@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.mixin.camera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.server.level.ServerPlayer;

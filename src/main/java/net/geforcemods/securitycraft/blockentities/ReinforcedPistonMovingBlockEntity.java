@@ -414,10 +414,10 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 			else
 				state = movedState;
 
-			float progress = getExtendedProgress(this.progress);
-			double x = direction.getStepX() * progress;
-			double y = direction.getStepY() * progress;
-			double z = direction.getStepZ() * progress;
+			float extendedProgress = getExtendedProgress(progress);
+			double x = direction.getStepX() * extendedProgress;
+			double y = direction.getStepY() * extendedProgress;
+			double z = direction.getStepZ() * extendedProgress;
 
 			return Shapes.or(shape, state.getCollisionShape(level, pos).move(x, y, z));
 		}

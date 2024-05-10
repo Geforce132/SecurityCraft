@@ -101,7 +101,7 @@ public class Owner {
 				continue;
 
 			// Check the player's UUID first.
-			if (uuidToCheck != null && !uuidToCheck.equals(ownerUUID))
+			if (uuidToCheck == null || !uuidToCheck.equals(ownerUUID))
 				return false;
 
 			// If the BlockEntity doesn't have a UUID saved, use the player's name instead.

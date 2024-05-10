@@ -131,7 +131,7 @@ public class SecurityCamera extends Entity {
 				be.stopViewing();
 
 			SectionPos chunkPos = SectionPos.of(blockPosition());
-			int chunkLoadingDistance = cameraChunks instanceof ChunkTrackingView.Positioned cameraChunks ? cameraChunks.viewDistance() : level().getServer().getPlayerList().getViewDistance();
+			int chunkLoadingDistance = cameraChunks instanceof ChunkTrackingView.Positioned positionedChunks ? positionedChunks.viewDistance() : level().getServer().getPlayerList().getViewDistance();
 
 			for (int x = chunkPos.getX() - chunkLoadingDistance; x <= chunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = chunkPos.getZ() - chunkLoadingDistance; z <= chunkPos.getZ() + chunkLoadingDistance; z++) {

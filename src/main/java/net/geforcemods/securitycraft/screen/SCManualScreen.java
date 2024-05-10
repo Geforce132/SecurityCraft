@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 
 import com.mojang.blaze3d.vertex.Tesselator;
 
@@ -472,19 +471,26 @@ public class SCManualScreen extends Screen {
 		if (item instanceof BlockItem blockItem) {
 			Block block = blockItem.getBlock();
 
-			if (explosive = block instanceof IExplosive)
+			explosive = block instanceof IExplosive;
+
+			if (explosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
 
 			if (block.defaultBlockState().hasBlockEntity()) {
 				BlockEntity be = ((EntityBlock) block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 
-				if (ownable = be instanceof IOwnable)
+				ownable = be instanceof IOwnable;
+				passcodeProtected = be instanceof IPasscodeProtected;
+				viewActivated = be instanceof IViewActivated;
+				lockable = be instanceof ILockable;
+
+				if (ownable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
 
-				if (passcodeProtected = be instanceof IPasscodeProtected)
+				if (passcodeProtected)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passcodeProtectedBlock")));
 
-				if (viewActivated = be instanceof IViewActivated)
+				if (viewActivated)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
 				if (be instanceof ICustomizable customizableBe) {
@@ -523,7 +529,7 @@ public class SCManualScreen extends Screen {
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
 				}
 
-				if (lockable = be instanceof ILockable)
+				if (lockable)
 					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
 
 				if (hasOptions || hasModules)
@@ -676,7 +682,7 @@ public class SCManualScreen extends Screen {
 				//create thread to fetch patrons. without this, and for example if the player has no internet connection, the game will hang
 				patronRequestFuture = executor.submit(() -> {
 					try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(PATRON_LIST_LINK).openStream()))) {
-						return reader.lines().collect(Collectors.toList());
+						return reader.lines().toList();
 					}
 					catch (IOException e) {
 						error = true;

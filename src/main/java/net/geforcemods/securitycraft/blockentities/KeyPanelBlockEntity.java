@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
+import net.geforcemods.securitycraft.blocks.AbstractPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -114,13 +115,13 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 			return false;
 		}
 
-		return !state.getValue(KeyPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return !state.getValue(AbstractPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
 	}
 
 	@Override
 	public void onOptionChanged(Option<?> option) {
 		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, false));
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(AbstractPanelBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
 
