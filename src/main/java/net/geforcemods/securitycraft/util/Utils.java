@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 
@@ -48,7 +49,7 @@ public class Utils {
 	}
 
 	public static ItemStack parseOptional(HolderLookup.Provider provider, CompoundTag tag) {
-		return tag.getInt("count") == 0 ? ItemStack.EMPTY : ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY);
+		return !tag.contains("id") || Items.AIR.toString().equals(tag.getString("id")) ? ItemStack.EMPTY : ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY);
 	}
 
 	public static BlockPos readBlockPos(CompoundTag tag) {
