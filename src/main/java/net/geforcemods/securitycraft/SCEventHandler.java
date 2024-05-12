@@ -201,13 +201,16 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingAttackEvent event) {
 		LivingEntity entity = event.getEntityLiving();
-		World level = entity.level;
-		DamageSource damageSource = event.getSource();
-		boolean isCreativePlayer = entity instanceof PlayerEntity && ((PlayerEntity) entity).isCreative();
 
-		if (!level.isClientSide && !isCreativePlayer && damageSource == DamageSource.IN_WALL && !entity.isInvulnerableTo(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity, entity.getEyePosition(1.0F))) {
-			entity.hurt(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
-			event.setCanceled(true);
+		if (entity instanceof ServerPlayerEntity) {
+			ServerPlayerEntity player = (ServerPlayerEntity) entity;
+			World level = player.level;
+			DamageSource damageSource = event.getSource();
+
+			if (!player.isCreative() && damageSource == DamageSource.IN_WALL && !player.isInvulnerableTo(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(1.0F))) {
+				player.hurt(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -238,7 +241,7 @@ public class SCEventHandler {
 				Vector3d newCenterPos = dismountLocation.add(0.0F, player.getBbHeight() / 2, 0.0F);
 				Vector3d newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
 
-				if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level, player, newEyePos) || BlockUtils.isInsideReinforcedBlocks(player.level, player, newCenterPos)))
+				if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideUnownedReinforcedBlocks(player.level, player, newEyePos) || BlockUtils.isInsideUnownedReinforcedBlocks(player.level, player, newCenterPos)))
 					event.setCanceled(true);
 			}
 		}

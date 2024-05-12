@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -88,11 +88,19 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static boolean isInsideReinforcedBlocks(World level, Entity entity, Vector3d pos) {
-		float width = entity.getBbWidth() * 0.8F;
+	public static boolean isInsideUnownedReinforcedBlocks(World level, PlayerEntity player, Vector3d pos) {
+		float width = player.getBbWidth() * 0.8F;
 		AxisAlignedBB inWallArea = AxisAlignedBB.ofSize(width, 0.1F, width).move(pos.x, pos.y, pos.z);
 
-		return level.getBlockCollisions(null, inWallArea, (wallState, testPos) -> wallState.getBlock() instanceof IReinforcedBlock && wallState.isSuffocating(level, testPos)).findAny().isPresent();
+		return level.getBlockCollisions(null, inWallArea, (wallState, testPos) -> {
+			if (wallState.getBlock() instanceof IReinforcedBlock && wallState.isSuffocating(level, testPos)) {
+				TileEntity be = level.getBlockEntity(testPos);
+
+				return !(be instanceof IOwnable) || !((IOwnable) be).isOwnedBy(player);
+			}
+
+			return false;
+		}).findAny().isPresent();
 	}
 
 	public static void updateIndirectNeighbors(World level, BlockPos pos, Block block) {
