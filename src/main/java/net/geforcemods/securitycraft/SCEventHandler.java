@@ -225,13 +225,16 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingAttackEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
-		World level = entity.world;
-		DamageSource damageSource = event.getSource();
-		boolean isCreativePlayer = entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative();
 
-		if (!level.isRemote && !isCreativePlayer && damageSource == DamageSource.IN_WALL && !entity.isEntityInvulnerable(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity, entity.getEyeHeight())) {
-			entity.attackEntityFrom(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
-			event.setCanceled(true);
+		if (entity instanceof EntityPlayerMP) {
+			EntityPlayerMP player = (EntityPlayerMP) entity;
+			World level = player.world;
+			DamageSource damageSource = event.getSource();
+
+			if (!player.isCreative() && damageSource == DamageSource.IN_WALL && !player.isEntityInvulnerable(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyeHeight())) {
+				player.attackEntityFrom(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -264,7 +267,7 @@ public class SCEventHandler {
 				player.dismountEntity(boat);
 				dismountLocation = new Vec3d(player.posX, player.posY, player.posZ);
 
-				if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.world, player, player.getEyeHeight()) || BlockUtils.isInsideReinforcedBlocks(player.world, player, player.height / 2) || BlockUtils.isInsideReinforcedBlocks(player.world, player, 0))) {
+				if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideUnownedReinforcedBlocks(player.world, player, player.getEyeHeight()) || BlockUtils.isInsideUnownedReinforcedBlocks(player.world, player, player.height / 2) || BlockUtils.isInsideUnownedReinforcedBlocks(player.world, player, 0))) {
 					player.rotationYaw = boat.rotationYaw + 180.0F % 360.0F; //The y-rotation is changed for the calculation of the new dismount location behind the boat in the next line
 					player.setPosition(oldPlayerPos.x, oldPlayerPos.y, oldPlayerPos.z);
 					player.dismountEntity(boat);
