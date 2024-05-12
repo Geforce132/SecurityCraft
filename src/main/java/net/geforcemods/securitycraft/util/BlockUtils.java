@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.LevelAccessor;
@@ -90,14 +91,14 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static boolean isInsideReinforcedBlocks(Level level, Vec3 pos, float entityWidth) {
+	public static boolean isInsideUnownedReinforcedBlocks(Level level, Player player, Vec3 pos, float entityWidth) {
 		float width = entityWidth * 0.8F;
 		AABB inWallArea = AABB.ofSize(pos, width, 1.0E-6, width);
 
 		return BlockPos.betweenClosedStream(inWallArea).anyMatch(testPos -> {
 			BlockState wallState = level.getBlockState(testPos);
 
-			return wallState.getBlock() instanceof IReinforcedBlock && wallState.isSuffocating(level, testPos) && Shapes.joinIsNotEmpty(wallState.getCollisionShape(level, testPos).move(testPos.getX(), testPos.getY(), testPos.getZ()), Shapes.create(inWallArea), BooleanOp.AND);
+			return wallState.getBlock() instanceof IReinforcedBlock && wallState.isSuffocating(level, testPos) && (!(level.getBlockEntity(testPos) instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) && Shapes.joinIsNotEmpty(wallState.getCollisionShape(level, testPos).move(testPos.getX(), testPos.getY(), testPos.getZ()), Shapes.create(inWallArea), BooleanOp.AND);
 		});
 	}
 
