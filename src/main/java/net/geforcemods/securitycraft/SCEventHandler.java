@@ -192,14 +192,14 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingAttackEvent event) {
-		LivingEntity entity = event.getEntityLiving();
-		Level level = entity.level;
-		DamageSource damageSource = event.getSource();
-		boolean isCreativePlayer = entity instanceof Player player && player.isCreative();
+		if (event.getEntityLiving() instanceof ServerPlayer player) {
+			Level level = player.level;
+			DamageSource damageSource = event.getSource();
 
-		if (!level.isClientSide && !isCreativePlayer && damageSource == DamageSource.IN_WALL && !entity.isInvulnerableTo(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity.getEyePosition(), entity.getBbWidth())) {
-			entity.hurt(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
-			event.setCanceled(true);
+			if (!player.isCreative() && damageSource == DamageSource.IN_WALL && !player.isInvulnerableTo(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(), player.getBbWidth())) {
+				player.hurt(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -223,7 +223,7 @@ public class SCEventHandler {
 			Vec3 newCenterPos = dismountLocation.add(0.0F, player.getBbHeight() / 2, 0.0F);
 			Vec3 newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
 
-			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level, newEyePos, player.getBbWidth()) || BlockUtils.isInsideReinforcedBlocks(player.level, newCenterPos, player.getBbWidth()))) {
+			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideUnownedReinforcedBlocks(player.level, player, newEyePos, player.getBbWidth()) || BlockUtils.isInsideUnownedReinforcedBlocks(player.level, player, newCenterPos, player.getBbWidth()))) {
 				player.setYRot(boat.getYRot() + 180.0F % 360.0F); //The y-rotation is changed for the calculation of the new dismount location behind the boat in the next line
 				dismountLocation = boat.getDismountLocationForPassenger(player);
 
