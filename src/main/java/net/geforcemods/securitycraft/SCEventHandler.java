@@ -198,14 +198,14 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingAttackEvent event) {
-		LivingEntity entity = event.getEntity();
-		Level level = entity.level();
-		DamageSource damageSource = event.getSource();
-		boolean isCreativePlayer = entity instanceof Player player && player.isCreative();
+		if (event.getEntity() instanceof ServerPlayer player) {
+			Level level = player.level();
+			DamageSource damageSource = event.getSource();
 
-		if (!level.isClientSide && !isCreativePlayer && damageSource.equals(level.damageSources().inWall()) && !entity.isInvulnerableTo(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity.getEyePosition(), entity.getBbWidth())) {
-			entity.hurt(CustomDamageSources.inReinforcedWall(entity.level().registryAccess()), 10.0F);
-			event.setCanceled(true);
+			if (!player.isCreative() && damageSource.equals(level.damageSources().inWall()) && !player.isInvulnerableTo(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(), player.getBbWidth())) {
+				player.hurt(CustomDamageSources.inReinforcedWall(level.registryAccess()), 10.0F);
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -229,7 +229,7 @@ public class SCEventHandler {
 			Vec3 newCenterPos = dismountLocation.add(0.0F, player.getBbHeight() / 2, 0.0F);
 			Vec3 newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
 
-			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level(), newEyePos, player.getBbWidth()) || BlockUtils.isInsideReinforcedBlocks(player.level(), newCenterPos, player.getBbWidth()))) {
+			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideUnownedReinforcedBlocks(player.level(), player, newEyePos, player.getBbWidth()) || BlockUtils.isInsideUnownedReinforcedBlocks(player.level(), player, newCenterPos, player.getBbWidth()))) {
 				player.setYRot(boat.getYRot() + 180.0F % 360.0F); //This doesn't actually alter the player's rotation, the y-rotation is only changed for the calculation of the new dismount location behind the boat in the next line
 				dismountLocation = boat.getDismountLocationForPassenger(player);
 
