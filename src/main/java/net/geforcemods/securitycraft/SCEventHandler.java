@@ -777,7 +777,7 @@ public class SCEventHandler {
 					return true;
 
 				if (codebreaker.getItem() == SCContent.codebreaker) {
-					if (codebreakable instanceof IOwnable && ((IOwnable) codebreakable).isOwnedBy(player)) {
+					if (codebreakable instanceof IOwnable && ((IOwnable) codebreakable).isOwnedBy(player) && !player.isCreative()) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.owned"), TextFormatting.RED);
 						return false;
 					}
