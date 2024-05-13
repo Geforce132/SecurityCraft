@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -573,7 +574,8 @@ public class SCEventHandler {
 			if (codebreakable instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
 				return false;
 
-			double chance = ConfigHandler.SERVER.codebreakerChance.get();
+			ItemStack codebreaker = player.getItemInHand(event.getHand());
+			double chance = CodebreakerItem.getSuccessChance(codebreaker);
 
 			if (chance < 0.0D) {
 				Block block = level.getBlockState(pos).getBlock();
@@ -581,7 +583,6 @@ public class SCEventHandler {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			}
 			else {
-				ItemStack codebreaker = player.getItemInHand(event.getHand());
 				BlockState state = level.getBlockState(pos);
 
 				if (!codebreakable.shouldAttemptCodebreak(state, player))

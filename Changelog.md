@@ -6,6 +6,7 @@
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
 - Change: The "preventReinforcedFloorGlitching" configuration option no longer affects players trying to glitch through reinforced blocks that they are the owner of
 - Change: Players in creative mode can once again use the codebreaker on their own blocks
+- Change: The "codebreaker_chance" config setting has been moved to the "securitycraft:success_chance" item component
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game

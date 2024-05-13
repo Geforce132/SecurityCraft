@@ -1325,6 +1325,8 @@
 	"tooltip.securitycraft.component.list_module_data.affects_everyone": "Wirkt sich auf jeden Spieler aus.",
 	"tooltip.securitycraft.component.notes": "Melodie mit %s Note(n) gespeichert.",
 	"tooltip.securitycraft.component.owner": "Besitzer: %s",
+	"tooltip.securitycraft.component.success_chance": "Erfolgschance: %s",
+	"tooltip.securitycraft.component.success_chance.disabled": "Deaktiviert",
 	"tooltip.securitycraft:camera": "Kamera",
 	"tooltip.securitycraft:cameraMonitor": "Anzahl an Kameras: %s",
 	"tooltip.securitycraft:keycard.limited_info": "Verbinde diese Karte in einer Werkbank mit einer begrenzt nutzbaren Schlüsselkarte, um zu kontrollieren, wie oft sie verwendet werden darf.",

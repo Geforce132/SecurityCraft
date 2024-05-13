@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
+import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -124,7 +125,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 	public ItemInteractionResult onRightClickWithActionItem(ItemStack stack, InteractionHand hand, Player player, boolean isCodebreaker, boolean isKeycardHolder) {
 		if (isCodebreaker) {
-			double chance = ConfigHandler.SERVER.codebreakerChance.get();
+			double chance = CodebreakerItem.getSuccessChance(stack);
 
 			if (chance < 0.0D)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);

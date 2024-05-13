@@ -1334,6 +1334,8 @@
 	"tooltip.securitycraft.component.list_module_data.affects_everyone": "Affects every player.",
 	"tooltip.securitycraft.component.notes": "Tune with %s note(s) saved.",
 	"tooltip.securitycraft.component.owner": "Owner: %s",
+	"tooltip.securitycraft.component.success_chance": "Success chance: %s",
+	"tooltip.securitycraft.component.success_chance.disabled": "Disabled",
 	"tooltip.securitycraft:camera": "Camera",
 	"tooltip.securitycraft:cameraMonitor": "# of cameras bound: %s",
 	"tooltip.securitycraft:keycard.limited_info": "Combine this card with a Limited Use Keycard in a crafting table to control how often it can be used.",

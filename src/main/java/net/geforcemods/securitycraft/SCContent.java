@@ -259,6 +259,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
@@ -344,6 +345,7 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Codec.unit(Unit.INSTANCE)));
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ListModuleData>> LIST_MODULE_DATA = DATA_COMPONENTS.registerComponentType("list_module_data", builder -> builder.persistent(ListModuleData.CODEC).networkSynchronized(ListModuleData.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SavedBlockState>> SAVED_BLOCK_STATE = DATA_COMPONENTS.registerComponentType("saved_block_state", builder -> builder.persistent(SavedBlockState.CODEC).networkSynchronized(SavedBlockState.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> SUCCESS_CHANCE = DATA_COMPONENTS.registerComponentType("success_chance", builder -> builder.persistent(Codec.doubleRange(-1.0D, 1.0D)).networkSynchronized(ByteBufCodecs.DOUBLE).cacheEncoding());
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
@@ -2571,7 +2573,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(BOUND_CAMERAS, GlobalPositions.sized(CameraMonitorItem.MAX_CAMERAS))));
 	@HasManualPage
-	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT)));
+	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT).component(SUCCESS_CHANCE, 0.33D)));
 	@HasManualPage
 	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
 	public static final DeferredItem<DisplayCaseItem> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.DISPLAY_CASE.get(), itemProp(), false));

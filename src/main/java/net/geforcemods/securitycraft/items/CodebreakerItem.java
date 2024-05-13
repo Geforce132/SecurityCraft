@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.ConfigHandler;
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.components.CodebreakerData;
@@ -20,11 +21,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
 public class CodebreakerItem extends Item {
 	public static final ResourceLocation STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "codebreaker_state");
+	private static final Component DISABLED = Component.translatable("tooltip.securitycraft.component.success_chance.disabled").withStyle(ChatFormatting.RED);
 
 	public CodebreakerItem(Item.Properties properties) {
 		super(properties);
@@ -39,12 +42,12 @@ public class CodebreakerItem extends Item {
 
 			if (briefcase.is(SCContent.BRIEFCASE.get())) {
 				if (BriefcaseItem.isOwnedBy(briefcase, player) && !player.isCreative())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
 				else {
-					double chance = ConfigHandler.SERVER.codebreakerChance.get();
+					double chance = getSuccessChance(codebreaker);
 
 					if (chance < 0.0D)
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 					else {
 						codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
@@ -70,7 +73,7 @@ public class CodebreakerItem extends Item {
 								}, player.blockPosition());
 							}
 							else
-								PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
+								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
 						}
 					}
 				}
@@ -80,6 +83,16 @@ public class CodebreakerItem extends Item {
 		}
 
 		return InteractionResultHolder.pass(codebreaker);
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
+		double chance = getSuccessChance(stack) * 100;
+
+		if (chance < 0.0D)
+			list.add(DISABLED);
+		else
+			list.add(Component.translatable("tooltip.securitycraft.component.success_chance", chance + "%").withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override
@@ -100,5 +113,9 @@ public class CodebreakerItem extends Item {
 	@Override
 	public boolean isEnchantable(ItemStack stack) {
 		return false;
+	}
+
+	public static double getSuccessChance(ItemStack codebreaker) {
+		return codebreaker.getOrDefault(SCContent.SUCCESS_CHANCE, 1.0D);
 	}
 }
