@@ -15,6 +15,7 @@
 - Fix: The debug world does not work with SecurityCraft installed
 - Fix: The block pocket can be assembled without the necessary items
 - Fix: Reinforcing a placed end rod will make the resulting reinforced end rod behave as if it had no owner until rejoining the world
+- Fix: The Reinforced Lever has incorrect break/place sounds
 - Misc.: The minimum required NeoForge version is now 20.4.234
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
