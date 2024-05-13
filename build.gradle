@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.4.226'
+	implementation 'net.neoforged:neoforge:20.4.234'
 
 	implementation "curse.maven:architectury-api-419699:5173990" //ftb teams dependency
 	implementation "curse.maven:ftb-library-forge-404465:5205161" //ftb teams dependency
@@ -98,4 +98,5 @@ tasks.named('jar', Jar).configure {
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
+	options.release = 17
 }
