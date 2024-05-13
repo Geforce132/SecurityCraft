@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
@@ -55,14 +56,14 @@ public class SCClientEventHandler {
 	private static final Component SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
 	//@formatter:off
 	private static final CameraKeyInfoEntry[] CAMERA_KEY_INFO_LIST = {
-			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.lookAround", options.keyUp.getTranslatedKeyMessage(), options.keyLeft.getTranslatedKeyMessage(), options.keyDown.getTranslatedKeyMessage(), options.keyRight.getTranslatedKeyMessage()), $ -> true),
-			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.exit", options.keyShift.getTranslatedKeyMessage()), $ -> true),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage()), $ -> true),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage()), $ -> true),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage()), be -> be.isModuleEnabled(ModuleType.REDSTONE)),
-			new CameraKeyInfoEntry($ -> REDSTONE_NOTE, be -> be.isModuleEnabled(ModuleType.REDSTONE)),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getTranslatedKeyMessage()), be -> be.isModuleEnabled(ModuleType.SMART)),
-			new CameraKeyInfoEntry($ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
+			new CameraKeyInfoEntry(() -> true, options -> Utils.localize("gui.securitycraft:camera.lookAround", options.keyUp.getTranslatedKeyMessage(), options.keyLeft.getTranslatedKeyMessage(), options.keyDown.getTranslatedKeyMessage(), options.keyRight.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry(() -> true, options -> Utils.localize("gui.securitycraft:camera.exit", options.keyShift.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry(() -> true, $ -> Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getTranslatedKeyMessage(), KeyBindings.cameraZoomOut.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry(ConfigHandler.SERVER.allowCameraNightVision::get, $ -> Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getTranslatedKeyMessage()), $ -> true),
+			new CameraKeyInfoEntry(() -> true, $ -> Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getTranslatedKeyMessage()), be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry(() -> true, $ -> REDSTONE_NOTE, be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry(() -> true, $ -> Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getTranslatedKeyMessage()), be -> be.isModuleEnabled(ModuleType.SMART)),
+			new CameraKeyInfoEntry(() -> true, $ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
 	};
 	//@formatter:on
 
@@ -148,11 +149,15 @@ public class SCClientEventHandler {
 
 		font.drawShadow(pose, time, scaledWidth - font.width(time) - 4, timeY, 0xFFFFFF);
 
-		int heightOffset = CAMERA_KEY_INFO_LIST.length * 10;
+		int heightOffset = 10;
 
-		for (CameraKeyInfoEntry entry : CAMERA_KEY_INFO_LIST) {
-			entry.drawString(options, pose, font, scaledWidth, scaledHeight, heightOffset, be);
-			heightOffset -= 10;
+		for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
+			CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
+
+			if (entry.enabled().get()) {
+				entry.drawString(options, pose, font, scaledWidth, scaledHeight, heightOffset, be);
+				heightOffset += 10;
+			}
 		}
 
 		RenderSystem._setShaderTexture(0, CAMERA_DASHBOARD);
@@ -213,7 +218,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public record CameraKeyInfoEntry(Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {
+	public record CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {
 		public void drawString(Options options, PoseStack pose, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be) {
 			Component text = text().apply(options);
 			boolean whiteText = whiteText().test(be);
