@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -83,7 +84,17 @@ public class EditModuleScreen extends Screen {
 		Button editTeamsButton;
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		inputField = addButton(new TextFieldWidget(font, controlsStartX, height / 2 - 88, 107, 15, StringTextComponent.EMPTY));
+		inputField = addButton(new TextFieldWidget(font, controlsStartX, height / 2 - 88, 107, 15, StringTextComponent.EMPTY) {
+			@Override
+			public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+				if (isFocused() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
+					addPlayerButtonClicked(addPlayerButton);
+					return true;
+				}
+
+				return super.keyPressed(keyCode, scanCode, modifiers);
+			}
+		});
 		addPlayerButton = addButton(new ExtendedButton(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked));
 		removePlayerButton = addButton(new ExtendedButton(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked));
 		editTeamsButton = addButton(new NonScrollableToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));
