@@ -60,7 +60,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	public static boolean convertBlock(BlockState state, World level, ItemStack stack, BlockPos pos, PlayerEntity player) {
-		if (!level.isClientSide && !player.isCreative() && level.mayInteract(player, pos)) {
+		if (!player.isCreative()) {
 			boolean isReinforcing = isReinforcing(stack);
 			Block block = state.getBlock();
 			Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
@@ -75,35 +75,38 @@ public class UniversalBlockReinforcerItem extends Item {
 				TileEntity be = level.getBlockEntity(pos);
 				CompoundNBT tag = null;
 
-				if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(player))
+				if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(player) || !level.mayInteract(player, pos))
 					return false;
 
-				if (be != null) {
-					tag = be.save(new CompoundNBT());
+				if (!level.isClientSide) {
+					if (be != null) {
+						tag = be.save(new CompoundNBT());
 
-					if (be instanceof IModuleInventory)
-						((IModuleInventory) be).dropAllModules();
+						if (be instanceof IModuleInventory)
+							((IModuleInventory) be).dropAllModules();
 
-					if (be instanceof IInventory)
-						((IInventory) be).clearContent();
-					else if (be instanceof ReinforcedHopperBlockEntity)
-						level.removeBlockEntity(pos); //because ReinforcedHopperBlock overrides Block#is to mimic the vanilla hopper, the BE needs to be removed here (usually this is done in Block#onRemove)
-					else if (be instanceof LecternTileEntity)
-						((LecternTileEntity) be).clearContent();
+						if (be instanceof IInventory)
+							((IInventory) be).clearContent();
+						else if (be instanceof ReinforcedHopperBlockEntity)
+							level.removeBlockEntity(pos); //because ReinforcedHopperBlock overrides Block#is to mimic the vanilla hopper, the BE needs to be removed here (usually this is done in Block#onRemove)
+						else if (be instanceof LecternTileEntity)
+							((LecternTileEntity) be).clearContent();
+					}
+
+					level.setBlockAndUpdate(pos, convertedState);
+					be = level.getBlockEntity(pos);
+
+					if (be != null) { //in case the converted state gets removed immediately after it is placed down
+						if (tag != null)
+							be.load(convertedState, tag);
+
+						if (isReinforcing)
+							((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					}
+
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				}
 
-				level.setBlockAndUpdate(pos, convertedState);
-				be = level.getBlockEntity(pos);
-
-				if (be != null) { //in case the converted state gets removed immediately after it is placed down
-					if (tag != null)
-						be.load(convertedState, tag);
-
-					if (isReinforcing)
-						((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				}
-
-				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				return true;
 			}
 		}
