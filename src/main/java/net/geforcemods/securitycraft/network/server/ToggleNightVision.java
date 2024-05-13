@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -26,7 +27,7 @@ public class ToggleNightVision implements IMessage {
 			EntityPlayerMP player = ctx.getServerHandler().player;
 
 			Utils.addScheduledTask(player.world, () -> {
-				if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+				if (ConfigHandler.allowCameraNightVision && PlayerUtils.isPlayerMountedOnCamera(player)) {
 					PotionEffect nightVision = player.getActivePotionEffect(MobEffects.NIGHT_VISION);
 
 					if (nightVision != null) {

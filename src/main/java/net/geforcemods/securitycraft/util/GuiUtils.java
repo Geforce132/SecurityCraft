@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.util;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.lwjgl.opengl.GL11;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -56,14 +58,14 @@ public class GuiUtils {
 	private static final TextComponentTranslation SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
 	//@formatter:off
 	private static final CameraKeyInfoEntry[] CAMERA_KEY_INFO_LIST = {
-			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.lookAround", options.keyBindForward.getDisplayName(), options.keyBindLeft.getDisplayName(), options.keyBindBack.getDisplayName(), options.keyBindRight.getDisplayName()), $ -> true),
-			new CameraKeyInfoEntry(options -> Utils.localize("gui.securitycraft:camera.exit", options.keyBindSneak.getDisplayName()), $ -> true),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getDisplayName(), KeyBindings.cameraZoomOut.getDisplayName()), $ -> true),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getDisplayName()), $ -> true),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getDisplayName()), be -> be.isModuleEnabled(ModuleType.REDSTONE)),
-			new CameraKeyInfoEntry($ -> REDSTONE_NOTE, be -> be.isModuleEnabled(ModuleType.REDSTONE)),
-			new CameraKeyInfoEntry($ -> Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getDisplayName()), be -> be.isModuleEnabled(ModuleType.SMART)),
-			new CameraKeyInfoEntry($ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
+			new CameraKeyInfoEntry(() -> true, options -> Utils.localize("gui.securitycraft:camera.lookAround", options.keyBindForward.getDisplayName(), options.keyBindLeft.getDisplayName(), options.keyBindBack.getDisplayName(), options.keyBindRight.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry(() -> true, options -> Utils.localize("gui.securitycraft:camera.exit", options.keyBindSneak.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry(() -> true, $ -> Utils.localize("gui.securitycraft:camera.zoom", KeyBindings.cameraZoomIn.getDisplayName(), KeyBindings.cameraZoomOut.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry(() -> ConfigHandler.allowCameraNightVision, $ -> Utils.localize("gui.securitycraft:camera.activateNightVision", KeyBindings.cameraActivateNightVision.getDisplayName()), $ -> true),
+			new CameraKeyInfoEntry(() -> true, $ -> Utils.localize("gui.securitycraft:camera.toggleRedstone", KeyBindings.cameraEmitRedstone.getDisplayName()), be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry(() -> true, $ -> REDSTONE_NOTE, be -> be.isModuleEnabled(ModuleType.REDSTONE)),
+			new CameraKeyInfoEntry(() -> true, $ -> Utils.localize("gui.securitycraft:camera.setDefaultViewingDirection", KeyBindings.setDefaultViewingDirection.getDisplayName()), be -> be.isModuleEnabled(ModuleType.SMART)),
+			new CameraKeyInfoEntry(() -> true, $ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
 	};
 	//@formatter:on
 
@@ -100,11 +102,15 @@ public class GuiUtils {
 
 		font.drawStringWithShadow(time, scaledWidth - font.getStringWidth(time) - 4, timeY, 16777215);
 
-		int heightOffset = CAMERA_KEY_INFO_LIST.length * 10;
+		int heightOffset = 10;
 
-		for (CameraKeyInfoEntry entry : CAMERA_KEY_INFO_LIST) {
-			entry.drawString(settings, font, scaledWidth, scaledHeight, heightOffset, te);
-			heightOffset -= 10;
+		for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
+			CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
+
+			if (entry.enabled().get()) {
+				entry.drawString(settings, font, scaledWidth, scaledHeight, heightOffset, te);
+				heightOffset += 10;
+			}
 		}
 
 		mc.getTextureManager().bindTexture(CAMERA_DASHBOARD);
@@ -187,10 +193,12 @@ public class GuiUtils {
 	}
 
 	public static final class CameraKeyInfoEntry {
+		private final Supplier<Boolean> enabled;
 		private final Function<GameSettings, TextComponentTranslation> text;
 		private final Predicate<SecurityCameraBlockEntity> whiteText;
 
-		public CameraKeyInfoEntry(Function<GameSettings, TextComponentTranslation> text, Predicate<SecurityCameraBlockEntity> whiteText) {
+		public CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<GameSettings, TextComponentTranslation> text, Predicate<SecurityCameraBlockEntity> whiteText) {
+			this.enabled = enabled;
 			this.text = text;
 			this.whiteText = whiteText;
 		}
@@ -200,6 +208,10 @@ public class GuiUtils {
 			boolean shouldTextBeWhite = whiteText().test(be);
 
 			font.drawStringWithShadow(formattedText, scaledWidth - font.getStringWidth(formattedText) - 8, scaledHeight - heightOffset, shouldTextBeWhite ? 0xFFFFFF : 0xFF3377);
+		}
+
+		public Supplier<Boolean> enabled() {
+			return enabled;
 		}
 
 		public Function<GameSettings, TextComponentTranslation> text() {

@@ -181,6 +181,10 @@ public class ConfigHandler {
 	@Comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
 	public static String[] sentryAttackableEntitiesDenylist = {};
 
+	@Name("Allow Camera Night Vision")
+	@Comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
+	public static boolean allowCameraNightVision = true;
+
 	/**
 	 * @deprecated Use {@link #TASER_EFFECTS}
 	 */
