@@ -197,7 +197,7 @@ public class CameraController {
 		BlockPos pos = cam.blockPosition();
 		Level level = cam.level();
 
-		if (((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+		if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.isModuleEnabled(ModuleType.REDSTONE))
 			SecurityCraft.CHANNEL.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
