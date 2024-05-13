@@ -38,7 +38,7 @@ public class CodebreakerItem extends Item {
 			ItemStack briefcase = player.getOffhandItem();
 
 			if (briefcase.is(SCContent.BRIEFCASE.get())) {
-				if (BriefcaseItem.isOwnedBy(briefcase, player))
+				if (BriefcaseItem.isOwnedBy(briefcase, player) && !player.isCreative())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
 				else {
 					double chance = ConfigHandler.SERVER.codebreakerChance.get();
