@@ -24,6 +24,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.CPlayerPacket;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
@@ -197,8 +198,9 @@ public class CameraController {
 
 	public static void toggleRedstone(SecurityCamera cam) {
 		BlockPos pos = cam.blockPosition();
+		TileEntity be = cam.level.getBlockEntity(pos);
 
-		if (((IModuleInventory) cam.level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+		if (be instanceof IModuleInventory && ((IModuleInventory) be).isModuleEnabled(ModuleType.REDSTONE))
 			SecurityCraft.channel.sendToServer(new SetCameraPowered(pos, !cam.level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
