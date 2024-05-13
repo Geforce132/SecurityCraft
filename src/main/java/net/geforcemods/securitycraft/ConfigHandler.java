@@ -77,6 +77,7 @@ public class ConfigHandler {
 		public DoubleValue laserDamage;
 		public IntValue incorrectPasscodeDamage;
 		public IntValue sentryBulletDamage;
+		public BooleanValue allowCameraNightVision;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
@@ -181,6 +182,10 @@ public class ConfigHandler {
 			sentryBulletDamage = builder
 					.comment("Set the amount of damage the default Sentry bullet inflicts onto the mobs it hits. This will not affect other projectiles the Sentry can use, like arrows. Default is one heart.")
 					.defineInRange("sentry_bullet_damage", 2, 0, Integer.MAX_VALUE);
+
+			allowCameraNightVision = builder
+					.comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
+					.define("allow_camera_night_vision", true);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
