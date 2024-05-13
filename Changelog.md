@@ -14,6 +14,7 @@
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 - Fix: The block pocket can be assembled without the necessary items
 - Fix: Reinforcing a placed end rod will make the resulting reinforced end rod behave as if it had no owner until rejoining the world
+- Fix: SecurityCraft's WTHIT config does not work on the client
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
