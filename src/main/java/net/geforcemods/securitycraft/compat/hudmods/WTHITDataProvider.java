@@ -30,9 +30,9 @@ public final class WTHITDataProvider extends HudModHandler implements IWailaPlug
 	@Override
 	public void register(IRegistrar registrar) {
 		registrar.addEventListener(this);
-		registrar.addSyncedConfig(SHOW_OWNER, true, true);
-		registrar.addSyncedConfig(SHOW_MODULES, true, true);
-		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true, true);
+		registrar.addSyncedConfig(SHOW_OWNER, true, false);
+		registrar.addSyncedConfig(SHOW_MODULES, true, false);
+		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true, false);
 		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.HEAD, IOverlayDisplay.class);
 		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.BODY, IOwnable.class);
 		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.TAIL, IOverlayDisplay.class);

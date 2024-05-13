@@ -204,7 +204,7 @@ public class CameraController {
 
 	public static void toggleNightVision(SecurityCamera cam) {
 		if (ConfigHandler.SERVER.allowCameraNightVision.get())
-		PacketDistributor.SERVER.noArg().send(new ToggleNightVision());
+			PacketDistributor.SERVER.noArg().send(new ToggleNightVision());
 	}
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
