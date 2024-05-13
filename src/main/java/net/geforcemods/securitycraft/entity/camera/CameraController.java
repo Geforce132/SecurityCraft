@@ -195,7 +195,7 @@ public class CameraController {
 	public static void toggleRedstone(SecurityCamera cam) {
 		BlockPos pos = cam.blockPosition();
 
-		if (((IModuleInventory) cam.level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+		if (cam.level.getBlockEntity(pos) instanceof IModuleInventory be && be.isModuleEnabled(ModuleType.REDSTONE))
 			SecurityCraft.CHANNEL.sendToServer(new SetCameraPowered(pos, !cam.level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
