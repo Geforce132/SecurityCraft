@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -74,7 +76,17 @@ public class EditModuleScreen extends Screen {
 		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 		Button editTeamsButton;
 
-		inputField = addRenderableWidget(new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()));
+		inputField = addRenderableWidget(new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()) {
+			@Override
+			public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+				if (isFocused() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
+					addPlayerButtonClicked(addPlayerButton);
+					return true;
+				}
+
+				return super.keyPressed(keyCode, scanCode, modifiers);
+			}
+		});
 		addPlayerButton = addRenderableWidget(new Button(controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player"), this::addPlayerButtonClicked, Button.DEFAULT_NARRATION));
 		removePlayerButton = addRenderableWidget(new Button(controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player"), this::removePlayerButtonClicked, Button.DEFAULT_NARRATION));
 		editTeamsButton = addRenderableWidget(new NonScrollableToggleComponentButton(controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams"), 0, 2, this::editTeamsButtonClicked));
