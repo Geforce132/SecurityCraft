@@ -78,7 +78,17 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 		GuiButton editTeamsButton;
 
 		Keyboard.enableRepeatEvents(true);
-		inputField = new GuiTextField(5, fontRenderer, controlsStartX, height / 2 - 88, controlsWidth, 15);
+		inputField = new GuiTextField(5, fontRenderer, controlsStartX, height / 2 - 88, controlsWidth, 15) {
+			@Override
+			public boolean textboxKeyTyped(char typedChar, int keyCode) {
+				if (isFocused() && (keyCode == Keyboard.KEY_RETURN || keyCode == Keyboard.KEY_NUMPADENTER)) {
+					actionPerformed(addPlayerButton);
+					return true;
+				}
+
+				return super.textboxKeyTyped(typedChar, keyCode);
+			}
+		};
 		addPlayerButton = addButton(new GuiButton(0, controlsStartX, height / 2 - 68, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.add_player").getFormattedText()));
 		removePlayerButton = addButton(new GuiButton(1, controlsStartX, height / 2 - 43, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.remove_player").getFormattedText()));
 		editTeamsButton = addButton(new ToggleComponentButton(2, controlsStartX, height / 2 - 18, controlsWidth, 20, i -> Utils.localize("gui.securitycraft:editModule.edit_teams").getFormattedText(), 0, 2, b -> {}));
