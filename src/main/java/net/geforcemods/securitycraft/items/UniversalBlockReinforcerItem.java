@@ -58,7 +58,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak
-		if (!level.isClientSide && !player.isCreative() && level.mayInteract(player, pos)) {
+		if (!player.isCreative()) {
 			boolean isReinforcing = isReinforcing(stack);
 			Block block = state.getBlock();
 			Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
@@ -73,33 +73,36 @@ public class UniversalBlockReinforcerItem extends Item {
 				BlockEntity be = level.getBlockEntity(pos);
 				CompoundTag tag = null;
 
-				if (be instanceof IOwnable ownable && !ownable.isOwnedBy(player))
+				if ((be instanceof IOwnable ownable && !ownable.isOwnedBy(player)) || !level.mayInteract(player, pos))
 					return false;
 
-				if (be != null) {
-					tag = be.saveWithoutMetadata();
+				if (!level.isClientSide) {
+					if (be != null) {
+						tag = be.saveWithoutMetadata();
 
-					if (be instanceof IModuleInventory inv)
-						inv.dropAllModules();
+						if (be instanceof IModuleInventory inv)
+							inv.dropAllModules();
 
-					if (be instanceof Container container)
-						container.clearContent();
-					else if (be instanceof LecternBlockEntity lectern)
-						lectern.clearContent();
+						if (be instanceof Container container)
+							container.clearContent();
+						else if (be instanceof LecternBlockEntity lectern)
+							lectern.clearContent();
+					}
+
+					level.setBlockAndUpdate(pos, convertedState);
+					be = level.getBlockEntity(pos);
+
+					if (be != null) { //in case the converted block gets removed immediately after it's set
+						if (tag != null)
+							be.load(tag);
+
+						if (isReinforcing)
+							((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+					}
+
+					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				}
 
-				level.setBlockAndUpdate(pos, convertedState);
-				be = level.getBlockEntity(pos);
-
-				if (be != null) { //in case the converted block gets removed immediately after it's set
-					if (tag != null)
-						be.load(tag);
-
-					if (isReinforcing)
-						((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				}
-
-				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 				return true;
 			}
 		}
