@@ -999,7 +999,7 @@
 	"messages.securitycraft:cameraMonitor.rightclickToView": "Rechtsklicke eine Kamera, um sie anzuschauen.",
 	"messages.securitycraft:cameraMonitor.unbound": "Kamera bei %s vom Monitor getrennt.",
 	"messages.securitycraft:codebreaker.failed": "Code konnte nicht geknackt werden, bitte versuche es nochmal.",
-	"messages.securitycraft:codebreaker.owned": "Du versuchsts von etwas, das dir gehört, das Passwort zu ändern. Falls du das Passwort vergessen hast, verwende stattdessen den Universellen Passwortwechsler.",
+	"messages.securitycraft:codebreaker.owned": "Du versuchsts etwas, das dir gehört, Mit dem Codebrecher zu öffnen. Falls du das Passwort vergessen hast, verwende stattdessen den Universellen Passwortwechsler.",
 	"messages.securitycraft:codebreakerDisabled": "Der Codebrecher wurde in der Konfigurations-Datei deaktiviert.",
 	"messages.securitycraft:command.sc.usage": "Verwendung: /sc connect ODER /sc disconnect ODER /sc contact ODER /sc resume",
 	"messages.securitycraft:frame.rightclick": "Das Anschauen von Kameramonitoren ist aktuell nicht möglich, da LookingGlass nicht zu einer neueren Version als 1.7.10 geported wurde. In einem zukünftigen Update wird diese Funktion vermutlich wieder eingeführt, diesmal ohne eine zusätzliche Modifikation wie LookingGlass zum Funktionieren zu benötigen. Es ist jedoch noch unbekannt, wann genau dies passieren wird.",
