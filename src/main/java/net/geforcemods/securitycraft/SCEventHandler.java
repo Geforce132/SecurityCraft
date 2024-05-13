@@ -453,7 +453,9 @@ public class SCEventHandler {
 
 		if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3) {
 			UniversalBlockReinforcerItem.maybeRemoveMending(stack);
-			UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getEntityPlayer());
+
+			if (UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getEntityPlayer()))
+				event.setCanceled(true); //When the client knows that a block will be converted on the server, it should not destroy that block (e.g. via instamining)
 		}
 	}
 

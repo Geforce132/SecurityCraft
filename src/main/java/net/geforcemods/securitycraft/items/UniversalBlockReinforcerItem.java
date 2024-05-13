@@ -45,7 +45,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	public static boolean convertBlock(ItemStack stack, BlockPos pos, EntityPlayer player) {
 		World world = player.getEntityWorld();
 
-		if (!world.isRemote && !player.capabilities.isCreativeMode && world.isBlockModifiable(player, pos)) {
+		if (!player.capabilities.isCreativeMode) {
 			boolean isReinforcing = isReinforcing(stack);
 			IBlockState state = world.getBlockState(pos);
 			Block blockToConvert = state.getBlock();
@@ -70,31 +70,34 @@ public class UniversalBlockReinforcerItem extends Item {
 				TileEntity te = world.getTileEntity(pos);
 				NBTTagCompound tag = null;
 
-				if (!isReinforcing && te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player))
+				if (!isReinforcing && te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player) || !world.isBlockModifiable(player, pos))
 					return false;
 
-				if (te != null) {
-					tag = te.writeToNBT(new NBTTagCompound());
+				if (!world.isRemote) {
+					if (te != null) {
+						tag = te.writeToNBT(new NBTTagCompound());
 
-					if (te instanceof IModuleInventory)
-						((IModuleInventory) te).dropAllModules();
+						if (te instanceof IModuleInventory)
+							((IModuleInventory) te).dropAllModules();
 
-					if (te instanceof IInventory)
-						((IInventory) te).clear();
+						if (te instanceof IInventory)
+							((IInventory) te).clear();
+					}
+
+					world.setBlockState(pos, convertedState);
+					te = world.getTileEntity(pos);
+
+					if (te != null) { //in case the converted state gets removed immediately after it is placed down
+						if (tag != null)
+							te.readFromNBT(tag);
+
+						if (isReinforcing)
+							((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName());
+					}
+
+					stack.damageItem(1, player);
 				}
 
-				world.setBlockState(pos, convertedState);
-				te = world.getTileEntity(pos);
-
-				if (te != null) { //in case the converted state gets removed immediately after it is placed down
-					if (tag != null)
-						te.readFromNBT(tag);
-
-					if (isReinforcing)
-						((IOwnable) te).setOwner(player.getGameProfile().getId().toString(), player.getName());
-				}
-
-				stack.damageItem(1, player);
 				return true;
 			}
 		}

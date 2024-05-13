@@ -7,6 +7,7 @@
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - Fix: The block pocket can be assembled without the necessary items
+- Fix: Reinforcing a placed end rod will briefly destroy the end rod before it is replaced with a reinforced end rod
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
