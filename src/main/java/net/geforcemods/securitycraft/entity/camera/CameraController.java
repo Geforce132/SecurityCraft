@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.function.Consumer;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -202,7 +203,8 @@ public class CameraController {
 	}
 
 	public static void toggleNightVision(SecurityCamera cam) {
-		SecurityCraft.channel.sendToServer(new ToggleNightVision());
+		if (ConfigHandler.SERVER.allowCameraNightVision.get())
+			SecurityCraft.channel.sendToServer(new ToggleNightVision());
 	}
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
