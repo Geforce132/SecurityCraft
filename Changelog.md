@@ -17,6 +17,7 @@
 - Fix: Reinforcing a placed end rod will make the resulting reinforced end rod behave as if it had no owner until rejoining the world
 - Fix: The Reinforced Lever has incorrect break/place sounds
 - Fix: SecurityCraft's WTHIT config does not work on the client
+- Fix: Crash when trying to toggle the redstone state of a camera immediately after mounting it
 - Misc.: The minimum required NeoForge version is now 20.4.234
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
