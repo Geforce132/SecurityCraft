@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -187,12 +188,28 @@ public class DisplayCaseBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
+	public void playerWillDestroy(World level, BlockPos pos, BlockState state, PlayerEntity player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative()) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IModuleInventory)
+				((IModuleInventory) te).getInventory().clear();
+		}
+
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			TileEntity be = level.getBlockEntity(pos);
 
 			if (be instanceof DisplayCaseBlockEntity)
 				Block.popResource(level, pos, ((DisplayCaseBlockEntity) be).getDisplayedStack());
+
+			if (be instanceof IModuleInventory)
+				((IModuleInventory) be).dropAllModules();
 
 			if (be instanceof IPasscodeProtected)
 				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
