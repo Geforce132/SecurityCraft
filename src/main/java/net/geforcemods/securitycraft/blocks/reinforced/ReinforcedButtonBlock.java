@@ -35,6 +35,7 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult rayTrace) {
 		if (isAllowedToPress((AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
 			return super.use(state, level, pos, player, hand, rayTrace);
+
 		return InteractionResult.FAIL;
 	}
 

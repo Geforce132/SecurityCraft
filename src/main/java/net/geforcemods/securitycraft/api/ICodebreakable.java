@@ -56,7 +56,7 @@ public interface ICodebreakable {
 			ItemStack codebreaker = player.getItemInHand(hand);
 
 			if (codebreaker.is(SCContent.CODEBREAKER.get())) {
-				if (this instanceof IOwnable ownable && ownable.isOwnedBy(player)) {
+				if (this instanceof IOwnable ownable && ownable.isOwnedBy(player) && !player.isCreative()) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
 					return false;
 				}

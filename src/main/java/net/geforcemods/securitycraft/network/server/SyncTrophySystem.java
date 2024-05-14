@@ -49,16 +49,14 @@ public class SyncTrophySystem implements CustomPacketPayload {
 	public void handle(PlayPayloadContext ctx) {
 		EntityType<?> projectileType = BuiltInRegistries.ENTITY_TYPE.get(projectileTypeLocation);
 
-		if (projectileType != null) {
-			Player player = ctx.player().orElseThrow();
-			Level level = player.level();
+		Player player = ctx.player().orElseThrow();
+		Level level = player.level();
 
-			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(player)) {
-				BlockState state = level.getBlockState(pos);
+		if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(player)) {
+			BlockState state = level.getBlockState(pos);
 
-				be.setFilter(projectileType, allowed);
-				level.sendBlockUpdated(pos, state, state, 2);
-			}
+			be.setFilter(projectileType, allowed);
+			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
 }

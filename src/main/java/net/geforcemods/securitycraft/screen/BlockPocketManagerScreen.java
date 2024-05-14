@@ -42,7 +42,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());
 	private static final int CHISELED_NEEDED_OVERALL = 8;
 	private final Component youNeed = Utils.localize("gui.securitycraft:blockPocketManager.youNeed");
-	private final boolean storage;
+	private final boolean hasStorageModule;
 	private final boolean isOwner;
 	private final int[] materialCounts = new int[3];
 	public final BlockPocketManagerBlockEntity be;
@@ -68,12 +68,12 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		be = menu.be;
 		size = be.getSize();
 		isOwner = menu.isOwner;
-		storage = menu.storage;
+		hasStorageModule = menu.hasStorageModule;
 
-		if (storage)
+		if (hasStorageModule)
 			imageWidth = 256;
 
-		imageHeight = !storage ? 194 : 240;
+		imageHeight = !hasStorageModule ? 194 : 240;
 		previousColor = be.getColor();
 	}
 
@@ -81,18 +81,18 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	public void init() {
 		super.init();
 
-		int guiWidth = storage ? 123 : imageWidth;
-		int widgetWidth = storage ? 110 : 120;
+		int guiWidth = hasStorageModule ? 123 : imageWidth;
+		int widgetWidth = hasStorageModule ? 110 : 120;
 		int widgetOffset = widgetWidth / 2;
 		//@formatter:off
-		int[] yOffset = storage ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
+		int[] yOffset = hasStorageModule ? new int[] {-76, -100, -52, -28, -4} : new int[] {-40, -70, 23, 47, 71};
 		//@formatter:on
 		int outlineY = topPos + imageHeight / 2 + yOffset[2];
 		Button colorChooserButton;
-		int colorChooserButtonX = leftPos + guiWidth / 2 - widgetOffset + (storage ? 0 : widgetWidth + 3);
-		int outlineButtonX = colorChooserButtonX + (storage ? 23 : -widgetWidth - 3);
-		int outlineButtonWidth = widgetWidth - (storage ? 23 : 0);
-		int colorChooserX = colorChooserButtonX + (storage ? -145 : 20);
+		int colorChooserButtonX = leftPos + guiWidth / 2 - widgetOffset + (hasStorageModule ? 0 : widgetWidth + 3);
+		int outlineButtonX = colorChooserButtonX + (hasStorageModule ? 23 : -widgetWidth - 3);
+		int outlineButtonWidth = widgetWidth - (hasStorageModule ? 23 : 0);
+		int colorChooserX = colorChooserButtonX + (hasStorageModule ? -145 : 20);
 		Button toggleButton, sizeButton;
 
 		toggleButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.isEnabled() ? "activate" : "deactivate")), this::toggleButtonClicked, Button.DEFAULT_NARRATION));
@@ -113,10 +113,10 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
 		else {
 			updateMaterialInformation(true);
-			sizeButton.active = assembleButton.active = offsetSlider.active = !be.isEnabled();
+			sizeButton.active = offsetSlider.active = !be.isEnabled();
 		}
 
-		if (!storage) {
+		if (!hasStorageModule) {
 			hoverCheckers[0] = new StackHoverChecker(BLOCK_POCKET_WALL, topPos + 93, topPos + 113, leftPos + 23, leftPos + 43);
 			hoverCheckers[1] = new StackHoverChecker(REINFORCED_CRYSTAL_QUARTZ_PILLAR, topPos + 93, topPos + 113, leftPos + 75, leftPos + 95);
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, topPos + 93, topPos + 113, leftPos + 128, leftPos + 148);
@@ -133,13 +133,13 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, title, (storage ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752, false);
+		guiGraphics.drawString(font, title, (hasStorageModule ? 123 : imageWidth) / 2 - font.width(title) / 2, 6, 4210752, false);
 
-		if (storage)
+		if (hasStorageModule)
 			guiGraphics.drawString(font, playerInventoryTitle, 8, imageHeight - 94, 4210752, false);
 
 		if (!be.isEnabled() && isOwner) {
-			if (!storage) {
+			if (!hasStorageModule) {
 				guiGraphics.drawString(font, youNeed, imageWidth / 2 - font.width(youNeed) / 2, 83, 4210752, false);
 
 				guiGraphics.drawString(font, wallsNeededOverall + "", 42, 100, 4210752, false);
@@ -170,7 +170,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		if (storage)
+		if (hasStorageModule)
 			renderTooltip(guiGraphics, mouseX, mouseY);
 
 		if (!be.isEnabled() && isOwner) {
@@ -185,7 +185,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(storage ? TEXTURE_STORAGE : TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(hasStorageModule ? TEXTURE_STORAGE : TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
@@ -252,6 +252,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			NonNullList<ItemStack> storage = be.getStorage();
 
 			materialCounts[0] = materialCounts[1] = materialCounts[2] = 0;
+
 			for (int i = 0; i < storage.size(); i++) {
 				ItemStack stack = storage.get(i);
 
@@ -274,7 +275,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		pillarsStillNeeded = pillarsNeededOverall - materialCounts[1];
 		chiseledStillNeeded = CHISELED_NEEDED_OVERALL - materialCounts[2];
 		//the assemble button should always be active when the player is in creative mode
-		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!be.isEnabled() && storage && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
+		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!be.isEnabled() && hasStorageModule && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
 		updateAssembleButtonTooltip();
 	}
 
@@ -321,7 +322,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	public void updateAssembleButtonTooltip() {
 		if (!assembleButton.isActive())
-			assembleButton.setTooltip(Tooltip.create(!storage ? Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule") : Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
+			assembleButton.setTooltip(Tooltip.create(!hasStorageModule ? Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule") : Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
 		else
 			assembleButton.setTooltip(null);
 	}

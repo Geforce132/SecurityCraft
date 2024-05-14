@@ -28,7 +28,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	private IntOption range = new IntOption("range", 15, 1, 30, 1, true);
+	private IntOption range = new IntOption("range", 15, 1, 30, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);

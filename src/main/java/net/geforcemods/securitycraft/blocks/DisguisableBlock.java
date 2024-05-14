@@ -33,6 +33,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 
 public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -61,7 +62,11 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-		int lightValue = level.getAuxLightManager(pos).getLightAt(pos);
+		AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
+		int lightValue = 0;
+
+		if (lightManager != null)
+			lightValue = lightManager.getLightAt(pos);
 
 		return lightValue > 0 ? lightValue : super.getLightEmission(state, level, pos);
 	}
@@ -212,5 +217,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
 		return getDisguisedStack(level, pos);
+	}
+
+	@Override
+	public boolean hasDynamicLightEmission(BlockState state) {
+		return true;
 	}
 }

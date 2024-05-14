@@ -39,8 +39,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
-	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
-	private IntOption range = new IntOption("range", 5, 1, 15, 1, true);
+	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
+	private IntOption range = new IntOption("range", 5, 1, 15, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private DetectionMode mode = DetectionMode.BOTH;

@@ -1,3 +1,25 @@
+--------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
+
+- New: Server config setting "allow_camera_night_vision" to set whether players are able to activate night vision without having the actual potion effect
+- New: Pressing "Enter" while typing a player name in an Allowlist/Denylist Module will now add the player to the list without needing to press the "Add Player" button
+- Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
+- Change: Some SecurityCraft tip messages have been reworded for clarity
+- Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
+- Change: The "preventReinforcedFloorGlitching" configuration option no longer affects players trying to glitch through reinforced blocks that they are the owner of
+- Change: Players in creative mode can once again use the codebreaker on their own blocks
+- API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
+- API: Removed FloatOption. Use DoubleOption instead
+- Fix: Trying to place a Panic Button on top of powdered snow crashes the game
+- Fix: Occasional crash when opening the inventory in creative mode in certain situations
+- Fix: Reinforced fence gates don't properly retain their owner when reloading the world
+- Fix: The debug world does not work with SecurityCraft installed
+- Fix: The block pocket can be assembled without the necessary items
+- Fix: Reinforcing a placed end rod will make the resulting reinforced end rod behave as if it had no owner until rejoining the world
+- Fix: The Reinforced Lever has incorrect break/place sounds
+- Fix: SecurityCraft's WTHIT config does not work on the client
+- Fix: Crash when trying to toggle the redstone state of a camera immediately after mounting it
+- Misc.: The minimum required NeoForge version is now 20.4.234
+
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
 - New: Items in open Display Cases can now be picked using the "Pick Block" key

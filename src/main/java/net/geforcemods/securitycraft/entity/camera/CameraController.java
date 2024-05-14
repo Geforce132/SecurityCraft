@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -42,11 +43,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class CameraController {
-	/**
-	 * @deprecated Don't use directly, use {@link #cameraSpeed()} so the config value gets loaded at the correct time
-	 */
-	@Deprecated
-	private static double cameraSpeed = -1.0D;
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
 	private static ClientChunkCache.Storage cameraStorage;
@@ -58,8 +54,8 @@ public class CameraController {
 				//@formatter:off
 				new ViewMovementKeyHandler(mc.options.keyUp, CameraController::moveViewUp),
 				new ViewMovementKeyHandler(mc.options.keyDown, CameraController::moveViewDown),
-				new ViewMovementKeyHandler(mc.options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - (float) cameraSpeed() * cam.zoomAmount)),
-				new ViewMovementKeyHandler(mc.options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + (float) cameraSpeed() * cam.zoomAmount))
+				new ViewMovementKeyHandler(mc.options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - getMovementSpeed(cam) * cam.zoomAmount)),
+				new ViewMovementKeyHandler(mc.options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + getMovementSpeed(cam) * cam.zoomAmount))
 				//@formatter:on
 			};
 		}
@@ -138,7 +134,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.getXRot() - (float) cameraSpeed() * cam.zoomAmount;
+		float next = cam.getXRot() - getMovementSpeed(cam) * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -149,7 +145,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.getXRot() + (float) cameraSpeed() * cam.zoomAmount;
+		float next = cam.getXRot() + getMovementSpeed(cam) * cam.zoomAmount;
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -202,12 +198,13 @@ public class CameraController {
 		BlockPos pos = cam.blockPosition();
 		Level level = cam.level();
 
-		if (((IModuleInventory) level.getBlockEntity(pos)).isModuleEnabled(ModuleType.REDSTONE))
+		if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.isModuleEnabled(ModuleType.REDSTONE))
 			PacketDistributor.SERVER.noArg().send(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
 	public static void toggleNightVision(SecurityCamera cam) {
-		PacketDistributor.SERVER.noArg().send(new ToggleNightVision());
+		if (ConfigHandler.SERVER.allowCameraNightVision.get())
+			PacketDistributor.SERVER.noArg().send(new ToggleNightVision());
 	}
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
@@ -231,11 +228,13 @@ public class CameraController {
 		}
 	}
 
-	private static double cameraSpeed() {
-		if (cameraSpeed < 0.0D)
-			cameraSpeed = ConfigHandler.CLIENT.cameraSpeed.get();
+	public static float getMovementSpeed(SecurityCamera cam) {
+		SecurityCameraBlockEntity be = cam.getBlockEntity();
 
-		return cameraSpeed;
+		if (be != null)
+			return (float) be.getMovementSpeed();
+
+		return 0.0F;
 	}
 
 	public static class ViewMovementKeyHandler {

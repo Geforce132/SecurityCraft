@@ -1343,8 +1343,7 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addBarkRecipe(RecipeOutput recipeOutput, ItemLike log, ItemLike result) //woof
-	{
+	protected final void addBarkRecipe(RecipeOutput recipeOutput, ItemLike log, ItemLike result) { //woof
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 3)
 		.group("securitycraft:bark")

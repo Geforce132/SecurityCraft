@@ -17,7 +17,7 @@ public class SaltData extends SavedData {
 	private SaltData() {}
 
 	public static void refreshLevel(ServerLevel level) {
-		instance = level.getDataStorage().computeIfAbsent(new SavedData.Factory<SaltData>(SaltData::new, SaltData::load, null), "securitycraft-salts");
+		instance = level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SaltData::new, SaltData::load, null), "securitycraft-salts");
 	}
 
 	public static boolean containsKey(UUID saltKey) {

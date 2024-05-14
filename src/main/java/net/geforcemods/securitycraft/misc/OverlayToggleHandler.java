@@ -26,7 +26,12 @@ public class OverlayToggleHandler {
 	}
 
 	public static boolean isDisabled(VanillaGuiOverlay overlay) {
-		return isDisabled(GuiOverlayManager.findOverlay(overlay.id()).overlay());
+		NamedGuiOverlay namedGuiOverlay = GuiOverlayManager.findOverlay(overlay.id());
+
+		if (namedGuiOverlay != null)
+			return isDisabled(namedGuiOverlay.overlay());
+		else
+			return true;
 	}
 
 	public static boolean isDisabled(NamedGuiOverlay overlay) {

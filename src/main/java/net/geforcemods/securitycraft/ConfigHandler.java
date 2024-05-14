@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +22,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
 public class ConfigHandler {
-	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final ModConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 	public static final ModConfigSpec SERVER_SPEC;
@@ -45,7 +41,6 @@ public class ConfigHandler {
 
 	public static class Client {
 		public BooleanValue sayThanksMessage;
-		public DoubleValue cameraSpeed;
 		public BooleanValue reinforcedBlockTint;
 		public IntValue reinforcedBlockTintColor;
 
@@ -54,10 +49,6 @@ public class ConfigHandler {
 			sayThanksMessage = builder
 					.comment("Display a 'tip' message at spawn?")
 					.define("sayThanksMessage", true);
-
-			cameraSpeed = builder
-					.comment("How fast can you rotate when mounted to a camera and holding W-A-S-D?")
-					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
 
 			reinforcedBlockTint = builder
 					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overridden by servers.")
@@ -96,6 +87,7 @@ public class ConfigHandler {
 		public DoubleValue laserDamage;
 		public IntValue incorrectPasscodeDamage;
 		public IntValue sentryBulletDamage;
+		public BooleanValue allowCameraNightVision;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
@@ -217,6 +209,10 @@ public class ConfigHandler {
 					.comment("Set the amount of damage the default Sentry bullet inflicts onto the mobs it hits. This will not affect other projectiles the Sentry can use, like arrows. Default is one heart.")
 					.defineInRange("sentry_bullet_damage", 2, 0, Integer.MAX_VALUE);
 
+			allowCameraNightVision = builder
+					.comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
+					.define("allow_camera_night_vision", true);
+
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
 					.defineList("sentry_attackable_entities_allowlist", List.of(), String.class::isInstance);
@@ -250,7 +246,7 @@ public class ConfigHandler {
 					ResourceLocation effectLocation = new ResourceLocation(split[0]);
 
 					if (!BuiltInRegistries.MOB_EFFECT.containsKey(effectLocation)) {
-						LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
+						SecurityCraft.LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);
 						continue;
 					}
 
@@ -259,13 +255,13 @@ public class ConfigHandler {
 				}
 			}
 			else
-				LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
+				SecurityCraft.LOGGER.warn("Not enough information provided for effect \"{}\", skipping", entry);
 		}
 	}
 
 	private static boolean validateValue(int value, String entry) {
 		if (value <= 0) {
-			LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
+			SecurityCraft.LOGGER.warn("Value \"{}\" cannot be less than or equal to zero for entry \"{}\", skipping", value, entry);
 			return false;
 		}
 
@@ -278,7 +274,7 @@ public class ConfigHandler {
 		}
 		catch (Exception e) {
 			if (!FMLLoader.getLaunchHandler().isData()) {
-				LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
+				SecurityCraft.LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
 				e.printStackTrace();
 			}
 

@@ -30,6 +30,7 @@ public class ReinforcedLeverBlock extends LeverBlock implements IReinforcedBlock
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		if (isAllowedToPress((AllowlistOnlyBlockEntity) level.getBlockEntity(pos), player))
 			return super.use(state, level, pos, player, hand, result);
+
 		return InteractionResult.FAIL;
 	}
 

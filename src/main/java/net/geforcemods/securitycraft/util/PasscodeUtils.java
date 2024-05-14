@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -147,5 +148,28 @@ public class PasscodeUtils {
 		}
 	}
 
-	private record HashingWork(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {}
+	private record HashingWork(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+
+			if (obj == null || getClass() != obj.getClass())
+				return false;
+
+			HashingWork hashingWork = (HashingWork) obj;
+
+			return passcode != null && passcode.equals(hashingWork.passcode) && Arrays.equals(salt, hashingWork.salt);
+		}
+
+		@Override
+		public int hashCode() {
+			return 31 * passcode.hashCode() + Arrays.hashCode(salt);
+		}
+
+		@Override
+		public String toString() {
+			return "HashingWork{" + "passcode=" + passcode + ", salt=" + Arrays.toString(salt) + "}";
+		}
+	}
 }

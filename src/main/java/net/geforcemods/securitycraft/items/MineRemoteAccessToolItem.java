@@ -68,7 +68,7 @@ public class MineRemoteAccessToolItem extends Item {
 				return InteractionResult.SUCCESS;
 			}
 			else {
-				removeMine(stack, pos, player);
+				removeMine(stack, pos);
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.MINE_REMOTE_ACCESS_TOOL.get().getDescriptionId()), Utils.localize("messages.securitycraft:mrat.unbound", Utils.getFormattedCoordinates(pos)), ChatFormatting.RED);
 				return InteractionResult.SUCCESS;
 			}
@@ -88,7 +88,7 @@ public class MineRemoteAccessToolItem extends Item {
 			if (coords.length != 3)
 				list.add(Component.literal(ChatFormatting.GRAY + "---"));
 			else
-				list.add(Utils.localize("tooltip.securitycraft:mine").append(Component.literal(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:mine", i, Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 		}
 	}
 
@@ -104,7 +104,7 @@ public class MineRemoteAccessToolItem extends Item {
 		return false;
 	}
 
-	public static void removeMine(ItemStack stack, BlockPos pos, Player player) {
+	public static void removeMine(ItemStack stack, BlockPos pos) {
 		if (stack.getTag() == null)
 			return;
 

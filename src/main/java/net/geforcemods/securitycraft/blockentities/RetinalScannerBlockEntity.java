@@ -48,7 +48,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new SignalLengthOption(60);
-	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
 		@Override
 		public String getKey(Block block) {
 			return "option.generic.viewActivated.maximumDistance";
