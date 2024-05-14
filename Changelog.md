@@ -17,6 +17,7 @@
 - Fix: SecurityCraft's WTHIT config does not work on the client
 - Fix: Crash when trying to toggle the redstone state of a camera immediately after mounting it
 - Fix: Crash when trying to remove the passcode of a Briefcase using a Universal Key Changer
+- Fix: The Display Case doesn't drop inserted modules when the block the display case is placed on is removed
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
