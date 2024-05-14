@@ -125,7 +125,7 @@ public class SentryRemoteAccessToolItem extends Item {
 						if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
 							nameToShow = sentries.get(0).getCustomName().getString();
 						else
-							nameToShow = Utils.localize("tooltip.securitycraft:sentry").getString() + " " + i;
+							nameToShow = Utils.localize("tooltip.securitycraft:sentry", i).getString();
 					}
 
 					tooltip.add(new StringTextComponent(TextFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));

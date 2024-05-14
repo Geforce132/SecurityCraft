@@ -90,6 +90,6 @@ public class PortableTunePlayerItem extends Item {
 		int notesCount = stack.getTag().getList("Notes", Constants.NBT.TAG_COMPOUND).size();
 
 		if (notesCount > 0)
-			tooltip.add(Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).withStyle(Utils.GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft.component.notes", notesCount).withStyle(Utils.GRAY_STYLE));
 	}
 }

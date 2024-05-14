@@ -105,7 +105,7 @@ public class MineRemoteAccessToolItem extends Item {
 				if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
 					list.add(new StringTextComponent(TextFormatting.GRAY + "---"));
 				else
-					list.add(Utils.localize("tooltip.securitycraft:mine").append(new StringTextComponent(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
+					list.add(Utils.localize("tooltip.securitycraft:mine", i, Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 			}
 			else
 				list.add(new StringTextComponent(TextFormatting.GRAY + "---"));

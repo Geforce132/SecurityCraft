@@ -83,7 +83,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 		String ownerName = getOwnerName(briefcase);
 
 		if (!ownerName.isEmpty())
-			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(Utils.GRAY_STYLE));
+			tooltip.add(Utils.localize("tooltip.securitycraft.component.owner", ownerName).setStyle(Utils.GRAY_STYLE));
 	}
 
 	public static void hashAndSetPasscode(CompoundNBT briefcaseTag, String passcode, Consumer<byte[]> afterSet) {
