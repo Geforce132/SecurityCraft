@@ -37,6 +37,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private ItemStack displayedStack = ItemStack.EMPTY;
+	private boolean hasReceivedData = false;
 	private boolean shouldBeOpen;
 	private float openness;
 	private float oOpenness;
@@ -118,10 +119,6 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public void load(CompoundTag tag) {
-		load(tag, true);
-	}
-
-	public void load(CompoundTag tag, boolean forceOpenness) {
 		super.load(tag);
 		setDisplayedStack(ItemStack.of((CompoundTag) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
@@ -129,8 +126,10 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
-		if (forceOpenness)
+		if (level != null && level.isClientSide && !hasReceivedData) {
 			forceOpen(shouldBeOpen);
+			hasReceivedData = true;
+		}
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);
@@ -181,11 +180,6 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	public boolean isDisabled() {
 		return disabled.get();
-	}
-
-	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		load(tag, false);
 	}
 
 	public void setDisplayedStack(ItemStack displayedStack) {
