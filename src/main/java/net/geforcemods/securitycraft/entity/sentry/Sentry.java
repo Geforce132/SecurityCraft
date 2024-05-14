@@ -266,9 +266,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	@Override
 	public void remove(RemovalReason reason) {
 		BlockPos pos = blockPosition();
+		ItemStack sentryStack = new ItemStack(SCContent.SENTRY.get());
+
+		if (hasCustomName())
+			sentryStack.setHoverName(getCustomName());
 
 		super.remove(reason);
-		Block.popResource(level, pos, new ItemStack(SCContent.SENTRY.get()));
+		Block.popResource(level, pos, sentryStack);
 		Block.popResource(level, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.popResource(level, pos, getAllowlistModule()); //if there is none, nothing will drop
 		level.setBlockAndUpdate(pos, level.getFluidState(pos).createLegacyBlock());
