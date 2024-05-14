@@ -8,6 +8,7 @@
 - Change: The "preventReinforcedFloorGlitching" configuration option no longer affects players trying to glitch through reinforced blocks that they are the owner of
 - Change: Players in creative mode can once again use the codebreaker on their own blocks
 - Change: The "codebreaker_chance" config setting has been moved to the "securitycraft:success_chance" item component
+- Change: When picking up a placed sentry, the resulting sentry item will now be named according to the custom name of the removed sentry
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
