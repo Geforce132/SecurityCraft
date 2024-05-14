@@ -22,15 +22,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SentryRemoteAccessToolItem extends Item {
-	private static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
-
 	public SentryRemoteAccessToolItem() {
 		addPropertyOverride(LinkingStateItemPropertyHandler.LINKING_STATE_PROPERTY, LinkingStateItemPropertyHandler::sentryRemoteAccessTool);
 	}
@@ -119,10 +116,10 @@ public class SentryRemoteAccessToolItem extends Item {
 						if (!sentries.isEmpty() && sentries.get(0).hasCustomName())
 							nameToShow = sentries.get(0).getCustomNameTag();
 						else
-							nameToShow = Utils.localize("tooltip.securitycraft:sentry").getFormattedText() + TextFormatting.GRAY + " " + i;
+							nameToShow = Utils.localize("tooltip.securitycraft:sentry", i).getFormattedText();
 					}
 
-					list.add(nameToShow + ": " + Utils.getFormattedCoordinates(pos).setStyle(GRAY_STYLE).getFormattedText());
+					list.add(nameToShow + ": " + Utils.getFormattedCoordinates(pos).setStyle(Utils.GRAY_STYLE).getFormattedText());
 				}
 			}
 			else

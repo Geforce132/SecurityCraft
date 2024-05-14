@@ -10,11 +10,15 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
 public class Utils {
+	public static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
+
 	private Utils() {}
 
 	public static TextComponentTranslation getFormattedCoordinates(BlockPos pos) {

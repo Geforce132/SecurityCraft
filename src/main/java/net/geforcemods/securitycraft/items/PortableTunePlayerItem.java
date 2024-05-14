@@ -21,7 +21,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.relauncher.Side;
@@ -90,6 +89,6 @@ public class PortableTunePlayerItem extends Item {
 		int notesCount = stack.getTagCompound().getTagList("Notes", Constants.NBT.TAG_COMPOUND).tagCount();
 
 		if (notesCount > 0)
-			tooltip.add(TextFormatting.GRAY + Utils.localize("tooltip.securitycraft:portableTunePlayer.noteCount", notesCount).getFormattedText());
+			tooltip.add(Utils.localize("tooltip.securitycraft.component.notes", notesCount).setStyle(Utils.GRAY_STYLE).getFormattedText());
 	}
 }

@@ -22,7 +22,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -98,7 +97,7 @@ public class MineRemoteAccessToolItem extends Item {
 				int[] coords = stack.getTagCompound().getIntArray("mine" + i);
 
 				if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0))
-					list.add(Utils.localize("tooltip.securitycraft:mine").appendText(TextFormatting.GRAY + " " + i + ": ").appendSibling(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2])).setStyle(new Style().setColor(TextFormatting.GRAY))).getFormattedText());
+					list.add(Utils.localize("tooltip.securitycraft:mine", i, Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE).getFormattedText());
 			}
 
 			list.add("---");

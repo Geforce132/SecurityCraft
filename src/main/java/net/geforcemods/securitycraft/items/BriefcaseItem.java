@@ -20,15 +20,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BriefcaseItem extends ColorableItem {
-	private static final Style GRAY_STYLE = new Style().setColor(TextFormatting.GRAY);
-
 	@Override
 	public boolean isFull3D() {
 		return true;
@@ -63,7 +59,7 @@ public class BriefcaseItem extends ColorableItem {
 		String ownerName = getOwnerName(briefcase);
 
 		if (!ownerName.isEmpty())
-			tooltip.add(Utils.localize("tooltip.securitycraft:briefcase.owner", ownerName).setStyle(GRAY_STYLE).getFormattedText());
+			tooltip.add(Utils.localize("tooltip.securitycraft.component.owner", ownerName).setStyle(Utils.GRAY_STYLE).getFormattedText());
 	}
 
 	@Override
