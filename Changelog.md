@@ -18,6 +18,7 @@
 - Fix: The Reinforced Lever has incorrect break/place sounds
 - Fix: SecurityCraft's WTHIT config does not work on the client
 - Fix: Crash when trying to toggle the redstone state of a camera immediately after mounting it
+- Fix: Crash when trying to remove the passcode of a Briefcase using a Universal Key Changer
 - Misc.: The minimum required NeoForge version is now 20.4.234
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
