@@ -36,6 +36,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private ItemStack displayedStack = ItemStack.EMPTY;
+	private boolean hasReceivedData = false;
 	private boolean shouldBeOpen;
 	private float openness;
 	private float oOpenness;
@@ -126,8 +127,10 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
-		if (level != null && !level.isClientSide)
+		if (level != null && level.isClientSide && !hasReceivedData) { //Skip opening animation when the display case is first loaded on the client
 			forceOpen(shouldBeOpen);
+			hasReceivedData = true;
+		}
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);
