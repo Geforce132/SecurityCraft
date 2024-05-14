@@ -88,7 +88,7 @@ public class MineRemoteAccessToolItem extends Item {
 			if (coords.length != 3)
 				list.add(Component.literal(ChatFormatting.GRAY + "---"));
 			else
-				list.add(Utils.localize("tooltip.securitycraft:mine").append(Component.literal(" " + i + ": ")).append(Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft:mine", i, Utils.getFormattedCoordinates(new BlockPos(coords[0], coords[1], coords[2]))).setStyle(Utils.GRAY_STYLE));
 		}
 	}
 

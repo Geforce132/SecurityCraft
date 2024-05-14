@@ -144,10 +144,10 @@ public class ModuleItem extends Item {
 			}
 
 			if (affectsEveryone)
-				list.add(Utils.localize("tooltip.securitycraft:module.affects_everyone").setStyle(Utils.GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft.component.list_module_data.affects_everyone").setStyle(Utils.GRAY_STYLE));
 			else {
-				list.add(Utils.localize("tooltip.securitycraft:module.added_players", playerCount).setStyle(Utils.GRAY_STYLE));
-				list.add(Utils.localize("tooltip.securitycraft:module.added_teams", teamCount).setStyle(Utils.GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft.component.list_module_data.added_players", playerCount).setStyle(Utils.GRAY_STYLE));
+				list.add(Utils.localize("tooltip.securitycraft.component.list_module_data.added_teams", teamCount).setStyle(Utils.GRAY_STYLE));
 			}
 		}
 	}
