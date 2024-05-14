@@ -37,6 +37,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getBlockPos);
 	private long cooldownEnd = 0;
 	private ItemStack displayedStack = ItemStack.EMPTY;
+	private boolean hasReceivedData = false;
 	private boolean shouldBeOpen;
 	private float openness;
 	private float oOpenness;
@@ -125,10 +126,6 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public void load(BlockState state, CompoundNBT tag) {
-		load(state, tag, true);
-	}
-
-	public void load(BlockState state, CompoundNBT tag, boolean forceOpenness) {
 		super.load(state, tag);
 		setDisplayedStack(ItemStack.of((CompoundNBT) tag.get("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
@@ -136,8 +133,10 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
-		if (forceOpenness)
+		if (level != null && level.isClientSide && !hasReceivedData) {
 			forceOpen(shouldBeOpen);
+			hasReceivedData = true;
+		}
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);
@@ -188,11 +187,6 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	public boolean isDisabled() {
 		return disabled.get();
-	}
-
-	@Override
-	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		load(state, tag, false);
 	}
 
 	public void setDisplayedStack(ItemStack displayedStack) {
