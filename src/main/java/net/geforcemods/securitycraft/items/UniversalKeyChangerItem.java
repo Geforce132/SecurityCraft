@@ -35,12 +35,12 @@ public class UniversalKeyChangerItem extends Item {
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
 		Player player = ctx.getPlayer();
 		InteractionHand hand = ctx.getHand();
-		InteractionResult briefcaseResult = handleBriefcase(player, hand).getResult();
+		Level level = ctx.getLevel();
+		InteractionResult briefcaseResult = handleBriefcase(level, player, hand).getResult();
 
 		if (briefcaseResult != InteractionResult.PASS)
 			return briefcaseResult;
 
-		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		BlockEntity be = level.getBlockEntity(pos);
 
@@ -64,10 +64,10 @@ public class UniversalKeyChangerItem extends Item {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		return handleBriefcase(player, hand);
+		return handleBriefcase(level, player, hand);
 	}
 
-	private InteractionResultHolder<ItemStack> handleBriefcase(Player player, InteractionHand hand) {
+	private InteractionResultHolder<ItemStack> handleBriefcase(Level level, Player player, InteractionHand hand) {
 		ItemStack keyChanger = player.getItemInHand(hand);
 
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
@@ -77,7 +77,9 @@ public class UniversalKeyChangerItem extends Item {
 				PasscodeData passcodeData = briefcase.get(SCContent.PASSCODE_DATA);
 
 				if (passcodeData != null) {
-					SaltData.removeSalt(passcodeData.saltKey());
+					if (!level.isClientSide)
+						SaltData.removeSalt(passcodeData.saltKey());
+
 					briefcase.remove(SCContent.PASSCODE_DATA);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), ChatFormatting.GREEN);
 					return InteractionResultHolder.success(keyChanger);

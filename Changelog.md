@@ -19,6 +19,7 @@
 - Fix: The Reinforced Lever has incorrect break/place sounds
 - Fix: SecurityCraft's WTHIT config does not work on the client
 - Fix: Crash when trying to toggle the redstone state of a camera immediately after mounting it
+- Fix: Crash when trying to remove the passcode of a Briefcase using a Universal Key Changer
 
 --------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
 
