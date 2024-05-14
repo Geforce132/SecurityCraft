@@ -37,12 +37,12 @@ public class UniversalKeyChangerItem extends Item {
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext ctx) {
 		PlayerEntity player = ctx.getPlayer();
 		Hand hand = ctx.getHand();
-		ActionResultType briefcaseResult = handleBriefcase(player, hand).getResult();
+		World level = ctx.getLevel();
+		ActionResultType briefcaseResult = handleBriefcase(level, player, hand).getResult();
 
 		if (briefcaseResult != ActionResultType.PASS)
 			return briefcaseResult;
 
-		World level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		TileEntity be = level.getBlockEntity(pos);
 
@@ -66,10 +66,10 @@ public class UniversalKeyChangerItem extends Item {
 
 	@Override
 	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
-		return handleBriefcase(player, hand);
+		return handleBriefcase(level, player, hand);
 	}
 
-	private ActionResult<ItemStack> handleBriefcase(PlayerEntity player, Hand hand) {
+	private ActionResult<ItemStack> handleBriefcase(World level, PlayerEntity player, Hand hand) {
 		ItemStack keyChanger = player.getItemInHand(hand);
 
 		if (hand == Hand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
@@ -79,7 +79,7 @@ public class UniversalKeyChangerItem extends Item {
 				CompoundNBT tag = briefcase.getTag();
 
 				if (tag != null && tag.contains("passcode")) {
-					if (tag.contains("saltKey"))
+					if (tag.contains("saltKey") && !level.isClientSide)
 						SaltData.removeSalt(tag.getUUID("saltKey"));
 
 					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
