@@ -186,6 +186,12 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onLevelUnload(WorldEvent.Unload event) {
+		if (event.getWorld() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
+			SaltData.invalidate();
+	}
+
+	@SubscribeEvent
 	public static void onServerStop(ServerStoppedEvent event) {
 		PasscodeUtils.stopHashingThread();
 	}
