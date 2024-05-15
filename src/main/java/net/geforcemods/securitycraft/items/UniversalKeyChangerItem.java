@@ -27,22 +27,22 @@ import net.minecraft.world.World;
 
 public class UniversalKeyChangerItem extends Item {
 	@Override
-	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
-		EnumActionResult briefcaseResult = handleBriefcase(player, hand).getType();
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World level, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+		EnumActionResult briefcaseResult = handleBriefcase(level, player, hand).getType();
 
 		if (briefcaseResult != EnumActionResult.PASS)
 			return briefcaseResult;
 
-		TileEntity te = world.getTileEntity(pos);
+		TileEntity te = level.getTileEntity(pos);
 
 		if (te instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) te).isOpen() && ((DisplayCaseBlockEntity) te).getDisplayedStack().isEmpty()))
 			return EnumActionResult.PASS;
 		else if (te instanceof IPasscodeProtected) {
 			if (((IOwnable) te).isOwnedBy(player)) {
-				player.openGui(SecurityCraft.instance, Screens.KEY_CHANGER.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+				player.openGui(SecurityCraft.instance, Screens.KEY_CHANGER.ordinal(), level, pos.getX(), pos.getY(), pos.getZ());
 				return EnumActionResult.SUCCESS;
 			}
-			else if (!(te.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
+			else if (!(te.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) te.getBlockType()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}
@@ -52,11 +52,11 @@ public class UniversalKeyChangerItem extends Item {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		return handleBriefcase(player, hand);
+	public ActionResult<ItemStack> onItemRightClick(World level, EntityPlayer player, EnumHand hand) {
+		return handleBriefcase(level, player, hand);
 	}
 
-	private ActionResult<ItemStack> handleBriefcase(EntityPlayer player, EnumHand hand) {
+	private ActionResult<ItemStack> handleBriefcase(World level, EntityPlayer player, EnumHand hand) {
 		ItemStack keyChanger = player.getHeldItem(hand);
 
 		if (hand == EnumHand.MAIN_HAND && player.getHeldItemOffhand().getItem() == SCContent.briefcase) {
@@ -66,7 +66,7 @@ public class UniversalKeyChangerItem extends Item {
 				NBTTagCompound tag = briefcase.getTagCompound();
 
 				if (tag != null && tag.hasKey("passcode")) {
-					if (tag.hasKey("saltKey"))
+					if (tag.hasKey("saltKey") && !level.isRemote)
 						SaltData.removeSalt(tag.getUniqueId("saltKey"));
 
 					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);

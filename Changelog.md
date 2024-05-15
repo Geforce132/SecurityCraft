@@ -13,6 +13,7 @@
 - Fix: Reinforcing a placed end rod will briefly destroy the end rod before it is replaced with a reinforced end rod
 - Fix: Reinforced End Rods do not emit light
 - Fix: Crash when trying to toggle the redstone state of a camera immediately after mounting it
+- Fix: Crash when trying to remove the passcode of a Briefcase using a Universal Key Changer
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
