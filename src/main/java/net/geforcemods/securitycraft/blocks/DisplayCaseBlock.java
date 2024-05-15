@@ -124,10 +124,15 @@ public class DisplayCaseBlock extends OwnableBlock {
 	}
 
 	@Override
+	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
+		return world.getBlockState(pos.offset(side.getOpposite())).isSideSolid(world, pos, side);
+	}
+
+	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		EnumFacing connectedDirection = getConnectedDirection(state);
 
-		if (!canPlaceBlockOnSide(world, pos.offset(connectedDirection.getOpposite()), connectedDirection)) {
+		if (!canPlaceBlockOnSide(world, pos, connectedDirection)) {
 			dropBlockAsItem(world, pos, state, 0);
 			world.setBlockToAir(pos);
 		}
@@ -293,6 +298,14 @@ public class DisplayCaseBlock extends OwnableBlock {
 	}
 
 	private EnumFacing getConnectedDirection(IBlockState state) {
-		return state.getValue(FACING);
+		switch (state.getValue(ATTACH_FACE)) {
+			case FLOOR:
+				return EnumFacing.UP;
+			case CEILING:
+				return EnumFacing.DOWN;
+			case WALL:
+			default:
+				return state.getValue(FACING);
+		}
 	}
 }
