@@ -21,6 +21,10 @@ public class SaltData extends SavedData {
 		instance = level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SaltData::new, SaltData::load), "securitycraft-salts");
 	}
 
+	public static void invalidate() {
+		instance = null;
+	}
+
 	public static boolean containsKey(UUID saltKey) {
 		if (saltKey == null)
 			return false;
