@@ -22,6 +22,10 @@ public class SaltData extends WorldSavedData {
 		instance = level.getDataStorage().computeIfAbsent(SaltData::new, "securitycraft-salts");
 	}
 
+	public static void invalidate() {
+		instance = null;
+	}
+
 	public static boolean containsKey(UUID saltKey) {
 		if (saltKey == null)
 			return false;

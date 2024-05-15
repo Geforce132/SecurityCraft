@@ -194,6 +194,14 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onLevelUnload(WorldEvent.Unload event) {
+		IWorld level = event.getWorld();
+
+		if (level instanceof ServerWorld && ((ServerWorld) level).dimension() == World.OVERWORLD)
+			SaltData.invalidate();
+	}
+
+	@SubscribeEvent
 	public static void onServerStop(FMLServerStoppedEvent event) {
 		PasscodeUtils.stopHashingThread();
 	}
