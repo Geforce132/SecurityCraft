@@ -1343,7 +1343,7 @@
 	"tooltip.securitycraft:keycard.reader_owner": "Works on Keycard Readers owned by: %s",
 	"tooltip.securitycraft:keycard.signature": "Signature: %s",
 	"tooltip.securitycraft:keycard.uses": "Uses remaining: %s",
-	"tooltip.securitycraft:mine": "Mine %s : %s",
+	"tooltip.securitycraft:mine": "Mine %s: %s",
 	"tooltip.securitycraft:module.itemAddons.added": "Added: %s",
 	"tooltip.securitycraft:module.modifiable": "Module is modifiable!",
 	"tooltip.securitycraft:module.notModifiable": "Module is not modifiable!",
