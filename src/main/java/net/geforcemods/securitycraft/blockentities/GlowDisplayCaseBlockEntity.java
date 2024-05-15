@@ -11,7 +11,7 @@ public class GlowDisplayCaseBlockEntity extends DisplayCaseBlockEntity {
 	}
 
 	@Override
-	public String getModuleDescriptionId(String blockName, ModuleType module) {
-		return super.getModuleDescriptionId(blockName.replace("glow_", ""), module);
+	public String getModuleDescriptionId(String denotation, ModuleType module) {
+		return super.getModuleDescriptionId(denotation.replace("glow_", ""), module);
 	}
 }

@@ -18,7 +18,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HangingSignBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,13 +27,13 @@ public class SecretHangingSignBlockEntity extends HangingSignBlockEntity impleme
 	private Owner owner = new Owner();
 	private BooleanOption isFrontSecret = new BooleanOption("isFrontSecret", true) {
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.secret_sign.isFrontSecret";
 		}
 	};
 	private BooleanOption isBackSecret = new BooleanOption("isBackSecret", true) {
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.secret_sign.isBackSecret";
 		}
 	};
@@ -161,7 +161,17 @@ public class SecretHangingSignBlockEntity extends HangingSignBlockEntity impleme
 	}
 
 	@Override
-	public String getModuleDescriptionId(String blockName, ModuleType module) {
+	public String getModuleDescriptionId(String denotation, ModuleType module) {
 		return IModuleInventory.super.getModuleDescriptionId("generic.secret_sign", module);
+	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.block.Block;
 
 /**
  * A class that allows blocks that have {@link ICustomizable} block entities to have custom, per-block options that are
@@ -110,19 +109,19 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * @param block The block this option is a part of
+	 * @param denotation The denotation to use for the option key, usually the block's name
 	 * @return The language key for this option
 	 */
-	public String getKey(Block block) {
-		return "option." + block.getDescriptionId().substring(6) + "." + getName();
+	public String getKey(String denotation) {
+		return "option." + denotation + "." + getName();
 	}
 
 	/**
-	 * @param block The block this option is a part of
+	 * @param denotation The denotation to use for the option key, usually the block's name
 	 * @return The language key for the description of this option
 	 */
-	public String getDescriptionKey(Block block) {
-		return getKey(block) + ".description";
+	public String getDescriptionKey(String denotation) {
+		return getKey(denotation) + ".description";
 	}
 
 	/**
@@ -175,7 +174,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.disabled";
 		}
 	}
@@ -186,7 +185,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.ignoreOwner";
 		}
 	}
@@ -197,7 +196,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.sendAllowlistMessage";
 		}
 	}
@@ -208,7 +207,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.sendDenylistMessage";
 		}
 	}
@@ -249,7 +248,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.smartModuleCooldown";
 		}
 	}
@@ -260,7 +259,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.signalLength";
 		}
 	}
@@ -348,7 +347,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.targetingMode";
 		}
 

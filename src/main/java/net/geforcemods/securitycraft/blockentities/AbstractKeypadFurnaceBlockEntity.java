@@ -339,4 +339,14 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	public boolean isDisabled() {
 		return disabled.get();
 	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
+	}
 }

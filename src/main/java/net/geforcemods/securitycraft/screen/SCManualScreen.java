@@ -34,6 +34,7 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -503,7 +504,7 @@ public class SCManualScreen extends Screen {
 						display.add(Component.literal("---"));
 
 						for (Option<?> option : options) {
-							display.add(Component.translatable("gui.securitycraft:scManual.option_text", Component.translatable(option.getDescriptionKey(block)), option.getDefaultInfo()));
+							display.add(Component.translatable("gui.securitycraft:scManual.option_text", Component.translatable(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(customizableBe))), option.getDefaultInfo()));
 							display.add(Component.empty());
 						}
 
@@ -520,7 +521,7 @@ public class SCManualScreen extends Screen {
 					display.add(Component.literal("---"));
 
 					for (ModuleType module : moduleInv.acceptedModules()) {
-						display.add(Component.literal("- ").append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), module))));
+						display.add(Component.literal("- ").append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(moduleInv), module))));
 						display.add(Component.empty());
 					}
 

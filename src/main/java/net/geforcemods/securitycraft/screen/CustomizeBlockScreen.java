@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -35,7 +36,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
@@ -55,14 +55,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private AbstractWidget[] optionButtons;
-	private final Block block;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
-		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		menu.addSlotListener(this);
 
@@ -88,7 +86,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
-		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable) {
+		if (moduleInv instanceof ICustomizable customizable) {
 			Option<?>[] options = customizable.customOptions();
 
 			if (options.length > 0) {
@@ -101,19 +99,19 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 						if (option instanceof DoubleOption doubleOption) {
 							final int sliderIndex = i;
 
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
+								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
 							final int sliderIndex = i;
 
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
+								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
 							});
 						}
 
@@ -139,7 +137,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		for (int i = 36; i < menu.maxSlots; i++) {
+		for (int i = 36; i < menu.getMaxSlots(); i++) {
 			Slot slot = menu.slots.get(i);
 
 			if (!slot.getItem().isEmpty()) {
@@ -201,7 +199,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		PacketDistributor.SERVER.noArg().send(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
+		PacketDistributor.SERVER.noArg().send(new ToggleModule(moduleInv.myPos(), moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -209,13 +207,13 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			if (button != optionButtons[i])
 				continue;
 
-			Option<?> tempOption = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
+			Option<?> tempOption = ((ICustomizable) moduleInv).customOptions()[i]; //safe cast, as this method is only called when it can be casted
 
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
-			PacketDistributor.SERVER.noArg().send(new ToggleOption(moduleInv.getBlockEntity().getBlockPos(), i));
+			PacketDistributor.SERVER.noArg().send(new ToggleOption(moduleInv.myPos(), i));
 			return;
 		}
 	}
@@ -226,18 +224,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				.append(Component.literal(":"))
 				.withStyle(ChatFormatting.RESET)
 				.append(Component.literal("\n\n"))
-				.append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
+				.append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
 		//@formatter:on
 	}
 
 	private Component getOptionDescription(int optionId) {
-		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
+		Option<?> option = ((ICustomizable) moduleInv).customOptions()[optionId];
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(option.getDescriptionKey(block)), Component.translatable("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), Component.translatable("gui.securitycraft:customize.currentSetting", getValueText(option)));
 	}
 
 	private Component getOptionButtonTitle(Option<?> option) {
-		return Utils.localize(option.getKey(block), getValueText(option));
+		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), getValueText(option));
 	}
 
 	private Component getValueText(Option<?> option) {

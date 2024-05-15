@@ -11,7 +11,7 @@ public class ReinforcedFenceGateBlockEntity extends AllowlistOnlyBlockEntity {
 	}
 
 	@Override
-	public String getModuleDescriptionId(String blockName, ModuleType module) {
+	public String getModuleDescriptionId(String denotation, ModuleType module) {
 		return super.getModuleDescriptionId("generic.reinforced_fence_gate", module);
 	}
 }

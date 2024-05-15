@@ -406,4 +406,14 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	public ResourceLocation getPreviousChest() {
 		return previousChest;
 	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
+	}
 }
