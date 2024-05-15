@@ -287,8 +287,12 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	 */
 	public void remove() {
 		BlockPos pos = getPosition();
+		ItemStack sentryStack = new ItemStack(SCContent.sentry);
 
-		Block.spawnAsEntity(world, pos, new ItemStack(SCContent.sentry));
+		if (hasCustomName())
+			sentryStack.setStackDisplayName(getCustomNameTag());
+
+		Block.spawnAsEntity(world, pos, sentryStack);
 		Block.spawnAsEntity(world, pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.spawnAsEntity(world, pos, getAllowlistModule()); //if there is none, nothing will drop
 		world.setBlockState(pos, Blocks.AIR.getDefaultState());
