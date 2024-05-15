@@ -223,6 +223,14 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onLevelUnload(WorldEvent.Unload event) {
+		World level = event.getWorld();
+
+		if (level instanceof WorldServer && level.provider.getDimensionType() == DimensionType.OVERWORLD)
+			SaltData.invalidate();
+	}
+
+	@SubscribeEvent
 	public static void onLivingAttacked(LivingAttackEvent event) {
 		EntityLivingBase entity = event.getEntityLiving();
 
