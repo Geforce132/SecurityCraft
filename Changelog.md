@@ -16,6 +16,7 @@
 - Fix: Crash when trying to toggle the redstone state of a camera immediately after mounting it
 - Fix: Crash when trying to remove the passcode of a Briefcase using a Universal Key Changer
 - Fix: Display Cases don't destroy themselves when their supporting block is removed, allowing them to float in the air
+- Fix: A previously open Display Case would replay its opening animation when joining a world or teleporting to it
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 

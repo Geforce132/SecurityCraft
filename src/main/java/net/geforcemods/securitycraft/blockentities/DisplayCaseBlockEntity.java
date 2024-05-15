@@ -35,6 +35,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
 	private ItemStack displayedStack = ItemStack.EMPTY;
+	private boolean hasReceivedData = false;
 	private boolean shouldBeOpen;
 	private float openness;
 	private float oOpenness;
@@ -114,15 +115,6 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
-		load(tag, true);
-	}
-
-	@Override
-	public void handleUpdateTag(NBTTagCompound tag) {
-		load(tag, false);
-	}
-
-	public void load(NBTTagCompound tag, boolean forceOpenness) {
 		super.readFromNBT(tag);
 		setDisplayedStack(new ItemStack(tag.getCompoundTag("DisplayedStack")));
 		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
@@ -130,8 +122,10 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
-		if (forceOpenness)
+		if (world != null && world.isRemote && !hasReceivedData) {
 			forceOpen(shouldBeOpen);
+			hasReceivedData = true;
+		}
 
 		if (tag.hasKey("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);
