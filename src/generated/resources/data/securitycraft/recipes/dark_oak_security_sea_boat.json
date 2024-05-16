@@ -7,7 +7,7 @@
       "item": "securitycraft:keypad_chest"
     },
     "P": {
-      "item": "securitycraft:reinforced_bamboo_planks"
+      "item": "securitycraft:reinforced_dark_oak_planks"
     }
   },
   "pattern": [
@@ -15,6 +15,6 @@
     "PPP"
   ],
   "result": {
-    "item": "securitycraft:security_sea_raft"
+    "item": "securitycraft:dark_oak_security_sea_boat"
   }
 }

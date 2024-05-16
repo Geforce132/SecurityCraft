@@ -62,7 +62,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
-import net.geforcemods.securitycraft.renderers.SecuritySeaRaftRenderer;
+import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
@@ -417,7 +417,7 @@ public class ClientHandler {
 		event.registerEntityRenderer(SCContent.SECURITY_CAMERA_ENTITY.get(), NoopRenderer::new);
 		event.registerEntityRenderer(SCContent.SENTRY_ENTITY.get(), SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.BULLET_ENTITY.get(), BulletRenderer::new);
-		event.registerEntityRenderer(SCContent.SECURITY_SEA_RAFT_ENTITY.get(), SecuritySeaRaftRenderer::new);
+		event.registerEntityRenderer(SCContent.SECURITY_SEA_BOAT_ENTITY.get(), SecuritySeaBoatRenderer::new);
 		//normal renderers
 		event.registerBlockEntityRenderer(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreRenderer::new);

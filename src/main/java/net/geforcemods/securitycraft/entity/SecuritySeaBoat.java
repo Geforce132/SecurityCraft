@@ -33,17 +33,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodeProtected {
-	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(SecuritySeaRaft.class, Owner.getSerializer());
+public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodeProtected {
+	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(SecuritySeaBoat.class, Owner.getSerializer());
 	private byte[] passcode;
 	private UUID saltKey;
 
-	public SecuritySeaRaft(EntityType<? extends Boat> type, Level level) {
-		super(SCContent.SECURITY_SEA_RAFT_ENTITY.get(), level);
+	public SecuritySeaBoat(EntityType<? extends Boat> type, Level level) {
+		super(SCContent.SECURITY_SEA_BOAT_ENTITY.get(), level);
 	}
 
-	public SecuritySeaRaft(Level level, double x, double y, double z) {
-		super(SCContent.SECURITY_SEA_RAFT_ENTITY.get(), level);
+	public SecuritySeaBoat(Level level, double x, double y, double z) {
+		super(SCContent.SECURITY_SEA_BOAT_ENTITY.get(), level);
 		setPos(x, y, z);
 		xo = y;
 		yo = y;
@@ -222,6 +222,16 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 
 	@Override
 	public Item getDropItem() {
-		return SCContent.SECURITY_SEA_RAFT_ITEM.get();
+		return (switch (getVariant()) {
+			case SPRUCE -> SCContent.SPRUCE_SECURITY_SEA_BOAT;
+			case BIRCH -> SCContent.BIRCH_SECURITY_SEA_BOAT;
+			case JUNGLE -> SCContent.JUNGLE_SECURITY_SEA_BOAT;
+			case ACACIA -> SCContent.ACACIA_SECURITY_SEA_BOAT;
+			case DARK_OAK -> SCContent.DARK_OAK_SECURITY_SEA_BOAT;
+			case MANGROVE -> SCContent.MANGROVE_SECURITY_SEA_BOAT;
+			case CHERRY -> SCContent.CHERRY_SECURITY_SEA_BOAT;
+			case BAMBOO -> SCContent.BAMBOO_SECURITY_SEA_RAFT;
+			default -> SCContent.OAK_SECURITY_SEA_BOAT;
+		}).get();
 	}
 }

@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.entity.SecuritySeaRaft;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -17,9 +17,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class SecuritySeaRaftItem extends BoatItem {
-	public SecuritySeaRaftItem(Item.Properties properties) {
-		super(true, Boat.Type.BAMBOO, properties);
+public class SecuritySeaBoatItem extends BoatItem {
+	public SecuritySeaBoatItem(Boat.Type type, Item.Properties properties) {
+		super(true, type, properties);
 	}
 
 	@Override
@@ -35,12 +35,12 @@ public class SecuritySeaRaftItem extends BoatItem {
 	@Override
 	public Boat getBoat(Level level, HitResult hitResult, ItemStack stack, Player player) {
 		Vec3 vec3 = hitResult.getLocation();
-		SecuritySeaRaft raft = new SecuritySeaRaft(level, vec3.x, vec3.y, vec3.z);
+		SecuritySeaBoat boat = new SecuritySeaBoat(level, vec3.x, vec3.y, vec3.z);
 
 		if (level instanceof ServerLevel serverLevel)
-			EntityType.createDefaultStackConfig(serverLevel, stack, player).accept(raft);
+			EntityType.createDefaultStackConfig(serverLevel, stack, player).accept(boat);
 
-		raft.setOwner(player);
-		return raft;
+		boat.setOwner(player);
+		return boat;
 	}
 }

@@ -178,7 +178,7 @@ import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.entity.SecuritySeaRaft;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -218,7 +218,7 @@ import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
-import net.geforcemods.securitycraft.items.SecuritySeaRaftItem;
+import net.geforcemods.securitycraft.items.SecuritySeaBoatItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
@@ -252,6 +252,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -2630,8 +2631,24 @@ public class SCContent {
 	public static final DeferredItem<HangingSignItem> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.register("secret_crimson_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(), itemProp(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), itemProp(16)));
-	@HasManualPage
-	public static final DeferredItem<SecuritySeaRaftItem> SECURITY_SEA_RAFT_ITEM = ITEMS.register("security_sea_raft", () -> new SecuritySeaRaftItem(itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> OAK_SECURITY_SEA_BOAT = ITEMS.register("oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.OAK, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> SPRUCE_SECURITY_SEA_BOAT = ITEMS.register("spruce_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.SPRUCE, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> BIRCH_SECURITY_SEA_BOAT = ITEMS.register("birch_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.BIRCH, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> JUNGLE_SECURITY_SEA_BOAT = ITEMS.register("jungle_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.JUNGLE, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> ACACIA_SECURITY_SEA_BOAT = ITEMS.register("acacia_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.ACACIA, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> DARK_OAK_SECURITY_SEA_BOAT = ITEMS.register("dark_oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.DARK_OAK, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.register("mangrove_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.MANGROVE, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.register("cherry_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.CHERRY, itemProp(1)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.register("bamboo_security_sea_raft", () -> new SecuritySeaBoatItem(Boat.Type.BAMBOO, itemProp(1)));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1)));
@@ -2922,12 +2939,12 @@ public class SCContent {
 			.setUpdateInterval(1)
 			.setShouldReceiveVelocityUpdates(true)
 			.build(SecurityCraft.MODID + ":bullet"));
-	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaRaft>> SECURITY_SEA_RAFT_ENTITY = ENTITY_TYPES.register("security_sea_raft",
-			() -> EntityType.Builder.<SecuritySeaRaft>of(SecuritySeaRaft::new, MobCategory.MISC)
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> SECURITY_SEA_BOAT_ENTITY = ENTITY_TYPES.register("security_sea_boat",
+			() -> EntityType.Builder.<SecuritySeaBoat>of(SecuritySeaBoat::new, MobCategory.MISC)
 					.sized(1.375F, 0.5625F)
 					.clientTrackingRange(10)
 					.fireImmune()
-					.build(SecurityCraft.MODID + ":security_sea_raft"));
+					.build(SecurityCraft.MODID + ":security_sea_boat"));
 	//@formatter:on
 
 	//container types

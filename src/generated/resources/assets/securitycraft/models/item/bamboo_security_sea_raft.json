@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "securitycraft:item/security_sea_raft"
+    "layer0": "securitycraft:item/bamboo_security_sea_raft"
   }
 }

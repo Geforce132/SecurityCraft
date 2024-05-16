@@ -881,7 +881,15 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecretSignRecipe(recipeOutput, Items.OAK_HANGING_SIGN, SCContent.SECRET_OAK_HANGING_SIGN.get());
 		addSecretSignRecipe(recipeOutput, Items.SPRUCE_HANGING_SIGN, SCContent.SECRET_SPRUCE_HANGING_SIGN.get());
 		addSecretSignRecipe(recipeOutput, Items.WARPED_HANGING_SIGN, SCContent.SECRET_WARPED_HANGING_SIGN.get());
-		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.SECURITY_SEA_RAFT_ITEM.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.OAK_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.SPRUCE_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.BIRCH_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.JUNGLE_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.ACACIA_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.DARK_OAK_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.MANGROVE_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.CHERRY_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.BAMBOO_SECURITY_SEA_RAFT.get());
 		addSlabRecipe(recipeOutput, Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get()), SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_SLAB.get());
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_ANDESITE_SLAB.get());
