@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -62,6 +64,16 @@ public class SCTags {
 
 		private static TagKey<Block> tag(String name) {
 			return BlockTags.create(new ResourceLocation(SecurityCraft.MODID, name));
+		}
+	}
+
+	public static class DamageTypes {
+		private DamageTypes() {}
+
+		public static final TagKey<DamageType> SECURITY_SEA_BOAT_VULNERABLE_TO = tag("security_sea_boat_vulnerable_to");
+
+		private static TagKey<DamageType> tag(String name) {
+			return TagKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(SecurityCraft.MODID, name));
 		}
 	}
 

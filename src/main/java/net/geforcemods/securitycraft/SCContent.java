@@ -2926,6 +2926,7 @@ public class SCContent {
 			() -> EntityType.Builder.<SecuritySeaRaft>of(SecuritySeaRaft::new, MobCategory.MISC)
 					.sized(1.375F, 0.5625F)
 					.clientTrackingRange(10)
+					.fireImmune()
 					.build(SecurityCraft.MODID + ":security_sea_raft"));
 	//@formatter:on
 

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Owner;
@@ -130,6 +131,11 @@ public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodePro
 			return super.hurt(source, amount);
 		else
 			return false;
+	}
+
+	@Override
+	public boolean isInvulnerableTo(DamageSource source) {
+		return !source.is(SCTags.DamageTypes.SECURITY_SEA_BOAT_VULNERABLE_TO) || super.isInvulnerableTo(source);
 	}
 
 	@Override

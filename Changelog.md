@@ -2,6 +2,7 @@
 
 - New: Server config setting "allow_camera_night_vision" to set whether players are able to activate night vision without having the actual potion effect
 - New: Pressing "Enter" while typing a player name in an Allowlist/Denylist Module will now add the player to the list without needing to press the "Add Player" button
+- New: Damage Type Tag "securitycraft:security_sea_boat_vulnerable_to" to define which damage types the Security Sea Boat can be destroyed by
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
