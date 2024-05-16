@@ -668,11 +668,6 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCContent.RETINAL_SCANNER.get())
 		.unlockedBy("has_reinforced_trapdoor", has(SCContent.REINFORCED_IRON_TRAPDOOR.get()))
 		.save(recipeOutput);
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, SCContent.SECURITY_SEA_RAFT_ITEM.get())
-		.requires(SCContent.KEYPAD_CHEST.get())
-		.requires(Items.BAMBOO_RAFT)
-		.unlockedBy("has_keypad_chest", has(SCContent.KEYPAD_CHEST.get()))
-		.save(recipeOutput);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, SCContent.UNIVERSAL_OWNER_CHANGER.get())
 		.requires(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())
 		.requires(Items.NAME_TAG)
@@ -886,6 +881,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecretSignRecipe(recipeOutput, Items.OAK_HANGING_SIGN, SCContent.SECRET_OAK_HANGING_SIGN.get());
 		addSecretSignRecipe(recipeOutput, Items.SPRUCE_HANGING_SIGN, SCContent.SECRET_SPRUCE_HANGING_SIGN.get());
 		addSecretSignRecipe(recipeOutput, Items.WARPED_HANGING_SIGN, SCContent.SECRET_WARPED_HANGING_SIGN.get());
+		addSecuritySeaBoatRecipe(recipeOutput, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.SECURITY_SEA_RAFT_ITEM.get());
 		addSlabRecipe(recipeOutput, Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get()), SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_SLAB.get());
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_ANDESITE_SLAB.get());
@@ -1565,6 +1561,19 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(vanillaSign, 3)
 		.requires(SCContent.RETINAL_SCANNER.get())
 		.unlockedBy("has_sign", has(ItemTags.SIGNS))
+		.save(recipeOutput);
+		//@formatter:on
+	}
+
+	protected final void addSecuritySeaBoatRecipe(RecipeOutput recipeOutput, ItemLike planks, ItemLike boat) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, boat)
+		.group("securitycraft:security_sea_boats")
+		.pattern("PCP")
+		.pattern("PPP")
+		.define('P', planks)
+		.define('C', SCContent.KEYPAD_CHEST.get())
+		.unlockedBy("has_keypad_chest", has(SCContent.KEYPAD_CHEST.get()))
 		.save(recipeOutput);
 		//@formatter:on
 	}

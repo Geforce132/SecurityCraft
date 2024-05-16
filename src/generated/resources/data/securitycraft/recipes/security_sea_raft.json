@@ -1,13 +1,18 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
   "category": "misc",
-  "ingredients": [
-    {
+  "group": "securitycraft:security_sea_boats",
+  "key": {
+    "C": {
       "item": "securitycraft:keypad_chest"
     },
-    {
-      "item": "minecraft:bamboo_raft"
+    "P": {
+      "item": "securitycraft:reinforced_bamboo_planks"
     }
+  },
+  "pattern": [
+    "PCP",
+    "PPP"
   ],
   "result": {
     "item": "securitycraft:security_sea_raft"
