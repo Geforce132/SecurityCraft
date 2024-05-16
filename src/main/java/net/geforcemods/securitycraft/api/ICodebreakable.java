@@ -14,12 +14,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Marks a block as being able to be hacked with the Codebreaker.
+ * Marks an object as being able to be hacked with the Codebreaker.
  *
  * @author Geforce
  */
-//TODO: Document removal of BlockState parameters in changelog
-//TODO: Document new method in changelog
 public interface ICodebreakable {
 	/**
 	 * Checked before any codebreaking attempt, whether the codebreaker should attempt to break the code. Useful when this

@@ -11,6 +11,8 @@
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - API: IModuleInventory is no longer hardcoded to just block entities
+- API: New method ICodebreakable#handleCodebreaking to define behavior when a codebreaker is used to break the code
+- API: The BlockState parameters in ICodebreakable's methods have been removed
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Occasional crash when opening the inventory in creative mode in certain situations
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
