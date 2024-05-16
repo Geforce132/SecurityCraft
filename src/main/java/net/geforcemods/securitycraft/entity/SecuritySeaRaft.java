@@ -33,9 +33,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-// TODO: Change "This block doesn't have a passcode yet" message to not mention block
-// TODO: Change all other passcode-related lines to stop talking about blocks
-// TODO: Remove mention of "block" in messages.securitycraft:notOwned
 public class SecuritySeaRaft extends ChestBoat implements IOwnable, IPasscodeProtected {
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(SecuritySeaRaft.class, Owner.getSerializer());
 	private byte[] passcode;
