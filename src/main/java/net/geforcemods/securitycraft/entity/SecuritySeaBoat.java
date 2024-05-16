@@ -142,6 +142,47 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
+	public ItemEntity spawnAtLocation(ItemStack stack, float offsetY) {
+		if (stack.getItem() instanceof BlockItem blockItem) {
+			Block block = blockItem.getBlock();
+			Block newBlock = null;
+
+			if (block == Blocks.OAK_PLANKS)
+				newBlock = SCContent.REINFORCED_OAK_PLANKS.get();
+			else if (block == Blocks.SPRUCE_PLANKS)
+				newBlock = SCContent.REINFORCED_SPRUCE_PLANKS.get();
+			else if (block == Blocks.BIRCH_PLANKS)
+				newBlock = SCContent.REINFORCED_BIRCH_PLANKS.get();
+			else if (block == Blocks.JUNGLE_PLANKS)
+				newBlock = SCContent.REINFORCED_JUNGLE_PLANKS.get();
+			else if (block == Blocks.ACACIA_PLANKS)
+				newBlock = SCContent.REINFORCED_ACACIA_PLANKS.get();
+			else if (block == Blocks.DARK_OAK_PLANKS)
+				newBlock = SCContent.REINFORCED_DARK_OAK_PLANKS.get();
+			else if (block == Blocks.MANGROVE_PLANKS)
+				newBlock = SCContent.REINFORCED_MANGROVE_PLANKS.get();
+			else if (block == Blocks.CHERRY_PLANKS)
+				newBlock = SCContent.REINFORCED_CHERRY_PLANKS.get();
+			else if (block == Blocks.BAMBOO_PLANKS)
+				newBlock = SCContent.REINFORCED_BAMBOO_PLANKS.get();
+
+			if (newBlock != null) {
+				ItemStack newStack = new ItemStack(newBlock, stack.getCount());
+
+				AttachmentUtils.copyStackAttachments(stack, newStack);
+				newStack.setPopTime(stack.getPopTime());
+
+				if (stack.getTag() != null)
+					newStack.setTag(stack.getTag().copy());
+
+				stack = newStack;
+			}
+		}
+
+		return super.spawnAtLocation(stack, offsetY);
+	}
+
+	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		CompoundTag ownerTag = new CompoundTag();
 
