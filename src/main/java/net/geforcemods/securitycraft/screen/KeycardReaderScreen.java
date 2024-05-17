@@ -136,7 +136,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		plusOne = addRenderableWidget(new Button(leftPos + 96, buttonY, 12, buttonHeight, Component.literal("+"), b -> changeSignature(signature + 1), Button.DEFAULT_NARRATION));
 		plusTwo = addRenderableWidget(new Button(leftPos + 110, buttonY, 18, buttonHeight, Component.literal("++"), b -> changeSignature(signature + 10), Button.DEFAULT_NARRATION));
 		plusThree = addRenderableWidget(new Button(leftPos + 130, buttonY, 24, buttonHeight, Component.literal("+++"), b -> changeSignature(signature + 100), Button.DEFAULT_NARRATION));
-		randomizeButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_SPRITE, RANDOM_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSignature(minecraft.level.random.nextInt(MAX_SIGNATURE))));
+		randomizeButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_SPRITE, RANDOM_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSignature(SecurityCraft.RANDOM.nextInt(MAX_SIGNATURE))));
 		randomizeButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:keycard_reader.randomize_signature")));
 		randomizeButton.active = isOwner;
 		//set correct signature

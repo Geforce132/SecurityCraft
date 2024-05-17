@@ -23,6 +23,7 @@
 - Fix: The Display Case doesn't drop inserted modules when the block the display case is placed on is removed
 - Fix: A previously open Display Case would replay its opening animation when joining a world or teleporting to it
 - Fix: Fake Water/Fake Lava can be brewed using any kind of potion instead of only harming/healing potions
+- Fix: Randomizing the signature of a Keycard Reader stops working when interacting with the block from certain angles
 - Misc.: The minimum required NeoForge version is now 20.4.234
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
