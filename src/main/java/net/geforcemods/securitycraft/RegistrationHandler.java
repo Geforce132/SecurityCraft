@@ -89,6 +89,8 @@ import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.brewing.BrewingRecipeRegistry;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -402,23 +404,15 @@ public class RegistrationHandler {
 	}
 
 	private static Ingredient getPotionIngredient(Potion normalPotion, Potion strongPotion) {
-		ItemStack normalPotionStack = new ItemStack(Items.POTION);
-		ItemStack strongPotionStack = new ItemStack(Items.POTION);
-		ItemStack normalSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack strongSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack normalLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
-		ItemStack strongLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
 		CompoundTag normalNBT = new CompoundTag();
 		CompoundTag strongNBT = new CompoundTag();
+		NBTIngredient normalPotions;
+		NBTIngredient strongPotions;
 
 		normalNBT.putString("Potion", Utils.getRegistryName(normalPotion).toString());
 		strongNBT.putString("Potion", Utils.getRegistryName(strongPotion).toString());
-		normalPotionStack.setTag(normalNBT.copy());
-		strongPotionStack.setTag(strongNBT.copy());
-		normalSplashPotionStack.setTag(normalNBT.copy());
-		strongSplashPotionStack.setTag(strongNBT.copy());
-		normalLingeringPotionStack.setTag(normalNBT.copy());
-		strongLingeringPotionStack.setTag(strongNBT.copy());
-		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
+		normalPotions = NBTIngredient.of(false, normalNBT, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		strongPotions = NBTIngredient.of(false, strongNBT, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		return CompoundIngredient.of(normalPotions, strongPotions);
 	}
 }
