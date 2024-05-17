@@ -24,6 +24,7 @@
 - Fix: A previously open Display Case would replay its opening animation when joining a world or teleporting to it
 - Fix: Fake Water/Fake Lava can be brewed using any kind of potion instead of only harming/healing potions
 - Fix: Randomizing the signature of a Keycard Reader stops working when interacting with the block from certain angles
+- Fix: Floor Trap cloud particles do not spawn when standing at certain positions relative to the Floor Trap
 - Misc.: The minimum required NeoForge version is now 20.4.234
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
