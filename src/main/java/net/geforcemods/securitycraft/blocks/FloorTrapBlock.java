@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
-
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.AbstractBlock;
@@ -64,14 +61,5 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
 		return new FloorTrapBlockEntity();
-	}
-
-	@Override
-	public void animateTick(BlockState state, World level, BlockPos pos, Random random) {
-		if (state.getValue(INVISIBLE)) {
-			for (int i = 0; i < 3; i++) {
-				level.addParticle(SCContent.FLOOR_TRAP_CLOUD.get(), false, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
-			}
-		}
 	}
 }

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
+import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
@@ -33,8 +34,15 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 
 	@Override
 	public void tick() {
-		if (level.isClientSide)
+		if (level.isClientSide) {
+			BlockState state = level.getBlockState(worldPosition);
+
+			if (state.getValue(FloorTrapBlock.INVISIBLE))
+				level.addParticle(SCContent.FLOOR_TRAP_CLOUD.get(), false, worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+
 			return;
+		}
+
 
 		if (!shouldReappear && shouldDisappear) {
 			if (ticksUntilDisappearing-- <= 0)
