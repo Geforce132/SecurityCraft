@@ -1,14 +1,18 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import com.google.common.collect.Lists;
 
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
+import net.geforcemods.securitycraft.misc.PartialNBTIngredient;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -80,6 +84,8 @@ import net.minecraft.potion.Potions;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.crafting.CompoundIngredient;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -138,6 +144,7 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void registerRecipeSerializer(RegistryEvent.Register<IRecipeSerializer<?>> event) {
 		event.getRegistry().register(new SpecialRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
+		CraftingHelper.register(new ResourceLocation(SecurityCraft.MODID, "partial_nbt"), PartialNBTIngredient.Serializer.INSTANCE);
 	}
 
 	@SubscribeEvent
@@ -238,28 +245,31 @@ public class RegistrationHandler {
 	}
 
 	private static Ingredient getPotionIngredient(Potion normalPotion, Potion strongPotion) {
-		ItemStack normalPotionStack = new ItemStack(Items.POTION);
-		ItemStack strongPotionStack = new ItemStack(Items.POTION);
-		ItemStack normalSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack strongSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack normalLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
-		ItemStack strongLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
 		CompoundNBT normalNBT = new CompoundNBT();
 		CompoundNBT strongNBT = new CompoundNBT();
+		PartialNBTIngredient normalPotions;
+		PartialNBTIngredient strongPotions;
+
 		normalNBT.putString("Potion", normalPotion.getRegistryName().toString());
 		strongNBT.putString("Potion", strongPotion.getRegistryName().toString());
-		normalPotionStack.setTag(normalNBT.copy());
-		strongPotionStack.setTag(strongNBT.copy());
-		normalSplashPotionStack.setTag(normalNBT.copy());
-		strongSplashPotionStack.setTag(strongNBT.copy());
-		normalLingeringPotionStack.setTag(normalNBT.copy());
-		strongLingeringPotionStack.setTag(strongNBT.copy());
-		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
+		normalPotions = PartialNBTIngredient.of(normalNBT, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		strongPotions = PartialNBTIngredient.of(strongNBT, Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		return PublicCompoundIngredient.of(normalPotions, strongPotions);
 	}
 
 	@SuppressWarnings("rawtypes")
 	public static void registerArgumentTypes() {
 		ArgumentTypes.register(SecurityCraft.MODID + ":single_game_profile", SingleGameProfileArgument.class, new ArgumentSerializer<>(SingleGameProfileArgument::singleGameProfile));
 		ArgumentTypes.register(SecurityCraft.MODID + ":lowercased_enum", LowercasedEnumArgument.class, (IArgumentSerializer) new LowercasedEnumArgument.Serializer());
+	}
+
+	public static class PublicCompoundIngredient extends CompoundIngredient { //Constructor of CompoundIngredient is protected, so this surrogate class is needed
+		public PublicCompoundIngredient(List<Ingredient> children) {
+			super(children);
+		}
+
+		public static PublicCompoundIngredient of(Ingredient... ingredients) {
+			return new PublicCompoundIngredient(Lists.newArrayList(ingredients));
+		}
 	}
 }
