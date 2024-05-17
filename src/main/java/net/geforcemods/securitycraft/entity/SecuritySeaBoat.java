@@ -101,38 +101,38 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
-			else if (isOwnedBy(player)) {
+			else if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
 				if (!level.isClientSide) {
-					if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get())) {
-						String newOwner = stack.getHoverName().getString();
+					String newOwner = stack.getHoverName().getString();
 
-						setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
-					}
-					else if (stack.is(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())) {
-						BlockPos pos = blockPosition();
-
-						player.openMenu(new MenuProvider() {
-							@Override
-							public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-								return new CustomizeBlockMenu(windowId, level, pos, SecuritySeaBoat.super.getId(), inv);
-							}
-
-							@Override
-							public Component getDisplayName() {
-								return SecuritySeaBoat.super.getDisplayName();
-							}
-						}, data -> {
-							data.writeBlockPos(pos);
-							data.writeVarInt(SecuritySeaBoat.super.getId());
-						});
-					}
+					setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
 				}
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
-			else
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
+			else if (stack.is(SCContent.UNIVERSAL_BLOCK_MODIFIER.get()) && isOwnedBy(player)) {
+				if (!level.isClientSide) {
+					BlockPos pos = blockPosition();
+
+					player.openMenu(new MenuProvider() {
+						@Override
+						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
+							return new CustomizeBlockMenu(windowId, level, pos, SecuritySeaBoat.super.getId(), inv);
+						}
+
+						@Override
+						public Component getDisplayName() {
+							return SecuritySeaBoat.super.getDisplayName();
+						}
+					}, data -> {
+						data.writeBlockPos(pos);
+						data.writeVarInt(SecuritySeaBoat.super.getId());
+					});
+				}
+
+				return InteractionResult.sidedSuccess(level.isClientSide);
+			}
 		}
 
 		return super.interact(player, hand);
