@@ -65,6 +65,7 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Mob;
@@ -86,6 +87,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
@@ -393,13 +396,9 @@ public class RegistrationHandler {
 	}
 
 	private static Ingredient getPotionIngredient(Holder<Potion> normalPotion, Holder<Potion> strongPotion) {
-		ItemStack normalPotionStack = PotionContents.createItemStack(Items.POTION, normalPotion);
-		ItemStack strongPotionStack = PotionContents.createItemStack(Items.POTION, strongPotion);
-		ItemStack normalSplashPotionStack = PotionContents.createItemStack(Items.SPLASH_POTION, normalPotion);
-		ItemStack strongSplashPotionStack = PotionContents.createItemStack(Items.SPLASH_POTION, strongPotion);
-		ItemStack normalLingeringPotionStack = PotionContents.createItemStack(Items.LINGERING_POTION, normalPotion);
-		ItemStack strongLingeringPotionStack = PotionContents.createItemStack(Items.LINGERING_POTION, strongPotion);
+		Ingredient normalPotions = DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(normalPotion), Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		Ingredient strongPotions = DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(strongPotion), Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
 
-		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
+		return CompoundIngredient.of(normalPotions, strongPotions);
 	}
 }
