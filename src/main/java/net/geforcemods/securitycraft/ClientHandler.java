@@ -387,6 +387,7 @@ public class ClientHandler {
 		event.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
 		event.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), ItemInventoryScreen.Briefcase::new);
 		event.register(SCContent.CUSTOMIZE_BLOCK_MENU.get(), CustomizeBlockScreen::new);
+		event.register(SCContent.CUSTOMIZE_ENTITY_MENU.get(), CustomizeBlockScreen::new);
 		event.register(SCContent.DISGUISE_MODULE_MENU.get(), DisguiseModuleScreen::new);
 		event.register(SCContent.INVENTORY_SCANNER_MENU.get(), InventoryScannerScreen::new);
 		event.register(SCContent.KEYPAD_FURNACE_MENU.get(), KeypadFurnaceScreen::new);

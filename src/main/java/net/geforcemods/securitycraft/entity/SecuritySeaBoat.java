@@ -1,12 +1,23 @@
 package net.geforcemods.securitycraft.entity;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
+import net.geforcemods.securitycraft.api.ICustomizable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
+import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -15,28 +26,40 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.ChestBoat;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodeProtected {
+public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodeProtected, IModuleInventory, ICustomizable {
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(SecuritySeaBoat.class, Owner.getSerializer());
 	private byte[] passcode;
 	private UUID saltKey;
+	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
+	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
+	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
+	private long cooldownEnd = 0;
+	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	public SecuritySeaBoat(EntityType<? extends Boat> type, Level level) {
 		super(SCContent.SECURITY_SEA_BOAT_ENTITY.get(), level);
@@ -78,16 +101,38 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
-			else if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
+			else if (isOwnedBy(player)) {
 				if (!level.isClientSide) {
-					String newOwner = stack.getHoverName().getString();
+					if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get())) {
+						String newOwner = stack.getHoverName().getString();
 
-					setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
+						setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
+					}
+					else if (stack.is(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())) {
+						BlockPos pos = blockPosition();
+
+						player.openMenu(new MenuProvider() {
+							@Override
+							public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
+								return new CustomizeBlockMenu(windowId, level, pos, SecuritySeaBoat.super.getId(), inv);
+							}
+
+							@Override
+							public Component getDisplayName() {
+								return SecuritySeaBoat.super.getDisplayName();
+							}
+						}, data -> {
+							data.writeBlockPos(pos);
+							data.writeVarInt(SecuritySeaBoat.super.getId());
+						});
+					}
 				}
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
+			else
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_MODIFIER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
 		}
 
 		return super.interact(player, hand);
@@ -98,8 +143,20 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 		Level level = level();
 		BlockPos pos = blockPosition();
 
-		if (!level.isClientSide && verifyPasscodeSet(level, pos, this, player))
-			openPasscodeGUI(level, pos, player);
+		if (!level.isClientSide && verifyPasscodeSet(level, pos, this, player)) {
+			if (isDenied(player)) {
+				if (sendsDenylistMessage())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+			}
+			else if (isAllowed(player)) {
+				if (sendsAllowlistMessage())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onAllowlist"), ChatFormatting.GREEN);
+
+				activate(player);
+			}
+			else
+				openPasscodeGUI(level, pos, player);
+		}
 
 		return !level.isClientSide ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
 	}
@@ -142,10 +199,39 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
+	public Item getDropItem() {
+		return (switch (getVariant()) {
+			case SPRUCE -> SCContent.SPRUCE_SECURITY_SEA_BOAT;
+			case BIRCH -> SCContent.BIRCH_SECURITY_SEA_BOAT;
+			case JUNGLE -> SCContent.JUNGLE_SECURITY_SEA_BOAT;
+			case ACACIA -> SCContent.ACACIA_SECURITY_SEA_BOAT;
+			case DARK_OAK -> SCContent.DARK_OAK_SECURITY_SEA_BOAT;
+			case MANGROVE -> SCContent.MANGROVE_SECURITY_SEA_BOAT;
+			case CHERRY -> SCContent.CHERRY_SECURITY_SEA_BOAT;
+			case BAMBOO -> SCContent.BAMBOO_SECURITY_SEA_RAFT;
+			default -> SCContent.OAK_SECURITY_SEA_BOAT;
+		}).get();
+	}
+
+	@Override
+	public void remove(RemovalReason reason) {
+		if (!level().isClientSide && reason.shouldDestroy())
+			Containers.dropContents(level(), blockPosition(), modules);
+
+		super.remove(reason);
+	}
+
+	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		CompoundTag ownerTag = new CompoundTag();
+		long cooldownLeft;
 
 		super.addAdditionalSaveData(tag);
+		writeModuleInventory(tag);
+		writeModuleStates(tag);
+		writeOptions(tag);
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		getOwner().save(ownerTag, needsValidation());
 		tag.put("owner", ownerTag);
 
@@ -159,6 +245,10 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
+		modules = readModuleInventory(tag);
+		moduleStates = readModuleStates(tag);
+		readOptions(tag);
+		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
 		entityData.set(OWNER, Owner.fromCompound(tag.getCompound("owner")));
 		loadSaltKey(tag);
 		loadPasscode(tag);
@@ -208,30 +298,73 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
-	public void startCooldown() {}
+	public void startCooldown() {
+		if (!isOnCooldown())
+			cooldownEnd = System.currentTimeMillis() + smartModuleCooldown.get() * 50;
+	}
 
 	@Override
 	public boolean isOnCooldown() {
-		return false;
+		return System.currentTimeMillis() < getCooldownEnd();
 	}
 
 	@Override
 	public long getCooldownEnd() {
-		return 0;
+		return cooldownEnd;
 	}
 
 	@Override
-	public Item getDropItem() {
-		return (switch (getVariant()) {
-			case SPRUCE -> SCContent.SPRUCE_SECURITY_SEA_BOAT;
-			case BIRCH -> SCContent.BIRCH_SECURITY_SEA_BOAT;
-			case JUNGLE -> SCContent.JUNGLE_SECURITY_SEA_BOAT;
-			case ACACIA -> SCContent.ACACIA_SECURITY_SEA_BOAT;
-			case DARK_OAK -> SCContent.DARK_OAK_SECURITY_SEA_BOAT;
-			case MANGROVE -> SCContent.MANGROVE_SECURITY_SEA_BOAT;
-			case CHERRY -> SCContent.CHERRY_SECURITY_SEA_BOAT;
-			case BAMBOO -> SCContent.BAMBOO_SECURITY_SEA_RAFT;
-			default -> SCContent.OAK_SECURITY_SEA_BOAT;
-		}).get();
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				sendAllowlistMessage, sendDenylistMessage, smartModuleCooldown
+		};
+	}
+
+	@Override
+	public NonNullList<ItemStack> getInventory() {
+		return modules;
+	}
+
+	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.SMART, ModuleType.HARMING
+		};
+	}
+
+	@Override
+	public boolean isModuleEnabled(ModuleType module) {
+		return hasModule(module) && moduleStates.get(module) == Boolean.TRUE; //prevent NPE
+	}
+
+	@Override
+	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
+		moduleStates.put(module, shouldBeEnabled);
+	}
+
+	@Override
+	public Level myLevel() {
+		return level();
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return blockPosition();
+	}
+
+	public boolean sendsAllowlistMessage() {
+		return sendAllowlistMessage.get();
+	}
+
+	public void setSendsAllowlistMessage(boolean value) {
+		sendAllowlistMessage.setValue(value);
+	}
+
+	public boolean sendsDenylistMessage() {
+		return sendDenylistMessage.get();
+	}
+
+	public void setSendsDenylistMessage(boolean value) {
+		sendDenylistMessage.setValue(value);
 	}
 }

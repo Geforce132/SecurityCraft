@@ -199,7 +199,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		PacketDistributor.SERVER.noArg().send(new ToggleModule(moduleInv.myPos(), moduleType));
+		if (menu.entityId == -1)
+			PacketDistributor.SERVER.noArg().send(new ToggleModule(moduleInv.myPos(), moduleType));
+		else
+			PacketDistributor.SERVER.noArg().send(new ToggleModule(menu.entityId, moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -213,7 +216,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
-			PacketDistributor.SERVER.noArg().send(new ToggleOption(moduleInv.myPos(), i));
+
+			if (menu.entityId == -1)
+				PacketDistributor.SERVER.noArg().send(new ToggleOption(moduleInv.myPos(), i));
+			else
+				PacketDistributor.SERVER.noArg().send(new ToggleOption(menu.entityId, i));
+
 			return;
 		}
 	}

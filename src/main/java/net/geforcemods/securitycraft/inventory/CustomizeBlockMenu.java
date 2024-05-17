@@ -20,19 +20,22 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 	public final IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
 	private int maxSlots;
+	public final int entityId;
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.CUSTOMIZE_BLOCK_MENU.get(), windowId);
 		moduleInv = (IModuleInventory) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 		addSlots(inventory);
+		entityId = -1;
 	}
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, int entityId, Inventory inventory) {
-		super(SCContent.CUSTOMIZE_BLOCK_MENU.get(), windowId);
+		super(SCContent.CUSTOMIZE_ENTITY_MENU.get(), windowId);
 		moduleInv = (IModuleInventory) level.getEntity(entityId);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 		addSlots(inventory);
+		this.entityId = entityId;
 	}
 
 	public void addSlots(Inventory inventory) {
