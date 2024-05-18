@@ -1,12 +1,11 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import com.google.common.collect.Lists;
 
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
@@ -269,7 +268,7 @@ public class RegistrationHandler {
 		}
 
 		public static PublicCompoundIngredient of(Ingredient... ingredients) {
-			return new PublicCompoundIngredient(Lists.newArrayList(ingredients));
+			return new PublicCompoundIngredient(Arrays.asList(ingredients));
 		}
 	}
 }

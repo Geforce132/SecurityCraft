@@ -36,6 +36,7 @@ public class PartialNBTIngredient extends Ingredient { //Copied and adapted from
 	protected PartialNBTIngredient(Set<Item> items, CompoundNBT nbt) {
 		super(items.stream().map(item -> {
 			ItemStack stack = new ItemStack(item);
+
 			// copy NBT to prevent the stack from modifying the original, as capabilities or vanilla item durability will modify the tag
 			stack.setTag(nbt.copy());
 			return new Ingredient.SingleItemList(stack);
@@ -46,7 +47,7 @@ public class PartialNBTIngredient extends Ingredient { //Copied and adapted from
 
 		this.items = Collections.unmodifiableSet(items);
 		this.nbt = nbt;
-		this.predicate = new NBTPredicate(nbt);
+		predicate = new NBTPredicate(nbt);
 	}
 
 	public static PartialNBTIngredient of(CompoundNBT nbt, IItemProvider... items) {
@@ -57,18 +58,17 @@ public class PartialNBTIngredient extends Ingredient { //Copied and adapted from
 	public boolean test(ItemStack input) {
 		if (input == null)
 			return false;
+
 		return items.contains(input.getItem()) && predicate.matches(input.getShareTag());
 	}
 
 	@Override
-	public boolean isSimple()
-	{
+	public boolean isSimple() {
 		return false;
 	}
 
 	@Override
-	public IIngredientSerializer<? extends Ingredient> getSerializer()
-	{
+	public IIngredientSerializer<? extends Ingredient> getSerializer() {
 		return Serializer.INSTANCE;
 	}
 
@@ -81,10 +81,11 @@ public class PartialNBTIngredient extends Ingredient { //Copied and adapted from
 		if (items.size() == 1)
 			json.addProperty("item", items.iterator().next().getRegistryName().toString());
 		else {
-			JsonArray items = new JsonArray();
+			JsonArray jsonItems = new JsonArray();
+
 			// ensure the order of items in the set is deterministic when saved to JSON
-			this.items.stream().map(Item::getRegistryName).sorted().forEach(name -> items.add(name.toString()));
-			json.add("items", items);
+			items.stream().map(Item::getRegistryName).sorted().forEach(name -> jsonItems.add(name.toString()));
+			json.add("items", jsonItems);
 		}
 
 		json.addProperty("nbt", nbt.toString());
@@ -121,9 +122,7 @@ public class PartialNBTIngredient extends Ingredient { //Copied and adapted from
 			if (!json.has("nbt"))
 				throw new JsonSyntaxException("Missing nbt, expected to find a String or JsonObject");
 
-			CompoundNBT nbt = getNBT(json);
-
-			return new PartialNBTIngredient(items, nbt);
+			return new PartialNBTIngredient(items, getNBT(json));
 		}
 
 		@Override
