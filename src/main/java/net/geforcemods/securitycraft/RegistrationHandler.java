@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -81,8 +82,10 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWalls;
 import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.DyeItemRecipe;
+import net.geforcemods.securitycraft.misc.IngredientBrewingRecipe;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.PageGroup;
+import net.geforcemods.securitycraft.misc.PartialNBTIngredient;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
@@ -153,6 +156,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
+import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -1173,28 +1177,25 @@ public class RegistrationHandler {
 	}
 
 	private static void registerFakeLiquidRecipes(ItemStack input, PotionType normalPotion, PotionType strongPotion, ItemStack output) {
-		ItemStack normalPotionStack = new ItemStack(Items.POTIONITEM);
-		ItemStack strongPotionStack = new ItemStack(Items.POTIONITEM);
-		ItemStack normalSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack strongSplashPotionStack = new ItemStack(Items.SPLASH_POTION);
-		ItemStack normalLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
-		ItemStack strongLingeringPotionStack = new ItemStack(Items.LINGERING_POTION);
 		NBTTagCompound normalNBT = new NBTTagCompound();
 		NBTTagCompound strongNBT = new NBTTagCompound();
+		PartialNBTIngredient normalPotions;
+		PartialNBTIngredient strongPotions;
+
 		normalNBT.setString("Potion", normalPotion.getRegistryName().toString());
 		strongNBT.setString("Potion", strongPotion.getRegistryName().toString());
-		normalPotionStack.setTagCompound(normalNBT.copy());
-		strongPotionStack.setTagCompound(strongNBT.copy());
-		normalSplashPotionStack.setTagCompound(normalNBT.copy());
-		strongSplashPotionStack.setTagCompound(strongNBT.copy());
-		normalLingeringPotionStack.setTagCompound(normalNBT.copy());
-		strongLingeringPotionStack.setTagCompound(strongNBT.copy());
+		normalPotions = PartialNBTIngredient.of(normalNBT, Items.POTIONITEM, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		strongPotions = PartialNBTIngredient.of(strongNBT, Items.POTIONITEM, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		BrewingRecipeRegistry.addRecipe(new IngredientBrewingRecipe(input, PublicCompoundIngredient.of(normalPotions, strongPotions), output));
+	}
 
-		BrewingRecipeRegistry.addRecipe(input, normalPotionStack, output);
-		BrewingRecipeRegistry.addRecipe(input, strongPotionStack, output);
-		BrewingRecipeRegistry.addRecipe(input, normalSplashPotionStack, output);
-		BrewingRecipeRegistry.addRecipe(input, strongSplashPotionStack, output);
-		BrewingRecipeRegistry.addRecipe(input, normalLingeringPotionStack, output);
-		BrewingRecipeRegistry.addRecipe(input, strongLingeringPotionStack, output);
+	public static class PublicCompoundIngredient extends CompoundIngredient { //Constructor of CompoundIngredient is protected, so this surrogate class is needed
+		public PublicCompoundIngredient(List<Ingredient> children) {
+			super(children);
+		}
+
+		public static PublicCompoundIngredient of(Ingredient... ingredients) {
+			return new PublicCompoundIngredient(Arrays.asList(ingredients));
+		}
 	}
 }

@@ -17,6 +17,7 @@
 - Fix: Crash when trying to remove the passcode of a Briefcase using a Universal Key Changer
 - Fix: Display Cases don't destroy themselves when their supporting block is removed, allowing them to float in the air
 - Fix: A previously open Display Case would replay its opening animation when joining a world or teleporting to it
+- Fix: Fake Water/Fake Lava can be brewed using any kind of potion instead of only harming/healing potions
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
