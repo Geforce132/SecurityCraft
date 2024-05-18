@@ -1,10 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
-
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
-import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -17,8 +13,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FloorTrapBlock extends SometimesVisibleBlock {
 	public FloorTrapBlock(Material material) {
@@ -76,15 +70,5 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new FloorTrapBlockEntity();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(IBlockState state, World level, BlockPos pos, Random rand) {
-		if (state.getValue(INVISIBLE)) {
-			for (int i = 0; i < 3; i++) {
-				SecurityCraft.proxy.addEffect(FloorTrapCloudParticle::createParticle, level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
-			}
-		}
 	}
 }

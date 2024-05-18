@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.misc;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.AbstractBrewingRecipe;
@@ -12,7 +10,7 @@ public class IngredientBrewingRecipe extends AbstractBrewingRecipe<Ingredient> {
 	}
 
 	@Override
-	public boolean isIngredient(@Nonnull ItemStack ingredient) {
+	public boolean isIngredient(ItemStack ingredient) {
 		return getIngredient().apply(ingredient);
 	}
 }

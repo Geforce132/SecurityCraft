@@ -1,11 +1,14 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
+import net.geforcemods.securitycraft.blocks.FloorTrapBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
+import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.minecraft.block.state.IBlockState;
@@ -28,8 +31,14 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 
 	@Override
 	public void update() {
-		if (world.isRemote)
+		if (world.isRemote) {
+			IBlockState state = world.getBlockState(pos);
+
+			if (state.getValue(FloorTrapBlock.INVISIBLE))
+				SecurityCraft.proxy.addEffect(FloorTrapCloudParticle::createParticle, world, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+
 			return;
+		}
 
 		if (!shouldReappear && shouldDisappear) {
 			if (ticksUntilDisappearing-- <= 0)
