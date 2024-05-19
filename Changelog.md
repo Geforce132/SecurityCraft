@@ -18,6 +18,7 @@
 - Fix: Display Cases don't destroy themselves when their supporting block is removed, allowing them to float in the air
 - Fix: A previously open Display Case would replay its opening animation when joining a world or teleporting to it
 - Fix: Fake Water/Fake Lava can be brewed using any kind of potion instead of only harming/healing potions
+- Fix: Cloning a passcode-protected block using the /clone command will invalidate the passcode of the original block if the clone is removed
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 

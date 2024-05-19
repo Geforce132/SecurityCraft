@@ -210,7 +210,7 @@ public class KeypadChestBlock extends OwnableBlock {
 					thisBe.setSendsDenylistMessage(be.sendsDenylistMessage());
 
 					if (be.getSaltKey() != null)
-						thisBe.setSaltKey(SaltData.putSalt(be.getSalt()));
+						thisBe.setSaltKey(SaltData.copySaltToNewKey(be.getSaltKey()));
 
 					thisBe.setPasscode(be.getPasscode());
 				}

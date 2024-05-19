@@ -132,10 +132,17 @@ public interface IPasscodeProtected extends ICodebreakable {
 		UUID saltKey = tag.hasUniqueId("saltKey") ? tag.getUniqueId("saltKey") : null;
 		String passcode = tag.getString(tag.hasKey("Passcode", Constants.NBT.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
-		if (passcode.length() == 32 && !SaltData.containsKey(saltKey)) //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found, a new passcode needs to be set
-			PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
-		else
+		if (passcode.length() == 32) {
+			if (!SaltData.containsKey(saltKey)) { //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found, a new passcode needs to be set
+				PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
+				return;
+			}
+			else if (SaltData.isKeyInUse(saltKey))
+				saltKey = SaltData.copySaltToNewKey(saltKey);
+
 			setSaltKey(saltKey);
+			SaltData.setKeyInUse(saltKey);
+		}
 	}
 
 	/**
