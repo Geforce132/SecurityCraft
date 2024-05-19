@@ -86,6 +86,8 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 				case INVERT_FUNCTIONALITY:
 					sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
 			}
+
+			sss.setChanged();
 		}
 	}
 
