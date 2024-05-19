@@ -152,7 +152,7 @@ public class KeypadChestBlock extends ChestBlock {
 					thisBe.readOptions(be.writeOptions(new CompoundNBT()));
 
 					if (be.getSaltKey() != null)
-						thisBe.setSaltKey(SaltData.putSalt(be.getSalt()));
+						thisBe.setSaltKey(SaltData.copySaltToNewKey(be.getSaltKey()));
 
 					thisBe.setPasscode(be.getPasscode());
 				}

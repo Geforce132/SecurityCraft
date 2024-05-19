@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.misc;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.nbt.CompoundNBT;
@@ -13,6 +15,7 @@ import net.minecraftforge.common.util.Constants;
 public class SaltData extends WorldSavedData {
 	private static SaltData instance;
 	private final Map<UUID, byte[]> saltMap = new HashMap<>();
+	private final Set<UUID> saltKeysInUse = new HashSet<>();
 
 	private SaltData() {
 		super("securitycraft-salts");
@@ -33,6 +36,18 @@ public class SaltData extends WorldSavedData {
 		return instance.saltMap.containsKey(saltKey);
 	}
 
+	public static void setKeyInUse(UUID saltKey) {
+		if (saltKey != null)
+			instance.saltKeysInUse.add(saltKey);
+	}
+
+	public static boolean isKeyInUse(UUID saltKey) {
+		if (saltKey == null)
+			return false;
+
+		return instance.saltKeysInUse.contains(saltKey);
+	}
+
 	public static byte[] getSalt(UUID saltKey) {
 		if (saltKey == null)
 			return null;
@@ -46,6 +61,7 @@ public class SaltData extends WorldSavedData {
 		UUID saltKey = UUID.randomUUID();
 
 		instance.saltMap.put(saltKey, salt);
+		setKeyInUse(saltKey);
 		instance.setDirty();
 		return saltKey;
 	}
@@ -53,8 +69,16 @@ public class SaltData extends WorldSavedData {
 	public static void removeSalt(UUID saltKey) {
 		if (saltKey != null) {
 			instance.saltMap.remove(saltKey);
+			instance.saltKeysInUse.remove(saltKey);
 			instance.setDirty();
 		}
+	}
+
+	public static UUID copySaltToNewKey(UUID oldKey) {
+		if (oldKey != null)
+			return putSalt(getSalt(oldKey));
+
+		return null;
 	}
 
 	@Override
