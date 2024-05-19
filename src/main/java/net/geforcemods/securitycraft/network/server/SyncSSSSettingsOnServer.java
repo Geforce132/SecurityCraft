@@ -86,8 +86,11 @@ public class SyncSSSSettingsOnServer implements IMessage {
 						case INVERT_FUNCTIONALITY:
 							sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
 					}
+
+					sss.markDirty();
 				}
 			});
+
 			return null;
 		}
 	}
