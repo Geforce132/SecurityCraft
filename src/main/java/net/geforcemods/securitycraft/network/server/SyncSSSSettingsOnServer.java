@@ -80,6 +80,8 @@ public class SyncSSSSettingsOnServer {
 				case INVERT_FUNCTIONALITY:
 					sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
 			}
+
+			sss.setChanged();
 		}
 	}
 
