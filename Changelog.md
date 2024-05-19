@@ -27,6 +27,7 @@
 - Fix: Randomizing the signature of a Keycard Reader stops working when interacting with the block from certain angles
 - Fix: Floor Trap cloud particles do not spawn when standing at certain positions relative to the Floor Trap
 - Fix: Cloning a passcode-protected block using the /clone command will invalidate the passcode of the original block if the clone is removed
+- Fix: Sonic Security System settings sometimes do not persist through world reloads
 
 --------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
 
