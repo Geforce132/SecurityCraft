@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.misc;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import net.minecraft.core.HolderLookup;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.saveddata.SavedData;
 public class SaltData extends SavedData {
 	private static SaltData instance;
 	private final Map<UUID, byte[]> saltMap = new HashMap<>();
+	private final Set<UUID> saltKeysInUse = new HashSet<>();
 
 	private SaltData() {}
 
@@ -32,6 +35,18 @@ public class SaltData extends SavedData {
 		return instance.saltMap.containsKey(saltKey);
 	}
 
+	public static void setKeyInUse(UUID saltKey) {
+		if (saltKey != null)
+			instance.saltKeysInUse.add(saltKey);
+	}
+
+	public static boolean isKeyInUse(UUID saltKey) {
+		if (saltKey == null)
+			return false;
+
+		return instance.saltKeysInUse.contains(saltKey);
+	}
+
 	public static byte[] getSalt(UUID saltKey) {
 		if (saltKey == null)
 			return null;
@@ -45,6 +60,7 @@ public class SaltData extends SavedData {
 		UUID saltKey = UUID.randomUUID();
 
 		instance.saltMap.put(saltKey, salt);
+		setKeyInUse(saltKey);
 		instance.setDirty();
 		return saltKey;
 	}
@@ -52,8 +68,16 @@ public class SaltData extends SavedData {
 	public static void removeSalt(UUID saltKey) {
 		if (saltKey != null) {
 			instance.saltMap.remove(saltKey);
+			instance.saltKeysInUse.remove(saltKey);
 			instance.setDirty();
 		}
+	}
+
+	public static UUID copySaltToNewKey(UUID oldKey) {
+		if (oldKey != null)
+			return putSalt(getSalt(oldKey));
+
+		return null;
 	}
 
 	public static SaltData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
