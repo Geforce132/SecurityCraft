@@ -111,7 +111,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		return Component.translatable(SCContent.REINFORCED_HOPPER.get().getDescriptionId());
 	}
 
-	public static IItemHandler getCapability(HopperBlockEntity be, Direction side) {
+	public static IItemHandler getCapability(ReinforcedHopperBlockEntity be, Direction side) {
 		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new VanillaHopperItemHandler(be) : new VanillaHopperInsertOnlyItemHandler(be);
 	}
 

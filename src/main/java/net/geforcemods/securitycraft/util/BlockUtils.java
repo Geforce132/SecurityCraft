@@ -74,18 +74,18 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static boolean isAllowedToExtractFromProtectedBlock(Direction side, BlockEntity be) {
-		if (side != null) {
-			Level level = be.getLevel();
+	public static <T extends BlockEntity & IOwnable> boolean isAllowedToExtractFromProtectedBlock(Direction side, T be) {
+		return isAllowedToExtractFromProtectedBlock(side, be, be.getLevel(), be.getBlockPos());
+	}
 
-			if (level != null) {
-				BlockPos offsetPos = be.getBlockPos().relative(side);
-				BlockState offsetState = level.getBlockState(offsetPos);
+	public static boolean isAllowedToExtractFromProtectedBlock(Direction side, IOwnable be, Level level, BlockPos pos) {
+		if (side != null && level != null) {
+			BlockPos offsetPos = pos.relative(side);
+			BlockState offsetState = level.getBlockState(offsetPos);
 
-				for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
-					if (offsetState.getBlock() == extractionBlock.getBlock())
-						return extractionBlock.canExtract((IOwnable) be, level, offsetPos, offsetState);
-				}
+			for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+				if (offsetState.getBlock() == extractionBlock.getBlock())
+					return extractionBlock.canExtract(be, level, offsetPos, offsetState);
 			}
 		}
 

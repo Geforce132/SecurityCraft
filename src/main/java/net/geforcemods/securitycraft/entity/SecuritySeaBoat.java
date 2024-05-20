@@ -17,15 +17,18 @@ import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -55,6 +58,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodeProtected, IModuleInventory, ICustomizable {
@@ -300,6 +305,10 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 			Containers.dropContents(level(), blockPosition(), modules);
 
 		super.remove(reason);
+	}
+
+	public static IItemHandler getCapability(SecuritySeaBoat boat, Direction direction) {
+		return BlockUtils.isAllowedToExtractFromProtectedBlock(direction, boat, boat.level(), boat.blockPosition()) ? new InvWrapper(boat) : new InsertOnlyInvWrapper(boat);
 	}
 
 	@Override
