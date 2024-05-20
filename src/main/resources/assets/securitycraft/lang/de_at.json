@@ -637,6 +637,7 @@
 	"death.attack.securitycraft.taser.item": "%1$s wurde von %2$s mit %3$s zu Tode getasert",
 	"entity.securitycraft.bullet": "Geschützkugel",
 	"entity.securitycraft.imsbomb": "I.M.S.-Bombe",
+	"entity.securitycraft.security_sea_boat": "Gesichertes Seeboot",
 	"entity.securitycraft.sentry": "Geschütz",
 	"gamerule.fakeLavaSourceConversion": "Erneuerbarkeit von Falscher Lava",
 	"gamerule.fakeWaterSourceConversion": "Erneuerbarkeit von Falschem Wasser",

@@ -638,6 +638,7 @@
 	"death.attack.securitycraft.taser.item": "%1$s was tasered to death by %2$s using %3$s",
 	"entity.securitycraft.bullet": "Sentry Bullet",
 	"entity.securitycraft.imsbomb": "I.M.S. Bomb",
+	"entity.securitycraft.security_sea_boat": "Security Sea Boat",
 	"entity.securitycraft.sentry": "Sentry",
 	"gamerule.fakeLavaSourceConversion": "Fake lava converts to source",
 	"gamerule.fakeWaterSourceConversion": "Fake water converts to source",
