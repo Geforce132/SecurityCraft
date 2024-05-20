@@ -335,7 +335,8 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	public void setOwner(Player player) {
-		setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+		if (player != null)
+			setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
 	}
 
 	@Override
