@@ -94,7 +94,19 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
+	public boolean canAddPassenger(Entity passenger) {
+		return super.canAddPassenger(passenger) && (isOwnedBy(passenger) || isAllowed(passenger)) && !isDenied(passenger);
+	}
+
+	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
+		if (isDenied(player)) {
+			if (sendsDenylistMessage())
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+
+			return InteractionResult.FAIL;
+		}
+
 		if (player.isSecondaryUseActive()) {
 			ItemStack stack = player.getItemInHand(hand);
 			Level level = player.level();
