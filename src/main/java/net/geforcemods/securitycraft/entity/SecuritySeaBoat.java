@@ -49,6 +49,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodeProtected, IModuleInventory, ICustomizable {
@@ -64,6 +69,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	private EntityDataWrappedOption<Boolean, Option<Boolean>> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Integer, Option<Integer>> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
 	private long cooldownEnd = 0;
+	private boolean isInLava = false;
 
 	public SecuritySeaBoat(EntityType<? extends Boat> type, Level level) {
 		super(SCContent.SECURITY_SEA_BOAT_ENTITY.get(), level);
@@ -183,6 +189,46 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	@Override
 	public void openSetPasscodeScreen(ServerPlayer player, BlockPos pos) {
 		PacketDistributor.PLAYER.with(player).send(new OpenScreen(DataType.SET_PASSCODE_FOR_ENTITY, getId()));
+	}
+
+	@Override
+	public boolean canBoatInFluid(FluidState state) {
+		return super.canBoatInFluid(state) || state.is(Fluids.LAVA);
+	}
+
+	@Override
+	public boolean canBoatInFluid(FluidType type) {
+		return super.canBoatInFluid(type) || type == NeoForgeMod.LAVA_TYPE;
+	}
+
+	@Override
+	public boolean checkInWater() {
+		isInLava = level().getFluidState(blockPosition()).is(Fluids.LAVA);
+		return super.checkInWater();
+	}
+
+	@Override
+	public void setDeltaMovement(Vec3 deltaMovement) {
+		if (isInLava)
+			super.setDeltaMovement(deltaMovement.scale(0.5F));
+		else
+			super.setDeltaMovement(deltaMovement);
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		if (!level().isClientSide && isInLava) {
+			Entity passenger = getFirstPassenger();
+
+			if (passenger != null && !passenger.fireImmune()) {
+				passenger.setRemainingFireTicks(passenger.getRemainingFireTicks() + 1);
+
+				if (passenger.getRemainingFireTicks() == 0)
+					passenger.setSecondsOnFire(8);
+			}
+		}
 	}
 
 	@Override

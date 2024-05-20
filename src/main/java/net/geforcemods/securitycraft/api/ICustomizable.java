@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  */
 public interface ICustomizable {
 	/**
-	 * @return An array of what custom {@link Option}s this bject has.
+	 * @return An array of what custom {@link Option}s this object has.
 	 */
 	public Option<?>[] customOptions();
 
