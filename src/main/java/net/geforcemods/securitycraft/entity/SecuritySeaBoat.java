@@ -426,6 +426,11 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
+	public String getModuleDescriptionId(String denotation, ModuleType module) {
+		return IModuleInventory.super.getModuleDescriptionId("generic." + denotation, module);
+	}
+
+	@Override
 	public Level myLevel() {
 		return level();
 	}
