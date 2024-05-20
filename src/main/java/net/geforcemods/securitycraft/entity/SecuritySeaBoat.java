@@ -245,11 +245,15 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 		if (!level().isClientSide && isInLava) {
 			Entity passenger = getFirstPassenger();
 
-			if (passenger != null && !passenger.fireImmune()) {
-				passenger.setRemainingFireTicks(passenger.getRemainingFireTicks() + 1);
+			if (passenger != null) {
+				if (!passenger.fireImmune()) {
+					passenger.setRemainingFireTicks(passenger.getRemainingFireTicks() + 1);
 
-				if (passenger.getRemainingFireTicks() == 0)
-					passenger.setSecondsOnFire(8);
+					if (passenger.getRemainingFireTicks() == 0)
+						passenger.setSecondsOnFire(8);
+				}
+
+				passenger.hurt(level().damageSources().inFire(), 1.0F);
 			}
 		}
 	}
