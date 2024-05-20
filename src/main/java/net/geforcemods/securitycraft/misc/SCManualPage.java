@@ -16,11 +16,12 @@ public record SCManualPage(Item item, PageGroup group, Component title, Componen
 		if (item instanceof BlockItem blockItem) {
 			Block block = blockItem.getBlock();
 
-			return ((EntityBlock) block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+			if (block.defaultBlockState().hasBlockEntity())
+				return ((EntityBlock) block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 		}
 		else if (item instanceof BoatItem boatItem)
 			return boatItem.getBoat(null, BlockHitResult.miss(Vec3.ZERO, Direction.NORTH, BlockPos.ZERO), item.getDefaultInstance(), null);
-		else
-			return null;
+
+		return null;
 	}
 }
