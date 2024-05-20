@@ -231,6 +231,7 @@ import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.items.WireCuttersItem;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.ItemStackListSerializer;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.ModuleStatesSerializer;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -248,6 +249,7 @@ import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
@@ -262,6 +264,7 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
@@ -325,6 +328,7 @@ public class SCContent {
 	//data serializer entries
 	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Owner>> OWNER_SERIALIZER = DATA_SERIALIZERS.register("owner", () -> new OwnerDataSerializer());
 	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Map<ModuleType, Boolean>>> MODULE_STATES_SERIALIZER = DATA_SERIALIZERS.register("module_states", () -> new ModuleStatesSerializer());
+	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<NonNullList<ItemStack>>> ITEM_STACK_LIST_SERIALIZER = DATA_SERIALIZERS.register("item_stack_list", () -> new ItemStackListSerializer());
 
 	//particle types
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FLOOR_TRAP_CLOUD = PARTICLE_TYPES.register("floor_trap_cloud", () -> new SimpleParticleType(false));

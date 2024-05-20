@@ -68,9 +68,9 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	private static final EntityDataAccessor<Boolean> SEND_DENYLIST_MESSAGE = SynchedEntityData.<Boolean>defineId(SecuritySeaBoat.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Integer> SMART_MODULE_COOLDOWN = SynchedEntityData.<Integer>defineId(SecuritySeaBoat.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Map<ModuleType, Boolean>> MODULE_STATES = SynchedEntityData.<Map<ModuleType, Boolean>>defineId(SecuritySeaBoat.class, SCContent.MODULE_STATES_SERIALIZER.get());
+	private static final EntityDataAccessor<NonNullList<ItemStack>> MODULES = SynchedEntityData.<NonNullList<ItemStack>>defineId(SecuritySeaBoat.class, SCContent.ITEM_STACK_LIST_SERIALIZER.get());
 	private byte[] passcode;
 	private UUID saltKey;
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private EntityDataWrappedOption<Boolean, Option<Boolean>> sendAllowlistMessage = new SendAllowlistMessageOption(false).wrapForEntityData(SEND_ALLOWLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Boolean, Option<Boolean>> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Integer, Option<Integer>> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
@@ -97,6 +97,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 		entityData.define(SEND_DENYLIST_MESSAGE, true);
 		entityData.define(SMART_MODULE_COOLDOWN, 100);
 		entityData.define(MODULE_STATES, new EnumMap<>(ModuleType.class));
+		entityData.define(MODULES, NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY));
 	}
 
 	@Override
@@ -306,7 +307,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	@Override
 	public void remove(RemovalReason reason) {
 		if (!level().isClientSide && reason.shouldDestroy())
-			Containers.dropContents(level(), blockPosition(), modules);
+			Containers.dropContents(level(), blockPosition(), getInventory());
 
 		super.remove(reason);
 	}
@@ -339,7 +340,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		modules = readModuleInventory(tag);
+		entityData.set(MODULES, readModuleInventory(tag));
 		entityData.set(MODULE_STATES, readModuleStates(tag));
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
@@ -443,7 +444,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 
 	@Override
 	public NonNullList<ItemStack> getInventory() {
-		return modules;
+		return entityData.get(MODULES);
 	}
 
 	@Override
