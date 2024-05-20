@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.EntityDataWrappedOption;
 import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
@@ -30,6 +30,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
@@ -52,12 +53,15 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodeProtected, IModuleInventory, ICustomizable {
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(SecuritySeaBoat.class, Owner.getSerializer());
+	private static final EntityDataAccessor<Boolean> SEND_ALLOWLIST_MESSAGE = SynchedEntityData.<Boolean>defineId(SecuritySeaBoat.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> SEND_DENYLIST_MESSAGE = SynchedEntityData.<Boolean>defineId(SecuritySeaBoat.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Integer> SMART_MODULE_COOLDOWN = SynchedEntityData.<Integer>defineId(SecuritySeaBoat.class, EntityDataSerializers.INT);
 	private byte[] passcode;
 	private UUID saltKey;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
-	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
-	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
+	private EntityDataWrappedOption<Boolean, Option<Boolean>> sendAllowlistMessage = new SendAllowlistMessageOption(false).wrapForEntityData(SEND_ALLOWLIST_MESSAGE, () -> entityData);
+	private EntityDataWrappedOption<Boolean, Option<Boolean>> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
+	private EntityDataWrappedOption<Integer, Option<Integer>> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
@@ -77,6 +81,9 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(OWNER, new Owner());
+		entityData.define(SEND_ALLOWLIST_MESSAGE, false);
+		entityData.define(SEND_DENYLIST_MESSAGE, true);
+		entityData.define(SMART_MODULE_COOLDOWN, 100);
 	}
 
 	@Override
@@ -252,6 +259,32 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 		entityData.set(OWNER, Owner.fromCompound(tag.getCompound("owner")));
 		loadSaltKey(tag);
 		loadPasscode(tag);
+	}
+
+	@Override
+	public void onOptionChanged(Option<?> option) {
+		if (!level().isClientSide) {
+			if (option == sendAllowlistMessage)
+				entityData.set(SEND_ALLOWLIST_MESSAGE, sendAllowlistMessage.get());
+			else if (option == sendDenylistMessage)
+				entityData.set(SEND_DENYLIST_MESSAGE, sendDenylistMessage.get());
+			else if (option == smartModuleCooldown)
+				entityData.set(SMART_MODULE_COOLDOWN, smartModuleCooldown.get());
+		}
+	}
+
+	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		if (level().isClientSide) {
+			if (key == SEND_ALLOWLIST_MESSAGE)
+				sendAllowlistMessage.setValue(entityData.get(SEND_ALLOWLIST_MESSAGE));
+			else if (key == SEND_DENYLIST_MESSAGE)
+				sendDenylistMessage.setValue(entityData.get(SEND_DENYLIST_MESSAGE));
+			else if (key == SMART_MODULE_COOLDOWN)
+				smartModuleCooldown.setValue(entityData.get(SMART_MODULE_COOLDOWN));
+		}
+
+		super.onSyncedDataUpdated(key);
 	}
 
 	public void setOwner(Player player) {

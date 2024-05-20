@@ -1,17 +1,18 @@
 package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.EntityDataWrappedOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
@@ -20,6 +21,7 @@ public class UpdateSliderValue implements CustomPacketPayload {
 	private BlockPos pos;
 	private String optionName;
 	private double value;
+	private int entityId;
 
 	public UpdateSliderValue() {}
 
@@ -29,15 +31,33 @@ public class UpdateSliderValue implements CustomPacketPayload {
 		value = v;
 	}
 
+	public UpdateSliderValue(int entityId, Option<?> option, double v) {
+		this.entityId = entityId;
+		optionName = option.getName();
+		value = v;
+	}
+
 	public UpdateSliderValue(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
+		if (buf.readBoolean())
+			pos = buf.readBlockPos();
+		else
+			entityId = buf.readVarInt();
+
 		optionName = buf.readUtf();
 		value = buf.readDouble();
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
+		boolean hasPos = pos != null;
+
+		buf.writeBoolean(hasPos);
+
+		if (hasPos)
+			buf.writeBlockPos(pos);
+		else
+			buf.writeVarInt(entityId);
+
 		buf.writeUtf(optionName);
 		buf.writeDouble(value);
 	}
@@ -49,9 +69,15 @@ public class UpdateSliderValue implements CustomPacketPayload {
 
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
-		BlockEntity be = player.level().getBlockEntity(pos);
+		Level level = player.level();
+		ICustomizable customizable = null;
 
-		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (pos != null && level.getBlockEntity(pos) instanceof ICustomizable be)
+			customizable = be;
+		else if (pos == null && level.getEntity(entityId) instanceof ICustomizable entity)
+			customizable = entity;
+
+		if (customizable != null && (!(customizable instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			Option<?> option = null;
 
 			for (Option<?> o : customizable.customOptions()) {
@@ -64,15 +90,23 @@ public class UpdateSliderValue implements CustomPacketPayload {
 			if (option == null)
 				return;
 
-			if (option instanceof DoubleOption o)
+			if (option instanceof EntityDataWrappedOption o) {
+				Option<?> wrapped = o.getWrapped();
+
+				if (wrapped instanceof DoubleOption)
+					o.setValue(value);
+				else if (wrapped instanceof IntOption)
+					o.setValue((int) value);
+			}
+			else if (option instanceof DoubleOption o)
 				o.setValue(value);
 			else if (option instanceof IntOption o)
 				o.setValue((int) value);
 
 			customizable.onOptionChanged(option);
 
-			if (be instanceof CustomizableBlockEntity)
-				player.level().sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
+			if (customizable instanceof BlockEntity be)
+				level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
 	}
 }

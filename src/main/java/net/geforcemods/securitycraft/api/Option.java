@@ -1,10 +1,14 @@
 package net.geforcemods.securitycraft.api;
 
+import java.util.function.Supplier;
+
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.SynchedEntityData;
 
 /**
  * A class that allows blocks that have {@link ICustomizable} block entities to have custom, per-block options that are
@@ -43,7 +47,11 @@ public abstract class Option<T> {
 
 	public abstract void load(CompoundTag tag);
 
-	public abstract void save(CompoundTag tag);
+	public abstract void save(CompoundTag tag, T value);
+
+	public void save(CompoundTag tag) {
+		save(tag, value);
+	}
 
 	public void copy(Option<?> option) {
 		value = (T) option.get();
@@ -52,7 +60,7 @@ public abstract class Option<T> {
 	/**
 	 * @return This option's name.
 	 */
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -131,9 +139,20 @@ public abstract class Option<T> {
 		return Component.translatable("securitycraft.option.default_with_range", getDefaultValue(), getMin(), getMax()).withStyle(ChatFormatting.GRAY);
 	}
 
+	/**
+	 * @return A textual representation of this option's value
+	 */
+	public Component getValueText() {
+		return Component.literal(toString());
+	}
+
 	@Override
 	public String toString() {
 		return (value) + "";
+	}
+
+	public EntityDataWrappedOption<T, Option<T>> wrapForEntityData(EntityDataAccessor<T> entityDataKey, Supplier<SynchedEntityData> entityData) {
+		return new EntityDataWrappedOption<>(this, entityDataKey, entityData);
 	}
 
 	/**
@@ -158,13 +177,18 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, Boolean value) {
 			tag.putBoolean(getName(), value);
 		}
 
 		@Override
 		public Component getDefaultInfo() {
 			return Component.translatable("securitycraft.option.default", Component.translatable(getDefaultValue() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no")).withStyle(ChatFormatting.GRAY);
+		}
+
+		@Override
+		public Component getValueText() {
+			return Component.translatable(get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
 		}
 	}
 
@@ -232,7 +256,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, Integer value) {
 			tag.putInt(getName(), value);
 		}
 
@@ -284,7 +308,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, Double value) {
 			tag.putDouble(getName(), value);
 		}
 
@@ -327,17 +351,18 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, T value) {
 			tag.putInt(getName(), value.ordinal());
 		}
 
-		public Component getValueName() {
+		@Override
+		public Component getValueText() {
 			return Component.literal(value.name());
 		}
 
 		@Override
 		public Component getDefaultInfo() {
-			return Component.translatable("securitycraft.option.default", getValueName()).withStyle(ChatFormatting.GRAY);
+			return Component.translatable("securitycraft.option.default", getValueText()).withStyle(ChatFormatting.GRAY);
 		}
 	}
 
@@ -352,8 +377,121 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public Component getValueName() {
+		public Component getValueText() {
 			return value.translate();
+		}
+	}
+
+	public static class EntityDataWrappedOption<T, O extends Option<T>> extends Option<T> {
+		private final Option<T> wrapped;
+		private final EntityDataAccessor<T> entityDataKey;
+		private final Supplier<SynchedEntityData> entityData;
+
+		public EntityDataWrappedOption(O wrapped, EntityDataAccessor<T> entityDataKey, Supplier<SynchedEntityData> entityData) {
+			super(wrapped.getName(), wrapped.getDefaultValue());
+			this.wrapped = wrapped;
+			this.entityDataKey = entityDataKey;
+			this.entityData = entityData;
+		}
+
+		@Override
+		public void toggle() {
+			wrapped.toggle();
+		}
+
+		@Override
+		public void load(CompoundTag tag) {
+			wrapped.load(tag);
+			entityData.get().set(entityDataKey, wrapped.get());
+		}
+
+		@Override
+		public void save(CompoundTag tag, T value) {
+			wrapped.save(tag, value);
+		}
+
+		@Override
+		public void save(CompoundTag tag) {
+			wrapped.save(tag, entityData.get().get(entityDataKey));
+		}
+
+		@Override
+		public void copy(Option<?> option) {
+			wrapped.copy(option);
+		}
+
+		@Override
+		public final String getName() {
+			return wrapped.getName();
+		}
+
+		@Override
+		public T get() {
+			return wrapped.get();
+		}
+
+		@Override
+		public void setValue(T value) {
+			wrapped.setValue(value);
+			entityData.get().set(entityDataKey, wrapped.get());
+		}
+
+		@Override
+		public T getDefaultValue() {
+			return wrapped.getDefaultValue();
+		}
+
+		@Override
+		public T getIncrement() {
+			return wrapped.getIncrement();
+		}
+
+		@Override
+		public T getMin() {
+			return wrapped.getMin();
+		}
+
+		@Override
+		public T getMax() {
+			return wrapped.getMax();
+		}
+
+		@Override
+		public boolean isSlider() {
+			return wrapped.isSlider();
+		}
+
+		@Override
+		public String getKey(String denotation) {
+			return wrapped.getKey(denotation);
+		}
+
+		@Override
+		public String getDescriptionKey(String denotation) {
+			return wrapped.getDescriptionKey(denotation);
+		}
+
+		@Override
+		public Component getDefaultInfo() {
+			return wrapped.getDefaultInfo();
+		}
+
+		@Override
+		public Component getValueText() {
+			return wrapped.getValueText();
+		}
+
+		@Override
+		public String toString() {
+			return wrapped.toString();
+		}
+
+		public Option<T> getWrapped() {
+			return wrapped;
+		}
+
+		public EntityDataAccessor<T> getEntityDataKey() {
+			return entityDataKey;
 		}
 	}
 }

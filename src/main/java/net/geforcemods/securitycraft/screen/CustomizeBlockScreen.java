@@ -7,9 +7,8 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
-import net.geforcemods.securitycraft.api.Option.EnumOption;
+import net.geforcemods.securitycraft.api.Option.EntityDataWrappedOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -93,7 +92,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				optionButtons = new AbstractWidget[options.length];
 
 				for (int i = 0; i < options.length; i++) {
-					Option<?> option = options[i];
+					Option<?> option = options[i] instanceof EntityDataWrappedOption wrapped ? wrapped.getWrapped() : options[i];
 
 					if (option.isSlider()) {
 						if (option instanceof DoubleOption doubleOption) {
@@ -102,7 +101,11 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
+
+								if (menu.entityId == -1)
+									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
+								else
+									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(menu.entityId, option, doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
@@ -111,7 +114,11 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
+
+								if (menu.entityId == -1)
+									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
+								else
+									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(menu.entityId, option, intOption.get()));
 							});
 						}
 
@@ -239,20 +246,11 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private Component getOptionDescription(int optionId) {
 		Option<?> option = ((ICustomizable) moduleInv).customOptions()[optionId];
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), Component.translatable("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), Component.translatable("gui.securitycraft:customize.currentSetting", option.getValueText()));
 	}
 
 	private Component getOptionButtonTitle(Option<?> option) {
-		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), getValueText(option));
-	}
-
-	private Component getValueText(Option<?> option) {
-		if (option instanceof BooleanOption booleanOption)
-			return Component.translatable(booleanOption.get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
-		else if (option instanceof EnumOption<?> enumOption)
-			return enumOption.getValueName();
-		else
-			return Component.literal(option.toString());
+		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), option.getValueText());
 	}
 
 	@Override

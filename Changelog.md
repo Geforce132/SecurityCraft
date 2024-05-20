@@ -13,6 +13,8 @@
 - API: IModuleInventory is no longer hardcoded to just block entities
 - API: New method ICodebreakable#handleCodebreaking to define behavior when a codebreaker is used to break the code
 - API: The BlockState parameters in ICodebreakable's methods have been removed
+- API: New Option "EntityDataWrappedOption" that connects an EntityDataAccessor with an Option, and corresponding converter method "wrapForEntityData"
+- API: New method Option#getValueText for getting a textual representation of the option's value
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Occasional crash when opening the inventory in creative mode in certain situations
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
