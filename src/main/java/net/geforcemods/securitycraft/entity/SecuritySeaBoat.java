@@ -173,8 +173,12 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
-			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && (isOwnedBy(player) || player.isCreative()))
-				destroy(damageSources().playerAttack(player));
+			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get())) {
+				if (isOwnedBy(player) || player.isCreative())
+					destroy(damageSources().playerAttack(player));
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
+			}
 		}
 
 		return super.interact(player, hand);
