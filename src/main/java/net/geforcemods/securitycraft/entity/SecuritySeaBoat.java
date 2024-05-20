@@ -106,24 +106,24 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 
 	@Override
 	public InteractionResult interact(Player player, InteractionHand hand) {
-		if (isDenied(player)) {
+		ItemStack stack = player.getItemInHand(hand);
+		Level level = player.level();
+
+		if (isDenied(player) && !(player.isSecondaryUseActive() && stack.is(SCContent.CODEBREAKER.get()))) {
 			if (sendsDenylistMessage())
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 
-			return InteractionResult.FAIL;
+			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
 
 		if (player.isSecondaryUseActive()) {
-			ItemStack stack = player.getItemInHand(hand);
-			Level level = player.level();
-
-			if (player.isHolding(SCContent.CODEBREAKER.get())) {
+			if (stack.is(SCContent.CODEBREAKER.get())) {
 				if (!level.isClientSide)
 					handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
-			else if (player.isHolding(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
+			else if (stack.is(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
 				if (!level.isClientSide) {
 					if (isOwnedBy(player) || player.isCreative())
 						PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(DataType.CHANGE_PASSCODE_FOR_ENTITY, getId()));
