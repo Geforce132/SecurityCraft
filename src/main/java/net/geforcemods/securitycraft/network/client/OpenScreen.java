@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -39,10 +40,13 @@ public class OpenScreen implements CustomPacketPayload {
 
 			if (packet.dataType.needsPosition)
 				buf.writeBlockPos(packet.pos);
+			else if (packet.dataType == DataType.CHANGE_PASSCODE_FOR_ENTITY || packet.dataType == DataType.CHECK_PASSCODE_FOR_ENTITY || packet.dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+				buf.writeVarInt(packet.entityId);
 		}
 	};
 	private DataType dataType;
 	private BlockPos pos;
+	private int entityId;
 
 	public OpenScreen() {}
 
@@ -51,6 +55,11 @@ public class OpenScreen implements CustomPacketPayload {
 
 		if (dataType.needsPosition)
 			throw new IllegalArgumentException(String.format("The DataType %s needs a position, but none was supplied.", dataType.name()));
+	}
+
+	public OpenScreen(DataType dataType, int entityId) {
+		this.dataType = dataType;
+		this.entityId = entityId;
 	}
 
 	public OpenScreen(DataType dataType, BlockPos pos) {
@@ -73,16 +82,31 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displayAlarmScreen(be);
 
 				break;
-			case CHECK_BRIEFCASE_PASSCODE:
+			case CHANGE_PASSCODE:
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected)
+					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
+
+				break;
+			case CHANGE_PASSCODE_FOR_ENTITY:
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displayUniversalKeyChangerScreen((Entity) entity);
+
+				break;
+			case CHECK_PASSCODE:
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
+
+				break;
+			case CHECK_PASSCODE_FOR_BRIEFCASE:
 				ItemStack briefcaseStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 				if (!briefcaseStack.isEmpty())
 					ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
 
 				break;
-			case CHECK_PASSCODE:
-				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-					ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
+			case CHECK_PASSCODE_FOR_ENTITY:
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displayCheckPasscodeScreen((Entity) entity);
 
 				break;
 			case RIFT_STABILIZER:
@@ -97,26 +121,26 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displaySRATScreen(srat);
 
 				break;
-			case SET_BRIEFCASE_PASSCODE:
+			case SET_PASSCODE:
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
+
+				break;
+			case SET_PASSCODE_FOR_BRIEFCASE:
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
 				if (!briefcase.isEmpty())
 					ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName().plainCopy().append(Component.literal(" ")).append(Utils.localize("gui.securitycraft:passcode.setup")));
 
 				break;
-			case SET_PASSCODE:
-				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
+			case SET_PASSCODE_FOR_ENTITY:
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displaySetPasscodeScreen((Entity) entity);
 
 				break;
 			case SONIC_SECURITY_SYSTEM:
 				if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss)
 					ClientHandler.displaySonicSecuritySystemScreen(sss);
-
-				break;
-			case UNIVERSAL_KEY_CHANGER:
-				if (level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected)
-					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
 
 				break;
 			default:
@@ -126,14 +150,17 @@ public class OpenScreen implements CustomPacketPayload {
 
 	public enum DataType {
 		ALARM(true),
-		CHECK_BRIEFCASE_PASSCODE(false),
+		CHANGE_PASSCODE(true),
+		CHANGE_PASSCODE_FOR_ENTITY(false),
 		CHECK_PASSCODE(true),
+		CHECK_PASSCODE_FOR_BRIEFCASE(false),
+		CHECK_PASSCODE_FOR_ENTITY(false),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
-		SET_BRIEFCASE_PASSCODE(false),
 		SET_PASSCODE(true),
-		SONIC_SECURITY_SYSTEM(true),
-		UNIVERSAL_KEY_CHANGER(true);
+		SET_PASSCODE_FOR_BRIEFCASE(false),
+		SET_PASSCODE_FOR_ENTITY(false),
+		SONIC_SECURITY_SYSTEM(true);
 
 		public final boolean needsPosition;
 

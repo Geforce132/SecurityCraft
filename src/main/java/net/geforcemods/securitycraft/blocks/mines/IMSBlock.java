@@ -168,8 +168,8 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	public static class ExtractionBlock implements IExtractionBlock {
 		@Override
-		public boolean canExtract(IOwnable be, Level level, BlockPos pos, BlockState state) {
-			return be.getOwner().owns((IMSBlockEntity) level.getBlockEntity(pos));
+		public boolean canExtract(IOwnable ownable, Level level, BlockPos pos, BlockState state) {
+			return ownable.getOwner().owns((IMSBlockEntity) level.getBlockEntity(pos));
 		}
 
 		@Override

@@ -68,13 +68,13 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !isOpen() && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return !isOpen() && !getDisplayedStack().isEmpty() && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override

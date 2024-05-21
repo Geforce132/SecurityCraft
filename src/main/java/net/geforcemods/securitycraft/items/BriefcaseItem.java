@@ -50,7 +50,7 @@ public class BriefcaseItem extends Item {
 
 	private void handle(ItemStack stack, Level level, Player player) {
 		if (!level.isClientSide)
-			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(stack.has(SCContent.PASSCODE_DATA) ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE));
+			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(stack.has(SCContent.PASSCODE_DATA) ? OpenScreen.DataType.CHECK_PASSCODE_FOR_BRIEFCASE : OpenScreen.DataType.SET_PASSCODE_FOR_BRIEFCASE));
 	}
 
 	public static void checkPasscode(Player player, ItemStack briefcase, String incomingCode, PasscodeData passcodeData) {

@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
-import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
@@ -32,12 +31,10 @@ import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -354,7 +351,8 @@ public class SCEventHandler {
 				return;
 			}
 
-			if (heldItem.is(SCContent.CODEBREAKER.get()) && handleCodebreaking(event)) {
+			if (heldItem.is(SCContent.CODEBREAKER.get()) && level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
+				codebreakable.handleCodebreaking(player, event.getHand());
 				event.setCanceled(true);
 				return;
 			}
@@ -569,55 +567,5 @@ public class SCEventHandler {
 			else
 				be.listenToNote(vanillaNoteId, instrument, customSoundId);
 		}
-	}
-
-	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		Player player = event.getEntity();
-		Level level = player.level();
-		BlockPos pos = event.getPos();
-
-		if (level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
-			if (codebreakable instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
-				return false;
-
-			ItemStack codebreaker = player.getItemInHand(event.getHand());
-			double chance = CodebreakerItem.getSuccessChance(codebreaker);
-
-			if (chance < 0.0D) {
-				Block block = level.getBlockState(pos).getBlock();
-
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
-			}
-			else {
-				BlockState state = level.getBlockState(pos);
-
-				if (!codebreakable.shouldAttemptCodebreak(state, player))
-					return true;
-
-				if (codebreaker.is(SCContent.CODEBREAKER.get())) {
-					if (codebreakable instanceof IOwnable ownable && ownable.isOwnedBy(player) && !player.isCreative()) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
-						return false;
-					}
-
-					if (codebreaker.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
-						return false;
-
-					boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-
-					codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(event.getHand()));
-					codebreaker.set(SCContent.CODEBREAKER_DATA, new CodebreakerData(System.currentTimeMillis(), isSuccessful));
-
-					if (isSuccessful)
-						codebreakable.useCodebreaker(state, player);
-					else
-						PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-				}
-			}
-
-			return true;
-		}
-
-		return false;
 	}
 }

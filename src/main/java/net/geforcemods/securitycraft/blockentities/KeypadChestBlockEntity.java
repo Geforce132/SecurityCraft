@@ -130,7 +130,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		return openersCounter.getOpenerCount();
 	}
 
-	public static IItemHandler getCapability(ChestBlockEntity be, Direction side) {
+	public static IItemHandler getCapability(KeypadChestBlockEntity be, Direction side) {
 		if (BlockUtils.isAllowedToExtractFromProtectedBlock(side, be))
 			return new InvWrapper(ChestBlock.getContainer((ChestBlock) be.getBlockState().getBlock(), be.getBlockState(), be.getLevel(), be.getBlockPos(), true));
 		else
@@ -394,5 +394,15 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	public ResourceLocation getPreviousChest() {
 		return previousChest;
+	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

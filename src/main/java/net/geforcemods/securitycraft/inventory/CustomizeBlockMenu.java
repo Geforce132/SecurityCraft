@@ -19,13 +19,26 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 public class CustomizeBlockMenu extends AbstractContainerMenu {
 	public final IModuleInventory moduleInv;
 	private ContainerLevelAccess worldPosCallable;
-	public final int maxSlots;
+	private int maxSlots;
+	public final int entityId;
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.CUSTOMIZE_BLOCK_MENU.get(), windowId);
-		this.moduleInv = (IModuleInventory) level.getBlockEntity(pos);
+		moduleInv = (IModuleInventory) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
+		addSlots(inventory);
+		entityId = -1;
+	}
 
+	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, int entityId, Inventory inventory) {
+		super(SCContent.CUSTOMIZE_ENTITY_MENU.get(), windowId);
+		moduleInv = (IModuleInventory) level.getEntity(entityId);
+		worldPosCallable = ContainerLevelAccess.create(level, pos);
+		addSlots(inventory);
+		this.entityId = entityId;
+	}
+
+	public void addSlots(Inventory inventory) {
 		int slotId = 0;
 
 		for (int i = 0; i < 3; i++) {
@@ -110,7 +123,11 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(worldPosCallable, player, moduleInv.getBlockEntity().getBlockState().getBlock());
+		return worldPosCallable.evaluate((level, pos) -> player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0, true); //TODO: 1.20.6: reach attribute
+	}
+
+	public int getMaxSlots() {
+		return maxSlots;
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler {

@@ -7,21 +7,51 @@ import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record CheckPasscode(BlockPos pos, String passcode) implements CustomPacketPayload {
+public class CheckPasscode implements CustomPacketPayload {
 	public static final Type<CheckPasscode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "check_passcode"));
-	//@formatter:off
-	public static final StreamCodec<RegistryFriendlyByteBuf, CheckPasscode> STREAM_CODEC = StreamCodec.composite(
-			BlockPos.STREAM_CODEC, CheckPasscode::pos,
-			ByteBufCodecs.STRING_UTF8, packet -> PasscodeUtils.hashPasscodeWithoutSalt(packet.passcode),
-			CheckPasscode::new);
-	//@formatter:on
+	public static final StreamCodec<RegistryFriendlyByteBuf, CheckPasscode> STREAM_CODEC = new StreamCodec<>() {
+		@Override
+		public CheckPasscode decode(RegistryFriendlyByteBuf buf) {
+			if (buf.readBoolean())
+				return new CheckPasscode(buf.readBlockPos(), buf.readUtf(Integer.MAX_VALUE / 4));
+			else
+				return new CheckPasscode(buf.readVarInt(), buf.readUtf(Integer.MAX_VALUE / 4));
+		}
+
+		@Override
+		public void encode(RegistryFriendlyByteBuf buf, CheckPasscode packet) {
+			boolean hasPos = packet.pos != null;
+
+			buf.writeBoolean(hasPos);
+
+			if (hasPos)
+				buf.writeBlockPos(packet.pos);
+			else
+				buf.writeVarInt(packet.entityId);
+
+			buf.writeUtf(packet.passcode);
+		}
+	};
+	private BlockPos pos;
+	private int entityId;
+	private String passcode;
+
+	public CheckPasscode(BlockPos pos, String passcode) {
+		this.pos = pos;
+		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
+	}
+
+	public CheckPasscode(int entityId, String passcode) {
+		this.entityId = entityId;
+		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
+	}
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
@@ -30,19 +60,31 @@ public record CheckPasscode(BlockPos pos, String passcode) implements CustomPack
 
 	public void handle(IPayloadContext ctx) {
 		Player player = ctx.player();
+		IPasscodeProtected passcodeProtected = getPasscodeProtected(player.level());
 
-		if (player.level().getBlockEntity(pos) instanceof IPasscodeProtected be) {
-			if (be.isOnCooldown())
+		if (passcodeProtected != null) {
+			if (passcodeProtected.isOnCooldown())
 				return;
 
-			PasscodeUtils.hashPasscode(passcode, be.getSalt(), p -> {
-				if (Arrays.equals(be.getPasscode(), p)) {
+			PasscodeUtils.hashPasscode(passcode, passcodeProtected.getSalt(), p -> {
+				if (Arrays.equals(passcodeProtected.getPasscode(), p)) {
 					player.closeContainer();
-					be.activate(player);
+					passcodeProtected.activate(player);
 				}
 				else
-					be.onIncorrectPasscodeEntered(player, passcode);
+					passcodeProtected.onIncorrectPasscodeEntered(player, passcode);
 			});
 		}
+	}
+
+	private IPasscodeProtected getPasscodeProtected(Level level) {
+		if (pos != null) {
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected pp)
+				return pp;
+		}
+		else if (level.getEntity(entityId) instanceof IPasscodeProtected pp)
+			return pp;
+
+		return null;
 	}
 }

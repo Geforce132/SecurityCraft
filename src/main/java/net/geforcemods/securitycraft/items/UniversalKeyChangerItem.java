@@ -49,7 +49,7 @@ public class UniversalKeyChangerItem extends Item {
 		else if (be instanceof IPasscodeProtected) {
 			if (((IOwnable) be).isOwnedBy(player) || player.isCreative()) {
 				if (!level.isClientSide)
-					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.UNIVERSAL_KEY_CHANGER, pos));
+					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.CHANGE_PASSCODE, pos));
 
 				return InteractionResult.SUCCESS;
 			}

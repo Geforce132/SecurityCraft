@@ -60,12 +60,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 */
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled);
 
-	/**
-	 * @return The block entity this inventory is for
-	 */
-	public default BlockEntity getBlockEntity() {
-		return (BlockEntity) this;
-	}
+	public Level myLevel();
+
+	public BlockPos myPos();
 
 	/**
 	 * @return The amount of modules that can be inserted
@@ -82,11 +79,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
 	public default void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
-		BlockEntity be = getBlockEntity();
-
 		toggleModuleState(module, true);
 
-		if (!be.getLevel().isClientSide) {
+		if (this instanceof BlockEntity be && !be.getLevel().isClientSide) {
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
@@ -100,11 +95,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param toggled false if the actual item changed, true if the enabled state of the module changed
 	 */
 	public default void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
-		BlockEntity be = getBlockEntity();
-
 		toggleModuleState(module, false);
 
-		if (!be.getLevel().isClientSide) {
+		if (this instanceof BlockEntity be && !be.getLevel().isClientSide) {
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
@@ -132,18 +125,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	public default void dropAllModules() {
-		BlockEntity be = getBlockEntity();
-		Level level = be.getLevel();
-		BlockPos pos = be.getBlockPos();
-
 		for (ItemStack module : getInventory()) {
 			if (!(module.getItem() instanceof ModuleItem))
 				continue;
 
-			if (be instanceof LinkableBlockEntity linkable)
-				linkable.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), linkable);
+			if (this instanceof LinkableBlockEntity be)
+				be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) module.getItem()).getModuleType(), false), be);
 
-			Block.popResource(level, pos, module);
+			Block.popResource(myLevel(), myPos(), module);
 		}
 
 		getInventory().clear();
@@ -179,7 +168,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ModuleItem module) {
 					onModuleRemoved(stack, module.getModuleType(), false);
 
-					if (getBlockEntity() instanceof LinkableBlockEntity be)
+					if (this instanceof LinkableBlockEntity be)
 						be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
 				}
 
@@ -212,7 +201,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				if (stack.getItem() instanceof ModuleItem module) {
 					onModuleInserted(stack, module.getModuleType(), false);
 
-					if (getBlockEntity() instanceof LinkableBlockEntity be)
+					if (this instanceof LinkableBlockEntity be)
 						be.propagate(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
 				}
 			}
@@ -242,7 +231,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (!previous.isEmpty()) {
 			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
 
-			if (getBlockEntity() instanceof LinkableBlockEntity be)
+			if (this instanceof LinkableBlockEntity be)
 				be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
 		}
 
@@ -251,7 +240,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (stack.getItem() instanceof ModuleItem module) {
 			onModuleInserted(stack, module.getModuleType(), false);
 
-			if (getBlockEntity() instanceof LinkableBlockEntity be)
+			if (this instanceof LinkableBlockEntity be)
 				be.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
 		}
 	}
@@ -500,7 +489,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		ListModuleData listModuleData = getModule(ModuleType.ALLOWLIST).get(SCContent.LIST_MODULE_DATA);
 
-		return listModuleData != null && (listModuleData.affectEveryone() || listModuleData.isTeamOfPlayerOnList(getBlockEntity().getLevel(), name) || listModuleData.isPlayerOnList(name));
+		return listModuleData != null && (listModuleData.affectEveryone() || listModuleData.isTeamOfPlayerOnList(myLevel(), name) || listModuleData.isPlayerOnList(name));
 	}
 
 	/**
@@ -517,7 +506,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 		if (listModuleData != null) {
 			if (listModuleData.affectEveryone()) {
-				if (getBlockEntity() instanceof IOwnable ownable) {
+				if (this instanceof IOwnable ownable) {
 					//only deny players that are not the owner
 					if (entity instanceof Player player) {
 						//if the player IS the owner, fall back to the default handling (check if the name is on the list)
@@ -533,7 +522,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 
 			String name = entity.getName().getString();
 
-			return listModuleData.isTeamOfPlayerOnList(getBlockEntity().getLevel(), name) || listModuleData.isPlayerOnList(name);
+			return listModuleData.isTeamOfPlayerOnList(myLevel(), name) || listModuleData.isPlayerOnList(name);
 		}
 
 		return false;
@@ -552,11 +541,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * Get the description text's translation key that is shown in the customize screen tooltip when hovering over a module
 	 * button
 	 *
-	 * @param blockName The name of the block that is being customized
+	 * @param denotation The denotation to use for the key, usually the block's name
 	 * @param module The type of the module whose module button is being hovered
 	 * @return The translation key to use for the description
 	 */
-	public default String getModuleDescriptionId(String blockName, ModuleType module) {
-		return "module." + blockName + "." + module.getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
+	public default String getModuleDescriptionId(String denotation, ModuleType module) {
+		return "module." + denotation + "." + module.getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 	}
 }
