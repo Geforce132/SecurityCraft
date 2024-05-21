@@ -1,8 +1,10 @@
 name: Crowdin Pull Request
 
 on:
-  schedule:
-    - cron: '0 */1 * * *' # Every hour - https://crontab.guru/#0_*/1_*_*_*
+  workflow_dispatch:
+# The PR is updated every time the cron job runs even if no translations changed. This is not ideal, so for now the only way to run this action is to trigger it manually
+#  schedule:
+#    - cron: '0 */1 * * *' # Every hour - https://crontab.guru/#0_*/1_*_*_*
 
 permissions:
   contents: write

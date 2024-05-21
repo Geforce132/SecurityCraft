@@ -6,6 +6,7 @@ on:
       - '1.20.4'
     paths: 
       - '**/lang/**'
+  workflow_dispatch:
 
 jobs:
   crowdin-upload:
