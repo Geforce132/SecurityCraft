@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -104,5 +105,15 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 	@Override
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled) {
 		moduleStates.put(module, shouldBeEnabled);
+	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

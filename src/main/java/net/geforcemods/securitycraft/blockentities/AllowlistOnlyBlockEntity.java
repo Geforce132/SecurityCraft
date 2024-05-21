@@ -30,12 +30,12 @@ public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public String getModuleDescriptionId(String blockName, ModuleType module) {
-		if (blockName.contains("pressure"))
+	public String getModuleDescriptionId(String denotation, ModuleType module) {
+		if (denotation.contains("pressure"))
 			return super.getModuleDescriptionId("generic.reinforced_pressure_plate", module);
-		else if (blockName.contains("button"))
+		else if (denotation.contains("button"))
 			return super.getModuleDescriptionId("generic.reinforced_button", module);
 		else
-			return super.getModuleDescriptionId(blockName, module);
+			return super.getModuleDescriptionId(denotation, module);
 	}
 }

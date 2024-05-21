@@ -18,6 +18,7 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -110,7 +111,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		return Component.translatable(SCContent.REINFORCED_HOPPER.get().getDescriptionId());
 	}
 
-	public static IItemHandler getCapability(HopperBlockEntity be, Direction side) {
+	public static IItemHandler getCapability(ReinforcedHopperBlockEntity be, Direction side) {
 		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new VanillaHopperItemHandler(be) : new VanillaHopperInsertOnlyItemHandler(be);
 	}
 
@@ -139,5 +140,15 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	@Override
 	public boolean needsValidation() {
 		return true;
+	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

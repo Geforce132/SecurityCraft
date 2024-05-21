@@ -14,7 +14,8 @@ public enum PageGroup {
 	SECRET_HANGING_SIGNS(true, "gui.securitycraft:scManual.secret_hanging_signs", "securitycraft.secret_signs.info"),
 	BLOCK_REINFORCERS(true, "gui.securitycraft:scManual.block_reinforcers", "securitycraft.block_reinforcers.info"),
 	DISPLAY_CASES(true, "gui.securitycraft:scManual.display_cases", "securitycraft.display_cases.info"),
-	FENCE_GATES(true, "gui.securitycraft:scManual.reinforced_fence_gates", "securitycraft.reinforced_fence_gates.info");
+	FENCE_GATES(true, "gui.securitycraft:scManual.reinforced_fence_gates", "securitycraft.reinforced_fence_gates.info"),
+	SECURITY_SEA_BOATS(true, "gui.securitycraft:scManual.security_sea_boats", "securitycraft.security_sea_boats.info");
 
 	private final boolean hasRecipeGrid;
 	private final String title;

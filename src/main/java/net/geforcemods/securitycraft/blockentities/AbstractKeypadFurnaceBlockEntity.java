@@ -191,13 +191,13 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override
@@ -338,5 +338,15 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

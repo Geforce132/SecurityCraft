@@ -60,7 +60,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 
 	private void handle(ItemStack stack, Level level, Player player) {
 		if (!level.isClientSide)
-			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE : OpenScreen.DataType.SET_BRIEFCASE_PASSCODE));
+			PacketDistributor.PLAYER.with((ServerPlayer) player).send(new OpenScreen(stack.getOrCreateTag().contains("passcode") ? OpenScreen.DataType.CHECK_PASSCODE_FOR_BRIEFCASE : OpenScreen.DataType.SET_PASSCODE_FOR_BRIEFCASE));
 	}
 
 	@Override

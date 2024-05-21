@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Predicates;
 
@@ -178,6 +179,7 @@ import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -217,6 +219,7 @@ import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
+import net.geforcemods.securitycraft.items.SecuritySeaBoatItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
@@ -228,7 +231,9 @@ import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.items.WireCuttersItem;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.ItemStackListSerializer;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
+import net.geforcemods.securitycraft.misc.ModuleStatesSerializer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnerDataSerializer;
 import net.geforcemods.securitycraft.misc.PageGroup;
@@ -244,12 +249,14 @@ import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -257,6 +264,7 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
@@ -319,6 +327,8 @@ public class SCContent {
 
 	//data serializer entries
 	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Owner>> OWNER_SERIALIZER = DATA_SERIALIZERS.register("owner", () -> new OwnerDataSerializer());
+	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Map<ModuleType, Boolean>>> MODULE_STATES_SERIALIZER = DATA_SERIALIZERS.register("module_states", () -> new ModuleStatesSerializer());
+	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<NonNullList<ItemStack>>> ITEM_STACK_LIST_SERIALIZER = DATA_SERIALIZERS.register("item_stack_list", () -> new ItemStackListSerializer());
 
 	//particle types
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FLOOR_TRAP_CLOUD = PARTICLE_TYPES.register("floor_trap_cloud", () -> new SimpleParticleType(false));
@@ -2628,6 +2638,24 @@ public class SCContent {
 	public static final DeferredItem<HangingSignItem> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.register("secret_crimson_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(), itemProp(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), itemProp(16)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> OAK_SECURITY_SEA_BOAT = ITEMS.register("oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.OAK, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> SPRUCE_SECURITY_SEA_BOAT = ITEMS.register("spruce_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.SPRUCE, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> BIRCH_SECURITY_SEA_BOAT = ITEMS.register("birch_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.BIRCH, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> JUNGLE_SECURITY_SEA_BOAT = ITEMS.register("jungle_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.JUNGLE, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> ACACIA_SECURITY_SEA_BOAT = ITEMS.register("acacia_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.ACACIA, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> DARK_OAK_SECURITY_SEA_BOAT = ITEMS.register("dark_oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.DARK_OAK, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.register("mangrove_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.MANGROVE, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.register("cherry_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.CHERRY, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.register("bamboo_security_sea_raft", () -> new SecuritySeaBoatItem(Boat.Type.BAMBOO, itemProp(1).fireResistant()));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1)));
@@ -2918,12 +2946,19 @@ public class SCContent {
 			.setUpdateInterval(1)
 			.setShouldReceiveVelocityUpdates(true)
 			.build(SecurityCraft.MODID + ":bullet"));
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> SECURITY_SEA_BOAT_ENTITY = ENTITY_TYPES.register("security_sea_boat",
+			() -> EntityType.Builder.<SecuritySeaBoat>of(SecuritySeaBoat::new, MobCategory.MISC)
+					.sized(1.375F, 0.5625F)
+					.clientTrackingRange(10)
+					.fireImmune()
+					.build(SecurityCraft.MODID + ":security_sea_boat"));
 	//@formatter:on
 
 	//container types
 	public static final DeferredHolder<MenuType<?>, MenuType<BlockReinforcerMenu>> BLOCK_REINFORCER_MENU = MENU_TYPES.register("block_reinforcer", () -> IMenuTypeExtension.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())));
 	public static final DeferredHolder<MenuType<?>, MenuType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IMenuTypeExtension.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.BRIEFCASE.get())))));
 	public static final DeferredHolder<MenuType<?>, MenuType<CustomizeBlockMenu>> CUSTOMIZE_BLOCK_MENU = MENU_TYPES.register("customize_block", () -> IMenuTypeExtension.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final DeferredHolder<MenuType<?>, MenuType<CustomizeBlockMenu>> CUSTOMIZE_ENTITY_MENU = MENU_TYPES.register("customize_entity", () -> IMenuTypeExtension.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level(), data.readBlockPos(), data.readVarInt(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<DisguiseModuleMenu>> DISGUISE_MODULE_MENU = MENU_TYPES.register("disguise_module", () -> IMenuTypeExtension.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.DISGUISE_MODULE.get())))));
 	public static final DeferredHolder<MenuType<?>, MenuType<InventoryScannerMenu>> INVENTORY_SCANNER_MENU = MENU_TYPES.register("inventory_scanner", () -> IMenuTypeExtension.create((windowId, inv, data) -> new InventoryScannerMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<KeypadFurnaceMenu>> KEYPAD_FURNACE_MENU = MENU_TYPES.register("keypad_furnace", () -> IMenuTypeExtension.create((windowId, inv, data) -> new KeypadFurnaceMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));

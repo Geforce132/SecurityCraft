@@ -131,6 +131,15 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.ADMIN_TOOL.get()));
+				output.accept(new ItemStack(SCContent.OAK_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.SPRUCE_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.BIRCH_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.JUNGLE_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.ACACIA_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.DARK_OAK_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.MANGROVE_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.CHERRY_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.BAMBOO_SECURITY_SEA_RAFT.get()));
 				output.acceptAll(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.TECHNICAL));
 			}).build());
 	//@formatter:off

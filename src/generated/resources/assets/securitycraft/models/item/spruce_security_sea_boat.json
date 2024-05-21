@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "securitycraft:item/spruce_security_sea_boat"
+  }
+}

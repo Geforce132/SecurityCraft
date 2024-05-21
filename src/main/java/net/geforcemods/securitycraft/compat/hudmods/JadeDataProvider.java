@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -36,6 +37,7 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 
 		registration.registerBlockComponent(this, Block.class);
 		registration.registerEntityComponent(this, Sentry.class);
+		registration.registerEntityComponent(this, SecuritySeaBoat.class);
 
 		registration.addBeforeRenderCallback((tooltip, rect, guiGraphics, accessor) -> ClientHandler.isPlayerMountedOnCamera());
 		registration.addRayTraceCallback((hit, accessor, original) -> {
@@ -67,7 +69,7 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 		BlockState state = data.getBlockState();
 		Block block = data.getBlock();
 
-		addOwnerModuleNameInfo(level, pos, state, block, data.getBlockEntity(), data.getPlayer(), tooltip::add, config::get);
+		addDisguisedOwnerModuleNameInfo(level, pos, state, block, data.getBlockEntity(), data.getPlayer(), tooltip::add, config::get);
 
 		if (tooltip instanceof Tooltip t && block instanceof IOverlayDisplay overlayDisplay)
 			t.lines.get(0).alignedElements(Align.LEFT).set(0, new TextElement(Component.translatable(overlayDisplay.getDisplayStack(level, state, pos).getDescriptionId()).setStyle(ITEM_NAME_STYLE)));
