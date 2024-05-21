@@ -13,6 +13,7 @@
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - API: IModuleInventory is no longer hardcoded to just block entities
+- API: New method IPasscodeProtected#openSetPasscodeScreen to define how to open the screen to set the passcode of the object
 - API: New method ICodebreakable#handleCodebreaking to define behavior when a codebreaker is used to break the code
 - API: The BlockState parameters in ICodebreakable's methods have been removed
 - API: New Option "EntityDataWrappedOption" that connects an EntityDataAccessor with an Option, and corresponding converter method "wrapForEntityData"
