@@ -636,7 +636,7 @@ public class ClientHandler {
 		blocksWithCustomTint = null;
 	}
 
-	private static int mixWithReinforcedTintIfEnabled(int tint) {
+	public static int mixWithReinforcedTintIfEnabled(int tint) {
 		boolean tintReinforcedBlocks;
 
 		if (Minecraft.getInstance().level == null)
