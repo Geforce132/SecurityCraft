@@ -182,6 +182,14 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
 			}
 		}
+		else if (!canAddPassenger(player)) {
+			if (isDenied(player))
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
+			else
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:security_sea_boat.cant_enter", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
+
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		}
 
 		return super.interact(player, hand);
 	}

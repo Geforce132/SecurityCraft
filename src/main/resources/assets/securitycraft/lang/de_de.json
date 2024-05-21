@@ -1062,6 +1062,7 @@
 	"messages.securitycraft:security_camera.direction_set": "Standard-Blickrichtung geändert",
 	"messages.securitycraft:security_camera.no_permission": "Keine Erlaubnis, um die Standard-Blickrichtung zu ändern",
 	"messages.securitycraft:security_camera.smart_module_needed": "Schlaues Modul benötigt",
+	"messages.securitycraft:security_sea_boat.cant_enter": "Entschuldigung, du kannst nicht in das Boot einsteigen. Es gehört %s.",
 	"messages.securitycraft:sentry.descriptionMode0": "(Immer aktiv, attackiert Monster und Spieler)",
 	"messages.securitycraft:sentry.descriptionMode1": "(Aktiv, sobald ein Monster oder Spieler nahe ist, attackiert Monster und Spieler)",
 	"messages.securitycraft:sentry.descriptionMode2": "(Immer aktiv, attackiert Monster)",

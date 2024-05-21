@@ -1071,6 +1071,7 @@
 	"messages.securitycraft:security_camera.direction_set": "Default viewing direction set",
 	"messages.securitycraft:security_camera.no_permission": "No permission to set the default viewing direction",
 	"messages.securitycraft:security_camera.smart_module_needed": "Smart Module required",
+	"messages.securitycraft:security_sea_boat.cant_enter": "Sorry, you cannot enter this boat. It is owned by %s.",
 	"messages.securitycraft:sentry.descriptionMode0": "(Always active, attacks hostile mobs and players)",
 	"messages.securitycraft:sentry.descriptionMode1": "(Activates when a hostile mob or player comes near, attacks hostile mobs and players)",
 	"messages.securitycraft:sentry.descriptionMode2": "(Always active, attacks hostile mobs)",
