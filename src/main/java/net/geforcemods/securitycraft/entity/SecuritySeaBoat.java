@@ -111,7 +111,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 		ItemStack stack = player.getItemInHand(hand);
 		Level level = player.level();
 
-		if (isDenied(player) && !(player.isSecondaryUseActive() && stack.is(SCContent.CODEBREAKER.get()))) {
+		if (isDenied(player) && !isOwnedBy(player) && !(player.isSecondaryUseActive() && stack.is(SCContent.CODEBREAKER.get()))) {
 			if (sendsDenylistMessage())
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 
