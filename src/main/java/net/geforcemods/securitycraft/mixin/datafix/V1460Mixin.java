@@ -34,7 +34,8 @@ public class V1460Mixin {
 	}
 
 	/**
-	 * Registers the Sentry and Security Sea Boat to datafixers so the items in it can be fixed properly
+	 * Registers the SecurityCraft's entities to datafixers so other entities in the same chunk and the items in them can be
+	 * fixed properly
 	 */
 	@Inject(method = "registerEntities", at = @At("TAIL"))
 	private void securitycraft$registerEntities(Schema schema, CallbackInfoReturnable<Map<String, Supplier<TypeTemplate>>> ci, @Local Map<String, Supplier<TypeTemplate>> map) {

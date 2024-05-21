@@ -140,10 +140,14 @@ public class DataFixHandler {
 
 	public static void registerEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
 		//@formatter:off
-		registerInventoryAndModules(schema, map, "securitycraft:security_sea_boat");
+		schema.registerSimple(map, "securitycraft:bouncingbetty");
+		schema.registerSimple(map, "securitycraft:imsbomb");
+		schema.registerSimple(map, "securitycraft:securitycamera");
 		schema.register(map, "securitycraft:sentry", () -> DSL.optionalFields(
 				"InstalledWhitelist", References.ITEM_STACK.in(schema),
 				"InstalledModule", References.ITEM_STACK.in(schema)));
+		schema.registerSimple(map, "securitycraft:bullet");
+		registerInventoryAndModules(schema, map, "securitycraft:security_sea_boat");
 		//@formatter:on
 	}
 
