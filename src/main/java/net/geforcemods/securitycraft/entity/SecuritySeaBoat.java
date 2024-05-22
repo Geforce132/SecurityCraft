@@ -72,9 +72,9 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	private static final EntityDataAccessor<NonNullList<ItemStack>> MODULES = SynchedEntityData.<NonNullList<ItemStack>>defineId(SecuritySeaBoat.class, SCContent.ITEM_STACK_LIST_SERIALIZER.get());
 	private byte[] passcode;
 	private UUID saltKey;
-	private EntityDataWrappedOption<Boolean, Option<Boolean>> sendAllowlistMessage = new SendAllowlistMessageOption(false).wrapForEntityData(SEND_ALLOWLIST_MESSAGE, () -> entityData);
-	private EntityDataWrappedOption<Boolean, Option<Boolean>> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
-	private EntityDataWrappedOption<Integer, Option<Integer>> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
+	private EntityDataWrappedOption<Boolean> sendAllowlistMessage = new SendAllowlistMessageOption(false).wrapForEntityData(SEND_ALLOWLIST_MESSAGE, () -> entityData);
+	private EntityDataWrappedOption<Boolean> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
+	private EntityDataWrappedOption<Integer> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
 	private boolean isInLava = false;
 
 	public SecuritySeaBoat(EntityType<? extends Boat> type, Level level) {
@@ -361,7 +361,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		if (!level().isClientSide)
-			entityData.set(((EntityDataWrappedOption<T, Option<T>>) option).getEntityDataKey(), option.get());
+			entityData.set(((EntityDataWrappedOption<T>) option).getEntityDataKey(), option.get());
 	}
 
 	@Override

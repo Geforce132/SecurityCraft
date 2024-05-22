@@ -151,7 +151,7 @@ public abstract class Option<T> {
 		return (value) + "";
 	}
 
-	public EntityDataWrappedOption<T, Option<T>> wrapForEntityData(EntityDataAccessor<T> entityDataKey, Supplier<SynchedEntityData> entityData) {
+	public EntityDataWrappedOption<T> wrapForEntityData(EntityDataAccessor<T> entityDataKey, Supplier<SynchedEntityData> entityData) {
 		return new EntityDataWrappedOption<>(this, entityDataKey, entityData);
 	}
 
@@ -382,12 +382,12 @@ public abstract class Option<T> {
 		}
 	}
 
-	public static class EntityDataWrappedOption<T, O extends Option<T>> extends Option<T> {
+	public static class EntityDataWrappedOption<T> extends Option<T> {
 		private final Option<T> wrapped;
 		private final EntityDataAccessor<T> entityDataKey;
 		private final Supplier<SynchedEntityData> entityData;
 
-		public EntityDataWrappedOption(O wrapped, EntityDataAccessor<T> entityDataKey, Supplier<SynchedEntityData> entityData) {
+		public EntityDataWrappedOption(Option<T> wrapped, EntityDataAccessor<T> entityDataKey, Supplier<SynchedEntityData> entityData) {
 			super(wrapped.getName(), wrapped.getDefaultValue());
 			this.wrapped = wrapped;
 			this.entityDataKey = entityDataKey;
