@@ -26,7 +26,7 @@ import net.minecraftforge.items.VanillaInventoryCodeHooks;
  */
 @Mixin(VanillaInventoryCodeHooks.class)
 public class VanillaInventoryCodeHooksMixin {
-	@Inject(method = "getItemHandler", at = @At(value = "INVOKE", target = "Ljava/util/Optional;empty()Ljava/util/Optional;"), cancellable = true)
+	@Inject(method = "getItemHandler(Lnet/minecraft/world/level/Level;DDDLnet/minecraft/core/Direction;)Ljava/util/Optional;", at = @At(value = "INVOKE", target = "Ljava/util/Optional;empty()Ljava/util/Optional;"), cancellable = true)
 	private static void securitycraft$callGetCapabilityForSecuritySeaBoat(Level level, double x, double y, double z, Direction side, CallbackInfoReturnable<Optional<Pair<IItemHandler, Object>>> cir) {
 		List<SecuritySeaBoat> list = level.getEntitiesOfClass(SecuritySeaBoat.class, new AABB(x, y, z, x, y, z).inflate(0.5D), EntitySelector.ENTITY_STILL_ALIVE);
 
