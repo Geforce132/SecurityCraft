@@ -30,6 +30,8 @@ public class OpenScreen implements CustomPacketPayload {
 
 			if (dataType.needsPosition)
 				return new OpenScreen(dataType, buf.readBlockPos());
+			else if (dataType == DataType.CHANGE_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY || dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+				return new OpenScreen(dataType, buf.readVarInt());
 			else
 				return new OpenScreen(dataType);
 		}
