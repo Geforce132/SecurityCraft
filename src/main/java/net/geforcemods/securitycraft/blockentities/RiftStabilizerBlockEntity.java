@@ -241,18 +241,17 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
 		if (connectedBlockEntity != null) {
-			if (option.getName().equals("signalLength"))
-				connectedBlockEntity.setSignalLength(((IntOption) option).get());
-			else if (option.getName().equals("range"))
-				connectedBlockEntity.setRange(((IntOption) option).get());
-			else if (option.getName().equals("disabled"))
-				connectedBlockEntity.setDisabled(((BooleanOption) option).get());
-			else if (option.getName().equals("ignoreOwner"))
-				connectedBlockEntity.setIgnoresOwner(((BooleanOption) option).get());
+			switch (option) {
+				case IntOption io when option == signalLength -> connectedBlockEntity.setSignalLength(io.get());
+				case IntOption io when option == range -> connectedBlockEntity.setRange(io.get());
+				case BooleanOption bo when option == disabled -> connectedBlockEntity.setDisabled(bo.get());
+				case BooleanOption bo when option == ignoreOwner -> connectedBlockEntity.setIgnoresOwner(bo.get());
+				default -> throw new UnsupportedOperationException("Unhandled option synchronization in rift stabilizer! " + option.getName());
+			}
 		}
 
 		super.onOptionChanged(option);

@@ -85,8 +85,8 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == disabled && ((BooleanOption) option).get() || option == signalLength) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}

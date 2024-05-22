@@ -17,9 +17,10 @@ public interface ICustomizable {
 	/**
 	 * Called whenever an {@link Option} in this object changes its value
 	 *
+	 * @param <T> The type the Option stores
 	 * @param option The changed Option
 	 */
-	public default void onOptionChanged(Option<?> option) {
+	public default <T> void onOptionChanged(Option<T> option) {
 		if (this instanceof BlockEntity be)
 			be.setChanged();
 	}

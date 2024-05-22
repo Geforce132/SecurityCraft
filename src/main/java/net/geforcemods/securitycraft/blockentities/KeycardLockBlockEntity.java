@@ -75,8 +75,8 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals(exactLevel.getName())) {
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == exactLevel) {
 			boolean[] acceptedLevels = getAcceptedLevels();
 			boolean swap = false;
 

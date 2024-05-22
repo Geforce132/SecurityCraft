@@ -378,38 +378,37 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("horizontal")) {
-			BooleanOption bo = (BooleanOption) option;
+	public <T> void onOptionChanged(Option<T> option) {
+		switch (option) {
+			case BooleanOption bo when option == horizontal -> {
+				modifyFields((offsetPos, state) -> level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get())), connectedScanner -> connectedScanner.setHorizontal(bo.get()));
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
+			}
+			case BooleanOption bo when option == solidifyField -> {
+				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-			modifyFields((offsetPos, state) -> level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get())), connectedScanner -> connectedScanner.setHorizontal(bo.get()));
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
-		}
-		else if (option.getName().equals("solidifyField")) {
-			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+				if (connectedScanner != null)
+					connectedScanner.setSolidifyField(bo.get());
+			}
+			case BooleanOption bo when option == disabled -> {
+				if (!bo.get())
+					InventoryScannerBlock.checkAndPlaceAppropriately(level, worldPosition, true);
+				else
+					modifyFields((offsetPos, state) -> level.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
+			}
+			case BooleanOption bo when option == ignoreOwner -> {
+				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-			if (connectedScanner != null)
-				connectedScanner.setSolidifyField(((BooleanOption) option).get());
-		}
-		else if (option.getName().equals("disabled")) {
-			BooleanOption bo = (BooleanOption) option;
+				if (connectedScanner != null)
+					connectedScanner.setIgnoresOwner(bo.get());
+			}
+			case IntOption io when option == signalLength -> {
+				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-			if (!bo.get())
-				InventoryScannerBlock.checkAndPlaceAppropriately(level, worldPosition, true);
-			else
-				modifyFields((offsetPos, state) -> level.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
-		}
-		else if (option.getName().equals("ignoreOwner")) {
-			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
-
-			if (connectedScanner != null)
-				connectedScanner.setIgnoresOwner(((BooleanOption) option).get());
-		}
-		else if (option.getName().equals("signalLength")) {
-			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
-
-			if (connectedScanner != null)
-				connectedScanner.setSignalLength(((IntOption) option).get());
+				if (connectedScanner != null)
+					connectedScanner.setSignalLength(((IntOption) option).get());
+			}
+			default -> throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
 		}
 
 		super.onOptionChanged(option);
