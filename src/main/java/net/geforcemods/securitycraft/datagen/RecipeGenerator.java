@@ -887,6 +887,15 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecretSignRecipe(consumer, Items.OAK_HANGING_SIGN, SCContent.SECRET_OAK_HANGING_SIGN.get());
 		addSecretSignRecipe(consumer, Items.SPRUCE_HANGING_SIGN, SCContent.SECRET_SPRUCE_HANGING_SIGN.get());
 		addSecretSignRecipe(consumer, Items.WARPED_HANGING_SIGN, SCContent.SECRET_WARPED_HANGING_SIGN.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.OAK_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.SPRUCE_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.BIRCH_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.JUNGLE_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.ACACIA_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.DARK_OAK_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.MANGROVE_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.CHERRY_SECURITY_SEA_BOAT.get());
+		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.BAMBOO_SECURITY_SEA_RAFT.get());
 		addSlabRecipe(consumer, Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get()), SCContent.CRYSTAL_QUARTZ_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_ANDESITE_SLAB.get());
@@ -1554,6 +1563,19 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(vanillaSign, 3)
 		.requires(SCContent.RETINAL_SCANNER.get())
 		.unlockedBy("has_sign", has(ItemTags.SIGNS))
+		.save(consumer);
+		//@formatter:on
+	}
+
+	protected final void addSecuritySeaBoatRecipe(Consumer<FinishedRecipe> consumer, ItemLike planks, ItemLike boat) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, boat)
+		.group("securitycraft:security_sea_boats")
+		.pattern("PCP")
+		.pattern("PPP")
+		.define('P', planks)
+		.define('C', SCContent.KEYPAD_CHEST.get())
+		.unlockedBy("has_keypad_chest", has(SCContent.KEYPAD_CHEST.get()))
 		.save(consumer);
 		//@formatter:on
 	}

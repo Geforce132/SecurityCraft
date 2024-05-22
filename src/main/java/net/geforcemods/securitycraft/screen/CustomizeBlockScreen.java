@@ -11,9 +11,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
-import net.geforcemods.securitycraft.api.Option.EnumOption;
+import net.geforcemods.securitycraft.api.Option.EntityDataWrappedOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -23,6 +22,7 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -39,7 +39,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	//@formatter:off
@@ -57,14 +56,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private AbstractWidget[] optionButtons;
-	private final Block block;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
-		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		menu.addSlotListener(this);
 
@@ -90,32 +87,40 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
-		if (moduleInv.getBlockEntity() instanceof ICustomizable customizable) {
+		if (moduleInv instanceof ICustomizable customizable) {
 			Option<?>[] options = customizable.customOptions();
 
 			if (options.length > 0) {
 				optionButtons = new AbstractWidget[options.length];
 
 				for (int i = 0; i < options.length; i++) {
-					Option<?> option = options[i];
+					Option<?> option = options[i] instanceof EntityDataWrappedOption wrapped ? wrapped.getWrapped() : options[i];
 
 					if (option.isSlider()) {
 						if (option instanceof DoubleOption doubleOption) {
 							final int sliderIndex = i;
 
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), Component.empty(), doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, doubleOption.get()));
+
+								if (menu.entityId == -1)
+									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
+								else
+									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(menu.entityId, option, doubleOption.get()));
 							});
 						}
 						else if (option instanceof IntOption intOption) {
 							final int sliderIndex = i;
 
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(block), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), Component.empty(), intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
-								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.getBlockEntity().getBlockPos(), option, intOption.get()));
+
+								if (menu.entityId == -1)
+									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
+								else
+									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(menu.entityId, option, intOption.get()));
 							});
 						}
 
@@ -143,7 +148,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 		RenderSystem._setShaderTexture(0, BEACON_GUI);
 
-		for (int i = 36; i < menu.maxSlots; i++) {
+		for (int i = 36; i < menu.getMaxSlots(); i++) {
 			Slot slot = menu.slots.get(i);
 
 			if (!slot.getItem().isEmpty()) {
@@ -207,7 +212,10 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		SecurityCraft.CHANNEL.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
+		if (menu.entityId == -1)
+			SecurityCraft.CHANNEL.sendToServer(new ToggleModule(moduleInv.myPos(), moduleType));
+		else
+			SecurityCraft.CHANNEL.sendToServer(new ToggleModule(menu.entityId, moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -215,13 +223,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			if (button != optionButtons[i])
 				continue;
 
-			Option<?> tempOption = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
+			Option<?> tempOption = ((ICustomizable) moduleInv).customOptions()[i]; //safe cast, as this method is only called when it can be casted
 
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
-			SecurityCraft.CHANNEL.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos(), i));
+
+			if (menu.entityId == -1)
+				SecurityCraft.CHANNEL.sendToServer(new ToggleOption(moduleInv.myPos(), i));
+			else
+				SecurityCraft.CHANNEL.sendToServer(new ToggleOption(menu.entityId, i));
+
 			return;
 		}
 	}
@@ -232,27 +245,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				.append(Component.literal(":"))
 				.withStyle(ChatFormatting.RESET)
 				.append(Component.literal("\n\n"))
-				.append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
+				.append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
 		//@formatter:on
 	}
 
 	private Component getOptionDescription(int optionId) {
-		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
+		Option<?> option = ((ICustomizable) moduleInv).customOptions()[optionId];
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(option.getDescriptionKey(block)), Component.translatable("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", Component.translatable(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), Component.translatable("gui.securitycraft:customize.currentSetting", option.getValueText()));
 	}
 
 	private Component getOptionButtonTitle(Option<?> option) {
-		return Utils.localize(option.getKey(block), getValueText(option));
-	}
-
-	private Component getValueText(Option<?> option) {
-		if (option instanceof BooleanOption booleanOption)
-			return Component.translatable(booleanOption.get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
-		else if (option instanceof EnumOption<?> enumOption)
-			return enumOption.getValueName();
-		else
-			return Component.literal(option.toString());
+		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), option.getValueText());
 	}
 
 	@Override

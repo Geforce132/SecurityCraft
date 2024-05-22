@@ -419,4 +419,14 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	public ResourceLocation getPreviousBarrel() {
 		return previousBarrel;
 	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
+	}
 }

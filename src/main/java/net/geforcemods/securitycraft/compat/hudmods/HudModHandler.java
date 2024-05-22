@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -41,7 +42,7 @@ public class HudModHandler {
 
 	protected HudModHandler() {}
 
-	public void addOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+	public void addDisguisedOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
 		boolean disguised = false;
 
 		if (block instanceof DisguisableBlock) {
@@ -56,11 +57,15 @@ public class HudModHandler {
 		if (be == null || disguised || block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, state, pos))
 			return;
 
-		if (configGetter.test(SHOW_OWNER) && be instanceof IOwnable ownable)
+		addOwnerModuleNameInfo(be, player, lineAdder, configGetter);
+	}
+
+	public void addOwnerModuleNameInfo(Object obj, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+		if (configGetter.test(SHOW_OWNER) && obj instanceof IOwnable ownable)
 			lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
 
-		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if (configGetter.test(SHOW_MODULES) && be instanceof IModuleInventory inv && !inv.getInsertedModules().isEmpty() && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		//if the object is ownable, show modules only when it's owned, otherwise always show
+		if (configGetter.test(SHOW_MODULES) && obj instanceof IModuleInventory inv && !inv.getInsertedModules().isEmpty() && (!(obj instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			lineAdder.accept(EQUIPPED);
 
 			for (ModuleType module : inv.getInsertedModules()) {
@@ -68,7 +73,7 @@ public class HudModHandler {
 			}
 		}
 
-		if (configGetter.test(SHOW_CUSTOM_NAME) && be instanceof Nameable nameable && nameable.hasCustomName()) {
+		if (configGetter.test(SHOW_CUSTOM_NAME) && obj instanceof Nameable nameable && nameable.hasCustomName()) {
 			Component text = nameable.getCustomName();
 			Component name = text == null ? Component.empty() : text;
 
@@ -103,5 +108,7 @@ public class HudModHandler {
 
 			lineAdder.accept(modeDescription.withStyle(ChatFormatting.GRAY));
 		}
+		else if (entity instanceof SecuritySeaBoat boat)
+			addOwnerModuleNameInfo(boat, player, lineAdder, configGetter);
 	}
 }

@@ -84,13 +84,13 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 	public static class ExtractionBlock implements IExtractionBlock {
 		@Override
-		public boolean canExtract(IOwnable be, Level level, BlockPos pos, BlockState state) {
+		public boolean canExtract(IOwnable ownable, Level level, BlockPos pos, BlockState state) {
 			ReinforcedHopperBlockEntity hopperBe = (ReinforcedHopperBlockEntity) level.getBlockEntity(pos);
 
 			if (!hopperBe.getOwner().isValidated())
 				return false;
-			else if (!be.getOwner().owns(hopperBe)) {
-				if (be instanceof IModuleInventory inv)
+			else if (!ownable.getOwner().owns(hopperBe)) {
+				if (ownable instanceof IModuleInventory inv)
 					return inv.isAllowed(hopperBe.getOwner().getName()); //hoppers can extract out of e.g. chests if the hopper's owner is on the chest's allowlist module
 
 				return false;

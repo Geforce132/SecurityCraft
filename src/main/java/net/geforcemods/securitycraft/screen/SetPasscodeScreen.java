@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SetPasscodeScreen extends Screen {
@@ -22,14 +24,14 @@ public class SetPasscodeScreen extends Screen {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private BlockEntity be;
+	private IPasscodeProtected passcodeProtected;
 	private Component setup;
 	private MutableComponent combined;
 	private EditBox keycodeTextbox;
 
-	public SetPasscodeScreen(BlockEntity be, Component title) {
+	public SetPasscodeScreen(IPasscodeProtected passcodeProtected, Component title) {
 		super(title);
-		this.be = be;
+		this.passcodeProtected = passcodeProtected;
 		setup = Utils.localize("gui.securitycraft:passcode.setup");
 		combined = title.plainCopy().append(Component.literal(" ")).append(setup);
 	}
@@ -83,7 +85,11 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	private void saveAndContinueButtonClicked(Button button) {
-		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
+		if (passcodeProtected instanceof BlockEntity be)
+			SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
+		else if (passcodeProtected instanceof Entity entity)
+			SecurityCraft.CHANNEL.sendToServer(new SetPasscode(entity.getId(), keycodeTextbox.getValue()));
+
 		Minecraft.getInstance().player.closeContainer();
 	}
 }
