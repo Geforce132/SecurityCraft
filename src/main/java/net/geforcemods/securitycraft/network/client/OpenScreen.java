@@ -73,7 +73,7 @@ public class OpenScreen {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Level level = ctx.get().getSender().level;
+		Level level = ClientHandler.getClientLevel();
 
 		switch (dataType) {
 			case ALARM:
