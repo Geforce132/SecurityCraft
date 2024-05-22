@@ -66,12 +66,7 @@ public class ToggleModule implements CustomPacketPayload {
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
 		Level level = player.level();
-		IModuleInventory moduleInv = null;
-
-		if (pos != null && level.getBlockEntity(pos) instanceof IModuleInventory be)
-			moduleInv = be;
-		else if (pos == null && level.getEntity(entityId) instanceof IModuleInventory entity)
-			moduleInv = entity;
+		IModuleInventory moduleInv = getModuleInventory(level);
 
 		if (moduleInv != null && (!(moduleInv instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			if (moduleInv.isModuleEnabled(moduleType)) {
@@ -93,5 +88,16 @@ public class ToggleModule implements CustomPacketPayload {
 			if (moduleInv instanceof BlockEntity be)
 				player.level().sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
+	}
+
+	private IModuleInventory getModuleInventory(Level level) {
+		if (pos != null) {
+			if (level.getBlockEntity(pos) instanceof IModuleInventory be)
+				return be;
+		}
+		else if (level.getEntity(entityId) instanceof IModuleInventory entity)
+			return entity;
+
+		return null;
 	}
 }

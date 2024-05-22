@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,6 +17,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
@@ -81,24 +81,26 @@ public class OpenScreen implements CustomPacketPayload {
 	}
 
 	public void handle(PlayPayloadContext ctx) {
+		Level level = ctx.player().get().level();
+
 		switch (dataType) {
 			case ALARM:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
+				if (level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
 					ClientHandler.displayAlarmScreen(be);
 
 				break;
 			case CHANGE_PASSCODE:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) be);
 
 				break;
 			case CHANGE_PASSCODE_FOR_ENTITY:
-				if (Minecraft.getInstance().level.getEntity(entityId) instanceof IPasscodeProtected be)
-					ClientHandler.displayUniversalKeyChangerScreen((Entity) be);
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displayUniversalKeyChangerScreen((Entity) entity);
 
 				break;
 			case CHECK_PASSCODE:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 					ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
 
 				break;
@@ -110,12 +112,12 @@ public class OpenScreen implements CustomPacketPayload {
 
 				break;
 			case CHECK_PASSCODE_FOR_ENTITY:
-				if (Minecraft.getInstance().level.getEntity(entityId) instanceof IPasscodeProtected be)
-					ClientHandler.displayCheckPasscodeScreen((Entity) be);
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displayCheckPasscodeScreen((Entity) entity);
 
 				break;
 			case RIFT_STABILIZER:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity riftStabilizer)
+				if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity riftStabilizer)
 					ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
 
 				break;
@@ -129,7 +131,7 @@ public class OpenScreen implements CustomPacketPayload {
 
 				break;
 			case SET_PASSCODE:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
 
 				break;
@@ -141,12 +143,12 @@ public class OpenScreen implements CustomPacketPayload {
 
 				break;
 			case SET_PASSCODE_FOR_ENTITY:
-				if (Minecraft.getInstance().level.getEntity(entityId) instanceof IPasscodeProtected be)
-					ClientHandler.displaySetPasscodeScreen((Entity) be);
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displaySetPasscodeScreen((Entity) entity);
 
 				break;
 			case SONIC_SECURITY_SYSTEM:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss)
+				if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss)
 					ClientHandler.displaySonicSecuritySystemScreen(sss);
 
 				break;

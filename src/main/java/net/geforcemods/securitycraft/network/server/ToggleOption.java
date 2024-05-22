@@ -60,12 +60,7 @@ public class ToggleOption implements CustomPacketPayload {
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
 		Level level = player.level();
-		ICustomizable customizable = null;
-
-		if (pos != null && level.getBlockEntity(pos) instanceof ICustomizable be)
-			customizable = be;
-		else if (pos == null && level.getEntity(entityId) instanceof ICustomizable entity)
-			customizable = entity;
+		ICustomizable customizable = getCustomizable(level);
 
 		if (customizable != null && (!(customizable instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			customizable.customOptions()[optionId].toggle();
@@ -74,5 +69,16 @@ public class ToggleOption implements CustomPacketPayload {
 			if (customizable instanceof BlockEntity be)
 				level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
+	}
+
+	private ICustomizable getCustomizable(Level level) {
+		if (pos != null) {
+			if (level.getBlockEntity(pos) instanceof ICustomizable be)
+				return be;
+		}
+		else if (level.getEntity(entityId) instanceof ICustomizable entity)
+			return entity;
+
+		return null;
 	}
 }

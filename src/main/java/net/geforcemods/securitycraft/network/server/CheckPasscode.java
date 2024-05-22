@@ -15,7 +15,6 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class CheckPasscode implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "check_passcode");
-	private boolean isEntity;
 	private BlockPos pos;
 	private int entityId;
 	private String passcode;
@@ -23,36 +22,34 @@ public class CheckPasscode implements CustomPacketPayload {
 	public CheckPasscode() {}
 
 	public CheckPasscode(BlockPos pos, String passcode) {
-		this.isEntity = false;
 		this.pos = pos;
 		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public CheckPasscode(int entityId, String passcode) {
-		this.isEntity = true;
 		this.entityId = entityId;
 		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
 	public CheckPasscode(FriendlyByteBuf buf) {
-		isEntity = buf.readBoolean();
-
-		if (isEntity)
-			entityId = buf.readVarInt();
-		else
+		if (buf.readBoolean())
 			pos = buf.readBlockPos();
+		else
+			entityId = buf.readVarInt();
 
 		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	@Override
 	public void write(FriendlyByteBuf buf) {
-		buf.writeBoolean(isEntity);
+		boolean hasPos = pos != null;
 
-		if (isEntity)
-			buf.writeVarInt(entityId);
-		else
+		buf.writeBoolean(hasPos);
+
+		if (hasPos)
 			buf.writeBlockPos(pos);
+		else
+			buf.writeVarInt(entityId);
 
 		buf.writeUtf(passcode);
 	}
@@ -82,11 +79,11 @@ public class CheckPasscode implements CustomPacketPayload {
 	}
 
 	private IPasscodeProtected getPasscodeProtected(Level level) {
-		if (isEntity) {
-			if (level.getEntity(entityId) instanceof IPasscodeProtected pp)
+		if (pos != null) {
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected pp)
 				return pp;
 		}
-		else if (level.getBlockEntity(pos) instanceof IPasscodeProtected pp)
+		else if (level.getEntity(entityId) instanceof IPasscodeProtected pp)
 			return pp;
 
 		return null;
