@@ -10,12 +10,13 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -23,6 +24,7 @@ public class OpenScreen {
 	private DataType dataType;
 	private BlockPos pos;
 	private CompoundTag tag;
+	private int entityId;
 
 	public OpenScreen() {}
 
@@ -43,14 +45,20 @@ public class OpenScreen {
 		this.tag = tag;
 	}
 
+	public OpenScreen(DataType dataType, int entityId) {
+		this.dataType = dataType;
+		this.entityId = entityId;
+	}
+
 	public OpenScreen(FriendlyByteBuf buf) {
 		dataType = buf.readEnum(DataType.class);
 
 		if (dataType.needsPosition)
 			pos = buf.readBlockPos();
-
-		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			tag = buf.readNbt();
+		else if (dataType == DataType.CHANGE_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY || dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+			entityId = buf.readVarInt();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
@@ -58,32 +66,50 @@ public class OpenScreen {
 
 		if (dataType.needsPosition)
 			buf.writeBlockPos(pos);
-
-		if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
+		else if (dataType == DataType.SENTRY_REMOTE_ACCESS_TOOL)
 			buf.writeNbt(tag);
+		else if (dataType == DataType.CHANGE_PASSCODE_FOR_ENTITY || dataType == DataType.CHECK_PASSCODE_FOR_ENTITY || dataType == DataType.SET_PASSCODE_FOR_ENTITY)
+			buf.writeVarInt(entityId);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
+		Level level = ctx.get().getSender().level();
+
 		switch (dataType) {
 			case ALARM:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
+				if (level.getBlockEntity(pos) instanceof AlarmBlockEntity be)
 					ClientHandler.displayAlarmScreen(be);
 
 				break;
-			case CHECK_BRIEFCASE_PASSCODE:
+			case CHANGE_PASSCODE:
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) be);
+
+				break;
+			case CHANGE_PASSCODE_FOR_ENTITY:
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displayUniversalKeyChangerScreen((Entity) entity);
+
+				break;
+			case CHECK_PASSCODE:
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
+
+				break;
+			case CHECK_PASSCODE_FOR_BRIEFCASE:
 				ItemStack briefcaseStack = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 				if (!briefcaseStack.isEmpty())
 					ClientHandler.displayBriefcasePasscodeScreen(briefcaseStack.getHoverName());
 
 				break;
-			case CHECK_PASSCODE:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-					ClientHandler.displayCheckPasscodeScreen((BlockEntity) be);
+			case CHECK_PASSCODE_FOR_ENTITY:
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displayCheckPasscodeScreen((Entity) entity);
 
 				break;
 			case RIFT_STABILIZER:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity riftStabilizer)
+				if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity riftStabilizer)
 					ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
 
 				break;
@@ -96,26 +122,26 @@ public class OpenScreen {
 				}
 
 				break;
-			case SET_BRIEFCASE_PASSCODE:
+			case SET_PASSCODE:
+				if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
+					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
+
+				break;
+			case SET_PASSCODE_FOR_BRIEFCASE:
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.BRIEFCASE.get());
 
 				if (!briefcase.isEmpty())
 					ClientHandler.displayBriefcaseSetupScreen(briefcase.getHoverName().plainCopy().append(Component.literal(" ")).append(Utils.localize("gui.securitycraft:passcode.setup")));
 
 				break;
-			case SET_PASSCODE:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-					ClientHandler.displaySetPasscodeScreen((BlockEntity) be);
+			case SET_PASSCODE_FOR_ENTITY:
+				if (level.getEntity(entityId) instanceof IPasscodeProtected entity)
+					ClientHandler.displaySetPasscodeScreen((Entity) entity);
 
 				break;
 			case SONIC_SECURITY_SYSTEM:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss)
+				if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss)
 					ClientHandler.displaySonicSecuritySystemScreen(sss);
-
-				break;
-			case UNIVERSAL_KEY_CHANGER:
-				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected)
-					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
 
 				break;
 			default:
@@ -125,14 +151,17 @@ public class OpenScreen {
 
 	public enum DataType {
 		ALARM(true),
-		CHECK_BRIEFCASE_PASSCODE(false),
+		CHANGE_PASSCODE(true),
+		CHANGE_PASSCODE_FOR_ENTITY(false),
 		CHECK_PASSCODE(true),
+		CHECK_PASSCODE_FOR_BRIEFCASE(false),
+		CHECK_PASSCODE_FOR_ENTITY(false),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
-		SET_BRIEFCASE_PASSCODE(false),
 		SET_PASSCODE(true),
-		SONIC_SECURITY_SYSTEM(true),
-		UNIVERSAL_KEY_CHANGER(true);
+		SET_PASSCODE_FOR_BRIEFCASE(false),
+		SET_PASSCODE_FOR_ENTITY(false),
+		SONIC_SECURITY_SYSTEM(true);
 
 		public final boolean needsPosition;
 

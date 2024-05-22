@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
-import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -36,7 +35,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -53,7 +51,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -331,7 +328,8 @@ public class SCEventHandler {
 				return;
 			}
 
-			if (heldItem.is(SCContent.CODEBREAKER.get()) && handleCodebreaking(event)) {
+			if (heldItem.is(SCContent.CODEBREAKER.get()) && level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
+				codebreakable.handleCodebreaking(player, event.getHand());
 				event.setCanceled(true);
 				return;
 			}
@@ -546,57 +544,5 @@ public class SCEventHandler {
 			else
 				be.listenToNote(vanillaNoteId, instrument, customSoundId);
 		}
-	}
-
-	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		Player player = event.getEntity();
-		Level level = player.level();
-		BlockPos pos = event.getPos();
-
-		if (level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
-			if (codebreakable instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
-				return false;
-
-			double chance = ConfigHandler.SERVER.codebreakerChance.get();
-
-			if (chance < 0.0D) {
-				Block block = level.getBlockState(pos).getBlock();
-
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
-			}
-			else {
-				ItemStack codebreaker = player.getItemInHand(event.getHand());
-				BlockState state = level.getBlockState(pos);
-
-				if (!codebreakable.shouldAttemptCodebreak(state, player))
-					return true;
-
-				if (codebreaker.is(SCContent.CODEBREAKER.get())) {
-					if (codebreakable instanceof IOwnable ownable && ownable.isOwnedBy(player) && !player.isCreative()) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
-						return false;
-					}
-
-					if (CodebreakerItem.wasRecentlyUsed(codebreaker))
-						return false;
-
-					boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-					CompoundTag tag = codebreaker.getOrCreateTag();
-
-					codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(event.getHand()));
-					tag.putLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
-					tag.putBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
-
-					if (isSuccessful)
-						codebreakable.useCodebreaker(state, player);
-					else
-						PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-				}
-			}
-
-			return true;
-		}
-
-		return false;
 	}
 }

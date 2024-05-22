@@ -2,6 +2,8 @@
 
 - New: Server config setting "allow_camera_night_vision" to set whether players are able to activate night vision without having the actual potion effect
 - New: Pressing "Enter" while typing a player name in an Allowlist/Denylist Module will now add the player to the list without needing to press the "Add Player" button
+- New: Security Sea Boats: Chest boats with a passcode-protected chest
+- New: Damage Type Tag "securitycraft:security_sea_boat_vulnerable_to" to define which damage types the Security Sea Boat can be destroyed by
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
@@ -10,6 +12,12 @@
 - Change: When picking up a placed sentry, the resulting sentry item will now be named according to the custom name of the removed sentry
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
+- API: IModuleInventory is no longer hardcoded to just block entities
+- API: New method IPasscodeProtected#openSetPasscodeScreen to define how to open the screen to set the passcode of the object
+- API: New method ICodebreakable#handleCodebreaking to define behavior when a codebreaker is used to break the code
+- API: The BlockState parameters in ICodebreakable's methods have been removed
+- API: New Option "EntityDataWrappedOption" that connects an EntityDataAccessor with an Option, and corresponding converter method "wrapForEntityData"
+- API: New method Option#getValueText for getting a textual representation of the option's value
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Occasional crash when opening the inventory in creative mode in certain situations
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world

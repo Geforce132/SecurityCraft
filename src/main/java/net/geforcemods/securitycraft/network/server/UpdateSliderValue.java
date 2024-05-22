@@ -2,15 +2,16 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.EntityDataWrappedOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -18,6 +19,7 @@ public class UpdateSliderValue {
 	private BlockPos pos;
 	private String optionName;
 	private double value;
+	private int entityId;
 
 	public UpdateSliderValue() {}
 
@@ -27,23 +29,42 @@ public class UpdateSliderValue {
 		value = v;
 	}
 
+	public UpdateSliderValue(int entityId, Option<?> option, double v) {
+		this.entityId = entityId;
+		optionName = option.getName();
+		value = v;
+	}
+
 	public UpdateSliderValue(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
+		if (buf.readBoolean())
+			pos = buf.readBlockPos();
+		else
+			entityId = buf.readVarInt();
+
 		optionName = buf.readUtf();
 		value = buf.readDouble();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
+		boolean hasPos = pos != null;
+
+		buf.writeBoolean(hasPos);
+
+		if (hasPos)
+			buf.writeBlockPos(pos);
+		else
+			buf.writeVarInt(entityId);
+
 		buf.writeUtf(optionName);
 		buf.writeDouble(value);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
-		BlockEntity be = player.level().getBlockEntity(pos);
+		Level level = player.level();
+		ICustomizable customizable = getCustomizable(level);
 
-		if (be instanceof ICustomizable customizable && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (customizable != null && (!(customizable instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			Option<?> option = null;
 
 			for (Option<?> o : customizable.customOptions()) {
@@ -56,15 +77,34 @@ public class UpdateSliderValue {
 			if (option == null)
 				return;
 
-			if (option instanceof DoubleOption o)
+			if (option instanceof EntityDataWrappedOption o) {
+				Option<?> wrapped = o.getWrapped();
+
+				if (wrapped instanceof DoubleOption)
+					o.setValue(value);
+				else if (wrapped instanceof IntOption)
+					o.setValue((int) value);
+			}
+			else if (option instanceof DoubleOption o)
 				o.setValue(value);
 			else if (option instanceof IntOption o)
 				o.setValue((int) value);
 
 			customizable.onOptionChanged(option);
 
-			if (be instanceof CustomizableBlockEntity)
-				player.level().sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
+			if (customizable instanceof BlockEntity be)
+				level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);
 		}
+	}
+
+	private ICustomizable getCustomizable(Level level) {
+		if (pos != null) {
+			if (level.getBlockEntity(pos) instanceof ICustomizable be)
+				return be;
+		}
+		else if (level.getEntity(entityId) instanceof ICustomizable entity)
+			return entity;
+
+		return null;
 	}
 }

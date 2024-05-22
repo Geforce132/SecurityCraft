@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -61,6 +62,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
@@ -121,6 +123,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -274,6 +277,7 @@ public class ClientHandler {
 			MenuScreens.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
 			MenuScreens.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), ItemInventoryScreen.Briefcase::new);
 			MenuScreens.register(SCContent.CUSTOMIZE_BLOCK_MENU.get(), CustomizeBlockScreen::new);
+			MenuScreens.register(SCContent.CUSTOMIZE_ENTITY_MENU.get(), CustomizeBlockScreen::new);
 			MenuScreens.register(SCContent.DISGUISE_MODULE_MENU.get(), DisguiseModuleScreen::new);
 			MenuScreens.register(SCContent.INVENTORY_SCANNER_MENU.get(), InventoryScannerScreen::new);
 			MenuScreens.register(SCContent.KEYPAD_FURNACE_MENU.get(), KeypadFurnaceScreen::new);
@@ -410,6 +414,7 @@ public class ClientHandler {
 		event.registerEntityRenderer(SCContent.SECURITY_CAMERA_ENTITY.get(), NoopRenderer::new);
 		event.registerEntityRenderer(SCContent.SENTRY_ENTITY.get(), SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.BULLET_ENTITY.get(), BulletRenderer::new);
+		event.registerEntityRenderer(SCContent.SECURITY_SEA_BOAT_ENTITY.get(), SecuritySeaBoatRenderer::new);
 		//normal renderers
 		event.registerBlockEntityRenderer(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreRenderer::new);
@@ -627,7 +632,7 @@ public class ClientHandler {
 		blocksWithCustomTint = null;
 	}
 
-	private static int mixWithReinforcedTintIfEnabled(int tint) {
+	public static int mixWithReinforcedTintIfEnabled(int tint) {
 		boolean tintReinforcedBlocks;
 
 		if (Minecraft.getInstance().level == null)
@@ -708,19 +713,31 @@ public class ClientHandler {
 	}
 
 	public static void displayUniversalKeyChangerScreen(BlockEntity be) {
-		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
+		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) be));
+	}
+
+	public static void displayUniversalKeyChangerScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) entity));
 	}
 
 	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasscodeScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) be, displayName));
+	}
+
+	public static void displayCheckPasscodeScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
 	}
 
 	public static void displaySetPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new SetPasscodeScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new SetPasscodeScreen((IPasscodeProtected) be, displayName));
+	}
+
+	public static void displaySetPasscodeScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new SetPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
 	}
 
 	public static void displaySSSItemScreen(ItemStack stack) {

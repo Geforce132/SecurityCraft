@@ -13,6 +13,8 @@
 		"taser.ItemInHandRendererMixin"
 	],
 	"mixins": [
+		"boat.BoatMixin",
+		"boat.BoatItemMixin",
 		"camera.ChunkMapMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",

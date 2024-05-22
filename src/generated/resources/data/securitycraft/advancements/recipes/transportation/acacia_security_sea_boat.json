@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_keypad_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "securitycraft:keypad_chest"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:acacia_security_sea_boat"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_keypad_chest",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:acacia_security_sea_boat"
+    ]
+  },
+  "sends_telemetry_event": false
+}

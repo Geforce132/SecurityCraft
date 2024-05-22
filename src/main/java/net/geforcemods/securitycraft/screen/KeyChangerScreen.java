@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class KeyChangerScreen extends Screen {
@@ -29,11 +31,11 @@ public class KeyChangerScreen extends Screen {
 	private EditBox textboxNewPasscode;
 	private EditBox textboxConfirmPasscode;
 	private Button confirmButton;
-	private BlockEntity be;
+	private IPasscodeProtected passcodeProtected;
 
-	public KeyChangerScreen(BlockEntity be) {
+	public KeyChangerScreen(IPasscodeProtected passcodeProtected) {
 		super(Component.translatable(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()));
-		this.be = be;
+		this.passcodeProtected = passcodeProtected;
 	}
 
 	@Override
@@ -91,7 +93,11 @@ public class KeyChangerScreen extends Screen {
 	}
 
 	private void confirmButtonClicked(Button button) {
-		SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos(), textboxNewPasscode.getValue()));
+		if (passcodeProtected instanceof BlockEntity be)
+			SecurityCraft.CHANNEL.sendToServer(new SetPasscode(be.getBlockPos(), textboxNewPasscode.getValue()));
+		else if (passcodeProtected instanceof Entity entity)
+			SecurityCraft.CHANNEL.sendToServer(new SetPasscode(entity.getId(), textboxNewPasscode.getValue()));
+
 		Minecraft.getInstance().player.closeContainer();
 		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), ChatFormatting.GREEN, true);
 	}

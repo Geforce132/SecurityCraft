@@ -19,6 +19,7 @@ import mcp.mobius.waila.api.component.ItemComponent;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,6 +39,7 @@ public final class WTHITDataProvider extends HudModHandler implements IWailaPlug
 		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.TAIL, IOverlayDisplay.class);
 		registrar.addIcon((IBlockComponentProvider) this, IOverlayDisplay.class);
 		registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, Sentry.class);
+		registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, SecuritySeaBoat.class);
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public final class WTHITDataProvider extends HudModHandler implements IWailaPlug
 
 	@Override
 	public void appendBody(ITooltip tooltip, IBlockAccessor data, IPluginConfig config) {
-		addOwnerModuleNameInfo(data.getWorld(), data.getPosition(), data.getBlockState(), data.getBlock(), data.getBlockEntity(), data.getPlayer(), tooltip::addLine, config::getBoolean);
+		addDisguisedOwnerModuleNameInfo(data.getWorld(), data.getPosition(), data.getBlockState(), data.getBlock(), data.getBlockEntity(), data.getPlayer(), tooltip::addLine, config::getBoolean);
 	}
 
 	@Override

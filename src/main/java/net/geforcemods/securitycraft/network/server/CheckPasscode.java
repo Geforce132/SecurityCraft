@@ -8,10 +8,12 @@ import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 public class CheckPasscode {
 	private BlockPos pos;
+	private int entityId;
 	private String passcode;
 
 	public CheckPasscode() {}
@@ -21,31 +23,60 @@ public class CheckPasscode {
 		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
 	}
 
+	public CheckPasscode(int entityId, String passcode) {
+		this.entityId = entityId;
+		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
+	}
+
 	public CheckPasscode(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
+		if (buf.readBoolean())
+			pos = buf.readBlockPos();
+		else
+			entityId = buf.readVarInt();
+
 		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
+		boolean hasPos = pos != null;
+
+		buf.writeBoolean(hasPos);
+
+		if (hasPos)
+			buf.writeBlockPos(pos);
+		else
+			buf.writeVarInt(entityId);
+
 		buf.writeUtf(passcode);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayer player = ctx.get().getSender();
+		IPasscodeProtected passcodeProtected = getPasscodeProtected(player.level());
 
-		if (player.level().getBlockEntity(pos) instanceof IPasscodeProtected be) {
-			if (be.isOnCooldown())
+		if (passcodeProtected != null) {
+			if (passcodeProtected.isOnCooldown())
 				return;
 
-			PasscodeUtils.hashPasscode(passcode, be.getSalt(), p -> {
-				if (Arrays.equals(be.getPasscode(), p)) {
+			PasscodeUtils.hashPasscode(passcode, passcodeProtected.getSalt(), p -> {
+				if (Arrays.equals(passcodeProtected.getPasscode(), p)) {
 					player.closeContainer();
-					be.activate(player);
+					passcodeProtected.activate(player);
 				}
 				else
-					be.onIncorrectPasscodeEntered(player, passcode);
+					passcodeProtected.onIncorrectPasscodeEntered(player, passcode);
 			});
 		}
+	}
+
+	private IPasscodeProtected getPasscodeProtected(Level level) {
+		if (pos != null) {
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected pp)
+				return pp;
+		}
+		else if (level.getEntity(entityId) instanceof IPasscodeProtected pp)
+			return pp;
+
+		return null;
 	}
 }

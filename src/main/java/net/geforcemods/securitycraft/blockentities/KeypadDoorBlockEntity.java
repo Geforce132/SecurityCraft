@@ -73,13 +73,13 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !state.getValue(DoorBlock.OPEN) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return !getBlockState().getValue(DoorBlock.OPEN) && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override

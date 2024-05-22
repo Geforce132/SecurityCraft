@@ -18,6 +18,7 @@ import net.minecraftforge.network.NetworkEvent;
 
 public class SetPasscode {
 	private BlockPos pos;
+	private int entityId;
 	private String passcode;
 
 	public SetPasscode() {}
@@ -27,27 +28,47 @@ public class SetPasscode {
 		passcode = PasscodeUtils.hashPasscodeWithoutSalt(code);
 	}
 
+	public SetPasscode(int entityId, String code) {
+		this.entityId = entityId;
+		passcode = PasscodeUtils.hashPasscodeWithoutSalt(code);
+	}
+
 	public SetPasscode(FriendlyByteBuf buf) {
-		pos = buf.readBlockPos();
+		if (buf.readBoolean())
+			pos = buf.readBlockPos();
+		else
+			entityId = buf.readVarInt();
+
 		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	public void encode(FriendlyByteBuf buf) {
-		buf.writeBlockPos(pos);
+		boolean hasPos = pos != null;
+
+		buf.writeBoolean(hasPos);
+
+		if (hasPos)
+			buf.writeBlockPos(pos);
+		else
+			buf.writeVarInt(entityId);
+
 		buf.writeUtf(passcode);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
 		Level level = player.level();
+		IPasscodeProtected passcodeProtected = getPasscodeProtected(level);
 
-		if (level.getBlockEntity(pos) instanceof IPasscodeProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-			be.hashAndSetPasscode(passcode);
+		if (passcodeProtected != null && (!(passcodeProtected instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+			passcodeProtected.hashAndSetPasscode(passcode);
 
-			if (be instanceof KeypadChestBlockEntity chestBe)
-				checkAndUpdateAdjacentChest(chestBe, level, pos, passcode, be.getSalt());
-			else if (be instanceof KeypadDoorBlockEntity doorBe)
-				checkAndUpdateAdjacentDoor(doorBe, level, passcode, be.getSalt());
+			if (pos != null) {
+				if (passcodeProtected instanceof KeypadChestBlockEntity chestBe)
+					checkAndUpdateAdjacentChest(chestBe, level, pos, passcode, passcodeProtected.getSalt());
+				else if (passcodeProtected instanceof KeypadDoorBlockEntity doorBe)
+					checkAndUpdateAdjacentDoor(doorBe, level, passcode, passcodeProtected.getSalt());
+			}
 		}
 	}
 
@@ -70,5 +91,16 @@ public class SetPasscode {
 				level.sendBlockUpdated(otherBe.getBlockPos(), otherBe.getBlockState(), otherBe.getBlockState(), 2);
 			}
 		});
+	}
+
+	private IPasscodeProtected getPasscodeProtected(Level level) {
+		if (pos != null) {
+			if (level.getBlockEntity(pos) instanceof IPasscodeProtected pp)
+				return pp;
+		}
+		else if (level.getEntity(entityId) instanceof IPasscodeProtected pp)
+			return pp;
+
+		return null;
 	}
 }
