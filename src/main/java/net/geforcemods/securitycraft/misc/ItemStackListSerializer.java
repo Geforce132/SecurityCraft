@@ -8,7 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemStackListSerializer implements EntityDataSerializer<NonNullList<ItemStack>> {
-	public static final StreamCodec<? super RegistryFriendlyByteBuf, NonNullList<ItemStack>> STREAM_CODEC = ItemStack.STREAM_CODEC.apply(ByteBufCodecs.collection(NonNullList::createWithCapacity));
+	public static final StreamCodec<? super RegistryFriendlyByteBuf, NonNullList<ItemStack>> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC.apply(ByteBufCodecs.collection(NonNullList::createWithCapacity));
 
 	@Override
 	public StreamCodec<? super RegistryFriendlyByteBuf, NonNullList<ItemStack>> codec() {
