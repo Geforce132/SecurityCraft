@@ -39,12 +39,13 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -59,6 +60,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
@@ -73,13 +75,15 @@ public class SCManualScreen extends GuiScreen {
 	private static int lastPage = -1;
 	private final String intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(new Style().setUnderlined(true)).getFormattedText();
 	private final String ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title").getFormattedText();
+	private final Style crowdinLinkStyle = new Style().setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/securitycraft"));
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
 	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
 	private List<String> subpages = new ArrayList<>();
-	private List<String> author = new ArrayList<>();
+	private List<String> translationCredits;
+	private HoverChecker translationCreditsArea;
 	private int currentSubpage = 0;
 	private List<String> intro2;
 	private PatronList patronList;
@@ -115,6 +119,8 @@ public class SCManualScreen extends GuiScreen {
 
 			return key1.compareTo(key2);
 		});
+		translationCredits = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.crowdin").setStyle(new Style().setColor(TextFormatting.BLUE).setUnderlined(true)).getFormattedText(), 180);
+		translationCreditsArea = new HoverChecker(180, 200, width / 2 - 90, width / 2 + 90);
 	}
 
 	@Override
@@ -204,8 +210,8 @@ public class SCManualScreen extends GuiScreen {
 				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 150 + 10 * i, 0);
 			}
 
-			for (int i = 0; i < author.size(); i++) {
-				String text = author.get(i);
+			for (int i = 0; i < translationCredits.size(); i++) {
+				String text = translationCredits.get(i);
 
 				fontRenderer.drawString(text, width / 2 - fontRenderer.getStringWidth(text) / 2, 180 + 10 * i, 0);
 			}
@@ -272,12 +278,19 @@ public class SCManualScreen extends GuiScreen {
 			return;
 		}
 
-		if (currentPage == -1 && patronList != null && patronList.isHovering() && !patronList.patrons.isEmpty()) {
+		if (currentPage == -1) {
 			int mouseX = Mouse.getEventX() * width / mc.displayWidth;
 			int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
 
-			patronList.handleMouseInput(mouseX, mouseY);
-			return;
+			if (Mouse.isButtonDown(0) && translationCreditsArea.checkHover(mouseX, mouseY)) {
+				handleComponentClick(new TextComponentString("").setStyle(crowdinLinkStyle));
+				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+				return;
+			}
+			else if (patronList != null && patronList.isHovering() && !patronList.patrons.isEmpty()) {
+				patronList.handleMouseInput(mouseX, mouseY);
+				return;
+			}
 		}
 
 		if (ClientUtils.hasCtrlDown() && subpages.size() > 1) {
@@ -353,12 +366,6 @@ public class SCManualScreen extends GuiScreen {
 			buttonList.get(2).visible = false;
 			buttonList.get(3).visible = false;
 			recipe = null;
-
-			if (I18n.hasKey("gui.securitycraft:scManual.author"))
-				author = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.author").getFormattedText(), 180);
-			else
-				author.clear();
-
 			intro2 = fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:scManual.intro.2").getFormattedText(), 203);
 			patronList.fetchPatrons();
 			return;

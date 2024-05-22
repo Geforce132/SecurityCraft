@@ -13,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class PartialNBTIngredient extends Ingredient { //Copied and adapted from 1.18.2
 	private final Set<Item> items;
-	private final NBTTagCompound nbt;
 	private final NBTPredicate predicate;
 
 	protected PartialNBTIngredient(Set<Item> items, NBTTagCompound nbt) {
@@ -29,8 +28,7 @@ public class PartialNBTIngredient extends Ingredient { //Copied and adapted from
 			throw new IllegalArgumentException("Cannot create a PartialNBTIngredient with no items");
 
 		this.items = Collections.unmodifiableSet(items);
-		this.nbt = nbt;
-		this.predicate = new NBTPredicate(nbt);
+		predicate = new NBTPredicate(nbt);
 	}
 
 	public static PartialNBTIngredient of(NBTTagCompound nbt, Item... items) {
