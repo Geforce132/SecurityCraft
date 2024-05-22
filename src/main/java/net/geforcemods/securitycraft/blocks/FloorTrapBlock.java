@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Random;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
