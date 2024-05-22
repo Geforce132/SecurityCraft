@@ -15,6 +15,7 @@
 	"mixins": [
 		"boat.BoatMixin",
 		"boat.BoatItemMixin",
+		"boat.VanillaInventoryCodeHooksMixin",
 		"camera.ChunkMapMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
