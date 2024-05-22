@@ -98,7 +98,6 @@ public class SCManualScreen extends Screen {
 	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.withUnderlined(true));
 	private final Component ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private final Style crowdinLinkStyle = Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/securitycraft"));
-	private final HoverChecker translationCreditsArea = new HoverChecker(180, 200, 135, 290);
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
@@ -106,6 +105,7 @@ public class SCManualScreen extends Screen {
 	private int startX = -1;
 	private List<FormattedText> subpages = new ArrayList<>();
 	private List<FormattedCharSequence> translationCredits;
+	private HoverChecker translationCreditsArea;
 	private int currentSubpage = 0;
 	private List<FormattedCharSequence> intro2;
 	private PatronList patronList;
@@ -147,6 +147,7 @@ public class SCManualScreen extends Screen {
 			return key1.compareTo(key2);
 		});
 		translationCredits = font.split(Utils.localize("gui.securitycraft:scManual.crowdin").withStyle(ChatFormatting.BLUE, ChatFormatting.UNDERLINE), 180);
+		translationCreditsArea = new HoverChecker(180, 200, width / 2 - 90, width / 2 + 90);
 	}
 
 	@Override
