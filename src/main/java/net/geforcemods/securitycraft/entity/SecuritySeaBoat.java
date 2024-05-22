@@ -359,15 +359,9 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (!level().isClientSide) {
-			if (option == sendAllowlistMessage)
-				entityData.set(SEND_ALLOWLIST_MESSAGE, sendAllowlistMessage.get());
-			else if (option == sendDenylistMessage)
-				entityData.set(SEND_DENYLIST_MESSAGE, sendDenylistMessage.get());
-			else if (option == smartModuleCooldown)
-				entityData.set(SMART_MODULE_COOLDOWN, smartModuleCooldown.get());
-		}
+	public <T> void onOptionChanged(Option<T> option) {
+		if (!level().isClientSide)
+			entityData.set(((EntityDataWrappedOption<T, Option<T>>) option).getEntityDataKey(), option.get());
 	}
 
 	@Override
