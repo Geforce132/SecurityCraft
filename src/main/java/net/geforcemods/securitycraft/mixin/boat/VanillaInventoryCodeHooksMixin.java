@@ -21,8 +21,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.VanillaInventoryCodeHooks;
 
 /**
- * Forge does not call {@link ICapabilityProvider#getCapability) for entities. This mixin adds a call for the security sea
- * boat's cap
+ * Forge does not call {@link net.minecraftforge.common.capabilities.ICapabilityProvider#getCapability} for entities. This
+ * mixin adds a call for the security sea boat's cap
  */
 @Mixin(VanillaInventoryCodeHooks.class)
 public class VanillaInventoryCodeHooksMixin {
@@ -31,10 +31,18 @@ public class VanillaInventoryCodeHooksMixin {
 		List<SecuritySeaBoat> list = level.getEntitiesOfClass(SecuritySeaBoat.class, new AABB(x, y, z, x, y, z).inflate(0.5D), EntitySelector.ENTITY_STILL_ALIVE);
 
 		if (!list.isEmpty()) {
-			SecuritySeaBoat boat = list.get(level.random.nextInt(list.size()));
-			LazyOptional<IItemHandler> entityCap = boat.getCapability(ForgeCapabilities.ITEM_HANDLER, side);
+			SecuritySeaBoat boat;
+			LazyOptional<IItemHandler> entityCap;
 
-			cir.setReturnValue(entityCap.map(capability -> ImmutablePair.<IItemHandler, Object>of(capability, boat)));
+			do {
+				boat = list.remove(level.random.nextInt(list.size()));
+				entityCap = boat.getCapability(ForgeCapabilities.ITEM_HANDLER, side);
+			}
+			while (!entityCap.isPresent() && !list.isEmpty());
+
+			final SecuritySeaBoat finalBoat = boat;
+
+			cir.setReturnValue(entityCap.map(capability -> ImmutablePair.<IItemHandler, Object>of(capability, finalBoat)));
 		}
 	}
 }
