@@ -16,7 +16,7 @@ public class ElectrifiedFenceAndGateBlockEntity extends AllowlistOnlyBlockEntity
 	}
 
 	@Override
-	public String getModuleDescriptionId(String blockName, ModuleType module) {
+	public String getModuleDescriptionId(String denotation, ModuleType module) {
 		return "module.generic.electrified_fence_and_gate.whitelist_module.description";
 	}
 }

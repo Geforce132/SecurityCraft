@@ -8,7 +8,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.level.block.Block;
 
 /**
  * A class that allows blocks that have {@link ICustomizable} block entities to have custom, per-block options that are
@@ -47,7 +46,11 @@ public abstract class Option<T> {
 
 	public abstract void load(CompoundTag tag);
 
-	public abstract void save(CompoundTag tag);
+	public abstract void save(CompoundTag tag, T value);
+
+	public void save(CompoundTag tag) {
+		save(tag, value);
+	}
 
 	public void copy(Option<?> option) {
 		value = (T) option.get();
@@ -56,7 +59,7 @@ public abstract class Option<T> {
 	/**
 	 * @return This option's name.
 	 */
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -113,19 +116,19 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * @param block The block this option is a part of
+	 * @param denotation The denotation to use for the option key, usually the block's name
 	 * @return The language key for this option
 	 */
-	public String getKey(Block block) {
-		return "option." + block.getDescriptionId().substring(6) + "." + getName();
+	public String getKey(String denotation) {
+		return "option." + denotation + "." + getName();
 	}
 
 	/**
-	 * @param block The block this option is a part of
+	 * @param denotation The denotation to use for the option key, usually the block's name
 	 * @return The language key for the description of this option
 	 */
-	public String getDescriptionKey(Block block) {
-		return getKey(block) + ".description";
+	public String getDescriptionKey(String denotation) {
+		return getKey(denotation) + ".description";
 	}
 
 	/**
@@ -133,6 +136,13 @@ public abstract class Option<T> {
 	 */
 	public Component getDefaultInfo() {
 		return Utils.localize("securitycraft.option.default_with_range", getDefaultValue(), getMin(), getMax()).withStyle(ChatFormatting.GRAY);
+	}
+
+	/**
+	 * @return A textual representation of this option's value
+	 */
+	public Component getValueText() {
+		return new TextComponent(toString());
 	}
 
 	@Override
@@ -162,13 +172,18 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, Boolean value) {
 			tag.putBoolean(getName(), value);
 		}
 
 		@Override
 		public Component getDefaultInfo() {
 			return Utils.localize("securitycraft.option.default", Utils.localize(getDefaultValue() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no")).withStyle(ChatFormatting.GRAY);
+		}
+
+		@Override
+		public Component getValueText() {
+			return new TranslatableComponent(get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
 		}
 	}
 
@@ -178,7 +193,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.disabled";
 		}
 	}
@@ -189,7 +204,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.ignoreOwner";
 		}
 	}
@@ -200,7 +215,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.sendAllowlistMessage";
 		}
 	}
@@ -211,7 +226,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.sendDenylistMessage";
 		}
 	}
@@ -236,7 +251,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, Integer value) {
 			tag.putInt(getName(), value);
 		}
 
@@ -252,7 +267,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.smartModuleCooldown";
 		}
 	}
@@ -263,7 +278,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.signalLength";
 		}
 	}
@@ -288,7 +303,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, Double value) {
 			tag.putDouble(getName(), value);
 		}
 
@@ -331,17 +346,18 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(CompoundTag tag) {
+		public void save(CompoundTag tag, T value) {
 			tag.putInt(getName(), value.ordinal());
 		}
 
-		public Component getValueName() {
+		@Override
+		public Component getValueText() {
 			return new TextComponent(value.name());
 		}
 
 		@Override
 		public Component getDefaultInfo() {
-			return new TranslatableComponent("securitycraft.option.default", getValueName()).withStyle(ChatFormatting.GRAY);
+			return new TranslatableComponent("securitycraft.option.default", getValueText()).withStyle(ChatFormatting.GRAY);
 		}
 	}
 
@@ -351,12 +367,12 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.targetingMode";
 		}
 
 		@Override
-		public Component getValueName() {
+		public Component getValueText() {
 			return value.translate();
 		}
 	}

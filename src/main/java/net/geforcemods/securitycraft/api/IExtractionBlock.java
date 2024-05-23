@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Defines a block that can extract from a Passcode-protected Chest, Passcode-protected Furnace, and Block Pocket Manager.
+ * Defines a block that can extract from a Passcode-protected Chest, Passcode-protected Furnace, Block Pocket Manager, ...
  * Call
  *
  * <pre>
@@ -19,18 +19,18 @@ import net.minecraft.world.level.block.state.BlockState;
  */
 public interface IExtractionBlock {
 	/**
-	 * The protected block uses this to check if this block can extract items
+	 * The protected object uses this to check if this block can extract items
 	 *
-	 * @param be The block entity of the protected block
-	 * @param level The level that the protected block is in
+	 * @param ownable The protected object
+	 * @param level The level that the object is in
 	 * @param pos The position of the block that is trying to extract items
 	 * @param state The state of the block that is trying to extract items
 	 * @return true if extraction is possible, false otherwise
 	 */
-	public boolean canExtract(IOwnable be, Level level, BlockPos pos, BlockState state);
+	public boolean canExtract(IOwnable ownable, Level level, BlockPos pos, BlockState state);
 
 	/**
-	 * @return The block that is trying to extract from a passcode-protected chest/furnace
+	 * @return The block that is trying to extract from something
 	 */
 	public Block getBlock();
 }

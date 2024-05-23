@@ -23,7 +23,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 	public CustomizeBlockMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.CUSTOMIZE_BLOCK_MENU.get(), windowId);
-		this.moduleInv = (IModuleInventory) level.getBlockEntity(pos);
+		moduleInv = (IModuleInventory) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		int slotId = 0;
@@ -110,7 +110,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(worldPosCallable, player, moduleInv.getBlockEntity().getBlockState().getBlock());
+		return worldPosCallable.evaluate((level, pos) -> player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0, true);
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler {
