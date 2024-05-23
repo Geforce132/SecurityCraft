@@ -83,8 +83,8 @@ public class KeypadTrapdoorBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == disabled && ((BooleanOption) option).get() || option == signalLength) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(TrapDoorBlock.OPEN, false));
 			SCContent.KEYPAD_TRAPDOOR.get().playSound(null, level, worldPosition, false);
 		}
