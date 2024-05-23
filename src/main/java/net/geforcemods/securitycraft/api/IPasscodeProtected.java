@@ -26,7 +26,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 /**
  * Implementing this interface designates an object as being passcode-protected. Implementing this allows you to use
  * {@link SetPasscodeScreen} and {@link CheckPasscodeScreen} to easily set your object's passcode. Extends
- * {@link ICodebreakable} as most passcode-protected object are likely able to be hacked using the Codebreaker by default.
+ * {@link ICodebreakable} as most passcode-protected objects are likely able to be hackable using the Codebreaker by default.
  *
  * @author Geforce
  */
@@ -73,7 +73,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param pos The position to open the screen at
 	 */
 	default void openSetPasscodeScreen(ServerPlayer player, BlockPos pos) {
-		PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SET_PASSCODE, pos));
+		PacketDistributor.sendToPlayer(player, new OpenScreen(DataType.SET_PASSCODE, pos));
 	}
 
 	@Override

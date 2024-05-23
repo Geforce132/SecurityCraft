@@ -132,7 +132,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	public static IItemHandler getCapability(KeypadChestBlockEntity be, Direction side) {
-		if (BlockUtils.isAllowedToExtractFromProtectedBlock(side, be))
+		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
 			return new InvWrapper(ChestBlock.getContainer((ChestBlock) be.getBlockState().getBlock(), be.getBlockState(), be.getLevel(), be.getBlockPos(), true));
 		else
 			return new InsertOnlyInvWrapper(be);
