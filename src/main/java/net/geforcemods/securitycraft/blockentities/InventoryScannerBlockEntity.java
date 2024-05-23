@@ -406,7 +406,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
 				if (connectedScanner != null)
-					connectedScanner.setSignalLength(((IntOption) option).get());
+					connectedScanner.setSignalLength(io.get());
 			}
 			default -> throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
 		}
