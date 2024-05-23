@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
@@ -216,16 +217,22 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		KeypadChestBlockEntity otherBe = findOther();
 
 		if (otherBe != null) {
-			if (option.getName().equals("sendAllowlistMessage"))
-				otherBe.setSendsAllowlistMessage(((BooleanOption) option).get());
-			else if (option.getName().equals("sendDenylistMessage"))
-				otherBe.setSendsDenylistMessage(((BooleanOption) option).get());
-			else if (option.getName().equals("smartModuleCooldown"))
+			if (option instanceof BooleanOption bo) {
+				if (option == sendAllowlistMessage)
+					otherBe.setSendsAllowlistMessage(bo.get());
+				else if (option == sendDenylistMessage)
+					otherBe.setSendsAllowlistMessage(bo.get());
+				else
+					throw new UnsupportedOperationException("Unhandled option synchronization in keypad chest! " + option.getName());
+			}
+			else if (option instanceof IntOption && option == smartModuleCooldown)
 				otherBe.smartModuleCooldown.copy(option);
+			else
+				throw new UnsupportedOperationException("Unhandled option synchronization in keypad chest! " + option.getName());
 		}
 
 		ICustomizable.super.onOptionChanged(option);

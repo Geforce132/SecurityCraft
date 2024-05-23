@@ -10,6 +10,7 @@
 - Change: When picking up a placed sentry, the resulting sentry item will now be named according to the custom name of the removed sentry
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
+- API: ICustomizable#onOptionChanged now has a proper generic type
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 - Fix: The block pocket can be assembled without the necessary items

@@ -163,8 +163,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals(signalLength.getName()))
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == signalLength)
 			turnOffRedstoneOutput();
 
 		super.onOptionChanged(option);
