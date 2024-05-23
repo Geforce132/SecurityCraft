@@ -110,6 +110,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.state.StateHolder;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ColorHelper;
 import net.minecraft.util.Direction;
 import net.minecraft.util.INameable;
 import net.minecraft.util.ResourceLocation;
@@ -651,19 +652,7 @@ public class ClientHandler {
 		else
 			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
-		return tintReinforcedBlocks ? mixTints(tint1, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint1;
-	}
-
-	private static int mixTints(int tint1, int tint2) {
-		int red = (tint1 >> 0x10) & 0xFF;
-		int green = (tint1 >> 0x8) & 0xFF;
-		int blue = tint1 & 0xFF;
-
-		red *= (float) (tint2 >> 0x10 & 0xFF) / 0xFF;
-		green *= (float) (tint2 >> 0x8 & 0xFF) / 0xFF;
-		blue *= (float) (tint2 & 0xFF) / 0xFF;
-
-		return ((red << 8) + green << 8) + blue;
+		return tintReinforcedBlocks ? ColorHelper.PackedColor.multiply(tint1, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint1;
 	}
 
 	public static PlayerEntity getClientPlayer() {
