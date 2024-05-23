@@ -1,10 +1,8 @@
 package net.geforcemods.securitycraft.misc;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -13,9 +11,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class SaltData extends SavedData {
+	private static final Object DUMMY = new Object();
 	private static SaltData instance;
-	private final Map<UUID, byte[]> saltMap = new HashMap<>();
-	private final Set<UUID> saltKeysInUse = new HashSet<>();
+	private final Map<UUID, byte[]> saltMap = new ConcurrentHashMap<>();
+	private final Map<UUID, Object> saltKeysInUse = new ConcurrentHashMap<>();
 
 	private SaltData() {}
 
@@ -36,14 +35,14 @@ public class SaltData extends SavedData {
 
 	public static void setKeyInUse(UUID saltKey) {
 		if (saltKey != null)
-			instance.saltKeysInUse.add(saltKey);
+			instance.saltKeysInUse.put(saltKey, DUMMY);
 	}
 
 	public static boolean isKeyInUse(UUID saltKey) {
 		if (saltKey == null)
 			return false;
 
-		return instance.saltKeysInUse.contains(saltKey);
+		return instance.saltKeysInUse.containsKey(saltKey);
 	}
 
 	public static byte[] getSalt(UUID saltKey) {
