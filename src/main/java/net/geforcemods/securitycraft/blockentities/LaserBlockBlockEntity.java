@@ -243,7 +243,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	public static IItemHandler getCapability(LaserBlockBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be.lenses) : new InsertOnlyInvWrapper(be.lenses);
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be.lenses) : new InsertOnlyInvWrapper(be.lenses);
 	}
 
 	@Override

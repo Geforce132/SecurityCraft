@@ -588,7 +588,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	public static IItemHandler getCapability(BlockPocketManagerBlockEntity be, Direction side) {
 		//prevent extracting while auto building the block pocket
-		if (!be.isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedBlock(side, be))
+		if (!be.isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
 			return new ValidityCheckItemStackHandler(be.storage);
 		else
 			return new ValidityCheckInsertOnlyItemStackHandler(be.storage);

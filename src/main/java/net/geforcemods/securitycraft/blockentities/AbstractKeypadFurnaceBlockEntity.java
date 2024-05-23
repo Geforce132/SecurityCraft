@@ -174,7 +174,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	public static IItemHandler getCapability(AbstractKeypadFurnaceBlockEntity be, Direction side) {
-		if (BlockUtils.isAllowedToExtractFromProtectedBlock(side, be))
+		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
 			return side == null ? new InvWrapper(be) : new SidedInvWrapper(be, side);
 		else
 			return new InsertOnlySidedInvWrapper(be, side);

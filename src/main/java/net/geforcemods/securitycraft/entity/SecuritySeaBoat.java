@@ -322,7 +322,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	public static IItemHandler getCapability(SecuritySeaBoat boat, Direction direction) {
-		return BlockUtils.isAllowedToExtractFromProtectedBlock(direction, boat, boat.level(), boat.blockPosition()) ? new InvWrapper(boat) : new InsertOnlyInvWrapper(boat);
+		return BlockUtils.isAllowedToExtractFromProtectedObject(direction, boat, boat.level(), boat.blockPosition()) ? new InvWrapper(boat) : new InsertOnlyInvWrapper(boat);
 	}
 
 	@Override

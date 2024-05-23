@@ -112,7 +112,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	}
 
 	public static IItemHandler getCapability(ReinforcedHopperBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new VanillaHopperItemHandler(be) : new VanillaHopperInsertOnlyItemHandler(be);
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new VanillaHopperItemHandler(be) : new VanillaHopperInsertOnlyItemHandler(be);
 	}
 
 	@Override

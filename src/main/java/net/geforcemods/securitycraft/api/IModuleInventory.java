@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 /**
- * Let your block entity implement this to be able to add modules to it
+ * Let your object implement this to be able to add modules to it
  *
  * @author bl4ckscor3
  */
@@ -56,8 +56,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 */
 	public void toggleModuleState(ModuleType module, boolean shouldBeEnabled);
 
+	/**
+	 * @return The level of this object
+	 */
 	public Level myLevel();
 
+	/**
+	 * @return The position of this object
+	 */
 	public BlockPos myPos();
 
 	/**
@@ -120,6 +126,9 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		return id >= 100 ? id - 100 : id;
 	}
 
+	/**
+	 * Drops all modules in this inventory at the position in the world
+	 */
 	public default void dropAllModules() {
 		for (ItemStack module : getInventory()) {
 			if (!(module.getItem() instanceof ModuleItem))
@@ -265,7 +274,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * @return A List of all ModuleType currently inserted in the TileEntity.
+	 * @return A List of all ModuleType currently inserted in the object
 	 */
 	public default List<ModuleType> getInsertedModules() {
 		ArrayList<ModuleType> modules = new ArrayList<>();
@@ -374,8 +383,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Call this from your read method. Used for reading the module inventory from a tag. Use in conjunction with
-	 * writeModuleInventory.
+	 * Used for reading the module inventory from a tag. Use in conjunction with writeModuleInventory.
 	 *
 	 * @param tag The tag to read the inventory from
 	 * @return A NonNullList of ItemStacks that were read from the given tag
@@ -396,8 +404,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Call this from your load method after loadModuleInventory. Used for loading which modules are enabled from a tag. Use in
-	 * conjunction with saveModuleStates.
+	 * Used for loading which modules are enabled from a tag. Use in conjunction with writeModuleStates and call after
+	 * readModuleInventory.
 	 *
 	 * @param tag The tag to read the states from
 	 * @return An EnumMap of all module types with the enabled flag set as read from the tag
@@ -423,8 +431,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Call this from your save method. Used for writing the module inventory to a tag. Use in conjunction with
-	 * loadModuleInventory.
+	 * Used for writing the module inventory to a tag. Use in conjunction with readModuleInventory.
 	 *
 	 * @param tag The tag to write the inventory to
 	 * @return The modified tag
@@ -448,8 +455,8 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Call this from your save method. Used for writing which modules are enabled to a tag. Use in conjunction with
-	 * loadModuleStates.
+	 * Used for writing which modules are enabled to a tag. Use in conjunction with readModuleStates and call after
+	 * writeModuleInventory.
 	 *
 	 * @param tag The tag to save the module enabled states to
 	 * @return The modified tag
@@ -463,7 +470,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Checks whether the entity is listed on the allowlist of this block, if an allowlist module exists
+	 * Checks whether the entity is listed on the allowlist of this object, if an allowlist module exists
 	 *
 	 * @param entity The entity to check
 	 * @return true if the entity is listed on the allowlist module, false otherwise
@@ -473,7 +480,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Checks whether the name of the entity is listed on the allowlist of this block, if an allowlist module exists
+	 * Checks whether the name of the entity is listed on the allowlist of this object, if an allowlist module exists
 	 *
 	 * @param entity The name of the to check
 	 * @return true if the name of the entity is listed on the allowlist module, false otherwise
@@ -492,7 +499,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Checks whether the entity is listed on the denylist of this block, if a denylist module exists
+	 * Checks whether the entity is listed on the denylist of this object, if a denylist module exists
 	 *
 	 * @param entity The entity to check
 	 * @return true if the entity is listed on the denylist module, false otherwise
@@ -525,7 +532,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * Determine whether the modules in this inventory should be dropped when the block is broken
+	 * Determine whether the modules in this inventory should be dropped when the object is broken
 	 *
 	 * @return true if the modules should be dropped, false if not
 	 */
