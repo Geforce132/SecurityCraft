@@ -200,7 +200,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		//make players stop viewing the camera when it's disabled
 		if (option.getName().equals("disabled") && !level.isClientSide && ((BooleanOption) option).get()) {
 			for (ServerPlayerEntity player : ((ServerWorld) level).players()) {
