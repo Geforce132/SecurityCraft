@@ -597,7 +597,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		//"!isPlacingBlocks()" prevents extracting while auto building the block pocket
 		if (cap == ForgeCapabilities.ITEM_HANDLER)
-			return !isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? getStorageHandler().cast() : getInsertOnlyHandler().cast();
+			return !isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedObject(side, this) ? getStorageHandler().cast() : getInsertOnlyHandler().cast();
 		else
 			return super.getCapability(cap, side);
 	}

@@ -27,7 +27,7 @@ import net.minecraftforge.network.PacketDistributor;
 /**
  * Implementing this interface designates an object as being passcode-protected. Implementing this allows you to use
  * {@link SetPasscodeScreen} and {@link CheckPasscodeScreen} to easily set your object's passcode. Extends
- * {@link ICodebreakable} as most passcode-protected object are likely able to be hacked using the Codebreaker by default.
+ * {@link ICodebreakable} as most passcode-protected objects are likely able to be hackable using the Codebreaker by default.
  *
  * @author Geforce
  */
