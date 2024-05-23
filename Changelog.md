@@ -32,6 +32,7 @@
 - Fix: Fake Water/Fake Lava can be brewed using any kind of potion instead of only harming/healing potions
 - Fix: Cloning a passcode-protected block using the /clone command will invalidate the passcode of the original block if the clone is removed
 - Fix: Sonic Security System settings sometimes do not persist through world reloads
+- Fix: Potential crash in SaltData (ConcurrentModificationException)
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
