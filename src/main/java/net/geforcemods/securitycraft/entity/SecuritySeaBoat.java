@@ -329,7 +329,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (isAlive() && cap == ForgeCapabilities.ITEM_HANDLER)
-			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this, level(), blockPosition()) ? super.getCapability(cap, side) : getInsertOnlyHandler().cast();
+			return BlockUtils.isAllowedToExtractFromProtectedObject(side, this, level(), blockPosition()) ? super.getCapability(cap, side) : getInsertOnlyHandler().cast();
 		else
 			return super.getCapability(cap, side);
 	}
