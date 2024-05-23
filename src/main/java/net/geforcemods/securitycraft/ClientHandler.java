@@ -611,19 +611,7 @@ public class ClientHandler {
 		else
 			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
-		return tintReinforcedBlocks ? mixTints(tint, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
-	}
-
-	private static int mixTints(int tint1, int tint2) {
-		int red = (tint1 >> 0x10) & 0xFF;
-		int green = (tint1 >> 0x8) & 0xFF;
-		int blue = tint1 & 0xFF;
-
-		red *= (float) (tint2 >> 0x10 & 0xFF) / 0xFF;
-		green *= (float) (tint2 >> 0x8 & 0xFF) / 0xFF;
-		blue *= (float) (tint2 & 0xFF) / 0xFF;
-
-		return FastColor.ARGB32.color(0xFF, red, green, blue);
+		return tintReinforcedBlocks ? FastColor.ARGB32.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
 	}
 
 	public static Player getClientPlayer() {
