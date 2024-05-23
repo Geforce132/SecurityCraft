@@ -198,16 +198,24 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		KeypadChestBlockEntity otherTe = findOther();
 
 		if (otherTe != null) {
-			if (option.getName().equals("sendAllowlistMessage"))
-				otherTe.setSendsAllowlistMessage(((BooleanOption) option).get());
-			else if (option.getName().equals("sendDenylistMessage"))
-				otherTe.setSendsDenylistMessage(((BooleanOption) option).get());
-			else if (option.getName().equals("smartModuleCooldown"))
+			if (option instanceof BooleanOption) {
+				BooleanOption bo = (BooleanOption) option;
+
+				if (option == sendAllowlistMessage)
+					otherTe.setSendsAllowlistMessage(bo.get());
+				else if (option == sendDenylistMessage)
+					otherTe.setSendsDenylistMessage(bo.get());
+				else
+					throw new UnsupportedOperationException("Unhandled option synchronization in keypad chest! " + option.getName());
+			}
+			else if (option == smartModuleCooldown)
 				otherTe.smartModuleCooldown.copy(option);
+			else
+				throw new UnsupportedOperationException("Unhandled option synchronization in keypad chest! " + option.getName());
 		}
 	}
 

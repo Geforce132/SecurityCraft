@@ -227,18 +227,32 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		RiftStabilizerBlockEntity connectedTileEntity = RiftStabilizerBlock.getConnectedTileEntity(world, pos);
 
 		if (connectedTileEntity != null) {
-			if (option.getName().equals("signalLength"))
-				connectedTileEntity.setSignalLength(((IntOption) option).get());
-			else if (option.getName().equals("range"))
-				connectedTileEntity.setRange(((IntOption) option).get());
-			else if (option.getName().equals("disabled"))
-				connectedTileEntity.setDisabled(((BooleanOption) option).get());
-			else if (option.getName().equals("ignoreOwner"))
-				connectedTileEntity.setIgnoresOwner(((BooleanOption) option).get());
+			if (option instanceof IntOption) {
+				IntOption io = (IntOption) option;
+
+				if (option == signalLength)
+					connectedTileEntity.setSignalLength(io.get());
+				else if (option == range)
+					connectedTileEntity.setRange(io.get());
+				else
+					throw new UnsupportedOperationException("Unhandled option synchronization in rift stabilizer! " + option.getName());
+			}
+			else if (option instanceof BooleanOption) {
+				BooleanOption bo = (BooleanOption) option;
+
+				if (option == disabled)
+					connectedTileEntity.setDisabled(bo.get());
+				else if (option == ignoreOwner)
+					connectedTileEntity.setIgnoresOwner(bo.get());
+				else
+					throw new UnsupportedOperationException("Unhandled option synchronization in rift stabilizer! " + option.getName());
+			}
+			else
+				throw new UnsupportedOperationException("Unhandled option synchronization in rift stabilizer! " + option.getName());
 		}
 
 		super.onOptionChanged(option);

@@ -10,6 +10,7 @@
 - Change: When picking up a placed sentry, the resulting sentry item will now be named according to the custom name of the removed sentry
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
+- API: ICustomizable#onOptionChanged now has a proper generic type
 - Fix: The block pocket can be assembled without the necessary items
 - Fix: Reinforcing a placed end rod will briefly destroy the end rod before it is replaced with a reinforced end rod
 - Fix: Reinforced End Rods do not emit light

@@ -92,7 +92,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		propagate(new ILinkedAction.OptionChanged<>(option), this);
 	}
 
@@ -184,8 +184,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedTEs TileEntityLinkables that aren't going to have onLinkedBlockAction() called on them, always add your
-	 *            tile entity to the list if you're going to call propagate() in this method to chain-link multiple
-	 *            blocks (i.e: like Laser Blocks)
+	 *            tile entity to the list if you're going to call propagate() in this method to chain-link multiple blocks (i.e:
+	 *            like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedTEs) {}
 }

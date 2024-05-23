@@ -127,8 +127,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals(signalLength.getName())) {
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == signalLength) {
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockChangeDetectorBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.blockChangeDetector);
 		}

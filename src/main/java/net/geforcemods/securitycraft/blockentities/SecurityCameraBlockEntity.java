@@ -213,8 +213,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("disabled") && ((BooleanOption) option).get())
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == disabled && ((BooleanOption) option).get())
 			makeEveryoneStopViewingTheCamera();
 	}
 

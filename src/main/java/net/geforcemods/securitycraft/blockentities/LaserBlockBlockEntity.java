@@ -169,8 +169,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals(signalLength.getName()))
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == signalLength)
 			onRemoveRedstoneModule();
 
 		super.onOptionChanged(option);

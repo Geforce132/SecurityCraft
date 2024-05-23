@@ -77,7 +77,7 @@ public class SecretSignBlockEntity extends TileEntitySign implements IOwnable, I
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		IBlockState state = world.getBlockState(pos);
 
 		world.notifyBlockUpdate(pos, state, state, 2);
