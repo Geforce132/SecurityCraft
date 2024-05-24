@@ -126,9 +126,6 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 										.include(SCContent.NOTES.get()))
 								.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)))));
 		//@formatter:on
-		add(SCContent.HORIZONTAL_REINFORCED_IRON_BARS, noDrop());
-		add(SCContent.INVENTORY_SCANNER_FIELD, noDrop());
-		add(SCContent.LASER_FIELD, noDrop());
 	}
 
 	protected final LootTable.Builder createTwoHighBlockLootTable(Block twoHighBlock) {
