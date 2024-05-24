@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -35,6 +36,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 			return "option.generic.viewActivated.maximumDistance";
 		}
 	};
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int viewCooldown = 0;
 
 	public ScannerDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -53,7 +55,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		BlockState lowerState = level.getBlockState(worldPosition.below());
 		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
-		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !Utils.isEntityInvisible(entity)) {
+		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !isConsideredInvisible(entity)) {
 			if (!(entity instanceof Player player) || facingAxis != hitResult.getDirection().getAxis())
 				return false;
 
@@ -119,7 +121,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled, maximumDistance
+				sendMessage, signalLength, disabled, maximumDistance, respectInvisibility
 		};
 	}
 
@@ -135,5 +137,10 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public double getMaximumDistance() {
 		return maximumDistance.get();
+	}
+
+	@Override
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
 	}
 }

@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -70,7 +69,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-		if (!level.isClientSide && entity instanceof LivingEntity livingEntity && !Utils.isEntityInvisible(livingEntity)) {
+		if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
 			if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 				return;
 
@@ -80,7 +79,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 				Block offsetBlock = offsetState.getBlock();
 
 				if (offsetBlock == SCContent.LASER_BLOCK.get() && level.getBlockEntity(offsetPos) instanceof LaserBlockBlockEntity laser) {
-					if (laser.isAllowed(entity))
+					if (laser.isAllowed(entity) || laser.isConsideredInvisible(livingEntity))
 						return;
 
 					if (!(entity instanceof Player player && laser.isOwnedBy(player) && laser.ignoresOwner())) {

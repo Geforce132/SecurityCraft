@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
@@ -58,6 +59,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		}
 	};
 	private DisabledOption disabled = new DisabledOption(false);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private GameProfile ownerProfile;
 	private int viewCooldown = 0;
 
@@ -80,7 +82,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 			int signalLength = getSignalLength();
 
-			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !Utils.isEntityInvisible(entity)) {
+			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !isConsideredInvisible(entity)) {
 				if (entity instanceof Player player) {
 					Owner viewingPlayer = new Owner(player);
 
@@ -176,7 +178,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				activatedByEntities, sendMessage, signalLength, disabled, maximumDistance
+				activatedByEntities, sendMessage, signalLength, disabled, maximumDistance, respectInvisibility
 		};
 	}
 
@@ -269,5 +271,10 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		}
 		else
 			onChanged.accept(input);
+	}
+
+	@Override
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
 	}
 }
