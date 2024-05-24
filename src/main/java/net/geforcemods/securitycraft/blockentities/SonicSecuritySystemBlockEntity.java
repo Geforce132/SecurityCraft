@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -507,11 +506,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 
 	public boolean disablesBlocksWhenTuneIsPlayed() {
 		return disableBlocksWhenTuneIsPlayed;
-	}
-
-	@Override
-	public TileEntity getTileEntity() {
-		return this;
 	}
 
 	/**

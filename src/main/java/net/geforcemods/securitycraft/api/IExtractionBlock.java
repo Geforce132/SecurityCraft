@@ -6,7 +6,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Defines a block that can extract from a Passcode-protected Chest, Passcode-protected Furnace, and Block Pocket Manager.
+ * Defines a block that can extract from a Passcode-protected Chest, Passcode-protected Furnace, Block Pocket Manager, ...
  * Call
  *
  * <pre>
@@ -21,18 +21,18 @@ import net.minecraft.world.World;
  */
 public interface IExtractionBlock {
 	/**
-	 * The protected block uses this to check if this block can extract items
+	 * The protected block uses this to check if this object can extract items
 	 *
-	 * @param te The tile entity of the protected block
-	 * @param world The world that the protected block is in
+	 * @param ownable The tile entity of the protected object
+	 * @param world The world that the protected object is in
 	 * @param pos The position of the block that is trying to extract items
 	 * @param state The state of the block that is trying to extract items
 	 * @return true if extraction is possible, false otherwise
 	 */
-	public boolean canExtract(IOwnable te, World world, BlockPos pos, IBlockState state);
+	public boolean canExtract(IOwnable ownable, World world, BlockPos pos, IBlockState state);
 
 	/**
-	 * @return The block that is trying to extract from a passcode-protected chest/furnace
+	 * @return The block that is trying to extract from something
 	 */
 	public Block getBlock();
 }

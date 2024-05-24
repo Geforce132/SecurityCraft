@@ -188,7 +188,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) getNormalHandler() : (T) getInsertOnlyHandler();
+			return BlockUtils.isAllowedToExtractFromProtectedObject(facing, this) ? (T) getNormalHandler() : (T) getInsertOnlyHandler();
 		else
 			return super.getCapability(capability, facing);
 	}

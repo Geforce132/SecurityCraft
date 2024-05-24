@@ -127,7 +127,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler();
+			return BlockUtils.isAllowedToExtractFromProtectedObject(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler();
 		else
 			return super.getCapability(capability, facing);
 	}
@@ -476,5 +476,15 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 
 	public ResourceLocation getPreviousChest() {
 		return previousChest;
+	}
+
+	@Override
+	public World myLevel() {
+		return world;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return pos;
 	}
 }

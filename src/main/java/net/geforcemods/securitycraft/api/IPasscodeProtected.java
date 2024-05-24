@@ -13,8 +13,8 @@ import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
@@ -23,9 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 /**
- * Implementing this interface designates a block entity as being passcode-protected. Implementing this allows you to use
- * {@link SetPasscodeScreen} and {@link CheckPasscodeScreen} to easily set your block's passcode. Extends
- * {@link ICodebreakable} as most passcode-protected blocks are likely able to be hacked using the Codebreaker by default.
+ * Implementing this interface designates an object as being passcode-protected. Implementing this allows you to use
+ * {@link SetPasscodeScreen} and {@link CheckPasscodeScreen} to easily set your object's passcode. Extends
+ * {@link ICodebreakable} as most passcode-protected object are likely able to be hackable using the Codebreaker by default.
  *
  * @author Geforce
  */
@@ -33,8 +33,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	/**
 	 * Open the check passcode GUI if a passcode is set. <p>
 	 *
-	 * @param world The level of this block entity
-	 * @param pos The position of this block entity
+	 * @param world The level of this object
+	 * @param pos The position of this object
 	 * @param player The player who the GUI should be opened to.
 	 */
 	public default void openPasscodeGUI(World world, BlockPos pos, EntityPlayer player) {
@@ -45,8 +45,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	/**
 	 * Check that a passcode has been set, and if not, opens the set passcode GUI or sends a warning message. <p>
 	 *
-	 * @param world The level of this block entity
-	 * @param pos The position of this block entity
+	 * @param world The level of this object
+	 * @param pos The position of this object
 	 * @param ownable This block entity
 	 * @param player The player who interacted with this block entity
 	 * @return true if a passcode has been set, false otherwise
@@ -57,7 +57,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 				return true;
 
 			if (ownable.isOwnedBy(player))
-				player.openGui(SecurityCraft.instance, Screens.SETUP_PASSCODE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+				openSetPasscodeScreen((EntityPlayerMP) player, world, pos);
 			else
 				PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), TextFormatting.DARK_RED);
 		}
@@ -65,8 +65,19 @@ public interface IPasscodeProtected extends ICodebreakable {
 		return false;
 	}
 
+	/**
+	 * Opens the screen to set the object's passcode
+	 *
+	 * @param player The player to open the screen for
+	 * @param world The world to open the screen in
+	 * @param pos The position to open the screen at
+	 */
+	default void openSetPasscodeScreen(EntityPlayerMP player, World world, BlockPos pos) {
+		player.openGui(SecurityCraft.instance, Screens.SETUP_PASSCODE.ordinal(), world, pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	@Override
-	default boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
+	default boolean shouldAttemptCodebreak(EntityPlayer player) {
 		if (getPasscode() == null) {
 			PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.notSetUp"), TextFormatting.DARK_RED);
 			return false;
@@ -76,19 +87,19 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	@Override
-	public default void useCodebreaker(IBlockState state, EntityPlayer player) {
+	public default void useCodebreaker(EntityPlayer player) {
 		activate(player);
 	}
 
 	/**
-	 * Called whenever a player correctly enters this block's passcode in the passcode GUI.
+	 * Called whenever a player correctly enters this object's passcode in the passcode GUI.
 	 *
 	 * @param player The player who entered the passcode.
 	 */
 	public void activate(EntityPlayer player);
 
 	/**
-	 * Returns the block entity's passcode.
+	 * Returns the object's passcode.
 	 *
 	 * @return The passcode, null if the passcode is not set yet
 	 */
@@ -153,7 +164,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	default void loadPasscode(NBTTagCompound tag) {
 		String passcode = tag.getString(tag.hasKey("Passcode", Constants.NBT.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
-		//SecurityCraft's passcode-protected blocks do not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
+		//SecurityCraft's passcode-protected blocks did not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
 		if (!passcode.isEmpty()) {
 			if (passcode.length() <= 20)
 				hashAndSetPasscode(PasscodeUtils.hashPasscodeWithoutSalt(passcode));
@@ -163,7 +174,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Returns the block entity's salt, which is used for hashing incoming passcodes.
+	 * Returns the object's salt, which is used for hashing incoming passcodes.
 	 *
 	 * @return The salt, null if the passcode and salt are not set yet
 	 */
@@ -172,7 +183,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Returns the block entity's salt key, which is used for retrieving the salt from the external salt list.
+	 * Returns the object's salt key, which is used for retrieving the salt from the external salt list.
 	 *
 	 * @return The stored salt key, null if the passcode and salt are not set yet
 	 */
@@ -187,14 +198,14 @@ public interface IPasscodeProtected extends ICodebreakable {
 	public void setSaltKey(UUID saltKey);
 
 	/**
-	 * Sets this block to be on cooldown and starts the cooldown
+	 * Sets this object to be on cooldown and starts the cooldown
 	 */
 	public void startCooldown();
 
 	/**
-	 * Checks whether this block is on cooldown, meaning a new code cannot be entered.
+	 * Checks whether this object is on cooldown, meaning a new code cannot be entered.
 	 *
-	 * @return true if this block is on cooldown, false otherwise
+	 * @return true if this object is on cooldown, false otherwise
 	 */
 	public boolean isOnCooldown();
 

@@ -89,12 +89,12 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !state.getValue(KeypadBlock.POWERED);
+	public boolean shouldAttemptCodebreak(EntityPlayer player) {
+		return !world.getBlockState(pos).getValue(KeypadBlock.POWERED);
 	}
 
 	@Override
-	public void useCodebreaker(IBlockState state, EntityPlayer player) {
+	public void useCodebreaker(EntityPlayer player) {
 		if (!world.isRemote)
 			activate();
 	}

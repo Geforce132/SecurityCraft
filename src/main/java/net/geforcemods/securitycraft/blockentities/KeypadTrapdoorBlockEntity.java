@@ -68,13 +68,13 @@ public class KeypadTrapdoorBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
+	public boolean shouldAttemptCodebreak(EntityPlayer player) {
 		if (isDisabled()) {
 			player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !state.getValue(BlockTrapDoor.OPEN) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return !world.getBlockState(pos).getValue(BlockTrapDoor.OPEN) && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override

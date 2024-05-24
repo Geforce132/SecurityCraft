@@ -102,8 +102,8 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !state.getValue(KeyPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+	public boolean shouldAttemptCodebreak(EntityPlayer player) {
+		return !world.getBlockState(pos).getValue(KeyPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override

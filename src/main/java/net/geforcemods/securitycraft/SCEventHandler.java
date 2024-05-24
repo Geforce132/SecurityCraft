@@ -38,7 +38,6 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -71,7 +70,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
@@ -404,7 +402,8 @@ public class SCEventHandler {
 			return;
 		}
 
-		if (heldItem == SCContent.codebreaker && handleCodebreaking(event)) {
+		if (heldItem == SCContent.codebreaker && te instanceof ICodebreakable) {
+			((ICodebreakable) te).handleCodebreaking(player, event.getHand());
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 			return;
@@ -419,7 +418,7 @@ public class SCEventHandler {
 
 				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
 					if (!(te.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof DisguisableBlock))
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockModifier.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalBlockModifier), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
 
 					return;
 				}
@@ -752,68 +751,13 @@ public class SCEventHandler {
 				continue;
 
 			// If the SSS is recording, record the note being played
-			if (te.isRecording()) {
+			if (te.isRecording())
 				te.recordNote(vanillaNoteId, instrumentName);
-			}
 			// If the SSS is active, check to see if the note being played matches the saved combination.
 			// If so, toggle its redstone power output on
 			else
 				te.listenToNote(vanillaNoteId, instrumentName);
 		}
-	}
-
-	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		EntityPlayer player = event.getEntityPlayer();
-		World world = player.world;
-		BlockPos pos = event.getPos();
-		TileEntity tileEntity = world.getTileEntity(pos);
-
-		if (tileEntity instanceof ICodebreakable) {
-			if (tileEntity instanceof DisplayCaseBlockEntity && (((DisplayCaseBlockEntity) tileEntity).isOpen() && ((DisplayCaseBlockEntity) tileEntity).getDisplayedStack().isEmpty()))
-				return false;
-
-			double chance = ConfigHandler.codebreakerChance;
-
-			if (chance < 0.0D)
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(world.getBlockState(pos).getBlock()), Utils.localize("messages.securitycraft:codebreakerDisabled"), TextFormatting.RED);
-			else {
-				ICodebreakable codebreakable = (ICodebreakable) tileEntity;
-				ItemStack codebreaker = player.getHeldItem(event.getHand());
-				IBlockState state = world.getBlockState(pos);
-
-				if (!codebreakable.shouldAttemptCodebreak(state, player))
-					return true;
-
-				if (codebreaker.getItem() == SCContent.codebreaker) {
-					if (codebreakable instanceof IOwnable && ((IOwnable) codebreakable).isOwnedBy(player) && !player.isCreative()) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.owned"), TextFormatting.RED);
-						return false;
-					}
-
-					if (!codebreaker.hasTagCompound())
-						codebreaker.setTagCompound(new NBTTagCompound());
-
-					if (CodebreakerItem.wasRecentlyUsed(codebreaker))
-						return false;
-
-					boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-					NBTTagCompound tag = codebreaker.getTagCompound();
-
-					codebreaker.damageItem(1, player);
-					tag.setLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
-					tag.setBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
-
-					if (isSuccessful)
-						codebreakable.useCodebreaker(state, player);
-					else
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.failed"), TextFormatting.RED);
-				}
-			}
-
-			return true;
-		}
-
-		return false;
 	}
 
 	private static String getRandomTip() {

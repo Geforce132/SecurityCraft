@@ -70,8 +70,8 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(IBlockState state, EntityPlayer player) {
-		return !isOpen() && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+	public boolean shouldAttemptCodebreak(EntityPlayer player) {
+		return !isOpen() && !getDisplayedStack().isEmpty() && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override

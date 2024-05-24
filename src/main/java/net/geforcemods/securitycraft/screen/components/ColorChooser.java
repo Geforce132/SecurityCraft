@@ -13,6 +13,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -90,9 +91,9 @@ public class ColorChooser extends GuiScreen {
 
 		updateHSBValues(red, green, blue);
 		extraAreas.add(new Rectangle(xStart, yStart, 144, 108));
-		hueSlider = addButton(new HueSlider(block, 0, colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, new net.geforcemods.securitycraft.screen.components.Slider.ISlider() {
+		hueSlider = addButton(new HueSlider(BlockUtils.getLanguageKeyDenotation(block), 0, colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, new net.geforcemods.securitycraft.screen.components.Slider.ISlider() {
 			@Override
-			public void onChangeSliderValue(Slider slider, Block block, int id) {
+			public void onChangeSliderValue(Slider slider, String denotation, int id) {
 				h = slider.getValueInt() / 360.0F;
 				updateTextFields(null);
 				onColorChange();
@@ -293,8 +294,8 @@ public class ColorChooser extends GuiScreen {
 	}
 
 	public class HueSlider extends Slider {
-		public HueSlider(Block block, int id, int x, int y, int width, int height, double d, net.geforcemods.securitycraft.screen.components.Slider.ISlider iSlider) {
-			super("", block, id, x, y, width, height, "", 0.0D, 360.0D, d, false, iSlider);
+		public HueSlider(String denotation, int id, int x, int y, int width, int height, double d, net.geforcemods.securitycraft.screen.components.Slider.ISlider iSlider) {
+			super("", denotation, id, x, y, width, height, "", 0.0D, 360.0D, d, false, iSlider);
 		}
 
 		@Override

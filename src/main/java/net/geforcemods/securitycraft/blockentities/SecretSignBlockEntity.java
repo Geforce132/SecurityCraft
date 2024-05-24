@@ -18,6 +18,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class SecretSignBlockEntity extends TileEntitySign implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
@@ -121,5 +123,15 @@ public class SecretSignBlockEntity extends TileEntitySign implements IOwnable, I
 			onModuleInserted(getModule(module), module, true);
 		else
 			onModuleRemoved(getModule(module), module, true);
+	}
+
+	@Override
+	public World myLevel() {
+		return world;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return pos;
 	}
 }

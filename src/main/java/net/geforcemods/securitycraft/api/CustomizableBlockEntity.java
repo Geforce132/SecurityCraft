@@ -7,6 +7,8 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * Extend this class in your TileEntity to make it customizable. You will be able to modify it with the various modules in
@@ -53,5 +55,15 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 			onModuleInserted(getModule(module), module, true);
 		else
 			onModuleRemoved(getModule(module), module, true);
+	}
+
+	@Override
+	public World myLevel() {
+		return world;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return pos;
 	}
 }

@@ -10,7 +10,6 @@ package net.geforcemods.securitycraft.screen.components;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
@@ -30,15 +29,15 @@ public class Slider extends GuiButtonExt {
 	@Nullable
 	private ISlider parent = null;
 	private boolean drawString = true;
-	private Block block;
+	private String denotation;
 	private String prefix;
 
-	public Slider(String initialString, Block block, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean drawStr, @Nullable ISlider par) {
+	public Slider(String initialString, String denotation, int id, int xPos, int yPos, int width, int height, String prefix, double minVal, double maxVal, double currentVal, boolean drawStr, @Nullable ISlider par) {
 		super(id, xPos, yPos, width, height, prefix);
 		setMinValue(minVal);
 		setMaxValue(maxVal);
 		parent = par;
-		this.block = block;
+		this.denotation = denotation;
 		setSliderValue((currentVal - minVal) / (maxVal - minVal));
 		this.prefix = prefix;
 		displayString = initialString;
@@ -87,7 +86,7 @@ public class Slider extends GuiButtonExt {
 			setSliderValue(1.0F);
 
 		if (parent != null)
-			parent.onChangeSliderValue(this, block, id);
+			parent.onChangeSliderValue(this, denotation, id);
 	}
 
 	@Override
@@ -139,7 +138,7 @@ public class Slider extends GuiButtonExt {
 	}
 
 	public static interface ISlider {
-		void onChangeSliderValue(Slider slider, Block block, int id);
+		void onChangeSliderValue(Slider slider, String denotation, int id);
 
 		void onMouseRelease(int id);
 	}

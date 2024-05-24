@@ -181,8 +181,8 @@ public class IMSBlock extends OwnableBlock {
 		}
 
 		@Override
-		public boolean canExtract(IOwnable te, World world, BlockPos pos, IBlockState state) {
-			return te.getOwner().owns((IMSBlockEntity) world.getTileEntity(pos));
+		public boolean canExtract(IOwnable ownable, World world, BlockPos pos, IBlockState state) {
+			return ownable.getOwner().owns((IMSBlockEntity) world.getTileEntity(pos));
 		}
 
 		@Override

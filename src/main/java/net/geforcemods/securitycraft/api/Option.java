@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -56,7 +55,11 @@ public abstract class Option<T> {
 
 	public abstract void load(NBTTagCompound tag);
 
-	public abstract void save(NBTTagCompound tag);
+	public abstract void save(NBTTagCompound tag, T value);
+
+	public void save(NBTTagCompound tag) {
+		save(tag, value);
+	}
 
 	public void copy(Option<?> option) {
 		value = (T) option.get();
@@ -65,7 +68,7 @@ public abstract class Option<T> {
 	/**
 	 * @return This option's name.
 	 */
-	public final String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -122,19 +125,19 @@ public abstract class Option<T> {
 	}
 
 	/**
-	 * @param block The block this option is a part of
+	 * @param denotation The denotation to use for the option key, usually the block's name
 	 * @return The language key for this option
 	 */
-	public String getKey(Block block) {
-		return "option." + block.getTranslationKey().substring(5) + "." + getName();
+	public String getKey(String denotation) {
+		return "option." + denotation + "." + getName();
 	}
 
 	/**
-	 * @param block The block this option is a part of
+	 * @param denotation The denotation to use for the option key, usually the block's name
 	 * @return The language key for the description of this option
 	 */
-	public String getDescriptionKey(Block block) {
-		return getKey(block) + ".description";
+	public String getDescriptionKey(String denotation) {
+		return getKey(denotation) + ".description";
 	}
 
 	/**
@@ -142,6 +145,13 @@ public abstract class Option<T> {
 	 */
 	public ITextComponent getDefaultInfo() {
 		return Utils.localize("securitycraft.option.default_with_range", getDefaultValue(), getMin(), getMax()).setStyle(new Style().setColor(TextFormatting.GRAY));
+	}
+
+	/**
+	 * @return A textual representation of this option's value
+	 */
+	public ITextComponent getValueText() {
+		return new TextComponentString(toString());
 	}
 
 	@Override
@@ -171,13 +181,18 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag, Boolean value) {
 			tag.setBoolean(getName(), value);
 		}
 
 		@Override
 		public ITextComponent getDefaultInfo() {
 			return Utils.localize("securitycraft.option.default", new TextComponentTranslation(getDefaultValue() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no").getFormattedText()).setStyle(new Style().setColor(TextFormatting.GRAY));
+		}
+
+		@Override
+		public ITextComponent getValueText() {
+			return new TextComponentTranslation(get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
 		}
 	}
 
@@ -187,7 +202,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.disabled";
 		}
 	}
@@ -198,7 +213,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.ignoreOwner";
 		}
 	}
@@ -209,7 +224,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.sendAllowlistMessage";
 		}
 	}
@@ -220,7 +235,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.sendDenylistMessage";
 		}
 	}
@@ -248,7 +263,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag, Integer value) {
 			tag.setInteger(getName(), value);
 		}
 
@@ -258,9 +273,9 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void onChangeSliderValue(Slider slider, Block block, int id) {
+		public void onChangeSliderValue(Slider slider, String denotation, int id) {
 			setValue((int) slider.getValue());
-			slider.displayString = Utils.localize(getKey(block), toString()).getFormattedText();
+			slider.displayString = Utils.localize(getKey(denotation), toString()).getFormattedText();
 		}
 
 		@Override
@@ -275,7 +290,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.smartModuleCooldown";
 		}
 	}
@@ -286,7 +301,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.signalLength";
 		}
 	}
@@ -314,7 +329,7 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag, Double value) {
 			tag.setDouble(getName(), value);
 		}
 
@@ -329,9 +344,9 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void onChangeSliderValue(Slider slider, Block block, int id) {
+		public void onChangeSliderValue(Slider slider, String denotation, int id) {
 			setValue(slider.getValue());
-			slider.displayString = Utils.localize(getKey(block), toString()).getFormattedText();
+			slider.displayString = Utils.localize(getKey(denotation), toString()).getFormattedText();
 		}
 
 		@Override
@@ -368,17 +383,18 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public void save(NBTTagCompound tag) {
+		public void save(NBTTagCompound tag, T value) {
 			tag.setInteger(getName(), value.ordinal());
 		}
 
-		public ITextComponent getValueName() {
+		@Override
+		public ITextComponent getValueText() {
 			return new TextComponentString(value.name());
 		}
 
 		@Override
 		public ITextComponent getDefaultInfo() {
-			return Utils.localize("securitycraft.option.default", getValueName()).setStyle(new Style().setColor(TextFormatting.GRAY));
+			return Utils.localize("securitycraft.option.default", getValueText()).setStyle(new Style().setColor(TextFormatting.GRAY));
 		}
 	}
 
@@ -388,12 +404,12 @@ public abstract class Option<T> {
 		}
 
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.targetingMode";
 		}
 
 		@Override
-		public ITextComponent getValueName() {
+		public ITextComponent getValueText() {
 			return value.translate();
 		}
 	}

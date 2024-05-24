@@ -606,7 +606,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public <T> T getCapability(Capability<T> cap, EnumFacing side) {
 		//"!isPlacingBlocks()" prevents extracting while auto building the block pocket
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return !isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? (T) getStorageHandler() : (T) getInsertOnlyHandler();
+			return !isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedObject(side, this) ? (T) getStorageHandler() : (T) getInsertOnlyHandler();
 		else
 			return super.getCapability(cap, side);
 	}

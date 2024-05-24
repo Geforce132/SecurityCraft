@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockTrapDoor;
 import net.minecraft.block.state.IBlockState;
@@ -34,7 +33,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 	protected IntOption signalLength = new IntOption(this::getPos, "signalLength", 0, 0, 400, 5); //20 seconds max
 	private DoubleOption maximumDistance = new DoubleOption(this::getPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.viewActivated.maximumDistance";
 		}
 	};

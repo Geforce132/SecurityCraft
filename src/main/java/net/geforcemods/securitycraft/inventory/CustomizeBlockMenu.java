@@ -4,13 +4,13 @@ import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
@@ -105,9 +105,16 @@ public class CustomizeBlockMenu extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		TileEntity te = moduleInv.getTileEntity();
+		BlockPos pos = moduleInv.myPos();
 
-		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, te.getBlockType());
+		if (moduleInv instanceof TileEntity) {
+			TileEntity te = (TileEntity) moduleInv;
+
+			if (te.getWorld().getBlockState(te.getPos()).getBlock() != te.getBlockType())
+				return false;
+		}
+
+		return player.getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D;
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler {

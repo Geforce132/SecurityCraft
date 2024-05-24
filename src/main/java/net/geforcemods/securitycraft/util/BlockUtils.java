@@ -9,9 +9,12 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -68,18 +71,18 @@ public class BlockUtils {
 		return false;
 	}
 
-	public static boolean isAllowedToExtractFromProtectedBlock(EnumFacing side, TileEntity be) {
-		if (side != null) {
-			World level = be.getWorld();
+	public static <T extends TileEntity & IOwnable> boolean isAllowedToExtractFromProtectedObject(EnumFacing side, T be) {
+		return isAllowedToExtractFromProtectedObject(side, be, be.getWorld(), be.getPos());
+	}
 
-			if (level != null) {
-				BlockPos offsetPos = be.getPos().offset(side);
-				IBlockState offsetState = level.getBlockState(offsetPos);
+	public static boolean isAllowedToExtractFromProtectedObject(EnumFacing side, IOwnable ownable, World level, BlockPos pos) {
+		if (side != null && level != null) {
+			BlockPos offsetPos = pos.offset(side);
+			IBlockState offsetState = level.getBlockState(offsetPos);
 
-				for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
-					if (offsetState.getBlock() == extractionBlock.getBlock())
-						return extractionBlock.canExtract((IOwnable) be, level, offsetPos, offsetState);
-				}
+			for (IExtractionBlock extractionBlock : SecurityCraftAPI.getRegisteredExtractionBlocks()) {
+				if (offsetState.getBlock() == extractionBlock.getBlock())
+					return extractionBlock.canExtract(ownable, level, offsetPos, offsetState);
 			}
 		}
 
@@ -140,5 +143,22 @@ public class BlockUtils {
 				modifiedPos = pos.offset(direction, ++i);
 			}
 		}
+	}
+
+	public static String getLanguageKeyDenotation(Object obj) {
+		if (obj instanceof Block)
+			return ((Block) obj).getTranslationKey().substring(5);
+		else if (obj instanceof TileEntity) {
+			TileEntity te = (TileEntity) obj;
+
+			return getLanguageKeyDenotation(te.getBlockType());
+		}
+		else if (obj instanceof Entity) {
+			ResourceLocation name = EntityList.getKey((Entity) obj);
+
+			return name == null ? "" : name.toString();
+		}
+		else
+			return "";
 	}
 }

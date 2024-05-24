@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
@@ -107,7 +108,7 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 		sizeButton = addButton(new GuiButton(1, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size).getFormattedText()));
 		outlineButton = addButton(new GuiButton(2, outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!te.showsOutline() ? "show" : "hide")).getFormattedText()));
 		assembleButton = addButton(new GuiButton(3, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble").getFormattedText()));
-		offsetSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.offset", te.getAutoBuildOffset()).getFormattedText(), SCContent.projector, 4, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.getAutoBuildOffset(), true, this));
+		offsetSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.offset", te.getAutoBuildOffset()).getFormattedText(), BlockUtils.getLanguageKeyDenotation(SCContent.projector), 4, guiLeft + guiWidth / 2 - widgetOffset, guiTop + ySize / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", "").getFormattedText(), (-size + 2) / 2, (size - 2) / 2, te.getAutoBuildOffset(), true, this));
 		colorChooser = new ColorChooser(colorChooserX, outlineY, previousColor, SCContent.blockPocketManager) {
 			@Override
 			public void onColorChange() {
@@ -360,7 +361,7 @@ public class BlockPocketManagerScreen extends GuiContainer implements ISlider, I
 	}
 
 	@Override
-	public void onChangeSliderValue(Slider slider, Block block, int id) {
+	public void onChangeSliderValue(Slider slider, String denotation, int id) {
 		if (slider.id == offsetSlider.id)
 			slider.displayString = slider.getPrefix() + slider.getValueInt();
 	}

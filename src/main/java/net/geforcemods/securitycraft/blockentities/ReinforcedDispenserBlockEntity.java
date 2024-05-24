@@ -82,7 +82,7 @@ public class ReinforcedDispenserBlockEntity extends TileEntityDispenser implemen
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler();
+			return BlockUtils.isAllowedToExtractFromProtectedObject(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler();
 		else
 			return super.getCapability(capability, facing);
 	}
@@ -144,5 +144,15 @@ public class ReinforcedDispenserBlockEntity extends TileEntityDispenser implemen
 			onModuleInserted(getModule(module), module, true);
 		else
 			onModuleRemoved(getModule(module), module, true);
+	}
+
+	@Override
+	public World myLevel() {
+		return world;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return pos;
 	}
 }

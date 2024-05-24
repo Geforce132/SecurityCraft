@@ -462,7 +462,7 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.isAllowedToExtractFromProtectedBlock(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler(facing);
+			return BlockUtils.isAllowedToExtractFromProtectedObject(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler(facing);
 		else
 			return super.getCapability(capability, facing);
 	}
