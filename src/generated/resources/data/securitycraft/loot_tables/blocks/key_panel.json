@@ -1,11 +1,5 @@
 {
   "type": "minecraft:block",
-  "functions": [
-    {
-      "function": "minecraft:copy_name",
-      "source": "block_entity"
-    }
-  ],
   "pools": [
     {
       "bonus_rolls": 0.0,
@@ -17,6 +11,15 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:custom_name"
+              ],
+              "source": "block_entity"
+            }
+          ],
           "name": "securitycraft:keypad_item"
         }
       ],

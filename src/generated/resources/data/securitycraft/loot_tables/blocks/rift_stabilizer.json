@@ -1,8 +1,19 @@
 {
   "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:copy_name",
+      "source": "block_entity"
+    }
+  ],
   "pools": [
     {
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -13,15 +24,6 @@
               "properties": {
                 "half": "lower"
               }
-            },
-            {
-              "condition": "minecraft:survives_explosion"
-            }
-          ],
-          "functions": [
-            {
-              "function": "minecraft:copy_name",
-              "source": "block_entity"
             }
           ],
           "name": "securitycraft:rift_stabilizer"
