@@ -378,7 +378,7 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<InventoryScannerBlock> INVENTORY_SCANNER = BLOCKS.register("inventory_scanner", () -> new InventoryScannerBlock(propDisguisable()));
-	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(MapColor.NONE)));
+	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(MapColor.NONE).noLootTable()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new ElectrifiedIronFenceBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
@@ -413,7 +413,7 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<LaserBlock> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable()));
-	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop(MapColor.NONE)));
+	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop(MapColor.NONE).noLootTable()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<MotionActivatedLightBlock> MOTION_ACTIVATED_LIGHT = BLOCKS.register("motion_activated_light", () -> new MotionActivatedLightBlock(prop(MapColor.NONE).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0)));
@@ -2531,7 +2531,7 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
-	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(MapColor.METAL).sound(SoundType.METAL), Blocks.IRON_BLOCK));
+	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(MapColor.METAL).sound(SoundType.METAL).noLootTable(), Blocks.IRON_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
