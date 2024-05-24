@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -110,7 +111,12 @@ public class CustomizeBlockMenu extends Container {
 
 	@Override
 	public boolean stillValid(PlayerEntity player) {
-		return worldPosCallable.evaluate((level, pos) -> player.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D, true);
+		return worldPosCallable.evaluate((level, pos) -> {
+			if (moduleInv instanceof TileEntity && !level.getBlockState(pos).is(((TileEntity) moduleInv).getBlockState().getBlock()))
+				return false;
+
+			return player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0;
+		}, true);
 	}
 
 	private class CustomSlotItemHandler extends SlotItemHandler {
