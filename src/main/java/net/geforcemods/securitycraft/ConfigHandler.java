@@ -74,7 +74,6 @@ public class ConfigHandler {
 		public IntValue inventoryScannerRange;
 		public IntValue maxAlarmRange;
 		public BooleanValue allowBlockClaim;
-		public BooleanValue respectInvisibility;
 		public BooleanValue reinforcedBlockTint;
 		public BooleanValue forceReinforcedBlockTint;
 		public BooleanValue retinalScannerFace;
@@ -141,10 +140,6 @@ public class ConfigHandler {
 			allowBlockClaim = builder
 					.comment("Allow claiming unowned blocks?")
 					.define("allowBlockClaim", false);
-
-			respectInvisibility = builder
-					.comment("Should the sentry/inventory scanner/laser block/etc. ignore players and entities that are invisible?")
-					.define("respect_invisibility", false);
 
 			reinforcedBlockTint = builder
 					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This does nothing unless force_reinforced_block_tint is set to true.")

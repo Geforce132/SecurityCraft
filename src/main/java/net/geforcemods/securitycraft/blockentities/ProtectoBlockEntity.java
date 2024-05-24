@@ -6,12 +6,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
@@ -29,6 +29,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	private int ticksBetweenAttacks = isModuleEnabled(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 
 	public ProtectoBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.PROTECTO_BLOCK_ENTITY.get(), pos, state);
@@ -49,7 +50,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				boolean shouldDeactivate = false;
 
 				for (LivingEntity entity : entities) {
-					if (!(entity instanceof Sentry) && !Utils.isEntityInvisible(entity)) {
+					if (!(entity instanceof Sentry) && !respectInvisibility.isConsideredInvisible(entity)) {
 						if (entity instanceof Player player && (player.isCreative() || !player.canBeSeenByAnyone() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity)) || entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity))
 							continue;
 
@@ -96,7 +97,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled, ignoreOwner
+				disabled, ignoreOwner, respectInvisibility
 		};
 	}
 
