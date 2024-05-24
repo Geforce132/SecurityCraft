@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
@@ -123,7 +124,12 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return worldPosCallable.evaluate((level, pos) -> player.canInteractWithBlock(pos, 4.0D), true);
+		return worldPosCallable.evaluate((level, pos) -> {
+			if (moduleInv instanceof BlockEntity be && !level.getBlockState(pos).is(be.getBlockState().getBlock()))
+				return false;
+
+			return player.canInteractWithBlock(pos, 4.0D);
+		}, true);
 	}
 
 	public int getMaxSlots() {
