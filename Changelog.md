@@ -8,6 +8,8 @@
 - Change: The "preventReinforcedFloorGlitching" configuration option no longer affects players trying to glitch through reinforced blocks that they are the owner of
 - Change: Players in creative mode can once again use the codebreaker on their own blocks
 - Change: When picking up a placed sentry, the resulting sentry item will now be named according to the custom name of the removed sentry
+- Change: The "respect_invisibility" config setting has been moved to a per-block option
+- Change: The Sentry can no longer attack invisible entities
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
 - API: New method IPasscodeProtected#openSetPasscodeScreen to define how to open the screen to set the passcode of the object
@@ -17,6 +19,7 @@
 - API: The BlockState parameters in ICodebreakable's methods have been removed
 - API: New method Option#getValueText for getting a textual representation of the option's value
 - API: ICustomizable#onOptionChanged now has a proper generic type
+- API: New method IViewActivated#isConsideredInvisible
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 - Fix: The block pocket can be assembled without the necessary items

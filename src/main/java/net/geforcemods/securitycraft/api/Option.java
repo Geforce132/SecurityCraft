@@ -8,6 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 
 /**
  * A class that allows blocks that have {@link ICustomizable} block entities to have custom, per-block options that are
@@ -206,6 +208,25 @@ public abstract class Option<T> {
 		@Override
 		public String getKey(String denotation) {
 			return "option.generic.ignoreOwner";
+		}
+	}
+
+	public static class RespectInvisibilityOption extends BooleanOption {
+		public RespectInvisibilityOption() {
+			this(false);
+		}
+
+		public RespectInvisibilityOption(Boolean value) {
+			super("respectInvisibility", value);
+		}
+
+		@Override
+		public String getKey(String denotation) {
+			return "option.generic.respectInvisibility";
+		}
+
+		public boolean isConsideredInvisible(LivingEntity entity) {
+			return get() && entity.hasEffect(MobEffects.INVISIBILITY);
 		}
 	}
 

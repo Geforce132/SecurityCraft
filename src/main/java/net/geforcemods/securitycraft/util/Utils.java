@@ -1,13 +1,10 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
@@ -35,9 +32,5 @@ public class Utils {
 		}
 
 		return new TranslatableComponent(key, params);
-	}
-
-	public static boolean isEntityInvisible(LivingEntity entity) {
-		return ConfigHandler.SERVER.respectInvisibility.get() && entity.hasEffect(MobEffects.INVISIBILITY);
 	}
 }
