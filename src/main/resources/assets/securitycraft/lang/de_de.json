@@ -1228,6 +1228,8 @@
 	"option.generic.disabled.description": "Soll dieser Block deaktiviert werden, sodass er bis zum Reaktivieren nicht mehr funktioniert?",
 	"option.generic.ignoreOwner": "Besitzer ignorieren: %s",
 	"option.generic.ignoreOwner.description": "Soll dieser Block seinen Besitzer ignorieren? Dies führt dazu, dass jegliche Funktionalität des Blocks nicht für seinen Besitzer funktioniert.",
+	"option.generic.respectInvisibility": "Unsichtbarkeit berücksichtigen: %s",
+	"option.generic.respectInvisibility.description": "Soll dieser Block unsichtbare Spieler und Entitäten ignorieren?",
 	"option.generic.secret_sign.isSecret": "Geheim: %s",
 	"option.generic.secret_sign.isSecret.description": "Soll der Text des geheimen Schildes nur für den Besitzer und zugelassenen Spieler sichtbar sein?",
 	"option.generic.sendAllowlistMessage": "Zulassungslisten-Nachricht: %s",

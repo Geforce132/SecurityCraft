@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -8,9 +7,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
@@ -58,9 +55,5 @@ public class Utils {
 
 	public static ResourceLocation getRegistryName(Potion potion) {
 		return ForgeRegistries.POTIONS.getKey(potion);
-	}
-
-	public static boolean isEntityInvisible(LivingEntity entity) {
-		return ConfigHandler.SERVER.respectInvisibility.get() && entity.hasEffect(MobEffects.INVISIBILITY);
 	}
 }
