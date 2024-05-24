@@ -11,9 +11,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
-import net.geforcemods.securitycraft.api.Option.EnumOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -23,9 +21,9 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.Block;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.ItemRenderer;
@@ -35,7 +33,6 @@ import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.IContainerListener;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -66,14 +63,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private Button[] optionButtons = {};
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
-	private final Block block;
 	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, PlayerInventory inv, ITextComponent title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
-		block = menu.moduleInv.getBlockEntity().getBlockState().getBlock();
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
 		menu.addSlotListener(this);
 
@@ -99,10 +94,8 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			descriptionButtons[i].active = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
-		TileEntity te = moduleInv.getBlockEntity();
-
-		if (te instanceof ICustomizable) {
-			ICustomizable customizable = (ICustomizable) te;
+		if (moduleInv instanceof ICustomizable) {
+			ICustomizable customizable = (ICustomizable) moduleInv;
 			Option<?>[] options = customizable.customOptions();
 
 			if (options.length > 0) {
@@ -113,11 +106,12 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 
 					if (option instanceof ISlider && option.isSlider()) {
 						final int sliderIndex = i;
+						String denotation = BlockUtils.getLanguageKeyDenotation(customizable);
 
 						if (option instanceof DoubleOption)
-							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), block, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(denotation), option.toString()), denotation, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
 						else if (option instanceof IntOption)
-							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(block), option.toString()), block, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
+							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(denotation), option.toString()), denotation, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((IntOption) option).getMin(), ((IntOption) option).getMax(), ((IntOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
 
 						optionButtons[i].setFGColor(14737632);
 					}
@@ -223,7 +217,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			moduleInv.insertModule(moduleInv.getModule(moduleType), true);
 		}
 
-		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.getBlockEntity().getBlockPos(), moduleType));
+		SecurityCraft.channel.sendToServer(new ToggleModule(moduleInv.myPos(), moduleType));
 	}
 
 	protected void optionButtonClicked(Button button) {
@@ -231,13 +225,13 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 			if (button != optionButtons[i])
 				continue;
 
-			Option<?> tempOption = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[i]; //safe cast, as this method is only called when it can be casted
+			Option<?> tempOption = ((ICustomizable) moduleInv).customOptions()[i]; //safe cast, as this method is only called when it can be casted
 
 			tempOption.toggle();
 			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			updateOptionTooltip(i);
-			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.getBlockEntity().getBlockPos().getX(), moduleInv.getBlockEntity().getBlockPos().getY(), moduleInv.getBlockEntity().getBlockPos().getZ(), i));
+			SecurityCraft.channel.sendToServer(new ToggleOption(moduleInv.myPos().getX(), moduleInv.myPos().getY(), moduleInv.myPos().getZ(), i));
 			return;
 		}
 	}
@@ -248,27 +242,18 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 				.append(new StringTextComponent(":"))
 				.withStyle(TextFormatting.RESET)
 				.append(new StringTextComponent("\n\n"))
-				.append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
+				.append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
 		//@formatter:on
 	}
 
 	private TranslationTextComponent getOptionDescription(int optionId) {
-		Option<?> option = ((ICustomizable) moduleInv.getBlockEntity()).customOptions()[optionId];
+		Option<?> option = ((ICustomizable) moduleInv).customOptions()[optionId];
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(option.getDescriptionKey(block)), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", getValueText(option)));
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", option.getValueText()));
 	}
 
 	private ITextComponent getOptionButtonTitle(Option<?> option) {
-		return Utils.localize(option.getKey(block), getValueText(option));
-	}
-
-	private ITextComponent getValueText(Option<?> option) {
-		if (option instanceof BooleanOption)
-			return new TranslationTextComponent(((BooleanOption) option).get() ? "gui.securitycraft:invScan.yes" : "gui.securitycraft:invScan.no");
-		else if (option instanceof EnumOption<?>)
-			return ((EnumOption<?>) option).getValueName();
-		else
-			return new StringTextComponent(option.toString());
+		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), option.getValueText());
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.text.TranslationTextComponent;
 
@@ -42,5 +45,16 @@ public class SCManualPage {
 
 	public boolean hasRecipeDescription() {
 		return hasRecipeDescription;
+	}
+
+	public Object getInWorldObject() {
+		if (item instanceof BlockItem) {
+			Block block = ((BlockItem) item).getBlock();
+
+			if (block.hasTileEntity(block.defaultBlockState()))
+				return block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
+		}
+
+		return null;
 	}
 }

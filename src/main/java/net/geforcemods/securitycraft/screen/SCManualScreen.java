@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -51,7 +52,6 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.item.crafting.ShapelessRecipe;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -510,71 +510,71 @@ public class SCManualScreen extends Screen {
 
 			if (explosive)
 				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 107, (startX + 107) + 16, Utils.localize("gui.securitycraft:scManual.explosiveBlock")));
+		}
 
-			if (block.hasTileEntity(block.defaultBlockState())) {
-				TileEntity be = block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
+		Object inWorldObj = page.getInWorldObject();
 
-				ownable = be instanceof IOwnable;
-				passcodeProtected = be instanceof IPasscodeProtected;
-				viewActivated = be instanceof IViewActivated;
-				lockable = be instanceof ILockable;
+		if (inWorldObj != null) {
+			ownable = inWorldObj instanceof IOwnable;
+			passcodeProtected = inWorldObj instanceof IPasscodeProtected;
+			viewActivated = inWorldObj instanceof IViewActivated;
+			lockable = inWorldObj instanceof ILockable;
 
-				if (ownable)
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
+			if (ownable)
+				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 29, (startX + 29) + 16, Utils.localize("gui.securitycraft:scManual.ownableBlock")));
 
-				if (passcodeProtected)
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passcodeProtectedBlock")));
+			if (passcodeProtected)
+				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 55, (startX + 55) + 16, Utils.localize("gui.securitycraft:scManual.passcodeProtectedBlock")));
 
-				if (viewActivated)
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
+			if (viewActivated)
+				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 81, (startX + 81) + 16, Utils.localize("gui.securitycraft:scManual.viewActivatedBlock")));
 
-				if (be instanceof ICustomizable) {
-					ICustomizable customizableBe = (ICustomizable) be;
-					Option<?>[] options = customizableBe.customOptions();
+			if (inWorldObj instanceof ICustomizable) {
+				ICustomizable customizableBe = (ICustomizable) inWorldObj;
+				Option<?>[] options = customizableBe.customOptions();
 
-					if (options.length > 0) {
-						List<ITextComponent> display = new ArrayList<>();
+				if (options.length > 0) {
+					List<ITextComponent> display = new ArrayList<>();
 
-						customizable = true;
-						display.add(Utils.localize("gui.securitycraft:scManual.options"));
-						display.add(new StringTextComponent("---"));
+					customizable = true;
+					display.add(Utils.localize("gui.securitycraft:scManual.options"));
+					display.add(new StringTextComponent("---"));
 
-						for (Option<?> option : options) {
-							display.add(new TranslationTextComponent("gui.securitycraft:scManual.option_text", Utils.localize(option.getDescriptionKey(block)), option.getDefaultInfo()));
-							display.add(StringTextComponent.EMPTY);
-						}
-
-						display.remove(display.size() - 1);
-						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
+					for (Option<?> option : options) {
+						display.add(new TranslationTextComponent("gui.securitycraft:scManual.option_text", Utils.localize(BlockUtils.getLanguageKeyDenotation(inWorldObj)), option.getDefaultInfo()));
+						display.add(StringTextComponent.EMPTY);
 					}
+
+					display.remove(display.size() - 1);
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 136, (startX + 136) + 16, display));
 				}
-
-				if (be instanceof IModuleInventory) {
-					IModuleInventory moduleInv = (IModuleInventory) be;
-
-					if (moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0) {
-						List<ITextComponent> display = new ArrayList<>();
-
-						moduleInventory = true;
-						display.add(Utils.localize("gui.securitycraft:scManual.modules"));
-						display.add(new StringTextComponent("---"));
-
-						for (ModuleType module : moduleInv.acceptedModules()) {
-							display.add(new StringTextComponent("- ").append(Utils.localize(moduleInv.getModuleDescriptionId(block.getDescriptionId().substring(6), module))));
-							display.add(StringTextComponent.EMPTY);
-						}
-
-						display.remove(display.size() - 1);
-						hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
-					}
-				}
-
-				if (lockable)
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
-
-				if (customizable || moduleInventory)
-					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
 			}
+
+			if (inWorldObj instanceof IModuleInventory) {
+				IModuleInventory moduleInv = (IModuleInventory) inWorldObj;
+
+				if (moduleInv.acceptedModules() != null && moduleInv.acceptedModules().length > 0) {
+					List<ITextComponent> display = new ArrayList<>();
+
+					moduleInventory = true;
+					display.add(Utils.localize("gui.securitycraft:scManual.modules"));
+					display.add(new StringTextComponent("---"));
+
+					for (ModuleType module : moduleInv.acceptedModules()) {
+						display.add(new StringTextComponent("- ").append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(inWorldObj), module))));
+						display.add(StringTextComponent.EMPTY);
+					}
+
+					display.remove(display.size() - 1);
+					hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 163, (startX + 163) + 16, display));
+				}
+			}
+
+			if (lockable)
+				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 189, startX + 189 + 16, Utils.localize("gui.securitycraft:scManual.lockable")));
+
+			if (customizable || moduleInventory)
+				hoverCheckers.add(new TextHoverChecker(118, 118 + 16, startX + 213, (startX + 213) + 16, Utils.localize("gui.securitycraft:scManual.customizableBlock")));
 		}
 
 		if (recipe != null && !recipe.isEmpty()) {

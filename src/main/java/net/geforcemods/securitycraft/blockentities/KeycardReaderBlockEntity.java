@@ -104,17 +104,17 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, PlayerEntity player) {
+	public boolean shouldAttemptCodebreak(PlayerEntity player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !state.getValue(BlockStateProperties.POWERED);
+		return !getBlockState().getValue(BlockStateProperties.POWERED);
 	}
 
 	@Override
-	public void useCodebreaker(BlockState state, PlayerEntity player) {
+	public void useCodebreaker(PlayerEntity player) {
 		if (!level.isClientSide)
 			activate();
 	}

@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
 
@@ -49,7 +50,8 @@ public class RefreshDisguisableModel {
 			else
 				be.removeModule(ModuleType.DISGUISE, toggled);
 
-			ClientHandler.refreshModelData(be.getBlockEntity());
+			if (be instanceof TileEntity)
+				ClientHandler.refreshModelData((TileEntity) be);
 		}
 	}
 }

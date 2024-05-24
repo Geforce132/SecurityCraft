@@ -10,6 +10,12 @@
 - Change: When picking up a placed sentry, the resulting sentry item will now be named according to the custom name of the removed sentry
 - API: Changed constructors for IntOption and DoubleOption, they are now always sliders by default
 - API: Removed FloatOption. Use DoubleOption instead
+- API: New method IPasscodeProtected#openSetPasscodeScreen to define how to open the screen to set the passcode of the object
+- API: IModuleInventory is no longer hardcoded to just block entities
+- API: New method IPasscodeProtected#openSetPasscodeScreen to define how to open the screen to set the passcode of the object
+- API: New method ICodebreakable#handleCodebreaking to define behavior when a codebreaker is used to break the code
+- API: The BlockState parameters in ICodebreakable's methods have been removed
+- API: New method Option#getValueText for getting a textual representation of the option's value
 - API: ICustomizable#onOptionChanged now has a proper generic type
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 - Fix: The block pocket can be assembled without the necessary items

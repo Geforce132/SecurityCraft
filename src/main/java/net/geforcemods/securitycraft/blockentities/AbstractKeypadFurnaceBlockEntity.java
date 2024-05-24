@@ -41,6 +41,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -150,7 +151,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? super.getCapability(cap, side) : getInsertOnlyHandler(side).cast();
+			return BlockUtils.isAllowedToExtractFromProtectedObject(side, this) ? super.getCapability(cap, side) : getInsertOnlyHandler(side).cast();
 		else
 			return super.getCapability(cap, side);
 	}
@@ -192,19 +193,19 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	}
 
 	@Override
-	public void activate(PlayerEntity player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractKeypadFurnaceBlock)
-			((AbstractKeypadFurnaceBlock) getBlockState().getBlock()).activate(level, worldPosition, player);
-	}
-
-	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, PlayerEntity player) {
+	public boolean shouldAttemptCodebreak(PlayerEntity player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return IPasscodeProtected.super.shouldAttemptCodebreak(player);
+	}
+
+	@Override
+	public void activate(PlayerEntity player) {
+		if (!level.isClientSide && getBlockState().getBlock() instanceof AbstractKeypadFurnaceBlock)
+			((AbstractKeypadFurnaceBlock) getBlockState().getBlock()).activate(level, worldPosition, player);
 	}
 
 	@Override
@@ -398,5 +399,15 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 
 	public boolean isDisabled() {
 		return disabled.get();
+	}
+
+	@Override
+	public World myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

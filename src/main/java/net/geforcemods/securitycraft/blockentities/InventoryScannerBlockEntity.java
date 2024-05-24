@@ -266,7 +266,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return BlockUtils.isAllowedToExtractFromProtectedBlock(side, this) ? getExtractionHandler().cast() : EMPTY_INVENTORY.cast(); //disallow inserting
+			return BlockUtils.isAllowedToExtractFromProtectedObject(side, this) ? getExtractionHandler().cast() : EMPTY_INVENTORY.cast(); //disallow inserting
 		else
 			return super.getCapability(cap, side);
 	}

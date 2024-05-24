@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.screen.components.ColorChooserButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.StackHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -104,7 +105,7 @@ public class BlockPocketManagerScreen extends ContainerScreen<BlockPocketManager
 		sizeButton = addButton(new ExtendedButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.size", size, size, size), this::sizeButtonClicked));
 		outlineButton = addButton(new ExtendedButton(outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showsOutline() ? "show" : "hide")), this::outlineButtonClicked));
 		assembleButton = addButton(new ExtendedButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked));
-		offsetSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getAutoBuildOffset()), SCContent.BLOCK_POCKET_MANAGER.get(), leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", (-size + 2) / 2, (size - 2) / 2, be.getAutoBuildOffset(), false, true, null, this::offsetSliderReleased));
+		offsetSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.offset", be.getAutoBuildOffset()), BlockUtils.getLanguageKeyDenotation(SCContent.BLOCK_POCKET_MANAGER.get()), leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), "", (-size + 2) / 2, (size - 2) / 2, be.getAutoBuildOffset(), false, true, null, this::offsetSliderReleased));
 		colorChooser = addWidget(new ColorChooser(StringTextComponent.EMPTY, colorChooserX, outlineY, previousColor) {
 			@Override
 			public void onColorChange() {

@@ -23,8 +23,10 @@ import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.LecternTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 
 public class ReinforcedLecternBlockEntity extends LecternTileEntity implements IOwnable, IModuleInventory, ICustomizable {
 	private Owner owner = new Owner();
@@ -126,5 +128,15 @@ public class ReinforcedLecternBlockEntity extends LecternTileEntity implements I
 	@Override
 	public ITextComponent getDisplayName() {
 		return new TranslationTextComponent(SCContent.REINFORCED_LECTERN.get().getDescriptionId());
+	}
+
+	@Override
+	public World myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

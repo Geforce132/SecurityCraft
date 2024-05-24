@@ -7,29 +7,28 @@ import javax.annotation.Nullable;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.client.gui.widget.Slider;
 
 public class NamedSlider extends Slider {
-	private final Block block;
+	private final String denotation;
 	private final Consumer<NamedSlider> onApplyValue;
 
-	public NamedSlider(ITextComponent initialString, Block block, int x, int y, int width, int height, ITextComponent prefix, String suffix, int minValue, int maxValue, int currentValue, boolean showDec, boolean drawString, @Nullable ISlider par, Consumer<NamedSlider> onApplyValue) {
+	public NamedSlider(ITextComponent initialString, String denotation, int x, int y, int width, int height, ITextComponent prefix, String suffix, int minValue, int maxValue, int currentValue, boolean showDec, boolean drawString, @Nullable ISlider par, Consumer<NamedSlider> onApplyValue) {
 		super(x, y, width, height, prefix, new StringTextComponent(suffix), minValue, maxValue, currentValue, showDec, drawString, b -> {}, par);
 
 		setMessage(new StringTextComponent(initialString.getString()));
-		this.block = block;
+		this.denotation = denotation;
 		this.onApplyValue = onApplyValue;
 	}
 
-	public NamedSlider(ITextComponent initialString, Block block, int x, int y, int width, int height, ITextComponent prefix, String suffix, double minValue, double maxValue, double currentValue, boolean showDec, boolean drawString, @Nullable ISlider par, Consumer<NamedSlider> onApplyValue) {
+	public NamedSlider(ITextComponent initialString, String denotation, int x, int y, int width, int height, ITextComponent prefix, String suffix, double minValue, double maxValue, double currentValue, boolean showDec, boolean drawString, @Nullable ISlider par, Consumer<NamedSlider> onApplyValue) {
 		super(x, y, width, height, prefix, new StringTextComponent(suffix), minValue, maxValue, currentValue, showDec, drawString, b -> {}, par);
 
 		setMessage(new StringTextComponent(initialString.getString()));
-		this.block = block;
+		this.denotation = denotation;
 		this.onApplyValue = onApplyValue;
 	}
 
@@ -58,7 +57,7 @@ public class NamedSlider extends Slider {
 			onApplyValue.accept(this);
 	}
 
-	public Block getBlock() {
-		return block;
+	public String getDenotation() {
+		return denotation;
 	}
 }
