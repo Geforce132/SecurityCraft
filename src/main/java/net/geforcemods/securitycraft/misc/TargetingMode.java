@@ -1,8 +1,9 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.util.function.Predicate;
+
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
@@ -31,7 +32,7 @@ public enum TargetingMode {
 		return this == MOBS || this == PLAYERS_AND_MOBS;
 	}
 
-	public <T extends IOwnable> boolean canAttackEntity(LivingEntity entity, T be, boolean checkInvisibility) {
+	public <T extends IOwnable> boolean canAttackEntity(LivingEntity entity, T be, Predicate<LivingEntity> isInvisible) {
 		if (entity == null || be instanceof IModuleInventory && ((IModuleInventory) be).isAllowed(entity))
 			return false;
 
@@ -39,7 +40,7 @@ public enum TargetingMode {
 
 		if (isPlayer && allowsPlayers() || !isPlayer && allowsMobs()) {
 			return (!isPlayer || !(be.isOwnedBy(entity) && be.ignoresOwner()) && !((PlayerEntity) entity).isCreative()) //Player checks
-					&& !entity.isSpectator() && (!checkInvisibility || !Utils.isEntityInvisible(entity)) && !be.allowsOwnableEntity(entity); //checks for all entities
+					&& !entity.isSpectator() && !isInvisible.test(entity) && !be.allowsOwnableEntity(entity); //checks for all entities
 		}
 		else
 			return false;

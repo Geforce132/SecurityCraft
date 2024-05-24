@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -32,7 +31,7 @@ public interface IViewActivated {
 			}
 
 			double maximumDistance = getMaximumDistance();
-			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos).inflate(maximumDistance), e -> !e.isSpectator() && !Utils.isEntityInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
+			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos).inflate(maximumDistance), e -> !e.isSpectator() && !isConsideredInvisible(e) && (!activatedOnlyByPlayer() || e instanceof PlayerEntity));
 
 			for (LivingEntity entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
@@ -87,4 +86,13 @@ public interface IViewActivated {
 	 * @return The maximum distance in blocks from which a view check is performed
 	 */
 	public double getMaximumDistance();
+
+	/**
+	 * Returns whether the given entity is treated as being invisible. This does not necessarily need to match whether the entity
+	 * has the invisibility effect
+	 *
+	 * @param entity The living entity to check
+	 * @return true if the entity is considered invisible, false otherwise
+	 */
+	public boolean isConsideredInvisible(LivingEntity entity);
 }

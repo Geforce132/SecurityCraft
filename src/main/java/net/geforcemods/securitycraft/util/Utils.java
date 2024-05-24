@@ -1,10 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -45,9 +42,5 @@ public class Utils {
 		TileEntity te = level.getBlockEntity(pos);
 
 		return te instanceof IOwnable && ((IOwnable) te).isOwnedBy(entity);
-	}
-
-	public static boolean isEntityInvisible(LivingEntity entity) {
-		return ConfigHandler.SERVER.respectInvisibility.get() && entity.hasEffect(Effects.INVISIBILITY);
 	}
 }

@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
@@ -24,6 +25,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -55,6 +57,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IntOption signalLength = new SignalLengthOption(this::getBlockPos, 60);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private LazyOptional<IItemHandler> storageHandler;
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean providePower;
@@ -546,10 +549,14 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
+	}
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				horizontal, solidifyField, disabled, ignoreOwner, signalLength
+				horizontal, solidifyField, disabled, ignoreOwner, signalLength, respectInvisibility
 		};
 	}
 

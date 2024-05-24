@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -29,6 +30,7 @@ import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
@@ -61,6 +63,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IntOption signalLength = new SignalLengthOption(this::getBlockPos, 50);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private Map<Direction, Boolean> sideConfig = Util.make(() -> {
 		Map<Direction, Boolean> map = new EnumMap<>(Direction.class);
 
@@ -128,16 +131,20 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 		if (action instanceof ILinkedAction.OptionChanged) {
 			Option<?> option = ((ILinkedAction.OptionChanged<?>) action).option;
 
-			if (option.getName().equals("disabled")) {
+			if (option.getName().equals(disabled.getName())) {
 				disabled.copy(option);
 				setLasersAccordingToDisabledOption();
 			}
-			else if (option.getName().equals("ignoreOwner"))
+			else if (option.getName().equals(ignoreOwner.getName()))
 				ignoreOwner.copy(option);
-			else if (option.getName().equals("signalLength")) {
+			else if (option.getName().equals(signalLength.getName())) {
 				signalLength.copy(option);
 				turnOffRedstoneOutput();
 			}
+			else if (option.getName().equals(respectInvisibility.getName()))
+				respectInvisibility.copy(option);
+			else
+				throw new UnsupportedOperationException("Unhandled option synchronization in laser block! " + option.getName());
 		}
 		else if (action instanceof ILinkedAction.ModuleInserted) {
 			ILinkedAction.ModuleInserted moduleInserted = (ILinkedAction.ModuleInserted) action;
@@ -330,7 +337,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled, ignoreOwner, signalLength
+				disabled, ignoreOwner, signalLength, respectInvisibility
 		};
 	}
 
@@ -350,6 +357,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
 	}
 
 	public void setLastToggleTime(long lastToggleTime) {

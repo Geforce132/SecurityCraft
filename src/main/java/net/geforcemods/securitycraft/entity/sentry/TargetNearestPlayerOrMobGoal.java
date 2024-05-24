@@ -6,7 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.FlyingEntity;
 import net.minecraft.entity.LivingEntity;
@@ -16,6 +15,7 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
 import net.minecraft.entity.monster.SlimeEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Effects;
 
 /**
  * Attacks any player who is not the owner, or any mob
@@ -34,7 +34,7 @@ public class TargetNearestPlayerOrMobGoal extends NearestAttackableTargetGoal<Li
 		if (sentry.isShutDown())
 			return false;
 
-		List<LivingEntity> list = mob.level.<LivingEntity>getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> sentry.getSensing().canSee(e) && !Utils.isEntityInvisible(e));
+		List<LivingEntity> list = mob.level.<LivingEntity>getEntitiesOfClass(targetType, getTargetSearchArea(getFollowDistance()), e -> sentry.getSensing().canSee(e) && !e.hasEffect(Effects.INVISIBILITY));
 
 		if (!list.isEmpty()) {
 			SentryMode sentryMode = sentry.getMode();

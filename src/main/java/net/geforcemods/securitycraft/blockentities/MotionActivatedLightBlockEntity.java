@@ -8,10 +8,10 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.tileentity.ITickableTileEntity;
@@ -21,6 +21,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getBlockPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D);
 	private DisabledOption disabled = new DisabledOption(false);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public MotionActivatedLightBlockEntity() {
@@ -32,7 +33,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if (level.isClientSide || isDisabled() || cooldown-- > 0)
 			return;
 
-		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !Utils.isEntityInvisible(e) && !e.isSpectator() && !(e instanceof Sentry || e instanceof ArmorStandEntity));
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(searchRadiusOption.get()), e -> !respectInvisibility.isConsideredInvisible(e) && !e.isSpectator() && !(e instanceof Sentry || e instanceof ArmorStandEntity));
 		boolean shouldBeOn = !entities.isEmpty();
 
 		if (getBlockState().getValue(MotionActivatedLightBlock.LIT) != shouldBeOn)
@@ -56,7 +57,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {
-				searchRadiusOption, disabled
+				searchRadiusOption, disabled, respectInvisibility
 		};
 	}
 
