@@ -1,0 +1,4 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "securitycraft:blocks/inventory_scanner_field"
+}
