@@ -45,6 +45,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -126,43 +127,31 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		switch (action) {
-			case ILinkedAction.OptionChanged<?> optionChanged -> {
-				Option<?> option = optionChanged.option();
-
-				if (option.getName().equals(disabled.getName())) {
-					disabled.copy(option);
-					setLasersAccordingToDisabledOption();
-				}
-				else if (option.getName().equals(ignoreOwner.getName()))
-					ignoreOwner.copy(option);
-				else if (option.getName().equals(signalLength.getName())) {
-					signalLength.copy(option);
-					turnOffRedstoneOutput();
-				}
-				else if (option.getName().equals(respectInvisibility.getName()))
-					respectInvisibility.copy(option);
-				else
-					throw new UnsupportedOperationException("Unhandled option synchronization in laser block! " + option.getName());
+			case ILinkedAction.OptionChanged<Boolean>(Option<Boolean> option) when option.getName().equals(disabled.getName()) -> {
+				disabled.copy(option);
+				setLasersAccordingToDisabledOption();
 			}
-			case ILinkedAction.ModuleInserted moduleInserted -> insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
-			case ILinkedAction.ModuleRemoved moduleRemoved -> removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
-			case ILinkedAction.OwnerChanged ownerChanged -> {
-				Owner owner = ownerChanged.newOwner();
-
-				setOwner(owner.getUUID(), owner.getName());
+			case ILinkedAction.OptionChanged<Boolean>(Option<Boolean> option) when option.getName().equals(ignoreOwner.getName()) -> ignoreOwner.copy(option);
+			case ILinkedAction.OptionChanged<Boolean>(Option<Boolean> option) when option.getName().equals(respectInvisibility.getName()) -> respectInvisibility.copy(option);
+			case ILinkedAction.OptionChanged<Integer>(Option<Integer> option) when option.getName().equals(signalLength.getName()) -> {
+				signalLength.copy(option);
+				turnOffRedstoneOutput();
 			}
-			case ILinkedAction.StateChanged<?> stateChanged -> {
+			case ILinkedAction.OptionChanged<?>(Option<?> option) -> throw new UnsupportedOperationException("Unhandled option synchronization in laser block! " + option.getName());
+			case ILinkedAction.ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) -> insertModule(stack, wasModuleToggled);
+			case ILinkedAction.ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) -> removeModule(moduleType, wasModuleToggled);
+			case ILinkedAction.OwnerChanged(Owner newOwner) -> setOwner(newOwner.getUUID(), newOwner.getName());
+			case ILinkedAction.StateChanged<Boolean>(BooleanProperty property, Boolean oldValue, Boolean newValue) when property == LaserBlock.POWERED -> {
 				BlockState state = getBlockState();
+				int signalLength = getSignalLength();
 
-				if (stateChanged.property() == LaserBlock.POWERED) {
-					int signalLength = getSignalLength();
+				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 
-					level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
-					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
-
-					if (signalLength > 0)
-						level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
-				}
+				if (signalLength > 0)
+					level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+			}
+			default -> {
 			}
 		}
 

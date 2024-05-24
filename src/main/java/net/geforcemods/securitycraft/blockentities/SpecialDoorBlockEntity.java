@@ -8,8 +8,11 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,9 +44,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		switch (action) {
-			case ILinkedAction.OptionChanged<?> optionChanged -> {
-				Option<?> option = optionChanged.option();
-
+			case ILinkedAction.OptionChanged<?>(Option<?> option) -> {
 				for (Option<?> customOption : customOptions()) {
 					if (customOption.getName().equals(option.getName())) {
 						customOption.copy(option);
@@ -53,8 +54,8 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 				setChanged();
 			}
-			case ILinkedAction.ModuleInserted moduleInserted -> insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
-			case ILinkedAction.ModuleRemoved moduleRemoved -> removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
+			case ILinkedAction.ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) -> insertModule(stack, wasModuleToggled);
+			case ILinkedAction.ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) -> removeModule(moduleType, wasModuleToggled);
 			default -> {
 			}
 		}
