@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
@@ -35,6 +36,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -52,6 +54,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IntOption signalLength = new SignalLengthOption(60);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean providePower;
 	private int signalCooldown, togglePowerCooldown;
@@ -494,10 +497,14 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
+	}
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				horizontal, solidifyField, disabled, ignoreOwner, signalLength
+				horizontal, solidifyField, disabled, ignoreOwner, signalLength, respectInvisibility
 		};
 	}
 
