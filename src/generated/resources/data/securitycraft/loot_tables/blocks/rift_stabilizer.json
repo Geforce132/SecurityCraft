@@ -9,6 +9,11 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -19,9 +24,6 @@
               "properties": {
                 "half": "lower"
               }
-            },
-            {
-              "condition": "minecraft:survives_explosion"
             }
           ],
           "name": "securitycraft:rift_stabilizer"
