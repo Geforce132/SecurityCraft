@@ -59,7 +59,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		add(SCContent.CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 		add(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 
-		LootPoolSingletonContainer.Builder<?> imsLootEntryBuilder = LootItem.lootTableItem(SCContent.BOUNCING_BETTY.get());
+		LootPoolSingletonContainer.Builder<?> imsLootEntryBuilder = LootItem.lootTableItem(SCContent.BOUNCING_BETTY);
 
 		for (int i = 0; i <= 4; i++) {
 			if (i == 1)
@@ -85,7 +85,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 				LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS.get())
+						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS)
 								.when(BlockEntityNBTCondition.nbt("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
 		//@formatter:on
@@ -120,7 +120,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		add(SCContent.SONIC_SECURITY_SYSTEM, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get())
+						.add(LootItem.lootTableItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM)
 								.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
 										.include(SCContent.SSS_LINKED_BLOCKS.get())
 										.include(SCContent.NOTES.get()))
