@@ -84,10 +84,10 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.Event.Result;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
@@ -276,7 +276,7 @@ public class SCEventHandler {
 			Block block = event.getLevel().getBlockState(event.getPos()).getBlock();
 
 			if (block == SCContent.KEYPAD_DOOR.get())
-				event.setUseItem(Result.DENY);
+				event.setUseItem(TriState.FALSE);
 			else if (block == SCContent.REINFORCED_DOOR.get() || block == SCContent.REINFORCED_IRON_TRAPDOOR.get() || block == SCContent.SCANNER_DOOR.get())
 				event.setCanceled(true);
 		}
@@ -343,8 +343,8 @@ public class SCEventHandler {
 			if (heldItem.is(SCContent.KEY_PANEL.get()) && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 				for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 					if (pc.isUnprotectedBlock(state)) {
-						event.setUseBlock(Result.DENY);
-						event.setUseItem(Result.ALLOW);
+						event.setUseBlock(TriState.FALSE);
+						event.setUseItem(TriState.TRUE);
 					}
 				}
 
@@ -359,8 +359,8 @@ public class SCEventHandler {
 		}
 
 		if (block instanceof DisplayCaseBlock && player.isShiftKeyDown() && player.getMainHandItem().isEmpty() && !player.getOffhandItem().isEmpty()) {
-			event.setUseBlock(Result.ALLOW);
-			event.setUseItem(Result.DENY);
+			event.setUseBlock(TriState.TRUE);
+			event.setUseItem(TriState.FALSE);
 			return;
 		}
 
