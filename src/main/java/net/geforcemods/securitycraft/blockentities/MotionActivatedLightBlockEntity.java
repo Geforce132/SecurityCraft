@@ -7,10 +7,10 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -22,6 +22,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
 	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D);
 	private DisabledOption disabled = new DisabledOption(false);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	@Override
@@ -29,7 +30,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 		if (world.isRemote || isDisabled() || cooldown-- > 0)
 			return;
 
-		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !Utils.isEntityInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(e instanceof Sentry || e instanceof EntityArmorStand));
+		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos).grow(searchRadiusOption.get()), e -> !respectInvisibility.isConsideredInvisible(e) && (!(e instanceof EntityPlayer) || !((EntityPlayer) e).isSpectator()) && !(e instanceof Sentry || e instanceof EntityArmorStand));
 		IBlockState state = world.getBlockState(pos);
 		boolean shouldBeOn = !entities.isEmpty();
 
@@ -58,7 +59,7 @@ public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity imp
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option<?>[] {
-				searchRadiusOption, disabled
+				searchRadiusOption, disabled, respectInvisibility
 		};
 	}
 

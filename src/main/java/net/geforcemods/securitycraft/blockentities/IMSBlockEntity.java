@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.entity.IMSBomb;
@@ -33,6 +34,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int bombsRemaining = 4;
 	private boolean updateBombCount = false;
 	private int attackTime = getAttackInterval();
@@ -81,7 +83,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 			AxisAlignedBB area = BlockUtils.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1).grow(range.get(), range.get(), range.get());
 			TargetingMode mode = getTargetingMode();
 
-			world.getEntitiesWithinAABB(EntityLivingBase.class, area, e -> (e instanceof EntityPlayer || e instanceof EntityMob) && mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
+			world.getEntitiesWithinAABB(EntityLivingBase.class, area, e -> (e instanceof EntityPlayer || e instanceof EntityMob) && mode.canAttackEntity(e, this, respectInvisibility::isConsideredInvisible)).stream().findFirst().ifPresent(e -> {
 				double addToX = bombsRemaining == 4 || bombsRemaining == 3 ? 0.84375D : 0.0D; //0.84375 is the offset towards the bomb's position in the model
 				double addToZ = bombsRemaining == 4 || bombsRemaining == 2 ? 0.84375D : 0.0D;
 				int launchHeight = getLaunchHeight();
@@ -155,7 +157,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, disabled, ignoreOwner, targetingMode
+				range, disabled, ignoreOwner, targetingMode, respectInvisibility
 		};
 	}
 

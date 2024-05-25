@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -30,6 +31,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 			return "option.generic.viewActivated.maximumDistance";
 		}
 	};
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int viewCooldown = 0;
 
 	@Override
@@ -43,7 +45,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		IBlockState upperState = world.getBlockState(pos);
 		IBlockState lowerState = world.getBlockState(pos.down());
 
-		if (upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !Utils.isEntityInvisible(entity)) {
+		if (upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !respectInvisibility.isConsideredInvisible(entity)) {
 			EnumFacing.Axis facingAxis = ScannerDoorBlock.getFacingAxis(lowerState);
 
 			if (!(entity instanceof EntityPlayer) || facingAxis != rayTraceResult.sideHit.getAxis())
@@ -109,7 +111,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled, maximumDistance
+				sendMessage, signalLength, disabled, maximumDistance, respectInvisibility
 		};
 	}
 

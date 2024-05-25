@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
@@ -22,6 +22,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private IntOption searchRadius = new IntOption(this::getPos, "searchRadius", 3, 1, 20, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private String[] players = new String[100];
 	private String[] uuids = new String[100];
 	private long[] timestamps = new long[100];
@@ -37,7 +38,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 				cooldown--;
 			else if (world.getRedstonePowerFromNeighbors(pos) > 0) {
 				long timestamp = System.currentTimeMillis();
-				List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !Utils.isEntityInvisible(e) && !wasPlayerRecentlyAdded(e.getName(), timestamp));
+				List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos).grow(searchRadius.get()), e -> !e.isSpectator() && !(isOwnedBy(e) && ignoresOwner() || isAllowed(e)) && !respectInvisibility.isConsideredInvisible(e) && !wasPlayerRecentlyAdded(e.getName(), timestamp));
 
 				if (!nearbyPlayers.isEmpty()) {
 					boolean changed = false;
@@ -115,7 +116,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadius, disabled, ignoreOwner
+				searchRadius, disabled, ignoreOwner, respectInvisibility
 		};
 	}
 

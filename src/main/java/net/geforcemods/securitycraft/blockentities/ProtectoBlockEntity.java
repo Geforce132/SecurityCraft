@@ -5,10 +5,10 @@ import java.util.List;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -25,6 +25,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	private int ticksBetweenAttacks = isModuleEnabled(ModuleType.SPEED) ? FAST_SPEED : SLOW_SPEED;
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 
 	@Override
 	public void update() {
@@ -43,7 +44,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				boolean shouldDeactivate = false;
 
 				for (EntityLivingBase entity : entities) {
-					if (!(entity instanceof Sentry) && !Utils.isEntityInvisible(entity)) {
+					if (!(entity instanceof Sentry) && !respectInvisibility.isConsideredInvisible(entity)) {
 						if (entity instanceof EntityPlayer) {
 							EntityPlayer player = (EntityPlayer) entity;
 
@@ -93,7 +94,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled, ignoreOwner
+				disabled, ignoreOwner, respectInvisibility
 		};
 	}
 

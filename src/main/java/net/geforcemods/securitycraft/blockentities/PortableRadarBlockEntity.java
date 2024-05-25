@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -33,6 +34,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private boolean shouldSendNewMessage = true;
 	private Owner lastPlayer = new Owner();
 	private int ticksUntilNextSearch = getSearchDelay();
@@ -43,7 +45,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			ticksUntilNextSearch = getSearchDelay();
 
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<EntityPlayer> closebyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !Utils.isEntityInvisible(e));
+			List<EntityPlayer> closebyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !respectInvisibility.isConsideredInvisible(e));
 
 			if (isModuleEnabled(ModuleType.REDSTONE)) {
 				PortableRadarBlock.togglePowerOutput(world, pos, !closebyPlayers.isEmpty());
@@ -154,7 +156,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled, ignoreOwner
+				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled, ignoreOwner, respectInvisibility
 		};
 	}
 }

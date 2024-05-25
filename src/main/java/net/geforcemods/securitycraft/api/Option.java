@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -215,6 +217,25 @@ public abstract class Option<T> {
 		@Override
 		public String getKey(String denotation) {
 			return "option.generic.ignoreOwner";
+		}
+	}
+
+	public static class RespectInvisibilityOption extends BooleanOption {
+		public RespectInvisibilityOption() {
+			this(false);
+		}
+
+		public RespectInvisibilityOption(Boolean value) {
+			super("respectInvisibility", value);
+		}
+
+		@Override
+		public String getKey(String denotation) {
+			return "option.generic.respectInvisibility";
+		}
+
+		public boolean isConsideredInvisible(EntityLivingBase entity) {
+			return get() && entity.isPotionActive(MobEffects.INVISIBILITY);
 		}
 	}
 

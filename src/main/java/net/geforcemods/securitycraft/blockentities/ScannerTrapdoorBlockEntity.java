@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -38,6 +39,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 		}
 	};
 	private DisabledOption disabled = new DisabledOption(false);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int viewCooldown = 0;
 
 	@Override
@@ -47,7 +49,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 
 	@Override
 	public boolean onEntityViewed(EntityLivingBase entity, RayTraceResult hitResult) {
-		if (!Utils.isEntityInvisible(entity)) {
+		if (!respectInvisibility.isConsideredInvisible(entity)) {
 			IBlockState state = world.getBlockState(pos);
 
 			if (!(entity instanceof EntityPlayer) || !(state.getValue(BlockTrapDoor.OPEN) ? hitResult.sideHit.getAxis() == state.getValue(BlockHorizontal.FACING).getAxis() : hitResult.sideHit.getAxis() == Axis.Y))
@@ -129,7 +131,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled, maximumDistance
+				sendMessage, signalLength, disabled, maximumDistance, respectInvisibility
 		};
 	}
 }

@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
@@ -33,6 +34,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	private IntOption range = new IntOption(this::getPos, "range", 5, 1, 10, 1);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS_AND_MOBS);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int cooldown = -1;
 	private IItemHandler insertOnlyHandler, lensHandler;
 	private LensContainer lens = new LensContainer(1);
@@ -72,7 +74,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 			else if (dir == EnumFacing.WEST)
 				area = area.contract(range.get(), -0, -0);
 
-			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> mode.canAttackEntity(e, this, true)).stream().findFirst().ifPresent(e -> {
+			getWorld().getEntitiesWithinAABB(EntityLivingBase.class, area, e -> mode.canAttackEntity(e, this, respectInvisibility::isConsideredInvisible)).stream().findFirst().ifPresent(e -> {
 				cooldown = 20;
 				getWorld().playSound(null, new BlockPos(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D), SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.BLOCKS, 0.3F, 0.6F);
 			});
@@ -139,7 +141,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				range, ignoreOwner, targetingMode
+				range, ignoreOwner, targetingMode, respectInvisibility
 		};
 	}
 

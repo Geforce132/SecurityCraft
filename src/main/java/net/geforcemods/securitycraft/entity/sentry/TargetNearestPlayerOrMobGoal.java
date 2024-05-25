@@ -6,7 +6,6 @@ import java.util.List;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,6 +15,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityShulker;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -36,7 +36,7 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 		if (sentry.isShutDown())
 			return false;
 
-		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> sentry.getEntitySenses().canSee(e) && !Utils.isEntityInvisible(e));
+		List<EntityLivingBase> list = taskOwner.world.<EntityLivingBase>getEntitiesWithinAABB(targetClass, getTargetableArea(getTargetDistance()), e -> sentry.getEntitySenses().canSee(e) && !e.isPotionActive(MobEffects.INVISIBILITY));
 
 		if (!list.isEmpty()) {
 			SentryMode sentryMode = sentry.getMode();
@@ -58,7 +58,7 @@ public class TargetNearestPlayerOrMobGoal extends EntityAINearestAttackableTarge
 							&& !((EntityPlayer) potentialTarget).isCreative()
 							&& !((Sentry) taskOwner).isOwnedBy((potentialTarget))
 							&& !sentry.isTargetingAllowedPlayer(potentialTarget)
-							&& !Utils.isEntityInvisible(potentialTarget)) {
+							&& !potentialTarget.isPotionActive(MobEffects.INVISIBILITY)) {
 						break;
 					}
 					//@formatter:on
