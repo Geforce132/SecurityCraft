@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -64,12 +63,9 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	public static void lowerFillLevel(BlockState state, Level level, BlockPos pos) {
 		int fillLevel = state.getValue(LEVEL) - 1;
 		BlockState newState = fillLevel == 0 ? SCContent.REINFORCED_CAULDRON.get().defaultBlockState() : state.setValue(LEVEL, fillLevel);
-		BlockEntity be = level.getBlockEntity(pos);
-		CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
-		level.setBlockAndUpdate(pos, newState);
+		ReinforcedCauldronBlock.updateBlockState(level, pos, newState);
 		level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState));
-		level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 	}
 
 	@Override
