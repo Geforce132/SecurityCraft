@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -128,6 +129,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
@@ -550,42 +552,53 @@ public class ClientHandler {
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);
-			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
 
-			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-				if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get()) && level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
-					ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
-
-					if (stack.getItem() instanceof DyeableLeatherItem lens)
-						return lens.getColor(stack);
-
-					break;
-				}
-				else
-					mutablePos.move(direction);
-			}
-
-			return -1;
+			return iterateFields(level, pos, direction, ConfigHandler.SERVER.laserBlockRange.get(), SCContent.LASER_BLOCK.get(), LaserBlockBlockEntity.class::isInstance, be -> ((LaserBlockBlockEntity) be).getLensContainer().getItem(direction.getOpposite().ordinal()));
 		}, SCContent.LASER_FIELD.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = state.getValue(InventoryScannerFieldBlock.FACING);
-			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
 
-			for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-				if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get()) && level.getBlockEntity(mutablePos) instanceof InventoryScannerBlockEntity be) {
-					ItemStack stack = be.getLensContainer().getItem(0);
+			return iterateFields(level, pos, direction, ConfigHandler.SERVER.inventoryScannerRange.get(), SCContent.INVENTORY_SCANNER.get(), InventoryScannerBlockEntity.class::isInstance, be -> ((InventoryScannerBlockEntity) be).getLensContainer().getItem(0));
+		}, SCContent.INVENTORY_SCANNER_FIELD.get());
+	}
+
+	public static int iterateFields(BlockAndTintGetter level, BlockPos pos, Direction direction, int range, Block block, Predicate<BlockEntity> beTest, Function<BlockEntity, ItemStack> lensGetter) {
+		try {
+			return iterateFieldsInternal(level, pos, direction, range, block, beTest, lensGetter);
+		}
+		catch (Exception e1) {
+			direction = direction.getOpposite();
+
+			try {
+				return iterateFieldsInternal(level, pos, direction, range, block, beTest, lensGetter);
+			}
+			catch (Exception e2) {}
+		}
+
+		return -1;
+	}
+
+	private static int iterateFieldsInternal(BlockAndTintGetter level, BlockPos pos, Direction direction, int range, Block block, Predicate<BlockEntity> beTest, Function<BlockEntity, ItemStack> lensGetter) throws ArrayIndexOutOfBoundsException {
+		MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+		for (int i = 0; i < range; i++) {
+			if (level.getBlockState(mutablePos).is(block)) {
+				BlockEntity be = level.getBlockEntity(mutablePos);
+
+				if (beTest.test(be)) {
+					ItemStack stack = lensGetter.apply(be);
 
 					if (stack.getItem() instanceof DyeableLeatherItem lens)
 						return lens.getColor(stack);
 
 					break;
 				}
-				else
-					mutablePos.move(direction);
 			}
 
-			return -1;
-		}, SCContent.INVENTORY_SCANNER_FIELD.get());
+			mutablePos.move(direction);
+		}
+
+		return -1;
 	}
 
 	@SubscribeEvent
