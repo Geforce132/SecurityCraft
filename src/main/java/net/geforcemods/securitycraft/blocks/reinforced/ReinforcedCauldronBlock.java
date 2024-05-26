@@ -108,7 +108,6 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	@Override
 	public void handlePrecipitation(BlockState state, Level level, BlockPos pos, Precipitation precipitation) {
 		if (shouldHandlePrecipitation(level, precipitation)) {
-			BlockEntity be = level.getBlockEntity(pos);
 			BlockState newCauldronState = null;
 
 			if (precipitation == Precipitation.RAIN)
@@ -117,10 +116,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				newCauldronState = SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState();
 
 			if (newCauldronState != null) {
-				CompoundTag tag = be.saveWithoutMetadata();
-
-				level.setBlockAndUpdate(pos, newCauldronState);
-				level.getBlockEntity(pos).load(tag);
+				updateBlockState(level, pos, newCauldronState);
 				level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
 			}
 		}
@@ -133,7 +129,6 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 
 	@Override
 	protected void receiveStalactiteDrip(BlockState state, Level level, BlockPos pos, Fluid fluid) {
-		BlockEntity be = level.getBlockEntity(pos);
 		BlockState newCauldronState = null;
 		int levelEvent = 0;
 
@@ -147,10 +142,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		}
 
 		if (newCauldronState != null) {
-			CompoundTag tag = be.saveWithoutMetadata();
-
-			level.setBlockAndUpdate(pos, newCauldronState);
-			level.getBlockEntity(pos).load(tag);
+			updateBlockState(level, pos, newCauldronState);
 			level.levelEvent(levelEvent, pos, 0);
 			level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newCauldronState));
 		}
@@ -170,6 +162,22 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedCauldronBlockEntity(pos, state);
+	}
+
+	public static void updateBlockState(Level level, BlockPos pos, BlockState newState) {
+		updateBlockState(level, pos, newState, level.getBlockEntity(pos));
+	}
+
+	public static void updateBlockState(Level level, BlockPos pos, BlockState newState, BlockEntity be) {
+		CompoundTag tag = null;
+
+		if (be != null)
+			tag = be.saveWithoutMetadata();
+
+		level.setBlockAndUpdate(pos, newState);
+
+		if (tag != null)
+			level.getBlockEntity(pos).load(tag);
 	}
 
 	public interface IReinforcedCauldronInteraction extends CauldronInteraction {
@@ -261,14 +269,11 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				else {
 					if (!level.isClientSide) {
 						Item item = stack.getItem();
-						BlockEntity be = level.getBlockEntity(pos);
-						CompoundTag tag = be.saveWithoutMetadata();
 
 						player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 						player.awardStat(Stats.USE_CAULDRON);
 						player.awardStat(Stats.ITEM_USED.get(item));
-						level.setBlockAndUpdate(pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
-						level.getBlockEntity(pos).load(tag);
+						updateBlockState(level, pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
 						level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 					}
@@ -298,7 +303,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 						player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 						player.awardStat(Stats.USE_CAULDRON);
 						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-						level.setBlockAndUpdate(pos, state.cycle(LayeredCauldronBlock.LEVEL));
+						updateBlockState(level, pos, state.cycle(LayeredCauldronBlock.LEVEL), null);
 						level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 					}
@@ -369,14 +374,11 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			else {
 				if (!level.isClientSide) {
 					Item item = stack.getItem();
-					BlockEntity be = level.getBlockEntity(pos);
-					CompoundTag tag = be.saveWithoutMetadata();
 
 					player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, bucket));
 					player.awardStat(Stats.USE_CAULDRON);
 					player.awardStat(Stats.ITEM_USED.get(item));
-					level.setBlockAndUpdate(pos, SCContent.REINFORCED_CAULDRON.get().defaultBlockState());
-					level.getBlockEntity(pos).load(tag);
+					updateBlockState(level, pos, SCContent.REINFORCED_CAULDRON.get().defaultBlockState());
 					level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
 					level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
 				}
@@ -388,14 +390,11 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		static InteractionResult emptyBucket(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState state, SoundEvent sound) {
 			if (!level.isClientSide) {
 				Item item = stack.getItem();
-				BlockEntity be = level.getBlockEntity(pos);
-				CompoundTag tag = be.saveWithoutMetadata();
 
 				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.BUCKET)));
 				player.awardStat(Stats.FILL_CAULDRON);
 				player.awardStat(Stats.ITEM_USED.get(item));
-				level.setBlockAndUpdate(pos, state);
-				level.getBlockEntity(pos).load(tag);
+				updateBlockState(level, pos, state);
 				level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 			}
