@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -10,7 +9,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -50,9 +48,6 @@ public class SecretCeilingHangingSignBlock extends CeilingHangingSignBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && player.getItemInHand(hand).getItem() == SCContent.ADMIN_TOOL.get())
-			return SCContent.ADMIN_TOOL.get().useOn(new UseOnContext(player, hand, hit));
-
 		if (level.getBlockEntity(pos) instanceof SecretHangingSignBlockEntity be && be.isPlayerAllowedToSeeText(player))
 			return super.use(state, level, pos, player, hand, hit);
 
