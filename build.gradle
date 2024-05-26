@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.6.78-beta'
+	implementation 'net.neoforged:neoforge:20.6.82-beta'
 
 //	implementation "curse.maven:architectury-api-419699:5173990" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5205161" //ftb teams dependency
