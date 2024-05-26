@@ -56,6 +56,12 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 	}
 
 	@Override
+	public void removed(Player player) {
+		super.removed(player);
+		be.setChanged();
+	}
+
+	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack copy = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
