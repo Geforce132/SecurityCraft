@@ -42,7 +42,8 @@
 - Fix: Sonic Security System settings sometimes do not persist through world reloads
 - Fix: The Block Pocket Manager's storage does not persist through world reloads
 - Fix: Potential crash in SaltData (ConcurrentModificationException)
-- Misc.: The minimum required NeoForge version is now 20.6.82-beta
+- Fix: Crash when Laser Block/Inventory Scanner ranges are set high
+- Misc.: The minimum required NeoForge version is now 20.4.235
 
 --------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
 
