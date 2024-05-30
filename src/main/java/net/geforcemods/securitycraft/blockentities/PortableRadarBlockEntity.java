@@ -55,6 +55,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 			AABB area = new AABB(pos).inflate(getSearchRadius());
 			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !respectInvisibility.isConsideredInvisible(e));
+			List<Owner> closebyOwners = closebyPlayers.stream().map(Owner::new).toList();
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, pos, !closebyPlayers.isEmpty());
@@ -86,7 +87,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 				}
 			}
 
-			seenPlayers.removeIf(owner -> !closebyPlayers.stream().map(Owner::new).toList().contains(owner));
+			seenPlayers.removeIf(owner -> !closebyOwners.contains(owner));
 		}
 	}
 
@@ -109,9 +110,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	public boolean shouldSendMessage(Player player) {
-		Owner currentPlayer = new Owner(player);
-
-		return seenPlayers.add(currentPlayer) || repeatMessageOption.get();
+		return seenPlayers.add(new Owner(player)) || repeatMessageOption.get();
 	}
 
 	public double getSearchRadius() {

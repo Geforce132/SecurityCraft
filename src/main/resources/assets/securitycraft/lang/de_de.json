@@ -1051,6 +1051,7 @@
 	"messages.securitycraft:ownable.ownerNotValidated": "Der Besitzer dieses Blocks wurde von einem Universellen Besitzeränderer geändert und muss deshalb vom neuen Besitzer verifiziert werden, um wieder zu funktionieren. Um einen Block zu verifizieren, muss der neue Besitzer des Blocks den Block rechtsklicken.",
 	"messages.securitycraft:ownable.validate": "Der Besitzer dieses Blocks wurde erfolgreich verifiziert.",
 	"messages.securitycraft:passcodeProtected.notSetUp": "Es existiert noch kein Passwort. Du kannst nicht hierauf zugreifen.",
+	"messages.securitycraft:passcodeProtected.onCooldown": "Nicht so schnell! Du musst einen kleinen Moment warten, bevor du ein neues Passwort eingeben kannst.",
 	"messages.securitycraft:portableRadar.withName": "%1$s ist in der Nähe deines tragbaren Radars namens %2$s bei %3$2.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s ist in der Nähe deines tragbaren Radars bei %2$s.",
 	"messages.securitycraft:portable_tune_player.no_tune": "Keine Melodie vorhanden.",
