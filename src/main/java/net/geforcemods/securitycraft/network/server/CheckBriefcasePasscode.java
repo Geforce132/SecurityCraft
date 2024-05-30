@@ -6,7 +6,9 @@ import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -33,7 +35,9 @@ public record CheckBriefcasePasscode(String passcode) implements CustomPacketPay
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 		PasscodeData passcodeData = briefcase.get(SCContent.PASSCODE_DATA);
 
-		if (passcodeData != null) {
+		if (PasscodeUtils.isOnCooldown(player))
+			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
+		else if (passcodeData != null) {
 			String dataCode = passcodeData.passcode();
 
 			if (dataCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant

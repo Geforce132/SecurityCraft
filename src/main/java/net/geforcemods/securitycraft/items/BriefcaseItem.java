@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -54,6 +55,7 @@ public class BriefcaseItem extends Item {
 	}
 
 	public static void checkPasscode(Player player, ItemStack briefcase, String incomingCode, PasscodeData passcodeData) {
+		PasscodeUtils.setOnCooldown(player);
 		passcodeData.checkPasscode(briefcase, incomingCode, () -> {
 			if (!briefcase.has(SCContent.OWNER_DATA)) //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
 				briefcase.set(SCContent.OWNER_DATA, OwnerData.fromPlayer(player, true));
