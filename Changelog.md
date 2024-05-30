@@ -44,6 +44,7 @@
 - Fix: Potential crash in SaltData (ConcurrentModificationException)
 - Fix: Crash when Laser Block/Inventory Scanner ranges are set high
 - Fix: Players are able to mount Security Cameras that have been shut down by an EMP
+- Fix: A Portable Radar configured to not send repeating messages still repeats messages when multiple players are in its range
 - Misc.: The minimum required NeoForge version is now 20.6.82-beta
 
 --------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
