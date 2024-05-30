@@ -87,6 +87,7 @@ public class ConfigHandler {
 		public IntValue incorrectPasscodeDamage;
 		public IntValue sentryBulletDamage;
 		public BooleanValue allowCameraNightVision;
+		public IntValue passcodeCheckCooldown;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
@@ -207,6 +208,10 @@ public class ConfigHandler {
 			allowCameraNightVision = builder
 					.comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
 					.define("allow_camera_night_vision", true);
+
+			passcodeCheckCooldown = builder
+					.comment("Defines the amount of time in milliseconds that needs to pass between two separate attempts from a player to enter a passcode.")
+					.defineInRange("passcode_check_cooldown", 250, 0, 2000);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
