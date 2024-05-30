@@ -83,7 +83,7 @@ public class CameraMonitorScreen extends Screen {
 				if (cameraBe != null) {
 					BlockState state = level.getBlockState(view.pos());
 
-					if (cameraBe.isDisabled()) {
+					if (cameraBe.isDisabled() || cameraBe.isShutDown()) {
 						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:scManual.disabled")));
 						cameraButton.active = false;
 					}
@@ -142,7 +142,7 @@ public class CameraMonitorScreen extends Screen {
 		int camID = buttonId + (page - 1) * 10;
 		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).pos();
 
-		if (minecraft.level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity camera && camera.isDisabled()) {
+		if (minecraft.level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity camera && (camera.isDisabled() || camera.isShutDown())) {
 			button.active = false;
 			return;
 		}

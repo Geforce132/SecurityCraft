@@ -42,6 +42,7 @@
 - Fix: The Block Pocket Manager's storage does not persist through world reloads
 - Fix: Potential crash in SaltData (ConcurrentModificationException)
 - Fix: Crash when Laser Block/Inventory Scanner ranges are set high
+- Fix: Players are able to mount Security Cameras that have been shut down by an EMP from another mod
 - Misc.: The minimum required NeoForge version is now 20.4.235
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
