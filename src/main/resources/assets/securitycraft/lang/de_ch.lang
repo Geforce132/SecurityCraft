@@ -197,7 +197,6 @@ gui.securitycraft:rift_stabilizer.toggle=Klicke die Einträge in der Liste unten
 gui.securitycraft:scManual.author=Übersetzt von bl4ckscor3 und Redstone_Dubstep
 gui.securitycraft:scManual.block_mines=Blockminen
 gui.securitycraft:scManual.block_reinforcers=Universelle Blockverstärker
-gui.securitycraft:scManual.crowdin=Vielen Dank unseren Übersetzern auf Crowdin!
 gui.securitycraft:scManual.customizableBlock=Anpassbar: Du kannst den Universellen Blockmodifizierer verwenden, um die Funktionen hiervon anzupassen.
 gui.securitycraft:scManual.designedBy=Entworfen von: %s
 gui.securitycraft:scManual.disabled=Deaktiviert
