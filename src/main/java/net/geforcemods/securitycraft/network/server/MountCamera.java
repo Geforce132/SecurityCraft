@@ -44,10 +44,12 @@ public class MountCamera {
 			if (te instanceof SecurityCameraBlockEntity) {
 				SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
 
-				if (be.isOwnedBy(player) || be.isAllowed(player))
-					((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
-				else
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), TextFormatting.RED);
+				if (!be.isDisabled()) {
+					if (be.isOwnedBy(player) || be.isAllowed(player))
+						((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
+					else
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), TextFormatting.RED);
+				}
 
 				return;
 			}
