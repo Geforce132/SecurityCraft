@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
@@ -39,8 +41,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
-	private boolean shouldSendNewMessage = true;
-	private Owner lastPlayer = new Owner();
+	private Set<Owner> seenPlayers = new HashSet<>();
 	private int ticksUntilNextSearch = getSearchDelay();
 
 	public PortableRadarBlockEntity(BlockPos pos, BlockState state) {
@@ -54,6 +55,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 			AABB area = new AABB(pos).inflate(getSearchRadius());
 			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !respectInvisibility.isConsideredInvisible(e));
+			List<Owner> closebyOwners = closebyPlayers.stream().map(Owner::new).toList();
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, pos, !closebyPlayers.isEmpty());
@@ -81,11 +83,11 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 						if (!onlineTeamPlayers.isEmpty())
 							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE));
-
-						setSentMessage();
 					}
 				}
 			}
+
+			seenPlayers.removeIf(owner -> !closebyOwners.contains(owner));
 		}
 	}
 
@@ -95,24 +97,6 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 		if (module == ModuleType.REDSTONE)
 			PortableRadarBlock.togglePowerOutput(level, worldPosition, false);
-	}
-
-	@Override
-	public void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
-		CompoundTag lastPlayerTag = new CompoundTag();
-
-		tag.putBoolean("shouldSendNewMessage", shouldSendNewMessage);
-		lastPlayer.save(lastPlayerTag, needsValidation());
-		tag.put("lastPlayer", lastPlayerTag);
-	}
-
-	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-
-		shouldSendNewMessage = tag.getBoolean("shouldSendNewMessage");
-		lastPlayer = Owner.fromCompound(tag.getCompound("lastPlayer"));
 	}
 
 	@Override
@@ -126,20 +110,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	public boolean shouldSendMessage(Player player) {
-		Owner currentPlayer = new Owner(player);
-
-		if (!currentPlayer.equals(lastPlayer)) {
-			shouldSendNewMessage = true;
-			lastPlayer = currentPlayer;
-			setChanged();
-		}
-
-		return (shouldSendNewMessage || repeatMessageOption.get()) && !(lastPlayer.owns(this) && ignoresOwner());
-	}
-
-	public void setSentMessage() {
-		shouldSendNewMessage = false;
-		setChanged();
+		return seenPlayers.add(new Owner(player)) || repeatMessageOption.get();
 	}
 
 	public double getSearchRadius() {
