@@ -756,7 +756,6 @@
 	"gui.securitycraft:scManual.author": "momo-iによる翻訳",
 	"gui.securitycraft:scManual.block_mines": "地雷ブロック",
 	"gui.securitycraft:scManual.block_reinforcers": "汎用ブロック強化機",
-	"gui.securitycraft:scManual.crowdin": "Crowdinの翻訳者の皆様に感謝します！",
 	"gui.securitycraft:scManual.customizableBlock": "カスタマイズ可能：汎用ブロック修正機やSecurityCraftが追加した様々なモジュールを使って、この機能をカスタマイズすることができます。",
 	"gui.securitycraft:scManual.designedBy": "%s氏によるデザイン",
 	"gui.securitycraft:scManual.disabled": "無効",

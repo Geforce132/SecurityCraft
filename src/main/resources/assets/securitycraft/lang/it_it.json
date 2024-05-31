@@ -755,7 +755,6 @@
 	"gui.securitycraft:scManual.author": "Traduzioni di Chexet48 e Cavallo Bianco",
 	"gui.securitycraft:scManual.block_mines": "Blocchi mina",
 	"gui.securitycraft:scManual.block_reinforcers": "Rinforza-blocchi universali",
-	"gui.securitycraft:scManual.crowdin": "Grazie ai nostri traduttori su Crowdin!",
 	"gui.securitycraft:scManual.customizableBlock": "Personalizzabile: Puoi usare il modifica-blocchi universale e i vari moduli della SecurityCraft per personalizzare le funzionalità del blocco.",
 	"gui.securitycraft:scManual.designedBy": "Progettato da: %s",
 	"gui.securitycraft:scManual.disabled": "Disattivata",

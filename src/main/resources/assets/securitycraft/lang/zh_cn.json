@@ -756,7 +756,6 @@
 	"gui.securitycraft:scManual.author": "由DrIceTea翻译",
 	"gui.securitycraft:scManual.block_mines": "方块地雷",
 	"gui.securitycraft:scManual.block_reinforcers": "通用方块强化器",
-	"gui.securitycraft:scManual.crowdin": "感谢我们在Crowdin上的所有译者！",
 	"gui.securitycraft:scManual.customizableBlock": "可自定义：你可以使用通用方块修改器与其他安全工艺添加的模块来对该方块功能进行自定义。",
 	"gui.securitycraft:scManual.designedBy": "设计者：%s",
 	"gui.securitycraft:scManual.disabled": "禁用",
