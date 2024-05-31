@@ -41,10 +41,10 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -55,13 +55,11 @@ import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.ITextProperties;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
@@ -82,15 +80,13 @@ public class SCManualScreen extends Screen {
 	private static int lastPage = -1;
 	private final IFormattableTextComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.setUnderlined(true));
 	private final TranslationTextComponent ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
-	private final Style crowdinLinkStyle = Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://crowdin.com/project/securitycraft"));
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
 	private NonNullList<Ingredient> recipe;
 	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
 	private List<ITextProperties> subpages = new ArrayList<>();
-	private List<IReorderingProcessor> translationCredits;
-	private HoverChecker translationCreditsArea;
+	private List<IReorderingProcessor> author = new ArrayList<>();
 	private int currentSubpage = 0;
 	private List<IReorderingProcessor> intro2;
 	private PatronList patronList;
@@ -131,8 +127,6 @@ public class SCManualScreen extends Screen {
 
 			return key1.compareTo(key2);
 		});
-		translationCredits = font.split(Utils.localize("gui.securitycraft:scManual.crowdin").withStyle(TextFormatting.BLUE, TextFormatting.UNDERLINE), 180);
-		translationCreditsArea = new HoverChecker(180, 200, width / 2 - 90, width / 2 + 90);
 	}
 
 	@Override
@@ -222,8 +216,8 @@ public class SCManualScreen extends Screen {
 				font.draw(pose, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0);
 			}
 
-			for (int i = 0; i < translationCredits.size(); i++) {
-				IReorderingProcessor text = translationCredits.get(i);
+			for (int i = 0; i < author.size(); i++) {
+				IReorderingProcessor text = author.get(i);
 
 				font.draw(pose, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0);
 			}
@@ -354,6 +348,12 @@ public class SCManualScreen extends Screen {
 			recipe = null;
 			previousSubpageButton.visible = false;
 			nextSubpageButton.visible = false;
+
+			if (I18n.exists("gui.securitycraft:scManual.author"))
+				author = font.split(Utils.localize("gui.securitycraft:scManual.author"), 180);
+			else
+				author.clear();
+
 			intro2 = font.split(Utils.localize("gui.securitycraft:scManual.intro.2"), 202);
 			patronList.fetchPatrons();
 			return;
@@ -615,11 +615,6 @@ public class SCManualScreen extends Screen {
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (patronList != null)
 			patronList.mouseClicked(mouseX, mouseY, button);
-
-		if (translationCreditsArea.checkHover(mouseX, mouseY)) {
-			handleComponentClicked(crowdinLinkStyle);
-			minecraft.getSoundManager().play(SimpleSound.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-		}
 
 		return super.mouseClicked(mouseX, mouseY, button);
 	}

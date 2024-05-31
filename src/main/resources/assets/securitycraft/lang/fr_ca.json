@@ -623,6 +623,7 @@
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "Vous devez installer un module intelligent pour choisir quels types de téléportations peuvent êtres détectées par ce stabilisateur de faille.",
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Types de téléportations détectables :",
 	"gui.securitycraft:rift_stabilizer.toggle": "Cliquez sur les entrées dans la liste ci-dessous pour activer la détection de ce type spécifique de téléportation.",
+	"gui.securitycraft:scManual.author": "Traduit par TheCrazyFreezee, marminot, thesupercat07, et Kobrha",
 	"gui.securitycraft:scManual.block_mines": "Blocs minés",
 	"gui.securitycraft:scManual.block_reinforcers": "Outil de blindage universel",
 	"gui.securitycraft:scManual.customizableBlock": "Personnalisable : vous pouvez utiliser le modificateur de blocs universel et les différents modules ajoutés par SecurityCraft pour personnaliser les fonctions de ce bloc.",
