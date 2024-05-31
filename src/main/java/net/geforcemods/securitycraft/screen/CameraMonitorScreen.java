@@ -89,7 +89,7 @@ public class CameraMonitorScreen extends GuiContainer {
 				if (cameraTEs[i] != null) {
 					IBlockState state = world.getBlockState(view.getPos());
 
-					if (cameraTEs[i].isDisabled())
+					if (cameraTEs[i].isDisabled() || cameraTEs[i].isShutDown())
 						cameraButton.enabled = false;
 
 					if (state.getWeakPower(world, view.getPos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
@@ -126,7 +126,7 @@ public class CameraMonitorScreen extends GuiContainer {
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (cameraTEs[i] != null && hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraTEs[i].isDisabled())
+				if (cameraTEs[i].isDisabled() || cameraTEs[i].isShutDown())
 					drawHoveringText(Utils.localize("gui.securitycraft:scManual.disabled").getFormattedText(), mouseX, mouseY);
 				else if (cameraTEs[i].hasCustomName())
 					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getName()), 150), mouseX, mouseY, mc.fontRenderer);
@@ -146,8 +146,12 @@ public class CameraMonitorScreen extends GuiContainer {
 			TileEntity te = mc.world.getTileEntity(cameraPos);
 
 			if (te instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) te).isDisabled()) {
-				button.enabled = false;
-				return;
+				SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
+
+				if (be.isDisabled() || be.isShutDown()) {
+					button.enabled = false;
+					return;
+				}
 			}
 
 			SecurityCraft.network.sendToServer(new MountCamera(cameraPos));

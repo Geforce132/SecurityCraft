@@ -49,7 +49,7 @@ public class MountCamera implements IMessage {
 					if (te instanceof SecurityCameraBlockEntity) {
 						SecurityCameraBlockEntity cam = (SecurityCameraBlockEntity) te;
 
-						if (!cam.isDisabled()) {
+						if (!cam.isDisabled() && !cam.isShutDown()) {
 							if (cam.isOwnedBy(player) || cam.isAllowed(player))
 								((SecurityCameraBlock) state.getBlock()).mountCamera(world, message.pos.getX(), message.pos.getY(), message.pos.getZ(), player);
 							else

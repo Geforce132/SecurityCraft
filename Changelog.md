@@ -30,6 +30,7 @@
 - Fix: Cloning a passcode-protected block using the /clone command will invalidate the passcode of the original block if the clone is removed
 - Fix: Sonic Security System settings sometimes do not persist through world reloads
 - Fix: Potential crash in SaltData (ConcurrentModificationException)
+- Fix: Players are able to mount Security Cameras that have been shut down by an EMP from another mod
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
