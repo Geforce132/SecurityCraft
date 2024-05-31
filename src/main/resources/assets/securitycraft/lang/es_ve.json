@@ -756,7 +756,6 @@
 	"gui.securitycraft:scManual.author": "Traducido por Ryo567, ca11, zeedif, y Globi10",
 	"gui.securitycraft:scManual.block_mines": "Bloques con mina",
 	"gui.securitycraft:scManual.block_reinforcers": "Reforzadores de bloques universales",
-	"gui.securitycraft:scManual.crowdin": "¡Gracias a nuestros/as traductores/as de Crowdin!",
 	"gui.securitycraft:scManual.customizableBlock": "Personalizable: Se puede usar el modificador de bloques universal y los módulos de SecurityCraft para personalizar las características de este bloque.",
 	"gui.securitycraft:scManual.designedBy": "Diseñado por: %s",
 	"gui.securitycraft:scManual.disabled": "Desactivado",
