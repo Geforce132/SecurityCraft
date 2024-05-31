@@ -5,10 +5,13 @@ import java.util.Arrays;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -51,12 +54,15 @@ public class CheckPasscode implements IMessage {
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if (te instanceof IPasscodeProtected) {
+				if (PasscodeUtils.isOnCooldown(player))
+					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
+				else if (te instanceof IPasscodeProtected) {
 					IPasscodeProtected be = (IPasscodeProtected) te;
 
 					if (be.isOnCooldown())
 						return;
 
+					PasscodeUtils.setOnCooldown(player);
 					PasscodeUtils.hashPasscode(message.passcode, be.getSalt(), p -> {
 						if (Arrays.equals(be.getPasscode(), p)) {
 							player.closeScreen();

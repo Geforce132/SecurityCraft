@@ -86,6 +86,7 @@ public class BriefcaseItem extends ColorableItem {
 			return;
 		}
 
+		PasscodeUtils.setOnCooldown(player);
 		PasscodeUtils.hashPasscode(incomingCode, salt, p -> {
 			if (Arrays.equals(PasscodeUtils.stringToBytes(briefcaseCode), p)) {
 				if (!tag.hasKey("owner")) { //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner

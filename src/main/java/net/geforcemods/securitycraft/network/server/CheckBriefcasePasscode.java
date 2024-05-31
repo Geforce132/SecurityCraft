@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -40,7 +42,9 @@ public class CheckBriefcasePasscode implements IMessage {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
 
-				if (!briefcase.isEmpty()) {
+				if (PasscodeUtils.isOnCooldown(player))
+					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
+				else if (!briefcase.isEmpty()) {
 					if (!briefcase.hasTagCompound())
 						briefcase.setTagCompound(new NBTTagCompound());
 

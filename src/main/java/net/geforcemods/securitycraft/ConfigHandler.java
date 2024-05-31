@@ -181,6 +181,11 @@ public class ConfigHandler {
 	@Comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
 	public static boolean allowCameraNightVision = true;
 
+	@Name("Passcode Check Cooldown")
+	@RangeInt(min = 0, max = 2000)
+	@Comment("Defines the amount of time in milliseconds that needs to pass between two separate attempts from a player to enter a passcode.")
+	public static int passcodeCheckCooldown = 250;
+
 	/**
 	 * @deprecated Use {@link #TASER_EFFECTS}
 	 */
