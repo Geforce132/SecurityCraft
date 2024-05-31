@@ -753,6 +753,7 @@
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "このリフトスタビライザーで検知可能なテレポートタイプを切り替えるにはスマートモジュールをインストールする必要があります。",
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "検知可能なテレポートタイプ:",
 	"gui.securitycraft:rift_stabilizer.toggle": "以下のリストの項目をクリックすると、特定のテレポートタイプの検出が切り替わります。",
+	"gui.securitycraft:scManual.author": "momo-iによる翻訳",
 	"gui.securitycraft:scManual.block_mines": "地雷ブロック",
 	"gui.securitycraft:scManual.block_reinforcers": "汎用ブロック強化機",
 	"gui.securitycraft:scManual.customizableBlock": "カスタマイズ可能：汎用ブロック修正機やSecurityCraftが追加した様々なモジュールを使って、この機能をカスタマイズすることができます。",

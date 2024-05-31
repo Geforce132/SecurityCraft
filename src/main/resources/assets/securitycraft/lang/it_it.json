@@ -753,6 +753,7 @@
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "Devi installare un modulo intelligente per decidere quali tipi di teletrasporto vengono rilevati da questo stabilizzatore.",
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Tipi di teletrasporto rilevabili:",
 	"gui.securitycraft:rift_stabilizer.toggle": "Clicca le entrate nella lista sottostante per attivare il rilevamento di quello specifico tipo di teletrasporto.",
+	"gui.securitycraft:scManual.author": "Traduzioni di Chexet48 e Cavallo Bianco",
 	"gui.securitycraft:scManual.block_mines": "Blocchi mina",
 	"gui.securitycraft:scManual.block_reinforcers": "Rinforza-blocchi universali",
 	"gui.securitycraft:scManual.customizableBlock": "Personalizzabile: Puoi usare il modifica-blocchi universale e i vari moduli della SecurityCraft per personalizzare le funzionalità del blocco.",

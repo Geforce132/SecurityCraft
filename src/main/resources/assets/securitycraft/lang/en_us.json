@@ -756,7 +756,6 @@
 	"gui.securitycraft:rift_stabilizer.toggle": "Click the entries in the list below to toggle the detection of that specific teleportation type.",
 	"gui.securitycraft:scManual.block_mines": "Block Mines",
 	"gui.securitycraft:scManual.block_reinforcers": "Universal Block Reinforcers",
-	"gui.securitycraft:scManual.crowdin": "Thanks to our translators on Crowdin!",
 	"gui.securitycraft:scManual.customizableBlock": "Customizable: You may use the Universal Block Modifier and the various modules added by SecurityCraft to customize the functions of this.",
 	"gui.securitycraft:scManual.designedBy": "Designed by: %s",
 	"gui.securitycraft:scManual.disabled": "Disabled",
