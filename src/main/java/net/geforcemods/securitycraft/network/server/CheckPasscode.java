@@ -5,8 +5,11 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
@@ -54,10 +57,13 @@ public class CheckPasscode {
 		ServerPlayer player = ctx.get().getSender();
 		IPasscodeProtected passcodeProtected = getPasscodeProtected(player.level());
 
-		if (passcodeProtected != null) {
+		if (PasscodeUtils.isOnCooldown(player))
+			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
+		else if (passcodeProtected != null) {
 			if (passcodeProtected.isOnCooldown())
 				return;
 
+			PasscodeUtils.setOnCooldown(player);
 			PasscodeUtils.hashPasscode(passcode, passcodeProtected.getSalt(), p -> {
 				if (Arrays.equals(passcodeProtected.getPasscode(), p)) {
 					player.closeContainer();
