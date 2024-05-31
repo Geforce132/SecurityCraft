@@ -100,7 +100,7 @@ public class CameraMonitorScreen extends Screen {
 				if (cameraBEs[i] != null) {
 					BlockState state = level.getBlockState(view.pos());
 
-					if (cameraBEs[i].isDisabled())
+					if (cameraBEs[i].isDisabled() || cameraBEs[i].isShutDown())
 						cameraButton.active = false;
 
 					if (state.getSignal(level, view.pos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
@@ -151,7 +151,7 @@ public class CameraMonitorScreen extends Screen {
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
 			if (hoverCheckers[i] != null && cameraBEs[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraBEs[i].isDisabled()) {
+				if (cameraBEs[i].isDisabled() || cameraBEs[i].isShutDown()) {
 					renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
 					break;
 				}
@@ -168,9 +168,13 @@ public class CameraMonitorScreen extends Screen {
 		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).pos();
 		TileEntity te = minecraft.level.getBlockEntity(cameraPos);
 
-		if (te instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) te).isDisabled()) {
-			button.active = false;
-			return;
+		if (te instanceof SecurityCameraBlockEntity) {
+			SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
+
+			if (be.isDisabled() || be.isShutDown()) {
+				button.active = false;
+				return;
+			}
 		}
 
 		SecurityCraft.channel.sendToServer(new MountCamera(cameraPos));

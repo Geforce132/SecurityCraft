@@ -44,7 +44,7 @@ public class MountCamera {
 			if (te instanceof SecurityCameraBlockEntity) {
 				SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
 
-				if (!be.isDisabled()) {
+				if (!be.isDisabled() && !be.isShutDown()) {
 					if (be.isOwnedBy(player) || be.isAllowed(player))
 						((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
 					else
