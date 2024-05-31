@@ -5,10 +5,14 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class CheckPasscode {
@@ -43,12 +47,15 @@ public class CheckPasscode {
 		ServerPlayerEntity player = ctx.get().getSender();
 		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (te instanceof IPasscodeProtected) {
+		if (PasscodeUtils.isOnCooldown(player))
+			PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
+		else if (te instanceof IPasscodeProtected) {
 			IPasscodeProtected be = (IPasscodeProtected) te;
 
 			if (be.isOnCooldown())
 				return;
 
+			PasscodeUtils.setOnCooldown(player);
 			PasscodeUtils.hashPasscode(passcode, be.getSalt(), p -> {
 				if (Arrays.equals(be.getPasscode(), p)) {
 					player.closeContainer();

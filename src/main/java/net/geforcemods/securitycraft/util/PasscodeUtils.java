@@ -6,6 +6,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -13,11 +15,14 @@ import java.util.function.Consumer;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import net.geforcemods.securitycraft.ConfigHandler;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 
 public class PasscodeUtils {
 	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	private static HashingThread hashingThread;
+	private static final Map<PlayerEntity, Long> LAST_PASSCODE_CHECKS = new HashMap<>();
 
 	private PasscodeUtils() {}
 
@@ -93,6 +98,19 @@ public class PasscodeUtils {
 
 		SECURE_RANDOM.nextBytes(salt);
 		return salt;
+	}
+
+	public static void setOnCooldown(PlayerEntity player) {
+		LAST_PASSCODE_CHECKS.put(player, System.currentTimeMillis());
+	}
+
+	public static boolean isOnCooldown(PlayerEntity player) {
+		if (!LAST_PASSCODE_CHECKS.containsKey(player) || System.currentTimeMillis() > LAST_PASSCODE_CHECKS.get(player) + ConfigHandler.SERVER.passcodeCheckCooldown.get()) {
+			LAST_PASSCODE_CHECKS.remove(player);
+			return false;
+		}
+
+		return true;
 	}
 
 	private static class HashingThread extends Thread {
