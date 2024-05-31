@@ -997,7 +997,6 @@
 	"messages.securitycraft:security_camera.direction_set": "Imposta la direzione predefinita della visuale",
 	"messages.securitycraft:security_camera.no_permission": "Non hai il permesso di impostare la direzione predefinita della visuale",
 	"messages.securitycraft:security_camera.smart_module_needed": "Modulo intelligente richiesto",
-	"messages.securitycraft:security_sea_boat.cant_enter": "Spiacente, non puoi usare questo scanner. È di %s.",
 	"messages.securitycraft:sentry.descriptionMode0": "(Sempre attiva, attacca mob ostili e giocatori)",
 	"messages.securitycraft:sentry.descriptionMode1": "(Si attiva quando un mob ostile o un giocatore si avvicina, attacca mob ostili e giocatori)",
 	"messages.securitycraft:sentry.descriptionMode2": "(Sempre attiva, attacca mob ostili)",
