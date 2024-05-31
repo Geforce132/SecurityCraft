@@ -6,8 +6,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
@@ -33,7 +35,9 @@ public class CheckBriefcasePasscode {
 		ServerPlayer player = ctx.get().getSender();
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
-		if (!briefcase.isEmpty()) {
+		if (PasscodeUtils.isOnCooldown(player))
+			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
+		else if (!briefcase.isEmpty()) {
 			CompoundTag tag = briefcase.getOrCreateTag();
 			String tagCode = tag.getString("passcode");
 

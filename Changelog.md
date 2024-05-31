@@ -4,6 +4,7 @@
 - New: Pressing "Enter" while typing a player name in an Allowlist/Denylist Module will now add the player to the list without needing to press the "Add Player" button
 - New: Security Sea Boats: Chest boats with a passcode-protected chest
 - New: Damage Type Tag "securitycraft:security_sea_boat_vulnerable_to" to define which damage types the Security Sea Boat can be destroyed by
+- New: Server config option "passcode_check_cooldown" to configure the time that needs to pass between two separate attempts from a player to enter a passcode
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
