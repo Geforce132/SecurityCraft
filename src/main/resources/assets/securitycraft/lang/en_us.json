@@ -983,6 +983,7 @@
 	"messages.securitycraft:ownable.ownerNotValidated": "This block's owner has been changed by the Universal Owner Changer and thus needs to be validated by the new owner to work again. To validate a block, the new owner of the block has to rightclick it.",
 	"messages.securitycraft:ownable.validate": "The owner of this block has been successfully validated.",
 	"messages.securitycraft:passcodeProtected.notSetUp": "There is no passcode set yet. You cannot interact with this.",
+	"messages.securitycraft:passcodeProtected.onCooldown": "Whoa, slow down there! You need to wait a little before entering a new passcode.",
 	"messages.securitycraft:portableRadar.withName": "%1$s is near your portable radar named %2$s at %3$s.",
 	"messages.securitycraft:portableRadar.withoutName": "%1$s is near your portable radar at %2$s.",
 	"messages.securitycraft:portable_tune_player.no_tune": "No tune available.",
