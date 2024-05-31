@@ -583,6 +583,7 @@
 	"gui.securitycraft:projector.width": "너비: %s",
 	"gui.securitycraft:projector.width.description": "투영의 너비입니다.",
 	"gui.securitycraft:protectedFurnace.name": "보호된 화로",
+	"gui.securitycraft:scManual.author": "mindy15963(민디스트) 옮김",
 	"gui.securitycraft:scManual.customizableBlock": "사용자 지정 가능: 이 블록의 기능을 사용자 정의하기 위해 시큐리티크래프트에 의해 추가된 만능 블록 수정기와 다양한 모듈을 사용할 수 있습니다.",
 	"gui.securitycraft:scManual.designedBy": "설계자: %s",
 	"gui.securitycraft:scManual.disabled": "사용안함",

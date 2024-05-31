@@ -686,6 +686,7 @@
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "需要安装一个智能模块来切换该裂缝稳定器检测的传送类型。",
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "可检测的传送类型：",
 	"gui.securitycraft:rift_stabilizer.toggle": "单击下面列表中的条目以切换特定传送类型的检测与否。",
+	"gui.securitycraft:scManual.author": "由DrIceTea翻译",
 	"gui.securitycraft:scManual.block_mines": "方块地雷",
 	"gui.securitycraft:scManual.block_reinforcers": "通用方块强化器",
 	"gui.securitycraft:scManual.customizableBlock": "可自定义：你可以使用通用方块修改器与其他安全工艺添加的模块来对该方块功能进行自定义。",
