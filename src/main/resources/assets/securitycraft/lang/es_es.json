@@ -753,6 +753,7 @@
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "Se debe instalar un módulo inteligente para escoger los tipos de teletransportación que este estabilizador de grietas puede detectar.",
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Tipos de teletransportación detectables:",
 	"gui.securitycraft:rift_stabilizer.toggle": "Haz clic en las opciones de la lista de abajo para activar o desactivar la detección de un tipo específico de teletransportación.",
+	"gui.securitycraft:scManual.author": "Traducido por Ryo567, ca11, zeedif, y Globi10",
 	"gui.securitycraft:scManual.block_mines": "Bloques con mina",
 	"gui.securitycraft:scManual.block_reinforcers": "Reforzadores de bloques universales",
 	"gui.securitycraft:scManual.crowdin": "¡Gracias a nuestros/as traductores/as de Crowdin!",
