@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
@@ -89,6 +90,7 @@ import net.geforcemods.securitycraft.screen.ReinforcedLecternScreen;
 import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
+import net.geforcemods.securitycraft.screen.SecureRedstoneInterfaceScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SingleLensScreen;
@@ -185,6 +187,7 @@ public class ClientHandler {
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
+			SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
@@ -440,6 +443,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 	}
 
@@ -718,6 +722,10 @@ public class ClientHandler {
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
 		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
+	}
+
+	public static void displaySecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
+		Minecraft.getInstance().setScreen(new SecureRedstoneInterfaceScreen(be));
 	}
 
 	public static void displayAlarmScreen(AlarmBlockEntity be) {
