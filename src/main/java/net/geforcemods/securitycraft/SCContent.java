@@ -384,7 +384,7 @@ public class SCContent {
 	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.register("block_pocket_manager", () -> new BlockPocketManagerBlock(prop(MapColor.COLOR_CYAN)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop(MapColor.COLOR_CYAN).noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn((s, l, p, v) -> false)));
+	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop(MapColor.COLOR_CYAN).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL)));
@@ -1247,7 +1247,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new BaseReinforcedBlock(prop(MapColor.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion().isValidSpawn((state, level, pos, type) -> type == EntityType.POLAR_BEAR), Blocks.ICE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new BaseReinforcedBlock(prop(MapColor.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion().isRedstoneConductor(SCContent::never).isValidSpawn((state, level, pos, type) -> type == EntityType.POLAR_BEAR), Blocks.ICE));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1279,7 +1279,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GLOWSTONE = BLOCKS.register("reinforced_glowstone", () -> new BaseReinforcedBlock(prop(MapColor.SAND).sound(SoundType.GLASS).lightLevel(state -> 15), Blocks.GLOWSTONE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GLOWSTONE = BLOCKS.register("reinforced_glowstone", () -> new BaseReinforcedBlock(prop(MapColor.SAND).sound(SoundType.GLASS).lightLevel(state -> 15).isRedstoneConductor(SCContent::never), Blocks.GLOWSTONE));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1586,7 +1586,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SEA_LANTERN = BLOCKS.register("reinforced_sea_lantern", () -> new BaseReinforcedBlock(prop(MapColor.QUARTZ).sound(SoundType.GLASS).lightLevel(state -> 15), Blocks.SEA_LANTERN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SEA_LANTERN = BLOCKS.register("reinforced_sea_lantern", () -> new BaseReinforcedBlock(prop(MapColor.QUARTZ).sound(SoundType.GLASS).lightLevel(state -> 15).isRedstoneConductor(SCContent::never), Blocks.SEA_LANTERN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2218,17 +2218,17 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRedstoneBlock> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(MapColor.FIRE).sound(SoundType.METAL), Blocks.REDSTONE_BLOCK));
+	public static final DeferredBlock<ReinforcedRedstoneBlock> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(MapColor.FIRE).sound(SoundType.METAL).isRedstoneConductor(SCContent::never), Blocks.REDSTONE_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBaseBlock(false, prop().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
+	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBaseBlock(false, prop().isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBaseBlock(true, prop().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
+	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBaseBlock(true, prop().isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
+	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop().isRedstoneConductor(SCContent::never)));
 	@HasManualPage
 	@Reinforced
 	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
@@ -2569,7 +2569,7 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(MapColor.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
-	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
+	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never)));
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop().noLootTable().pushReaction(PushReaction.BLOCK)));
 	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SometimesVisibleBlock(propDisguisable().noLootTable().pushReaction(PushReaction.BLOCK)));
