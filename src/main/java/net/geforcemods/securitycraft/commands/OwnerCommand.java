@@ -76,9 +76,10 @@ public class OwnerCommand {
 
 		if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
 			BlockState state = ((BlockEntity) ownable).getBlockState();
+			Owner oldOwner = ownable.getOwner().copy();
 
 			ownable.setOwner(uuid, name);
-			ownable.onOwnerChanged(state, level, pos, null);
+			ownable.onOwnerChanged(state, level, pos, null, oldOwner, ownable.getOwner());
 			ownable.getOwner().setValidated(true);
 			level.sendBlockUpdated(pos, state, state, 3);
 			source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.set.success", "Set the owner at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ()), true);
@@ -106,15 +107,17 @@ public class OwnerCommand {
 		if (blockCount > commandModificationBlockLimit)
 			throw FillCommand.ERROR_AREA_TOO_LARGE.create(commandModificationBlockLimit, blockCount);
 		else {
-			List<BlockEntity> modifiedBlocks = new ArrayList<>();
+			List<OwnerChange> modifiedBlocks = new ArrayList<>();
 
 			for (BlockPos pos : BlockPos.betweenClosed(area.minX(), area.minY(), area.minZ(), area.maxX(), area.maxY(), area.maxZ())) {
 				if (level.getBlockEntity(pos) instanceof IOwnable ownable) {
 					Owner previousOwner = ownable.getOwner();
 
 					if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
+						Owner oldOwner = ownable.getOwner().copy();
+
 						ownable.setOwner(uuid, name);
-						modifiedBlocks.add((BlockEntity) ownable);
+						modifiedBlocks.add(new OwnerChange((BlockEntity) ownable, oldOwner));
 					}
 				}
 			}
@@ -124,12 +127,14 @@ public class OwnerCommand {
 			if (blocksModified == 0)
 				throw ERROR_FILL_FAILED.create();
 			else {
-				for (BlockEntity be : modifiedBlocks) {
+				for (OwnerChange ownerChange : modifiedBlocks) {
+					BlockEntity be = ownerChange.be;
 					BlockPos pos = be.getBlockPos();
 					BlockState state = be.getBlockState();
+					IOwnable ownable = (IOwnable) be;
 
-					((IOwnable) be).onOwnerChanged(state, level, pos, null);
-					((IOwnable) be).getOwner().setValidated(true);
+					ownable.onOwnerChanged(state, level, pos, null, ownerChange.oldOwner, ownable.getOwner());
+					ownable.getOwner().setValidated(true);
 					level.sendBlockUpdated(pos, state, state, 3);
 				}
 
@@ -138,4 +143,6 @@ public class OwnerCommand {
 			}
 		}
 	}
+
+	private record OwnerChange(BlockEntity be, Owner oldOwner) {}
 }
