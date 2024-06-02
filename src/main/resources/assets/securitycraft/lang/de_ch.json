@@ -798,6 +798,8 @@
 	"gui.securitycraft:secure_redstone_interface.mode": "Modus",
 	"gui.securitycraft:secure_redstone_interface.mode.receiver": "Empfänger",
 	"gui.securitycraft:secure_redstone_interface.mode.sender": "Sender",
+	"gui.securitycraft:secure_redstone_interface.receive_inverted_power": "Invertiertes Signal ausgeben",
+	"gui.securitycraft:secure_redstone_interface.send_exact_power": "Exaktes Signal senden",
 	"gui.securitycraft:sonic_security_system.invert.tooltip_default": "Erlaubt momentan den Zugriff auf Blöcke, sobald die richtige Melodie gespielt wird.",
 	"gui.securitycraft:sonic_security_system.invert.tooltip_inverted": "Verhindert momentan den Zugriff auf Blöcke, sobald die richtige Melodie gespielt wird.",
 	"gui.securitycraft:sonic_security_system.invert_functionality": "Funktionalität umkehren",

@@ -14,9 +14,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecureRedstoneInterfaceScreen extends Screen {
 	private final SecureRedstoneInterfaceBlockEntity be;
-	private final boolean oldSender;
+	private final boolean oldSender, oldSendExactPower, oldReceiveInvertedPower;
 	private final int oldFrequency;
-	private boolean sender;
+	private boolean sender, sendExactPower, receiveInvertedPower;
 	private int frequency;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
@@ -24,7 +24,8 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		this.be = be;
 		sender = oldSender = be.isSender();
 		frequency = oldFrequency = be.getFrequency();
-		System.out.println(oldFrequency);
+		sendExactPower = oldSendExactPower = be.sendsExactPower();
+		receiveInvertedPower = oldReceiveInvertedPower = be.receivesInvertedPower();
 	}
 
 	@Override
@@ -47,6 +48,16 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 				.withValues(true, false)
 				.withInitialValue(be.isSender())
 				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.mode"), (button, newValue) -> sender = newValue)));
+		layout.addChild(addRenderableWidget(
+				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
+				.withValues(true, false)
+				.withInitialValue(be.isSender() ? be.sendsExactPower() : be.receivesInvertedPower())
+				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface." + (be.isSender() ? "send_exact_power" : "receive_inverted_power")), (button, newValue) -> {
+					if (be.isSender())
+						sendExactPower = newValue;
+					else
+						receiveInvertedPower = newValue;
+				})));
 		//@formatter:on
 		layout.addChild(addRenderableWidget(frequencyBox));
 		layout.arrangeElements();
@@ -61,8 +72,8 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 
-		if (oldSender != sender || oldFrequency != frequency)
-			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, frequency));
+		if (oldSender != sender || oldFrequency != frequency || sendExactPower != oldSendExactPower || receiveInvertedPower != oldReceiveInvertedPower)
+			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, frequency, sendExactPower, receiveInvertedPower));
 	}
 
 	@Override

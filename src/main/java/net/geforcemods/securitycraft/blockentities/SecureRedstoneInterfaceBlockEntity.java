@@ -26,6 +26,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	private boolean sender = true;
 	private int power = 0;
 	private int frequency = 0;
+	private boolean sendExactPower = true;
+	private boolean receiveInvertedPower = false;
 
 	public SecureRedstoneInterfaceBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), pos, state);
@@ -71,6 +73,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		sender = tag.getBoolean("sender");
 		power = tag.getInt("power");
 		frequency = tag.getInt("frequency");
+		sendExactPower = tag.getBoolean("send_exact_power");
+		receiveInvertedPower = tag.getBoolean("receive_inverted_power");
 	}
 
 	@Override
@@ -79,6 +83,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		tag.putBoolean("sender", sender);
 		tag.putInt("power", power);
 		tag.putInt("frequency", frequency);
+		tag.putBoolean("send_exact_power", sendExactPower);
+		tag.putBoolean("receive_inverted_power", receiveInvertedPower);
 	}
 
 	public boolean isSender() {
@@ -109,8 +115,14 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		if (isDisabled())
 			return;
 
-		if (isSender())
-			setPower(level.getBestNeighborSignal(worldPosition));
+		if (isSender()) {
+			int bestSignal = level.getBestNeighborSignal(worldPosition);
+
+			if (sendsExactPower())
+				setPower(bestSignal);
+			else
+				setPower(bestSignal > 0 ? 15 : 0);
+		}
 		else {
 			int highestPower = 0;
 
@@ -126,6 +138,9 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 				}
 			}
 
+			if (receivesInvertedPower())
+				highestPower = 15 - highestPower;
+
 			setPower(highestPower);
 		}
 	}
@@ -139,8 +154,44 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		if (!level.isClientSide) {
 			tellSimilarReceiversToRefresh(); //not restricted to sender only, as a receiver that was just changed from being a sender needs to refresh other receivers as well
 			setChanged();
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+	}
+
+	public boolean sendsExactPower() {
+		return sendExactPower;
+	}
+
+	public void setSendExactPower(boolean sendExactPower) {
+		if (sendsExactPower() == sendExactPower)
+			return;
+
+		this.sendExactPower = sendExactPower;
+
+		if (!level.isClientSide) {
+			refreshPower();
+			setChanged();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+	}
+
+	public boolean receivesInvertedPower() {
+		return receiveInvertedPower;
+	}
+
+	public void setReceiveInvertedPower(boolean receiveInvertedPower) {
+		if (receivesInvertedPower() == receiveInvertedPower)
+			return;
+
+		this.receiveInvertedPower = receiveInvertedPower;
+
+		if (!level.isClientSide) {
+			refreshPower();
+			setChanged();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
 	}
 
@@ -173,10 +224,13 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		Owner owner = getOwner();
 
 		this.frequency = frequency;
-		tellSimilarReceiversToRefresh(owner, oldFrequency);
-		tellSimilarReceiversToRefresh(owner, frequency);
-		setChanged();
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+
+		if (!level.isClientSide) {
+			tellSimilarReceiversToRefresh(owner, oldFrequency);
+			tellSimilarReceiversToRefresh(owner, frequency);
+			setChanged();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+		}
 	}
 
 	public int getFrequency() {
