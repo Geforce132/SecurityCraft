@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 // TODO: option translations
 // TODO: module translations
-// TODO: disabled option
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	public final DisabledOption disabled = new DisabledOption(false);
 	//TODO: Change this to receiver-only setting
@@ -45,6 +44,16 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 		tellReceiversOfOwnerInRangeToRefresh(oldOwner);
 		tellReceiversOfOwnerInRangeToRefresh(newOwner);
+	}
+
+	@Override
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == disabled) {
+			if (isDisabled())
+				setPower(0);
+			else
+				refreshPower();
+		}
 	}
 
 	@Override
@@ -77,7 +86,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 		this.sender = sender;
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide && !isDisabled()) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureRedstoneInterfaceBlock.SENDER, sender));
 			tellReceiversInRangeToRefresh();
 		}
@@ -88,13 +97,16 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void refreshPower() {
+		if (isDisabled())
+			return;
+
 		if (isSender())
 			setPower(level.getBestNeighborSignal(worldPosition));
 		else {
 			int highestPower = 0;
 
 			for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesInRange(level, worldPosition)) {
-				if (be.isSender() && be.isOwnedBy(getOwner())) {
+				if (!be.isDisabled() && be.isSender() && be.isOwnedBy(getOwner())) {
 					int ownPower = be.getPower();
 
 					if (ownPower > highestPower)
@@ -116,7 +128,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.power = power;
 
 		if (!level.isClientSide) {
-			tellReceiversInRangeToRefresh();
+			tellReceiversInRangeToRefresh(); //not restricted to sender only, as a receiver that was just changed from being a sender needs to refresh other receivers as well
 			setChanged();
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);

@@ -49,13 +49,13 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 
 	@Override
 	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
-		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isSender())
+		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isSender() && !be.isDisabled())
 			be.refreshPower();
 	}
 
 	@Override
 	protected int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && !be.isSender())
+		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && !be.isSender() && !be.isDisabled())
 			return be.getPower();
 		else
 			return 0;
