@@ -13,15 +13,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender) implements CustomPacketPayload {
+public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int frequency) implements CustomPacketPayload {
+
 	public static final Type<SyncSecureRedstoneInterface> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_secure_redstone_interface"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncSecureRedstoneInterface> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncSecureRedstoneInterface::pos,
 			ByteBufCodecs.BOOL, SyncSecureRedstoneInterface::sender,
+			ByteBufCodecs.VAR_INT, SyncSecureRedstoneInterface::frequency,
 			SyncSecureRedstoneInterface::new);
 	//@formatter:on
-
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
 		return TYPE;
@@ -31,9 +32,21 @@ public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender) implemen
 		Player player = ctx.player();
 		Level level = player.level();
 
-		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isOwnedBy(player) && sender != be.isSender()) {
-			be.setSender(sender);
-			BlockUtils.updateIndirectNeighbors(level, be.getBlockPos(), be.getBlockState().getBlock());
+		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isOwnedBy(player)) {
+			boolean updateNeighbors = false;
+
+			if (sender != be.isSender()) {
+				be.setSender(sender);
+				updateNeighbors = true;
+			}
+
+			if (frequency != be.getFrequency()) {
+				be.setFrequency(frequency);
+				updateNeighbors = true;
+			}
+
+			if (updateNeighbors)
+				BlockUtils.updateIndirectNeighbors(level, be.getBlockPos(), be.getBlockState().getBlock());
 		}
 	}
 }

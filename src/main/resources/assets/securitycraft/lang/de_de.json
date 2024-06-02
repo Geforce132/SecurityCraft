@@ -794,6 +794,7 @@
 	"gui.securitycraft:scManual.secret_signs": "Geheime Schilder",
 	"gui.securitycraft:scManual.security_sea_boats": "Gesicherte Seeboote",
 	"gui.securitycraft:scManual.viewActivatedBlock": "Sichtfeldaktivierung: Dieser Block wird aktiviert, indem du ihn mit deinem Fadenkreuz anschaust.",
+	"gui.securitycraft:secure_redstone_interface.frequency": "Frequenz",
 	"gui.securitycraft:secure_redstone_interface.mode": "Modus",
 	"gui.securitycraft:secure_redstone_interface.mode.receiver": "Empfänger",
 	"gui.securitycraft:secure_redstone_interface.mode.sender": "Sender",

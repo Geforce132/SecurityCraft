@@ -802,6 +802,7 @@
 	"gui.securitycraft:scManual.secret_signs": "Secret Signs",
 	"gui.securitycraft:scManual.security_sea_boats": "Security Sea Boats",
 	"gui.securitycraft:scManual.viewActivatedBlock": "View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.",
+	"gui.securitycraft:secure_redstone_interface.frequency": "Frequency",
 	"gui.securitycraft:secure_redstone_interface.mode": "Mode",
 	"gui.securitycraft:secure_redstone_interface.mode.receiver": "Receiver",
 	"gui.securitycraft:secure_redstone_interface.mode.sender": "Sender",
