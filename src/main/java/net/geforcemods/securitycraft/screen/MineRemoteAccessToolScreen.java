@@ -97,6 +97,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 			}
 
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+			boolean foundMine = false;
 
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
@@ -114,23 +115,18 @@ public class MineRemoteAccessToolScreen extends Screen {
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DEFUSE], Utils.localize("gui.securitycraft:mrat.defuse")));
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][ACTIVATE], Utils.localize("gui.securitycraft:mrat.activate")));
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][DETONATE], Utils.localize("gui.securitycraft:mrat.detonate")));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
-					}
-					else {
-						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
-
-						for (int j = 0; j < 4; j++) {
-							guiButtons[i][j].active = false;
-						}
+						foundMine = true;
 					}
 				}
-				else {
+
+				if (!foundMine) {
 					for (int j = 0; j < 3; j++) {
+						guiButtons[i][j].active = false;
 						hoverCheckers.add(new TextHoverChecker(guiButtons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
-
-					hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
 				}
+
+				hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind")));
 			}
 
 			if (coords[0] == 0 && coords[1] == 0 && coords[2] == 0)
