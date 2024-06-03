@@ -84,6 +84,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 			}
 
 			BlockPos minePos = getMineCoordinates(i);
+			boolean foundMine = false;
 
 			if (minePos != null) {
 				guiButtons[i][UNBIND].active = true;
@@ -103,22 +104,18 @@ public class MineRemoteAccessToolScreen extends Screen {
 						guiButtons[i][ACTIVATE].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.activate")));
 						guiButtons[i][DETONATE].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.detonate")));
 						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.unbind")));
-					}
-					else {
-						removeTagFromToolAndUpdate(mrat, minePos);
-
-						for (int j = 0; j < 4; j++) {
-							guiButtons[i][j].active = false;
-						}
+						foundMine = true;
 					}
 				}
-				else {
+
+				if (!foundMine) {
 					for (int j = 0; j < 3; j++) {
+						guiButtons[i][j].active = false;
 						guiButtons[i][j].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.outOfRange")));
 					}
-
-					guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.unbind")));
 				}
+
+				guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:mrat.unbind")));
 			}
 			else
 				lines[i] = notBound;
