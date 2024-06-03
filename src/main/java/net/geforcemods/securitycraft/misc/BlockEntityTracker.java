@@ -27,7 +27,7 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	public static final BlockEntityTracker<SonicSecuritySystemBlockEntity> SONIC_SECURITY_SYSTEM = new BlockEntityTracker<>(be -> SonicSecuritySystemBlockEntity.MAX_RANGE);
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(be -> be.getRange());
 	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
-	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(be -> 16);
+	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
 	private final Map<ResourceKey<Level>, Collection<BlockPos>> trackedBlockEntities = new ConcurrentHashMap<>();
 	private final Function<BE, Integer> range;
 
@@ -91,6 +91,38 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	}
 
 	/**
+	 * Gets all block entities that are in the given range of the given block position
+	 *
+	 * @param level The level
+	 * @param pos The block position
+	 * @param range The range around the block position for getting the block entity in
+	 * @return A list of all block entities that are in the given range of the given block position
+	 */
+	public List<BE> getBlockEntitiesAround(Level level, BlockPos pos, int range) {
+		final Collection<BlockPos> blockEntities = getTrackedBlockEntities(level);
+		List<BE> returnValue = new ArrayList<>();
+		Iterator<BlockPos> it = blockEntities.iterator();
+
+		while (it.hasNext()) {
+			BlockPos bePos = it.next();
+
+			if (bePos != null) {
+				try {
+					if (isInRange(pos, range, new Vec3(bePos.getX(), bePos.getY(), bePos.getZ())))
+						returnValue.add((BE) level.getBlockEntity(bePos));
+
+					continue;
+				}
+				catch (Exception e) {}
+			}
+
+			it.remove();
+		}
+
+		return returnValue;
+	}
+
+	/**
 	 * Gets the positions of all tracked block entities in the given level
 	 *
 	 * @param level The level to get the tracked block entities of
@@ -111,9 +143,22 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	 *
 	 * @param be The block entitiy
 	 * @param pos The position to check
+	 * @return true if the position is in range of the block entity, false otherwise
 	 */
 	public boolean canReach(BE be, Vec3 pos) {
-		AABB testRange = new AABB(be.getBlockPos()).inflate(this.range.apply(be));
+		return isInRange(be.getBlockPos(), range.apply(be), pos);
+	}
+
+	/**
+	 * Checks whether a position is contained in the range around the given block position
+	 *
+	 * @param around The block position around which to check
+	 * @param range The range to check within
+	 * @param pos The position to check
+	 * @return true if the position is in range of the first given position, false otherwise
+	 */
+	public boolean isInRange(BlockPos around, int range, Vec3 pos) {
+		AABB testRange = new AABB(around).inflate(range);
 
 		return testRange.minX <= pos.x && testRange.minY <= pos.y && testRange.minZ <= pos.z && testRange.maxX >= pos.x && testRange.maxY >= pos.y && testRange.maxZ >= pos.z;
 	}

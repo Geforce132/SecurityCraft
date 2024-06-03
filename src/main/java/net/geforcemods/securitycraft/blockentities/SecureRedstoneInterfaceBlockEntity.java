@@ -20,12 +20,11 @@ import net.minecraft.world.level.block.state.BlockState;
 // TODO: module translations
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	public final DisabledOption disabled = new DisabledOption(false);
-	//TODO: Change this to receiver-only setting
-	//private final IntOption range = new IntOption("range", 16, 1, 64, 1);
 	private boolean tracked = false;
 	private boolean sender = true;
 	private int power = 0;
 	private int frequency = 0;
+	private int senderRange = 24;
 	private boolean sendExactPower = true;
 	private boolean receiveInvertedPower = false;
 
@@ -44,11 +43,17 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 	@Override
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
-		int currentFrequency = getFrequency();
-
 		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
-		tellSimilarReceiversToRefresh(oldOwner, currentFrequency);
-		tellSimilarReceiversToRefresh(newOwner, currentFrequency);
+
+		if (isSender()) {
+			int currentFrequency = getFrequency();
+			int range = getSenderRange();
+
+			tellSimilarReceiversToRefresh(oldOwner, currentFrequency, range);
+			tellSimilarReceiversToRefresh(newOwner, currentFrequency, range);
+		}
+		else
+			refreshPower();
 	}
 
 	@Override
@@ -75,6 +80,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		frequency = tag.getInt("frequency");
 		sendExactPower = tag.getBoolean("send_exact_power");
 		receiveInvertedPower = tag.getBoolean("receive_inverted_power");
+		senderRange = tag.getInt("sender_range");
 	}
 
 	@Override
@@ -85,6 +91,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		tag.putInt("frequency", frequency);
 		tag.putBoolean("send_exact_power", sendExactPower);
 		tag.putBoolean("receive_inverted_power", receiveInvertedPower);
+		tag.putInt("sender_range", senderRange);
 	}
 
 	public boolean isSender() {
@@ -201,7 +208,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	 * Tells receivers in range with the same owner and frequency of this one to refresh their power
 	 */
 	public void tellSimilarReceiversToRefresh() {
-		tellSimilarReceiversToRefresh(getOwner(), getFrequency());
+		tellSimilarReceiversToRefresh(getOwner(), getFrequency(), getSenderRange());
 	}
 
 	/**
@@ -210,8 +217,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	 * @param owner The owner the receivers that should be refreshed belong to
 	 * @param frequency The frequency that the receivers that should be refreshed need to have
 	 */
-	public void tellSimilarReceiversToRefresh(Owner owner, int frequency) {
-		for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesInRange(level, worldPosition)) {
+	public void tellSimilarReceiversToRefresh(Owner owner, int frequency, int range) {
+		for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesAround(level, worldPosition, range)) {
 			if (!be.isSender() && be.isOwnedBy(owner) && be.isSameFrequency(frequency))
 				be.refreshPower(frequency);
 		}
@@ -223,13 +230,14 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		if (oldFrequency == frequency)
 			return;
 
-		Owner owner = getOwner();
-
 		this.frequency = frequency;
 
 		if (!level.isClientSide) {
-			tellSimilarReceiversToRefresh(owner, oldFrequency);
-			tellSimilarReceiversToRefresh(owner, frequency);
+			Owner owner = getOwner();
+			int range = getSenderRange();
+
+			tellSimilarReceiversToRefresh(owner, oldFrequency, range);
+			tellSimilarReceiversToRefresh(owner, frequency, range);
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
@@ -241,6 +249,30 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 	public boolean isSameFrequency(int frequency) {
 		return getFrequency() == frequency;
+	}
+
+	public void setSenderRange(int senderRange) {
+		senderRange = Math.clamp(senderRange, 1, 64);
+
+		if (getSenderRange() == senderRange)
+			return;
+
+		int oldRange = this.senderRange;
+
+		this.senderRange = senderRange;
+
+		if (!level.isClientSide && !isDisabled()) {
+			Owner owner = getOwner();
+			int frequency = getFrequency();
+
+			tellSimilarReceiversToRefresh(owner, frequency, Math.max(oldRange, senderRange));
+			setChanged();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+		}
+	}
+
+	public int getSenderRange() {
+		return senderRange;
 	}
 
 	public boolean isDisabled() {

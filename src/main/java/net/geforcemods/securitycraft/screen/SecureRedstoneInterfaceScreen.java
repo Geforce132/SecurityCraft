@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
+import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
@@ -12,12 +13,14 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+// TODO: change widgets when the mode is changed
+// TODO: fix layout not always being in the middle of the screen depending on the window size
 public class SecureRedstoneInterfaceScreen extends Screen {
 	private final SecureRedstoneInterfaceBlockEntity be;
 	private final boolean oldSender, oldSendExactPower, oldReceiveInvertedPower;
-	private final int oldFrequency;
+	private final int oldFrequency, oldSenderRange;
 	private boolean sender, sendExactPower, receiveInvertedPower;
-	private int frequency;
+	private int frequency, senderRange;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
 		super(Component.translatable(SCContent.SECURE_REDSTONE_INTERFACE.get().getDescriptionId()));
@@ -26,6 +29,7 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		frequency = oldFrequency = be.getFrequency();
 		sendExactPower = oldSendExactPower = be.sendsExactPower();
 		receiveInvertedPower = oldReceiveInvertedPower = be.receivesInvertedPower();
+		senderRange = oldSenderRange = be.getSenderRange();
 	}
 
 	@Override
@@ -60,6 +64,10 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 				})));
 		//@formatter:on
 		layout.addChild(addRenderableWidget(frequencyBox));
+
+		if (be.isSender())
+			layout.addChild(addRenderableWidget(new CallbackSlider(0, 0, 210, 20, Component.translatable("gui.securitycraft:projector.range", ""), Component.empty(), 1, 64, be.getSenderRange(), true, slider -> senderRange = slider.getValueInt())));
+
 		layout.arrangeElements();
 	}
 
@@ -72,8 +80,8 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 
-		if (oldSender != sender || oldFrequency != frequency || sendExactPower != oldSendExactPower || receiveInvertedPower != oldReceiveInvertedPower)
-			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, frequency, sendExactPower, receiveInvertedPower));
+		if (oldSender != sender || oldFrequency != frequency || sendExactPower != oldSendExactPower || receiveInvertedPower != oldReceiveInvertedPower || senderRange != oldSenderRange)
+			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, frequency, sendExactPower, receiveInvertedPower, senderRange));
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int frequency, boolean sendExactPower, boolean receiveInvertedPower) implements CustomPacketPayload {
+public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int frequency, boolean sendExactPower, boolean receiveInvertedPower, int senderRange) implements CustomPacketPayload {
 
 	public static final Type<SyncSecureRedstoneInterface> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_secure_redstone_interface"));
 	//@formatter:off
@@ -23,6 +23,7 @@ public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int freq
 			ByteBufCodecs.VAR_INT, SyncSecureRedstoneInterface::frequency,
 			ByteBufCodecs.BOOL, SyncSecureRedstoneInterface::sendExactPower,
 			ByteBufCodecs.BOOL, SyncSecureRedstoneInterface::receiveInvertedPower,
+			ByteBufCodecs.VAR_INT, SyncSecureRedstoneInterface::senderRange,
 			SyncSecureRedstoneInterface::new);
 	//@formatter:on
 	@Override
@@ -56,6 +57,9 @@ public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int freq
 				be.setReceiveInvertedPower(receiveInvertedPower);
 				updateNeighbors = true;
 			}
+
+			if (senderRange != be.getSenderRange())
+				be.setSenderRange(senderRange);
 
 			if (updateNeighbors)
 				BlockUtils.updateIndirectNeighbors(level, be.getBlockPos(), be.getBlockState().getBlock());
