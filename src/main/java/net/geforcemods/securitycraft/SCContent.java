@@ -281,7 +281,7 @@ public class SCContent {
 	public static final RegistryObject<Block> BLOCK_POCKET_MANAGER = BLOCKS.register("block_pocket_manager", () -> new BlockPocketManagerBlock(prop(MaterialColor.COLOR_CYAN)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
+	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.METAL, 1.0F)));
@@ -1853,10 +1853,10 @@ public class SCContent {
 	public static final RegistryObject<Block> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(Material.STONE)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBlock(true, prop(Material.PISTON).isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBlock.EXTENDED))));
+	public static final RegistryObject<Block> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBlock(true, prop(Material.PISTON).isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBlock.EXTENDED))));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBlock(false, prop(Material.PISTON).isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBlock.EXTENDED))));
+	public static final RegistryObject<Block> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBlock(false, prop(Material.PISTON).isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBlock.EXTENDED))));
 	@HasManualPage
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop().noCollission().sound(SoundType.WOOD)));
@@ -1927,7 +1927,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(Material.METAL, MaterialColor.FIRE).sound(SoundType.METAL), Blocks.REDSTONE_BLOCK));
+	public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(Material.METAL, MaterialColor.FIRE).sound(SoundType.METAL).isRedstoneConductor(SCContent::never), Blocks.REDSTONE_BLOCK));
 	@HasManualPage
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(Material.METAL, MaterialColor.STONE).sound(SoundType.METAL).noOcclusion()));
@@ -1965,7 +1965,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
+	public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop().isRedstoneConductor(SCContent::never)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_LECTERN = BLOCKS.register("reinforced_lectern", () -> new ReinforcedLecternBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
@@ -2029,7 +2029,7 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_GRASS_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedGrassPathBlock(prop(Material.DIRT).sound(SoundType.GRASS), Blocks.GRASS_PATH));
-	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noDrops().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
+	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noDrops().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never)));
 	@Reinforced(registerBlockItem = false)
 	public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
 	public static final RegistryObject<Block> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SometimesVisibleBlock(propDisguisable(Material.AIR).noDrops()));
@@ -2388,6 +2388,10 @@ public class SCContent {
 
 	private static final Item.Properties itemProp(ItemGroup tab, int stackSize) {
 		return itemProp(tab).stacksTo(stackSize);
+	}
+
+	private static boolean never(BlockState state, IBlockReader level, BlockPos pos) {
+		return false;
 	}
 
 	private static boolean never(BlockState state, IBlockReader level, BlockPos pos, EntityType<?> entityType) {
