@@ -42,6 +42,12 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		BlockEntityTracker.SECURE_REDSTONE_INTERFACE.stopTracking(this);
+	}
+
+	@Override
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 
@@ -64,12 +70,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			else
 				refreshPower();
 		}
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		BlockEntityTracker.SECURE_REDSTONE_INTERFACE.stopTracking(this);
 	}
 
 	@Override
@@ -106,6 +106,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 		if (!level.isClientSide) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureRedstoneInterfaceBlock.SENDER, sender));
+			setChanged();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
