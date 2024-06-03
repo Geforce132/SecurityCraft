@@ -82,6 +82,8 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 			}
 
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
+			boolean foundMine = false;
+
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				buttons[i][UNBIND].enabled = true;
 				if (Minecraft.getMinecraft().player.world.isBlockLoaded(minePos, false)) {
@@ -96,23 +98,18 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 						hoverCheckers.add(new StringHoverChecker(buttons[i][DEFUSE], Utils.localize("gui.securitycraft:mrat.defuse").getFormattedText()));
 						hoverCheckers.add(new StringHoverChecker(buttons[i][ACTIVATE], Utils.localize("gui.securitycraft:mrat.activate").getFormattedText()));
 						hoverCheckers.add(new StringHoverChecker(buttons[i][DETONATE], Utils.localize("gui.securitycraft:mrat.detonate").getFormattedText()));
-						hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
-					}
-					else {
-						removeTagFromToolAndUpdate(mrat, coords[0], coords[1], coords[2]);
-
-						for (int j = 0; j < 4; j++) {
-							buttons[i][j].enabled = false;
-						}
+						foundMine = true;
 					}
 				}
-				else {
+
+				if (!foundMine) {
 					for (int j = 0; j < 3; j++) {
+						buttons[i][j].enabled = false;
 						hoverCheckers.add(new StringHoverChecker(buttons[i][j], Utils.localize("gui.securitycraft:mrat.outOfRange").getFormattedText()));
 					}
-
-					hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
 				}
+
+				hoverCheckers.add(new StringHoverChecker(buttons[i][UNBIND], Utils.localize("gui.securitycraft:mrat.unbind").getFormattedText()));
 			}
 		}
 	}
