@@ -40,8 +40,9 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		EditBox frequencyBox = new EditBox(font, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.frequency"));
 
 		frequencyBox.setValue(be.getFrequency() + "");
-		frequencyBox.setFilter(s -> s.matches("\\d*")); //any amount of digits
-		frequencyBox.setResponder(s -> { //TODO: input sanitization
+		frequencyBox.setMaxLength(9);
+		frequencyBox.setFilter(s -> s.matches("\\d*")); //any amount of digits);
+		frequencyBox.setResponder(s -> {
 			if (!s.isEmpty())
 				be.setFrequency(Integer.parseInt(s));
 			else
