@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -36,33 +35,20 @@ public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int freq
 		Level level = player.level();
 
 		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isOwnedBy(player)) {
-			boolean updateNeighbors = false;
-
-			if (sender != be.isSender()) {
+			if (sender != be.isSender())
 				be.setSender(sender);
-				updateNeighbors = true;
-			}
 
-			if (frequency != be.getFrequency()) {
+			if (frequency != be.getFrequency())
 				be.setFrequency(frequency);
-				updateNeighbors = true;
-			}
 
-			if (sendExactPower != be.sendsExactPower()) {
+			if (sendExactPower != be.sendsExactPower())
 				be.setSendExactPower(sendExactPower);
-				updateNeighbors = true;
-			}
 
-			if (receiveInvertedPower != be.receivesInvertedPower()) {
+			if (receiveInvertedPower != be.receivesInvertedPower())
 				be.setReceiveInvertedPower(receiveInvertedPower);
-				updateNeighbors = true;
-			}
 
 			if (senderRange != be.getSenderRange())
 				be.setSenderRange(senderRange);
-
-			if (updateNeighbors)
-				BlockUtils.updateIndirectNeighbors(level, be.getBlockPos(), be.getBlockState().getBlock());
 		}
 	}
 }

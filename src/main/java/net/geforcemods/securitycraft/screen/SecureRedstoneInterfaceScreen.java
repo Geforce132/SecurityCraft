@@ -19,17 +19,15 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 	private final SecureRedstoneInterfaceBlockEntity be;
 	private final boolean oldSender, oldSendExactPower, oldReceiveInvertedPower;
 	private final int oldFrequency, oldSenderRange;
-	private boolean sender, sendExactPower, receiveInvertedPower;
-	private int frequency, senderRange;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
 		super(Component.translatable(SCContent.SECURE_REDSTONE_INTERFACE.get().getDescriptionId()));
 		this.be = be;
-		sender = oldSender = be.isSender();
-		frequency = oldFrequency = be.getFrequency();
-		sendExactPower = oldSendExactPower = be.sendsExactPower();
-		receiveInvertedPower = oldReceiveInvertedPower = be.receivesInvertedPower();
-		senderRange = oldSenderRange = be.getSenderRange();
+		oldSender = be.isSender();
+		oldFrequency = be.getFrequency();
+		oldSendExactPower = be.sendsExactPower();
+		oldReceiveInvertedPower = be.receivesInvertedPower();
+		oldSenderRange = be.getSenderRange();
 	}
 
 	@Override
@@ -42,31 +40,31 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		frequencyBox.setFilter(s -> s.matches("\\d*")); //any amount of digits
 		frequencyBox.setResponder(s -> { //TODO: input sanitization
 			if (!s.isEmpty())
-				frequency = Integer.parseInt(s);
+				be.setFrequency(Integer.parseInt(s));
 			else
-				frequency = 0;
+				be.setFrequency(0);
 		});
 		//@formatter:off
 		layout.addChild(addRenderableWidget(
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:secure_redstone_interface.mode." + (value ? "sender" : "receiver")))
 				.withValues(true, false)
 				.withInitialValue(be.isSender())
-				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.mode"), (button, newValue) -> sender = newValue)));
+				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.mode"), (button, newValue) -> be.setSender(newValue))));
 		layout.addChild(addRenderableWidget(
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
 				.withValues(true, false)
 				.withInitialValue(be.isSender() ? be.sendsExactPower() : be.receivesInvertedPower())
 				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface." + (be.isSender() ? "send_exact_power" : "receive_inverted_power")), (button, newValue) -> {
 					if (be.isSender())
-						sendExactPower = newValue;
+						be.setSendExactPower(newValue);
 					else
-						receiveInvertedPower = newValue;
+						be.setReceiveInvertedPower(newValue);
 				})));
 		//@formatter:on
 		layout.addChild(addRenderableWidget(frequencyBox));
 
 		if (be.isSender())
-			layout.addChild(addRenderableWidget(new CallbackSlider(0, 0, 210, 20, Component.translatable("gui.securitycraft:projector.range", ""), Component.empty(), 1, 64, be.getSenderRange(), true, slider -> senderRange = slider.getValueInt())));
+			layout.addChild(addRenderableWidget(new CallbackSlider(0, 0, 210, 20, Component.translatable("gui.securitycraft:projector.range", ""), Component.empty(), 1, 64, be.getSenderRange(), true, slider -> be.setSenderRange(slider.getValueInt()))));
 
 		layout.arrangeElements();
 	}
@@ -80,8 +78,14 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 	public void onClose() {
 		super.onClose();
 
-		if (oldSender != sender || oldFrequency != frequency || sendExactPower != oldSendExactPower || receiveInvertedPower != oldReceiveInvertedPower || senderRange != oldSenderRange)
-			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, frequency, sendExactPower, receiveInvertedPower, senderRange));
+		boolean sender = be.isSender();
+		int frequency = be.getFrequency();
+		boolean sendsExactPower = be.sendsExactPower();
+		boolean receivesInvertedPower = be.receivesInvertedPower();
+		int senderRange = be.getSenderRange();
+
+		if (sender != oldSender || frequency != oldFrequency || sendsExactPower != oldSendExactPower || receivesInvertedPower != oldReceiveInvertedPower || senderRange != oldSenderRange)
+			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, frequency, sendsExactPower, receivesInvertedPower, senderRange));
 	}
 
 	@Override

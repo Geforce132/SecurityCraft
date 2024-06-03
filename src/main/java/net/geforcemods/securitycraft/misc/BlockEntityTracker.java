@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
@@ -64,30 +65,16 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 		return getBlockEntitiesInRange(level, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
 	}
 
+	/**
+	 * @see {@link #getBlockEntitiesInRange(Level, BlockPos)}
+	 */
 	public List<BE> getBlockEntitiesInRange(Level level, Vec3 pos) {
-		final Collection<BlockPos> blockEntities = getTrackedBlockEntities(level);
-		List<BE> returnValue = new ArrayList<>();
-		Iterator<BlockPos> it = blockEntities.iterator();
+		return iterate(level, (list, bePos) -> {
+			BE be = (BE) level.getBlockEntity(bePos);
 
-		while (it.hasNext()) {
-			BlockPos bePos = it.next();
-
-			if (bePos != null) {
-				try {
-					BE be = (BE) level.getBlockEntity(bePos);
-
-					if (be != null && canReach(be, pos))
-						returnValue.add(be);
-
-					continue;
-				}
-				catch (Exception e) {}
-			}
-
-			it.remove();
-		}
-
-		return returnValue;
+			if (be != null && canReach(be, pos))
+				list.add(be);
+		});
 	}
 
 	/**
@@ -99,6 +86,13 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	 * @return A list of all block entities that are in the given range of the given block position
 	 */
 	public List<BE> getBlockEntitiesAround(Level level, BlockPos pos, int range) {
+		return iterate(level, (list, bePos) -> {
+			if (isInRange(pos, range, new Vec3(bePos.getX(), bePos.getY(), bePos.getZ())))
+				list.add((BE) level.getBlockEntity(bePos));
+		});
+	}
+
+	private List<BE> iterate(Level level, BiConsumer<List<BE>, BlockPos> listAdder) {
 		final Collection<BlockPos> blockEntities = getTrackedBlockEntities(level);
 		List<BE> returnValue = new ArrayList<>();
 		Iterator<BlockPos> it = blockEntities.iterator();
@@ -108,9 +102,7 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 
 			if (bePos != null) {
 				try {
-					if (isInRange(pos, range, new Vec3(bePos.getX(), bePos.getY(), bePos.getZ())))
-						returnValue.add((BE) level.getBlockEntity(bePos));
-
+					listAdder.accept(returnValue, bePos);
 					continue;
 				}
 				catch (Exception e) {}

@@ -111,6 +111,9 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
+
+			if (!isSender())
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
 	}
 
@@ -180,7 +183,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 		this.sendExactPower = sendExactPower;
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide && isSender()) {
 			refreshPower();
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
@@ -198,7 +201,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 		this.receiveInvertedPower = receiveInvertedPower;
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide && !isSender()) {
 			refreshPower();
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
@@ -218,6 +221,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	 *
 	 * @param owner The owner the receivers that should be refreshed belong to
 	 * @param frequency The frequency that the receivers that should be refreshed need to have
+	 * @param range The range around this block entity's position in which to update the receivers
 	 */
 	public void tellSimilarReceiversToRefresh(Owner owner, int frequency, int range) {
 		for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesAround(level, worldPosition, range)) {
@@ -238,8 +242,13 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			Owner owner = getOwner();
 			int range = getSenderRange();
 
-			tellSimilarReceiversToRefresh(owner, oldFrequency, range);
-			tellSimilarReceiversToRefresh(owner, frequency, range);
+			if (isSender()) {
+				tellSimilarReceiversToRefresh(owner, oldFrequency, range);
+				tellSimilarReceiversToRefresh(owner, frequency, range);
+			}
+			else
+				refreshPower();
+
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
@@ -263,7 +272,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 		this.senderRange = senderRange;
 
-		if (!level.isClientSide && !isDisabled()) {
+		if (!level.isClientSide && !isDisabled() && isSender()) {
 			Owner owner = getOwner();
 			int frequency = getFrequency();
 
