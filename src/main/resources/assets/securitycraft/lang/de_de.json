@@ -719,7 +719,7 @@
 	"gui.securitycraft:mrat.detonate": "Detonieren",
 	"gui.securitycraft:mrat.mineLocations": "Mine bei %s",
 	"gui.securitycraft:mrat.notBound": "Nicht verbunden!",
-	"gui.securitycraft:mrat.outOfRange": "Mine außer Reichweite",
+	"gui.securitycraft:mrat.outOfRange": "Mine außer Reichweite, oder entfernt worden",
 	"gui.securitycraft:mrat.unbind": "Mine von Einheit entfernen",
 	"gui.securitycraft:passcode.cooldown1": "Abklingzeit aktiv!",
 	"gui.securitycraft:passcode.cooldown2": "Verbleibende Zeit: %s Sekunde(n)",
