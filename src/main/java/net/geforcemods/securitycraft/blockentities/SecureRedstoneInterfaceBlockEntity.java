@@ -97,9 +97,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 		this.sender = sender;
 
-		if (!level.isClientSide && !isDisabled()) {
+		if (!level.isClientSide) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureRedstoneInterfaceBlock.SENDER, sender));
-			tellSimilarReceiversToRefresh();
+
+			if (!isDisabled())
+				tellSimilarReceiversToRefresh();
 		}
 	}
 
