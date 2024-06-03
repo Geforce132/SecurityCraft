@@ -13,7 +13,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-// TODO: change widgets when the mode is changed
 // TODO: fix layout not always being in the middle of the screen depending on the window size
 public class SecureRedstoneInterfaceScreen extends Screen {
 	private final SecureRedstoneInterfaceBlockEntity be;
@@ -21,13 +20,17 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 	private final int oldFrequency, oldSenderRange;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
-		super(Component.translatable(SCContent.SECURE_REDSTONE_INTERFACE.get().getDescriptionId()));
+		this(Component.translatable(SCContent.SECURE_REDSTONE_INTERFACE.get().getDescriptionId()), be, be.isSender(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange());
+	}
+
+	private SecureRedstoneInterfaceScreen(Component title, SecureRedstoneInterfaceBlockEntity be, boolean oldSender, int oldFrequency, boolean oldSendExactPower, boolean oldReceiveInvertedPower, int oldSenderRange) {
+		super(title);
 		this.be = be;
-		oldSender = be.isSender();
-		oldFrequency = be.getFrequency();
-		oldSendExactPower = be.sendsExactPower();
-		oldReceiveInvertedPower = be.receivesInvertedPower();
-		oldSenderRange = be.getSenderRange();
+		this.oldSender = oldSender;
+		this.oldFrequency = oldFrequency;
+		this.oldSendExactPower = oldSendExactPower;
+		this.oldReceiveInvertedPower = oldReceiveInvertedPower;
+		this.oldSenderRange = oldSenderRange;
 	}
 
 	@Override
@@ -49,7 +52,18 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:secure_redstone_interface.mode." + (value ? "sender" : "receiver")))
 				.withValues(true, false)
 				.withInitialValue(be.isSender())
-				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.mode"), (button, newValue) -> be.setSender(newValue))));
+				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.mode"), (button, isNowASender) -> {
+					be.setSender(isNowASender);
+
+					if (isNowASender)
+						be.setReceiveInvertedPower(oldReceiveInvertedPower);
+					else {
+						be.setSendExactPower(oldSendExactPower);
+						be.setSenderRange(oldSenderRange);
+					}
+
+					minecraft.setScreen(new SecureRedstoneInterfaceScreen(title, be, oldSender, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange));
+				})));
 		layout.addChild(addRenderableWidget(
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
 				.withValues(true, false)
