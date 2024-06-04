@@ -20,7 +20,6 @@ import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
-import net.geforcemods.securitycraft.util.IncreasingInteger;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -133,13 +132,13 @@ public class SCClientEventHandler {
 		TooltipContext ctx = event.getContext();
 		List<Component> tooltip = event.getToolTip();
 		TooltipFlag flag = event.getFlags();
-		IncreasingInteger lineIndex = new IncreasingInteger(1);
 
-		for (var component : COMPONENTS_WITH_GLOBAL_TOOLTIP) {
-			TooltipProvider tooltipProvider = stack.get(component);
+		for (int i = 0; i < COMPONENTS_WITH_GLOBAL_TOOLTIP.size(); i++) {
+			TooltipProvider tooltipProvider = stack.get(COMPONENTS_WITH_GLOBAL_TOOLTIP.get(i));
+			final int index = i + 1;
 
 			if (tooltipProvider != null)
-				tooltipProvider.addToTooltip(ctx, line -> tooltip.add(lineIndex.get(), line), flag); //add after item name
+				tooltipProvider.addToTooltip(ctx, line -> tooltip.add(index, line), flag); //add after item name
 		}
 	}
 
