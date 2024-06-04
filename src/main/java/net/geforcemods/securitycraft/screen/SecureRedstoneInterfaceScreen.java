@@ -14,19 +14,21 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 // TODO: fix layout not always being in the middle of the screen depending on the window size
+// TODO: explanatory tooltips
 public class SecureRedstoneInterfaceScreen extends Screen {
 	private final SecureRedstoneInterfaceBlockEntity be;
-	private final boolean oldSender, oldSendExactPower, oldReceiveInvertedPower;
+	private final boolean oldSender, oldProtectedSignal, oldSendExactPower, oldReceiveInvertedPower;
 	private final int oldFrequency, oldSenderRange;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
-		this(Component.translatable(SCContent.SECURE_REDSTONE_INTERFACE.get().getDescriptionId()), be, be.isSender(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange());
+		this(Component.translatable(SCContent.SECURE_REDSTONE_INTERFACE.get().getDescriptionId()), be, be.isSender(), be.isProtectedSignal(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange());
 	}
 
-	private SecureRedstoneInterfaceScreen(Component title, SecureRedstoneInterfaceBlockEntity be, boolean oldSender, int oldFrequency, boolean oldSendExactPower, boolean oldReceiveInvertedPower, int oldSenderRange) {
+	private SecureRedstoneInterfaceScreen(Component title, SecureRedstoneInterfaceBlockEntity be, boolean oldSender, boolean oldProtectedSignal, int oldFrequency, boolean oldSendExactPower, boolean oldReceiveInvertedPower, int oldSenderRange) {
 		super(title);
 		this.be = be;
 		this.oldSender = oldSender;
+		this.oldProtectedSignal = oldProtectedSignal;
 		this.oldFrequency = oldFrequency;
 		this.oldSendExactPower = oldSendExactPower;
 		this.oldReceiveInvertedPower = oldReceiveInvertedPower;
@@ -59,11 +61,12 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 					if (isNowASender)
 						be.setReceiveInvertedPower(oldReceiveInvertedPower);
 					else {
+						be.setProtectedSignal(oldProtectedSignal);
 						be.setSendExactPower(oldSendExactPower);
 						be.setSenderRange(oldSenderRange);
 					}
 
-					minecraft.setScreen(new SecureRedstoneInterfaceScreen(title, be, oldSender, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange));
+					minecraft.setScreen(new SecureRedstoneInterfaceScreen(title, be, oldSender, oldProtectedSignal, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange));
 				})));
 		layout.addChild(addRenderableWidget(
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
@@ -78,8 +81,16 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		//@formatter:on
 		layout.addChild(addRenderableWidget(frequencyBox));
 
-		if (be.isSender())
+		if (be.isSender()) {
+			//@formatter:off
+			layout.addChild(addRenderableWidget(
+					CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
+					.withValues(true, false)
+					.withInitialValue(be.isProtectedSignal())
+					.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.protected_signal"), (button, newValue) -> be.setProtectedSignal(newValue))));
+			//@formatter:on
 			layout.addChild(addRenderableWidget(new CallbackSlider(0, 0, 210, 20, Component.translatable("gui.securitycraft:projector.range", ""), Component.empty(), 1, 64, be.getSenderRange(), true, slider -> be.setSenderRange(slider.getValueInt()))));
+		}
 
 		layout.arrangeElements();
 	}
@@ -94,13 +105,14 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		super.onClose();
 
 		boolean sender = be.isSender();
+		boolean protectedSignal = be.isProtectedSignal();
 		int frequency = be.getFrequency();
 		boolean sendsExactPower = be.sendsExactPower();
 		boolean receivesInvertedPower = be.receivesInvertedPower();
 		int senderRange = be.getSenderRange();
 
-		if (sender != oldSender || frequency != oldFrequency || sendsExactPower != oldSendExactPower || receivesInvertedPower != oldReceiveInvertedPower || senderRange != oldSenderRange)
-			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, frequency, sendsExactPower, receivesInvertedPower, senderRange));
+		if (sender != oldSender || protectedSignal != oldProtectedSignal || frequency != oldFrequency || sendsExactPower != oldSendExactPower || receivesInvertedPower != oldReceiveInvertedPower || senderRange != oldSenderRange)
+			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, protectedSignal, frequency, sendsExactPower, receivesInvertedPower, senderRange));
 	}
 
 	@Override

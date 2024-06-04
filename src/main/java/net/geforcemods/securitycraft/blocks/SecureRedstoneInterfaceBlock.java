@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -100,5 +104,19 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(SENDER, WATERLOGGED);
+	}
+
+	public static class DoorActivator implements IDoorActivator {
+		private final List<Block> blocks = Arrays.asList(SCContent.SECURE_REDSTONE_INTERFACE.get());
+
+		@Override
+		public boolean isPowering(Level level, BlockPos pos, BlockState state, BlockEntity blockEntity, Direction direction, int distance) {
+			return !state.getValue(SENDER) && blockEntity instanceof SecureRedstoneInterfaceBlockEntity be && be.isProtectedSignal() && be.getPower() > 0;
+		}
+
+		@Override
+		public List<Block> getBlocks() {
+			return blocks;
+		}
 	}
 }

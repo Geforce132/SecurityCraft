@@ -25,6 +25,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	private int power = 0;
 	private int frequency = 0;
 	private int senderRange = 24;
+	private boolean protectedSignal = false;
 	private boolean sendExactPower = true;
 	private boolean receiveInvertedPower = false;
 
@@ -78,9 +79,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		sender = tag.getBoolean("sender");
 		power = tag.getInt("power");
 		frequency = tag.getInt("frequency");
+		senderRange = tag.getInt("sender_range");
+		protectedSignal = tag.getBoolean("protected_signal");
 		sendExactPower = tag.getBoolean("send_exact_power");
 		receiveInvertedPower = tag.getBoolean("receive_inverted_power");
-		senderRange = tag.getInt("sender_range");
 	}
 
 	@Override
@@ -89,9 +91,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		tag.putBoolean("sender", sender);
 		tag.putInt("power", power);
 		tag.putInt("frequency", frequency);
+		tag.putInt("sender_range", senderRange);
+		tag.putBoolean("protected_signal", protectedSignal);
 		tag.putBoolean("send_exact_power", sendExactPower);
 		tag.putBoolean("receive_inverted_power", receiveInvertedPower);
-		tag.putInt("sender_range", senderRange);
 	}
 
 	public boolean isSender() {
@@ -129,7 +132,12 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			return;
 
 		if (isSender()) {
-			int bestSignal = level.getBestNeighborSignal(worldPosition);
+			int bestSignal;
+
+			if (isProtectedSignal())
+				bestSignal = BlockUtils.hasActiveSCBlockNextTo(level, worldPosition) ? 15 : 0;
+			else
+				bestSignal = level.getBestNeighborSignal(worldPosition);
 
 			if (sendsExactPower())
 				setPower(bestSignal);
@@ -138,6 +146,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		}
 		else {
 			int highestPower = 0;
+			boolean protectedSignal = true;
 
 			for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesInRange(level, worldPosition)) {
 				if (!be.isDisabled() && be.isSender() && be.isOwnedBy(getOwner()) && be.isSameFrequency(frequency)) {
@@ -146,7 +155,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 					if (ownPower > highestPower)
 						highestPower = ownPower;
 
-					if (highestPower == 15)
+					if (!be.isProtectedSignal())
+						protectedSignal = false;
+
+					if (highestPower == 15 && !protectedSignal)
 						break;
 				}
 			}
@@ -154,6 +166,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (receivesInvertedPower())
 				highestPower = 15 - highestPower;
 
+			setProtectedSignal(protectedSignal);
 			setPower(highestPower);
 		}
 	}
@@ -169,6 +182,29 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+		}
+	}
+
+	public boolean isProtectedSignal() {
+		return protectedSignal;
+	}
+
+	public void setProtectedSignal(boolean protectedSignal) {
+		if (isProtectedSignal() == protectedSignal)
+			return;
+
+		this.protectedSignal = protectedSignal;
+
+		if (!level.isClientSide) {
+			refreshPower();
+
+			if (isSender())
+				tellSimilarReceiversToRefresh();
+			else
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+
+			setChanged();
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
 	}
 

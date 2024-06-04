@@ -806,6 +806,7 @@
 	"gui.securitycraft:secure_redstone_interface.mode": "Mode",
 	"gui.securitycraft:secure_redstone_interface.mode.receiver": "Receiver",
 	"gui.securitycraft:secure_redstone_interface.mode.sender": "Sender",
+	"gui.securitycraft:secure_redstone_interface.protected_signal": "Protected Signal",
 	"gui.securitycraft:secure_redstone_interface.receive_inverted_power": "Output inverted signal",
 	"gui.securitycraft:secure_redstone_interface.send_exact_power": "Send exact signal",
 	"gui.securitycraft:sonic_security_system.invert.tooltip_default": "Currently allows access to blocks after the correct tune is played.",

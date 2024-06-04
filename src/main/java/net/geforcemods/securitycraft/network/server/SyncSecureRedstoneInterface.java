@@ -10,15 +10,17 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int frequency, boolean sendExactPower, boolean receiveInvertedPower, int senderRange) implements CustomPacketPayload {
+public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, boolean protectedSignal, int frequency, boolean sendExactPower, boolean receiveInvertedPower, int senderRange) implements CustomPacketPayload {
 
 	public static final Type<SyncSecureRedstoneInterface> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_secure_redstone_interface"));
 	//@formatter:off
-	public static final StreamCodec<RegistryFriendlyByteBuf, SyncSecureRedstoneInterface> STREAM_CODEC = StreamCodec.composite(
+	public static final StreamCodec<RegistryFriendlyByteBuf, SyncSecureRedstoneInterface> STREAM_CODEC = NeoForgeStreamCodecs.composite(
 			BlockPos.STREAM_CODEC, SyncSecureRedstoneInterface::pos,
 			ByteBufCodecs.BOOL, SyncSecureRedstoneInterface::sender,
+			ByteBufCodecs.BOOL, SyncSecureRedstoneInterface::protectedSignal,
 			ByteBufCodecs.VAR_INT, SyncSecureRedstoneInterface::frequency,
 			ByteBufCodecs.BOOL, SyncSecureRedstoneInterface::sendExactPower,
 			ByteBufCodecs.BOOL, SyncSecureRedstoneInterface::receiveInvertedPower,
@@ -37,6 +39,9 @@ public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, int freq
 		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isOwnedBy(player)) {
 			if (sender != be.isSender())
 				be.setSender(sender);
+
+			if (protectedSignal != be.isProtectedSignal())
+				be.setProtectedSignal(protectedSignal);
 
 			if (frequency != be.getFrequency())
 				be.setFrequency(frequency);
