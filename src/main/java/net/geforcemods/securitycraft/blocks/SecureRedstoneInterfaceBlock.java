@@ -48,6 +48,11 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	}
 
 	@Override
+	protected boolean isSignalSource(BlockState state) {
+		return !state.getValue(SENDER);
+	}
+
+	@Override
 	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
 		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isSender() && !be.isDisabled())
 			be.refreshPower();
