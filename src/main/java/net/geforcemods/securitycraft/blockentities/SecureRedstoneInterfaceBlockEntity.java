@@ -72,6 +72,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	@Override
+	public boolean needsValidation() {
+		return true;
+	}
+
+	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		if (option == disabled) {
 			if (isDisabled())
