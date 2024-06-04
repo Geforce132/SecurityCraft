@@ -112,8 +112,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
 
-			if (!isSender())
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
 	}
 
