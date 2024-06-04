@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -75,7 +76,11 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
 		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be) {
 			be.disabled.setValue(true); //make sure receivers that update themselves don't check for this one
-			be.tellSimilarReceiversToRefresh();
+
+			if (be.isSender())
+				be.tellSimilarReceiversToRefresh();
+			else
+				BlockUtils.updateIndirectNeighbors(level, pos, this);
 		}
 
 		super.onRemove(state, level, pos, newState, movedByPiston);
