@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 // TODO: module translations
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	public final DisabledOption disabled = new DisabledOption(false);
-	private boolean tracked = false;
+	private boolean tracked = false, refreshed = false;
 	private boolean sender = true;
 	private int power = 0;
 	private int frequency = 0;
@@ -36,9 +36,17 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (!tracked) {
-			refreshPower();
+			if (isSender())
+				refreshPower();
+
 			BlockEntityTracker.SECURE_REDSTONE_INTERFACE.track(this);
 			tracked = true;
+		}
+		else if (!refreshed) {
+			refreshed = true;
+
+			if (!isSender())
+				refreshPower();
 		}
 	}
 
