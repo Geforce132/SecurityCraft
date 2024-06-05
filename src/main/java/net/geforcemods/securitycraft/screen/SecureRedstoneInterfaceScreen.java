@@ -1,31 +1,38 @@
 package net.geforcemods.securitycraft.screen;
 
-import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.LinearLayout;
 import net.minecraft.client.gui.layouts.LinearLayout.Orientation;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-// TODO: fix layout not always being in the middle of the screen depending on the window size
-// TODO: explanatory tooltips
 public class SecureRedstoneInterfaceScreen extends Screen {
+	public static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
+	private final Component frequencyText = Component.translatable("gui.securitycraft:secure_redstone_interface.frequency");
 	private final SecureRedstoneInterfaceBlockEntity be;
 	private final boolean oldSender, oldProtectedSignal, oldSendExactPower, oldReceiveInvertedPower;
 	private final int oldFrequency, oldSenderRange;
+	private final int xSize = 176, ySize = 166;
+	private int leftPos;
+	private int topPos;
+	private EditBox frequencyBox;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
-		this(Component.translatable(SCContent.SECURE_REDSTONE_INTERFACE.get().getDescriptionId()), be, be.isSender(), be.isProtectedSignal(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange());
+		this(be, be.isSender(), be.isProtectedSignal(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange());
 	}
 
-	private SecureRedstoneInterfaceScreen(Component title, SecureRedstoneInterfaceBlockEntity be, boolean oldSender, boolean oldProtectedSignal, int oldFrequency, boolean oldSendExactPower, boolean oldReceiveInvertedPower, int oldSenderRange) {
-		super(title);
+	private SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be, boolean oldSender, boolean oldProtectedSignal, int oldFrequency, boolean oldSendExactPower, boolean oldReceiveInvertedPower, int oldSenderRange) {
+		super(be.getDisplayName());
 		this.be = be;
 		this.oldSender = oldSender;
 		this.oldProtectedSignal = oldProtectedSignal;
@@ -37,10 +44,16 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 
 	@Override
 	protected void init() {
-		super.init();
-		LinearLayout layout = new LinearLayout(210, 60, Orientation.VERTICAL).spacing(10);
-		EditBox frequencyBox = new EditBox(font, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.frequency"));
+		int widgetWidth = 150, widgetHeight = 20;
 
+		super.init();
+		leftPos = (width - xSize) / 2;
+		topPos = (height - ySize) / 2;
+
+		LinearLayout layout = new LinearLayout(0, 0, Orientation.VERTICAL).spacing(3);
+		String powerSettingKey = "gui.securitycraft:secure_redstone_interface." + (be.isSender() ? "send_exact_power" : "receive_inverted_power");
+
+		frequencyBox = new EditBox(font, widgetWidth, widgetHeight, frequencyText);
 		frequencyBox.setValue(be.getFrequency() + "");
 		frequencyBox.setMaxLength(9);
 		frequencyBox.setFilter(s -> s.matches("\\d*")); //any amount of digits);
@@ -50,12 +63,13 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 			else
 				be.setFrequency(0);
 		});
+		layout.addChild(addRenderableWidget(frequencyBox));
 		//@formatter:off
 		layout.addChild(addRenderableWidget(
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:secure_redstone_interface.mode." + (value ? "sender" : "receiver")))
 				.withValues(true, false)
 				.withInitialValue(be.isSender())
-				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.mode"), (button, isNowASender) -> {
+				.create(0, 0, widgetWidth, widgetHeight, Component.translatable("gui.securitycraft:secure_redstone_interface.mode"), (button, isNowASender) -> {
 					be.setSender(isNowASender);
 
 					if (isNowASender)
@@ -66,38 +80,46 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 						be.setSenderRange(oldSenderRange);
 					}
 
-					minecraft.setScreen(new SecureRedstoneInterfaceScreen(title, be, oldSender, oldProtectedSignal, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange));
+					minecraft.setScreen(new SecureRedstoneInterfaceScreen(be, oldSender, oldProtectedSignal, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange));
 				})));
 		layout.addChild(addRenderableWidget(
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
 				.withValues(true, false)
 				.withInitialValue(be.isSender() ? be.sendsExactPower() : be.receivesInvertedPower())
-				.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface." + (be.isSender() ? "send_exact_power" : "receive_inverted_power")), (button, newValue) -> {
+				.withTooltip(value -> Tooltip.create(Component.translatable(powerSettingKey + ".tooltip." + value)))
+				.create(0, 0, widgetWidth, widgetHeight, Component.translatable(powerSettingKey), (button, newValue) -> {
 					if (be.isSender())
 						be.setSendExactPower(newValue);
 					else
 						be.setReceiveInvertedPower(newValue);
 				})));
-		//@formatter:on
-		layout.addChild(addRenderableWidget(frequencyBox));
 
 		if (be.isSender()) {
-			//@formatter:off
 			layout.addChild(addRenderableWidget(
 					CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
 					.withValues(true, false)
 					.withInitialValue(be.isProtectedSignal())
-					.create(0, 0, 210, 20, Component.translatable("gui.securitycraft:secure_redstone_interface.protected_signal"), (button, newValue) -> be.setProtectedSignal(newValue))));
+					.withTooltip(value -> Tooltip.create(Component.translatable("gui.securitycraft:secure_redstone_interface.protected_signal.tooltip." + value)))
+					.create(0, 0, widgetWidth, widgetHeight, Component.translatable("gui.securitycraft:secure_redstone_interface.protected_signal"), (button, newValue) -> be.setProtectedSignal(newValue))));
 			//@formatter:on
-			layout.addChild(addRenderableWidget(new CallbackSlider(0, 0, 210, 20, Component.translatable("gui.securitycraft:projector.range", ""), Component.empty(), 1, 64, be.getSenderRange(), true, slider -> be.setSenderRange(slider.getValueInt()))));
+			layout.addChild(addRenderableWidget(new CallbackSlider(0, 0, widgetWidth, widgetHeight, Component.translatable("gui.securitycraft:projector.range", ""), Component.empty(), 1, 64, be.getSenderRange(), true, slider -> be.setSenderRange(slider.getValueInt()))));
 		}
 
 		layout.arrangeElements();
+		FrameLayout.centerInRectangle(layout, leftPos, topPos, xSize, 24 + (be.isSender() ? ySize : ySize - 46));
 	}
 
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		renderTransparentBackground(guiGraphics);
+		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, xSize, ySize);
+	}
+
+	@Override
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.drawString(font, frequencyText, frequencyBox.getX(), frequencyBox.getY() - font.lineHeight - 1, 0x404040, false);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040, false);
 	}
 
 	@Override
