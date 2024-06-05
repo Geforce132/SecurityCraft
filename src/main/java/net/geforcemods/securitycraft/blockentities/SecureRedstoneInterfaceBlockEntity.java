@@ -162,10 +162,13 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		else {
 			int highestPower = 0;
 			boolean protectedSignal = true;
+			boolean foundSender = false;
 
 			for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesInRange(level, worldPosition)) {
 				if (!be.isDisabled() && be.isSender() && be.isOwnedBy(getOwner()) && be.isSameFrequency(frequency)) {
 					int ownPower = be.getPower();
+
+					foundSender = true;
 
 					if (ownPower > highestPower)
 						highestPower = ownPower;
@@ -177,6 +180,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 						break;
 				}
 			}
+
+			//if no sender is there, the signal mustn't be protected
+			//however if there are only protected senders that don't send a signal, the inverted signal should be protected still
+			if (!foundSender)
+				protectedSignal = false;
 
 			if (receivesInvertedPower())
 				highestPower = 15 - highestPower;
