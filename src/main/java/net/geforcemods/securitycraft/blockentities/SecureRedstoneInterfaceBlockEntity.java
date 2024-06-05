@@ -43,8 +43,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		else if (!refreshed) {
 			refreshed = true;
 
-			if (!isSender())
-				refreshPower();
+			if (isSender())
+				tellSimilarReceiversToRefresh();
 		}
 	}
 
@@ -189,7 +189,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (receivesInvertedPower())
 				highestPower = 15 - highestPower;
 
-			setProtectedSignal(protectedSignal);
+			this.protectedSignal = protectedSignal;
 			setPower(highestPower);
 		}
 	}
@@ -201,7 +201,9 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.power = power;
 
 		if (!level.isClientSide) {
-			tellSimilarReceiversToRefresh(); //not restricted to sender only, as a receiver that was just changed from being a sender needs to refresh other receivers as well
+			if (isSender())
+				tellSimilarReceiversToRefresh();
+
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
