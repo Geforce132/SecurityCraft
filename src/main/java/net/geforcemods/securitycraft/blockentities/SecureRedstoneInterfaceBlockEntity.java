@@ -16,8 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-// TODO: option translations
-// TODO: module translations
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	public final DisabledOption disabled = new DisabledOption(false);
 	private boolean tracked = false, refreshed = false;
