@@ -195,7 +195,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void setPower(int power) {
-		if (getPower() == power || !getOwner().isValidated())
+		if (getPower() == power)
 			return;
 
 		this.power = power;
