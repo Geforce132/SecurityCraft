@@ -10,7 +10,9 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -42,8 +44,10 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 			if (!level.isClientSide) {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else
+				else if (be.getOwner().isValidated())
 					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SECURE_REDSTONE_INTERFACE, pos));
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.ownerInvalidated"), ChatFormatting.RED);
 			}
 
 			return InteractionResult.SUCCESS;

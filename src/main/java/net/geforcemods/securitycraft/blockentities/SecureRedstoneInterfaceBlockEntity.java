@@ -63,15 +63,19 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			int range = getSenderRange();
 
 			tellSimilarReceiversToRefresh(oldOwner, currentFrequency, range);
-			tellSimilarReceiversToRefresh(newOwner, currentFrequency, range);
 		}
 		else
-			refreshPower();
+			setPower(0);
 	}
 
 	@Override
 	public boolean needsValidation() {
 		return true;
+	}
+
+	@Override
+	public void onValidate() {
+		refreshPower();
 	}
 
 	@Override
@@ -113,7 +117,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void setSender(boolean sender) {
-		if (isSender() == sender)
+		if (isSender() == sender || !getOwner().isValidated())
 			return;
 
 		this.sender = sender;
@@ -139,7 +143,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void refreshPower(int frequency) {
-		if (isDisabled())
+		if (isDisabled() || !getOwner().isValidated())
 			return;
 
 		if (isSender()) {
@@ -183,7 +187,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void setPower(int power) {
-		if (getPower() == power)
+		if (getPower() == power || !getOwner().isValidated())
 			return;
 
 		this.power = power;
@@ -201,7 +205,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void setProtectedSignal(boolean protectedSignal) {
-		if (isProtectedSignal() == protectedSignal)
+		if (isProtectedSignal() == protectedSignal || !getOwner().isValidated())
 			return;
 
 		this.protectedSignal = protectedSignal;
@@ -224,7 +228,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void setSendExactPower(boolean sendExactPower) {
-		if (sendsExactPower() == sendExactPower)
+		if (sendsExactPower() == sendExactPower || !getOwner().isValidated())
 			return;
 
 		this.sendExactPower = sendExactPower;
@@ -242,7 +246,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void setReceiveInvertedPower(boolean receiveInvertedPower) {
-		if (receivesInvertedPower() == receiveInvertedPower)
+		if (receivesInvertedPower() == receiveInvertedPower || !getOwner().isValidated())
 			return;
 
 		this.receiveInvertedPower = receiveInvertedPower;
@@ -270,16 +274,18 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	 * @param range The range around this block entity's position in which to update the receivers
 	 */
 	public void tellSimilarReceiversToRefresh(Owner owner, int frequency, int range) {
-		for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesAround(level, worldPosition, range)) {
-			if (!be.isSender() && be.isOwnedBy(owner) && be.isSameFrequency(frequency))
-				be.refreshPower(frequency);
+		if (getOwner().isValidated()) {
+			for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesAround(level, worldPosition, range)) {
+				if (!be.isSender() && be.isOwnedBy(owner) && be.isSameFrequency(frequency))
+					be.refreshPower(frequency);
+			}
 		}
 	}
 
 	public void setFrequency(int frequency) {
 		int oldFrequency = getFrequency();
 
-		if (oldFrequency == frequency)
+		if (oldFrequency == frequency || !getOwner().isValidated())
 			return;
 
 		this.frequency = frequency;
@@ -311,7 +317,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	public void setSenderRange(int senderRange) {
 		senderRange = Math.clamp(senderRange, 1, 64);
 
-		if (getSenderRange() == senderRange)
+		if (getSenderRange() == senderRange || !getOwner().isValidated())
 			return;
 
 		int oldRange = this.senderRange;

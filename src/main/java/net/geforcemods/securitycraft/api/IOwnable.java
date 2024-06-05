@@ -43,6 +43,11 @@ public interface IOwnable {
 	}
 
 	/**
+	 * Called when this is validated
+	 */
+	default void onValidate() {}
+
+	/**
 	 * Executes after the owner has been changed and invalidates this if it needs validation
 	 *
 	 * @param state The IOwnable's state
