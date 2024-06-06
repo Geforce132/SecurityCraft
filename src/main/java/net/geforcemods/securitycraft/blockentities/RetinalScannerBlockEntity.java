@@ -215,9 +215,9 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
+	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		setPlayerProfile(new GameProfile(null, getOwner().getName()));
-		super.onOwnerChanged(state, world, pos, player);
+		super.onOwnerChanged(state, world, pos, player, oldOwner, newOwner);
 	}
 
 	@Nullable

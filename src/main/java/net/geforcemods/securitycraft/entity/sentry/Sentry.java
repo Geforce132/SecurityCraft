@@ -478,7 +478,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {}
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible
