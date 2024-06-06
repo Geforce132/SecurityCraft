@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.Arrays;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -54,10 +56,17 @@ public class CheckPasscode implements IMessage {
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if (PasscodeUtils.isOnCooldown(player))
-					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
-				else if (te instanceof IPasscodeProtected) {
+				if (te instanceof IPasscodeProtected) {
 					IPasscodeProtected be = (IPasscodeProtected) te;
+
+					if (PasscodeUtils.isOnCooldown(player)) {
+						PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
+
+						if (ConfigHandler.passcodeSpamLogWarningEnabled)
+							SecurityCraft.LOGGER.warn(String.format(ConfigHandler.passcodeSpamLogWarning, player.getGameProfile().getName(), Utils.localize(player.world.getBlockState(pos).getBlock()).getUnformattedComponentText(), player.world.provider.getDimensionType() + " " + pos));
+
+						return;
+					}
 
 					if (be.isOnCooldown())
 						return;

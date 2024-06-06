@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -42,9 +44,16 @@ public class CheckBriefcasePasscode implements IMessage {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase);
 
-				if (PasscodeUtils.isOnCooldown(player))
-					PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
-				else if (!briefcase.isEmpty()) {
+				if (!briefcase.isEmpty()) {
+					if (PasscodeUtils.isOnCooldown(player)) {
+						PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
+
+						if (ConfigHandler.passcodeSpamLogWarningEnabled)
+							SecurityCraft.LOGGER.warn(String.format(ConfigHandler.passcodeSpamLogWarning, player.getGameProfile().getName(), Utils.localize(SCContent.briefcase).getUnformattedComponentText(), player.world.provider.getDimensionType() + " " + player.getPosition()));
+
+						return;
+					}
+
 					if (!briefcase.hasTagCompound())
 						briefcase.setTagCompound(new NBTTagCompound());
 
