@@ -59,7 +59,12 @@ public class PanicButtonBlock extends AbstractButtonBlock implements IWaterLogga
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return super.getStateForPlacement(ctx).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
+		BlockState superState = super.getStateForPlacement(ctx);
+
+		if (superState != null)
+			return superState.setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
+
+		return null;
 	}
 
 	@Override

@@ -21,6 +21,7 @@
 - API: New method Option#getValueText for getting a textual representation of the option's value
 - API: ICustomizable#onOptionChanged now has a proper generic type
 - API: New method IViewActivated#isConsideredInvisible
+- Fix: Trying to place a Panic Button where a normal button cannot be placed crashes the game
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 - Fix: The block pocket can be assembled without the necessary items
 - Fix: Reinforcing a placed end rod will briefly destroy the end rod before it is replaced with a reinforced end rod
