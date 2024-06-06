@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -24,6 +25,13 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 			level.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
 			playSound((Player) null, level, pos, hasActiveSCBlock);
 		}
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(ctx.getLevel(), ctx.getClickedPos());
+
+		return super.getStateForPlacement(ctx).setValue(OPEN, hasActiveSCBlock).setValue(POWERED, hasActiveSCBlock);
 	}
 
 	@Override
