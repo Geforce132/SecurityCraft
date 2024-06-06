@@ -60,7 +60,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 				tellSimilarReceiversToRefresh();
 		}
 
-		if (!level.isClientSide && shouldHighlightConnections() && level.getGameTime() % 5 == 0) {
+		if (shouldHighlightConnections() && level.getGameTime() % 5 == 0) {
 			ServerLevel serverLevel = (ServerLevel) level;
 			Vec3 myPos = Vec3.atCenterOf(pos);
 
@@ -198,7 +198,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void refreshPower(int frequency) {
-		if (isDisabled() || !getOwner().isValidated())
+		if (level.isClientSide || isDisabled() || !getOwner().isValidated())
 			return;
 
 		if (isSender()) {
@@ -337,7 +337,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	 * @param range The range around this block entity's position in which to update the receivers
 	 */
 	public void tellSimilarReceiversToRefresh(Owner owner, int frequency, int range) {
-		if (getOwner().isValidated()) {
+		if (!level.isClientSide && getOwner().isValidated()) {
 			for (SecureRedstoneInterfaceBlockEntity be : getReceiversToSendTo(owner, frequency, range)) {
 				be.refreshPower(frequency);
 			}
