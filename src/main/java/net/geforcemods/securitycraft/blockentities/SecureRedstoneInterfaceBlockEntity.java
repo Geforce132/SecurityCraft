@@ -14,10 +14,12 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleOptions;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,35 +63,39 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		}
 
 		if (shouldHighlightConnections() && level.getGameTime() % 5 == 0) {
-			ServerLevel serverLevel = (ServerLevel) level;
-			Vec3 myPos = Vec3.atCenterOf(pos);
+			ServerPlayer player = PlayerUtils.getPlayerFromName(getOwner().getName());
 
-			if (isSender()) {
-				for (SecureRedstoneInterfaceBlockEntity be : getReceiversISendTo()) {
-					if (!be.isDisabled()) {
-						Vec3 receiverPos = Vec3.atCenterOf(be.worldPosition);
+			if (player != null) {
+				ServerLevel serverLevel = (ServerLevel) level;
+				Vec3 myPos = Vec3.atCenterOf(pos);
 
-						showParticleTrail(serverLevel, myPos, receiverPos, SENDER_PARTICLE_COLOR);
+				if (isSender()) {
+					for (SecureRedstoneInterfaceBlockEntity be : getReceiversISendTo()) {
+						if (!be.isDisabled()) {
+							Vec3 receiverPos = Vec3.atCenterOf(be.worldPosition);
+
+							showParticleTrail(player, serverLevel, myPos, receiverPos, SENDER_PARTICLE_COLOR);
+						}
 					}
 				}
-			}
-			else {
-				for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
-					Vec3 senderPos = Vec3.atCenterOf(be.worldPosition);
-					Vector3f color;
+				else {
+					for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
+						Vec3 senderPos = Vec3.atCenterOf(be.worldPosition);
+						Vector3f color;
 
-					if (be.getPower() == 0)
-						color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL : RECEIVER_PARTICLE_COLOR_NO_SIGNAL;
-					else
-						color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR;
+						if (be.getPower() == 0)
+							color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL : RECEIVER_PARTICLE_COLOR_NO_SIGNAL;
+						else
+							color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR;
 
-					showParticleTrail(serverLevel, senderPos, myPos, color);
+						showParticleTrail(player, serverLevel, senderPos, myPos, color);
+					}
 				}
 			}
 		}
 	}
 
-	public void showParticleTrail(ServerLevel level, Vec3 senderPos, Vec3 receiverPos, Vector3f color) {
+	public void showParticleTrail(ServerPlayer player, ServerLevel level, Vec3 senderPos, Vec3 receiverPos, Vector3f color) {
 		Vec3 senderToReceiver = receiverPos.subtract(senderPos);
 		Vector3f particleDirection = senderToReceiver.normalize().scale(0.01F).toVector3f();
 		double step = senderToReceiver.length() * 6;
@@ -97,7 +103,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		for (int i = 0; i < step; i++) {
 			Vec3 particlePos = receiverPos.lerp(senderPos, i / step);
 
-			level.sendParticles(new InterfaceHighlightParticleOptions(color, particleDirection, 1.0F), particlePos.x, particlePos.y, particlePos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+			level.sendParticles(player, new InterfaceHighlightParticleOptions(color, particleDirection, 1.0F), false, particlePos.x, particlePos.y, particlePos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
