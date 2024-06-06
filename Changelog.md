@@ -34,6 +34,7 @@
 - Fix: Players are able to mount Security Cameras that have been shut down by an EMP from another mod
 - Fix: A Portable Radar configured to not send repeating messages still repeats messages when multiple players are in its range
 - Fix: Mine remote access tools automatically remove positions of mines that are no longer in the world from their list
+- Fix: SecurityCraft's doors, trapdoors and fence gates are sometimes erroneously in their open state when placed down
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 

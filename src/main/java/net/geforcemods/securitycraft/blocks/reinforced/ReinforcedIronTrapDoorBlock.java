@@ -8,8 +8,10 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -27,6 +29,13 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 			world.markBlockRangeForRenderUpdate(pos, pos);
 			playSound((EntityPlayer) null, world, pos, hasActiveSCBlock);
 		}
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
+
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(OPEN, hasActiveSCBlock);
 	}
 
 	@Override

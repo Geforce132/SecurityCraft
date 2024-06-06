@@ -79,25 +79,6 @@ public class BaseIronTrapDoorBlock extends BlockTrapDoor implements ITileEntityP
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		IBlockState state = this.getDefaultState();
-
-		if (facing.getAxis().isHorizontal()) {
-			state = state.withProperty(FACING, facing).withProperty(OPEN, false);
-			state = state.withProperty(HALF, hitY > 0.5F ? BlockTrapDoor.DoorHalf.TOP : BlockTrapDoor.DoorHalf.BOTTOM);
-		}
-		else {
-			state = state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(OPEN, false);
-			state = state.withProperty(HALF, facing == EnumFacing.UP ? BlockTrapDoor.DoorHalf.BOTTOM : BlockTrapDoor.DoorHalf.TOP);
-		}
-
-		if (BlockUtils.hasActiveSCBlockNextTo(world, pos))
-			state = state.withProperty(OPEN, true);
-
-		return state;
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		return false;
 	}

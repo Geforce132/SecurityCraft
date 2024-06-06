@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -58,6 +59,13 @@ public class OwnableFenceGateBlock extends BlockFenceGate implements ITileEntity
 		TileEntity te = world.getTileEntity(pos);
 
 		return te != null && te.receiveClientEvent(eventID, eventParam);
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(world, pos);
+
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(OPEN, hasActiveSCBlock).withProperty(POWERED, hasActiveSCBlock);
 	}
 
 	@Override
