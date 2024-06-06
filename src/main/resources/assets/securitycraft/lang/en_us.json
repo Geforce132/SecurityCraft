@@ -804,7 +804,7 @@
 	"gui.securitycraft:scManual.viewActivatedBlock": "View activated: This block can be activated by hovering over it with your cursor while in block-breaking range.",
 	"gui.securitycraft:secure_redstone_interface.frequency": "Frequency:",
 	"gui.securitycraft:secure_redstone_interface.highlight_connections": "Highlight connections",
-	"gui.securitycraft:secure_redstone_interface.highlight_connections.tooltip": "Green: The sender sends to the receiver\nYellow: The receiver receives any signal from the sender\nRed: The receiver receives a protected signal from the sender",
+	"gui.securitycraft:secure_redstone_interface.highlight_connections.tooltip": "Green: The sender can send to the receiver.\n\nYellow/White: The receiver can receive any signal from the sender; white means that no signal is currently present.\n\nRed/Black: The receiver can receive a protected signal from the sender; black means that no signal is currently present.",
 	"gui.securitycraft:secure_redstone_interface.mode": "Mode",
 	"gui.securitycraft:secure_redstone_interface.mode.receiver": "Receiver",
 	"gui.securitycraft:secure_redstone_interface.mode.sender": "Sender",

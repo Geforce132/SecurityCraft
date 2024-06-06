@@ -26,7 +26,9 @@ import net.minecraft.world.phys.Vec3;
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	public static final Vector3f SENDER_PARTICLE_COLOR = new Vector3f(0.0F, 1.0F, 0.0F);
 	public static final Vector3f RECEIVER_PARTICLE_COLOR = new Vector3f(1.0F, 1.0F, 0.0F);
+	public static final Vector3f RECEIVER_PARTICLE_COLOR_NO_SIGNAL = new Vector3f(1.0F, 1.0F, 1.0F);
 	public static final Vector3f RECEIVER_PROTECTED_PARTICLE_COLOR = new Vector3f(1.0F, 0.0F, 0.0F);
+	public static final Vector3f RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL = new Vector3f(0.0F, 0.0F, 0.0F);
 	public final DisabledOption disabled = new DisabledOption(false);
 	private boolean tracked = false, refreshed = false;
 	private boolean sender = true;
@@ -74,8 +76,14 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			else {
 				for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
 					Vec3 senderPos = Vec3.atCenterOf(be.worldPosition);
+					Vector3f color;
 
-					showParticleTrail(serverLevel, senderPos, myPos, be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR);
+					if (be.getPower() == 0)
+						color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL : RECEIVER_PARTICLE_COLOR_NO_SIGNAL;
+					else
+						color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR;
+
+					showParticleTrail(serverLevel, senderPos, myPos, color);
 				}
 			}
 		}
@@ -84,12 +92,12 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	public void showParticleTrail(ServerLevel level, Vec3 senderPos, Vec3 receiverPos, Vector3f color) {
 		Vec3 senderToReceiver = receiverPos.subtract(senderPos);
 		Vector3f particleDirection = senderToReceiver.normalize().scale(0.01F).toVector3f();
-		double length = senderToReceiver.length() * 4;
+		double step = senderToReceiver.length() * 6;
 
-		for (int i = 0; i < length; i++) {
-			Vec3 particlePos = receiverPos.lerp(senderPos, i / length);
+		for (int i = 0; i < step; i++) {
+			Vec3 particlePos = receiverPos.lerp(senderPos, i / step);
 
-			level.sendParticles(new InterfaceHighlightParticleOptions(color, particleDirection, 1f), particlePos.x, particlePos.y, particlePos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+			level.sendParticles(new InterfaceHighlightParticleOptions(color, particleDirection, 1.0F), particlePos.x, particlePos.y, particlePos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

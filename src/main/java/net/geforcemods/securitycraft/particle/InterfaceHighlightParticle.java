@@ -10,29 +10,25 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 public class InterfaceHighlightParticle extends DustParticleBase<InterfaceHighlightParticleOptions> {
-	private final TextureAtlasSprite sprite;
+	private final TextureAtlasSprite permanentSprite;
 
 	protected InterfaceHighlightParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, InterfaceHighlightParticleOptions options, SpriteSet sprites) {
 		super(level, x, y, z, xSpeed, ySpeed, zSpeed, options, sprites);
 		float colorChangeMultiplier = random.nextFloat() * 0.4F + 0.6F;
-		Vector3f color = randomizeColor(options.getColor(), colorChangeMultiplier);
+		Vector3f color = options.getColor().mul(randomizeColor(1.0F, colorChangeMultiplier));
 
 		hasPhysics = false;
 		setColor(color.x, color.y, color.z);
 		setParticleSpeed(options.getDirection().x, options.getDirection().y, options.getDirection().z);
-		sprite = sprites.get(random);
-		setSprite(sprite);
-		age = 5;
-	}
-
-	private Vector3f randomizeColor(Vector3f vector, float multiplier) {
-		return new Vector3f(randomizeColor(vector.x(), multiplier), randomizeColor(vector.y(), multiplier), randomizeColor(vector.z(), multiplier));
+		permanentSprite = sprites.get(random);
+		setSprite(permanentSprite);
+		lifetime = (int) (20.0D / (random.nextDouble() * 0.3D + 0.7D)) - 5;
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		setSprite(sprite);
+		setSprite(permanentSprite);
 	}
 
 	public static class Provider implements ParticleProvider<InterfaceHighlightParticleOptions> {
