@@ -48,7 +48,10 @@ public class CheckBriefcasePasscode implements CustomPacketPayload {
 		if (!briefcase.isEmpty()) {
 			if (PasscodeUtils.isOnCooldown(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
-				SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), SCContent.BRIEFCASE.get().getDescription().getString(), GlobalPos.of(player.level().dimension(), player.blockPosition())));
+
+				if (ConfigHandler.SERVER.passcodeSpamLogWarningEnabled.get())
+					SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), SCContent.BRIEFCASE.get().getDescription().getString(), GlobalPos.of(player.level().dimension(), player.blockPosition())));
+
 				return;
 			}
 

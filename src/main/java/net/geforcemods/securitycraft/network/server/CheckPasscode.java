@@ -73,7 +73,10 @@ public class CheckPasscode implements CustomPacketPayload {
 		if (passcodeProtected != null) {
 			if (PasscodeUtils.isOnCooldown(player)) {
 				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
-				SecurityCraft.LOGGER.warn(formatForPasscodeProtected(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player, passcodeProtected));
+
+				if (ConfigHandler.SERVER.passcodeSpamLogWarningEnabled.get())
+					SecurityCraft.LOGGER.warn(formatForPasscodeProtected(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player, passcodeProtected));
+
 				return;
 			}
 
