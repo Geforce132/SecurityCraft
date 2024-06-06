@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -85,6 +86,13 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock 
 			inv.getInventory().clear();
 
 		return super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		BlockState state = super.getStateForPlacement(ctx);
+
+		return state == null ? null : state.setValue(OPEN, false).setValue(POWERED, false);
 	}
 
 	@Override
