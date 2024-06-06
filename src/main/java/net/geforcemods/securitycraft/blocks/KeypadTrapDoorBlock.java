@@ -15,6 +15,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.Half;
 import net.minecraft.tileentity.TileEntity;
@@ -89,6 +90,11 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return super.getStateForPlacement(ctx).setValue(OPEN, false).setValue(POWERED, false);
+	}
 
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {

@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -39,6 +40,11 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, World level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return super.getStateForPlacement(ctx).setValue(OPEN, false).setValue(POWERED, false);
+	}
 
 	@Override
 	public boolean hasTileEntity(BlockState state) {

@@ -3,20 +3,14 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapDoorBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.state.properties.Half;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -40,23 +34,6 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock {
 			if (be instanceof INameSetter)
 				((INameSetter) be).setCustomName(stack.getHoverName());
 		}
-	}
-
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		BlockState state = defaultBlockState();
-		FluidState fluidState = ctx.getLevel().getFluidState(ctx.getClickedPos());
-		Direction direction = ctx.getClickedFace();
-
-		if (!ctx.replacingClickedOnBlock() && direction.getAxis().isHorizontal())
-			state = state.setValue(FACING, direction).setValue(HALF, ctx.getClickLocation().y - ctx.getClickedPos().getY() > 0.5D ? Half.TOP : Half.BOTTOM);
-		else
-			state = state.setValue(FACING, ctx.getHorizontalDirection().getOpposite()).setValue(HALF, direction == Direction.UP ? Half.BOTTOM : Half.TOP);
-
-		if (BlockUtils.hasActiveSCBlockNextTo(ctx.getLevel(), ctx.getClickedPos()))
-			state = state.setValue(OPEN, true).setValue(POWERED, true);
-
-		return state.setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 	}
 
 	@Override

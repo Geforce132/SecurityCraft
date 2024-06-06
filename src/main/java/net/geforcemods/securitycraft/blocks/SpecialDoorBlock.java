@@ -15,6 +15,7 @@ import net.minecraft.block.DoorBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.DoubleBlockHalf;
@@ -92,6 +93,13 @@ public abstract class SpecialDoorBlock extends DoorBlock {
 		}
 
 		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		BlockState state = super.getStateForPlacement(ctx);
+
+		return state == null ? null : state.setValue(OPEN, false).setValue(POWERED, false);
 	}
 
 	@Override

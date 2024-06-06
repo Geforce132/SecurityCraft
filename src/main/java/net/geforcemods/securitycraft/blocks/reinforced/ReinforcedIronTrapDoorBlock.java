@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -23,6 +24,13 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 			level.setBlock(pos, state.setValue(OPEN, hasActiveSCBlock), 2);
 			playSound((PlayerEntity) null, level, pos, hasActiveSCBlock);
 		}
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(ctx.getLevel(), ctx.getClickedPos());
+
+		return super.getStateForPlacement(ctx).setValue(OPEN, hasActiveSCBlock).setValue(POWERED, hasActiveSCBlock);
 	}
 
 	@Override

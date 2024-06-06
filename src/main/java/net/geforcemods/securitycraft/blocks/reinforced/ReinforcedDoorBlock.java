@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import javax.annotation.Nullable;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
@@ -125,17 +123,17 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	@Nullable
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
 		BlockPos pos = context.getClickedPos();
 		World level = context.getLevel();
 
 		if (pos.getY() < 255 && level.getBlockState(pos.above()).canBeReplaced(context)) {
-			boolean hasNeighborSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above());
-			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, hasNeighborSignal).setValue(HALF, DoubleBlockHalf.LOWER);
+			boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos) || BlockUtils.hasActiveSCBlockNextTo(level, pos.above());
+
+			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, hasActiveSCBlock).setValue(HALF, DoubleBlockHalf.LOWER);
 		}
-		else
-			return null;
+
+		return null;
 	}
 
 	@Override

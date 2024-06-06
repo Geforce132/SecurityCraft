@@ -10,6 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
@@ -40,6 +41,13 @@ public class OwnableFenceGateBlock extends FenceGateBlock {
 			if (te instanceof INameSetter)
 				((INameSetter) te).setCustomName(stack.getHoverName());
 		}
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(context.getLevel(), context.getClickedPos());
+
+		return super.getStateForPlacement(context).setValue(OPEN, hasActiveSCBlock).setValue(POWERED, hasActiveSCBlock);
 	}
 
 	@Override
