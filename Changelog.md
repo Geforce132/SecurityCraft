@@ -23,7 +23,7 @@
 - API: New method Option#getValueText for getting a textual representation of the option's value
 - API: ICustomizable#onOptionChanged now has a proper generic type
 - API: New method IViewActivated#isConsideredInvisible
-- Fix: Trying to place a Panic Button on top of powdered snow crashes the game
+- Fix: Trying to place a Panic Button where a normal button cannot be placed crashes the game
 - Fix: Occasional crash when opening the inventory in creative mode in certain situations
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 - Fix: The block pocket can be assembled without the necessary items
