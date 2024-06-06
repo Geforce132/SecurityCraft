@@ -5,6 +5,7 @@
 - New: Security Sea Boats: Chest boats with a passcode-protected chest
 - New: Damage Type Tag "securitycraft:security_sea_boat_vulnerable_to" to define which damage types the Security Sea Boat can be destroyed by
 - New: Server config option "passcode_check_cooldown" to configure the time that needs to pass between two separate attempts from a player to enter a passcode
+- New: Secure Redstone Interface for owner-restricted redstone signal transfer
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
@@ -24,6 +25,9 @@
 - API: New method Option#getValueText for getting a textual representation of the option's value
 - API: ICustomizable#onOptionChanged now has a proper generic type
 - API: New method IViewActivated#isConsideredInvisible
+- API: New method Owner#copy to copy the owner into a new object
+- API: IOwnable#onOwnerChanged now has two new parameters: oldOwner and newOwner
+- API: New method IOwnable#onValidate that gets called when the underlying owner is validated
 - Fix: Trying to place a Panic Button on top of powdered snow crashes the game
 - Fix: Occasional crash when opening the inventory in creative mode in certain situations
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
