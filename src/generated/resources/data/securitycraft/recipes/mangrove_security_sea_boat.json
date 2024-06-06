@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:security_sea_boats",
+  "key": {
+    "C": {
+      "item": "securitycraft:keypad_chest"
+    },
+    "P": {
+      "item": "securitycraft:reinforced_mangrove_planks"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:mangrove_security_sea_boat"
+  }
+}

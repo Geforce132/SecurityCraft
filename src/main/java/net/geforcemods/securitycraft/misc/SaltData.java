@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.misc;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -12,8 +12,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public class SaltData extends SavedData {
+	private static final Object DUMMY = new Object();
 	private static SaltData instance;
-	private final Map<UUID, byte[]> saltMap = new HashMap<>();
+	private final Map<UUID, byte[]> saltMap = new ConcurrentHashMap<>();
+	private final Map<UUID, Object> saltKeysInUse = new ConcurrentHashMap<>();
 
 	private SaltData() {}
 
@@ -21,11 +23,27 @@ public class SaltData extends SavedData {
 		instance = level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SaltData::new, SaltData::load), "securitycraft-salts");
 	}
 
+	public static void invalidate() {
+		instance = null;
+	}
+
 	public static boolean containsKey(UUID saltKey) {
 		if (saltKey == null)
 			return false;
 
 		return instance.saltMap.containsKey(saltKey);
+	}
+
+	public static void setKeyInUse(UUID saltKey) {
+		if (saltKey != null)
+			instance.saltKeysInUse.put(saltKey, DUMMY);
+	}
+
+	public static boolean isKeyInUse(UUID saltKey) {
+		if (saltKey == null)
+			return false;
+
+		return instance.saltKeysInUse.containsKey(saltKey);
 	}
 
 	public static byte[] getSalt(UUID saltKey) {
@@ -41,6 +59,7 @@ public class SaltData extends SavedData {
 		UUID saltKey = UUID.randomUUID();
 
 		instance.saltMap.put(saltKey, salt);
+		setKeyInUse(saltKey);
 		instance.setDirty();
 		return saltKey;
 	}
@@ -48,8 +67,16 @@ public class SaltData extends SavedData {
 	public static void removeSalt(UUID saltKey) {
 		if (saltKey != null) {
 			instance.saltMap.remove(saltKey);
+			instance.saltKeysInUse.remove(saltKey);
 			instance.setDirty();
 		}
+	}
+
+	public static UUID copySaltToNewKey(UUID oldKey) {
+		if (oldKey != null)
+			return putSalt(getSalt(oldKey));
+
+		return null;
 	}
 
 	public static SaltData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {

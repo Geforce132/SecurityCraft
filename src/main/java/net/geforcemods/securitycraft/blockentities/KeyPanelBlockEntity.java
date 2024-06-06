@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
+import net.geforcemods.securitycraft.blocks.AbstractPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -108,19 +109,19 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !state.getValue(KeyPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return !getBlockState().getValue(AbstractPanelBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(KeyPanelBlock.POWERED, false));
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == disabled && ((BooleanOption) option).get() || option == signalLength) {
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(AbstractPanelBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
 

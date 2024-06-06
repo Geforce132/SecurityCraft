@@ -3,9 +3,6 @@ package net.geforcemods.securitycraft;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-
-import com.mojang.logging.LogUtils;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
@@ -15,7 +12,6 @@ import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
 public class ConfigHandler {
-	private static final Logger LOGGER = LogUtils.getLogger();
 	public static final ModConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
 	public static final ModConfigSpec SERVER_SPEC;
@@ -35,7 +31,6 @@ public class ConfigHandler {
 
 	public static class Client {
 		public BooleanValue sayThanksMessage;
-		public DoubleValue cameraSpeed;
 		public BooleanValue reinforcedBlockTint;
 		public IntValue reinforcedBlockTintColor;
 
@@ -44,10 +39,6 @@ public class ConfigHandler {
 			sayThanksMessage = builder
 					.comment("Display a 'tip' message at spawn?")
 					.define("sayThanksMessage", true);
-
-			cameraSpeed = builder
-					.comment("How fast can you rotate when mounted to a camera and holding W-A-S-D?")
-					.defineInRange("cameraSpeed", 2.0D, 0.0D, Double.MAX_VALUE);
 
 			reinforcedBlockTint = builder
 					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overridden by servers.")
@@ -62,7 +53,6 @@ public class ConfigHandler {
 	}
 
 	public static class Server {
-		public DoubleValue codebreakerChance;
 		public BooleanValue allowAdminTool;
 		public BooleanValue shouldSpawnFire;
 		public BooleanValue ableToBreakMines;
@@ -73,7 +63,6 @@ public class ConfigHandler {
 		public IntValue inventoryScannerRange;
 		public IntValue maxAlarmRange;
 		public BooleanValue allowBlockClaim;
-		public BooleanValue respectInvisibility;
 		public BooleanValue reinforcedBlockTint;
 		public BooleanValue forceReinforcedBlockTint;
 		public BooleanValue retinalScannerFace;
@@ -86,16 +75,15 @@ public class ConfigHandler {
 		public DoubleValue laserDamage;
 		public IntValue incorrectPasscodeDamage;
 		public IntValue sentryBulletDamage;
+		public BooleanValue allowCameraNightVision;
+		public IntValue passcodeCheckCooldown;
+		public BooleanValue passcodeSpamLogWarningEnabled;
+		public ConfigValue<String> passcodeSpamLogWarning;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
 		Server(ModConfigSpec.Builder builder) {
 			//@formatter:off
-			codebreakerChance = builder
-					.comment("The chance for the codebreaker to successfully hack a block. 0.33 is 33%. Set to a negative value to disable the codebreaker.",
-							"Using the codebreaker when this is set to 0.0 will still damage the item, while negative values do not damage it.")
-					.defineInRange("codebreaker_chance", 0.33D, -1.0D, 1.0D);
-
 			allowAdminTool = builder
 					.comment("Can the admin tool be used?")
 					.define("allowAdminTool", true);
@@ -135,10 +123,6 @@ public class ConfigHandler {
 			allowBlockClaim = builder
 					.comment("Allow claiming unowned blocks?")
 					.define("allowBlockClaim", false);
-
-			respectInvisibility = builder
-					.comment("Should the sentry/inventory scanner/laser block/etc. ignore players and entities that are invisible?")
-					.define("respect_invisibility", false);
 
 			reinforcedBlockTint = builder
 					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This does nothing unless force_reinforced_block_tint is set to true.")
@@ -191,6 +175,22 @@ public class ConfigHandler {
 					.comment("Set the amount of damage the default Sentry bullet inflicts onto the mobs it hits. This will not affect other projectiles the Sentry can use, like arrows. Default is one heart.")
 					.defineInRange("sentry_bullet_damage", 2, 0, Integer.MAX_VALUE);
 
+			allowCameraNightVision = builder
+					.comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
+					.define("allow_camera_night_vision", true);
+
+			passcodeCheckCooldown = builder
+					.comment("Defines the amount of time in milliseconds that needs to pass between two separate attempts from a player to enter a passcode.")
+					.defineInRange("passcode_check_cooldown", 250, 0, 2000);
+
+			passcodeSpamLogWarningEnabled = builder
+					.comment("Set this to false to disable the log warning that is sent whenever a player tries to enter a passcode while on passcode cooldown.")
+					.define("passcode_spam_log_warning_enabled", true);
+
+			passcodeSpamLogWarning = builder
+					.comment("The warning that is sent into the server log whenever a player tries to enter a passcode while on passcode cooldown. \"%1$s\" will be replaced with the player's name, \"%2$s\" with the passcode-protected object's name and \"%3$s\" with the object's position and dimension.")
+					.define("passcode_spam_log_warning", "Player \"%1$s\" tried to enter a passcode into \"%2$s\" at position [%3$s] too quickly!");
+
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
 					.defineList("sentry_attackable_entities_allowlist", List.of(), String.class::isInstance);
@@ -208,7 +208,7 @@ public class ConfigHandler {
 		}
 		catch (Exception e) {
 			if (!DatagenModLoader.isRunningDataGen()) {
-				LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
+				SecurityCraft.LOGGER.warn("Error when getting config value with getOrDefault! Please report this.");
 				e.printStackTrace();
 			}
 

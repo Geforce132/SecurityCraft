@@ -75,18 +75,18 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !state.getValue(KeypadBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return !getBlockState().getValue(KeypadBlock.POWERED) && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if ((option.getName().equals(disabled.getName()) && ((BooleanOption) option).get() || option.getName().equals(signalLength.getName()))) {
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == disabled && ((BooleanOption) option).get() || option == signalLength) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}

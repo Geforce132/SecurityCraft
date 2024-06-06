@@ -86,7 +86,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
 			TargetingMode mode = mine.getTargetingMode();
 
-			if (mode.canAttackEntity(livingEntity, mine, false))
+			if (mode.canAttackEntity(livingEntity, mine, e -> false))
 				explode(level, pos);
 		}
 	}

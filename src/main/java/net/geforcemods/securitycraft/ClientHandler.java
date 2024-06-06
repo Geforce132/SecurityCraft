@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -14,12 +15,14 @@ import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
@@ -27,8 +30,8 @@ import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.components.CodebreakerData;
-import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.components.GlobalPositionComponent;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.components.SentryPositions;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -36,7 +39,6 @@ import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.LensItem;
-import net.geforcemods.securitycraft.misc.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
@@ -45,6 +47,8 @@ import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
+import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
+import net.geforcemods.securitycraft.particle.InterfaceHighlightParticle;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
 import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
@@ -59,6 +63,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
@@ -86,6 +91,7 @@ import net.geforcemods.securitycraft.screen.ReinforcedLecternScreen;
 import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
+import net.geforcemods.securitycraft.screen.SecureRedstoneInterfaceScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SingleLensScreen;
@@ -119,10 +125,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
@@ -180,6 +188,7 @@ public class ClientHandler {
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
+			SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
@@ -374,6 +383,7 @@ public class ClientHandler {
 		event.register(SCContent.BLOCK_REINFORCER_MENU.get(), BlockReinforcerScreen::new);
 		event.register(SCContent.BRIEFCASE_INVENTORY_MENU.get(), ItemInventoryScreen.Briefcase::new);
 		event.register(SCContent.CUSTOMIZE_BLOCK_MENU.get(), CustomizeBlockScreen::new);
+		event.register(SCContent.CUSTOMIZE_ENTITY_MENU.get(), CustomizeBlockScreen::new);
 		event.register(SCContent.DISGUISE_MODULE_MENU.get(), DisguiseModuleScreen::new);
 		event.register(SCContent.INVENTORY_SCANNER_MENU.get(), InventoryScannerScreen::new);
 		event.register(SCContent.KEYPAD_FURNACE_MENU.get(), KeypadFurnaceScreen::new);
@@ -403,6 +413,7 @@ public class ClientHandler {
 		event.registerEntityRenderer(SCContent.SECURITY_CAMERA_ENTITY.get(), NoopRenderer::new);
 		event.registerEntityRenderer(SCContent.SENTRY_ENTITY.get(), SentryRenderer::new);
 		event.registerEntityRenderer(SCContent.BULLET_ENTITY.get(), BulletRenderer::new);
+		event.registerEntityRenderer(SCContent.SECURITY_SEA_BOAT_ENTITY.get(), SecuritySeaBoatRenderer::new);
 		//normal renderers
 		event.registerBlockEntityRenderer(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreRenderer::new);
@@ -433,6 +444,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 	}
 
@@ -450,6 +462,7 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(SCContent.FLOOR_TRAP_CLOUD.get(), FloorTrapCloudParticle.Provider::new);
+		event.registerSpriteSet(SCContent.INTERFACE_HIGHLIGHT.get(), InterfaceHighlightParticle.Provider::new);
 	}
 
 	private static void initTint() {
@@ -531,42 +544,53 @@ public class ClientHandler {
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);
-			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
 
-			for (int i = 0; i < ConfigHandler.SERVER.laserBlockRange.get(); i++) {
-				if (level.getBlockState(mutablePos).is(SCContent.LASER_BLOCK.get()) && level.getBlockEntity(mutablePos) instanceof LaserBlockBlockEntity be) {
-					ItemStack stack = be.getLensContainer().getItem(direction.getOpposite().ordinal());
-
-					if (stack.has(DataComponents.DYED_COLOR))
-						return stack.get(DataComponents.DYED_COLOR).rgb();
-
-					break;
-				}
-				else
-					mutablePos.move(direction);
-			}
-
-			return -1;
+			return iterateFields(level, pos, direction, ConfigHandler.SERVER.laserBlockRange.get(), SCContent.LASER_BLOCK.get(), LaserBlockBlockEntity.class::isInstance, be -> ((LaserBlockBlockEntity) be).getLensContainer().getItem(direction.getOpposite().ordinal()));
 		}, SCContent.LASER_FIELD.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = state.getValue(InventoryScannerFieldBlock.FACING);
-			MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
 
-			for (int i = 0; i < ConfigHandler.SERVER.inventoryScannerRange.get(); i++) {
-				if (level.getBlockState(mutablePos).is(SCContent.INVENTORY_SCANNER.get()) && level.getBlockEntity(mutablePos) instanceof InventoryScannerBlockEntity be) {
-					ItemStack stack = be.getLensContainer().getItem(0);
+			return iterateFields(level, pos, direction, ConfigHandler.SERVER.inventoryScannerRange.get(), SCContent.INVENTORY_SCANNER.get(), InventoryScannerBlockEntity.class::isInstance, be -> ((InventoryScannerBlockEntity) be).getLensContainer().getItem(0));
+		}, SCContent.INVENTORY_SCANNER_FIELD.get());
+	}
+
+	public static int iterateFields(BlockAndTintGetter level, BlockPos pos, Direction direction, int range, Block block, Predicate<BlockEntity> beTest, Function<BlockEntity, ItemStack> lensGetter) {
+		try {
+			return iterateFieldsInternal(level, pos, direction, range, block, beTest, lensGetter);
+		}
+		catch (Exception e1) {
+			direction = direction.getOpposite();
+
+			try {
+				return iterateFieldsInternal(level, pos, direction, range, block, beTest, lensGetter);
+			}
+			catch (Exception e2) {}
+		}
+
+		return -1;
+	}
+
+	private static int iterateFieldsInternal(BlockAndTintGetter level, BlockPos pos, Direction direction, int range, Block block, Predicate<BlockEntity> beTest, Function<BlockEntity, ItemStack> lensGetter) throws ArrayIndexOutOfBoundsException {
+		MutableBlockPos mutablePos = new MutableBlockPos(pos.getX(), pos.getY(), pos.getZ());
+
+		for (int i = 0; i < range; i++) {
+			if (level.getBlockState(mutablePos).is(block)) {
+				BlockEntity be = level.getBlockEntity(mutablePos);
+
+				if (beTest.test(be)) {
+					ItemStack stack = lensGetter.apply(be);
 
 					if (stack.has(DataComponents.DYED_COLOR))
 						return stack.get(DataComponents.DYED_COLOR).rgb();
 
 					break;
 				}
-				else
-					mutablePos.move(direction);
 			}
 
-			return -1;
-		}, SCContent.INVENTORY_SCANNER_FIELD.get());
+			mutablePos.move(direction);
+		}
+
+		return -1;
 	}
 
 	@SubscribeEvent
@@ -598,7 +622,7 @@ public class ClientHandler {
 		blocksWithCustomTint = null;
 	}
 
-	private static int mixWithReinforcedTintIfEnabled(int tint) {
+	public static int mixWithReinforcedTintIfEnabled(int tint) {
 		boolean tintReinforcedBlocks;
 
 		if (Minecraft.getInstance().level == null)
@@ -606,19 +630,7 @@ public class ClientHandler {
 		else
 			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
-		return tintReinforcedBlocks ? mixTints(tint, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
-	}
-
-	private static int mixTints(int tint1, int tint2) {
-		int red = (tint1 >> 0x10) & 0xFF;
-		int green = (tint1 >> 0x8) & 0xFF;
-		int blue = tint1 & 0xFF;
-
-		red *= (float) (tint2 >> 0x10 & 0xFF) / 0xFF;
-		green *= (float) (tint2 >> 0x8 & 0xFF) / 0xFF;
-		blue *= (float) (tint2 & 0xFF) / 0xFF;
-
-		return FastColor.ARGB32.color(0xFF, red, green, blue);
+		return tintReinforcedBlocks ? FastColor.ARGB32.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
 	}
 
 	public static Player getClientPlayer() {
@@ -679,19 +691,31 @@ public class ClientHandler {
 	}
 
 	public static void displayUniversalKeyChangerScreen(BlockEntity be) {
-		Minecraft.getInstance().setScreen(new KeyChangerScreen(be));
+		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) be));
+	}
+
+	public static void displayUniversalKeyChangerScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) entity));
 	}
 
 	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasscodeScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) be, displayName));
+	}
+
+	public static void displayCheckPasscodeScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
 	}
 
 	public static void displaySetPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new SetPasscodeScreen(be, displayName));
+		Minecraft.getInstance().setScreen(new SetPasscodeScreen((IPasscodeProtected) be, displayName));
+	}
+
+	public static void displaySetPasscodeScreen(Entity entity) {
+		Minecraft.getInstance().setScreen(new SetPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
 	}
 
 	public static void displaySSSItemScreen(ItemStack stack) {
@@ -700,6 +724,10 @@ public class ClientHandler {
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
 		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
+	}
+
+	public static void displaySecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
+		Minecraft.getInstance().setScreen(new SecureRedstoneInterfaceScreen(be));
 	}
 
 	public static void displayAlarmScreen(AlarmBlockEntity be) {

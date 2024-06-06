@@ -11,6 +11,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -43,6 +44,11 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		return super.getStateForPlacement(ctx).setValue(OPEN, false).setValue(POWERED, false);
+	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

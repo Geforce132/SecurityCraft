@@ -138,11 +138,16 @@ public class DataFixHandler {
 		registerSingleItemAndModules(schema, map, "securitycraft:glow_display_case", "DisplayedStack");
 	}
 
-	public static void registerSentry(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
+	public static void registerEntities(Schema schema, Map<String, Supplier<TypeTemplate>> map) {
 		//@formatter:off
+		schema.registerSimple(map, "securitycraft:bouncingbetty");
+		schema.registerSimple(map, "securitycraft:imsbomb");
+		schema.registerSimple(map, "securitycraft:securitycamera");
 		schema.register(map, "securitycraft:sentry", () -> DSL.optionalFields(
 				"InstalledWhitelist", References.ITEM_STACK.in(schema),
 				"InstalledModule", References.ITEM_STACK.in(schema)));
+		schema.registerSimple(map, "securitycraft:bullet");
+		registerInventoryAndModules(schema, map, "securitycraft:security_sea_boat");
 		//@formatter:on
 	}
 
@@ -383,25 +388,25 @@ public class DataFixHandler {
 		}
 	}
 
-	private static void registerModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType) {
-		schema.register(map, blockEntityType, () -> DSL.optionalFields("Modules", DSL.list(References.ITEM_STACK.in(schema))));
+	private static void registerModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String type) {
+		schema.register(map, type, () -> DSL.optionalFields("Modules", DSL.list(References.ITEM_STACK.in(schema))));
 	}
 
-	private static void registerSingleItemAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String itemKey) {
+	private static void registerSingleItemAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String type, String itemKey) {
 		//@formatter:off
-		schema.register(map, blockEntityType, name -> DSL.optionalFields(
+		schema.register(map, type, name -> DSL.optionalFields(
 				itemKey, References.ITEM_STACK.in(schema),
 				"Modules", DSL.list(References.ITEM_STACK.in(schema))));
 		//@formatter:on
 	}
 
-	private static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType) {
-		registerInventoryAndModules(schema, map, blockEntityType, "Items");
+	private static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String type) {
+		registerInventoryAndModules(schema, map, type, "Items");
 	}
 
-	private static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String blockEntityType, String key) {
+	private static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String type, String key) {
 		//@formatter:off
-		schema.register(map, blockEntityType, () -> DSL.optionalFields(
+		schema.register(map, type, () -> DSL.optionalFields(
 				key, DSL.list(References.ITEM_STACK.in(schema)),
 				"Modules", DSL.list(References.ITEM_STACK.in(schema))));
 		//@formatter:on

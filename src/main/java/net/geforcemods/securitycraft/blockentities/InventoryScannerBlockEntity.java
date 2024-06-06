@@ -14,7 +14,9 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.inventory.ExtractOnlyItemStackHandler;
@@ -35,6 +37,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -44,7 +47,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.EmptyHandler;
+import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
 
 public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
@@ -52,6 +55,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IntOption signalLength = new SignalLengthOption(60);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(37, ItemStack.EMPTY);
 	private boolean providePower;
 	private int signalCooldown, togglePowerCooldown;
@@ -74,7 +78,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos, getBlockState(), be -> be.setOwner(getOwner().getUUID(), getOwner().getName()));
 
 		if (connectedScanner != null) {
@@ -84,7 +88,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				level.getServer().getPlayerList().broadcastAll(connectedScanner.getUpdatePacket());
 		}
 
-		super.onOwnerChanged(state, level, pos, player);
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	@Override
@@ -241,7 +245,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	public static IItemHandler getCapability(InventoryScannerBlockEntity be, Direction side) {
-		if (BlockUtils.isAllowedToExtractFromProtectedBlock(side, be)) {
+		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be)) {
 			return new ExtractOnlyItemStackHandler(be.inventoryContents) {
 				@Override
 				public ItemStack extractItem(int slot, int amount, boolean simulate) {
@@ -250,7 +254,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			};
 		}
 		else
-			return EmptyHandler.INSTANCE; //disallow inserting
+			return EmptyItemHandler.INSTANCE; //disallow inserting
 	}
 
 	@Override
@@ -378,38 +382,37 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals("horizontal")) {
-			BooleanOption bo = (BooleanOption) option;
+	public <T> void onOptionChanged(Option<T> option) {
+		switch (option) {
+			case BooleanOption bo when option == horizontal -> {
+				modifyFields((offsetPos, state) -> level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get())), connectedScanner -> connectedScanner.setHorizontal(bo.get()));
+				level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
+			}
+			case BooleanOption bo when option == solidifyField -> {
+				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-			modifyFields((offsetPos, state) -> level.setBlockAndUpdate(offsetPos, state.setValue(InventoryScannerFieldBlock.HORIZONTAL, bo.get())), connectedScanner -> connectedScanner.setHorizontal(bo.get()));
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(InventoryScannerBlock.HORIZONTAL, bo.get()));
-		}
-		else if (option.getName().equals("solidifyField")) {
-			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+				if (connectedScanner != null)
+					connectedScanner.setSolidifyField(bo.get());
+			}
+			case BooleanOption bo when option == disabled -> {
+				if (!bo.get())
+					InventoryScannerBlock.checkAndPlaceAppropriately(level, worldPosition, true);
+				else
+					modifyFields((offsetPos, state) -> level.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
+			}
+			case BooleanOption bo when option == ignoreOwner -> {
+				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-			if (connectedScanner != null)
-				connectedScanner.setSolidifyField(((BooleanOption) option).get());
-		}
-		else if (option.getName().equals("disabled")) {
-			BooleanOption bo = (BooleanOption) option;
+				if (connectedScanner != null)
+					connectedScanner.setIgnoresOwner(bo.get());
+			}
+			case IntOption io when option == signalLength -> {
+				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
 
-			if (!bo.get())
-				InventoryScannerBlock.checkAndPlaceAppropriately(level, worldPosition, true);
-			else
-				modifyFields((offsetPos, state) -> level.destroyBlock(offsetPos, false), connectedScanner -> connectedScanner.setDisabled(true));
-		}
-		else if (option.getName().equals("ignoreOwner")) {
-			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
-
-			if (connectedScanner != null)
-				connectedScanner.setIgnoresOwner(((BooleanOption) option).get());
-		}
-		else if (option.getName().equals("signalLength")) {
-			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
-
-			if (connectedScanner != null)
-				connectedScanner.setSignalLength(((IntOption) option).get());
+				if (connectedScanner != null)
+					connectedScanner.setSignalLength(io.get());
+			}
+			default -> throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
 		}
 
 		super.onOptionChanged(option);
@@ -495,10 +498,14 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
+	}
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				horizontal, solidifyField, disabled, ignoreOwner, signalLength
+				horizontal, solidifyField, disabled, ignoreOwner, signalLength, respectInvisibility
 		};
 	}
 

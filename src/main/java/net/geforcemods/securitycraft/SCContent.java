@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Predicates;
 import com.mojang.serialization.Codec;
@@ -46,6 +47,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity
 import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedFenceGateBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
@@ -57,6 +59,7 @@ import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
@@ -106,6 +109,7 @@ import net.geforcemods.securitycraft.blocks.SecretCeilingHangingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallHangingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
@@ -187,6 +191,7 @@ import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.components.SentryPositions;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -226,6 +231,7 @@ import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
+import net.geforcemods.securitycraft.items.SecuritySeaBoatItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
@@ -237,10 +243,13 @@ import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.items.WireCuttersItem;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.ItemStackListSerializer;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
+import net.geforcemods.securitycraft.misc.ModuleStatesSerializer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnerDataSerializer;
 import net.geforcemods.securitycraft.misc.PageGroup;
+import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableBE;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -253,15 +262,18 @@ import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -269,6 +281,7 @@ import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -343,15 +356,19 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Codec.unit(Unit.INSTANCE)));
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ListModuleData>> LIST_MODULE_DATA = DATA_COMPONENTS.registerComponentType("list_module_data", builder -> builder.persistent(ListModuleData.CODEC).networkSynchronized(ListModuleData.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SavedBlockState>> SAVED_BLOCK_STATE = DATA_COMPONENTS.registerComponentType("saved_block_state", builder -> builder.persistent(SavedBlockState.CODEC).networkSynchronized(SavedBlockState.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> SUCCESS_CHANCE = DATA_COMPONENTS.registerComponentType("success_chance", builder -> builder.persistent(Codec.doubleRange(-1.0D, 1.0D)).networkSynchronized(ByteBufCodecs.DOUBLE).cacheEncoding());
 
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
 
 	//data serializer entries
 	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Owner>> OWNER_SERIALIZER = DATA_SERIALIZERS.register("owner", () -> new OwnerDataSerializer());
+	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<Map<ModuleType, Boolean>>> MODULE_STATES_SERIALIZER = DATA_SERIALIZERS.register("module_states", () -> new ModuleStatesSerializer());
+	public static final DeferredHolder<EntityDataSerializer<?>, EntityDataSerializer<NonNullList<ItemStack>>> ITEM_STACK_LIST_SERIALIZER = DATA_SERIALIZERS.register("item_stack_list", () -> new ItemStackListSerializer());
 
 	//particle types
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FLOOR_TRAP_CLOUD = PARTICLE_TYPES.register("floor_trap_cloud", () -> new SimpleParticleType(false));
+	public static final DeferredHolder<ParticleType<?>, InterfaceHighlightParticleType> INTERFACE_HIGHLIGHT = PARTICLE_TYPES.register("interface_highlight", () -> new InterfaceHighlightParticleType(false));
 
 	//fluids
 	public static final DeferredHolder<Fluid, FakeWaterFluid.Flowing> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing(fakeWaterProperties()));
@@ -371,7 +388,7 @@ public class SCContent {
 	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.register("block_pocket_manager", () -> new BlockPocketManagerBlock(prop(MapColor.COLOR_CYAN)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop(MapColor.COLOR_CYAN).noCollission().isRedstoneConductor((s, w, p) -> false).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn((s, l, p, v) -> false)));
+	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop(MapColor.COLOR_CYAN).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL)));
@@ -398,7 +415,7 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<InventoryScannerBlock> INVENTORY_SCANNER = BLOCKS.register("inventory_scanner", () -> new InventoryScannerBlock(propDisguisable()));
-	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(MapColor.NONE)));
+	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(MapColor.NONE).noLootTable()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new ElectrifiedIronFenceBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
@@ -433,7 +450,7 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<LaserBlock> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable()));
-	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop(MapColor.NONE)));
+	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop(MapColor.NONE).noLootTable()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<MotionActivatedLightBlock> MOTION_ACTIVATED_LIGHT = BLOCKS.register("motion_activated_light", () -> new MotionActivatedLightBlock(prop(MapColor.NONE).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0)));
@@ -482,6 +499,9 @@ public class SCContent {
 	public static final DeferredBlock<SecretWallSignBlock> SECRET_CRIMSON_WALL_SIGN = BLOCKS.register("secret_crimson_sign_wall", () -> new SecretWallSignBlock(prop(MapColor.CRIMSON_STEM).sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn(), WoodType.CRIMSON));
 	public static final DeferredBlock<SecretStandingSignBlock> SECRET_WARPED_SIGN = BLOCKS.register("secret_warped_sign_standing", () -> new SecretStandingSignBlock(prop(MapColor.WARPED_STEM).sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn(), WoodType.WARPED));
 	public static final DeferredBlock<SecretWallSignBlock> SECRET_WARPED_WALL_SIGN = BLOCKS.register("secret_warped_sign_wall", () -> new SecretWallSignBlock(prop(MapColor.WARPED_STEM).sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn(), WoodType.WARPED));
+	@HasManualPage //TODO: manual page entry
+	@RegisterItemBlock
+	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(prop(MapColor.METAL))); //TODO: Map color
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(MapColor.METAL)));
@@ -1234,7 +1254,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new BaseReinforcedBlock(prop(MapColor.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion().isValidSpawn((state, level, pos, type) -> type == EntityType.POLAR_BEAR), Blocks.ICE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new BaseReinforcedBlock(prop(MapColor.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion().isRedstoneConductor(SCContent::never).isValidSpawn((state, level, pos, type) -> type == EntityType.POLAR_BEAR), Blocks.ICE));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1266,7 +1286,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GLOWSTONE = BLOCKS.register("reinforced_glowstone", () -> new BaseReinforcedBlock(prop(MapColor.SAND).sound(SoundType.GLASS).lightLevel(state -> 15), Blocks.GLOWSTONE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GLOWSTONE = BLOCKS.register("reinforced_glowstone", () -> new BaseReinforcedBlock(prop(MapColor.SAND).sound(SoundType.GLASS).lightLevel(state -> 15).isRedstoneConductor(SCContent::never), Blocks.GLOWSTONE));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1573,7 +1593,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SEA_LANTERN = BLOCKS.register("reinforced_sea_lantern", () -> new BaseReinforcedBlock(prop(MapColor.QUARTZ).sound(SoundType.GLASS).lightLevel(state -> 15), Blocks.SEA_LANTERN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SEA_LANTERN = BLOCKS.register("reinforced_sea_lantern", () -> new BaseReinforcedBlock(prop(MapColor.QUARTZ).sound(SoundType.GLASS).lightLevel(state -> 15).isRedstoneConductor(SCContent::never), Blocks.SEA_LANTERN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2205,17 +2225,17 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRedstoneBlock> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(MapColor.FIRE).sound(SoundType.METAL), Blocks.REDSTONE_BLOCK));
+	public static final DeferredBlock<ReinforcedRedstoneBlock> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(MapColor.FIRE).sound(SoundType.METAL).isRedstoneConductor(SCContent::never), Blocks.REDSTONE_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBaseBlock(false, prop().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
+	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBaseBlock(false, prop().isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBaseBlock(true, prop().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
+	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBaseBlock(true, prop().isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop()));
+	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop().isRedstoneConductor(SCContent::never)));
 	@HasManualPage
 	@Reinforced
 	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
@@ -2230,7 +2250,7 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedLecternBlock> REINFORCED_LECTERN = BLOCKS.register("reinforced_lectern", () -> new ReinforcedLecternBlock(prop(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD)));
 	@HasManualPage
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(MapColor.NONE).noCollission().sound(SoundType.WOOD).pushReaction(PushReaction.BLOCK).forceSolidOn()));
+	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(MapColor.NONE).noCollission().sound(SoundType.STONE).pushReaction(PushReaction.BLOCK).forceSolidOn()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2551,12 +2571,12 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
-	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(MapColor.METAL).sound(SoundType.METAL), Blocks.IRON_BLOCK));
+	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(MapColor.METAL).sound(SoundType.METAL).noLootTable(), Blocks.IRON_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(MapColor.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
-	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor((s, w, p) -> false).isSuffocating((s, w, p) -> false).isViewBlocking((s, w, p) -> false)));
+	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never)));
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop().noLootTable().pushReaction(PushReaction.BLOCK)));
 	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SometimesVisibleBlock(propDisguisable().noLootTable().pushReaction(PushReaction.BLOCK)));
@@ -2570,7 +2590,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(BOUND_CAMERAS, GlobalPositions.sized(CameraMonitorItem.MAX_CAMERAS))));
 	@HasManualPage
-	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT)));
+	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT).component(SUCCESS_CHANCE, 0.33D)));
 	@HasManualPage
 	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
 	public static final DeferredItem<DisplayCaseItem> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.DISPLAY_CASE.get(), itemProp(), false));
@@ -2658,6 +2678,24 @@ public class SCContent {
 	public static final DeferredItem<HangingSignItem> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.register("secret_crimson_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(), itemProp(16)));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), itemProp(16)));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> OAK_SECURITY_SEA_BOAT = ITEMS.register("oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.OAK, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> SPRUCE_SECURITY_SEA_BOAT = ITEMS.register("spruce_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.SPRUCE, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> BIRCH_SECURITY_SEA_BOAT = ITEMS.register("birch_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.BIRCH, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> JUNGLE_SECURITY_SEA_BOAT = ITEMS.register("jungle_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.JUNGLE, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> ACACIA_SECURITY_SEA_BOAT = ITEMS.register("acacia_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.ACACIA, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> DARK_OAK_SECURITY_SEA_BOAT = ITEMS.register("dark_oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.DARK_OAK, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.register("mangrove_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.MANGROVE, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.register("cherry_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.CHERRY, itemProp(1).fireResistant()));
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.register("bamboo_security_sea_raft", () -> new SecuritySeaBoatItem(Boat.Type.BAMBOO, itemProp(1).fireResistant()));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(SSS_LINKED_BLOCKS, GlobalPositions.sized(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS))));
@@ -2898,7 +2936,7 @@ public class SCContent {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ScannerTrapdoorBlockEntity>> SCANNER_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_trapdoor", () -> BlockEntityType.Builder.of(ScannerTrapdoorBlockEntity::new, SCContent.SCANNER_TRAPDOOR.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDispenserBlockEntity>> REINFORCED_DISPENSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dispenser", () -> BlockEntityType.Builder.of(ReinforcedDispenserBlockEntity::new, SCContent.REINFORCED_DISPENSER.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDropperBlockEntity>> REINFORCED_DROPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dropper", () -> BlockEntityType.Builder.of(ReinforcedDropperBlockEntity::new, SCContent.REINFORCED_DROPPER.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AllowlistOnlyBlockEntity>> REINFORCED_FENCE_GATE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_fence_gate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedFenceGateBlockEntity>> REINFORCED_FENCE_GATE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_fence_gate", () -> BlockEntityType.Builder.of(ReinforcedFenceGateBlockEntity::new,
 			SCContent.REINFORCED_OAK_FENCE_GATE.get(),
 			SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(),
 			SCContent.REINFORCED_BIRCH_FENCE_GATE.get(),
@@ -2911,6 +2949,7 @@ public class SCContent {
 			SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
 			SCContent.REINFORCED_WARPED_FENCE_GATE.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedLecternBlockEntity>> REINFORCED_LECTERN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_lectern", () -> BlockEntityType.Builder.of(ReinforcedLecternBlockEntity::new, SCContent.REINFORCED_LECTERN.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> BlockEntityType.Builder.of(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()).build(null));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
@@ -2949,12 +2988,19 @@ public class SCContent {
 			.setUpdateInterval(1)
 			.setShouldReceiveVelocityUpdates(true)
 			.build(SecurityCraft.MODID + ":bullet"));
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> SECURITY_SEA_BOAT_ENTITY = ENTITY_TYPES.register("security_sea_boat",
+			() -> EntityType.Builder.<SecuritySeaBoat>of(SecuritySeaBoat::new, MobCategory.MISC)
+					.sized(1.375F, 0.5625F)
+					.clientTrackingRange(10)
+					.fireImmune()
+					.build(SecurityCraft.MODID + ":security_sea_boat"));
 	//@formatter:on
 
 	//container types
 	public static final DeferredHolder<MenuType<?>, MenuType<BlockReinforcerMenu>> BLOCK_REINFORCER_MENU = MENU_TYPES.register("block_reinforcer", () -> IMenuTypeExtension.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())));
 	public static final DeferredHolder<MenuType<?>, MenuType<BriefcaseMenu>> BRIEFCASE_INVENTORY_MENU = MENU_TYPES.register("briefcase_inventory", () -> IMenuTypeExtension.create((windowId, inv, data) -> new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.BRIEFCASE.get())))));
 	public static final DeferredHolder<MenuType<?>, MenuType<CustomizeBlockMenu>> CUSTOMIZE_BLOCK_MENU = MENU_TYPES.register("customize_block", () -> IMenuTypeExtension.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
+	public static final DeferredHolder<MenuType<?>, MenuType<CustomizeBlockMenu>> CUSTOMIZE_ENTITY_MENU = MENU_TYPES.register("customize_entity", () -> IMenuTypeExtension.create((windowId, inv, data) -> new CustomizeBlockMenu(windowId, inv.player.level(), data.readBlockPos(), data.readVarInt(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<DisguiseModuleMenu>> DISGUISE_MODULE_MENU = MENU_TYPES.register("disguise_module", () -> IMenuTypeExtension.create((windowId, inv, data) -> new DisguiseModuleMenu(windowId, inv, new ModuleItemContainer(PlayerUtils.getItemStackFromAnyHand(inv.player, SCContent.DISGUISE_MODULE.get())))));
 	public static final DeferredHolder<MenuType<?>, MenuType<InventoryScannerMenu>> INVENTORY_SCANNER_MENU = MENU_TYPES.register("inventory_scanner", () -> IMenuTypeExtension.create((windowId, inv, data) -> new InventoryScannerMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<KeypadFurnaceMenu>> KEYPAD_FURNACE_MENU = MENU_TYPES.register("keypad_furnace", () -> IMenuTypeExtension.create((windowId, inv, data) -> new KeypadFurnaceMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));

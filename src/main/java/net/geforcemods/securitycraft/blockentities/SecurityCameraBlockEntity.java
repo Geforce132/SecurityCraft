@@ -46,11 +46,12 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	private int playersViewing = 0;
 	private boolean shutDown = false;
 	private float initialXRotation, initialYRotation;
-	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D, true);
+	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D);
+	private DoubleOption movementSpeedOption = new DoubleOption("movementSpeed", 2.0D, 0.0D, 20.0D, 0.1D);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
-	private DoubleOption customRotationOption = new DoubleOption("customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get(), true);
+	private DoubleOption customRotationOption = new DoubleOption("customRotation", getCameraRotation(), 1.55D, -1.55D, rotationSpeedOption.get());
 	private DisabledOption disabled = new DisabledOption(false);
-	private IntOption opacity = new IntOption("opacity", 100, 0, 255, 1, true);
+	private IntOption opacity = new IntOption("opacity", 100, 0, 255, 1);
 	private LensContainer lens = new LensContainer(1);
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state) {
@@ -109,7 +110,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	public static IItemHandler getCapability(SecurityCameraBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be.lens) : new InsertOnlyInvWrapper(be.lens);
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be.lens) : new InsertOnlyInvWrapper(be.lens);
 	}
 
 	@Override
@@ -145,7 +146,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity
+				rotationSpeedOption, shouldRotateOption, customRotationOption, disabled, opacity, movementSpeedOption
 		};
 	}
 
@@ -160,7 +161,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		//make players stop viewing the camera when it's disabled
 		if (option.getName().equals("disabled") && !level.isClientSide && ((BooleanOption) option).get()) {
 			for (ServerPlayer player : ((ServerLevel) level).players()) {
@@ -220,6 +221,10 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public int getOpacity() {
 		return opacity.get();
+	}
+
+	public double getMovementSpeed() {
+		return movementSpeedOption.get();
 	}
 
 	public void setDefaultViewingDirection(Direction facing) {

@@ -36,6 +36,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private ItemStack displayedStack = ItemStack.EMPTY;
+	private boolean hasReceivedData = false;
 	private boolean shouldBeOpen;
 	private float openness;
 	private float oOpenness;
@@ -67,13 +68,13 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !isOpen() && IPasscodeProtected.super.shouldAttemptCodebreak(state, player);
+		return !isOpen() && !getDisplayedStack().isEmpty() && IPasscodeProtected.super.shouldAttemptCodebreak(player);
 	}
 
 	@Override
@@ -126,8 +127,10 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
-		if (level != null && !level.isClientSide)
+		if (level != null && level.isClientSide && !hasReceivedData) { //Skip opening animation when the display case is first loaded on the client
 			forceOpen(shouldBeOpen);
+			hasReceivedData = true;
+		}
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);

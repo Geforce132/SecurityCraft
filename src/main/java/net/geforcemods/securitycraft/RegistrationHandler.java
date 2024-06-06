@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
+import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -54,6 +55,7 @@ import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
+import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
@@ -65,6 +67,7 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.Mob;
@@ -86,6 +89,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
@@ -186,6 +191,7 @@ public class RegistrationHandler {
 		registrar.playToServer(SyncLaserSideConfig.TYPE, SyncLaserSideConfig.STREAM_CODEC, SyncLaserSideConfig::handle);
 		registrar.playToServer(SyncProjector.TYPE, SyncProjector.STREAM_CODEC, SyncProjector::handle);
 		registrar.playToServer(SyncRiftStabilizer.TYPE, SyncRiftStabilizer.STREAM_CODEC, SyncRiftStabilizer::handle);
+		registrar.playToServer(SyncSecureRedstoneInterface.TYPE, SyncSecureRedstoneInterface.STREAM_CODEC, SyncSecureRedstoneInterface::handle);
 		registrar.playToServer(SyncSSSSettingsOnServer.TYPE, SyncSSSSettingsOnServer.STREAM_CODEC, SyncSSSSettingsOnServer::handle);
 		registrar.playToServer(SyncTrophySystem.TYPE, SyncTrophySystem.STREAM_CODEC, SyncTrophySystem::handle);
 		registrar.playToServer(ToggleBlockPocketManager.TYPE, ToggleBlockPocketManager.STREAM_CODEC, ToggleBlockPocketManager::handle);
@@ -205,13 +211,15 @@ public class RegistrationHandler {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), InventoryScannerBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), KeypadBarrelBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), (chest, dir) -> KeypadChestBlockEntity.getCapability((KeypadChestBlockEntity) chest, dir));
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), LaserBlockBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get(), ReinforcedHopperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), TrophySystemBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), ReinforcedDispenserBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
+		event.registerEntity(Capabilities.ItemHandler.ENTITY, SCContent.SECURITY_SEA_BOAT_ENTITY.get(), (boat, void_) -> SecuritySeaBoat.getCapability(boat, null));
+		event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION, SCContent.SECURITY_SEA_BOAT_ENTITY.get(), SecuritySeaBoat::getCapability);
 	}
 
 	@SubscribeEvent
@@ -383,6 +391,17 @@ public class RegistrationHandler {
 			entries.put(new ItemStack(SCContent.ADMIN_TOOL.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			entries.put(new ItemStack(SCContent.CODEBREAKER.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 		}
+		else if (tabKey.equals(CreativeModeTabs.TOOLS_AND_UTILITIES)) {
+			entries.putAfter(new ItemStack(Items.OAK_CHEST_BOAT), new ItemStack(SCContent.OAK_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.SPRUCE_CHEST_BOAT), new ItemStack(SCContent.SPRUCE_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.BIRCH_CHEST_BOAT), new ItemStack(SCContent.BIRCH_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.JUNGLE_CHEST_BOAT), new ItemStack(SCContent.JUNGLE_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.ACACIA_CHEST_BOAT), new ItemStack(SCContent.ACACIA_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.DARK_OAK_CHEST_BOAT), new ItemStack(SCContent.DARK_OAK_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.MANGROVE_CHEST_BOAT), new ItemStack(SCContent.MANGROVE_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.CHERRY_CHEST_BOAT), new ItemStack(SCContent.CHERRY_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			entries.putAfter(new ItemStack(Items.BAMBOO_CHEST_RAFT), new ItemStack(SCContent.BAMBOO_SECURITY_SEA_RAFT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+		}
 	}
 
 	public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
@@ -393,13 +412,9 @@ public class RegistrationHandler {
 	}
 
 	private static Ingredient getPotionIngredient(Holder<Potion> normalPotion, Holder<Potion> strongPotion) {
-		ItemStack normalPotionStack = PotionContents.createItemStack(Items.POTION, normalPotion);
-		ItemStack strongPotionStack = PotionContents.createItemStack(Items.POTION, strongPotion);
-		ItemStack normalSplashPotionStack = PotionContents.createItemStack(Items.SPLASH_POTION, normalPotion);
-		ItemStack strongSplashPotionStack = PotionContents.createItemStack(Items.SPLASH_POTION, strongPotion);
-		ItemStack normalLingeringPotionStack = PotionContents.createItemStack(Items.LINGERING_POTION, normalPotion);
-		ItemStack strongLingeringPotionStack = PotionContents.createItemStack(Items.LINGERING_POTION, strongPotion);
+		Ingredient normalPotions = DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(normalPotion), Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		Ingredient strongPotions = DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(strongPotion), Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
 
-		return Ingredient.of(normalPotionStack, strongPotionStack, normalSplashPotionStack, strongSplashPotionStack, normalLingeringPotionStack, strongLingeringPotionStack);
+		return CompoundIngredient.of(normalPotions, strongPotions);
 	}
 }

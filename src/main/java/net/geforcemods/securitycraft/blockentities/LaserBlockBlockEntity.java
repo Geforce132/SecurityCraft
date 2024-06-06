@@ -12,9 +12,11 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
@@ -38,11 +40,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -58,6 +62,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	};
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private IntOption signalLength = new SignalLengthOption(50);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private Map<Direction, Boolean> sideConfig = Util.make(() -> {
 		EnumMap<Direction, Boolean> map = new EnumMap<>(Direction.class);
 
@@ -123,39 +128,31 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		switch (action) {
-			case ILinkedAction.OptionChanged<?> optionChanged -> {
-				Option<?> option = optionChanged.option();
-
-				if (option.getName().equals("disabled")) {
-					disabled.copy(option);
-					setLasersAccordingToDisabledOption();
-				}
-				else if (option.getName().equals("ignoreOwner"))
-					ignoreOwner.copy(option);
-				else if (option.getName().equals("signalLength")) {
-					signalLength.copy(option);
-					turnOffRedstoneOutput();
-				}
+			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(disabled.getName()) -> {
+				disabled.copy(option);
+				setLasersAccordingToDisabledOption();
 			}
-			case ILinkedAction.ModuleInserted moduleInserted -> insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
-			case ILinkedAction.ModuleRemoved moduleRemoved -> removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
-			case ILinkedAction.OwnerChanged ownerChanged -> {
-				Owner owner = ownerChanged.newOwner();
-
-				setOwner(owner.getUUID(), owner.getName());
+			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(ignoreOwner.getName()) -> ignoreOwner.copy(option);
+			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(respectInvisibility.getName()) -> respectInvisibility.copy(option);
+			case ILinkedAction.OptionChanged(IntOption option) when option.getName().equals(signalLength.getName()) -> {
+				signalLength.copy(option);
+				turnOffRedstoneOutput();
 			}
-			case ILinkedAction.StateChanged<?> stateChanged -> {
+			case ILinkedAction.OptionChanged(Option<?> option) -> throw new UnsupportedOperationException("Unhandled option synchronization in laser block! " + option.getName());
+			case ILinkedAction.ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) -> insertModule(stack, wasModuleToggled);
+			case ILinkedAction.ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) -> removeModule(moduleType, wasModuleToggled);
+			case ILinkedAction.OwnerChanged(Owner newOwner) -> setOwner(newOwner.getUUID(), newOwner.getName());
+			case ILinkedAction.StateChanged(BooleanProperty property, Boolean oldValue, Boolean newValue) when property == LaserBlock.POWERED -> {
 				BlockState state = getBlockState();
+				int signalLength = getSignalLength();
 
-				if (stateChanged.property() == LaserBlock.POWERED) {
-					int signalLength = getSignalLength();
+				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 
-					level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
-					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
-
-					if (signalLength > 0)
-						level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
-				}
+				if (signalLength > 0)
+					level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+			}
+			default -> {
 			}
 		}
 
@@ -164,8 +161,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals(signalLength.getName()))
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == signalLength)
 			turnOffRedstoneOutput();
 
 		super.onOptionChanged(option);
@@ -248,7 +245,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	public static IItemHandler getCapability(LaserBlockBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be.lenses) : new InsertOnlyInvWrapper(be.lenses);
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be.lenses) : new InsertOnlyInvWrapper(be.lenses);
 	}
 
 	@Override
@@ -281,7 +278,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				disabled, ignoreOwner, signalLength
+				disabled, ignoreOwner, signalLength, respectInvisibility
 		};
 	}
 
@@ -301,6 +298,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
 	}
 
 	public void setLastToggleTime(long lastToggleTime) {

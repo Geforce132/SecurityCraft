@@ -1,12 +1,16 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -34,6 +38,15 @@ public record CheckBriefcasePasscode(String passcode) implements CustomPacketPay
 		PasscodeData passcodeData = briefcase.get(SCContent.PASSCODE_DATA);
 
 		if (passcodeData != null) {
+			if (PasscodeUtils.isOnCooldown(player)) {
+				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
+
+				if (ConfigHandler.SERVER.passcodeSpamLogWarningEnabled.get())
+					SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), SCContent.BRIEFCASE.get().getDescription().getString(), new GlobalPos(player.level().dimension(), player.blockPosition())));
+
+				return;
+			}
+
 			String dataCode = passcodeData.passcode();
 
 			if (dataCode.length() == 4) //If an old plaintext passcode is encountered, generate and check with the hashed variant

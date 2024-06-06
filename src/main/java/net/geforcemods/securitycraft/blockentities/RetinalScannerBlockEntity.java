@@ -2,13 +2,11 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-
 import com.mojang.authlib.properties.PropertyMap;
-import com.mojang.logging.LogUtils;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
@@ -16,6 +14,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
@@ -37,23 +36,22 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickingBlockEntity, ILockable {
-	private static final Logger LOGGER = LogUtils.getLogger();
 	private BooleanOption activatedByEntities = new BooleanOption("activatedByEntities", false);
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	private IntOption signalLength = new SignalLengthOption(60);
-	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.viewActivated.maximumDistance";
 		}
 	};
 	private DisabledOption disabled = new DisabledOption(false);
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private ResolvableProfile ownerProfile;
 	private int viewCooldown = 0;
 
@@ -76,7 +74,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 			int signalLength = getSignalLength();
 
-			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !Utils.isEntityInvisible(entity)) {
+			if ((!state.getValue(RetinalScannerBlock.POWERED) || signalLength == 0) && !isConsideredInvisible(entity)) {
 				if (entity instanceof Player player) {
 					Owner viewingPlayer = new Owner(player);
 
@@ -119,8 +117,8 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals(signalLength.getName())) {
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == signalLength) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(RetinalScannerBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}
@@ -172,7 +170,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				activatedByEntities, sendMessage, signalLength, disabled, maximumDistance
+				activatedByEntities, sendMessage, signalLength, disabled, maximumDistance, respectInvisibility
 		};
 	}
 
@@ -195,14 +193,14 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 			if (ownerProfileTag.contains("Name"))
 				ownerProfileTag.putString("name", ownerProfileTag.getString("Name"));
 
-			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, ownerProfileTag).resultOrPartial(name -> LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
+			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, ownerProfileTag).resultOrPartial(name -> SecurityCraft.LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
 		}
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player) {
+	public void onOwnerChanged(BlockState state, Level world, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		setOwnerProfile(new ResolvableProfile(Optional.of(getOwner().getName()), Optional.empty(), new PropertyMap()));
-		super.onOwnerChanged(state, world, pos, player);
+		super.onOwnerChanged(state, world, pos, player, oldOwner, newOwner);
 	}
 
 	public void setOwnerProfile(ResolvableProfile ownerProfile) {
@@ -223,5 +221,10 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 
 	public ResolvableProfile getPlayerProfile() {
 		return ownerProfile;
+	}
+
+	@Override
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
 	}
 }

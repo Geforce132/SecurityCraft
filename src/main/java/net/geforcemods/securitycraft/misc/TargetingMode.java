@@ -1,8 +1,9 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.util.function.Predicate;
+
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
@@ -31,15 +32,15 @@ public enum TargetingMode {
 		return this == MOBS || this == PLAYERS_AND_MOBS;
 	}
 
-	public <T extends IOwnable> boolean canAttackEntity(LivingEntity entity, T be, boolean checkInvisibility) {
+	public <T extends IOwnable> boolean canAttackEntity(LivingEntity entity, T be, Predicate<LivingEntity> isInvisible) {
 		if (entity == null || be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(entity))
 			return false;
 
 		boolean isPlayer = entity instanceof Player;
 
 		if (isPlayer && allowsPlayers() || !isPlayer && allowsMobs()) {
-			return (!isPlayer || !(be.isOwnedBy((Player) entity) && be.ignoresOwner()) && !((Player) entity).isCreative()) //Player checks
-					&& entity.canBeSeenByAnyone() && (!checkInvisibility || !Utils.isEntityInvisible(entity)) && !(entity instanceof OwnableEntity ownableEntity && be.allowsOwnableEntity(ownableEntity)); //checks for all entities
+			return (!isPlayer || !(be.isOwnedBy(entity) && be.ignoresOwner()) && !((Player) entity).isCreative()) //Player checks
+					&& entity.canBeSeenByAnyone() && !isInvisible.test(entity) && !(entity instanceof OwnableEntity ownableEntity && be.allowsOwnableEntity(ownableEntity)); //checks for all entities
 		}
 		else
 			return false;

@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.EntityDataWrappedOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -70,6 +71,9 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 
 			if (level.getBlockEntity(pos) instanceof ICustomizable mine) {
 				for (Option<?> option : mine.customOptions()) {
+					if (option instanceof EntityDataWrappedOption wrapped)
+						option = wrapped.getWrapped();
+
 					if (option instanceof TargetingModeOption targetingMode && !targetingMode.get().allowsPlayers())
 						return InteractionResult.PASS;
 					else if (option instanceof IgnoreOwnerOption ignoreOwner && ((IOwnable) be).isOwnedBy(player) && ignoreOwner.get())

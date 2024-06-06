@@ -17,7 +17,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 public class BlockPocketManagerMenu extends AbstractContainerMenu {
 	public final BlockPocketManagerBlockEntity be;
 	private ContainerLevelAccess worldPosCallable;
-	public final boolean storage;
+	public final boolean hasStorageModule;
 	public final boolean isOwner;
 
 	public BlockPocketManagerMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
@@ -26,9 +26,9 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 		this.be = (BlockPocketManagerBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 		isOwner = be.isOwnedBy(inventory.player);
-		storage = be.isModuleEnabled(ModuleType.STORAGE) && isOwner;
+		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE) && isOwner;
 
-		if (storage) {
+		if (hasStorageModule) {
 			for (int y = 0; y < 3; y++) {
 				for (int x = 0; x < 9; ++x) {
 					addSlot(new Slot(inventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18 + 74));
@@ -53,6 +53,12 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void removed(Player player) {
+		super.removed(player);
+		be.setChanged();
 	}
 
 	@Override

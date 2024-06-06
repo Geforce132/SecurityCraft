@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.105'
+	id 'net.neoforged.gradle.userdev' version '7.0.+'
 }
 
 import groovy.json.JsonOutput
@@ -67,18 +67,18 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.6.78-beta'
+	implementation 'net.neoforged:neoforge:20.6.111-beta'
 
-//	implementation "curse.maven:architectury-api-419699:5173990" //ftb teams dependency
-//	implementation "curse.maven:ftb-library-forge-404465:5205161" //ftb teams dependency
-//	implementation "curse.maven:ftb-teams-forge-404468:5202951"
+	implementation "curse.maven:architectury-api-419699:5383746" //ftb teams dependency
+	implementation "curse.maven:ftb-library-forge-404465:5397531" //ftb teams dependency
+	implementation "curse.maven:ftb-teams-forge-404468:5397629"
 //	implementation "curse.maven:jei-238222:5044537"
 	implementation "curse.maven:the-one-probe-245211:5304322"
 	implementation "curse.maven:jade-324717:5366595"
 	implementation "curse.maven:betterf3-401648:5346196"
 	implementation "curse.maven:cloth-config-348521:5287791" //betterf3 dependency
-	implementation "curse.maven:wthit-forge-455982:5353692"
-	implementation "curse.maven:badpackets-615134:5288257" //wthit dependency
+	implementation "curse.maven:wthit-forge-455982:5401338"
+	implementation "curse.maven:badpackets-615134:5400300" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 	implementation "curse.maven:embeddium-908741:5352254"
 }

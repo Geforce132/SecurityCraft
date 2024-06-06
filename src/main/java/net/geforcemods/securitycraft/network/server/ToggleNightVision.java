@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.network.server;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -23,7 +24,7 @@ public record ToggleNightVision() implements CustomPacketPayload {
 	public void handle(IPayloadContext ctx) {
 		Player player = ctx.player();
 
-		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+		if (ConfigHandler.SERVER.allowCameraNightVision.get() && PlayerUtils.isPlayerMountedOnCamera(player)) {
 			if (player.hasEffect(MobEffects.NIGHT_VISION)) {
 				if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
 					player.removeEffect(MobEffects.NIGHT_VISION);

@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
-import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
@@ -32,7 +31,6 @@ import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -189,20 +187,26 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onLevelUnload(LevelEvent.Unload event) {
+		if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
+			SaltData.invalidate();
+	}
+
+	@SubscribeEvent
 	public static void onServerStop(ServerStoppedEvent event) {
 		PasscodeUtils.stopHashingThread();
 	}
 
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingAttackEvent event) {
-		LivingEntity entity = event.getEntity();
-		Level level = entity.level();
-		DamageSource damageSource = event.getSource();
-		boolean isCreativePlayer = entity instanceof Player player && player.isCreative();
+		if (event.getEntity() instanceof ServerPlayer player) {
+			Level level = player.level();
+			DamageSource damageSource = event.getSource();
 
-		if (!level.isClientSide && !isCreativePlayer && damageSource.equals(level.damageSources().inWall()) && !entity.isInvulnerableTo(damageSource) && BlockUtils.isInsideReinforcedBlocks(level, entity.getEyePosition(), entity.getBbWidth())) {
-			entity.hurt(CustomDamageSources.inReinforcedWall(entity.level().registryAccess()), 10.0F);
-			event.setCanceled(true);
+			if (!player.isCreative() && damageSource.equals(level.damageSources().inWall()) && !player.isInvulnerableTo(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(), player.getBbWidth())) {
+				player.hurt(CustomDamageSources.inReinforcedWall(level.registryAccess()), 10.0F);
+				event.setCanceled(true);
+			}
 		}
 	}
 
@@ -226,7 +230,7 @@ public class SCEventHandler {
 			Vec3 newCenterPos = dismountLocation.add(0.0F, player.getBbHeight() / 2, 0.0F);
 			Vec3 newEyePos = dismountLocation.add(0.0F, player.getEyeHeight(), 0.0F);
 
-			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideReinforcedBlocks(player.level(), newEyePos, player.getBbWidth()) || BlockUtils.isInsideReinforcedBlocks(player.level(), newCenterPos, player.getBbWidth()))) {
+			if (dismountLocation.equals(incorrectDismountLocation) && (BlockUtils.isInsideUnownedReinforcedBlocks(player.level(), player, newEyePos, player.getBbWidth()) || BlockUtils.isInsideUnownedReinforcedBlocks(player.level(), player, newCenterPos, player.getBbWidth()))) {
 				player.setYRot(boat.getYRot() + 180.0F % 360.0F); //This doesn't actually alter the player's rotation, the y-rotation is only changed for the calculation of the new dismount location behind the boat in the next line
 				dismountLocation = boat.getDismountLocationForPassenger(player);
 
@@ -310,6 +314,7 @@ public class SCEventHandler {
 			if (!owner.isValidated()) {
 				if (ownable.isOwnedBy(player)) {
 					owner.setValidated(true);
+					ownable.onValidate();
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
 				}
 				else
@@ -347,7 +352,8 @@ public class SCEventHandler {
 				return;
 			}
 
-			if (heldItem.is(SCContent.CODEBREAKER.get()) && handleCodebreaking(event)) {
+			if (heldItem.is(SCContent.CODEBREAKER.get()) && level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
+				codebreakable.handleCodebreaking(player, event.getHand());
 				event.setCanceled(true);
 				return;
 			}
@@ -381,7 +387,9 @@ public class SCEventHandler {
 
 		if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()) {
 			UniversalBlockReinforcerItem.maybeRemoveMending(stack);
-			UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getEntity());
+
+			if (UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getEntity()))
+				event.setCanceled(true); //When the client knows that a block will be converted on the server, it should not destroy that block (e.g. via instamining)
 		}
 	}
 
@@ -560,55 +568,5 @@ public class SCEventHandler {
 			else
 				be.listenToNote(vanillaNoteId, instrument, customSoundId);
 		}
-	}
-
-	private static boolean handleCodebreaking(PlayerInteractEvent.RightClickBlock event) {
-		Player player = event.getEntity();
-		Level level = player.level();
-		BlockPos pos = event.getPos();
-
-		if (level.getBlockEntity(pos) instanceof ICodebreakable codebreakable) {
-			if (codebreakable instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
-				return false;
-
-			double chance = ConfigHandler.SERVER.codebreakerChance.get();
-
-			if (chance < 0.0D) {
-				Block block = level.getBlockState(pos).getBlock();
-
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
-			}
-			else {
-				ItemStack codebreaker = player.getItemInHand(event.getHand());
-				BlockState state = level.getBlockState(pos);
-
-				if (!codebreakable.shouldAttemptCodebreak(state, player))
-					return true;
-
-				if (codebreaker.is(SCContent.CODEBREAKER.get())) {
-					if (codebreakable instanceof IOwnable ownable && ownable.isOwnedBy(player)) {
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
-						return false;
-					}
-
-					if (codebreaker.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
-						return false;
-
-					boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
-
-					codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(event.getHand()));
-					codebreaker.set(SCContent.CODEBREAKER_DATA, new CodebreakerData(System.currentTimeMillis(), isSuccessful));
-
-					if (isSuccessful)
-						codebreakable.useCodebreaker(state, player);
-					else
-						PlayerUtils.sendMessageToPlayer(player, Component.translatable(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);
-				}
-			}
-
-			return true;
-		}
-
-		return false;
 	}
 }

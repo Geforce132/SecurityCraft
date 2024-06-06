@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
@@ -130,8 +131,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		return openersCounter.getOpenerCount();
 	}
 
-	public static IItemHandler getCapability(ChestBlockEntity be, Direction side) {
-		if (BlockUtils.isAllowedToExtractFromProtectedBlock(side, be))
+	public static IItemHandler getCapability(KeypadChestBlockEntity be, Direction side) {
+		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
 			return new InvWrapper(ChestBlock.getContainer((ChestBlock) be.getBlockState().getBlock(), be.getBlockState(), be.getLevel(), be.getBlockPos(), true));
 		else
 			return new InsertOnlyInvWrapper(be);
@@ -180,16 +181,16 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		KeypadChestBlockEntity otherBe = findOther();
 
 		if (otherBe != null) {
-			if (option.getName().equals("sendAllowlistMessage"))
-				otherBe.setSendsAllowlistMessage(((BooleanOption) option).get());
-			else if (option.getName().equals("sendDenylistMessage"))
-				otherBe.setSendsDenylistMessage(((BooleanOption) option).get());
-			else if (option.getName().equals("smartModuleCooldown"))
-				otherBe.smartModuleCooldown.copy(option);
+			switch (option) {
+				case BooleanOption bo when option == sendAllowlistMessage -> otherBe.setSendsAllowlistMessage(bo.get());
+				case BooleanOption bo when option == sendDenylistMessage -> otherBe.setSendsAllowlistMessage(bo.get());
+				case IntOption io when option == smartModuleCooldown -> otherBe.smartModuleCooldown.copy(option);
+				default -> throw new UnsupportedOperationException("Unhandled option synchronization in keypad chest! " + option.getName());
+			}
 		}
 
 		ICustomizable.super.onOptionChanged(option);
@@ -249,13 +250,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		KeypadChestBlockEntity otherHalf = findOther();
 
 		if (otherHalf != null)
 			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
 
-		IOwnable.super.onOwnerChanged(state, level, pos, player);
+		IOwnable.super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	@Override
@@ -394,5 +395,15 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	public ResourceLocation getPreviousChest() {
 		return previousChest;
+	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

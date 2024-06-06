@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -45,8 +46,8 @@ import net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<TeleportationType> {
-	private final IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5, true); //20 seconds max
-	private final IntOption range = new IntOption("range", 5, 1, 15, 1, true);
+	private final IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
+	private final IntOption range = new IntOption("range", 5, 1, 15, 1);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private final Map<TeleportationType, Boolean> teleportationFilter = new EnumMap<>(TeleportationType.class);
@@ -241,18 +242,17 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
+	public <T> void onOptionChanged(Option<T> option) {
 		RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 
 		if (connectedBlockEntity != null) {
-			if (option.getName().equals("signalLength"))
-				connectedBlockEntity.setSignalLength(((IntOption) option).get());
-			else if (option.getName().equals("range"))
-				connectedBlockEntity.setRange(((IntOption) option).get());
-			else if (option.getName().equals("disabled"))
-				connectedBlockEntity.setDisabled(((BooleanOption) option).get());
-			else if (option.getName().equals("ignoreOwner"))
-				connectedBlockEntity.setIgnoresOwner(((BooleanOption) option).get());
+			switch (option) {
+				case IntOption io when option == signalLength -> connectedBlockEntity.setSignalLength(io.get());
+				case IntOption io when option == range -> connectedBlockEntity.setRange(io.get());
+				case BooleanOption bo when option == disabled -> connectedBlockEntity.setDisabled(bo.get());
+				case BooleanOption bo when option == ignoreOwner -> connectedBlockEntity.setIgnoresOwner(bo.get());
+				default -> throw new UnsupportedOperationException("Unhandled option synchronization in rift stabilizer! " + option.getName());
+			}
 		}
 
 		super.onOptionChanged(option);
@@ -266,7 +266,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		RiftStabilizerBlockEntity be = RiftStabilizerBlock.getConnectedBlockEntity(level, pos);
 
 		if (be != null) {
@@ -276,7 +276,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
 
-		super.onOwnerChanged(state, level, pos, player);
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	public void setSignalLength(int signalLength) {

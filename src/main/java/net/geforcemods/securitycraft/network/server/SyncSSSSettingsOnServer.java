@@ -76,6 +76,8 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 				case REMOVE_POS -> sss.delink(posToRemove, false);
 				case INVERT_FUNCTIONALITY -> sss.setDisableBlocksWhenTuneIsPlayed(!sss.disablesBlocksWhenTuneIsPlayed());
 			}
+
+			sss.setChanged();
 		}
 	}
 

@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -117,12 +118,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				newCauldronState = SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState();
 
 			if (newCauldronState != null) {
-				BlockEntity be = level.getBlockEntity(pos);
-				CompoundTag tag = be.saveCustomOnly(level.registryAccess());
-
-				level.setBlockAndUpdate(pos, newCauldronState);
+				updateBlockState(level, pos, newCauldronState);
 				level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
-				level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 			}
 		}
 	}
@@ -147,13 +144,9 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		}
 
 		if (newCauldronState != null) {
-			BlockEntity be = level.getBlockEntity(pos);
-			CompoundTag tag = be.saveCustomOnly(level.registryAccess());
-
-			level.setBlockAndUpdate(pos, newCauldronState);
+			updateBlockState(level, pos, newCauldronState);
 			level.levelEvent(levelEvent, pos, 0);
 			level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newCauldronState));
-			level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 		}
 	}
 
@@ -171,6 +164,23 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedCauldronBlockEntity(pos, state);
+	}
+
+	public static void updateBlockState(Level level, BlockPos pos, BlockState newState) {
+		updateBlockState(level, pos, newState, level.getBlockEntity(pos));
+	}
+
+	public static void updateBlockState(Level level, BlockPos pos, BlockState newState, BlockEntity be) {
+		CompoundTag tag = null;
+		HolderLookup.Provider lookupProvider = level.registryAccess();
+
+		if (be != null)
+			tag = be.saveCustomOnly(lookupProvider);
+
+		level.setBlockAndUpdate(pos, newState);
+
+		if (tag != null)
+			level.getBlockEntity(pos).loadCustomOnly(tag, lookupProvider);
 	}
 
 	public interface IReinforcedCauldronInteraction extends CauldronInteraction {
@@ -254,16 +264,13 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				if (potionContents != null && potionContents.is(Potions.WATER)) {
 					if (!level.isClientSide) {
 						Item item = stack.getItem();
-						BlockEntity be = level.getBlockEntity(pos);
-						CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 						player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 						player.awardStat(Stats.USE_CAULDRON);
 						player.awardStat(Stats.ITEM_USED.get(item));
-						level.setBlockAndUpdate(pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
+						updateBlockState(level, pos, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState());
 						level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
-						level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 					}
 
 					return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -296,7 +303,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 							player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.GLASS_BOTTLE)));
 							player.awardStat(Stats.USE_CAULDRON);
 							player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-							level.setBlockAndUpdate(pos, state.cycle(LayeredCauldronBlock.LEVEL));
+							updateBlockState(level, pos, state.cycle(LayeredCauldronBlock.LEVEL), null);
 							level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
 							level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
 						}
@@ -370,16 +377,13 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			else {
 				if (!level.isClientSide) {
 					Item item = stack.getItem();
-					BlockEntity be = level.getBlockEntity(pos);
-					CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 					player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, bucket));
 					player.awardStat(Stats.USE_CAULDRON);
 					player.awardStat(Stats.ITEM_USED.get(item));
-					level.setBlockAndUpdate(pos, SCContent.REINFORCED_CAULDRON.get().defaultBlockState());
+					updateBlockState(level, pos, SCContent.REINFORCED_CAULDRON.get().defaultBlockState());
 					level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
 					level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
-					level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 				}
 
 				return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -389,16 +393,13 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		static ItemInteractionResult emptyBucket(Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState state, SoundEvent sound) {
 			if (!level.isClientSide) {
 				Item item = stack.getItem();
-				BlockEntity be = level.getBlockEntity(pos);
-				CompoundTag tag = be.saveCustomOnly(level.registryAccess());
 
 				player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, new ItemStack(Items.BUCKET)));
 				player.awardStat(Stats.FILL_CAULDRON);
 				player.awardStat(Stats.ITEM_USED.get(item));
-				level.setBlockAndUpdate(pos, state);
+				updateBlockState(level, pos, state);
 				level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
-				level.getBlockEntity(pos).loadCustomOnly(tag, level.registryAccess());
 			}
 
 			return ItemInteractionResult.sidedSuccess(level.isClientSide);

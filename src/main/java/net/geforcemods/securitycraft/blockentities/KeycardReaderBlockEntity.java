@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
+import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -107,24 +108,24 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	@Override
-	public boolean shouldAttemptCodebreak(BlockState state, Player player) {
+	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
 			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			return false;
 		}
 
-		return !state.getValue(BlockStateProperties.POWERED);
+		return !getBlockState().getValue(BlockStateProperties.POWERED);
 	}
 
 	@Override
-	public void useCodebreaker(BlockState state, Player player) {
+	public void useCodebreaker(Player player) {
 		if (!level.isClientSide)
 			activate();
 	}
 
 	public ItemInteractionResult onRightClickWithActionItem(ItemStack stack, InteractionHand hand, Player player, boolean isCodebreaker, boolean isKeycardHolder) {
 		if (isCodebreaker) {
-			double chance = ConfigHandler.SERVER.codebreakerChance.get();
+			double chance = CodebreakerItem.getSuccessChance(stack);
 
 			if (chance < 0.0D)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
@@ -226,8 +227,8 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	}
 
 	@Override
-	public void onOptionChanged(Option<?> option) {
-		if (option.getName().equals(signalLength.getName())) {
+	public <T> void onOptionChanged(Option<T> option) {
+		if (option == signalLength) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
 		}

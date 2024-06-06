@@ -189,7 +189,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	public static IItemHandler getCapability(KeypadBarrelBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedBlock(side, be) ? new InvWrapper(be) : new InsertOnlyInvWrapper(be);
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be) : new InsertOnlyInvWrapper(be);
 	}
 
 	@Override
@@ -390,5 +390,15 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 
 	public ResourceLocation getPreviousBarrel() {
 		return previousBarrel;
+	}
+
+	@Override
+	public Level myLevel() {
+		return level;
+	}
+
+	@Override
+	public BlockPos myPos() {
+		return worldPosition;
 	}
 }

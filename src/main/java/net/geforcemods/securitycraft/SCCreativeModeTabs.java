@@ -2,9 +2,12 @@ package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.ToIntFunction;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
@@ -91,6 +94,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.BLOCK_POCKET_WALL.get()));
 				output.accept(new ItemStack(SCContent.SONIC_SECURITY_SYSTEM.get()));
 				output.accept(new ItemStack(SCContent.PORTABLE_TUNE_PLAYER.get()));
+				output.accept(new ItemStack(SCContent.SECURE_REDSTONE_INTERFACE.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_PISTON.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_STICKY_PISTON.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_DISPENSER.get()));
@@ -128,6 +132,15 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.ADMIN_TOOL.get()));
+				output.accept(new ItemStack(SCContent.OAK_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.SPRUCE_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.BIRCH_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.JUNGLE_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.ACACIA_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.DARK_OAK_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.MANGROVE_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.CHERRY_SECURITY_SEA_BOAT.get()));
+				output.accept(new ItemStack(SCContent.BAMBOO_SECURITY_SEA_RAFT.get()));
 				output.acceptAll(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.TECHNICAL));
 			}).build());
 	//@formatter:off
@@ -140,17 +153,12 @@ public class SCCreativeModeTabs {
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 				List<ItemStack> mineGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES));
 
-				mineGroupItems.sort((a, b) -> {
-					//if a isn't an item that has a vanilla counterpart, it should appear at the front
-					if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof BaseFullMineBlock blockMineA))
-						return -1;
-
-					//same for b
-					if (!(b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof BaseFullMineBlock blockMineB))
-						return 1;
-
-					return Integer.compare(vanillaOrderedItems.indexOf(blockMineA.getBlockDisguisedAs().asItem()), vanillaOrderedItems.indexOf(blockMineB.getBlockDisguisedAs().asItem()));
-				});
+				mineGroupItems.sort(stackComparator(item -> {
+					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof BaseFullMineBlock blockMine)
+						return blockMine;
+					else
+						return null;
+				}, blockMine -> vanillaOrderedItems.indexOf(blockMine.getBlockDisguisedAs().asItem())));
 				output.accept(SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 				output.accept(SCContent.WIRE_CUTTERS.get());
 				output.accept(Items.FLINT_AND_STEEL);
@@ -171,30 +179,12 @@ public class SCCreativeModeTabs {
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
 				List<ItemStack> decorationGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION));
 
-				decorationGroupItems.sort((a, b) -> {
-					//if a isn't an item that has a vanilla counterpart, it should appear at the back
-					if (!(a.getItem() instanceof BlockItem blockItemA && blockItemA.getBlock() instanceof IReinforcedBlock reinforcedBlockA))
-						return 1;
-
-					//same for b
-					if (!(b.getItem() instanceof BlockItem blockItemB && blockItemB.getBlock() instanceof IReinforcedBlock reinforcedBlockB))
-						return -1;
-
-					int indexA = vanillaOrderedItems.indexOf(reinforcedBlockA.getVanillaBlock().asItem());
-
-					//items that have no counterpart in any of the above vanilla tabs should appear at the end
-					if (indexA == -1)
-						return 1;
-
-					int indexB = vanillaOrderedItems.indexOf(reinforcedBlockB.getVanillaBlock().asItem());
-
-					//same here
-					if (indexB == -1)
-						return -1;
-
-					return Integer.compare(indexA, indexB);
-				});
-
+				decorationGroupItems.sort(stackComparator(item -> {
+					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IReinforcedBlock reinforcedBlock)
+						return reinforcedBlock;
+					else
+						return null;
+				}, reinforcedBlock -> vanillaOrderedItems.indexOf(reinforcedBlock.getVanillaBlock().asItem())));
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
@@ -231,10 +221,34 @@ public class SCCreativeModeTabs {
 				output.accept(SCContent.GLOW_DISPLAY_CASE.get());
 			}).build());
 
-	private static List<Item> getVanillaOrderedItems() {
-		List<Item> vanillaOrderedItems = new ArrayList<>();
+	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, ToIntFunction<T> indexGetter) {
+		return (a, b) -> {
+			T blockA = blockInstanceGetter.apply(a.getItem());
+			T blockB = blockInstanceGetter.apply(b.getItem());
+			boolean blockAExists = blockA != null;
+			boolean blockBExists = blockB != null;
 
-		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
+			if (!blockAExists && !blockBExists)
+				return 0;
+			else if (blockAExists ^ blockBExists)
+				return blockAExists ? -1 : 1;
+			else if (blockA == blockB)
+				return 0;
+
+			int indexA = indexGetter.applyAsInt(blockA);
+			int indexB = indexGetter.applyAsInt(blockB);
+			boolean indexAExists = indexA != -1;
+
+			if (indexAExists ^ indexB != -1)
+				return indexAExists ? -1 : 1;
+
+			return Integer.compare(indexA, indexB);
+		};
+	}
+
+	private static List<Item> getVanillaOrderedItems() {
+		List<Item> vanillaOrderedItems = new ArrayList<>(getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
+
 		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
 		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
 		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));

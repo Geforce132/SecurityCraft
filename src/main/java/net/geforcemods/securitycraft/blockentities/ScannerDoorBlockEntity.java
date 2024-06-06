@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -21,7 +22,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -30,12 +30,13 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IViewActivated, ITickingBlockEntity {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
-	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D, true) {
+	private DoubleOption maximumDistance = new DoubleOption("maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
 		@Override
-		public String getKey(Block block) {
+		public String getKey(String denotation) {
 			return "option.generic.viewActivated.maximumDistance";
 		}
 	};
+	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int viewCooldown = 0;
 
 	public ScannerDoorBlockEntity(BlockPos pos, BlockState state) {
@@ -54,7 +55,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		BlockState lowerState = level.getBlockState(worldPosition.below());
 		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
-		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !Utils.isEntityInvisible(entity)) {
+		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !isConsideredInvisible(entity)) {
 			if (!(entity instanceof Player player) || facingAxis != hitResult.getDirection().getAxis())
 				return false;
 
@@ -120,7 +121,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				sendMessage, signalLength, disabled, maximumDistance
+				sendMessage, signalLength, disabled, maximumDistance, respectInvisibility
 		};
 	}
 
@@ -136,5 +137,10 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public double getMaximumDistance() {
 		return maximumDistance.get();
+	}
+
+	@Override
+	public boolean isConsideredInvisible(LivingEntity entity) {
+		return respectInvisibility.isConsideredInvisible(entity);
 	}
 }

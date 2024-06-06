@@ -25,8 +25,8 @@ import net.minecraft.world.phys.AABB;
 public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private BooleanOption disappearInstantlyInChains = new BooleanOption("disappearInstantlyInChains", true);
-	private IntOption disappearDelay = new IntOption("disappearDelay", 5, 0, 200, 1, true);
-	private IntOption reappearDelay = new IntOption("reappearDelay", 20, 5, 200, 1, true);
+	private IntOption disappearDelay = new IntOption("disappearDelay", 5, 0, 200, 1);
+	private IntOption reappearDelay = new IntOption("reappearDelay", 20, 5, 200, 1);
 	private TargetingModeOption targetingMode = new TargetingModeOption(TargetingMode.PLAYERS);
 	private boolean shouldDisappear = false, shouldReappear = false;
 	private int ticksUntilDisappearing = -1, ticksUntilReappearing = -1;
@@ -56,6 +56,10 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 			reappear();
 
 		scheduleDisappear(false);
+	}
+
+	public static void particleTick(Level level, BlockPos pos, BlockState state, FloorTrapBlockEntity blockEntity) { //client only, and is only called when invisible
+		level.addParticle(SCContent.FLOOR_TRAP_CLOUD.get(), false, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
 	}
 
 	public void scheduleDisappear(boolean force) {

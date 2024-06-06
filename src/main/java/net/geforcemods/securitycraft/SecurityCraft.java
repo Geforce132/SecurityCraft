@@ -19,13 +19,14 @@ import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
 import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock.IReinforcedCauldronInteraction;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedHopperBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
-import net.geforcemods.securitycraft.compat.top.TOPDataProvider;
+import net.geforcemods.securitycraft.compat.hudmods.TOPDataProvider;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.ConfigAttackTargetCheck;
@@ -118,6 +119,7 @@ public class SecurityCraft {
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, InventoryScannerBlock.DoorActivator::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ReinforcedPressurePlateBlock.DoorActivator::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, ReinforcedRedstoneBlock.DoorActivator::new);
+		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_DOOR_ACTIVATOR_MSG, SecureRedstoneInterfaceBlock.DoorActivator::new);
 
 		if (ModList.get().isLoaded("theoneprobe"))
 			InterModComms.sendTo("theoneprobe", "getTheOneProbe", TOPDataProvider::new);

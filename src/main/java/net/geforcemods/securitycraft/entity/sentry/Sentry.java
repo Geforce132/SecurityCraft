@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
@@ -264,9 +265,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	@Override
 	public void remove(RemovalReason reason) {
 		BlockPos pos = blockPosition();
+		ItemStack sentryStack = new ItemStack(SCContent.SENTRY.get());
 
 		super.remove(reason);
-		Block.popResource(level(), pos, new ItemStack(SCContent.SENTRY.get()));
+		sentryStack.set(DataComponents.CUSTOM_NAME, getCustomName());
+		Block.popResource(level(), pos, sentryStack);
 		Block.popResource(level(), pos, getDisguiseModule()); //if there is none, nothing will drop
 		Block.popResource(level(), pos, getAllowlistModule()); //if there is none, nothing will drop
 		level().setBlockAndUpdate(pos, level().getFluidState(pos).createLegacyBlock());
@@ -470,7 +473,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {}
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible

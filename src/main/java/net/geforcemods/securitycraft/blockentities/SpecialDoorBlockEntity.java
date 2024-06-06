@@ -8,8 +8,12 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
-	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5, true); //20 seconds max
+	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
 	protected SpecialDoorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -25,7 +29,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
 
 		if (level.getBlockEntity(pos) instanceof SpecialDoorBlockEntity be && isLinkedWith(this, be)) {
@@ -35,15 +39,13 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
 
-		super.onOwnerChanged(state, level, pos, player);
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		switch (action) {
-			case ILinkedAction.OptionChanged<?> optionChanged -> {
-				Option<?> option = optionChanged.option();
-
+			case ILinkedAction.OptionChanged<?>(Option<?> option) -> {
 				for (Option<?> customOption : customOptions()) {
 					if (customOption.getName().equals(option.getName())) {
 						customOption.copy(option);
@@ -53,8 +55,8 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 				setChanged();
 			}
-			case ILinkedAction.ModuleInserted moduleInserted -> insertModule(moduleInserted.stack(), moduleInserted.wasModuleToggled());
-			case ILinkedAction.ModuleRemoved moduleRemoved -> removeModule(moduleRemoved.moduleType(), moduleRemoved.wasModuleToggled());
+			case ILinkedAction.ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) -> insertModule(stack, wasModuleToggled);
+			case ILinkedAction.ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) -> removeModule(moduleType, wasModuleToggled);
 			default -> {
 			}
 		}

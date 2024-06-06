@@ -5,6 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
@@ -12,11 +15,14 @@ import java.util.function.Consumer;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 
 public class PasscodeUtils {
 	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	private static HashingThread hashingThread;
+	private static final Map<Player, Long> LAST_PASSCODE_CHECKS = new HashMap<>();
 
 	private PasscodeUtils() {}
 
@@ -94,6 +100,19 @@ public class PasscodeUtils {
 		return salt;
 	}
 
+	public static void setOnCooldown(Player player) {
+		LAST_PASSCODE_CHECKS.put(player, System.currentTimeMillis());
+	}
+
+	public static boolean isOnCooldown(Player player) {
+		if (!LAST_PASSCODE_CHECKS.containsKey(player) || System.currentTimeMillis() > LAST_PASSCODE_CHECKS.get(player) + ConfigHandler.SERVER.passcodeCheckCooldown.get()) {
+			LAST_PASSCODE_CHECKS.remove(player);
+			return false;
+		}
+
+		return true;
+	}
+
 	private static class HashingThread extends Thread {
 		private double sleepOverhead = 0.0D;
 		private final ConcurrentLinkedDeque<HashingWork> workList = new ConcurrentLinkedDeque<>();
@@ -147,5 +166,28 @@ public class PasscodeUtils {
 		}
 	}
 
-	private record HashingWork(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {}
+	private record HashingWork(String passcode, byte[] salt, Consumer<byte[]> afterHashing) {
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+
+			if (obj == null || getClass() != obj.getClass())
+				return false;
+
+			HashingWork hashingWork = (HashingWork) obj;
+
+			return passcode != null && passcode.equals(hashingWork.passcode) && Arrays.equals(salt, hashingWork.salt);
+		}
+
+		@Override
+		public int hashCode() {
+			return 31 * passcode.hashCode() + Arrays.hashCode(salt);
+		}
+
+		@Override
+		public String toString() {
+			return "HashingWork{" + "passcode=" + passcode + ", salt=" + Arrays.toString(salt) + "}";
+		}
+	}
 }
