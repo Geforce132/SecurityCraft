@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.105'
+	id 'net.neoforged.gradle.userdev' version '7.0.+'
 }
 
 import groovy.json.JsonOutput
@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.6.82-beta'
+	implementation 'net.neoforged:neoforge:20.6.111-beta'
 
 	implementation "curse.maven:architectury-api-419699:5383746" //ftb teams dependency
 	implementation "curse.maven:ftb-library-forge-404465:5397531" //ftb teams dependency
