@@ -88,6 +88,8 @@ public class ConfigHandler {
 		public IntValue sentryBulletDamage;
 		public BooleanValue allowCameraNightVision;
 		public IntValue passcodeCheckCooldown;
+		public BooleanValue passcodeSpamLogWarningEnabled;
+		public ConfigValue<String> passcodeSpamLogWarning;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 		private ConfigValue<List<? extends String>> taserEffectsValue;
@@ -212,6 +214,14 @@ public class ConfigHandler {
 			passcodeCheckCooldown = builder
 					.comment("Defines the amount of time in milliseconds that needs to pass between two separate attempts from a player to enter a passcode.")
 					.defineInRange("passcode_check_cooldown", 250, 0, 2000);
+
+			passcodeSpamLogWarningEnabled = builder
+					.comment("Set this to false to disable the log warning that is sent whenever a player tries to enter a passcode while on passcode cooldown.")
+					.define("passcode_spam_log_warning_enabled", true);
+
+			passcodeSpamLogWarning = builder
+					.comment("The warning that is sent into the server log whenever a player tries to enter a passcode while on passcode cooldown. \"%1$s\" will be replaced with the player's name, \"%2$s\" with the passcode-protected object's name and \"%3$s\" with the object's position and dimension.")
+					.define("passcode_spam_log_warning", "Player \"%1$s\" tried to enter a passcode into \"%2$s\" at position [%3$s] too quickly!");
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
