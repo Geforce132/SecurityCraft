@@ -45,7 +45,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	@Override
-	public void tick(Level level, BlockPos pos, BlockState state) {
+	public void tick(Level level, BlockPos pos, BlockState state) { //server side only
 		if (!tracked) {
 			if (isSender())
 				refreshPower();
@@ -104,7 +104,9 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-		BlockEntityTracker.SECURE_REDSTONE_INTERFACE.stopTracking(this);
+
+		if (!level.isClientSide)
+			BlockEntityTracker.SECURE_REDSTONE_INTERFACE.stopTracking(this);
 	}
 
 	@Override
