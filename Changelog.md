@@ -28,7 +28,7 @@
 - API: New method Owner#copy to copy the owner into a new object
 - API: IOwnable#onOwnerChanged now has two new parameters: oldOwner and newOwner
 - API: New method IOwnable#onValidate that gets called when the underlying owner is validated
-- Fix: Trying to place a Panic Button on top of powdered snow crashes the game
+- Fix: Trying to place a Panic Button where a normal button cannot be placed crashes the game
 - Fix: Occasional crash when opening the inventory in creative mode in certain situations
 - Fix: Reinforced fence gates don't properly retain their owner when reloading the world
 - Fix: The debug world does not work with SecurityCraft installed
