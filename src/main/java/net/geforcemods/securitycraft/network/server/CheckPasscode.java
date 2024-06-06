@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -11,6 +13,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.network.NetworkEvent;
@@ -47,10 +50,17 @@ public class CheckPasscode {
 		ServerPlayerEntity player = ctx.get().getSender();
 		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (PasscodeUtils.isOnCooldown(player))
-			PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
-		else if (te instanceof IPasscodeProtected) {
+		if (te instanceof IPasscodeProtected) {
 			IPasscodeProtected be = (IPasscodeProtected) te;
+
+			if (PasscodeUtils.isOnCooldown(player)) {
+				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
+
+				if (ConfigHandler.SERVER.passcodeSpamLogWarningEnabled.get())
+					SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), player.level.getBlockState(pos).getBlock().getName().getString(), GlobalPos.of(player.level.dimension(), pos)));
+
+				return;
+			}
 
 			if (be.isOnCooldown())
 				return;
