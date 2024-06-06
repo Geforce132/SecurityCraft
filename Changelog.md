@@ -37,6 +37,7 @@
 - Fix: A Portable Radar configured to not send repeating messages still repeats messages when multiple players are in its range
 - Fix: Mine remote access tools automatically remove positions of mines that are no longer in the world from their list
 - Fix: Some reinforced blocks can conduct redstone while their vanilla counterpart cannot do so
+- Fix: The behaviour of reinforced pistons sometimes deviates from vanilla piston behaviour in advanced redstone contraptions
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 

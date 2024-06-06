@@ -55,6 +55,12 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 	}
 
 	@Override
+	public void onPlace(BlockState state, World level, BlockPos pos, BlockState oldState, boolean isMoving) {
+		if (!oldState.is(state.getBlock()) && !level.isClientSide && level.getBlockEntity(pos) instanceof ValidationOwnableBlockEntity)
+			checkIfExtend(level, pos, state);
+	}
+
+	@Override
 	public void checkIfExtend(World level, BlockPos pos, BlockState state) {
 		Direction direction = state.getValue(FACING);
 		boolean hasSignal = shouldBeExtended(level, pos, direction);
