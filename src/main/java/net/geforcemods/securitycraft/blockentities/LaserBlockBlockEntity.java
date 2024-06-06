@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -127,21 +128,21 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		switch (action) {
-			case ILinkedAction.OptionChanged<Boolean>(Option<Boolean> option) when option.getName().equals(disabled.getName()) -> {
+			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(disabled.getName()) -> {
 				disabled.copy(option);
 				setLasersAccordingToDisabledOption();
 			}
-			case ILinkedAction.OptionChanged<Boolean>(Option<Boolean> option) when option.getName().equals(ignoreOwner.getName()) -> ignoreOwner.copy(option);
-			case ILinkedAction.OptionChanged<Boolean>(Option<Boolean> option) when option.getName().equals(respectInvisibility.getName()) -> respectInvisibility.copy(option);
-			case ILinkedAction.OptionChanged<Integer>(Option<Integer> option) when option.getName().equals(signalLength.getName()) -> {
+			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(ignoreOwner.getName()) -> ignoreOwner.copy(option);
+			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(respectInvisibility.getName()) -> respectInvisibility.copy(option);
+			case ILinkedAction.OptionChanged(IntOption option) when option.getName().equals(signalLength.getName()) -> {
 				signalLength.copy(option);
 				turnOffRedstoneOutput();
 			}
-			case ILinkedAction.OptionChanged<?>(Option<?> option) -> throw new UnsupportedOperationException("Unhandled option synchronization in laser block! " + option.getName());
+			case ILinkedAction.OptionChanged(Option<?> option) -> throw new UnsupportedOperationException("Unhandled option synchronization in laser block! " + option.getName());
 			case ILinkedAction.ModuleInserted(ItemStack stack, ModuleItem module, boolean wasModuleToggled) -> insertModule(stack, wasModuleToggled);
 			case ILinkedAction.ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) -> removeModule(moduleType, wasModuleToggled);
 			case ILinkedAction.OwnerChanged(Owner newOwner) -> setOwner(newOwner.getUUID(), newOwner.getName());
-			case ILinkedAction.StateChanged<Boolean>(BooleanProperty property, Boolean oldValue, Boolean newValue) when property == LaserBlock.POWERED -> {
+			case ILinkedAction.StateChanged(BooleanProperty property, Boolean oldValue, Boolean newValue) when property == LaserBlock.POWERED -> {
 				BlockState state = getBlockState();
 				int signalLength = getSignalLength();
 
