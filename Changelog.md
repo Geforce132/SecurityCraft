@@ -44,6 +44,7 @@
 - Fix: Mine remote access tools automatically remove positions of mines that are no longer in the world from their list
 - Fix: Some reinforced blocks can conduct redstone while their vanilla counterpart cannot do so
 - Fix: The behaviour of reinforced pistons sometimes deviates from vanilla piston behaviour in advanced redstone contraptions
+- Fix: SecurityCraft's doors, trapdoors and fence gates are sometimes erroneously in their open state when placed down
 
 --------------------------Changelog for v1.9.9 of SecurityCraft--------------------------
 
