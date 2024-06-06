@@ -6,10 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -26,6 +28,7 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	public static final BlockEntityTracker<SonicSecuritySystemBlockEntity> SONIC_SECURITY_SYSTEM = new BlockEntityTracker<>(be -> SonicSecuritySystemBlockEntity.MAX_RANGE);
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(be -> be.getRange());
 	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
+	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
 	private final Map<ResourceKey<Level>, Collection<BlockPos>> trackedBlockEntities = new ConcurrentHashMap<>();
 	private final Function<BE, Integer> range;
 
@@ -62,7 +65,34 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 		return getBlockEntitiesInRange(level, new Vec3(pos.getX(), pos.getY(), pos.getZ()));
 	}
 
+	/**
+	 * @see {@link #getBlockEntitiesInRange(Level, BlockPos)}
+	 */
 	public List<BE> getBlockEntitiesInRange(Level level, Vec3 pos) {
+		return iterate(level, (list, bePos) -> {
+			BE be = (BE) level.getBlockEntity(bePos);
+
+			if (be != null && canReach(be, pos))
+				list.add(be);
+		});
+	}
+
+	/**
+	 * Gets all block entities that are in the given range of the given block position
+	 *
+	 * @param level The level
+	 * @param pos The block position
+	 * @param range The range around the block position for getting the block entity in
+	 * @return A list of all block entities that are in the given range of the given block position
+	 */
+	public List<BE> getBlockEntitiesAround(Level level, BlockPos pos, int range) {
+		return iterate(level, (list, bePos) -> {
+			if (isInRange(pos, range, new Vec3(bePos.getX(), bePos.getY(), bePos.getZ())))
+				list.add((BE) level.getBlockEntity(bePos));
+		});
+	}
+
+	private List<BE> iterate(Level level, BiConsumer<List<BE>, BlockPos> listAdder) {
 		final Collection<BlockPos> blockEntities = getTrackedBlockEntities(level);
 		List<BE> returnValue = new ArrayList<>();
 		Iterator<BlockPos> it = blockEntities.iterator();
@@ -72,11 +102,7 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 
 			if (bePos != null) {
 				try {
-					BE be = (BE) level.getBlockEntity(bePos);
-
-					if (be != null && canReach(be, pos))
-						returnValue.add(be);
-
+					listAdder.accept(returnValue, bePos);
 					continue;
 				}
 				catch (Exception e) {}
@@ -109,9 +135,22 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	 *
 	 * @param be The block entitiy
 	 * @param pos The position to check
+	 * @return true if the position is in range of the block entity, false otherwise
 	 */
 	public boolean canReach(BE be, Vec3 pos) {
-		AABB testRange = new AABB(be.getBlockPos()).inflate(this.range.apply(be));
+		return isInRange(be.getBlockPos(), range.apply(be), pos);
+	}
+
+	/**
+	 * Checks whether a position is contained in the range around the given block position
+	 *
+	 * @param around The block position around which to check
+	 * @param range The range to check within
+	 * @param pos The position to check
+	 * @return true if the position is in range of the first given position, false otherwise
+	 */
+	public boolean isInRange(BlockPos around, int range, Vec3 pos) {
+		AABB testRange = new AABB(around).inflate(range);
 
 		return testRange.minX <= pos.x && testRange.minY <= pos.y && testRange.minZ <= pos.z && testRange.maxX >= pos.x && testRange.maxY >= pos.y && testRange.maxZ >= pos.z;
 	}

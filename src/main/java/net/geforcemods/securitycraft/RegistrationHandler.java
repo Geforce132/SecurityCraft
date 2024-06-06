@@ -56,6 +56,7 @@ import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
+import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
@@ -192,6 +193,7 @@ public class RegistrationHandler {
 		serverPacket(registrar, SyncLaserSideConfig.ID, SyncLaserSideConfig::new, SyncLaserSideConfig::handle);
 		serverPacket(registrar, SyncProjector.ID, SyncProjector::new, SyncProjector::handle);
 		serverPacket(registrar, SyncRiftStabilizer.ID, SyncRiftStabilizer::new, SyncRiftStabilizer::handle);
+		serverPacket(registrar, SyncSecureRedstoneInterface.ID, SyncSecureRedstoneInterface::new, SyncSecureRedstoneInterface::handle);
 		serverPacket(registrar, SyncSSSSettingsOnServer.ID, SyncSSSSettingsOnServer::new, SyncSSSSettingsOnServer::handle);
 		serverPacket(registrar, SyncTrophySystem.ID, SyncTrophySystem::new, SyncTrophySystem::handle);
 		serverPacket(registrar, ToggleBlockPocketManager.ID, ToggleBlockPocketManager::new, ToggleBlockPocketManager::handle);

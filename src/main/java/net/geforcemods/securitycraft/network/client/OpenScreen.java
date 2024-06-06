@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -121,6 +122,11 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
 
 				break;
+			case SECURE_REDSTONE_INTERFACE:
+				if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity secureRedstoneInterface)
+					ClientHandler.displaySecureRedstoneInterfaceScreen(secureRedstoneInterface);
+
+				break;
 			case SENTRY_REMOTE_ACCESS_TOOL:
 				ItemStack srat = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
@@ -166,6 +172,7 @@ public class OpenScreen implements CustomPacketPayload {
 		CHECK_PASSCODE_FOR_ENTITY(false),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
+		SECURE_REDSTONE_INTERFACE(true),
 		SET_PASSCODE(true),
 		SET_PASSCODE_FOR_BRIEFCASE(false),
 		SET_PASSCODE_FOR_ENTITY(false),

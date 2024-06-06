@@ -312,6 +312,7 @@ public class SCEventHandler {
 			if (!owner.isValidated()) {
 				if (ownable.isOwnedBy(player)) {
 					owner.setValidated(true);
+					ownable.onValidate();
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(block.getDescriptionId()), Component.translatable("messages.securitycraft:ownable.validate"), ChatFormatting.GREEN);
 				}
 				else

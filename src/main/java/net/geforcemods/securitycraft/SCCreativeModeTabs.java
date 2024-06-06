@@ -94,6 +94,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.BLOCK_POCKET_WALL.get()));
 				output.accept(new ItemStack(SCContent.SONIC_SECURITY_SYSTEM.get()));
 				output.accept(new ItemStack(SCContent.PORTABLE_TUNE_PLAYER.get()));
+				output.accept(new ItemStack(SCContent.SECURE_REDSTONE_INTERFACE.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_PISTON.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_STICKY_PISTON.get()));
 				output.accept(new ItemStack(SCContent.REINFORCED_DISPENSER.get()));
@@ -246,9 +247,8 @@ public class SCCreativeModeTabs {
 	}
 
 	private static List<Item> getVanillaOrderedItems() {
-		List<Item> vanillaOrderedItems = new ArrayList<>();
+		List<Item> vanillaOrderedItems = new ArrayList<>(getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
 
-		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.BUILDING_BLOCKS));
 		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.COLORED_BLOCKS));
 		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.NATURAL_BLOCKS));
 		vanillaOrderedItems.addAll(getCreativeTabItems(CreativeModeTabs.FUNCTIONAL_BLOCKS));
