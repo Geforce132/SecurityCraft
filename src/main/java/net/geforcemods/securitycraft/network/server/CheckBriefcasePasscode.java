@@ -2,11 +2,14 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -35,9 +38,13 @@ public class CheckBriefcasePasscode {
 		ServerPlayer player = ctx.get().getSender();
 		ItemStack briefcase = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
-		if (PasscodeUtils.isOnCooldown(player))
-			PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
-		else if (!briefcase.isEmpty()) {
+		if (!briefcase.isEmpty()) {
+			if (PasscodeUtils.isOnCooldown(player)) {
+				PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:passcodeProtected.onCooldown"), ChatFormatting.RED);
+				SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), SCContent.BRIEFCASE.get().getDescription().getString(), GlobalPos.of(player.level().dimension(), player.blockPosition())));
+				return;
+			}
+
 			CompoundTag tag = briefcase.getOrCreateTag();
 			String tagCode = tag.getString("passcode");
 
