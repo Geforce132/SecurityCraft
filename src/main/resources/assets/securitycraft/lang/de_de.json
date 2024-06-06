@@ -795,6 +795,8 @@
 	"gui.securitycraft:scManual.security_sea_boats": "Gesicherte Seeboote",
 	"gui.securitycraft:scManual.viewActivatedBlock": "Sichtfeldaktivierung: Dieser Block wird aktiviert, indem du ihn mit deinem Fadenkreuz anschaust.",
 	"gui.securitycraft:secure_redstone_interface.frequency": "Frequenz:",
+	"gui.securitycraft:secure_redstone_interface.highlight_connections": "Verbindungen hervorheben",
+	"gui.securitycraft:secure_redstone_interface.highlight_connections.tooltip": "Grün: Der Sender sendet zum Empfänger\nGelb: Der Empfänger empfängt jedes Signal des Senders\nRot: Der Empfänger empfängt ein geschütztes Signal des Senders",
 	"gui.securitycraft:secure_redstone_interface.mode": "Modus",
 	"gui.securitycraft:secure_redstone_interface.mode.receiver": "Empfänger",
 	"gui.securitycraft:secure_redstone_interface.mode.sender": "Sender",

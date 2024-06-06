@@ -249,6 +249,7 @@ import net.geforcemods.securitycraft.misc.ModuleStatesSerializer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnerDataSerializer;
 import net.geforcemods.securitycraft.misc.PageGroup;
+import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableBE;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -367,6 +368,7 @@ public class SCContent {
 
 	//particle types
 	public static final DeferredHolder<ParticleType<?>, SimpleParticleType> FLOOR_TRAP_CLOUD = PARTICLE_TYPES.register("floor_trap_cloud", () -> new SimpleParticleType(false));
+	public static final DeferredHolder<ParticleType<?>, InterfaceHighlightParticleType> INTERFACE_HIGHLIGHT = PARTICLE_TYPES.register("interface_highlight", () -> new InterfaceHighlightParticleType(false));
 
 	//fluids
 	public static final DeferredHolder<Fluid, FakeWaterFluid.Flowing> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing(fakeWaterProperties()));

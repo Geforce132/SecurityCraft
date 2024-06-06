@@ -17,21 +17,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecureRedstoneInterfaceScreen extends Screen {
-	public static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/blank.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/secure_redstone_interface.png");
 	private final Component frequencyText = Component.translatable("gui.securitycraft:secure_redstone_interface.frequency");
 	private final SecureRedstoneInterfaceBlockEntity be;
-	private final boolean oldSender, oldProtectedSignal, oldSendExactPower, oldReceiveInvertedPower;
+	private final boolean oldSender, oldProtectedSignal, oldSendExactPower, oldReceiveInvertedPower, oldHighlightConnections;
 	private final int oldFrequency, oldSenderRange;
-	private final int xSize = 176, ySize = 166;
+	private final int xSize = 176, ySize = 188;
 	private int leftPos;
 	private int topPos;
 	private EditBox frequencyBox;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
-		this(be, be.isSender(), be.isProtectedSignal(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange());
+		this(be, be.isSender(), be.isProtectedSignal(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange(), be.shouldHighlightConnections());
 	}
 
-	private SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be, boolean oldSender, boolean oldProtectedSignal, int oldFrequency, boolean oldSendExactPower, boolean oldReceiveInvertedPower, int oldSenderRange) {
+	private SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be, boolean oldSender, boolean oldProtectedSignal, int oldFrequency, boolean oldSendExactPower, boolean oldReceiveInvertedPower, int oldSenderRange, boolean oldHighlightConnections) {
 		super(be.getDisplayName());
 		this.be = be;
 		this.oldSender = oldSender;
@@ -40,6 +40,7 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		this.oldSendExactPower = oldSendExactPower;
 		this.oldReceiveInvertedPower = oldReceiveInvertedPower;
 		this.oldSenderRange = oldSenderRange;
+		this.oldHighlightConnections = oldHighlightConnections;
 	}
 
 	@Override
@@ -80,7 +81,7 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 						be.setSenderRange(oldSenderRange);
 					}
 
-					minecraft.setScreen(new SecureRedstoneInterfaceScreen(be, oldSender, oldProtectedSignal, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange));
+					minecraft.setScreen(new SecureRedstoneInterfaceScreen(be, oldSender, oldProtectedSignal, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange,oldHighlightConnections));
 				})));
 		layout.addChild(addRenderableWidget(
 				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
@@ -101,10 +102,16 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 					.withInitialValue(be.isProtectedSignal())
 					.withTooltip(value -> Tooltip.create(Component.translatable("gui.securitycraft:secure_redstone_interface.protected_signal.tooltip." + value)))
 					.create(0, 0, widgetWidth, widgetHeight, Component.translatable("gui.securitycraft:secure_redstone_interface.protected_signal"), (button, newValue) -> be.setProtectedSignal(newValue))));
-			//@formatter:on
 			layout.addChild(addRenderableWidget(new CallbackSlider(0, 0, widgetWidth, widgetHeight, Component.translatable("gui.securitycraft:projector.range", ""), Component.empty(), 1, 64, be.getSenderRange(), true, slider -> be.setSenderRange(slider.getValueInt()))));
 		}
 
+		layout.addChild(addRenderableWidget(
+				CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")))
+				.withValues(true, false)
+				.withInitialValue(be.shouldHighlightConnections())
+				.withTooltip(value -> Tooltip.create(Component.translatable("gui.securitycraft:secure_redstone_interface.highlight_connections.tooltip")))
+				.create(0, 0, widgetWidth, widgetHeight, Component.translatable("gui.securitycraft:secure_redstone_interface.highlight_connections"), (button, newValue) -> be.setHighlightConnections(newValue))));
+		//@formatter:on
 		layout.arrangeElements();
 		FrameLayout.centerInRectangle(layout, leftPos, topPos, xSize, 24 + (be.isSender() ? ySize : ySize - 46));
 	}
@@ -132,9 +139,10 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		boolean sendsExactPower = be.sendsExactPower();
 		boolean receivesInvertedPower = be.receivesInvertedPower();
 		int senderRange = be.getSenderRange();
+		boolean highlightConnections = be.shouldHighlightConnections();
 
-		if (sender != oldSender || protectedSignal != oldProtectedSignal || frequency != oldFrequency || sendsExactPower != oldSendExactPower || receivesInvertedPower != oldReceiveInvertedPower || senderRange != oldSenderRange)
-			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, protectedSignal, frequency, sendsExactPower, receivesInvertedPower, senderRange));
+		if (sender != oldSender || protectedSignal != oldProtectedSignal || frequency != oldFrequency || sendsExactPower != oldSendExactPower || receivesInvertedPower != oldReceiveInvertedPower || senderRange != oldSenderRange || highlightConnections != oldHighlightConnections)
+			PacketDistributor.sendToServer(new SyncSecureRedstoneInterface(be.getBlockPos(), sender, protectedSignal, frequency, sendsExactPower, receivesInvertedPower, senderRange, highlightConnections));
 	}
 
 	@Override

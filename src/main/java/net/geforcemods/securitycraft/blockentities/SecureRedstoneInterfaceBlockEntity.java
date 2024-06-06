@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.List;
+
+import org.joml.Vector3f;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -7,16 +11,22 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleOptions;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
+	public static final Vector3f SENDER_PARTICLE_COLOR = new Vector3f(0.0F, 1.0F, 0.0F);
+	public static final Vector3f RECEIVER_PARTICLE_COLOR = new Vector3f(1.0F, 1.0F, 0.0F);
+	public static final Vector3f RECEIVER_PROTECTED_PARTICLE_COLOR = new Vector3f(1.0F, 0.0F, 0.0F);
 	public final DisabledOption disabled = new DisabledOption(false);
 	private boolean tracked = false, refreshed = false;
 	private boolean sender = true;
@@ -26,6 +36,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	private boolean protectedSignal = false;
 	private boolean sendExactPower = true;
 	private boolean receiveInvertedPower = false;
+	private boolean highlightConnections = false;
 
 	public SecureRedstoneInterfaceBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), pos, state);
@@ -45,6 +56,40 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 			if (isSender())
 				tellSimilarReceiversToRefresh();
+		}
+
+		if (!level.isClientSide && shouldHighlightConnections() && level.getGameTime() % 5 == 0) {
+			ServerLevel serverLevel = (ServerLevel) level;
+			Vec3 myPos = Vec3.atCenterOf(pos);
+
+			if (isSender()) {
+				for (SecureRedstoneInterfaceBlockEntity be : getReceiversISendTo()) {
+					if (!be.isDisabled()) {
+						Vec3 receiverPos = Vec3.atCenterOf(be.worldPosition);
+
+						showParticleTrail(serverLevel, myPos, receiverPos, SENDER_PARTICLE_COLOR);
+					}
+				}
+			}
+			else {
+				for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
+					Vec3 senderPos = Vec3.atCenterOf(be.worldPosition);
+
+					showParticleTrail(serverLevel, senderPos, myPos, be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR);
+				}
+			}
+		}
+	}
+
+	public void showParticleTrail(ServerLevel level, Vec3 senderPos, Vec3 receiverPos, Vector3f color) {
+		Vec3 senderToReceiver = receiverPos.subtract(senderPos);
+		Vector3f particleDirection = senderToReceiver.normalize().scale(0.01F).toVector3f();
+		double length = senderToReceiver.length() * 4;
+
+		for (int i = 0; i < length; i++) {
+			Vec3 particlePos = receiverPos.lerp(senderPos, i / length);
+
+			level.sendParticles(new InterfaceHighlightParticleOptions(color, particleDirection, 1f), particlePos.x, particlePos.y, particlePos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -98,6 +143,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		protectedSignal = tag.getBoolean("protected_signal");
 		sendExactPower = tag.getBoolean("send_exact_power");
 		receiveInvertedPower = tag.getBoolean("receive_inverted_power");
+		highlightConnections = tag.getBoolean("highlight_connections");
 	}
 
 	@Override
@@ -110,6 +156,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		tag.putBoolean("protected_signal", protectedSignal);
 		tag.putBoolean("send_exact_power", sendExactPower);
 		tag.putBoolean("receive_inverted_power", receiveInvertedPower);
+		tag.putBoolean("highlight_connections", highlightConnections);
 	}
 
 	public boolean isSender() {
@@ -164,21 +211,19 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			boolean protectedSignal = true;
 			boolean foundSender = false;
 
-			for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesInRange(level, worldPosition)) {
-				if (!be.isDisabled() && be.isSender() && be.isOwnedBy(getOwner()) && be.isSameFrequency(frequency)) {
-					int ownPower = be.getPower();
+			for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe(frequency)) {
+				int ownPower = be.getPower();
 
-					foundSender = true;
+				foundSender = true;
 
-					if (ownPower > highestPower)
-						highestPower = ownPower;
+				if (ownPower > highestPower)
+					highestPower = ownPower;
 
-					if (!be.isProtectedSignal())
-						protectedSignal = false;
+				if (!be.isProtectedSignal())
+					protectedSignal = false;
 
-					if (highestPower == 15 && !protectedSignal)
-						break;
-				}
+				if (highestPower == 15 && !protectedSignal)
+					break;
 			}
 
 			//if no sender is there, the signal mustn't be protected
@@ -285,9 +330,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	 */
 	public void tellSimilarReceiversToRefresh(Owner owner, int frequency, int range) {
 		if (getOwner().isValidated()) {
-			for (SecureRedstoneInterfaceBlockEntity be : BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesAround(level, worldPosition, range)) {
-				if (!be.isSender() && be.isOwnedBy(owner) && be.isSameFrequency(frequency))
-					be.refreshPower(frequency);
+			for (SecureRedstoneInterfaceBlockEntity be : getReceiversToSendTo(owner, frequency, range)) {
+				be.refreshPower(frequency);
 			}
 		}
 	}
@@ -344,8 +388,40 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		}
 	}
 
+	public List<SecureRedstoneInterfaceBlockEntity> getReceiversISendTo() {
+		return getReceiversToSendTo(getOwner(), getFrequency(), getSenderRange());
+	}
+
+	public List<SecureRedstoneInterfaceBlockEntity> getReceiversToSendTo(Owner owner, int frequency, int range) {
+		List<SecureRedstoneInterfaceBlockEntity> all = BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesAround(level, worldPosition, range);
+
+		all.removeIf(be -> be.isSender() || !be.isOwnedBy(owner) || !be.isSameFrequency(frequency));
+		return all;
+	}
+
+	public List<SecureRedstoneInterfaceBlockEntity> getSendersThatSendToMe() {
+		return getSendersThatSendToMe(getFrequency());
+	}
+
+	public List<SecureRedstoneInterfaceBlockEntity> getSendersThatSendToMe(int frequency) {
+		List<SecureRedstoneInterfaceBlockEntity> all = BlockEntityTracker.SECURE_REDSTONE_INTERFACE.getBlockEntitiesInRange(level, worldPosition);
+
+		all.removeIf(be -> be.isDisabled() || !be.isSender() || !be.isOwnedBy(getOwner()) || !be.isSameFrequency(frequency));
+		return all;
+	}
+
 	public int getSenderRange() {
 		return senderRange;
+	}
+
+	public boolean shouldHighlightConnections() {
+		return highlightConnections;
+	}
+
+	public void setHighlightConnections(boolean highlightConnections) {
+		this.highlightConnections = highlightConnections;
+		setChanged();
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	public boolean isDisabled() {
