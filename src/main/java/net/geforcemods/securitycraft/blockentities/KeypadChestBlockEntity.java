@@ -292,13 +292,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player) {
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		KeypadChestBlockEntity otherHalf = findOther();
 
 		if (otherHalf != null)
 			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
 
-		IOwnable.super.onOwnerChanged(state, level, pos, player);
+		IOwnable.super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	@Override

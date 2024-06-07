@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -65,19 +66,30 @@ public class TeamUtils {
 	}
 
 	/**
-	 * Gets all players that are in a team and currently online
+	 * Gets all players that are in the same team as the given owner, and currently online
 	 *
 	 * @param server The server
 	 * @param owner The owner whose team to get the players of
-	 * @return A list containing all online players who are in the same team as the owner
+	 * @return A list containing all online players who are in the same team as the owner. If the owner is not in a team, the
+	 *         list will only contain the owning player, if they're online.
 	 */
-	public static Collection<ServerPlayer> getOnlinePlayersInTeam(MinecraftServer server, Owner owner) {
+	public static Collection<ServerPlayer> getOnlinePlayersFromOwner(MinecraftServer server, Owner owner) {
+		Collection<ServerPlayer> onlinePlayers = null;
 		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
 		if (team != null)
-			return team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
+			onlinePlayers = team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
 
-		return new ArrayList<>();
+		if (onlinePlayers == null || onlinePlayers.isEmpty()) {
+			ServerPlayer player = PlayerUtils.getPlayerFromName(owner.getName());
+
+			if (player != null)
+				return Arrays.asList(player);
+
+			return new ArrayList<>();
+		}
+
+		return onlinePlayers;
 	}
 
 	public record TeamRepresentation(String name, int color) {}
