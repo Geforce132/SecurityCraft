@@ -19,8 +19,8 @@ public class InterfaceHighlightParticleOptions extends DustParticleOptionsBase {
 	//@formatter:off
 	public static final Codec<InterfaceHighlightParticleOptions> CODEC = RecordCodecBuilder.create(
 			instance -> instance.group(
-					Vector3f.CODEC.fieldOf("color").forGetter(DustParticleOptionsBase::getColor),
 					Vector3f.CODEC.fieldOf("direction").forGetter(InterfaceHighlightParticleOptions::getDirection),
+					Vector3f.CODEC.fieldOf("color").forGetter(DustParticleOptionsBase::getColor),
 					Codec.FLOAT.fieldOf("scale").forGetter(DustParticleOptionsBase::getScale))
 			.apply(instance, InterfaceHighlightParticleOptions::new));
 	//@formatter:on
