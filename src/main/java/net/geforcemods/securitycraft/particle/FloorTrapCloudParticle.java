@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.misc;
+package net.geforcemods.securitycraft.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
