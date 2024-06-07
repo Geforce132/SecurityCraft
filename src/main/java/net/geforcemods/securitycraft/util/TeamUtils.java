@@ -83,21 +83,29 @@ public class TeamUtils {
 	 */
 	public static Collection<ServerPlayer> getOnlinePlayersFromOwner(MinecraftServer server, Owner owner) {
 		Collection<ServerPlayer> onlinePlayers = null;
-		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
-		if (team != null)
-			onlinePlayers = team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
+		if (ModList.get().isLoaded("ftbteams"))
+			onlinePlayers = FTBTeamsCompat.getOnlinePlayersInTeam(owner);
+		else {
+			PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
-		if (onlinePlayers == null || onlinePlayers.isEmpty()) {
-			ServerPlayer player = PlayerUtils.getPlayerFromName(owner.getName());
-
-			if (player != null)
-				return Arrays.asList(player);
-
-			return new ArrayList<>();
+			if (team != null)
+				onlinePlayers = team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
 		}
 
+		if (onlinePlayers == null || onlinePlayers.isEmpty())
+			return getPlayerListFromOwner(owner);
+
 		return onlinePlayers;
+	}
+
+	private static Collection<ServerPlayer> getPlayerListFromOwner(Owner owner) {
+		ServerPlayer player = PlayerUtils.getPlayerFromName(owner.getName());
+
+		if (player != null)
+			return Arrays.asList(player);
+
+		return new ArrayList<>();
 	}
 
 	public record TeamRepresentation(String name, int color) {}
