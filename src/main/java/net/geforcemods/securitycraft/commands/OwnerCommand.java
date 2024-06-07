@@ -77,9 +77,10 @@ public class OwnerCommand {
 
 		if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
 			BlockState state = te.getBlockState();
+			Owner oldOwner = ownable.getOwner().copy();
 
 			ownable.setOwner(uuid, name);
-			ownable.onOwnerChanged(state, level, pos, null);
+			ownable.onOwnerChanged(state, level, pos, null, oldOwner, ownable.getOwner());
 			ownable.getOwner().setValidated(true);
 			level.sendBlockUpdated(pos, state, state, 3);
 			source.sendSuccess(new TranslationTextComponent("commands.securitycraft.owner.set.success", pos.getX(), pos.getY(), pos.getZ()), true);
@@ -106,7 +107,7 @@ public class OwnerCommand {
 		if (blockCount > 32768)
 			throw FillCommand.ERROR_AREA_TOO_LARGE.create(32768, blockCount);
 		else {
-			List<TileEntity> modifiedBlocks = new ArrayList<>();
+			List<OwnerChange> modifiedBlocks = new ArrayList<>();
 
 			for (BlockPos pos : BlockPos.betweenClosed(area.x0, area.y0, area.z0, area.x1, area.y1, area.z1)) {
 				TileEntity te = level.getBlockEntity(pos);
@@ -116,8 +117,10 @@ public class OwnerCommand {
 					Owner previousOwner = ownable.getOwner();
 
 					if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
+						Owner oldOwner = ownable.getOwner().copy();
+
 						ownable.setOwner(uuid, name);
-						modifiedBlocks.add((TileEntity) ownable);
+						modifiedBlocks.add(new OwnerChange((TileEntity) ownable, oldOwner));
 					}
 				}
 			}
@@ -127,18 +130,30 @@ public class OwnerCommand {
 			if (blocksModified == 0)
 				throw ERROR_FILL_FAILED.create();
 			else {
-				for (TileEntity be : modifiedBlocks) {
+				for (OwnerChange ownerChange : modifiedBlocks) {
+					TileEntity be = ownerChange.be;
 					BlockPos pos = be.getBlockPos();
 					BlockState state = be.getBlockState();
+					IOwnable ownable = (IOwnable) be;
 
-					((IOwnable) be).onOwnerChanged(state, level, pos, null);
-					((IOwnable) be).getOwner().setValidated(true);
+					ownable.onOwnerChanged(state, level, pos, null, ownerChange.oldOwner, ownable.getOwner());
+					ownable.getOwner().setValidated(true);
 					level.sendBlockUpdated(pos, state, state, 3);
 				}
 
 				source.sendSuccess(new TranslationTextComponent("commands.securitycraft.owner.fill.success", blocksModified), true);
 				return blocksModified;
 			}
+		}
+	}
+
+	private static class OwnerChange {
+		private final TileEntity be;
+		private final Owner oldOwner;
+
+		private OwnerChange(TileEntity be, Owner oldOwner) {
+			this.be = be;
+			this.oldOwner = oldOwner;
 		}
 	}
 }

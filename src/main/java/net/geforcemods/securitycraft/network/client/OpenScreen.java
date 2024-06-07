@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -91,6 +92,11 @@ public class OpenScreen {
 					ClientHandler.displayRiftStabilizerScreen(((RiftStabilizerBlockEntity) be));
 
 				break;
+			case SECURE_REDSTONE_INTERFACE:
+				if (be instanceof SecureRedstoneInterfaceBlockEntity)
+					ClientHandler.displaySecureRedstoneInterfaceScreen((SecureRedstoneInterfaceBlockEntity) be);
+
+				break;
 			case SENTRY_REMOTE_ACCESS_TOOL:
 				ItemStack srat = PlayerUtils.getItemStackFromAnyHand(ClientHandler.getClientPlayer(), SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
@@ -133,6 +139,7 @@ public class OpenScreen {
 		CHECK_PASSCODE(true),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
+		SECURE_REDSTONE_INTERFACE(true),
 		SET_BRIEFCASE_PASSCODE(false),
 		SET_PASSCODE(true),
 		SONIC_SECURITY_SYSTEM(true),

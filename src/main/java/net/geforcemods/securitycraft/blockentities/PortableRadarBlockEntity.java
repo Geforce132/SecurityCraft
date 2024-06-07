@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -58,14 +57,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 				PortableRadarBlock.togglePowerOutput(level, worldPosition, !closebyPlayers.isEmpty());
 
 			if (!closebyPlayers.isEmpty()) {
-				Collection<ServerPlayerEntity> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(level.getServer(), getOwner());
-
-				if (onlineTeamPlayers.isEmpty()) { //owner may not be in a team
-					ServerPlayerEntity ownerPlayer = level.getServer().getPlayerList().getPlayerByName(getOwner().getName());
-
-					if (ownerPlayer != null)
-						onlineTeamPlayers = Arrays.asList(ownerPlayer);
-				}
+				Collection<ServerPlayerEntity> onlineTeamPlayers = TeamUtils.getOnlinePlayersFromOwner(level.getServer(), getOwner());
 
 				for (PlayerEntity closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {

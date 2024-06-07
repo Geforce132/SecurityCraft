@@ -4,6 +4,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
@@ -42,5 +44,9 @@ public class Utils {
 		TileEntity te = level.getBlockEntity(pos);
 
 		return te instanceof IOwnable && ((IOwnable) te).isOwnedBy(entity);
+	}
+
+	public static Vector3d lerp(Vector3d from, Vector3d to, double delta) {
+		return new Vector3d(MathHelper.lerp(delta, from.x, to.x), MathHelper.lerp(delta, from.y, to.y), MathHelper.lerp(delta, from.z, to.z));
 	}
 }

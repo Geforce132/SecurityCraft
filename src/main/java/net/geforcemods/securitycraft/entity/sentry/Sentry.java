@@ -489,7 +489,7 @@ public class Sentry extends CreatureEntity implements IRangedAttackMob, IEMPAffe
 	}
 
 	@Override
-	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player) {}
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player, Owner oldOwner, Owner newOwner) {}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible

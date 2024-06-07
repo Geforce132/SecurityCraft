@@ -47,6 +47,7 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
@@ -94,6 +95,7 @@ import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.blocks.ScannerTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
@@ -205,6 +207,7 @@ import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.items.WireCuttersItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.PageGroup;
+import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
 import net.geforcemods.securitycraft.renderers.DisplayCaseItemRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestItemRenderer;
 import net.geforcemods.securitycraft.util.HasManualPage;
@@ -262,6 +265,7 @@ public class SCContent {
 
 	//particle types
 	public static final RegistryObject<BasicParticleType> FLOOR_TRAP_CLOUD = PARTICLE_TYPES.register("floor_trap_cloud", () -> new BasicParticleType(false));
+	public static final RegistryObject<InterfaceHighlightParticleType> INTERFACE_HIGHLIGHT = PARTICLE_TYPES.register("interface_highlight", () -> new InterfaceHighlightParticleType(false));
 
 	//fluids
 	public static final RegistryObject<FlowingFluid> FLOWING_FAKE_WATER = FLUIDS.register("flowing_fake_water", () -> new FakeWaterFluid.Flowing());
@@ -388,6 +392,9 @@ public class SCContent {
 	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_SIGN = BLOCKS.register("secret_crimson_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.WOOD), WoodType.CRIMSON));
 	public static final RegistryObject<Block> SECRET_WARPED_SIGN = BLOCKS.register("secret_warped_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.WARPED_STEM).sound(SoundType.WOOD), WoodType.WARPED));
 	public static final RegistryObject<Block> SECRET_WARPED_WALL_SIGN = BLOCKS.register("secret_warped_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.WARPED_STEM).sound(SoundType.WOOD), WoodType.WARPED));
+	@HasManualPage
+	@RegisterItemBlock
+	public static final RegistryObject<Block> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(prop(Material.METAL))); //TODO: Map color
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(Material.METAL)));
@@ -2283,6 +2290,7 @@ public class SCContent {
 			SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
 			SCContent.REINFORCED_WARPED_FENCE_GATE.get()).build(null));
 	public static final RegistryObject<TileEntityType<ReinforcedLecternBlockEntity>> REINFORCED_LECTERN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_lectern", () -> TileEntityType.Builder.of(ReinforcedLecternBlockEntity::new, SCContent.REINFORCED_LECTERN.get()).build(null));
+	public static final RegistryObject<TileEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> TileEntityType.Builder.of(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",

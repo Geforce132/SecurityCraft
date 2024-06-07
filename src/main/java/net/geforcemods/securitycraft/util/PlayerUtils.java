@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.mojang.authlib.GameProfile;
@@ -39,33 +38,22 @@ public class PlayerUtils {
 	/**
 	 * Gets the PlayerEntity instance of a player (if they're online) using their name. <p>
 	 */
-	public static PlayerEntity getPlayerFromName(String name) {
-		if (EffectiveSide.get() == LogicalSide.CLIENT) {
-			List<AbstractClientPlayerEntity> players = Minecraft.getInstance().level.players();
-			Iterator<?> iterator = players.iterator();
+	public static <T extends PlayerEntity> T getPlayerFromName(String name) {
+		List<T> players = null;
 
-			while (iterator.hasNext()) {
-				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
+		if (EffectiveSide.get() == LogicalSide.CLIENT)
+			players = (List<T>) Minecraft.getInstance().level.players();
+		else
+			players = (List<T>) ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
 
-				if (tempPlayer.getName().getString().equals(name))
-					return tempPlayer;
+		if (players != null) {
+			for (T player : players) {
+				if (player.getName().getString().equals(name))
+					return player;
 			}
-
-			return null;
 		}
-		else {
-			List<?> players = ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers();
-			Iterator<?> iterator = players.iterator();
 
-			while (iterator.hasNext()) {
-				PlayerEntity tempPlayer = (PlayerEntity) iterator.next();
-
-				if (tempPlayer.getName().getString().equals(name))
-					return tempPlayer;
-			}
-
-			return null;
-		}
+		return null;
 	}
 
 	/**
