@@ -36,7 +36,9 @@ public class BlockUtils {
 	}
 
 	public static boolean hasActiveSCBlockNextTo(Level level, BlockPos pos) {
-		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(level, pos, level.getBlockEntity(pos), activator));
+		BlockEntity be = level.getBlockEntity(pos);
+
+		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(level, pos, be, activator));
 	}
 
 	private static boolean hasActiveSCBlockNextTo(Level level, BlockPos pos, BlockEntity be, IDoorActivator activator) {
