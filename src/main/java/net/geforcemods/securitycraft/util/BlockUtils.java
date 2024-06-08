@@ -34,7 +34,9 @@ public class BlockUtils {
 	}
 
 	public static boolean hasActiveSCBlockNextTo(World world, BlockPos pos) {
-		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, world.getTileEntity(pos), activator));
+		TileEntity be = world.getTileEntity(pos);
+
+		return SecurityCraftAPI.getRegisteredDoorActivators().stream().anyMatch(activator -> hasActiveSCBlockNextTo(world, pos, be, activator));
 	}
 
 	private static boolean hasActiveSCBlockNextTo(World world, BlockPos pos, TileEntity te, IDoorActivator activator) {
