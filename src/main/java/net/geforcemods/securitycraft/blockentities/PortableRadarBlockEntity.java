@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -55,14 +54,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			}
 
 			if (!closebyPlayers.isEmpty()) {
-				Collection<EntityPlayerMP> onlineTeamPlayers = TeamUtils.getOnlinePlayersInTeam(world.getMinecraftServer(), getOwner());
-
-				if (onlineTeamPlayers.isEmpty()) { //owner may not be in a team
-					EntityPlayerMP ownerPlayer = world.getMinecraftServer().getPlayerList().getPlayerByUsername(getOwner().getName());
-
-					if (ownerPlayer != null)
-						onlineTeamPlayers = Arrays.asList(ownerPlayer);
-				}
+				Collection<EntityPlayerMP> onlineTeamPlayers = TeamUtils.getOnlinePlayersFromOwner(world.getMinecraftServer(), getOwner());
 
 				for (EntityPlayer closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {

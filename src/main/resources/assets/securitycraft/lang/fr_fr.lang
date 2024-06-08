@@ -699,6 +699,7 @@ option.securitycraft:sonic_security_system.signalLength.description=Combien de t
 option.securitycraft:sonic_security_system.signalLength=Temps actif : %s
 option.securitycraft:usernameLogger.searchRadius.description=La portée en blocs dans laquelle l'enregistreur de nom d'utilisateur recherche des joueurs.
 option.securitycraft:usernameLogger.searchRadius=Rayon de recherche : %s
+securitycraft.generic_value=%s : %s
 securitycraft.option.default=(Défaut de %s)
 securitycraft.option.default_with_range=(Défaut de %s, avec une portée de %s à %s)
 securitycraft.subtitle.alarm=Sonnerie d‘alarme

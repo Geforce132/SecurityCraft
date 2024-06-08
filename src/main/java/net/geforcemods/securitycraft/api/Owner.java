@@ -170,6 +170,10 @@ public class Owner {
 		return "Name: " + ownerName + "  UUID: " + ownerUUID;
 	}
 
+	public Owner copy() {
+		return new Owner(ownerName, ownerUUID);
+	}
+
 	/**
 	 * @deprecated Use {@link #owns} or {@link IOwnable#isOwnedBy} to check for ownership
 	 */

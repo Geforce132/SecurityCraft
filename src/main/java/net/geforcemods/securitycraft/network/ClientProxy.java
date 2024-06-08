@@ -26,6 +26,7 @@ import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
@@ -233,6 +234,7 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(KeypadFurnaceBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(LaserBlockBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(ProtectoBlockEntity.class, new DisguisableBlockEntityRenderer<>());
+		ClientRegistry.bindTileEntitySpecialRenderer(SecureRedstoneInterfaceBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(UsernameLoggerBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 
 		Item.getItemFromBlock(SCContent.keypadChest).setTileEntityItemStackRenderer(new BlockEntityItemRenderer(new KeypadChestBlockEntity()));

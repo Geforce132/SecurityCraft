@@ -15,8 +15,8 @@ import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -200,7 +200,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	public float getOpenness(float partialTicks) {
-		return ClientUtils.lerp(partialTicks, oOpenness, openness);
+		return Utils.lerp(partialTicks, oOpenness, openness);
 	}
 
 	public boolean isOpen() {

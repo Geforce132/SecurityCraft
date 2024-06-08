@@ -274,13 +274,13 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	}
 
 	@Override
-	public void onOwnerChanged(IBlockState state, World level, BlockPos pos, EntityPlayer player) {
+	public void onOwnerChanged(IBlockState state, World level, BlockPos pos, EntityPlayer player, Owner oldOwner, Owner newOwner) {
 		KeypadChestBlockEntity otherHalf = findOther();
 
 		if (otherHalf != null)
 			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
 
-		IOwnable.super.onOwnerChanged(state, level, pos, player);
+		IOwnable.super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	@Override

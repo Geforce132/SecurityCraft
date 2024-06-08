@@ -6,10 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -25,6 +27,7 @@ public class BlockEntityTracker<TE extends TileEntity> {
 	public static final BlockEntityTracker<SonicSecuritySystemBlockEntity> SONIC_SECURITY_SYSTEM = new BlockEntityTracker<>(te -> SonicSecuritySystemBlockEntity.MAX_RANGE);
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(te -> te.getRange());
 	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
+	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
 	private final Map<Integer, Collection<BlockPos>> trackedTileEntities = new ConcurrentHashMap<>();
 	private final Function<TE, Integer> range;
 
@@ -61,21 +64,47 @@ public class BlockEntityTracker<TE extends TileEntity> {
 		return getTileEntitiesInRange(world, new Vec3d(pos.getX(), pos.getY(), pos.getZ()));
 	}
 
-	public List<TE> getTileEntitiesInRange(World world, Vec3d pos) {
-		final Collection<BlockPos> tileEntities = getTrackedTileEntities(world);
+	/**
+	 * @see {@link #getTileEntitiesInRange(World, BlockPos)}
+	 */
+	public List<TE> getTileEntitiesInRange(World level, Vec3d pos) {
+		return iterate(level, (list, bePos) -> {
+			TE be = (TE) level.getTileEntity(bePos);
+
+			if (be != null && canReach(be, pos))
+				list.add(be);
+		});
+	}
+
+	/**
+	 * Gets all block entities that are in the given range of the given block position
+	 *
+	 * @param level The level
+	 * @param pos The block position
+	 * @param range The range around the block position for getting the block entity in
+	 * @return A list of all block entities that are in the given range of the given block position
+	 */
+	public List<TE> getTileEntitiesAround(World level, BlockPos pos, int range) {
+		return iterate(level, (list, bePos) -> {
+			if (isInRange(pos, range, new Vec3d(bePos.getX(), bePos.getY(), bePos.getZ())))
+				list.add((TE) level.getTileEntity(bePos));
+		});
+	}
+
+	private List<TE> iterate(World level, BiConsumer<List<TE>, BlockPos> listAdder) {
+		final Collection<BlockPos> blockEntities = getTrackedTileEntities(level);
 		List<TE> returnValue = new ArrayList<>();
-		Iterator<BlockPos> it = tileEntities.iterator();
+		Iterator<BlockPos> it = blockEntities.iterator();
 
 		while (it.hasNext()) {
 			BlockPos tePos = it.next();
 
 			if (tePos != null) {
-				TE te = (TE) world.getTileEntity(tePos);
-
-				if (te != null && canReach(te, pos))
-					returnValue.add(te);
-
-				continue;
+				try {
+					listAdder.accept(returnValue, tePos);
+					continue;
+				}
+				catch (Exception e) {}
 			}
 
 			it.remove();
@@ -105,10 +134,23 @@ public class BlockEntityTracker<TE extends TileEntity> {
 	 *
 	 * @param te The tile entity
 	 * @param pos The position to check
+	 * @return true if the position is in range of the block entity, false otherwise
 	 */
-	public boolean canReach(TE te, Vec3d pos) {
-		AxisAlignedBB possibleRange = new AxisAlignedBB(te.getPos()).grow(range.apply(te));
+	public boolean canReach(TE be, Vec3d pos) {
+		return isInRange(be.getPos(), range.apply(be), pos);
+	}
 
-		return possibleRange.minX <= pos.x && possibleRange.minY <= pos.y && possibleRange.minZ <= pos.z && possibleRange.maxX >= pos.x && possibleRange.maxY >= pos.y && possibleRange.maxZ >= pos.z;
+	/**
+	 * Checks whether a position is contained in the range around the given block position
+	 *
+	 * @param around The block position around which to check
+	 * @param range The range to check within
+	 * @param pos The position to check
+	 * @return true if the position is in range of the first given position, false otherwise
+	 */
+	public boolean isInRange(BlockPos around, int range, Vec3d pos) {
+		AxisAlignedBB testRange = new AxisAlignedBB(around).grow(range);
+
+		return testRange.minX <= pos.x && testRange.minY <= pos.y && testRange.minZ <= pos.z && testRange.maxX >= pos.x && testRange.maxY >= pos.y && testRange.maxZ >= pos.z;
 	}
 }

@@ -5,8 +5,8 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -65,7 +65,7 @@ public class SecurityCameraRenderer extends TileEntitySpecialRenderer<SecurityCa
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
 
 		if (!te.isDisabled())
-			MODEL.rotateCameraY((float) ClientUtils.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation()));
+			MODEL.rotateCameraY((float) Utils.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation()));
 
 		if (te.isShutDown())
 			MODEL.rotateCameraX(0.9F);

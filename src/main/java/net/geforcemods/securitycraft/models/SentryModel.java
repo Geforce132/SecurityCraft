@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.models;
 
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -59,7 +59,7 @@ public class SentryModel extends ModelBase {
 			float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
 			Sentry sentry = (Sentry) entity;
 
-			GlStateManager.rotate(ClientUtils.lerp(partialTicks, sentry.getOriginalHeadRotation(), sentry.getHeadRotation()), 0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(Utils.lerp(partialTicks, sentry.getOriginalHeadRotation(), sentry.getHeadRotation()), 0.0F, 1.0F, 0.0F);
 			GlStateManager.translate(0.0F, sentry.getHeadYTranslation(partialTicks), 0.0F);
 		}
 

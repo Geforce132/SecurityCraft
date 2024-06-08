@@ -3,6 +3,7 @@
 - New: Server config setting "allow_camera_night_vision" to set whether players are able to activate night vision without having the actual potion effect
 - New: Pressing "Enter" while typing a player name in an Allowlist/Denylist Module will now add the player to the list without needing to press the "Add Player" button
 - New: Server config option "passcode_check_cooldown" to configure the time that needs to pass between two separate attempts from a player to enter a passcode
+- New: Secure Redstone Interface for owner-restricted redstone signal transfer
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
@@ -20,6 +21,9 @@
 - API: The BlockState parameters in ICodebreakable's methods have been removed
 - API: New method Option#getValueText for getting a textual representation of the option's value
 - API: ICustomizable#onOptionChanged now has a proper generic type
+- API: New method Owner#copy to copy the owner into a new object
+- API: IOwnable#onOwnerChanged now has two new parameters: oldOwner and newOwner
+- API: New method IOwnable#onValidate that gets called when the underlying owner is validated
 - Fix: The block pocket can be assembled without the necessary items
 - Fix: Reinforcing a placed end rod will briefly destroy the end rod before it is replaced with a reinforced end rod
 - Fix: Reinforced End Rods do not emit light

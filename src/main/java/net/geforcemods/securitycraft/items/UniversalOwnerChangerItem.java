@@ -80,10 +80,10 @@ public class UniversalOwnerChangerItem extends Item {
 			}
 		}
 
-		if (te instanceof IOwnable) {
-			((IOwnable) te).setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
-			((IOwnable) te).onOwnerChanged(state, world, pos, player);
-		}
+		Owner oldOwner = ownable.getOwner().copy();
+
+		ownable.setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUniqueID().toString() : "ownerUUID", newOwner);
+		ownable.onOwnerChanged(state, world, pos, player, oldOwner, ownable.getOwner());
 
 		if (!world.isRemote)
 			world.notifyBlockUpdate(pos, state, state, 3);

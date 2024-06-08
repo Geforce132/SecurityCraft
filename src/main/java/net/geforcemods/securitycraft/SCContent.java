@@ -440,6 +440,7 @@ public class SCContent {
 	public static ScannerTrapDoorBlock scannerTrapdoor;
 	public static Block secretSignStanding;
 	public static Block secretSignWall;
+    public static Block secureRedstoneInterface;
 	public static Block securityCamera;
 	public static Block sentryDisguise;
 	public static Block sonicSecuritySystem;

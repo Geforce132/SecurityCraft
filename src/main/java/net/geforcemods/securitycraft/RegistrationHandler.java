@@ -50,6 +50,7 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
@@ -94,6 +95,7 @@ import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.client.SpawnInterfaceHighlightParticle;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
@@ -127,6 +129,7 @@ import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
 import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
+import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
 import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
@@ -359,6 +362,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedJungleFenceGate, PageGroup.FENCE_GATES);
 		registerBlock(event, SCContent.reinforcedDarkOakFenceGate, PageGroup.FENCE_GATES);
 		registerBlock(event, SCContent.reinforcedAcaciaFenceGate, PageGroup.FENCE_GATES);
+		registerBlock(event, SCContent.secureRedstoneInterface);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -524,6 +528,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(ScannerTrapdoorBlockEntity.class, new ResourceLocation("securitycraft:scanner_trapdoor"));
 		GameRegistry.registerTileEntity(ReinforcedDispenserBlockEntity.class, new ResourceLocation("securitycraft:reinforced_dispenser"));
 		GameRegistry.registerTileEntity(ReinforcedDropperBlockEntity.class, new ResourceLocation("securitycraft:reinforced_dropper"));
+		GameRegistry.registerTileEntity(SecureRedstoneInterfaceBlockEntity.class, new ResourceLocation("securitycraft:secure_redstone_interface"));
 	}
 
 	@SubscribeEvent
@@ -604,6 +609,8 @@ public class RegistrationHandler {
 		network.registerMessage(OpenScreen.Handler.class, OpenScreen.class, 55, Side.CLIENT);
 		network.registerMessage(BlockPocketManagerFailedActivation.Handler.class, BlockPocketManagerFailedActivation.class, 56, Side.SERVER);
 		network.registerMessage(SetDefaultCameraViewingDirection.Handler.class, SetDefaultCameraViewingDirection.class, 57, Side.SERVER);
+		network.registerMessage(SyncSecureRedstoneInterface.Handler.class, SyncSecureRedstoneInterface.class, 58, Side.SERVER);
+		network.registerMessage(SpawnInterfaceHighlightParticle.Handler.class, SpawnInterfaceHighlightParticle.class, 59, Side.CLIENT);
 	}
 
 	@SubscribeEvent
@@ -949,6 +956,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedJungleFenceGate, 0, "reinforced_jungle_fence_gate");
 		registerInventoryModel(SCContent.reinforcedDarkOakFenceGate, 0, "reinforced_dark_oak_fence_gate");
 		registerInventoryModel(SCContent.reinforcedAcaciaFenceGate, 0, "reinforced_acacia_fence_gate");
+		registerInventoryModel(SCContent.secureRedstoneInterface, 0, "secure_redstone_interface");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");

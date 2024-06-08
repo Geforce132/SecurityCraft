@@ -52,14 +52,21 @@ public interface IOwnable {
 	}
 
 	/**
+	 * Called when this is validated
+	 */
+	default void onValidate() {}
+
+	/**
 	 * Executes after the owner has been changed and invalidates this if it needs validation
 	 *
-	 * @param world The current world
 	 * @param state The IOwnable's state
+	 * @param world The current world
 	 * @param pos The IOwnable's position
 	 * @param player The player who changed the owner of the IOwnable
+	 * @param oldOwner The previous owner of this IOwnable
+	 * @param newOwner The new owner of this IOwnable
 	 */
-	default void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+	default void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player, Owner oldOwner, Owner newOwner) {
 		if (needsValidation()) {
 			getOwner().setValidated(false);
 

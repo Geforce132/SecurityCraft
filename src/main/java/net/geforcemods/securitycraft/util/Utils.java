@@ -7,6 +7,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
@@ -79,5 +80,21 @@ public class Utils {
 			Minecraft.getMinecraft().addScheduledTask(runnable);
 		else
 			((WorldServer) world).addScheduledTask(runnable);
+	}
+
+	public static double lerp(double delta, double start, double end) {
+		return start + (end - start) * delta;
+	}
+
+	public static float lerp(float delta, float start, float end) {
+		return start + (end - start) * delta;
+	}
+
+	public static Vec3d lerp(Vec3d from, Vec3d to, double delta) {
+		return new Vec3d(lerp(delta, from.x, to.x), lerp(delta, from.y, to.y), lerp(delta, from.z, to.z));
+	}
+
+	public static Vec3d atCenterOf(BlockPos pos) {
+		return new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
 	}
 }

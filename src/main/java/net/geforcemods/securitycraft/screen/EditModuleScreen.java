@@ -220,7 +220,7 @@ public class EditModuleScreen extends GuiContainer implements GuiResponder {
 				ToggleComponentButton tcb = (ToggleComponentButton) button;
 				boolean buttonState;
 
-				tcb.cycleIndex(1);
+				tcb.onClick();
 				buttonState = tcb.getCurrentIndex() == 0;
 				copyButton.visible = pasteButton.visible = clearButton.visible = buttonState;
 				teamList.active = !buttonState;

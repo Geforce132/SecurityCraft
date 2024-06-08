@@ -44,6 +44,7 @@ import net.geforcemods.securitycraft.blocks.ScannerDoorBlock;
 import net.geforcemods.securitycraft.blocks.ScannerTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
@@ -333,6 +334,7 @@ public class SetupHandler {
 		SCContent.reinforcedJungleFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.JUNGLE, Blocks.JUNGLE_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_jungle_fence_gate").setTranslationKey("securitycraft:reinforced_jungle_fence_gate");
 		SCContent.reinforcedDarkOakFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.DARK_OAK, Blocks.DARK_OAK_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_dark_oak_fence_gate").setTranslationKey("securitycraft:reinforced_dark_oak_fence_gate");
 		SCContent.reinforcedAcaciaFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.ACACIA, Blocks.ACACIA_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_acacia_fence_gate").setTranslationKey("securitycraft:reinforced_acacia_fence_gate");
+		SCContent.secureRedstoneInterface = new SecureRedstoneInterfaceBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("secure_redstone_interface").setTranslationKey("securitycraft:secure_redstone_interface");
 
 		//mines
 		SCContent.mine = (MineBlock) new MineBlock(Material.IRON).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("mine").setTranslationKey("securitycraft:mine");

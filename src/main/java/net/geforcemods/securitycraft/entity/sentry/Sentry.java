@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -500,7 +499,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	}
 
 	@Override
-	public void onOwnerChanged(IBlockState state, World level, BlockPos pos, EntityPlayer player) {}
+	public void onOwnerChanged(IBlockState state, World level, BlockPos pos, EntityPlayer player, Owner oldOwner, Owner newOwner) {}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible
@@ -578,7 +577,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 	 * @return The amount of y translation from the head's default position, used for animation
 	 */
 	public float getHeadYTranslation(float partialTicks) {
-		return ClientUtils.lerp(partialTicks, oHeadYTranslation, headYTranslation);
+		return Utils.lerp(partialTicks, oHeadYTranslation, headYTranslation);
 	}
 
 	/**

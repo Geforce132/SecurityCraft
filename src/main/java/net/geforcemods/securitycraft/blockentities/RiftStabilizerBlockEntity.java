@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -266,7 +267,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player, Owner oldOwner, Owner newOwner) {
 		RiftStabilizerBlockEntity te = RiftStabilizerBlock.getConnectedTileEntity(world, pos);
 
 		if (te != null) {
@@ -276,7 +277,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 				world.getMinecraftServer().getPlayerList().sendPacketToAllPlayers(te.getUpdatePacket());
 		}
 
-		super.onOwnerChanged(state, world, pos, player);
+		super.onOwnerChanged(state, world, pos, player, oldOwner, newOwner);
 	}
 
 	public void setSignalLength(int signalLength) {

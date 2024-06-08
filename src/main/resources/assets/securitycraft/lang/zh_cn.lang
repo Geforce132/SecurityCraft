@@ -718,6 +718,7 @@ option.securitycraft:sonic_security_system.signalLength.description=在听到正
 option.securitycraft:sonic_security_system.signalLength=激活时间：%s
 option.securitycraft:usernameLogger.searchRadius.description=用户名记录器搜索玩家的范围。
 option.securitycraft:usernameLogger.searchRadius=搜索范围：%s
+securitycraft.generic_value=%s：%s
 securitycraft.option.default=（默认为 %s）
 securitycraft.option.default_with_range=（默认为 %s，范围为 %s 到 %s）
 securitycraft.subtitle.alarm=报警器警报声

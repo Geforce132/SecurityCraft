@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +22,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	protected DisabledOption disabled = new DisabledOption(false);
 
 	@Override
-	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player) {
+	public void onOwnerChanged(IBlockState state, World world, BlockPos pos, EntityPlayer player, Owner oldOwner, Owner newOwner) {
 		TileEntity te;
 
 		pos = state.getValue(BlockDoor.HALF) == EnumDoorHalf.UPPER ? pos.down() : pos.up();

@@ -9,7 +9,10 @@ public class ToggleComponentButton extends ClickButton implements IToggleableBut
 	private final int toggleCount;
 
 	public ToggleComponentButton(int id, int xPos, int yPos, int width, int height, IntFunction<String> onValueChange, int initialValue, int toggleCount, Consumer<ClickButton> onPress) {
-		super(id, xPos, yPos, width, height, "", onPress);
+		super(id, xPos, yPos, width, height, "", button -> {
+			onPress.accept(button);
+			((ToggleComponentButton) button).cycleIndex(1);
+		});
 
 		this.onValueChange = onValueChange;
 		this.currentIndex = initialValue;

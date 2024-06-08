@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -74,20 +75,36 @@ public class TeamUtils {
 	}
 
 	/**
-	 * Gets all players that are in a team and currently online
+	 * Gets all players that are in the same team as the given owner, and currently online
 	 *
 	 * @param server The server
 	 * @param owner The owner whose team to get the players of
-	 * @return A list containing all online players who are in the same team as the owner
+	 * @return A list containing all online players who are in the same team as the owner. If the owner is not in a team, the
+	 *         list will only contain the owning player, if they're online.
 	 */
-	public static Collection<EntityPlayerMP> getOnlinePlayersInTeam(MinecraftServer server, Owner owner) {
+	public static Collection<EntityPlayerMP> getOnlinePlayersFromOwner(MinecraftServer server, Owner owner) {
+		Collection<EntityPlayerMP> onlinePlayers = null;
+
 		if (Loader.isModLoaded("ftbutilities"))
-			return FTBUtilitiesCompat.getOnlinePlayersInTeam(owner);
+			onlinePlayers = FTBUtilitiesCompat.getOnlinePlayersInTeam(owner);
+		else {
+			ScorePlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
-		ScorePlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
+			if (team != null)
+				onlinePlayers = team.getMembershipCollection().stream().map(server.getPlayerList()::getPlayerByUsername).filter(Objects::nonNull).collect(Collectors.toList());
+		}
 
-		if (team != null)
-			return team.getMembershipCollection().stream().map(server.getPlayerList()::getPlayerByUsername).filter(Objects::nonNull).collect(Collectors.toList());
+		if (onlinePlayers == null || onlinePlayers.isEmpty())
+			return getPlayerListFromOwner(owner);
+
+		return onlinePlayers;
+	}
+
+	private static Collection<EntityPlayerMP> getPlayerListFromOwner(Owner owner) {
+		EntityPlayerMP player = PlayerUtils.getPlayerFromName(owner.getName());
+
+		if (player != null)
+			return Arrays.asList(player);
 
 		return new ArrayList<>();
 	}

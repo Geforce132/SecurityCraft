@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.Iterator;
 import java.util.List;
 
 import com.mojang.authlib.GameProfile;
@@ -34,33 +33,22 @@ public class PlayerUtils {
 	/**
 	 * Gets the EntityPlayer instance of a player (if they're online) using their name. <p> Args: playerName.
 	 */
-	public static EntityPlayer getPlayerFromName(String name) {
-		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) {
-			List<?> players = Minecraft.getMinecraft().world.playerEntities;
-			Iterator<?> iterator = players.iterator();
+	public static <T extends EntityPlayer> T getPlayerFromName(String name) {
+		List<T> players = null;
 
-			while (iterator.hasNext()) {
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+			players = (List<T>) Minecraft.getMinecraft().world.playerEntities;
+		else
+			players = (List<T>) FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
 
-				if (tempPlayer.getName().equals(name))
-					return tempPlayer;
+		if (players != null) {
+			for (T player : players) {
+				if (player.getName().equals(name))
+					return player;
 			}
-
-			return null;
 		}
-		else {
-			List<?> players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
-			Iterator<?> iterator = players.iterator();
 
-			while (iterator.hasNext()) {
-				EntityPlayer tempPlayer = (EntityPlayer) iterator.next();
-
-				if (tempPlayer.getName().equals(name))
-					return tempPlayer;
-			}
-
-			return null;
-		}
+		return null;
 	}
 
 	/**

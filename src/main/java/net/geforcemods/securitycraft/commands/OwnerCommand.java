@@ -107,9 +107,10 @@ public class OwnerCommand extends CommandTreeBase {
 
 			if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
 				IBlockState state = world.getBlockState(pos);
+				Owner oldOwner = ownable.getOwner().copy();
 
 				ownable.setOwner(uuid, name);
-				ownable.onOwnerChanged(state, world, pos, null);
+				ownable.onOwnerChanged(state, world, pos, null, oldOwner, ownable.getOwner());
 				ownable.getOwner().setValidated(true);
 				world.notifyBlockUpdate(pos, state, state, 3);
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_BLOCKS, 1);
@@ -205,7 +206,7 @@ public class OwnerCommand extends CommandTreeBase {
 		}
 
 		private void fillOwner(ICommandSender sender, World world, BlockPos from, BlockPos to, String uuid, String name) throws CommandException {
-			List<TileEntity> modifiedBlocks = new ArrayList<>();
+			List<OwnerChange> modifiedBlocks = new ArrayList<>();
 
 			for (int z = from.getZ(); z <= to.getZ(); ++z) {
 				for (int y = from.getY(); y <= to.getY(); ++y) {
@@ -218,8 +219,9 @@ public class OwnerCommand extends CommandTreeBase {
 							Owner previousOwner = ownable.getOwner();
 
 							if (!previousOwner.getUUID().equals(uuid) || !previousOwner.getName().equals(name)) {
+								Owner oldOwner = ownable.getOwner().copy();
 								ownable.setOwner(uuid, name);
-								modifiedBlocks.add((TileEntity) ownable);
+								modifiedBlocks.add(new OwnerChange((TileEntity) ownable, oldOwner));
 							}
 						}
 					}
@@ -231,11 +233,13 @@ public class OwnerCommand extends CommandTreeBase {
 			if (blocksModified == 0)
 				throw new CommandException("commands.securitycraft.owner.fill.failed");
 			else {
-				for (TileEntity be : modifiedBlocks) {
+				for (OwnerChange ownerChange : modifiedBlocks) {
+					TileEntity be = ownerChange.be;
 					BlockPos pos = be.getPos();
 					IBlockState state = world.getBlockState(pos);
+					IOwnable ownable = (IOwnable) be;
 
-					((IOwnable) be).onOwnerChanged(state, world, pos, null);
+					((IOwnable) be).onOwnerChanged(state, world, pos, null, ownerChange.oldOwner, ownable.getOwner());
 					((IOwnable) be).getOwner().setValidated(true);
 					world.notifyBlockUpdate(pos, state, state, 3);
 				}
@@ -262,6 +266,16 @@ public class OwnerCommand extends CommandTreeBase {
 		@Override
 		public boolean isUsernameIndex(String[] args, int index) {
 			return args.length == 8 && args[6].equals("player") && index == 7;
+		}
+	}
+
+	private static class OwnerChange {
+		private final TileEntity be;
+		private final Owner oldOwner;
+
+		private OwnerChange(TileEntity be, Owner oldOwner) {
+			this.be = be;
+			this.oldOwner = oldOwner;
 		}
 	}
 }
