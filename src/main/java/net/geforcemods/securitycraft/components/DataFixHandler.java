@@ -94,7 +94,8 @@ public class DataFixHandler {
 				"securitycraft:scanner_trapdoor",
 				"securitycraft:sonic_security_system",
 				"securitycraft:secret_hanging_sign",
-				"securitycraft:secret_sign"
+				"securitycraft:secret_sign",
+				"securitycraft:secure_redstone_interface"
 		};
 		//@formatter:on
 
