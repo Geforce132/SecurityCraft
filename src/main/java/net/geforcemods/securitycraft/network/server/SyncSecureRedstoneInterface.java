@@ -31,14 +31,14 @@ public class SyncSecureRedstoneInterface {
 	}
 
 	public SyncSecureRedstoneInterface(FriendlyByteBuf buf) {
-		this.pos = buf.readBlockPos();
-		this.sender = buf.readBoolean();
-		this.protectedSignal = buf.readBoolean();
-		this.frequency = buf.readVarInt();
-		this.sendExactPower = buf.readBoolean();
-		this.receiveInvertedPower = buf.readBoolean();
-		this.senderRange = buf.readVarInt();
-		this.highlightConnections = buf.readBoolean();
+		pos = buf.readBlockPos();
+		sender = buf.readBoolean();
+		protectedSignal = buf.readBoolean();
+		frequency = buf.readVarInt();
+		sendExactPower = buf.readBoolean();
+		receiveInvertedPower = buf.readBoolean();
+		senderRange = buf.readVarInt();
+		highlightConnections = buf.readBoolean();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
