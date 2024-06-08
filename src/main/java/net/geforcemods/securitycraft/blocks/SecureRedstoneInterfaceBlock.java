@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -133,8 +134,13 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 		return new BlockStateContainer(this, SENDER);
 	}
 
-	public static class DoorActivator implements IDoorActivator {
+	public static class DoorActivator implements Function<Object, IDoorActivator>, IDoorActivator {
 		private final List<Block> blocks = Arrays.asList(SCContent.secureRedstoneInterface);
+
+		@Override
+		public IDoorActivator apply(Object o) {
+			return this;
+		}
 
 		@Override
 		public boolean isPowering(World level, BlockPos pos, IBlockState state, TileEntity be, EnumFacing direction, int distance) {
