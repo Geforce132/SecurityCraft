@@ -13,13 +13,14 @@ import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
-import net.geforcemods.securitycraft.screen.components.SmallXButton;
+import net.geforcemods.securitycraft.screen.components.SmallButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
@@ -36,7 +37,6 @@ public class CameraMonitorScreen extends Screen {
 	private Inventory playerInventory;
 	private ItemStack cameraMonitor;
 	private Button[] cameraButtons = new Button[10];
-	private Button[] unbindButtons = new Button[10];
 	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int xSize = 176, ySize = 166, leftPos, topPos;
 	private int page = 1;
@@ -63,25 +63,27 @@ public class CameraMonitorScreen extends Screen {
 		GlobalPositions cameras = cameraMonitor.getOrDefault(SCContent.BOUND_CAMERAS, GlobalPositions.sized(CameraMonitorItem.MAX_CAMERAS));
 		List<GlobalPos> views = cameras.positions();
 		Level level = Minecraft.getInstance().level;
+		LocalPlayer player = Minecraft.getInstance().player;
 
 		for (int i = 0; i < 10; i++) {
 			int buttonId = i + 1;
 			int camID = buttonId + (page - 1) * 10;
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
+			int aboveCameraButton = y - 8;
 			GlobalPos view = views.get(camID - 1);
 			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, view), Button.DEFAULT_NARRATION));
-			Button unbindButton = addRenderableWidget(new SmallXButton(x + 19, y - 8, button -> unbindButtonClicked(button, view, camID)));
+			Button unbindButton = addRenderableWidget(SmallButton.createWithX(x + 19, aboveCameraButton, button -> unbindButtonClicked(button, view, camID)));
 
 			cameraButtons[i] = cameraButton;
-			unbindButtons[i] = unbindButton;
 			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(Component.literal("" + camID)));
 
 			if (view != null) {
-				SecurityCameraBlockEntity cameraBe = level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity cameraEntity ? cameraEntity : null;
+				BlockPos pos = view.pos();
+				SecurityCameraBlockEntity cameraBe = level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cameraEntity ? cameraEntity : null;
 
 				if (cameraBe != null) {
-					BlockState state = level.getBlockState(view.pos());
+					BlockState state = level.getBlockState(pos);
 
 					if (cameraBe.isDisabled() || cameraBe.isShutDown()) {
 						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:scManual.disabled")));
@@ -90,7 +92,7 @@ public class CameraMonitorScreen extends Screen {
 					else if (cameraBe.hasCustomName())
 						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBe.getCustomName())));
 
-					if (state.getSignal(level, view.pos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
+					if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 						if (!cameraBe.isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
 						else
@@ -98,6 +100,13 @@ public class CameraMonitorScreen extends Screen {
 					}
 					else
 						redstoneModuleStates[i] = CameraRedstoneModuleState.ACTIVATED;
+				}
+
+				//op check is done on the server through the command
+				if (player.isCreative()) {
+					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), b -> player.connection.sendUnsignedCommand(String.format("execute in %s run tp %s %s %s", view.dimension().location(), pos.getX(), pos.getY(), pos.getZ()))));
+
+					tpButton.setTooltip(Tooltip.create(Component.translatable("chat.coordinates.tooltip")));
 				}
 			}
 			else {

@@ -14,7 +14,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
-import net.geforcemods.securitycraft.screen.components.SmallXButton;
+import net.geforcemods.securitycraft.screen.components.SmallButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -49,7 +49,7 @@ public class UsernameLoggerScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		Button clearButton = addRenderableWidget(new SmallXButton(leftPos + 4, topPos + 4, b -> {
+		Button clearButton = addRenderableWidget(SmallButton.createWithX(leftPos + 4, topPos + 4, b -> {
 			be.setPlayers(new String[100]);
 			PacketDistributor.sendToServer(new ClearLoggerServer(be.getBlockPos()));
 		}));
