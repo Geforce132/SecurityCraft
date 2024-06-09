@@ -4,10 +4,10 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -18,11 +18,11 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public boolean matches(CraftingContainer inv, Level level) {
+	public boolean matches(CraftingInput inv, Level level) {
 		boolean hasNormalKeycard = false;
 		boolean hasLimitedUseKeycard = false;
 
-		for (int i = 0; i < inv.getContainerSize(); ++i) {
+		for (int i = 0; i < inv.size(); ++i) {
 			ItemStack stack = inv.getItem(i);
 			Item item = stack.getItem();
 
@@ -48,10 +48,10 @@ public class LimitedUseKeycardRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer inv, HolderLookup.Provider lookupProvider) {
+	public ItemStack assemble(CraftingInput inv, HolderLookup.Provider lookupProvider) {
 		ItemStack keycard = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getContainerSize(); ++i) {
+		for (int i = 0; i < inv.size(); ++i) {
 			ItemStack stack = inv.getItem(i);
 			Item item = stack.getItem();
 

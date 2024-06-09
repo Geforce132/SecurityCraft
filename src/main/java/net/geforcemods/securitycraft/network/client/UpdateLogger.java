@@ -7,12 +7,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) implements CustomPacketPayload {
 
-	public static final Type<UpdateLogger> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "update_logger"));
+	public static final Type<UpdateLogger> TYPE = new Type<>(SecurityCraft.resLoc("update_logger"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateLogger> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, UpdateLogger::pos,

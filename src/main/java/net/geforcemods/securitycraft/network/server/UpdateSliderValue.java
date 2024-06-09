@@ -11,14 +11,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class UpdateSliderValue implements CustomPacketPayload {
-	public static final Type<UpdateSliderValue> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "update_slider_value"));
+	public static final Type<UpdateSliderValue> TYPE = new Type<>(SecurityCraft.resLoc("update_slider_value"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateSliderValue> STREAM_CODEC = new StreamCodec<>() {
 		@Override
 		public UpdateSliderValue decode(RegistryFriendlyByteBuf buf) {

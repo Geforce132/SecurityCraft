@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,7 +17,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record RemoteControlMine(BlockPos pos, Action action) implements CustomPacketPayload {
 
-	public static final Type<RemoteControlMine> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "remote_control_mine"));
+	public static final Type<RemoteControlMine> TYPE = new Type<>(SecurityCraft.resLoc("remote_control_mine"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, RemoteControlMine> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, RemoteControlMine::pos,

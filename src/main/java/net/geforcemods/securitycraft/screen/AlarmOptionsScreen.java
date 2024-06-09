@@ -21,9 +21,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class AlarmOptionsScreen extends Screen {
-	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm_options.png");
-	private static final ResourceLocation RESET_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset");
-	private static final ResourceLocation RESET_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset_inactive");
+	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/alarm_options.png");
+	private static final ResourceLocation RESET_SPRITE = SecurityCraft.resLoc("widget/reset");
+	private static final ResourceLocation RESET_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/reset_inactive");
 	private final Component soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
 	private final AlarmScreen alarmScreen;
 	private int imageWidth = 226, imageHeight = 112, leftPos, topPos;

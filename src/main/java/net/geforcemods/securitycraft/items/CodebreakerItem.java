@@ -26,7 +26,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
 public class CodebreakerItem extends Item {
-	public static final ResourceLocation STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "codebreaker_state");
+	public static final ResourceLocation STATE_PROPERTY = SecurityCraft.resLoc("codebreaker_state");
 	private static final Component DISABLED = Component.translatable("tooltip.securitycraft.component.success_chance.disabled").withStyle(ChatFormatting.RED);
 
 	public CodebreakerItem(Item.Properties properties) {

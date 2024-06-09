@@ -8,14 +8,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncLaserSideConfig(BlockPos pos, CompoundTag sideConfig) implements CustomPacketPayload {
-	public static final Type<SyncLaserSideConfig> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_laser_side_config"));
+	public static final Type<SyncLaserSideConfig> TYPE = new Type<>(SecurityCraft.resLoc("sync_laser_side_config"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncLaserSideConfig> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncLaserSideConfig::pos,

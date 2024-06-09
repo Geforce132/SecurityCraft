@@ -6,14 +6,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncSecureRedstoneInterface(BlockPos pos, boolean sender, boolean protectedSignal, int frequency, boolean sendExactPower, boolean receiveInvertedPower, int senderRange, boolean highlightConnections) implements CustomPacketPayload {
 
-	public static final Type<SyncSecureRedstoneInterface> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_secure_redstone_interface"));
+	public static final Type<SyncSecureRedstoneInterface> TYPE = new Type<>(SecurityCraft.resLoc("sync_secure_redstone_interface"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncSecureRedstoneInterface> STREAM_CODEC = new StreamCodec<>() {
 		@Override

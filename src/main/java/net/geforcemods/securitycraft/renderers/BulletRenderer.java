@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class BulletRenderer extends EntityRenderer<Bullet> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/bullet.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.mcResLoc(SecurityCraft.MODID + ":textures/entity/bullet.png");
 	private final BulletModel model;
 
 	public BulletRenderer(EntityRendererProvider.Context ctx) {
@@ -27,7 +27,7 @@ public class BulletRenderer extends EntityRenderer<Bullet> {
 	@Override
 	public void render(Bullet entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		pose.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 
 	@Override

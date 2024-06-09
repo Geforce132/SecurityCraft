@@ -12,14 +12,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetCameraView(int id) implements CustomPacketPayload {
-	public static final Type<SetCameraView> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_camera_view"));
+	public static final Type<SetCameraView> TYPE = new Type<>(SecurityCraft.resLoc("set_camera_view"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetCameraView> STREAM_CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, SetCameraView::id,

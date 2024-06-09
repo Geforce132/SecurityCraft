@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
@@ -21,7 +22,7 @@ public enum SCSounds {
 
 	private SCSounds(String path) {
 		this.path = path;
-		location = new ResourceLocation(path);
-		event = SoundEvent.createVariableRangeEvent(new ResourceLocation(path));
+		location = SecurityCraft.mcResLoc(path);
+		event = SoundEvent.createVariableRangeEvent(SecurityCraft.mcResLoc(path));
 	}
 }

@@ -9,7 +9,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetCameraPowered(BlockPos pos, boolean powered) implements CustomPacketPayload {
-	public static final Type<SetCameraPowered> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_camera_powered"));
+	public static final Type<SetCameraPowered> TYPE = new Type<>(SecurityCraft.resLoc("set_camera_powered"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetCameraPowered> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SetCameraPowered::pos,

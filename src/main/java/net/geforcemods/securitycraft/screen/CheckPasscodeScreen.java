@@ -4,6 +4,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -23,7 +24,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CheckPasscodeScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/check_passcode.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/check_passcode.png");
 	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:passcode.cooldown1");
 	private int cooldownText1XPos;
 	private IPasscodeProtected passcodeProtected;

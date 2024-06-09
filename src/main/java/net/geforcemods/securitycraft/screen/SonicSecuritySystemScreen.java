@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SonicSecuritySystemScreen extends Screen implements ConnectionAccessor {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/sonic_security_system.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/sonic_security_system.png");
 	private static final Component SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
@@ -59,7 +59,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 				if (currentNote < be.getNumberOfNotes()) {
 					NoteWrapper note = be.getRecordedNotes().get(currentNote++);
 					NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
-					SoundEvent sound = instrument.hasCustomSound() && !note.customSound().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSound())) : instrument.getSoundEvent().value();
+					SoundEvent sound = instrument.hasCustomSound() && !note.customSound().isEmpty() ? SoundEvent.createVariableRangeEvent(SecurityCraft.mcResLoc(note.customSound())) : instrument.getSoundEvent().value();
 					float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.id() - 12) / 12.0D) : 1.0F;
 
 					tickCount = 0;
@@ -135,7 +135,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 
 			be.setPings(toggledPing);
 			PacketDistributor.sendToServer(new SyncSSSSettingsOnServer(be.getBlockPos(), toggledPing ? SyncSSSSettingsOnServer.DataType.SOUND_ON : SyncSSSSettingsOnServer.DataType.SOUND_OFF));
-		}, new ResourceLocation(SecurityCraft.MODID, "sonic_security_system/sound"), new ResourceLocation(SecurityCraft.MODID, "sonic_security_system/no_sound")));
+		}, SecurityCraft.resLoc("sonic_security_system/sound"), SecurityCraft.resLoc("sonic_security_system/no_sound")));
 		soundButton.setCurrentIndex(!be.pings() ? 1 : 0); // Use the disabled mic icon if the SSS is not emitting sounds
 
 		connectionList = addRenderableWidget(new SSSConnectionList<>(this, minecraft, 130, 120, powerButton.getY(), leftPos + 10));

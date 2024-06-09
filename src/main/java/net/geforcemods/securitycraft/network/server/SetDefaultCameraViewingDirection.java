@@ -9,13 +9,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetDefaultCameraViewingDirection(int id, float initialXRotation, float initialYRotation) implements CustomPacketPayload {
 
-	public static final Type<SetDefaultCameraViewingDirection> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_default_camera_viewing_direction"));
+	public static final Type<SetDefaultCameraViewingDirection> TYPE = new Type<>(SecurityCraft.resLoc("set_default_camera_viewing_direction"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetDefaultCameraViewingDirection> STREAM_CODEC = StreamCodec.composite(
 			ByteBufCodecs.VAR_INT, SetDefaultCameraViewingDirection::id,

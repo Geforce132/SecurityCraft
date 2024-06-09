@@ -20,11 +20,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public interface GlobalPositionComponent<C, T, E> {
-	public static final GlobalPos DUMMY_GLOBAL_POS = new GlobalPos(ResourceKey.create(Registries.DIMENSION, new ResourceLocation(SecurityCraft.MODID, "dummy")), BlockPos.ZERO);
+	public static final GlobalPos DUMMY_GLOBAL_POS = new GlobalPos(ResourceKey.create(Registries.DIMENSION, SecurityCraft.resLoc("dummy")), BlockPos.ZERO);
 
 	public static <A> Codec<List<A>> nullableSizedCodec(Codec<A> baseCodec, int size) {
 		return new NullableListCodec<>(new Codec<>() {

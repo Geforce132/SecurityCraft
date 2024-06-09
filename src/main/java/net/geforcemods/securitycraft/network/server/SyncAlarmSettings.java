@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float pitch, int soundLength) implements CustomPacketPayload {
 
-	public static final Type<SyncAlarmSettings> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_alarm_settings"));
+	public static final Type<SyncAlarmSettings> TYPE = new Type<>(SecurityCraft.resLoc("sync_alarm_settings"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncAlarmSettings> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncAlarmSettings::pos,

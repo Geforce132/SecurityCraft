@@ -15,7 +15,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class OpenScreen implements CustomPacketPayload {
-	public static final Type<OpenScreen> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "open_screen"));
+	public static final Type<OpenScreen> TYPE = new Type<>(SecurityCraft.resLoc("open_screen"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, OpenScreen> STREAM_CODEC = new StreamCodec<>() {
 		public OpenScreen decode(RegistryFriendlyByteBuf buf) {
 			DataType dataType = buf.readEnum(DataType.class);

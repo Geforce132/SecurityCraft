@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import com.mojang.blaze3d.vertex.Tesselator;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.DetectionMode;
@@ -46,7 +47,7 @@ import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChangeDetectorMenu> implements ContainerListener, IHasExtraAreas {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_change_detector.png");
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker smartModuleHoverChecker;

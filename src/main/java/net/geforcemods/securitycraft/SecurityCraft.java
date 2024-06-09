@@ -71,7 +71,7 @@ public class SecurityCraft {
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_WATER_SOURCE_CONVERSION = GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true));
 	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
 	public static final Random RANDOM = new Random();
-	public static final TicketController CAMERA_TICKET_CONTROLLER = new TicketController(new ResourceLocation(SecurityCraft.MODID, "camera_chunks"), (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
+	public static final TicketController CAMERA_TICKET_CONTROLLER = new TicketController(SecurityCraft.resLoc("camera_chunks"), (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
 		ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
 			if (level.getEntity(uuid) == null)
 				ticketHelper.removeAllTickets(uuid);
@@ -191,5 +191,13 @@ public class SecurityCraft {
 
 	public static String getVersion() {
 		return "v" + ModList.get().getModContainerById(MODID).get().getModInfo().getVersion().toString();
+	}
+
+	public static ResourceLocation resLoc(String path) {
+		return ResourceLocation.fromNamespaceAndPath(MODID, path);
+	}
+
+	public static ResourceLocation mcResLoc(String path) {
+		return ResourceLocation.withDefaultNamespace(path);
 	}
 }

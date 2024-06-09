@@ -12,7 +12,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.entity.vehicle.Boat.Type;
 
@@ -23,7 +22,7 @@ public class SecuritySeaBoatRenderer extends BoatRenderer {
         boatResources = Stream.of(Boat.Type.values())
                 .collect(ImmutableMap.toImmutableMap(
                         type -> type,
-                        type -> Pair.of(new ResourceLocation(SecurityCraft.MODID, "textures/entity/security_sea_boat/" + type.getName() + ".png"), createBoatModel(ctx, type, true))));
+                        type -> Pair.of(SecurityCraft.resLoc("textures/entity/security_sea_boat/" + type.getName() + ".png"), createBoatModel(ctx, type, true))));
 	}
 
 	@Override

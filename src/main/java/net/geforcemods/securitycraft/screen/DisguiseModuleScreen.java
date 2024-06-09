@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.network.server.SetStateOnDisguiseModule;
@@ -22,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModuleMenu> implements IHasExtraAreas {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/customize1.png");
 	private final Component disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getDescriptionId());
 	private StateSelector stateSelector;
 

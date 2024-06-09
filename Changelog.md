@@ -1,4 +1,4 @@
---------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.10-beta1 of SecurityCraft--------------------------
 
 - New: Server config setting "allow_camera_night_vision" to set whether players are able to activate night vision without having the actual potion effect
 - New: Pressing "Enter" while typing a player name in an Allowlist/Denylist Module will now add the player to the list without needing to press the "Add Player" button
@@ -56,17 +56,3 @@
 - Fix: The behaviour of reinforced pistons sometimes deviates from vanilla piston behaviour in advanced redstone contraptions
 - Fix: SecurityCraft's doors, trapdoors and fence gates are sometimes erroneously in their open state when placed down
 - Fix: The Codebreaker's cooldown still applies to players in creative mode
-- Misc.: The minimum required NeoForge version is now 20.6.95-beta
-
---------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
-
-- Fix: The block display in disguise modules and projectors is rendered too dark
-- Fix: Error messages in console when loading a 1.20.4 world with certain SecurityCraft blocks that have empty slots
-- Fix: Compatibility with NeoForge 20.6.78-beta and newer
-- Misc.: The minimum required NeoForge version is now 20.6.78-beta
-
---------------------------Changelog for v1.9.9-beta1 of SecurityCraft--------------------------
-
-- Change: The "taser_effects" and "powered_taser_effects" config settings have been moved to the item component "minecraft:potion_contents" on the taser
-- Fix: The Mine/Sentry Remote Access Tool and Sonic Security System neither save nor respect the level of the bound objects
-- Misc.: The minimum required NeoForge version is 20.6.14-beta

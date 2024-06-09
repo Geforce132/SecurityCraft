@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class KeycardHolderItem extends Item {
-	public static final ResourceLocation COUNT_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "keycard_count");
+	public static final ResourceLocation COUNT_PROPERTY = SecurityCraft.resLoc("keycard_count");
 
 	public KeycardHolderItem(Properties properties) {
 		super(properties);

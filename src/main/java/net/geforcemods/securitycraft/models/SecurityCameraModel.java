@@ -49,11 +49,11 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
 		attachment.render(pose, builder, packedLight, packedOverlay);
 		stickTop.render(pose, builder, packedLight, packedOverlay);
 		cameraRotationPoint1.render(pose, builder, packedLight, packedOverlay);
-		cameraRotationPoint2.render(pose, builder, packedLight, packedOverlay, red, green, blue, alpha);
+		cameraRotationPoint2.render(pose, builder, packedLight, packedOverlay, packedARGB);
 	}
 
 	@Override

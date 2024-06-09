@@ -131,7 +131,7 @@ public class SCEventHandler {
 
 						if (note != null) {
 							NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
-							SoundEvent sound = instrument.hasCustomSound() && !note.customSound().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSound())) : instrument.getSoundEvent().value();
+							SoundEvent sound = instrument.hasCustomSound() && !note.customSound().isEmpty() ? SoundEvent.createVariableRangeEvent(SecurityCraft.mcResLoc(note.customSound())) : instrument.getSoundEvent().value();
 							float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.id() - 12) / 12.0D) : 1.0F;
 
 							player.level().playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
@@ -386,7 +386,7 @@ public class SCEventHandler {
 		BlockPos pos = event.getPos();
 
 		if (held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get() || held == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()) {
-			UniversalBlockReinforcerItem.maybeRemoveMending(stack);
+			UniversalBlockReinforcerItem.maybeRemoveMending(level.registryAccess(), stack);
 
 			if (UniversalBlockReinforcerItem.convertBlock(level.getBlockState(pos), level, stack, pos, event.getEntity()))
 				event.setCanceled(true); //When the client knows that a block will be converted on the server, it should not destroy that block (e.g. via instamining)

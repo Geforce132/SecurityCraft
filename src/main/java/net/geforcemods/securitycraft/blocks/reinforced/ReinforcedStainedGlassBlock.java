@@ -19,8 +19,8 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 	}
 
 	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, LevelReader level, BlockPos pos, BlockPos beaconPos) {
-		return color.getTextureDiffuseColors();
+	public Integer getBeaconColorMultiplier(BlockState state, LevelReader level, BlockPos pos, BlockPos beaconPos) {
+		return color.getTextureDiffuseColor();
 	}
 
 	@Override

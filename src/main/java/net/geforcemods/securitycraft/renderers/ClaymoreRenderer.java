@@ -53,10 +53,10 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 			b = color & 0xFF;
 		}
 
-		builder.vertex(positionMatrix, xzStart, y, xzStart).color(r, g, b, 255).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
-		builder.vertex(positionMatrix, 11.0F * multiplier, y, 1.0F).color(r, g, b, 0).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
-		builder.vertex(positionMatrix, 7.0F * multiplier, y, xzStart).color(r, g, b, 255).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
-		builder.vertex(positionMatrix, 5.0F * multiplier, y, 1.0F).color(r, g, b, 0).normal(normal.getX(), normal.getY(), normal.getZ()).endVertex();
+		builder.addVertex(positionMatrix, xzStart, y, xzStart).setColor(r, g, b, 255).setNormal(normal.getX(), normal.getY(), normal.getZ());
+		builder.addVertex(positionMatrix, 11.0F * multiplier, y, 1.0F).setColor(r, g, b, 0).setNormal(normal.getX(), normal.getY(), normal.getZ());
+		builder.addVertex(positionMatrix, 7.0F * multiplier, y, xzStart).setColor(r, g, b, 255).setNormal(normal.getX(), normal.getY(), normal.getZ());
+		builder.addVertex(positionMatrix, 5.0F * multiplier, y, 1.0F).setColor(r, g, b, 0).setNormal(normal.getX(), normal.getY(), normal.getZ());
 		pose.popPose();
 	}
 

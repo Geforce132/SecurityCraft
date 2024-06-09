@@ -11,6 +11,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -29,7 +30,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 
 public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends ScrollPanel {
-	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
+	private static final ResourceLocation CANCEL_SPRITE = SecurityCraft.mcResLoc("container/beacon/cancel");
 	private static final int SLOT_HEIGHT = 12;
 	private final T parent;
 	private final List<ConnectionInfo> connectionInfo = new ArrayList<>();
@@ -92,20 +93,20 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			int min = left;
 			int max = entryRight - 6; //6 is the width of the scrollbar
 			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
-			BufferBuilder bufferBuilder = tesselator.getBuilder();
+			BufferBuilder bufferBuilder;
 
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
-			bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-			bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			BufferUploader.drawWithShader(bufferBuilder.end());
+			bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+			bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setUv(0, 1).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setUv(1, 1).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(max, slotTop - 2, 0).setUv(1, 0).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(min, slotTop - 2, 0).setUv(0, 0).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setUv(0, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+			bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setUv(1, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+			bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setUv(1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+			bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setUv(0, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 			RenderSystem.disableBlend();
 
 			guiGraphics.blitSprite(CANCEL_SPRITE, left + 2, slotTop - 2, 11, 11);

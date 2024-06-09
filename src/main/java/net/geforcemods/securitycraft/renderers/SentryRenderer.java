@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class SentryRenderer extends EntityRenderer<Sentry> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID + ":textures/entity/sentry.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.mcResLoc(SecurityCraft.MODID + ":textures/entity/sentry.png");
 	private final SentryModel model;
 
 	public SentryRenderer(EntityRendererProvider.Context ctx) {
@@ -37,10 +37,10 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 		pose.translate(0.0D, 1.5D, 0.0D);
 		pose.scale(-1, -1, 1); //rotate model rightside up
 		RenderSystem._setShaderTexture(0, getTextureLocation(entity));
-		model.renderBase(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderBase(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		pose.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.getOriginalHeadRotation(), entity.getHeadRotation())));
 		pose.translate(0.0F, entity.getHeadYTranslation(partialTicks), 0.0F);
-		model.renderToBuffer(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		pose.popPose();
 	}
 

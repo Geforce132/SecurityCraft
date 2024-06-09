@@ -41,9 +41,9 @@ import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class AlarmScreen extends Screen {
-	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
-	private static final ResourceLocation PLAY_SOUND_SPRITE = new ResourceLocation(SecurityCraft.MODID, "alarm/play_sound");
-	private static final ResourceLocation PLAY_SOUND_HIGHLIGHTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "alarm/play_sound_highlighted");
+	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/alarm.png");
+	private static final ResourceLocation PLAY_SOUND_SPRITE = SecurityCraft.resLoc("alarm/play_sound");
+	private static final ResourceLocation PLAY_SOUND_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("alarm/play_sound_highlighted");
 	protected final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
 	private final Component smartModuleTooltip;
@@ -260,20 +260,20 @@ public class AlarmScreen extends Screen {
 		private void renderHighlightBox(int entryRight, Tesselator tesselator, int baseY, int slotBuffer, int slotIndex, int min) {
 			int max = entryRight - 6;
 			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
-			BufferBuilder bufferBuilder = tesselator.getBuilder();
+			BufferBuilder bufferBuilder;
 
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
-			bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-			bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-			bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-			BufferUploader.drawWithShader(bufferBuilder.end());
+			bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+			bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setUv(0, 1).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setUv(1, 1).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(max, slotTop - 2, 0).setUv(1, 0).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(min, slotTop - 2, 0).setUv(0, 0).setColor(0x80, 0x80, 0x80, 0xFF);
+			bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setUv(0, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+			bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setUv(1, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+			bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setUv(1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+			bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setUv(0, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 			RenderSystem.disableBlend();
 		}
 

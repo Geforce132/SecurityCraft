@@ -64,10 +64,18 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
+	maven {
+		name 'Maven for PR #1076' // https://github.com/neoforged/NeoForge/pull/1076
+		url 'https://prmaven.neoforged.net/NeoForge/pr1076'
+		content {
+            includeModule('net.neoforged', 'testframework')
+			includeModule('net.neoforged', 'neoforge')
+		}
+	}
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:20.6.113-beta'
+	implementation 'net.neoforged:neoforge:21.0.0-alpha.1.21-pre4.20240609.093716'
 
 	implementation "curse.maven:architectury-api-419699:5383746" //ftb teams dependency
 	implementation "curse.maven:ftb-library-forge-404465:5397531" //ftb teams dependency

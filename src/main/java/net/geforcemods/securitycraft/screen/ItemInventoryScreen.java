@@ -38,14 +38,14 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 	public static class Briefcase extends ItemInventoryScreen<BriefcaseMenu> {
 		public Briefcase(BriefcaseMenu menu, Inventory inventory, Component title) {
 			super(menu, inventory, title);
-			texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/briefcase_inventory.png");
+			texture = SecurityCraft.resLoc("textures/gui/container/briefcase_inventory.png");
 		}
 	}
 
 	public static class KeycardHolder extends ItemInventoryScreen<KeycardHolderMenu> {
 		public KeycardHolder(KeycardHolderMenu menu, Inventory inventory, Component title) {
 			super(menu, inventory, title);
-			texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_holder.png");
+			texture = SecurityCraft.resLoc("textures/gui/container/keycard_holder.png");
 			imageHeight = 133;
 		}
 	}

@@ -18,9 +18,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecureRedstoneInterfaceScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/secure_redstone_interface.png");
-	private static final ResourceLocation RANDOM_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/random");
-	private static final ResourceLocation RANDOM_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/random_inactive");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/secure_redstone_interface.png");
+	private static final ResourceLocation RANDOM_SPRITE = SecurityCraft.resLoc("widget/random");
+	private static final ResourceLocation RANDOM_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/random_inactive");
 	private final Component frequencyText = Component.translatable("gui.securitycraft:secure_redstone_interface.frequency");
 	private final SecureRedstoneInterfaceBlockEntity be;
 	private final boolean oldSender, oldProtectedSignal, oldSendExactPower, oldReceiveInvertedPower, oldHighlightConnections;

@@ -33,16 +33,16 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
-	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
-	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
-	private static final ResourceLocation RANDOM_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/random");
-	private static final ResourceLocation RANDOM_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/random_inactive");
-	private static final ResourceLocation RESET_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset");
-	private static final ResourceLocation RESET_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/reset_inactive");
-	private static final ResourceLocation RETURN_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/return");
-	private static final ResourceLocation RETURN_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/return_inactive");
-	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = new ResourceLocation("world_list/warning_highlighted");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/keycard_reader.png");
+	private static final ResourceLocation CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
+	private static final ResourceLocation CANCEL_SPRITE = SecurityCraft.mcResLoc("container/beacon/cancel");
+	private static final ResourceLocation RANDOM_SPRITE = SecurityCraft.resLoc("widget/random");
+	private static final ResourceLocation RANDOM_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/random_inactive");
+	private static final ResourceLocation RESET_SPRITE = SecurityCraft.resLoc("widget/reset");
+	private static final ResourceLocation RESET_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/reset_inactive");
+	private static final ResourceLocation RETURN_SPRITE = SecurityCraft.resLoc("widget/return");
+	private static final ResourceLocation RETURN_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/return_inactive");
+	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("world_list/warning_highlighted");
 	private static final Component EQUALS = Component.literal("=");
 	private static final Component GREATER_THAN_EQUALS = Component.literal(">=");
 	private static final int MAX_SIGNATURE = 99999;

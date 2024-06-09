@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png");
-	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer_lvl1.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer.png");
+	private static final ResourceLocation TEXTURE_LVL1 = SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer_lvl1.png");
 	private final Component ubr = Utils.localize("gui.securitycraft:blockReinforcer.title");
 	private final Component output = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private CallbackCheckbox unreinforceCheckbox;

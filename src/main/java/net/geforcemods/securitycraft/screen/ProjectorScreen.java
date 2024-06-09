@@ -24,7 +24,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> implements IHasExtraAreas {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/projector.png");
 	private static final Component SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorBlockEntity be;
 	private TextHoverChecker slotHoverChecker;
@@ -77,7 +77,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
 			applySliderValue(projectionRangeSlider);
 			PacketDistributor.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
-		}, new ResourceLocation(SecurityCraft.MODID, "projector/vertical"), new ResourceLocation(SecurityCraft.MODID, "projector/horizontal")));
+		}, SecurityCraft.resLoc("projector/vertical"), SecurityCraft.resLoc("projector/horizontal")));
 		horizontalToggleButton.setCurrentIndex(be.isHorizontal() ? 1 : 0);
 		updateHorizontalToggleButtonTooltip();
 

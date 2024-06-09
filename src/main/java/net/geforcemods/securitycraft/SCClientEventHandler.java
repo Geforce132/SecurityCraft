@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
@@ -54,12 +55,12 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class SCClientEventHandler {
-	public static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/background");
-	public static final ResourceLocation LIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/live");
-	public static final ResourceLocation NIGHT_VISION_INACTIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/night_vision_inactive");
-	public static final ResourceLocation REDSTONE_MODULE_NOT_PRESENT_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/redstone_module_not_present");
-	public static final ResourceLocation REDSTONE_MODULE_PRESENT_SPRITE = new ResourceLocation(SecurityCraft.MODID, "hud/camera/redstone_module_present");
-	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
+	public static final ResourceLocation BACKGROUND_SPRITE = SecurityCraft.resLoc("hud/camera/background");
+	public static final ResourceLocation LIVE_SPRITE = SecurityCraft.resLoc("hud/camera/live");
+	public static final ResourceLocation NIGHT_VISION_INACTIVE_SPRITE = SecurityCraft.resLoc("hud/camera/night_vision_inactive");
+	public static final ResourceLocation REDSTONE_MODULE_NOT_PRESENT_SPRITE = SecurityCraft.resLoc("hud/camera/redstone_module_not_present");
+	public static final ResourceLocation REDSTONE_MODULE_PRESENT_SPRITE = SecurityCraft.resLoc("hud/camera/redstone_module_present");
+	public static final ResourceLocation NIGHT_VISION = SecurityCraft.mcResLoc("textures/mob_effect/night_vision.png");
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final Component SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
@@ -142,7 +143,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public static void cameraOverlay(GuiGraphics guiGraphics, float partialTicks) {
+	public static void cameraOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos pos = mc.cameraEntity.blockPosition();

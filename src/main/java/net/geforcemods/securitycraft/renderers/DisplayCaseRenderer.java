@@ -27,8 +27,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlockEntity> {
-	private final ResourceLocation texture = new ResourceLocation(SecurityCraft.MODID, "textures/entity/display_case.png");
-	private final ResourceLocation glowTexture = new ResourceLocation(SecurityCraft.MODID, "textures/entity/glow_display_case.png");
+	private final ResourceLocation texture = SecurityCraft.resLoc("textures/entity/display_case.png");
+	private final ResourceLocation glowTexture = SecurityCraft.resLoc("textures/entity/glow_display_case.png");
 	private final ModelPart main;
 	private final ModelPart door;
 	private final boolean glowing;

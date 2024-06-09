@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -15,7 +14,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncProjector(BlockPos pos, int data, DataType dataType) implements CustomPacketPayload {
 
-	public static final Type<SyncProjector> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_projector"));
+	public static final Type<SyncProjector> TYPE = new Type<>(SecurityCraft.resLoc("sync_projector"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncProjector> STREAM_CODEC = new StreamCodec<>() {
 		public SyncProjector decode(RegistryFriendlyByteBuf buf) {
 			BlockPos pos = buf.readBlockPos();

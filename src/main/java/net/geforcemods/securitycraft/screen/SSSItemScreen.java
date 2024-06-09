@@ -5,6 +5,7 @@ import java.util.List;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
@@ -20,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SSSItemScreen extends Screen implements ConnectionAccessor {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final ItemStack stack;
 	private int imageWidth = 176;
 	private int imageHeight = 166;

@@ -30,9 +30,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class HudModHandler {
-	protected static final ResourceLocation SHOW_OWNER = new ResourceLocation(SecurityCraft.MODID, "showowner");
-	protected static final ResourceLocation SHOW_MODULES = new ResourceLocation(SecurityCraft.MODID, "showmodules");
-	protected static final ResourceLocation SHOW_CUSTOM_NAME = new ResourceLocation(SecurityCraft.MODID, "showcustomname");
+	protected static final ResourceLocation SHOW_OWNER = SecurityCraft.resLoc("showowner");
+	protected static final ResourceLocation SHOW_MODULES = SecurityCraft.resLoc("showmodules");
+	protected static final ResourceLocation SHOW_CUSTOM_NAME = SecurityCraft.resLoc("showcustomname");
 	protected static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	protected static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
 	protected static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(ChatFormatting.GRAY);

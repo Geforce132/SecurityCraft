@@ -26,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
@@ -94,7 +95,7 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 				double accelerationY = e.getBoundingBox().minY + e.getBbHeight() / 2.0F - pos.getY() - launchHeight;
 				double accelerationZ = e.getZ() - pos.getZ();
 
-				level.addFreshEntity(new IMSBomb(level, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
+				level.addFreshEntity(new IMSBomb(level, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, new Vec3(accelerationX, accelerationY, accelerationZ), launchHeight, this));
 
 				if (!level.isClientSide)
 					level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);

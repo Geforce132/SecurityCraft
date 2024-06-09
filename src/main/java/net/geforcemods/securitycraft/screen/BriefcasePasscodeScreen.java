@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -20,7 +21,7 @@ public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
 	public static final String RIGHT_ARROW = "\u2192";
 	public static final String DOWN_ARROW = "\u2193";
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final boolean isSetup;
 	private int imageWidth = 176;
 	private int imageHeight = 166;

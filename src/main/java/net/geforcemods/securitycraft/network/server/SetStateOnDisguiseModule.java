@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,7 +16,7 @@ import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetStateOnDisguiseModule(BlockState state, StandingOrWallType standingOrWall) implements CustomPacketPayload {
-	public static final Type<SetStateOnDisguiseModule> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_state_on_disguise_module"));
+	public static final Type<SetStateOnDisguiseModule> TYPE = new Type<>(SecurityCraft.resLoc("set_state_on_disguise_module"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetStateOnDisguiseModule> STREAM_CODEC = StreamCodec.composite(
 			SCStreamCodecs.BLOCK_STATE, SetStateOnDisguiseModule::state,

@@ -18,7 +18,6 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.FastColor;
@@ -1423,7 +1422,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(dye)
 		.requires(SCTags.Items.REINFORCED_WOOL_CARPETS)
 		.unlockedBy("has_wool_carpet", has(SCTags.Items.REINFORCED_WOOL_CARPETS))
-		.save(recipeOutput, new ResourceLocation(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
+		.save(recipeOutput, SecurityCraft.mcResLoc(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
 		//@formatter:on
 	}
 
@@ -1436,7 +1435,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" P")
 		.define('P', pane)
 		.unlockedBy("has_lens", has(SCContent.LENS))
-		.save(recipeOutput, new ResourceLocation(((DyeItem) dye).getDyeColor().getName() + "_lens"));
+		.save(recipeOutput, SecurityCraft.mcResLoc(((DyeItem) dye).getDyeColor().getName() + "_lens"));
 		//@formatter:on
 	}
 
@@ -1525,7 +1524,7 @@ public class RecipeGenerator extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, keycard)
 		.requires(keycard)
 		.unlockedBy("has_keycard", has(keycard))
-		.save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(keycard.asItem()).getPath() + "_reset"));
+		.save(recipeOutput, SecurityCraft.resLoc(Utils.getRegistryName(keycard.asItem()).getPath() + "_reset"));
 		//@formatter:on
 	}
 
@@ -1693,14 +1692,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE)
 		.define('D', dye)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
-		.save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
+		.save(recipeOutput, SecurityCraft.resLoc(Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 16)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', stainedGlass)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
-		.save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_glass"));
+		.save(recipeOutput, SecurityCraft.resLoc(Utils.getRegistryName(result.asItem()).getPath() + "_from_glass"));
 		//@formatter:on
 	}
 
@@ -1794,6 +1793,7 @@ public class RecipeGenerator extends RecipeProvider {
 			int j1 = FastColor.ARGB32.red(existingColor.rgb());
 			int k1 = FastColor.ARGB32.green(existingColor.rgb());
 			int l1 = FastColor.ARGB32.blue(existingColor.rgb());
+
 			l += Math.max(j1, Math.max(k1, l1));
 			i += j1;
 			j += k1;
@@ -1801,10 +1801,10 @@ public class RecipeGenerator extends RecipeProvider {
 			i1++;
 		}
 
-		float[] afloat = dye.getDyeColor().getTextureDiffuseColors();
-		int i2 = (int) (afloat[0] * 255.0F);
-		int j2 = (int) (afloat[1] * 255.0F);
-		int k2 = (int) (afloat[2] * 255.0F);
+		int j3 = dye.getDyeColor().getTextureDiffuseColor();
+		int i2 = FastColor.ARGB32.red(j3);
+		int j2 = FastColor.ARGB32.green(j3);
+		int k2 = FastColor.ARGB32.blue(j3);
 
 		l += Math.max(i2, Math.max(j2, k2));
 		i += i2;
@@ -1814,18 +1814,18 @@ public class RecipeGenerator extends RecipeProvider {
 
 		int l2 = i / i1;
 		int i3 = j / i1;
-		int j3 = k / i1;
+		int k3 = k / i1;
 		float f = (float) l / (float) i1;
-		float f1 = Math.max(l2, Math.max(i3, j3));
+		float f1 = Math.max(l2, Math.max(i3, k3));
 
 		l2 = (int) (l2 * f / f1);
 		i3 = (int) (i3 * f / f1);
-		j3 = (int) (j3 * f / f1);
+		k3 = (int) (k3 * f / f1);
 
-		int k3 = FastColor.ARGB32.color(0, l2, i3, j3);
+		int l3 = FastColor.ARGB32.color(0, l2, i3, k3);
 		boolean flag = existingColor == null || existingColor.showInTooltip();
 
-		copy.set(DataComponents.DYED_COLOR, new DyedItemColor(k3, flag));
+		copy.set(DataComponents.DYED_COLOR, new DyedItemColor(l3, flag));
 		return copy;
 	}
 }

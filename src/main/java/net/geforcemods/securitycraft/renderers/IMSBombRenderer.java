@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,7 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/entity/ims_bomb.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/ims_bomb.png");
 	private final IMSBombModel model;
 
 	public IMSBombRenderer(EntityRendererProvider.Context ctx) {
@@ -28,7 +29,7 @@ public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
 		pose.translate(-0.1D, 0, 0.1D);
 		pose.scale(1.4F, 1.4F, 1.4F);
 		RenderSystem._setShaderTexture(0, getTextureLocation(imsBomb));
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 
 	@Override

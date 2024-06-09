@@ -11,14 +11,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetSentryMode(List<Info> sentriesToUpdate) implements CustomPacketPayload {
-	public static final Type<SetSentryMode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_sentry_mode"));
+	public static final Type<SetSentryMode> TYPE = new Type<>(SecurityCraft.resLoc("set_sentry_mode"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetSentryMode> STREAM_CODEC = StreamCodec.composite(
 			ByteBufCodecs.collection(ArrayList::new, Info.STREAM_CODEC), packet -> {

@@ -12,12 +12,11 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record AssembleBlockPocket(BlockPos pos, int size) implements CustomPacketPayload {
-	public static final Type<AssembleBlockPocket> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "assemble_block_pocket"));
+	public static final Type<AssembleBlockPocket> TYPE = new Type<>(SecurityCraft.resLoc("assemble_block_pocket"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, AssembleBlockPocket> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, AssembleBlockPocket::pos,

@@ -9,13 +9,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class PlayAlarmSound implements CustomPacketPayload {
-	public static final Type<PlayAlarmSound> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "play_alarm_sound"));
+	public static final Type<PlayAlarmSound> TYPE = new Type<>(SecurityCraft.resLoc("play_alarm_sound"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, PlayAlarmSound> STREAM_CODEC = new StreamCodec<>() {
 		public PlayAlarmSound decode(RegistryFriendlyByteBuf buf) {
 			PlayAlarmSound packet = new PlayAlarmSound();

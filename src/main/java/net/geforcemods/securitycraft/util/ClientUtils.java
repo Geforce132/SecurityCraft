@@ -28,18 +28,18 @@ import net.minecraft.resources.ResourceLocation;
 public class ClientUtils {
 	//@formatter:off
 	private static final ResourceLocation[] MODULE_TEXTURES = {
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/whitelist_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/blacklist_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/harming_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/storage_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/disguise_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png")
+			SecurityCraft.resLoc("textures/item/module_background.png"),
+			SecurityCraft.resLoc("textures/item/whitelist_module.png"),
+			SecurityCraft.resLoc("textures/item/blacklist_module.png"),
+			SecurityCraft.resLoc("textures/item/harming_module.png"),
+			SecurityCraft.resLoc("textures/item/smart_module.png"),
+			SecurityCraft.resLoc("textures/item/storage_module.png"),
+			SecurityCraft.resLoc("textures/item/disguise_module.png"),
+			SecurityCraft.resLoc("textures/item/module_background.png")
 	};
 	//@formatter:on
-	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/item/redstone.png");
-	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/item/sugar.png");
+	private static final ResourceLocation REDSTONE_TEXTURE = SecurityCraft.mcResLoc("textures/item/redstone.png");
+	private static final ResourceLocation SUGAR_TEXTURE = SecurityCraft.mcResLoc("textures/item/sugar.png");
 
 	private ClientUtils() {}
 
@@ -49,21 +49,20 @@ public class ClientUtils {
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
 		Matrix4f m4f = guiGraphics.pose().last().pose();
-		BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
 
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 		RenderSystem._setShaderTexture(0, MODULE_TEXTURES[module.ordinal()]);
-		drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
+		drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
 		if (module == ModuleType.REDSTONE) {
 			RenderSystem._setShaderTexture(0, REDSTONE_TEXTURE);
-			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
+			drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 		else if (module == ModuleType.SPEED) {
 			RenderSystem._setShaderTexture(0, SUGAR_TEXTURE);
-			drawTexture(bufferBuilder, m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
+			drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 
 		RenderSystem.disableBlend();
@@ -72,13 +71,14 @@ public class ClientUtils {
 			guiGraphics.renderComponentTooltip(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
-	private static void drawTexture(BufferBuilder bufferBuilder, Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {
-		bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-		bufferBuilder.vertex(m4f, moduleLeft, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 1).endVertex();
-		bufferBuilder.vertex(m4f, moduleRight, moduleBottom, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 1).endVertex();
-		bufferBuilder.vertex(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 0).endVertex();
-		bufferBuilder.vertex(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 0).endVertex();
-		BufferUploader.drawWithShader(bufferBuilder.end());
+	private static void drawTexture(Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {
+		BufferBuilder bufferBuilder = Tesselator.getInstance().begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+
+		bufferBuilder.addVertex(m4f, moduleLeft, moduleBottom, 0).setUv(0, 1).setColor(1.0F, 1.0F, 1.0F, alpha);
+		bufferBuilder.addVertex(m4f, moduleRight, moduleBottom, 0).setUv(1, 1).setColor(1.0F, 1.0F, 1.0F, alpha);
+		bufferBuilder.addVertex(m4f, moduleRight, moduleTop, 0).setUv(1, 0).setColor(1.0F, 1.0F, 1.0F, alpha);
+		bufferBuilder.addVertex(m4f, moduleLeft, moduleTop, 0).setUv(0, 0).setColor(1.0F, 1.0F, 1.0F, alpha);
+		BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 	}
 
 	public static Quaternionf fromXYZDegrees(float x, float y, float z) {
@@ -101,32 +101,32 @@ public class ClientUtils {
 		int b = rgbColor & 255;
 
 		//bottom lines
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.addVertex(positionMatrix, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(0.0F, 0.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(0.0F, 0.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
 		//top lines
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.addVertex(positionMatrix, minX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
 		//corner edge lines
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
+		builder.addVertex(positionMatrix, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, minX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(positionMatrix, maxX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
 	}
 
 	public static void fillHorizontalGradient(GuiGraphics guiGraphics, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
@@ -139,19 +139,18 @@ public class ClientUtils {
 		float toGreen = (toColor >> 8 & 255) / 255.0F;
 		float toBlue = (toColor & 255) / 255.0F;
 		Matrix4f mat = guiGraphics.pose().last().pose();
-		Tesselator tessellator = Tesselator.getInstance();
-		BufferBuilder buffer = tessellator.getBuilder();
+		BufferBuilder buffer;
 
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-		buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		buffer.vertex(mat, right, top, zLevel).color(toRed, toGreen, toBlue, toAlpha).endVertex();
-		buffer.vertex(mat, left, top, zLevel).color(fromRed, fromGreen, fromBlue, fromAlpha).endVertex();
-		buffer.vertex(mat, left, bottom, zLevel).color(fromRed, fromGreen, fromBlue, fromAlpha).endVertex();
-		buffer.vertex(mat, right, bottom, zLevel).color(toRed, toGreen, toBlue, toAlpha).endVertex();
-		tessellator.end();
+		buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+		buffer.addVertex(mat, right, top, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
+		buffer.addVertex(mat, left, top, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
+		buffer.addVertex(mat, left, bottom, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
+		buffer.addVertex(mat, right, bottom, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
+		BufferUploader.drawWithShader(buffer.buildOrThrow());
 		RenderSystem.disableBlend();
 	}
 

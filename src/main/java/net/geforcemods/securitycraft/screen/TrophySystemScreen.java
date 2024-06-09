@@ -17,7 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 
 public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu> {
-	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/trophy_system.png");
+	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/trophy_system.png");
 	public final Component scrollListTitle, smartModuleTooltip;
 	private boolean hasSmartModule;
 	private boolean hasRedstoneModule;

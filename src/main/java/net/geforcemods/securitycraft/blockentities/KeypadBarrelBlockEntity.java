@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -138,7 +139,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
-		previousBarrel = new ResourceLocation(tag.getString("previous_barrel"));
+		previousBarrel = SecurityCraft.mcResLoc(tag.getString("previous_barrel"));
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);

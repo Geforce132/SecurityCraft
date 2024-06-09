@@ -7,13 +7,12 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class SyncSSSSettingsOnServer implements CustomPacketPayload {
-	public static final Type<SyncSSSSettingsOnServer> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_sss_settings_on_server"));
+	public static final Type<SyncSSSSettingsOnServer> TYPE = new Type<>(SecurityCraft.resLoc("sync_sss_settings_on_server"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncSSSSettingsOnServer> STREAM_CODEC = new StreamCodec<>() {
 		public SyncSSSSettingsOnServer decode(RegistryFriendlyByteBuf buf) {
 			BlockPos pos = buf.readBlockPos();

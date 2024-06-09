@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class KeyChangerScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final Component ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
 	private final Component enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
 	private final Component confirmPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.confirmNewPasscode");

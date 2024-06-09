@@ -50,7 +50,7 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
 	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, int packedARGB) {
 		dish.render(pose, buffer, packedLight, packedOverlay);
 		main.render(pose, buffer, packedLight, packedOverlay);
 	}

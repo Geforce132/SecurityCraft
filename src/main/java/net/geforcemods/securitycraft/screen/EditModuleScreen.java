@@ -18,6 +18,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
@@ -40,9 +41,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class EditModuleScreen extends Screen {
 	private static ListModuleData savedData;
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
-	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
-	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/edit_module.png");
+	private static final ResourceLocation CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
+	private static final ResourceLocation CANCEL_SPRITE = SecurityCraft.mcResLoc("container/beacon/cancel");
 	private final Component editModule = Utils.localize("gui.securitycraft:editModule");
 	private final ItemStack module;
 	private final List<PlayerTeam> availableTeams;
@@ -316,11 +317,11 @@ public class EditModuleScreen extends Screen {
 				//highlight hovered slot
 				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
 					if (slotIndex < players.size() && !players.get(slotIndex).isBlank())
-						renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
+						renderBox(tessellator, left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
 				}
 
 				if (selectedIndex >= 0)
-					renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + selectedIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFF);
+					renderBox(tessellator, left, entryRight - 6, baseY + selectedIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFF);
 
 				//draw entry strings
 				for (int i = 0; i < players.size(); i++) {
@@ -420,7 +421,7 @@ public class EditModuleScreen extends Screen {
 
 			//highlight hovered slot
 			if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-				renderBox(tessellator.getBuilder(), left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
+				renderBox(tessellator, left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
 
 			//draw entry strings and indicators whether the filter is enabled
 			for (int i = 0; i < listLength; i++) {
@@ -458,19 +459,21 @@ public class EditModuleScreen extends Screen {
 		}
 	}
 
-	private void renderBox(BufferBuilder bufferBuilder, int min, int max, int slotTop, int slotBuffer, int borderColor) {
+	private void renderBox(Tesselator tesselator, int min, int max, int slotTop, int slotBuffer, int borderColor) {
+		BufferBuilder bufferBuilder;
+
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-		bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-		bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-		bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(borderColor, borderColor, borderColor, 0xFF).endVertex();
-		bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-		bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-		bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-		bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-		BufferUploader.drawWithShader(bufferBuilder.end());
+		bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+		bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setUv(0, 1).setColor(borderColor, borderColor, borderColor, 0xFF);
+		bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setUv(1, 1).setColor(borderColor, borderColor, borderColor, 0xFF);
+		bufferBuilder.addVertex(max, slotTop - 2, 0).setUv(1, 0).setColor(borderColor, borderColor, borderColor, 0xFF);
+		bufferBuilder.addVertex(min, slotTop - 2, 0).setUv(0, 0).setColor(borderColor, borderColor, borderColor, 0xFF);
+		bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setUv(0, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+		bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setUv(1, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+		bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setUv(1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+		bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setUv(0, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+		BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 		RenderSystem.disableBlend();
 	}
 }

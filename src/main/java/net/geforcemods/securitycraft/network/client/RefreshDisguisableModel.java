@@ -9,14 +9,13 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record RefreshDisguisableModel(BlockPos pos, boolean insert, ItemStack stack, boolean toggled) implements CustomPacketPayload {
 
-	public static final Type<RefreshDisguisableModel> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "refresh_disguisable_model"));
+	public static final Type<RefreshDisguisableModel> TYPE = new Type<>(SecurityCraft.resLoc("refresh_disguisable_model"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, RefreshDisguisableModel> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, RefreshDisguisableModel::pos,

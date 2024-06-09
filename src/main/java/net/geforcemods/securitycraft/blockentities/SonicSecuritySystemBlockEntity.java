@@ -34,7 +34,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -232,7 +231,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 				CompoundTag linkedBlock = list.getCompound(i);
 				BlockPos linkedBlockPos = Utils.readBlockPos(linkedBlock);
 
-				linkedBlocks.add(new GlobalPos(level != null ? level.dimension() : ResourceKey.create(Registries.DIMENSION, new ResourceLocation("overworld")), linkedBlockPos));
+				linkedBlocks.add(new GlobalPos(level != null ? level.dimension() : ResourceKey.create(Registries.DIMENSION, SecurityCraft.mcResLoc("overworld")), linkedBlockPos));
 			}
 		}
 

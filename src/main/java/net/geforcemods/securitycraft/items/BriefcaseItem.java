@@ -20,8 +20,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -42,11 +40,6 @@ public class BriefcaseItem extends Item {
 
 		handle(stack, level, player);
 		return InteractionResultHolder.consume(stack);
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment == Enchantments.VANISHING_CURSE;
 	}
 
 	private void handle(ItemStack stack, Level level, Player player) {

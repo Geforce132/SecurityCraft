@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.SmallButton;
@@ -28,7 +29,7 @@ import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class UsernameLoggerScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final Component logged = Utils.localize("gui.securitycraft:logger.logged");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
@@ -150,7 +151,7 @@ public class UsernameLoggerScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tess, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = SLOT_HEIGHT - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - border);
@@ -164,20 +165,20 @@ public class UsernameLoggerScreen extends Screen {
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
 					int slotTop = baseY + slotIndex * SLOT_HEIGHT;
-					BufferBuilder bufferBuilder = tess.getBuilder();
+					BufferBuilder bufferBuilder;
 
 					RenderSystem.enableBlend();
 					RenderSystem.defaultBlendFunc();
-					bufferBuilder.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-					bufferBuilder.vertex(min, slotTop + slotBuffer + 2, 0).uv(0, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(max, slotTop + slotBuffer + 2, 0).uv(1, 1).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(max, slotTop - 2, 0).uv(1, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(min, slotTop - 2, 0).uv(0, 0).color(0x80, 0x80, 0x80, 0xFF).endVertex();
-					bufferBuilder.vertex(min + 1, slotTop + slotBuffer + 1, 0).uv(0, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.vertex(max - 1, slotTop + slotBuffer + 1, 0).uv(1, 1).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.vertex(max - 1, slotTop - 1, 0).uv(1, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					bufferBuilder.vertex(min + 1, slotTop - 1, 0).uv(0, 0).color(0x00, 0x00, 0x00, 0xFF).endVertex();
-					BufferUploader.drawWithShader(bufferBuilder.end());
+					bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+					bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setUv(0, 1).setColor(0x80, 0x80, 0x80, 0xFF);
+					bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setUv(1, 1).setColor(0x80, 0x80, 0x80, 0xFF);
+					bufferBuilder.addVertex(max, slotTop - 2, 0).setUv(1, 0).setColor(0x80, 0x80, 0x80, 0xFF);
+					bufferBuilder.addVertex(min, slotTop - 2, 0).setUv(0, 0).setColor(0x80, 0x80, 0x80, 0xFF);
+					bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setUv(0, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+					bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setUv(1, 1).setColor(0x00, 0x00, 0x00, 0xFF);
+					bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setUv(1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+					bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setUv(0, 0).setColor(0x00, 0x00, 0x00, 0xFF);
+					BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 					RenderSystem.disableBlend();
 				}
 			}

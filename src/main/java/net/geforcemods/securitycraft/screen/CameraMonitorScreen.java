@@ -5,6 +5,7 @@ import java.util.List;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.components.GlobalPositions;
@@ -32,7 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CameraMonitorScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final Component selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
 	private Inventory playerInventory;
 	private ItemStack cameraMonitor;

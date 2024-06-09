@@ -7,13 +7,12 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetListModuleData(ListModuleData listModuleData) implements CustomPacketPayload {
-	public static final Type<SetListModuleData> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_list_module_data"));
+	public static final Type<SetListModuleData> TYPE = new Type<>(SecurityCraft.resLoc("set_list_module_data"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetListModuleData> STREAM_CODEC = StreamCodec.composite(
 			ListModuleData.STREAM_CODEC, SetListModuleData::listModuleData,

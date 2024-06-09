@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class LensItem extends Item {
-	public static final ResourceLocation COLOR_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "colored");
+	public static final ResourceLocation COLOR_PROPERTY = SecurityCraft.resLoc("colored");
 
 	public LensItem(Item.Properties properties) {
 		super(properties);

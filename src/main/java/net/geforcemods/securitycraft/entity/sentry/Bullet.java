@@ -14,6 +14,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -31,12 +32,12 @@ public class Bullet extends AbstractArrow {
 	private Collection<MobEffectInstance> potionEffects = Sets.newHashSet();
 
 	public Bullet(EntityType<Bullet> type, Level level) {
-		super(SCContent.BULLET_ENTITY.get(), level, ItemStack.EMPTY);
+		super(SCContent.BULLET_ENTITY.get(), level);
 		pickup = Pickup.DISALLOWED;
 	}
 
 	public Bullet(Level level, Sentry shooter) {
-		super(SCContent.BULLET_ENTITY.get(), shooter, level, ItemStack.EMPTY);
+		super(SCContent.BULLET_ENTITY.get(), shooter, level, ItemStack.EMPTY, ItemStack.EMPTY);
 
 		Owner owner = shooter.getOwner();
 
@@ -120,7 +121,7 @@ public class Bullet extends AbstractArrow {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+		return new ClientboundAddEntityPacket(this, serverEntity);
 	}
 }

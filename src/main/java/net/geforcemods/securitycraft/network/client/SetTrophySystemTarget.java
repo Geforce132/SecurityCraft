@@ -8,13 +8,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetTrophySystemTarget(BlockPos pos, int targetID) implements CustomPacketPayload {
-	public static final Type<SetTrophySystemTarget> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_trophy_system_target"));
+	public static final Type<SetTrophySystemTarget> TYPE = new Type<>(SecurityCraft.resLoc("set_trophy_system_target"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetTrophySystemTarget> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SetTrophySystemTarget::pos,

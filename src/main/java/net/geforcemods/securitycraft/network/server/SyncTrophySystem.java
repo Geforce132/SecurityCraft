@@ -17,7 +17,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncTrophySystem(BlockPos pos, ResourceLocation projectileTypeLocation, boolean allowed) implements CustomPacketPayload {
 
-	public static final Type<SyncTrophySystem> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_trophy_system"));
+	public static final Type<SyncTrophySystem> TYPE = new Type<>(SecurityCraft.resLoc("sync_trophy_system"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncTrophySystem> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncTrophySystem::pos,

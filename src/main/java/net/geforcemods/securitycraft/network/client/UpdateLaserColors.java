@@ -10,11 +10,10 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record UpdateLaserColors(List<BlockPos> positionsToUpdate) implements CustomPacketPayload {
-	public static final Type<UpdateLaserColors> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "update_laser_colors"));
+	public static final Type<UpdateLaserColors> TYPE = new Type<>(SecurityCraft.resLoc("update_laser_colors"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, UpdateLaserColors> STREAM_CODEC = StreamCodec.composite(
 			ByteBufCodecs.collection(ArrayList::new, BlockPos.STREAM_CODEC), UpdateLaserColors::positionsToUpdate,

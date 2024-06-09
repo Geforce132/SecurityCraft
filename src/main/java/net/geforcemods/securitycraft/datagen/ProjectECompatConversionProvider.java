@@ -16,8 +16,8 @@
 //
 //	@Override
 //	protected void addCustomConversions() {
-//		CustomConversionBuilder reinforcedBlocksConversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "reinforced_blocks"));
-//		CustomConversionBuilder passcodeProtectedConversionBuilder = createConversionBuilder(new ResourceLocation(SecurityCraft.MODID, "passcode_protected"));
+//		CustomConversionBuilder reinforcedBlocksConversionBuilder = createConversionBuilder(SecurityCraft.resLoc("reinforced_blocks"));
+//		CustomConversionBuilder passcodeProtectedConversionBuilder = createConversionBuilder(SecurityCraft.resLoc("passcode_protected"));
 //		long keyPanelEMC = 520;
 //
 //		SecurityCraft.collectSCContentData();

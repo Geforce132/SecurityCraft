@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
@@ -19,7 +18,7 @@ import net.minecraft.world.level.block.state.properties.ChestType;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class SetPasscode implements CustomPacketPayload {
-	public static final Type<SetPasscode> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_passcode"));
+	public static final Type<SetPasscode> TYPE = new Type<>(SecurityCraft.resLoc("set_passcode"));
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetPasscode> STREAM_CODEC = new StreamCodec<>() {
 		@Override
 		public SetPasscode decode(RegistryFriendlyByteBuf buf) {

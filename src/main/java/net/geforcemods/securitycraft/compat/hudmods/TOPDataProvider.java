@@ -58,7 +58,7 @@ public class TOPDataProvider extends HudModHandler implements Function<ITheOnePr
 		theOneProbe.registerProvider(new IProbeInfoProvider() {
 			@Override
 			public ResourceLocation getID() {
-				return new ResourceLocation(SecurityCraft.MODID, SecurityCraft.MODID);
+				return SecurityCraft.resLoc(SecurityCraft.MODID);
 			}
 
 			@Override

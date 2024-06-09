@@ -15,6 +15,7 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ChunkTrackingView;
+import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
@@ -151,8 +152,8 @@ public class SecurityCamera extends Entity {
 	public void readAdditionalSaveData(CompoundTag tag) {}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return new ClientboundAddEntityPacket(this);
+	public Packet<ClientGamePacketListener> getAddEntityPacket(ServerEntity serverEntity) {
+		return new ClientboundAddEntityPacket(this, serverEntity);
 	}
 
 	@Override

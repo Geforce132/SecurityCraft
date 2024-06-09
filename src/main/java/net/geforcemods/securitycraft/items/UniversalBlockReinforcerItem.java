@@ -6,7 +6,10 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -19,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.Level;
@@ -37,7 +41,7 @@ public class UniversalBlockReinforcerItem extends Item {
 		ItemStack heldItem = player.getItemInHand(hand);
 
 		if (!level.isClientSide) {
-			maybeRemoveMending(heldItem);
+			maybeRemoveMending(level.registryAccess(), heldItem);
 			player.openMenu(new MenuProvider() {
 				@Override
 				public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
@@ -111,19 +115,21 @@ public class UniversalBlockReinforcerItem extends Item {
 		return stack.is(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()) || !stack.has(SCContent.UNREINFORCING);
 	}
 
-	public static void maybeRemoveMending(ItemStack stack) {
+	public static void maybeRemoveMending(HolderLookup.Provider lookupProvider, ItemStack stack) {
 		ItemEnchantments enchantments = stack.get(DataComponents.ENCHANTMENTS);
+		Holder<Enchantment> mending = lookupProvider.lookup(Registries.ENCHANTMENT).get().getOrThrow(Enchantments.MENDING);
 
-		if (enchantments != null && enchantments.getLevel(Enchantments.MENDING) > 0) {
+		if (enchantments != null && enchantments.getLevel(mending) > 0) {
 			ItemEnchantments.Mutable mutable = new ItemEnchantments.Mutable(enchantments);
 
-			mutable.set(Enchantments.MENDING, 0);
+			mutable.set(mending, 0);
 			stack.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
 		}
 	}
 
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return book.get(DataComponents.STORED_ENCHANTMENTS).getLevel(Enchantments.MENDING) == 0;
-	}
+	//TODO: make sure this item can't be enchanted with mending
+	//	@Override
+	//	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+	//		return book.get(DataComponents.STORED_ENCHANTMENTS).getLevel(Enchantments.MENDING) == 0;
+	//	}
 }

@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.flag.FeatureFlags;
@@ -34,8 +35,8 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockLootTableGenerator extends BlockLootSubProvider {
-	public BlockLootTableGenerator() {
-		super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+	public BlockLootTableGenerator(HolderLookup.Provider lookupProvider) {
+		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
 	}
 
 	@Override

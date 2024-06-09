@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.util.Utils;
@@ -24,7 +25,7 @@ import net.minecraft.util.Mth;
 
 public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSecuritySystemBlockEntity> {
 	private static final Quaternionf POSITIVE_X_180 = Axis.XP.rotationDegrees(180.0F);
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/sonic_security_system.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/sonic_security_system.png");
 	private static final Component RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
 	private static final Component LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 	private final SonicSecuritySystemModel model;
@@ -60,6 +61,6 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 
 		pose.mulPose(POSITIVE_X_180);
 		model.setRadarRotation(Mth.lerp(partialTicks, be.getOriginalRadarRotationDegrees(), be.getRadarRotationDegrees()));
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 }

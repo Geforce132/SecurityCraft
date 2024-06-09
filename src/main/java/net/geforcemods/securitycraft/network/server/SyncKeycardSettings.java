@@ -12,13 +12,12 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link) implements CustomPacketPayload {
 
-	public static final Type<SyncKeycardSettings> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_keycard_settings"));
+	public static final Type<SyncKeycardSettings> TYPE = new Type<>(SecurityCraft.resLoc("sync_keycard_settings"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncKeycardSettings> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncKeycardSettings::pos,

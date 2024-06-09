@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -16,10 +17,10 @@ import net.minecraft.util.Mth;
 
 // copy from vanilla's Checkbox to be able to change the text color and remove the shadow
 public class CallbackCheckbox extends AbstractButton {
-	private static final ResourceLocation CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/checkbox_selected_highlighted");
-	private static final ResourceLocation CHECKBOX_SELECTED_SPRITE = new ResourceLocation("widget/checkbox_selected");
-	private static final ResourceLocation CHECKBOX_HIGHLIGHTED_SPRITE = new ResourceLocation("widget/checkbox_highlighted");
-	private static final ResourceLocation CHECKBOX_SPRITE = new ResourceLocation("widget/checkbox");
+	private static final ResourceLocation CHECKBOX_SELECTED_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("widget/checkbox_selected_highlighted");
+	private static final ResourceLocation CHECKBOX_SELECTED_SPRITE = SecurityCraft.mcResLoc("widget/checkbox_selected");
+	private static final ResourceLocation CHECKBOX_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("widget/checkbox_highlighted");
+	private static final ResourceLocation CHECKBOX_SPRITE = SecurityCraft.mcResLoc("widget/checkbox");
 	private boolean selected;
 	private final Consumer<Boolean> onChange;
 	private final int textColor;

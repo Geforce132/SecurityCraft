@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.screen;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
@@ -18,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SetPasscodeScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
 	private int leftPos;

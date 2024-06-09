@@ -8,12 +8,11 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record RemoveMineFromMRAT(GlobalPos globalPos) implements CustomPacketPayload {
-	public static final Type<RemoveMineFromMRAT> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "remove_mine_from_mrat"));
+	public static final Type<RemoveMineFromMRAT> TYPE = new Type<>(SecurityCraft.resLoc("remove_mine_from_mrat"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, RemoveMineFromMRAT> STREAM_CODEC = StreamCodec.composite(
 			GlobalPos.STREAM_CODEC, RemoveMineFromMRAT::globalPos,

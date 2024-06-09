@@ -25,11 +25,11 @@ import net.minecraft.util.Mth;
 import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
 
 public class ColorChooser extends Screen implements GuiEventListener, NarratableEntry {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
-	private static final ResourceLocation HUE_SLIDER_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/color_chooser/hue_slider");
-	private static final ResourceLocation HUE_SLIDER_HIGHLIGHTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/color_chooser/hue_slider_highlighted");
-	private static final ResourceLocation FIELD_SELECTOR_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/color_chooser/field_selector");
-	private static final ResourceLocation FIELD_SELECTOR_HIGHLIGHTED_SPRITE = new ResourceLocation(SecurityCraft.MODID, "widget/color_chooser/field_selector_highlighted");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/color_chooser.png");
+	private static final ResourceLocation HUE_SLIDER_SPRITE = SecurityCraft.resLoc("widget/color_chooser/hue_slider");
+	private static final ResourceLocation HUE_SLIDER_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("widget/color_chooser/hue_slider_highlighted");
+	private static final ResourceLocation FIELD_SELECTOR_SPRITE = SecurityCraft.resLoc("widget/color_chooser/field_selector");
+	private static final ResourceLocation FIELD_SELECTOR_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("widget/color_chooser/field_selector_highlighted");
 	private static final int COLOR_FIELD_SIZE = 75;
 	protected boolean disabled = true;
 	private final int xStart, yStart;

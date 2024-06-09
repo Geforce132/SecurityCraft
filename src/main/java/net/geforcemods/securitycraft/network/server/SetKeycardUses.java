@@ -8,12 +8,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SetKeycardUses(BlockPos pos, int uses) implements CustomPacketPayload {
-	public static final Type<SetKeycardUses> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_keycard_uses"));
+	public static final Type<SetKeycardUses> TYPE = new Type<>(SecurityCraft.resLoc("set_keycard_uses"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetKeycardUses> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SetKeycardUses::pos,

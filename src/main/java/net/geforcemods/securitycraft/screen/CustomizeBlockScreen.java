@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
@@ -40,16 +41,16 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	//@formatter:off
 	private static final ResourceLocation[] TEXTURES = {
-			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize3.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize4.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
+			SecurityCraft.resLoc("textures/gui/container/customize0.png"),
+			SecurityCraft.resLoc("textures/gui/container/customize1.png"),
+			SecurityCraft.resLoc("textures/gui/container/customize2.png"),
+			SecurityCraft.resLoc("textures/gui/container/customize3.png"),
+			SecurityCraft.resLoc("textures/gui/container/customize4.png"),
+			SecurityCraft.resLoc("textures/gui/container/customize5.png")
 	};
 	//@formatter:on
-	private static final ResourceLocation CONFIRM_SPRITE = new ResourceLocation("container/beacon/confirm");
-	private static final ResourceLocation CANCEL_SPRITE = new ResourceLocation("container/beacon/cancel");
+	private static final ResourceLocation CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
+	private static final ResourceLocation CANCEL_SPRITE = SecurityCraft.mcResLoc("container/beacon/cancel");
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];

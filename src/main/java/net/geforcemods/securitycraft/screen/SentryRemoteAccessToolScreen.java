@@ -32,13 +32,13 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SentryRemoteAccessToolScreen extends Screen {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
-	private static final ResourceLocation CAMOUFLAGE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/camouflage");
-	private static final ResourceLocation AGGRESSIVE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/aggressive");
-	private static final ResourceLocation IDLE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/idle");
-	private static final ResourceLocation ATTACK_HOSTILE_AND_PLAYERS_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/attack_hostile_and_players");
-	private static final ResourceLocation ATTACK_HOSTILE_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/attack_hostile");
-	private static final ResourceLocation ATTACK_PLAYERS_SPRITE = new ResourceLocation(SecurityCraft.MODID, "sentry/attack_players");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/srat.png");
+	private static final ResourceLocation CAMOUFLAGE_SPRITE = SecurityCraft.resLoc("sentry/camouflage");
+	private static final ResourceLocation AGGRESSIVE_SPRITE = SecurityCraft.resLoc("sentry/aggressive");
+	private static final ResourceLocation IDLE_SPRITE = SecurityCraft.resLoc("sentry/idle");
+	private static final ResourceLocation ATTACK_HOSTILE_AND_PLAYERS_SPRITE = SecurityCraft.resLoc("sentry/attack_hostile_and_players");
+	private static final ResourceLocation ATTACK_HOSTILE_SPRITE = SecurityCraft.resLoc("sentry/attack_hostile");
+	private static final ResourceLocation ATTACK_PLAYERS_SPRITE = SecurityCraft.resLoc("sentry/attack_players");
 	private final Component modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private Button[][] guiButtons = new Button[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)

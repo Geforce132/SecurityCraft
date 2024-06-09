@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
@@ -35,8 +36,8 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocketManagerMenu> implements IHasExtraAreas {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager.png");
-	private static final ResourceLocation TEXTURE_STORAGE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_storage.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_pocket_manager.png");
+	private static final ResourceLocation TEXTURE_STORAGE = SecurityCraft.resLoc("textures/gui/container/block_pocket_manager_storage.png");
 	private static final ItemStack BLOCK_POCKET_WALL = new ItemStack(SCContent.BLOCK_POCKET_WALL.get());
 	private static final ItemStack REINFORCED_CHISELED_CRYSTAL_QUARTZ = new ItemStack(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get());
 	private static final ItemStack REINFORCED_CRYSTAL_QUARTZ_PILLAR = new ItemStack(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get());

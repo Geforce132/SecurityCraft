@@ -7,6 +7,7 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,8 +31,8 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	private static final Quaternionf POSITIVE_Y_90 = Axis.YP.rotationDegrees(90.0F);
 	private static final Quaternionf NEGATIVE_Y_90 = Axis.YN.rotationDegrees(90.0F);
 	private static final Quaternionf POSITIVE_X_180 = Axis.XP.rotationDegrees(180.0F);
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera.png");
-	private static final ResourceLocation BEING_VIEWED_TEXTURE = new ResourceLocation("securitycraft:textures/block/security_camera_viewing.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/security_camera.png");
+	private static final ResourceLocation BEING_VIEWED_TEXTURE = SecurityCraft.resLoc("textures/block/security_camera_viewing.png");
 	private final SecurityCameraModel model;
 
 	public SecurityCameraRenderer(BlockEntityRendererProvider.Context ctx) {
@@ -82,7 +84,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		else
 			model.cameraRotationPoint2.visible = false;
 
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1.0F, r, g, b));
 		model.cameraRotationPoint2.visible = true;
 	}
 }
