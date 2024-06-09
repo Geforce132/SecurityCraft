@@ -7,6 +7,7 @@
 - New: Server config option "passcode_check_cooldown" to configure the time that needs to pass between two separate attempts from a player to enter a passcode
 - New: Secure Redstone Interface for owner-restricted redstone signal transfer
 - New: Operators in creative mode can now teleport to a camera via the camera monitor
+- New: The Reinforced Cobweb now supports the weaving effect
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
@@ -49,7 +50,7 @@
 - Fix: The Block Pocket Manager's storage does not persist through world reloads
 - Fix: Potential crash in SaltData (ConcurrentModificationException)
 - Fix: Crash when Laser Block/Inventory Scanner ranges are set high
-- Fix: Players are able to mount Security Cameras that have been shut down by an EMP from another mod
+- Fix: Players are able to mount security cameras that have been shut down by an EMP from another mod
 - Fix: A Portable Radar configured to not send repeating messages still repeats messages when multiple players are in its range
 - Fix: Mine remote access tools automatically remove positions of mines that are no longer in the world from their list
 - Fix: Some reinforced blocks can conduct redstone while their vanilla counterpart cannot do so
