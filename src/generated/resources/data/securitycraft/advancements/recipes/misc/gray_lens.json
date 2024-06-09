@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:yellow_lens"
+        "recipe": "securitycraft:gray_lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:yellow_lens"
+      "securitycraft:gray_lens"
     ]
   }
 }

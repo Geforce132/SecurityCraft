@@ -40,7 +40,7 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	protected final void buildRecipes(RecipeOutput recipeOutput) {
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
-		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe::new).save(recipeOutput, "limited_use_keycards");
+		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe::new).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "limited_use_keycards"));
 
 		//@formatter:off
 		//shaped recipes
@@ -1436,7 +1436,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" P")
 		.define('P', pane)
 		.unlockedBy("has_lens", has(SCContent.LENS))
-		.save(recipeOutput, new ResourceLocation(((DyeItem) dye).getDyeColor().getName() + "_lens"));
+		.save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, ((DyeItem) dye).getDyeColor().getName() + "_lens"));
 		//@formatter:on
 	}
 

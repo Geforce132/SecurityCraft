@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:orange_lens"
+        "recipe": "securitycraft:black_lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:orange_lens"
+      "securitycraft:black_lens"
     ]
   }
 }

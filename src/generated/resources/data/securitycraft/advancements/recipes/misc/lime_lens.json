@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:white_lens"
+        "recipe": "securitycraft:lime_lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:white_lens"
+      "securitycraft:lime_lens"
     ]
   }
 }
