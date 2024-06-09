@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -97,7 +96,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
-		previousChest = SecurityCraft.mcResLoc(tag.getString("previous_chest"));
+		previousChest = ResourceLocation.parse(tag.getString("previous_chest"));
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);

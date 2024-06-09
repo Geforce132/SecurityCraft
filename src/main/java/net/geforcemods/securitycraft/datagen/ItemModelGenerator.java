@@ -218,7 +218,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder flatReinforcedItem(Block block, String texturePath) {
-		return singleTexture(name(block), mcLoc("item/generated"), "layer0", SecurityCraft.mcResLoc(texturePath));
+		return singleTexture(name(block), mcLoc("item/generated"), "layer0", ResourceLocation.parse(texturePath));
 	}
 
 	public ItemModelBuilder reinforcedStainedPane(Block block) {

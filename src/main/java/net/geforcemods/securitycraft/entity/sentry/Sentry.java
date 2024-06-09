@@ -685,7 +685,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	@Override
-	public boolean canBeLeashed() {//no leashing for sentry
+	public boolean canBeLeashed() { //no leashing for sentry
 		return false;
 	}
 

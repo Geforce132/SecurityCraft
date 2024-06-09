@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class SentryRenderer extends EntityRenderer<Sentry> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.mcResLoc(SecurityCraft.MODID + ":textures/entity/sentry.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/sentry.png");
 	private final SentryModel model;
 
 	public SentryRenderer(EntityRendererProvider.Context ctx) {

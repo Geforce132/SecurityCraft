@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class BulletRenderer extends EntityRenderer<Bullet> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.mcResLoc(SecurityCraft.MODID + ":textures/entity/bullet.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/bullet.png");
 	private final BulletModel model;
 
 	public BulletRenderer(EntityRendererProvider.Context ctx) {
