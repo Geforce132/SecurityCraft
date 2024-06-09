@@ -16,10 +16,12 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
+import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
@@ -39,8 +41,8 @@ public class CameraMonitorScreen extends Screen {
 	private CameraMonitorItem cameraMonitor;
 	private CompoundTag nbtTag;
 	private CameraButton[] cameraButtons = new CameraButton[10];
-	private CameraButton[] unbindButtons = new CameraButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
+	private TextHoverChecker tpHoverChecker;
 	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
@@ -70,36 +72,39 @@ public class CameraMonitorScreen extends Screen {
 		List<GlobalPos> views = CameraMonitorItem.getCameraPositions(nbtTag);
 		Level level = Minecraft.getInstance().level;
 		TextComponent xText = new TextComponent("x");
+		LocalPlayer player = Minecraft.getInstance().player;
 
 		for (int i = 0; i < 10; i++) {
 			int buttonId = i + 1;
 			int camID = buttonId + (page - 1) * 10;
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
-			CameraButton cameraButton = addRenderableWidget(new CameraButton(buttonId, x, y, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked));
-			CameraButton unbindButton = addRenderableWidget(new CameraButton(buttonId, x + 19, y - 8, 8, 8, xText, this::unbindButtonClicked));
+			int aboveCameraButton = y - 8;
 			GlobalPos view = views.get(camID - 1);
+			CameraButton cameraButton = addRenderableWidget(new CameraButton(buttonId, x, y, 20, 20, TextComponent.EMPTY, this::cameraButtonClicked));
+			CameraButton unbindButton = addRenderableWidget(new CameraButton(buttonId, x + 19, aboveCameraButton, 8, 8, xText, this::unbindButtonClicked));
 
 			cameraButtons[i] = cameraButton;
-			unbindButtons[i] = unbindButton;
 			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(new TextComponent("" + camID)));
 
 			if (view != null) {
+				BlockPos pos = view.pos();
+
 				if (!view.dimension().equals(level.dimension())) {
 					hoverCheckers[i] = new HoverChecker(cameraButton);
 					cameraViewDim[i] = view.dimension().location();
 				}
 
-				cameraBEs[i] = level.getBlockEntity(view.pos()) instanceof SecurityCameraBlockEntity camera ? camera : null;
+				cameraBEs[i] = level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity camera ? camera : null;
 				hoverCheckers[i] = new HoverChecker(cameraButton);
 
 				if (cameraBEs[i] != null) {
-					BlockState state = level.getBlockState(view.pos());
+					BlockState state = level.getBlockState(pos);
 
 					if (cameraBEs[i].isDisabled() || cameraBEs[i].isShutDown())
 						cameraButton.active = false;
 
-					if (state.getSignal(level, view.pos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
+					if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 						if (!cameraBEs[i].isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
 						else
@@ -107,6 +112,16 @@ public class CameraMonitorScreen extends Screen {
 					}
 					else
 						redstoneModuleStates[i] = CameraRedstoneModuleState.ACTIVATED;
+				}
+
+				//op check is done on the server through the command
+				if (player.isCreative()) {
+					Button tpButton = addRenderableWidget(new ExtendedButton(x, aboveCameraButton, 8, 8, TextComponent.EMPTY, b -> {
+						player.chat(String.format("/execute in %s run tp %s %s %s", view.dimension().location(), pos.getX(), pos.getY(), pos.getZ()));
+						minecraft.setScreen(null);
+					}));
+
+					tpHoverChecker = new TextHoverChecker(tpButton, new TranslatableComponent("chat.coordinates.tooltip"));
 				}
 			}
 			else {
@@ -157,6 +172,9 @@ public class CameraMonitorScreen extends Screen {
 				}
 			}
 		}
+
+		if (tpHoverChecker != null && tpHoverChecker.checkHover(mouseX, mouseY))
+			renderTooltip(pose, tpHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	private void cameraButtonClicked(Button button) {
