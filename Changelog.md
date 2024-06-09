@@ -8,6 +8,7 @@
 - New: Secure Redstone Interface for owner-restricted redstone signal transfer
 - New: Operators in creative mode can now teleport to a camera via the camera monitor
 - New: The Reinforced Cobweb now supports the weaving effect
+- New: The Trophy System can now target wind charges
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks

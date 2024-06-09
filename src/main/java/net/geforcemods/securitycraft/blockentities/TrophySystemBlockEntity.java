@@ -90,6 +90,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		projectileFilter.put(EntityType.SNOWBALL, true);
 		projectileFilter.put(EntityType.FIREWORK_ROCKET, true);
 		projectileFilter.put(EntityType.PIG, false); //modded projectiles
+		projectileFilter.put(EntityType.BREEZE_WIND_CHARGE, true);
+		projectileFilter.put(EntityType.WIND_CHARGE, true);
 	}
 
 	@Override
