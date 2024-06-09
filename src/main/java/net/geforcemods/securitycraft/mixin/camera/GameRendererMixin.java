@@ -15,6 +15,7 @@ import com.mojang.blaze3d.platform.Window;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -45,7 +46,7 @@ public class GameRendererMixin {
 	 * when the GUI is hidden with F1
 	 */
 	@Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Options;hideGui:Z", opcode = Opcodes.GETFIELD))
-	private void securitycraft$renderCameraTint(float partialTicks, long nanoTime, boolean renderLevel, CallbackInfo ci, @Local GuiGraphics guiGraphics) {
+	private void securitycraft$renderCameraTint(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci, @Local GuiGraphics guiGraphics) {
 		if (minecraft.cameraEntity instanceof SecurityCamera) {
 			Level level = minecraft.level;
 			BlockPos pos = minecraft.cameraEntity.blockPosition();
