@@ -731,6 +731,7 @@ securitycraft.subtitle.get_item=物品获取
 securitycraft.subtitle.lock=容器上锁
 securitycraft.subtitle.ping=声波安全系统 Ping
 securitycraft.subtitle.taserFire=泰瑟枪开火
+securitycraft.teleport=点此传送
 tile.securitycraft:alarm.name=报警器
 tile.securitycraft:blockPocketManager.name=方块领域管理器
 tile.securitycraft:blockPocketWall.name=方块领域墙

@@ -719,6 +719,7 @@ securitycraft.subtitle.get_item=Oggetto preso!
 securitycraft.subtitle.lock=Il contenitore si sta bloccando
 securitycraft.subtitle.ping=Ping del sistema di sicurezza sonico
 securitycraft.subtitle.taserFire=Lo storditore sta sparando
+securitycraft.teleport=Fai clic per teletrasportarti
 tile.securitycraft:alarm.name=Allarme
 tile.securitycraft:blockPocketManager.name=Gestore del blocco tascabile
 tile.securitycraft:blockPocketWall.name=Muro di blocco tascabile

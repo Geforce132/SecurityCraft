@@ -752,6 +752,7 @@ securitycraft.subtitle.get_item=Item gotten
 securitycraft.subtitle.lock=Container locking
 securitycraft.subtitle.ping=Sonic Security System pings
 securitycraft.subtitle.taserFire=Taser firing
+securitycraft.teleport=Click to teleport
 tile.securitycraft:alarm.name=Alarm
 tile.securitycraft:blockPocketManager.name=Block Pocket Manager
 tile.securitycraft:blockPocketWall.name=Block Pocket Wall

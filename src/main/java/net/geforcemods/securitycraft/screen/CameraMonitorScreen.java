@@ -12,10 +12,13 @@ import net.geforcemods.securitycraft.misc.CameraView;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
+import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
+import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -32,8 +35,8 @@ public class CameraMonitorScreen extends GuiContainer {
 	private CameraMonitorItem cameraMonitor;
 	private NBTTagCompound nbtTag;
 	private GuiButton[] cameraButtons = new GuiButton[10];
-	private GuiButton[] unbindButtons = new GuiButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
+	private StringHoverChecker[] tpHoverCheckers = new StringHoverChecker[10];
 	private SecurityCameraBlockEntity[] cameraTEs = new SecurityCameraBlockEntity[10];
 	private int[] cameraViewDim = new int[10];
 	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
@@ -59,40 +62,43 @@ public class CameraMonitorScreen extends GuiContainer {
 		GuiButton nextPageButton = new GuiButton(0, width / 2 + 5, height / 2 + 57, 20, 20, ">");
 		List<CameraView> views = CameraMonitorItem.getCameraPositions(nbtTag);
 		World world = Minecraft.getMinecraft().world;
+		EntityPlayerSP player = Minecraft.getMinecraft().player;
 
 		buttonList.add(prevPageButton);
 		buttonList.add(nextPageButton);
 
 		for (int i = 0; i < 10; i++) {
 			int buttonId = i + 1;
+			int camID = (buttonId + ((page - 1) * 10));
 			int x = guiLeft + 18 + (i % 5) * 30;
 			int y = guiTop + 30 + (i / 5) * 55;
-			int camID = (buttonId + ((page - 1) * 10));
-			GuiButton cameraButton = new GuiButton(buttonId, x, y, 20, 20, "#" + camID);
-			GuiButton unbindButton = new GuiButton(buttonId + 10, x + 19, y - 8, 8, 8, "x");
+			int aboveCameraButton = y - 8;
 			CameraView view = views.get(camID - 1);
+			GuiButton cameraButton = new GuiButton(buttonId, x, y, 20, 20, "#" + camID);
+			GuiButton unbindButton = new GuiButton(buttonId + 10, x + 19, aboveCameraButton, 8, 8, "x");
 
 			cameraButtons[i] = cameraButton;
-			unbindButtons[i] = unbindButton;
 			buttonList.add(cameraButton);
 			buttonList.add(unbindButton);
 
 			if (view != null) {
+				BlockPos pos = view.getPos();
+
 				if (view.getDimension() != Minecraft.getMinecraft().player.dimension)
 					cameraViewDim[i] = view.getDimension();
 
-				TileEntity te = world.getTileEntity(view.getPos());
+				TileEntity te = world.getTileEntity(pos);
 
 				cameraTEs[i] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
 				hoverCheckers[i] = new HoverChecker(cameraButton);
 
 				if (cameraTEs[i] != null) {
-					IBlockState state = world.getBlockState(view.getPos());
+					IBlockState state = world.getBlockState(pos);
 
 					if (cameraTEs[i].isDisabled() || cameraTEs[i].isShutDown())
 						cameraButton.enabled = false;
 
-					if (state.getWeakPower(world, view.getPos(), state.getValue(SecurityCameraBlock.FACING)) == 0) {
+					if (state.getWeakPower(world, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 						if (!cameraTEs[i].isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
 						else
@@ -100,6 +106,20 @@ public class CameraMonitorScreen extends GuiContainer {
 					}
 					else
 						redstoneModuleStates[i] = CameraRedstoneModuleState.ACTIVATED;
+				}
+
+				//op check is done on the server through the command
+				if (player.isCreative()) {
+					GuiButton tpButton = addButton(new ClickButton(buttonId + 20, x, aboveCameraButton, 8, 8, "", b -> {
+						if (player.dimension == view.getDimension())
+							player.sendChatMessage(String.format("/tp @p %s %s %s", pos.getX(), pos.getY(), pos.getZ()));
+						else
+							player.sendChatMessage(String.format("/forge setdim @p %s %s %s %s", view.getDimension(), pos.getX(), pos.getY(), pos.getZ()));
+
+						mc.displayGuiScreen(null);
+					}));
+
+					tpHoverCheckers[i] = new StringHoverChecker(tpButton, Utils.localize("securitycraft.teleport").getFormattedText());
 				}
 			}
 			else {
@@ -132,6 +152,11 @@ public class CameraMonitorScreen extends GuiContainer {
 					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(Utils.localize("gui.securitycraft:monitor.cameraName").getFormattedText().replace("#", cameraTEs[i].getName()), 150), mouseX, mouseY, mc.fontRenderer);
 			}
 		}
+
+		for (int i = 0; i < tpHoverCheckers.length; i++) {
+			if (tpHoverCheckers[i] != null && tpHoverCheckers[i].checkHover(mouseX, mouseY))
+				drawHoveringText(tpHoverCheckers[i].getName(), mouseX, mouseY);
+		}
 	}
 
 	@Override
@@ -157,6 +182,8 @@ public class CameraMonitorScreen extends GuiContainer {
 			SecurityCraft.network.sendToServer(new MountCamera(cameraPos));
 			Minecraft.getMinecraft().player.closeScreen();
 		}
+		else if (button instanceof ClickButton)
+			((ClickButton) button).onClick();
 		else {
 			int camID = (button.id - 10) + ((page - 1) * 10);
 			int i = (camID - 1) % 10;

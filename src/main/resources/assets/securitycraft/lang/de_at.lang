@@ -742,6 +742,7 @@ securitycraft.subtitle.get_item=Item bekommen
 securitycraft.subtitle.lock=Behälter wird verschlossen
 securitycraft.subtitle.ping=Schallsicherheitssystem pingt
 securitycraft.subtitle.taserFire=Taser wird gefeuert
+securitycraft.teleport=Klicke zum Teleportieren
 tile.securitycraft:alarm.name=Alarm
 tile.securitycraft:blockPocketManager.name=Blocktaschenverwalter
 tile.securitycraft:blockPocketWall.name=Blocktaschenwand

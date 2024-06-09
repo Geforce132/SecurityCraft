@@ -712,6 +712,7 @@ securitycraft.subtitle.get_item=Objet obtenu !
 securitycraft.subtitle.lock=Verrouillage du conteneur
 securitycraft.subtitle.ping=Ping du système de sécurité sonique
 securitycraft.subtitle.taserFire=Tir de taser
+securitycraft.teleport=Cliquez pour vous y téléporter
 tile.securitycraft:alarm.name=Alarme
 tile.securitycraft:blockPocketManager.name=Gestionnaire de poche bloc
 tile.securitycraft:blockPocketWall.name=Mur de poche bloc

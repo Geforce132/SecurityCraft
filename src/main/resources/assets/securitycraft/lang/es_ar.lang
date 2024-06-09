@@ -712,6 +712,7 @@ securitycraft.subtitle.get_item=¡Objeto conseguido!
 securitycraft.subtitle.lock=Contenedor Cámara acercándose
 securitycraft.subtitle.ping=Sistema de seguridad sónico suena
 securitycraft.subtitle.taserFire=Disparo de táser
+securitycraft.teleport=Haz clic para teletransportarte
 tile.securitycraft:alarm.name=Alarma
 tile.securitycraft:blockPocketManager.name=Gestor de bolsillo de bloques
 tile.securitycraft:blockPocketWall.name=Muro de bolsillo de bloques
