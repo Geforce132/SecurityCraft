@@ -7,9 +7,17 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 
-public class SmallXButton extends Button {
-	public SmallXButton(int xPos, int yPos, OnPress handler) {
-		super(xPos, yPos, 8, 8, Component.literal("x"), handler, DEFAULT_NARRATION);
+public class SmallButton extends Button {
+	private SmallButton(int xPos, int yPos, Component text, OnPress handler) {
+		super(xPos, yPos, 8, 8, text, handler, DEFAULT_NARRATION);
+	}
+
+	public static SmallButton create(int xPos, int yPos, Component text, OnPress handler) {
+		return new SmallButton(xPos, yPos, text, handler);
+	}
+
+	public static SmallButton createWithX(int xPos, int yPos, OnPress handler) {
+		return new SmallButton(xPos, yPos, Component.literal("x"), handler);
 	}
 
 	@Override
