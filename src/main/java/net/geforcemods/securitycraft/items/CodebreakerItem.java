@@ -35,15 +35,15 @@ public class CodebreakerItem extends Item {
 				stack.setTagCompound(new NBTTagCompound());
 
 			NBTTagCompound tag = stack.getTagCompound();
+			boolean isPlayer = entity instanceof EntityPlayer;
 
-			if (CodebreakerItem.wasRecentlyUsed(stack))
+			if ((!isPlayer || !((EntityPlayer) entity).isCreative()) && CodebreakerItem.wasRecentlyUsed(stack))
 				return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;
 
-			if (!(entity instanceof EntityPlayer))
+			if (!isPlayer)
 				return 0.0F;
 
-			EntityPlayer player = (EntityPlayer) entity;
-			float state = LinkingStateItemPropertyHandler.getLinkingState(world, player, stack, (_level, pos) -> _level.getTileEntity(pos) instanceof ICodebreakable, 0, null, false, (_tag, pos) -> true);
+			float state = LinkingStateItemPropertyHandler.getLinkingState(world, (EntityPlayer) entity, stack, (_level, pos) -> _level.getTileEntity(pos) instanceof ICodebreakable, 0, null, false, (_tag, pos) -> true);
 
 			if (state == LinkingStateItemPropertyHandler.LINKED_STATE || state == LinkingStateItemPropertyHandler.NOT_LINKED_STATE)
 				return 0.25F;
@@ -74,7 +74,7 @@ public class CodebreakerItem extends Item {
 							if (!codebreaker.hasTagCompound())
 								codebreaker.setTagCompound(new NBTTagCompound());
 
-							if (wasRecentlyUsed(codebreaker))
+							if (!player.isCreative() && wasRecentlyUsed(codebreaker))
 								return ActionResult.newResult(EnumActionResult.PASS, codebreaker);
 
 							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;

@@ -111,7 +111,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 				if (!stack.hasTagCompound())
 					stack.setTagCompound(new NBTTagCompound());
 
-				if (CodebreakerItem.wasRecentlyUsed(stack))
+				if (!player.isCreative() && (isOwnedBy(player) || CodebreakerItem.wasRecentlyUsed(stack)))
 					return false;
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;

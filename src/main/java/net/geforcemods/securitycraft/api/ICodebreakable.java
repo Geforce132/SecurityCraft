@@ -61,7 +61,7 @@ public interface ICodebreakable {
 				if (!codebreaker.hasTagCompound())
 					codebreaker.setTagCompound(new NBTTagCompound());
 
-				if (CodebreakerItem.wasRecentlyUsed(codebreaker))
+				if (!player.isCreative() && CodebreakerItem.wasRecentlyUsed(codebreaker))
 					return false;
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
