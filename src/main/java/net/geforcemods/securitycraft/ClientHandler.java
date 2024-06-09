@@ -459,15 +459,15 @@ public class ClientHandler {
 		});
 		ItemModelsProperties.register(SCContent.CODEBREAKER.get(), CodebreakerItem.STATE_PROPERTY, (stack, level, entity) -> {
 			CompoundNBT tag = stack.getTag();
+			boolean isPlayer = entity instanceof PlayerEntity;
 
-			if (CodebreakerItem.wasRecentlyUsed(stack))
+			if ((!isPlayer || !((PlayerEntity) entity).isCreative()) && CodebreakerItem.wasRecentlyUsed(stack))
 				return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;
 
-			if (!(entity instanceof PlayerEntity))
+			if (!isPlayer)
 				return 0.0F;
 
-			PlayerEntity player = (PlayerEntity) entity;
-			float state = getLinkingState(level, player, stack, (_level, pos) -> _level.getBlockEntity(pos) instanceof ICodebreakable, 0, null, false, (_tag, pos) -> true);
+			float state = getLinkingState(level, (PlayerEntity) entity, stack, (_level, pos) -> _level.getBlockEntity(pos) instanceof ICodebreakable, 0, null, false, (_tag, pos) -> true);
 
 			if (state == LINKED_STATE || state == NOT_LINKED_STATE)
 				return 0.25F;

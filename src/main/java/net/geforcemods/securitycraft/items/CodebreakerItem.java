@@ -55,7 +55,7 @@ public class CodebreakerItem extends Item {
 						codebreaker.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 
 						if (!level.isClientSide) {
-							if (wasRecentlyUsed(codebreaker))
+							if (!player.isCreative() && wasRecentlyUsed(codebreaker))
 								return ActionResult.pass(codebreaker);
 
 							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
