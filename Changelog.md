@@ -6,6 +6,7 @@
 - New: Damage Type Tag "securitycraft:security_sea_boat_vulnerable_to" to define which damage types the Security Sea Boat can be destroyed by
 - New: Server config option "passcode_check_cooldown" to configure the time that needs to pass between two separate attempts from a player to enter a passcode
 - New: Secure Redstone Interface for owner-restricted redstone signal transfer
+- New: Operators in creative mode can now teleport to a camera via the camera monitor
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks
