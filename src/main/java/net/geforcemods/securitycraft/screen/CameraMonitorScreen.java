@@ -46,7 +46,7 @@ public class CameraMonitorScreen extends Screen {
 	private CompoundNBT nbtTag;
 	private CameraButton[] cameraButtons = new CameraButton[10];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
-	private TextHoverChecker tpHoverChecker;
+	private TextHoverChecker[] tpHoverCheckers = new TextHoverChecker[10];
 	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
@@ -125,7 +125,7 @@ public class CameraMonitorScreen extends Screen {
 						minecraft.setScreen(null);
 					}));
 
-					tpHoverChecker = new TextHoverChecker(tpButton, new TranslationTextComponent("chat.coordinates.tooltip"));
+					tpHoverCheckers[i] = new TextHoverChecker(tpButton, new TranslationTextComponent("chat.coordinates.tooltip"));
 				}
 			}
 			else {
@@ -177,8 +177,10 @@ public class CameraMonitorScreen extends Screen {
 			}
 		}
 
-		if (tpHoverChecker != null && tpHoverChecker.checkHover(mouseX, mouseY))
-			renderTooltip(pose, tpHoverChecker.getName(), mouseX, mouseY);
+		for (int i = 0; i < tpHoverCheckers.length; i++) {
+			if (tpHoverCheckers[i] != null && tpHoverCheckers[i].checkHover(mouseX, mouseY))
+				renderTooltip(pose, tpHoverCheckers[i].getName(), mouseX, mouseY);
+		}
 	}
 
 	protected void cameraButtonClicked(Button button) {
