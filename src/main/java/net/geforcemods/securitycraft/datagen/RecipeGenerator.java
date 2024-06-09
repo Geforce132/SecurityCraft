@@ -18,6 +18,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.FastColor;
@@ -1422,7 +1423,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(dye)
 		.requires(SCTags.Items.REINFORCED_WOOL_CARPETS)
 		.unlockedBy("has_wool_carpet", has(SCTags.Items.REINFORCED_WOOL_CARPETS))
-		.save(recipeOutput, SecurityCraft.mcResLoc(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
+		.save(recipeOutput, ResourceLocation.parse(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
 		//@formatter:on
 	}
 
