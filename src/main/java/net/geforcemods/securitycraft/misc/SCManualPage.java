@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -69,7 +69,7 @@ public class SCManualPage {
 			Block block = ((ItemBlock) item).getBlock();
 
 			if (block.hasTileEntity(block.getDefaultState())) {
-				TileEntity te = block.createTileEntity(Minecraft.getMinecraft().world, block.getDefaultState());
+				TileEntity te = block.createTileEntity(SecurityCraft.proxy.getClientLevel(), block.getDefaultState());
 
 				te.blockType = block;
 				return te;
