@@ -549,6 +549,13 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @return The translation key to use for the description
 	 */
 	public default String getModuleDescriptionId(String denotation, ModuleType module) {
+		if (module == ModuleType.DISGUISE)
+			return "module.generic.disguise_module.description";
+
+		return getBaseModuleDescriptionId(denotation, module);
+	}
+
+	public static String getBaseModuleDescriptionId(String denotation, ModuleType module) {
 		return "module." + denotation + "." + module.getTranslationKey().substring(5).replace("securitycraft.", "") + ".description";
 	}
 }

@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
@@ -685,6 +686,11 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return new ModuleType[] {
 				ModuleType.DISGUISE, ModuleType.ALLOWLIST, ModuleType.STORAGE
 		};
+	}
+
+	@Override
+	public String getModuleDescriptionId(String denotation, ModuleType module) {
+		return IModuleInventory.getBaseModuleDescriptionId(denotation, module); //the disguise module description is generic and doesn't apply to the block pocket manager
 	}
 
 	@Override
