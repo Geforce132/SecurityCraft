@@ -125,7 +125,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			if (chance < 0.0D)
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			else {
-				if (isOwnedBy(player) || CodebreakerItem.wasRecentlyUsed(stack))
+				if (!player.isCreative() && (isOwnedBy(player) || CodebreakerItem.wasRecentlyUsed(stack)))
 					return InteractionResult.PASS;
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
