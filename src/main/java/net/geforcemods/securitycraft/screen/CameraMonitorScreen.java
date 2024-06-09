@@ -104,7 +104,10 @@ public class CameraMonitorScreen extends Screen {
 
 				//op check is done on the server through the command
 				if (player.isCreative()) {
-					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), b -> player.connection.sendUnsignedCommand(String.format("execute in %s run tp %s %s %s", view.dimension().location(), pos.getX(), pos.getY(), pos.getZ()))));
+					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), b -> {
+						player.connection.sendUnsignedCommand(String.format("execute in %s run tp %s %s %s", view.dimension().location(), pos.getX(), pos.getY(), pos.getZ()));
+						minecraft.setScreen(null);
+					}));
 
 					tpButton.setTooltip(Tooltip.create(Component.translatable("chat.coordinates.tooltip")));
 				}
