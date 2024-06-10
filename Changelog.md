@@ -58,6 +58,7 @@
 - Fix: The behaviour of reinforced pistons sometimes deviates from vanilla piston behaviour in advanced redstone contraptions
 - Fix: SecurityCraft's doors, trapdoors and fence gates are sometimes erroneously in their open state when placed down
 - Fix: The Codebreaker's cooldown still applies to players in creative mode
+- Fix: The Sentry is not immune to infested/oozing, causing unintentional side effects
 - Misc.: The minimum required NeoForge version is now 20.6.95-beta
 
 --------------------------Changelog for v1.9.9-beta2 of SecurityCraft--------------------------
