@@ -127,9 +127,8 @@ public class UniversalBlockReinforcerItem extends Item {
 		}
 	}
 
-	//TODO: make sure this item can't be enchanted with mending
-	//	@Override
-	//	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-	//		return book.get(DataComponents.STORED_ENCHANTMENTS).getLevel(Enchantments.MENDING) == 0;
-	//	}
+	@Override
+	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
+		return book.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).keySet().stream().noneMatch(e -> e.is(Enchantments.MENDING));
+	}
 }

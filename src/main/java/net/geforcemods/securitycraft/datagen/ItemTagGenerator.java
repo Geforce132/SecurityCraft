@@ -135,6 +135,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.TERRACOTTA).addTag(SCTags.Items.REINFORCED_TERRACOTTA);
 		tag(ItemTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem(), SCContent.KEYPAD_TRAPDOOR.get().asItem(), SCContent.SCANNER_TRAPDOOR.get().asItem());
 		tag(ItemTags.VANISHING_ENCHANTABLE).add(
+				SCContent.BRIEFCASE.get(),
 				SCContent.WIRE_CUTTERS.get(),
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get(),
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get(),
