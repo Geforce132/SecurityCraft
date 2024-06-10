@@ -6,17 +6,15 @@ import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
+public class DamageTypeTagGenerator extends DamageTypeTagsProvider {
 	protected DamageTypeTagGenerator(PackOutput output, CompletableFuture<Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-		super(output, Registries.DAMAGE_TYPE, lookupProvider, SecurityCraft.MODID, existingFileHelper);
+		super(output, lookupProvider, SecurityCraft.MODID, existingFileHelper);
 	}
 
 	@Override
