@@ -58,3 +58,4 @@
 - Fix: The behaviour of reinforced pistons sometimes deviates from vanilla piston behaviour in advanced redstone contraptions
 - Fix: SecurityCraft's doors, trapdoors and fence gates are sometimes erroneously in their open state when placed down
 - Fix: The Codebreaker's cooldown still applies to players in creative mode
+- Fix: The Sentry is not immune to infested/oozing, causing unintentional side effects
