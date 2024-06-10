@@ -35,7 +35,7 @@ public class ModuleItemContainer implements Container {
 	}
 
 	public void load() {
-		module.get(DataComponents.CONTAINER).copyInto(moduleInventory);
+		module.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(moduleInventory);
 	}
 
 	public void save() {

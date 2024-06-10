@@ -204,7 +204,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if (item != null && !item.isEmpty() && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
 			NonNullList<ItemStack> list = NonNullList.withSize(27, ItemStack.EMPTY);
 
-			item.get(DataComponents.CONTAINER).copyInto(list);
+			item.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(list);
 
 			for (int i = 0; i < list.size(); i++) {
 				ItemStack itemInChest = list.get(i);

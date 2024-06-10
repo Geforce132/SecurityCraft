@@ -328,7 +328,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
-		stack.get(SCContent.BOUND_SENTRIES).remove(SCContent.BOUND_SENTRIES, stack, pos);
+		stack.getOrDefault(SCContent.BOUND_SENTRIES, SentryPositions.DEFAULT).remove(SCContent.BOUND_SENTRIES, stack, pos);
 		PacketDistributor.sendToServer(new RemoveSentryFromSRAT(pos));
 	}
 

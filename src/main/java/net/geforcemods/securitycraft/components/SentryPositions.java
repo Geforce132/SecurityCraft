@@ -27,6 +27,7 @@ public record SentryPositions(List<Entry> positions) implements GlobalPositionCo
 			GlobalPositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, MAX_SENTRIES, new Entry(DUMMY_GLOBAL_POS, Optional.empty())), SentryPositions::positions,
 			SentryPositions::new);
 	//@formatter:on
+	public static final SentryPositions DEFAULT = sized(MAX_SENTRIES);
 
 	public static SentryPositions sized(int size) {
 		return new SentryPositions(Arrays.asList(new Entry[size]));

@@ -40,7 +40,7 @@ public class ItemContainer implements Container {
 	}
 
 	public void load() {
-		containerStack.get(DataComponents.CONTAINER).copyInto(inventory);
+		containerStack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(inventory);
 	}
 
 	public void save() {

@@ -164,7 +164,7 @@ public class CameraMonitorScreen extends Screen {
 			Button cameraButton = cameraButtons[i];
 
 			PacketDistributor.sendToServer(new RemoveCameraTag(camera));
-			cameraMonitor.get(SCContent.BOUND_CAMERAS).remove(SCContent.BOUND_CAMERAS, cameraMonitor, camera);
+			cameraMonitor.getOrDefault(SCContent.BOUND_CAMERAS, GlobalPositions.sized(CameraMonitorItem.MAX_CAMERAS)).remove(SCContent.BOUND_CAMERAS, cameraMonitor, camera);
 			button.active = false;
 			cameraButton.active = false;
 			cameraButton.setTooltip(null);

@@ -2627,7 +2627,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(BOUND_MINES, GlobalPositions.sized(MineRemoteAccessToolItem.MAX_MINES))));
 	@HasManualPage
-	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(BOUND_SENTRIES, SentryPositions.sized(SentryPositions.MAX_SENTRIES))));
+	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(BOUND_SENTRIES, SentryPositions.DEFAULT)));
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> RIFT_STABILIZER_ITEM = ITEMS.register("rift_stabilizer", () -> new DoubleHighBlockItem(RIFT_STABILIZER.get(), itemProp()));
 	@HasManualPage
@@ -2721,7 +2721,7 @@ public class SCContent {
 
 	//modules
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(1).component(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY), ModuleType.DENYLIST, true, true));
+	public static final DeferredItem<ModuleItem> DENYLIST_MODULE = ITEMS.register("blacklist_module", () -> new ModuleItem(itemProp(1).component(LIST_MODULE_DATA, ListModuleData.EMPTY), ModuleType.DENYLIST, true, true));
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> DISGUISE_MODULE = ITEMS.register("disguise_module", () -> new ModuleItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY).component(SAVED_BLOCK_STATE, SavedBlockState.EMPTY), ModuleType.DISGUISE, false, true));
 	@HasManualPage
@@ -2733,7 +2733,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> STORAGE_MODULE = ITEMS.register("storage_module", () -> new ModuleItem(itemProp(1), ModuleType.STORAGE, false));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(1).component(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY), ModuleType.ALLOWLIST, true, true));
+	public static final DeferredItem<ModuleItem> ALLOWLIST_MODULE = ITEMS.register("whitelist_module", () -> new ModuleItem(itemProp(1).component(LIST_MODULE_DATA, ListModuleData.EMPTY), ModuleType.ALLOWLIST, true, true));
 	@HasManualPage
 	public static final DeferredItem<ModuleItem> SPEED_MODULE = ITEMS.register("speed_module", () -> new ModuleItem(itemProp(1), ModuleType.SPEED, false));
 

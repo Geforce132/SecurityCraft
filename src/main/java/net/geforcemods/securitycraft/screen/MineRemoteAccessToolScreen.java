@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.components.GlobalPositions;
+import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine.Action;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
@@ -196,7 +197,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
-		stack.get(SCContent.BOUND_MINES).remove(SCContent.BOUND_MINES, stack, pos);
+		stack.getOrDefault(SCContent.BOUND_MINES, GlobalPositions.sized(MineRemoteAccessToolItem.MAX_MINES)).remove(SCContent.BOUND_MINES, stack, pos);
 		PacketDistributor.sendToServer(new RemoveMineFromMRAT(pos));
 	}
 

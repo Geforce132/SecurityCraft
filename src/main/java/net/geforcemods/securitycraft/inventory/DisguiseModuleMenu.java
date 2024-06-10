@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -83,12 +84,12 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public BlockState getSavedState() {
-		return inventory.getModule().get(SCContent.SAVED_BLOCK_STATE).state();
+		return inventory.getModule().getOrDefault(SCContent.SAVED_BLOCK_STATE, SavedBlockState.EMPTY).state();
 	}
 
 	@Override
 	public StandingOrWallType getStandingOrWallType() {
-		return inventory.getModule().get(SCContent.SAVED_BLOCK_STATE).standingOrWallType();
+		return inventory.getModule().getOrDefault(SCContent.SAVED_BLOCK_STATE, SavedBlockState.EMPTY).standingOrWallType();
 	}
 
 	public ModuleItemContainer getInventory() {

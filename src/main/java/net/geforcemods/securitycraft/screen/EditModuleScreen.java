@@ -95,7 +95,7 @@ public class EditModuleScreen extends Screen {
 		clearButton = addRenderableWidget(new Button(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked, Button.DEFAULT_NARRATION));
 		playerList = addRenderableWidget(new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
 		teamList = addRenderableWidget(new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
-		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.get(SCContent.LIST_MODULE_DATA).affectEveryone(), newState -> module.get(SCContent.LIST_MODULE_DATA).updateAffectEveryone(module, newState), 0x404040));
+		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).affectEveryone(), newState -> module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).updateAffectEveryone(module, newState), 0x404040));
 
 		teamList.active = false;
 		editTeamsButton.active = !availableTeams.isEmpty();
@@ -128,7 +128,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.sendToServer(new SetListModuleData(module.get(SCContent.LIST_MODULE_DATA)));
+		PacketDistributor.sendToServer(new SetListModuleData(module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY)));
 	}
 
 	@Override

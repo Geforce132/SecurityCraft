@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 
 public class KeycardHolderItem extends Item {
@@ -50,6 +51,6 @@ public class KeycardHolderItem extends Item {
 	}
 
 	public static int getCardCount(ItemStack stack) {
-		return (int) stack.get(DataComponents.CONTAINER).stream().filter(item -> item.getItem() instanceof KeycardItem).count();
+		return (int) stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).stream().filter(item -> item.getItem() instanceof KeycardItem).count();
 	}
 }
