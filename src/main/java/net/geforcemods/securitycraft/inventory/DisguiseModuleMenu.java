@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.inventory;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
@@ -81,7 +79,6 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public ItemStack getStateStack() {
-		DefaultVertexFormat.POSITION_COLOR;
 		return slots.get(0).getItem();
 	}
 
