@@ -7,6 +7,8 @@ import java.util.Map;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
@@ -31,6 +33,7 @@ import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Half;
@@ -92,6 +95,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		horizontalBlock(SCContent.FURNACE_MINE.get(), mcBlock("furnace_side"), mcBlock("furnace_front"), mcBlock("furnace_top"));
 		horizontalBlock(SCContent.SMOKER_MINE.get(), mcBlock("smoker_side"), mcBlock("smoker_front"), mcBlock("smoker_top"));
 		horizontalBlock(SCContent.BLAST_FURNACE_MINE.get(), mcBlock("blast_furnace_side"), mcBlock("blast_furnace_front"), mcBlock("blast_furnace_top"));
+		secureRedstoneInterface();
 
 		simpleBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
 		simpleBlockWithRenderType(SCContent.REINFORCED_GLASS.get(), "cutout");
@@ -398,6 +402,25 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		models().reinforcedWallInventory(baseName + "_inventory", texture);
 	}
 
+	public void secureRedstoneInterface() {
+		Block block = SCContent.SECURE_REDSTONE_INTERFACE.get();
+
+		getVariantBuilder(block).forAllStatesExcept(state -> {
+			int x = getXRotationBasedOnFacing(state);
+			int y = getYRotationBasedOnFacing(state);
+			String baseName = blockTexture(block).toString();
+
+			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
+				baseName += "_sender";
+			else
+				baseName += "_receiver";
+
+			return new ConfiguredModel[] {
+					new ConfiguredModel(new UncheckedModelFile(baseName), x, y, false)
+			};
+		}, DisguisableBlock.WATERLOGGED);
+	}
+
 	public void simpleBlockWithRenderType(Block block, String renderType) {
 		simpleBlock(block, models().cubeAll(name(block), blockTexture(block)).renderType(renderType));
 	}
@@ -442,5 +465,22 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 
 	private String name(Block block) {
 		return Utils.getRegistryName(block).getPath();
+	}
+
+	private int getXRotationBasedOnFacing(BlockState state) {
+		return switch (state.getValue(BlockStateProperties.FACING)) {
+			case DOWN -> 180;
+			case UP -> 0;
+			default -> 90;
+		};
+	}
+
+	private int getYRotationBasedOnFacing(BlockState state) {
+		return switch (state.getValue(BlockStateProperties.FACING)) {
+			case EAST -> 90;
+			case SOUTH -> 180;
+			case WEST -> 270;
+			default -> 0;
+		};
 	}
 }
