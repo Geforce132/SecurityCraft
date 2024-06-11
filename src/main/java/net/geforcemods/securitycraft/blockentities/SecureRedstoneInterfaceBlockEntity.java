@@ -274,6 +274,13 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		}
 	}
 
+	public int getRedstonePowerOutput() {
+		if (!isSender() && !isDisabled())
+			return getPower();
+		else
+			return 0;
+	}
+
 	public boolean isProtectedSignal() {
 		return protectedSignal;
 	}
