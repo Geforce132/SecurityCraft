@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "lit=false,powered=false": {
+      "model": "securitycraft:block/reinforced_exposed_copper_bulb"
+    },
+    "lit=false,powered=true": {
+      "model": "securitycraft:block/reinforced_exposed_copper_bulb_powered"
+    },
+    "lit=true,powered=false": {
+      "model": "securitycraft:block/reinforced_exposed_copper_bulb_lit"
+    },
+    "lit=true,powered=true": {
+      "model": "securitycraft:block/reinforced_exposed_copper_bulb_lit_powered"
+    }
+  }
+}

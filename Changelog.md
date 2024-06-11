@@ -8,6 +8,7 @@
 - New: Secure Redstone Interface for owner-restricted redstone signal transfer
 - New: Operators in creative mode can now teleport to a camera via the camera monitor
 - New: The Trophy System can now target wind charges
+- New: Reinforced Blocks: Chiseled Copper, Exposed Chiseled Copper, Weathered Chiseled Copper, Oxidized Chiseled Copper, Copper Grate, Exposed Copper Grate, Weathered Copper Grate, Oxidized Copper Grate, Copper Bulb, Exposed Copper Bulb, Weathered Copper Bulb, Oxidized Copper Bulb, Tuff Stairs, Tuff Slab, Tuff Wall, Chiseled Tuff, Polished Tuff, Polished Tuff Stairs, Polished Tuff Slab, Polished Tuff Wall, Tuff Bricks, Tuff Brick Stairs, Tuff Brick Slab, Tuff Brick Wall, Chiseled Tuff Bricks
 - Change: The cameraSpeed client side config setting has been moved to be a per-block option, accessible with the Universal Block Modifier
 - Change: Some SecurityCraft tip messages have been reworded for clarity
 - Change: Increased suffocation damage inside reinforced blocks no longer affects non-player entities and players owning the reinforced blocks

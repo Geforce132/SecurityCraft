@@ -21,6 +21,9 @@
     "securitycraft:reinforced_cobbled_deepslate_wall",
     "securitycraft:reinforced_polished_deepslate_wall",
     "securitycraft:reinforced_deepslate_brick_wall",
-    "securitycraft:reinforced_deepslate_tile_wall"
+    "securitycraft:reinforced_deepslate_tile_wall",
+    "securitycraft:reinforced_tuff_wall",
+    "securitycraft:reinforced_polished_tuff_wall",
+    "securitycraft:reinforced_tuff_brick_wall"
   ]
 }

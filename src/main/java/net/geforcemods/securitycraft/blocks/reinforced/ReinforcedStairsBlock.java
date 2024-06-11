@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -62,6 +63,10 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	};
 	private final Block modelBlock;
 	private final BlockState modelState;
+
+	public ReinforcedStairsBlock(Block vB) {
+		this(SCContent.reinforcedCopy(vB), () -> vB);
+	}
 
 	public ReinforcedStairsBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);

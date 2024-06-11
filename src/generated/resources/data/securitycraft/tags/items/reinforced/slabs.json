@@ -41,6 +41,9 @@
     "securitycraft:reinforced_blackstone_slab",
     "securitycraft:reinforced_polished_blackstone_slab",
     "securitycraft:reinforced_polished_blackstone_brick_slab",
+    "securitycraft:reinforced_tuff_slab",
+    "securitycraft:reinforced_polished_tuff_slab",
+    "securitycraft:reinforced_tuff_brick_slab",
     "securitycraft:reinforced_crystal_quartz_slab",
     "securitycraft:reinforced_smooth_crystal_quartz_slab"
   ]

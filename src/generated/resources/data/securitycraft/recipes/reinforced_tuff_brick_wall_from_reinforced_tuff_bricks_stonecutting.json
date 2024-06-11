@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "securitycraft:reinforced_tuff_bricks"
+  },
+  "result": "securitycraft:reinforced_tuff_brick_wall"
+}

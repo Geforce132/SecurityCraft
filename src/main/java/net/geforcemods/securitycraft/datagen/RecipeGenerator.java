@@ -770,6 +770,12 @@ public class RecipeGenerator extends RecipeProvider {
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_RED_SANDSTONE_SLAB, SCContent.REINFORCED_CHISELED_RED_SANDSTONE);
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_SANDSTONE_SLAB, SCContent.REINFORCED_CHISELED_SANDSTONE);
 		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICK_SLAB, SCContent.REINFORCED_CHISELED_STONE_BRICKS);
+		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_CUT_COPPER_SLAB, SCContent.REINFORCED_CHISELED_COPPER);
+		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB, SCContent.REINFORCED_EXPOSED_CHISELED_COPPER);
+		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB, SCContent.REINFORCED_WEATHERED_CHISELED_COPPER);
+		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB, SCContent.REINFORCED_OXIDIZED_CHISELED_COPPER);
+		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_TUFF_BRICK_SLAB, SCContent.REINFORCED_CHISELED_TUFF_BRICKS);
+		addChiselingRecipe(recipeOutput, SCContent.REINFORCED_TUFF_SLAB, SCContent.REINFORCED_CHISELED_TUFF);
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL);
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL);
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL);
@@ -788,6 +794,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_WOOL);
 		addCompressingRecipe(recipeOutput, SCContent.REINFORCED_ICE, SCContent.REINFORCED_PACKED_ICE);
 		addCompressingRecipe(recipeOutput, SCContent.REINFORCED_PACKED_ICE, SCContent.REINFORCED_BLUE_ICE);
+		addCopperGrateRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_COPPER_GRATE);
+		addCopperGrateRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_COPPER_GRATE);
+		addCopperGrateRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_COPPER_GRATE);
+		addCopperGrateRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_COPPER_GRATE);
 		addFenceRecipe(recipeOutput, SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_FENCE);
 		addFenceRecipe(recipeOutput, SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_FENCE);
 		addFenceRecipe(recipeOutput, SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_FENCE);
@@ -943,6 +953,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_STONE, SCContent.REINFORCED_NORMAL_STONE_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_SLAB);
+		addSlabRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB);
@@ -1030,6 +1041,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_DEEPSLATE, SCContent.REINFORCED_POLISHED_DEEPSLATE_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_DIORITE, SCContent.REINFORCED_POLISHED_DIORITE_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_GRANITE, SCContent.REINFORCED_POLISHED_GRANITE_STAIRS);
+		addStairsRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_POLISHED_TUFF_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_PRISMARINE_BRICKS, SCContent.REINFORCED_PRISMARINE_BRICK_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_PRISMARINE, SCContent.REINFORCED_PRISMARINE_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_PURPUR_BLOCK, SCContent.REINFORCED_PURPUR_STAIRS);
@@ -1044,6 +1056,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_STAIRS);
+		addStairsRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_STAIRS);
+		addStairsRecipe(recipeOutput, SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS);
 		addStairsRecipe(recipeOutput, SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS);
@@ -1064,11 +1078,13 @@ public class RecipeGenerator extends RecipeProvider {
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_QUARTZ_BLOCK, SCContent.REINFORCED_QUARTZ_BRICKS);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_DEEPSLATE, SCContent.REINFORCED_DEEPSLATE_TILES);
+		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_TUFF_BRICKS);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_RED_SAND, SCContent.REINFORCED_RED_SANDSTONE, 1);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_RED_SANDSTONE, SCContent.REINFORCED_CUT_RED_SANDSTONE);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_SAND, SCContent.REINFORCED_SANDSTONE, 1);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_SANDSTONE, SCContent.REINFORCED_CUT_SANDSTONE);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_BRICKS);
+		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_POLISHED_TUFF);
 		addTwoByTwoRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER);
 		addWallRecipes(recipeOutput, SCContent.REINFORCED_ANDESITE, SCContent.REINFORCED_ANDESITE_WALL);
 		addWallRecipes(recipeOutput, SCContent.REINFORCED_BLACKSTONE, SCContent.REINFORCED_BLACKSTONE_WALL);
@@ -1092,6 +1108,9 @@ public class RecipeGenerator extends RecipeProvider {
 		addWallRecipes(recipeOutput, SCContent.REINFORCED_RED_SANDSTONE, SCContent.REINFORCED_RED_SANDSTONE_WALL);
 		addWallRecipes(recipeOutput, SCContent.REINFORCED_SANDSTONE, SCContent.REINFORCED_SANDSTONE_WALL);
 		addWallRecipes(recipeOutput, SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_WALL);
+		addWallRecipes(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_POLISHED_TUFF_WALL);
+		addWallRecipes(recipeOutput, SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_WALL);
+		addWallRecipes(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_WALL);
 
 		//furnace recipes
 		addSimpleCookingRecipe(recipeOutput, SCContent.REINFORCED_BASALT, SCContent.REINFORCED_SMOOTH_BASALT);
@@ -1172,6 +1191,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_CUT_COPPER, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_CUT_COPPER_SLAB, 8);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_CUT_COPPER_STAIRS, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_CHISELED_COPPER, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_COPPER_GRATE, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK, SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK, SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR, 1);
@@ -1179,6 +1200,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK, SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CUT_COPPER, SCContent.REINFORCED_CUT_COPPER_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CUT_COPPER, SCContent.REINFORCED_CUT_COPPER_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CUT_COPPER, SCContent.REINFORCED_CHISELED_COPPER, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CUT_RED_SANDSTONE, SCContent.REINFORCED_CUT_RED_SANDSTONE_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_CUT_SANDSTONE, SCContent.REINFORCED_CUT_SANDSTONE_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_DARK_PRISMARINE, SCContent.REINFORCED_DARK_PRISMARINE_SLAB, 2);
@@ -1205,8 +1227,11 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_CUT_COPPER, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB, 8);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_CHISELED_COPPER, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_COPPER_GRATE, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_CUT_COPPER, SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_CUT_COPPER, SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_CUT_COPPER, SCContent.REINFORCED_EXPOSED_CHISELED_COPPER, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_GRANITE, SCContent.REINFORCED_GRANITE_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_GRANITE, SCContent.REINFORCED_GRANITE_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_GRANITE, SCContent.REINFORCED_POLISHED_GRANITE, 1);
@@ -1224,8 +1249,11 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_CUT_COPPER, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB, 8);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_CHISELED_COPPER, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_COPPER_GRATE, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_CUT_COPPER, SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_CUT_COPPER, SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_CUT_COPPER, SCContent.REINFORCED_OXIDIZED_CHISELED_COPPER, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_ANDESITE, SCContent.REINFORCED_POLISHED_ANDESITE_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_ANDESITE, SCContent.REINFORCED_POLISHED_ANDESITE_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_CHISELED_POLISHED_BLACKSTONE, 1);
@@ -1251,6 +1279,13 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_DIORITE, SCContent.REINFORCED_POLISHED_DIORITE_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_GRANITE, SCContent.REINFORCED_POLISHED_GRANITE_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_GRANITE, SCContent.REINFORCED_POLISHED_GRANITE_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_CHISELED_TUFF_BRICKS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_TUFF_BRICKS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_TUFF_BRICK_SLAB, 2);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_TUFF_BRICK_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_TUFF_BRICK_WALL, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_TUFF_SLAB, 2);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_TUFF_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_PRISMARINE, SCContent.REINFORCED_PRISMARINE_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_PRISMARINE, SCContent.REINFORCED_PRISMARINE_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_PRISMARINE_BRICKS, SCContent.REINFORCED_PRISMARINE_BRICK_SLAB, 2);
@@ -1291,14 +1326,32 @@ public class RecipeGenerator extends RecipeProvider {
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_BRICK_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_BRICK_WALL, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_CHISELED_TUFF, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_POLISHED_TUFF, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_POLISHED_TUFF_SLAB, 2);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_POLISHED_TUFF_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_POLISHED_TUFF_WALL, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_BRICKS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_CHISELED_TUFF_BRICKS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_BRICK_SLAB, 2);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_BRICK_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_BRICK_WALL, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_SLAB, 2);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_CHISELED_TUFF_BRICKS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_SLAB, 2);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_CHISELED_STONE_BRICKS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_STAIRS, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB, 8);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_CHISELED_COPPER, 4);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_COPPER_GRATE, 4);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS, 1);
+		addStonecuttingRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CHISELED_COPPER, 1);
 		addStonecuttingRecipe(recipeOutput, SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB, 2);
 		addStonecuttingRecipe(recipeOutput, SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS, 1);
 
@@ -1433,6 +1486,32 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block))
+		.save(recipeOutput);
+		//@formatter:on
+	}
+
+	protected final void addCopperGrateRecipe(RecipeOutput recipeOutput, ItemLike block, ItemLike grate) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, grate, 4)
+		.pattern(" C ")
+		.pattern("C C")
+		.pattern(" C ")
+		.define('C', block)
+		.unlockedBy("has_copper_block", has(block))
+		.save(recipeOutput);
+		//@formatter:on
+	}
+
+	protected final void addCopperBulbRecipe(RecipeOutput recipeOutput, ItemLike copperBlock, ItemLike bulb) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, bulb, 4)
+		.pattern(" C ")
+		.pattern("CBC")
+		.pattern(" R ")
+		.define('C', copperBlock)
+		.define('B', Tags.Items.RODS_BLAZE)
+		.define('R', Tags.Items.DUSTS_REDSTONE)
+		.unlockedBy("has_copper_block", has(copperBlock))
 		.save(recipeOutput);
 		//@formatter:on
 	}

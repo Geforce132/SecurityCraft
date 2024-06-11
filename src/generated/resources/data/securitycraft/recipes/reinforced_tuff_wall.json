@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:walls",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_tuff"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "item": "securitycraft:reinforced_tuff_wall"
+  }
+}

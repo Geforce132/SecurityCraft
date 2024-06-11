@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "item": "securitycraft:reinforced_exposed_copper"
+    }
+  },
+  "pattern": [
+    " C ",
+    "C C",
+    " C "
+  ],
+  "result": {
+    "count": 4,
+    "item": "securitycraft:reinforced_exposed_copper_grate"
+  }
+}
