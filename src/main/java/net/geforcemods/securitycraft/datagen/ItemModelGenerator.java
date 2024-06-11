@@ -171,6 +171,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), "deepslate_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
+		reinforcedWallInventory(SCContent.REINFORCED_TUFF_BRICK_WALL.get(), "tuff_bricks");
 	}
 
 	public void linkingStateItem(DeferredHolder<Item, ? extends Item> item) {

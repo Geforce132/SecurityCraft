@@ -136,6 +136,8 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock.I
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCopperBulbBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCopperGrateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCryingObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDirtPathBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedDispenserBlock;
@@ -2521,6 +2523,81 @@ public class SCContent {
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.WARPED, Blocks.WARPED_FENCE_GATE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_COPPER = BLOCKS.register("reinforced_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_COPPER_BLOCK.get()), Blocks.CHISELED_COPPER));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CHISELED_COPPER = BLOCKS.register("reinforced_exposed_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_EXPOSED_COPPER.get()), Blocks.EXPOSED_CHISELED_COPPER));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CHISELED_COPPER = BLOCKS.register("reinforced_weathered_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_WEATHERED_COPPER.get()), Blocks.WEATHERED_CHISELED_COPPER));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CHISELED_COPPER = BLOCKS.register("reinforced_oxidized_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_OXIDIZED_COPPER.get()), Blocks.OXIDIZED_CHISELED_COPPER));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_COPPER_GRATE = BLOCKS.register("reinforced_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.COPPER_GRATE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_EXPOSED_COPPER_GRATE = BLOCKS.register("reinforced_exposed_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.EXPOSED_COPPER_GRATE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_WEATHERED_COPPER_GRATE = BLOCKS.register("reinforced_weathered_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.WEATHERED_COPPER_GRATE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_OXIDIZED_COPPER_GRATE = BLOCKS.register("reinforced_oxidized_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.OXIDIZED_COPPER_GRATE));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_COPPER_BULB = BLOCKS.register("reinforced_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.COPPER_BULB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_EXPOSED_COPPER_BULB = BLOCKS.register("reinforced_exposed_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.EXPOSED_COPPER_BULB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_WEATHERED_COPPER_BULB = BLOCKS.register("reinforced_weathered_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.WEATHERED_COPPER_BULB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_OXIDIZED_COPPER_BULB = BLOCKS.register("reinforced_oxidized_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.OXIDIZED_COPPER_BULB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF = BLOCKS.register("reinforced_chiseled_tuff", () -> new BaseReinforcedBlock(Blocks.CHISELED_TUFF));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_STAIRS = BLOCKS.register("reinforced_tuff_stairs", () -> new ReinforcedStairsBlock(Blocks.TUFF_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_SLAB = BLOCKS.register("reinforced_tuff_slab", () -> new ReinforcedSlabBlock(Blocks.TUFF_SLAB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_WALL = BLOCKS.register("reinforced_tuff_wall", () -> new ReinforcedWallBlock(Blocks.TUFF_WALL));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_TUFF = BLOCKS.register("reinforced_polished_tuff", () -> new BaseReinforcedBlock(Blocks.POLISHED_TUFF));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_TUFF_STAIRS = BLOCKS.register("reinforced_polished_tuff_stairs", () -> new ReinforcedStairsBlock(Blocks.POLISHED_TUFF_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_TUFF_SLAB = BLOCKS.register("reinforced_polished_tuff_slab", () -> new ReinforcedSlabBlock(Blocks.POLISHED_TUFF_SLAB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_TUFF_WALL = BLOCKS.register("reinforced_polished_tuff_wall", () -> new ReinforcedWallBlock(Blocks.POLISHED_TUFF_WALL));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TUFF_BRICKS = BLOCKS.register("reinforced_tuff_bricks", () -> new BaseReinforcedBlock(Blocks.TUFF_BRICKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_BRICK_STAIRS = BLOCKS.register("reinforced_tuff_brick_stairs", () -> new ReinforcedStairsBlock(Blocks.TUFF_BRICK_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_BRICK_SLAB = BLOCKS.register("reinforced_tuff_brick_slab", () -> new ReinforcedSlabBlock(Blocks.TUFF_BRICK_SLAB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_BRICK_WALL = BLOCKS.register("reinforced_tuff_brick_wall", () -> new ReinforcedWallBlock(Blocks.TUFF_BRICK_WALL));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF_BRICKS = BLOCKS.register("reinforced_chiseled_tuff_bricks", () -> new BaseReinforcedBlock(Blocks.CHISELED_TUFF_BRICKS));
 
 	//misc
 	@RegisterItemBlock
@@ -3031,6 +3108,10 @@ public class SCContent {
 
 	private static final BlockBehaviour.Properties prop(MapColor color) {
 		return BlockBehaviour.Properties.of().mapColor(color).strength(-1.0F, Float.MAX_VALUE);
+	}
+
+	public static final BlockBehaviour.Properties reinforcedCopy(Block block) {
+		return BlockBehaviour.Properties.ofFullCopy(block).strength(-1.0F, Float.MAX_VALUE);
 	}
 
 	@SuppressWarnings("unused")

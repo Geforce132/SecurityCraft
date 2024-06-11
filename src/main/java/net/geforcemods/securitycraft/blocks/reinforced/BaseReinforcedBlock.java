@@ -34,6 +34,10 @@ import net.neoforged.neoforge.common.PlantType;
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<? extends Block> vanillaBlockSupplier;
 
+	public BaseReinforcedBlock(Block vB) {
+		this(SCContent.reinforcedCopy(vB), () -> vB);
+	}
+
 	public BaseReinforcedBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
 	}
