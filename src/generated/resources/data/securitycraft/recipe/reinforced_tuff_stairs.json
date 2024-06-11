@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:stairs",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_tuff"
+    }
+  },
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "result": {
+    "count": 4,
+    "id": "securitycraft:reinforced_tuff_stairs"
+  }
+}

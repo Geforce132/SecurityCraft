@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -51,6 +52,10 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 			12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8
 	};
 	private final Block modelBlock;
+
+	public ReinforcedStairsBlock(Block vB) {
+		this(SCContent.reinforcedCopy(vB), () -> vB);
+	}
 
 	public ReinforcedStairsBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);

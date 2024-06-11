@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "securitycraft:reinforced_tuff"
+  },
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_chiseled_tuff"
+  }
+}

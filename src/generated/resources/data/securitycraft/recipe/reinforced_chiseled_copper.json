@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "S": {
+      "item": "securitycraft:reinforced_cut_copper_slab"
+    }
+  },
+  "pattern": [
+    "S",
+    "S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_chiseled_copper"
+  }
+}
