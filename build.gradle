@@ -100,7 +100,7 @@ tasks.named('jar', Jar).configure {
 					"Specification-Version": "${version}",
 					"Implementation-Title": "SecurityCraft",
 					"Implementation-Version": "${version}",
-					"Implementation-Vendor" :"Geforce, bl4ckscor3, Redstone_Dubstep"],)
+					"Implementation-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep"],)
 	}
 }
 
