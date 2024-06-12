@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.misc;
+package net.geforcemods.securitycraft.recipe;
 
 import java.util.Map;
 
