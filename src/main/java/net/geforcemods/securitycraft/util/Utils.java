@@ -5,6 +5,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
@@ -32,5 +36,18 @@ public class Utils {
 		}
 
 		return new TranslatableComponent(key, params);
+	}
+
+	public static String getLanguageKeyDenotation(Object obj) {
+		if (obj instanceof BlockEntity be)
+			return getLanguageKeyDenotation(be.getBlockState().getBlock());
+		else if (obj instanceof Block block)
+			return block.getDescriptionId().substring(6);
+		else if (obj instanceof Entity entity)
+			return entity.getType().toShortString();
+		else if (obj instanceof BlockState state)
+			return getLanguageKeyDenotation(state.getBlock());
+		else
+			return "";
 	}
 }

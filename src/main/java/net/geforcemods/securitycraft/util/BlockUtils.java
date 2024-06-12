@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
@@ -127,14 +126,5 @@ public class BlockUtils {
 				modifiedPos = pos.relative(direction, ++i);
 			}
 		}
-	}
-
-	public static String getLanguageKeyDenotation(Object obj) {
-		if (obj instanceof BlockEntity be)
-			return be.getBlockState().getBlock().getDescriptionId().substring(6);
-		else if (obj instanceof Entity entity)
-			return entity.getType().toShortString();
-		else
-			return "";
 	}
 }

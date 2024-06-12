@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -103,7 +102,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 						if (option instanceof DoubleOption doubleOption) {
 							final int sliderIndex = i;
 
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), TextComponent.EMPTY, doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(Utils.getLanguageKeyDenotation(moduleInv)), ""), TextComponent.EMPTY, doubleOption.getMin(), doubleOption.getMax(), doubleOption.get(), doubleOption.getIncrement(), 0, true, slider -> {
 								doubleOption.setValue(slider.getValue());
 								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
 								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
@@ -112,7 +111,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 						else if (option instanceof IntOption intOption) {
 							final int sliderIndex = i;
 
-							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), ""), TextComponent.EMPTY, intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
+							optionButtons[i] = new CallbackSlider(leftPos + 178, (topPos + 10) + (i * 25), 120, 20, Utils.localize(option.getKey(Utils.getLanguageKeyDenotation(moduleInv)), ""), TextComponent.EMPTY, intOption.getMin(), intOption.getMax(), intOption.get(), true, slider -> {
 								intOption.setValue(slider.getValueInt());
 								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
 								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
@@ -241,18 +240,18 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				.append(new TextComponent(":"))
 				.withStyle(ChatFormatting.RESET)
 				.append(new TextComponent("\n\n"))
-				.append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
+				.append(Utils.localize(moduleInv.getModuleDescriptionId(Utils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
 		//@formatter:on
 	}
 
 	private TranslatableComponent getOptionDescription(int optionId) {
 		Option<?> option = ((ICustomizable) moduleInv).customOptions()[optionId];
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslatableComponent(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), new TranslatableComponent("gui.securitycraft:customize.currentSetting", option.getValueText()));
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslatableComponent(option.getDescriptionKey(Utils.getLanguageKeyDenotation(moduleInv))), new TranslatableComponent("gui.securitycraft:customize.currentSetting", option.getValueText()));
 	}
 
 	private Component getOptionButtonTitle(Option<?> option) {
-		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), option.getValueText());
+		return Utils.localize(option.getKey(Utils.getLanguageKeyDenotation(moduleInv)), option.getValueText());
 	}
 
 	@Override
