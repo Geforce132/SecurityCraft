@@ -7,10 +7,13 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class Utils {
@@ -55,5 +58,18 @@ public class Utils {
 
 	public static ResourceLocation getRegistryName(Potion potion) {
 		return ForgeRegistries.POTIONS.getKey(potion);
+	}
+
+	public static String getLanguageKeyDenotation(Object obj) {
+		if (obj instanceof BlockEntity be)
+			return getLanguageKeyDenotation(be.getBlockState().getBlock());
+		else if (obj instanceof Block block)
+			return block.getDescriptionId().substring(6);
+		else if (obj instanceof Entity entity)
+			return entity.getType().toShortString();
+		else if (obj instanceof BlockState state)
+			return getLanguageKeyDenotation(state.getBlock());
+		else
+			return "";
 	}
 }
