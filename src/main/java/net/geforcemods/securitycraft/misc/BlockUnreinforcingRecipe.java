@@ -10,23 +10,23 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 
-public class BlockReinforcingRecipe extends AbstractReinforcerRecipe {
-	public BlockReinforcingRecipe(CraftingBookCategory category) {
+public class BlockUnreinforcingRecipe extends AbstractReinforcerRecipe {
+	public BlockUnreinforcingRecipe(CraftingBookCategory category) {
 		super(category);
 	}
 
 	@Override
 	public Map<Block, Block> getBlockMap() {
-		return IReinforcedBlock.VANILLA_TO_SECURITYCRAFT;
+		return IReinforcedBlock.SECURITYCRAFT_TO_VANILLA;
 	}
 
 	@Override
 	public boolean isCorrectReinforcer(ItemStack reinforcer) {
-		return UniversalBlockReinforcerItem.isReinforcing(reinforcer);
+		return !UniversalBlockReinforcerItem.isReinforcing(reinforcer);
 	}
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return SCContent.BLOCK_REINFORCING_RECIPE_SERIALIZER.get();
+		return SCContent.BLOCK_UNREINFORCING_RECIPE_SERIALIZER.get();
 	}
 }
