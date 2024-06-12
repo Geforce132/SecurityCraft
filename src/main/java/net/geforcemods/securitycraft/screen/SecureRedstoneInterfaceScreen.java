@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -108,7 +107,7 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 			protectedSignalButton = addButton(new ToggleComponentButton(widgetX, widgetY, widgetWidth, widgetHeight, i -> formatButtonText("gui.securitycraft:secure_redstone_interface.protected_signal", yesOrNo(i)), initial(be.isProtectedSignal()), 2, button -> be.setProtectedSignal(!be.isProtectedSignal())));
 			hoverCheckers[hoverCheckerId++] = new TextHoverChecker(protectedSignalButton, yesOrNoTooltip("gui.securitycraft:secure_redstone_interface.protected_signal.tooltip"));
 			widgetY += 23;
-			addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", be.getSenderRange()), BlockUtils.getLanguageKeyDenotation(SCContent.SECURE_REDSTONE_INTERFACE.get()), widgetX, widgetY, widgetWidth, widgetHeight, Utils.localize("gui.securitycraft:projector.range", ""), "", 1, 64, be.getSenderRange(), false, true, null, slider -> be.setSenderRange(slider.getValueInt()))).setFGColor(0xE0E0E0);
+			addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.range", be.getSenderRange()), Utils.getLanguageKeyDenotation(SCContent.SECURE_REDSTONE_INTERFACE.get()), widgetX, widgetY, widgetWidth, widgetHeight, Utils.localize("gui.securitycraft:projector.range", ""), "", 1, 64, be.getSenderRange(), false, true, null, slider -> be.setSenderRange(slider.getValueInt()))).setFGColor(0xE0E0E0);
 		}
 
 		widgetY += 23;

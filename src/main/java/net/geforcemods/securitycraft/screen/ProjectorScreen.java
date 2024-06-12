@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -62,7 +61,7 @@ public class ProjectorScreen extends ContainerScreen<ProjectorMenu> implements I
 		int left = leftPos + ((imageWidth - sliderWidth) / 2);
 		TogglePictureButton toggleButton;
 		CallbackCheckbox overrideCheckbox;
-		String denotation = BlockUtils.getLanguageKeyDenotation(block);
+		String denotation = Utils.getLanguageKeyDenotation(block);
 
 		projectionWidthSlider = addButton(new NamedSlider(Utils.localize("gui.securitycraft:projector.width", be.getProjectionWidth()), denotation, left, topPos + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), "", ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), false, true, null, this::applySliderValue));
 		projectionWidthSlider.setFGColor(14737632);

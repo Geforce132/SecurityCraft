@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -128,22 +127,5 @@ public class BlockUtils {
 				modifiedPos = pos.relative(direction, ++i);
 			}
 		}
-	}
-
-	public static String getLanguageKeyDenotation(Object obj) {
-		if (obj instanceof Block)
-			return ((Block) obj).getDescriptionId().substring(6);
-		else if (obj instanceof TileEntity)
-			return getLanguageKeyDenotation(((TileEntity) obj).getBlockState().getBlock());
-		else if (obj instanceof Entity)
-			return toShortString(((Entity) obj).getType().getDescriptionId());
-		else
-			return "";
-	}
-
-	private static String toShortString(String descriptionId) {
-		int i = descriptionId.lastIndexOf(46);
-
-		return i == -1 ? descriptionId : descriptionId.substring(i + 1);
 	}
 }

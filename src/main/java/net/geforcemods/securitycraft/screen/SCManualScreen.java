@@ -37,7 +37,6 @@ import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -541,7 +540,7 @@ public class SCManualScreen extends Screen {
 					display.add(new StringTextComponent("---"));
 
 					for (Option<?> option : options) {
-						display.add(new TranslationTextComponent("gui.securitycraft:scManual.option_text", Utils.localize(BlockUtils.getLanguageKeyDenotation(inWorldObj)), option.getDefaultInfo()));
+						display.add(new TranslationTextComponent("gui.securitycraft:scManual.option_text", Utils.localize(Utils.getLanguageKeyDenotation(inWorldObj)), option.getDefaultInfo()));
 						display.add(StringTextComponent.EMPTY);
 					}
 
@@ -561,7 +560,7 @@ public class SCManualScreen extends Screen {
 					display.add(new StringTextComponent("---"));
 
 					for (ModuleType module : moduleInv.acceptedModules()) {
-						display.add(new StringTextComponent("- ").append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(inWorldObj), module))));
+						display.add(new StringTextComponent("- ").append(Utils.localize(moduleInv.getModuleDescriptionId(Utils.getLanguageKeyDenotation(inWorldObj), module))));
 						display.add(StringTextComponent.EMPTY);
 					}
 

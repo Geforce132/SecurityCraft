@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.util;
 
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -48,5 +50,24 @@ public class Utils {
 
 	public static Vector3d lerp(Vector3d from, Vector3d to, double delta) {
 		return new Vector3d(MathHelper.lerp(delta, from.x, to.x), MathHelper.lerp(delta, from.y, to.y), MathHelper.lerp(delta, from.z, to.z));
+	}
+
+	public static String getLanguageKeyDenotation(Object obj) {
+		if (obj instanceof TileEntity)
+			return getLanguageKeyDenotation(((TileEntity) obj).getBlockState().getBlock());
+		else if (obj instanceof Block)
+			return ((Block) obj).getDescriptionId().substring(6);
+		else if (obj instanceof Entity)
+			return toShortString(((Entity) obj).getType().getDescriptionId());
+		else if (obj instanceof BlockState)
+			return getLanguageKeyDenotation(((BlockState) obj).getBlock());
+		else
+			return "";
+	}
+
+	private static String toShortString(String descriptionId) {
+		int i = descriptionId.lastIndexOf(46);
+
+		return i == -1 ? descriptionId : descriptionId.substring(i + 1);
 	}
 }

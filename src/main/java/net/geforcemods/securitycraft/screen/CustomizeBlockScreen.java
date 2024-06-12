@@ -21,7 +21,6 @@ import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.screen.components.NamedSlider;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -106,7 +105,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 
 					if (option instanceof ISlider && option.isSlider()) {
 						final int sliderIndex = i;
-						String denotation = BlockUtils.getLanguageKeyDenotation(customizable);
+						String denotation = Utils.getLanguageKeyDenotation(customizable);
 
 						if (option instanceof DoubleOption)
 							optionButtons[i] = new NamedSlider(Utils.localize(option.getKey(denotation), option.toString()), denotation, leftPos + 178, (topPos + 10) + (i * 25), 120, 20, StringTextComponent.EMPTY, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, false, (ISlider) option, slider -> updateOptionTooltip(sliderIndex));
@@ -242,18 +241,18 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 				.append(new StringTextComponent(":"))
 				.withStyle(TextFormatting.RESET)
 				.append(new StringTextComponent("\n\n"))
-				.append(Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
+				.append(Utils.localize(moduleInv.getModuleDescriptionId(Utils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[moduleId].getItemStack().getItem()).getModuleType())));
 		//@formatter:on
 	}
 
 	private TranslationTextComponent getOptionDescription(int optionId) {
 		Option<?> option = ((ICustomizable) moduleInv).customOptions()[optionId];
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", option.getValueText()));
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TranslationTextComponent(option.getDescriptionKey(Utils.getLanguageKeyDenotation(moduleInv))), new TranslationTextComponent("gui.securitycraft:customize.currentSetting", option.getValueText()));
 	}
 
 	private ITextComponent getOptionButtonTitle(Option<?> option) {
-		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), option.getValueText());
+		return Utils.localize(option.getKey(Utils.getLanguageKeyDenotation(moduleInv)), option.getValueText());
 	}
 
 	@Override
