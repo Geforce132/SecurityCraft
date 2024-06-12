@@ -7,6 +7,8 @@ import com.google.common.collect.ImmutableMap;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
@@ -15,6 +17,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPan
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FenceGateBlock;
 import net.minecraft.block.FourWayBlock;
@@ -86,6 +89,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		horizontalBlock(SCContent.FURNACE_MINE.get(), mcBlock("furnace_side"), mcBlock("furnace_front"), mcBlock("furnace_top"));
 		horizontalBlock(SCContent.SMOKER_MINE.get(), mcBlock("smoker_side"), mcBlock("smoker_front"), mcBlock("smoker_top"));
 		horizontalBlock(SCContent.BLAST_FURNACE_MINE.get(), mcBlock("blast_furnace_side"), mcBlock("blast_furnace_front"), mcBlock("blast_furnace_top"));
+		secureRedstoneInterface();
 
 		simpleBlock(SCContent.FLOOR_TRAP.get());
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
@@ -348,6 +352,25 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		models().reinforcedWallInventory(baseName + "_inventory", texture);
 	}
 
+	public void secureRedstoneInterface() {
+		Block block = SCContent.SECURE_REDSTONE_INTERFACE.get();
+
+		getVariantBuilder(block).forAllStatesExcept(state -> {
+			int x = getXRotationBasedOnFacing(state);
+			int y = getYRotationBasedOnFacing(state);
+			String baseName = blockTexture(block).toString();
+
+			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
+				baseName += "_sender";
+			else
+				baseName += "_receiver";
+
+			return new ConfiguredModel[] {
+					new ConfiguredModel(new UncheckedModelFile(baseName), x, y, false)
+			};
+		}, DisguisableBlock.WATERLOGGED);
+	}
+
 	public ResourceLocation mcBlock(String path) {
 		return mcLoc(ModelProvider.BLOCK_FOLDER + "/" + path);
 	}
@@ -388,5 +411,29 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 
 	private String name(Block block) {
 		return block.getRegistryName().getPath();
+	}
+
+	private int getXRotationBasedOnFacing(BlockState state) {
+		switch (state.getValue(BlockStateProperties.FACING)) {
+			case DOWN:
+				return 180;
+			case UP:
+				return 0;
+			default:
+				return 90;
+		}
+	}
+
+	private int getYRotationBasedOnFacing(BlockState state) {
+		switch (state.getValue(BlockStateProperties.FACING)) {
+			case EAST:
+				return 90;
+			case SOUTH:
+				return 180;
+			case WEST:
+				return 270;
+			default:
+				return 0;
+		}
 	}
 }

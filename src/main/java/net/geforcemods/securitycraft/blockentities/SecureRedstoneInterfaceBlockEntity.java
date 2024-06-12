@@ -200,7 +200,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
 
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+			updateNeighbors();
 		}
 	}
 
@@ -274,8 +274,15 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+			updateNeighbors();
 		}
+	}
+
+	public int getRedstonePowerOutput() {
+		if (!isSender() && !isDisabled())
+			return getPower();
+		else
+			return 0;
 	}
 
 	public boolean isProtectedSignal() {
@@ -294,7 +301,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (isSender())
 				tellSimilarReceiversToRefresh();
 			else
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+				updateNeighbors();
 
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
@@ -315,7 +322,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			refreshPower();
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+			updateNeighbors();
 		}
 	}
 
@@ -333,7 +340,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			refreshPower();
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock());
+			updateNeighbors();
 		}
 	}
 
@@ -445,6 +452,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.highlightConnections = highlightConnections;
 		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+	}
+
+	public void updateNeighbors() {
+		BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock(), getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getOpposite());
 	}
 
 	public boolean isDisabled() {

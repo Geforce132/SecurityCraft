@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
@@ -17,8 +16,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -32,9 +34,11 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	public static final BooleanProperty SENDER = BooleanProperty.create("sender");
+	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
 	public SecureRedstoneInterfaceBlock(AbstractBlock.Properties properties) {
 		super(properties);
+		registerDefaultState(defaultBlockState().setValue(SENDER, false).setValue(FACING, Direction.UP));
 	}
 
 	@Override
@@ -80,21 +84,20 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 
 	@Override
 	public int getDirectSignal(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
-		TileEntity te = level.getBlockEntity(pos);
-
-		if (te instanceof SecureRedstoneInterfaceBlockEntity) {
-			SecureRedstoneInterfaceBlockEntity be = (SecureRedstoneInterfaceBlockEntity) te;
-
-			if (!be.isSender() && !be.isDisabled())
-				return be.getPower();
-		}
-
-		return 0;
+		if (state.getValue(FACING) == direction)
+			return getSignal(state, level, pos, direction);
+		else
+			return 0;
 	}
 
 	@Override
 	public int getSignal(BlockState state, IBlockReader level, BlockPos pos, Direction direction) {
-		return getDirectSignal(state, level, pos, direction);
+		TileEntity te = level.getBlockEntity(pos);
+
+		if (te instanceof SecureRedstoneInterfaceBlockEntity)
+			return ((SecureRedstoneInterfaceBlockEntity) te).getRedstonePowerOutput();
+		else
+			return 0;
 	}
 
 	@Override
@@ -110,11 +113,16 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 				if (be.isSender())
 					be.tellSimilarReceiversToRefresh();
 				else
-					BlockUtils.updateIndirectNeighbors(level, pos, this);
+					be.updateNeighbors();
 			}
 		}
 
 		super.onRemove(state, level, pos, newState, movedByPiston);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
+		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getClickedFace());
 	}
 
 	@Override
@@ -124,8 +132,7 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(SENDER, WATERLOGGED);
+		builder.add(SENDER, FACING, WATERLOGGED);
 	}
 
 	public static class DoorActivator implements IDoorActivator {
