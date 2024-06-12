@@ -10,12 +10,15 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class Utils {
 	public static final Style GRAY_STYLE = Style.EMPTY.withColor(ChatFormatting.GRAY);
@@ -76,5 +79,15 @@ public class Utils {
 
 	public static ResourceLocation getRegistryName(Potion potion) {
 		return BuiltInRegistries.POTION.getKey(potion);
+	}
+
+	public static String getLanguageKeyDenotation(Object obj) {
+		return switch (obj) {
+			case BlockEntity be -> getLanguageKeyDenotation(be.getBlockState().getBlock());
+			case Block block -> block.getDescriptionId().substring(6);
+			case Entity entity -> entity.getType().toShortString();
+			case BlockState state -> getLanguageKeyDenotation(state.getBlock());
+			default -> "";
+		};
 	}
 }
