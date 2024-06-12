@@ -197,7 +197,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
 
-			BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock());
+			updateNeighbors(state);
 		}
 	}
 
@@ -273,8 +273,15 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 			markDirty();
 			world.notifyBlockUpdate(pos, state, state, 2);
-			BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock());
+			updateNeighbors(state);
 		}
+	}
+
+	public int getRedstonePowerOutput() {
+		if (!isSender() && !isDisabled())
+			return getPower();
+		else
+			return 0;
 	}
 
 	public boolean isProtectedSignal() {
@@ -295,7 +302,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (isSender())
 				tellSimilarReceiversToRefresh();
 			else
-				BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock());
+				updateNeighbors(state);
 
 			markDirty();
 			world.notifyBlockUpdate(pos, state, state, 2);
@@ -318,7 +325,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			refreshPower();
 			markDirty();
 			world.notifyBlockUpdate(pos, state, state, 2);
-			BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock());
+			updateNeighbors(state);
 		}
 	}
 
@@ -338,7 +345,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			refreshPower();
 			markDirty();
 			world.notifyBlockUpdate(pos, state, state, 2);
-			BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock());
+			updateNeighbors(state);
 		}
 	}
 
@@ -454,6 +461,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.highlightConnections = highlightConnections;
 		markDirty();
 		world.notifyBlockUpdate(pos, state, state, 2);
+	}
+
+	public void updateNeighbors(IBlockState state) {
+		BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock(), state.getValue(SecureRedstoneInterfaceBlock.FACING).getOpposite());
 	}
 
 	public boolean isDisabled() {
