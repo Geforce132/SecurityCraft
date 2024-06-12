@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
@@ -133,7 +132,7 @@ public class SecureRedstoneInterfaceScreen extends GuiScreen {
 			protectedSignalButton = addButton(new ToggleComponentButton(id++, widgetX, widgetY, widgetWidth, widgetHeight, i -> formatButtonText("gui.securitycraft:secure_redstone_interface.protected_signal", yesOrNo(i)), initial(be.isProtectedSignal()), 2, button -> be.setProtectedSignal(!be.isProtectedSignal())));
 			hoverCheckers[hoverCheckerId++] = new StringHoverChecker(protectedSignalButton, yesOrNoTooltip("gui.securitycraft:secure_redstone_interface.protected_signal.tooltip"));
 			widgetY += 23;
-			addButton(new Slider(Utils.localize("gui.securitycraft:projector.range", be.getSenderRange()).getFormattedText(), BlockUtils.getLanguageKeyDenotation(SCContent.secureRedstoneInterface), id++, widgetX, widgetY, widgetWidth, widgetHeight, Utils.localize("gui.securitycraft:projector.range", "").getFormattedText(), 1, 64, be.getSenderRange(), true, new Slider.ISlider() {
+			addButton(new Slider(Utils.localize("gui.securitycraft:projector.range", be.getSenderRange()).getFormattedText(), Utils.getLanguageKeyDenotation(SCContent.secureRedstoneInterface), id++, widgetX, widgetY, widgetWidth, widgetHeight, Utils.localize("gui.securitycraft:projector.range", "").getFormattedText(), 1, 64, be.getSenderRange(), true, new Slider.ISlider() {
 				@Override
 				public void onMouseRelease(int id) {}
 

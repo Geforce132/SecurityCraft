@@ -19,7 +19,6 @@ import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
 import net.geforcemods.securitycraft.screen.components.StateSelector;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -62,7 +61,7 @@ public class ProjectorScreen extends GuiContainer implements ISlider, IHasExtraA
 
 		int id = 0;
 		int left = guiLeft + ((xSize - sliderWidth) / 2);
-		String denotation = BlockUtils.getLanguageKeyDenotation(block);
+		String denotation = Utils.getLanguageKeyDenotation(block);
 
 		projectionWidthSlider = addButton(new Slider(Utils.localize("gui.securitycraft:projector.width", te.getProjectionWidth()).getFormattedText(), denotation, id, left, guiTop + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", "").getFormattedText(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, te.getProjectionWidth(), true, this));
 		hoverCheckers[id++] = new StringHoverChecker(projectionWidthSlider, Utils.localize("gui.securitycraft:projector.width.description").getFormattedText());

@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IHasExtraAreas;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiButton;
@@ -113,7 +112,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 					Option<?> option = options[i];
 
 					if (option instanceof ISlider && option.isSlider()) {
-						String denotation = BlockUtils.getLanguageKeyDenotation(customizable);
+						String denotation = Utils.getLanguageKeyDenotation(customizable);
 
 						if (option instanceof DoubleOption)
 							optionButtons[i] = new Slider(Utils.localize(option.getKey(denotation), option.toString()).getFormattedText(), denotation, i, guiLeft + 178, (guiTop + 10) + (i * 25), 120, 20, "", ((DoubleOption) option).getMin(), ((DoubleOption) option).getMax(), ((DoubleOption) option).get(), true, (ISlider) option);
@@ -232,7 +231,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 	}
 
 	private String getModuleDescription(int buttonID) {
-		ITextComponent moduleDescription = Utils.localize(moduleInv.getModuleDescriptionId(BlockUtils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[buttonID].getItemStack()).getModuleType()));
+		ITextComponent moduleDescription = Utils.localize(moduleInv.getModuleDescriptionId(Utils.getLanguageKeyDenotation(moduleInv), ((ModuleItem) descriptionButtons[buttonID].getItemStack()).getModuleType()));
 
 		return Utils.localize(descriptionButtons[buttonID].getItemStack().getTranslationKey() + ".name").getFormattedText() + ":" + TextFormatting.RESET + "\n\n" + moduleDescription.getFormattedText();
 	}
@@ -240,11 +239,11 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 	private String getOptionDescription(int buttonID) {
 		Option<?> option = ((ICustomizable) moduleInv).customOptions()[buttonID - moduleInv.getSlots()];
 
-		return Utils.localize("gui.securitycraft:customize.tooltip", new TextComponentTranslation(option.getDescriptionKey(BlockUtils.getLanguageKeyDenotation(moduleInv))), new TextComponentTranslation("gui.securitycraft:customize.currentSetting", option.getValueText())).getFormattedText();
+		return Utils.localize("gui.securitycraft:customize.tooltip", new TextComponentTranslation(option.getDescriptionKey(Utils.getLanguageKeyDenotation(moduleInv))), new TextComponentTranslation("gui.securitycraft:customize.currentSetting", option.getValueText())).getFormattedText();
 	}
 
 	private String getOptionButtonTitle(Option<?> option) {
-		return Utils.localize(option.getKey(BlockUtils.getLanguageKeyDenotation(moduleInv)), option.getValueText()).getFormattedText();
+		return Utils.localize(option.getKey(Utils.getLanguageKeyDenotation(moduleInv)), option.getValueText()).getFormattedText();
 	}
 
 	@Override

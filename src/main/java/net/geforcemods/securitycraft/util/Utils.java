@@ -2,10 +2,13 @@ package net.geforcemods.securitycraft.util;
 
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.Style;
@@ -96,5 +99,24 @@ public class Utils {
 
 	public static Vec3d atCenterOf(BlockPos pos) {
 		return new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
+	}
+
+	public static String getLanguageKeyDenotation(Object obj) {
+		if (obj instanceof TileEntity) {
+			TileEntity te = (TileEntity) obj;
+
+			return getLanguageKeyDenotation(te.getBlockType());
+		}
+		if (obj instanceof Block)
+			return ((Block) obj).getTranslationKey().substring(5);
+		else if (obj instanceof Entity) {
+			ResourceLocation name = EntityList.getKey((Entity) obj);
+
+			return name == null ? "" : name.toString();
+		}
+		else if (obj instanceof IBlockState)
+			return getLanguageKeyDenotation(((IBlockState) obj).getBlock());
+		else
+			return "";
 	}
 }

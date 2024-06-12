@@ -13,8 +13,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ClientUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -91,7 +91,7 @@ public class ColorChooser extends GuiScreen {
 
 		updateHSBValues(red, green, blue);
 		extraAreas.add(new Rectangle(xStart, yStart, 144, 108));
-		hueSlider = addButton(new HueSlider(BlockUtils.getLanguageKeyDenotation(block), 0, colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, new net.geforcemods.securitycraft.screen.components.Slider.ISlider() {
+		hueSlider = addButton(new HueSlider(Utils.getLanguageKeyDenotation(block), 0, colorFieldLeft - 2, yStart + 85, 82, 20, h * 360.0D, new net.geforcemods.securitycraft.screen.components.Slider.ISlider() {
 			@Override
 			public void onChangeSliderValue(Slider slider, String denotation, int id) {
 				h = slider.getValueInt() / 360.0F;

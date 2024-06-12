@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.Slider;
 import net.geforcemods.securitycraft.screen.components.Slider.ISlider;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -72,7 +71,7 @@ public class AlarmOptionsScreen extends GuiScreen implements ISlider {
 		plusTenSeconds = addButton(new ClickButton(id++, buttonsX + 150, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_ten_seconds").getFormattedText(), b -> changeSoundLength(10)));
 		plusMinute = addButton(new ClickButton(id++, buttonsX + 184, buttonY, 32, buttonHeight, new TextComponentTranslation("gui.securitycraft:alarm.plus_one_minute").getFormattedText(), b -> changeSoundLength(60)));
 		setSoundLength(alarmScreen.soundLength);
-		pitchSlider = addButton(new Slider(Utils.localize("gui.securitycraft:alarm.pitch", "" + alarmScreen.pitch).getFormattedText(), BlockUtils.getLanguageKeyDenotation(SCContent.alarm), id++, leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", "").getFormattedText(), 0.5D, 2.0D, alarmScreen.pitch, true, this));
+		pitchSlider = addButton(new Slider(Utils.localize("gui.securitycraft:alarm.pitch", "" + alarmScreen.pitch).getFormattedText(), Utils.getLanguageKeyDenotation(SCContent.alarm), id++, leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", "").getFormattedText(), 0.5D, 2.0D, alarmScreen.pitch, true, this));
 	}
 
 	private void updateAlarmScreenSizes() {
