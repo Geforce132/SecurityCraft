@@ -235,6 +235,7 @@ import net.geforcemods.securitycraft.items.UniversalKeyChangerItem;
 import net.geforcemods.securitycraft.items.UniversalOwnerChangerItem;
 import net.geforcemods.securitycraft.items.WireCuttersItem;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
+import net.geforcemods.securitycraft.misc.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.misc.ItemStackListSerializer;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.ModuleStatesSerializer;
@@ -328,6 +329,7 @@ public class SCContent {
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
 
 	//recipe serializers
+	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<BlockReinforcingRecipe>> BLOCK_REINFORCING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("block_reinforcing_recipe", () -> new SimpleCraftingRecipeSerializer<>(BlockReinforcingRecipe::new));
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
 
 	//data serializer entries

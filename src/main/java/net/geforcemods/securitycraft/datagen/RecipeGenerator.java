@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.datagen;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.data.PackOutput;
@@ -31,6 +32,9 @@ public class RecipeGenerator extends RecipeProvider {
 
 	@Override
 	protected final void buildRecipes(RecipeOutput recipeOutput) {
+		//Combine block with universal block reinforcer to unreinforce/reinforce it (depending on the reinforcer's mode), reducing the reinforcer's durability
+		SpecialRecipeBuilder.special(BlockReinforcingRecipe::new).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "block_reinforcing"));
+
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
 		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe::new).save(recipeOutput, "limited_use_keycards");
 
