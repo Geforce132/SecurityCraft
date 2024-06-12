@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.misc;
+package net.geforcemods.securitycraft.recipe;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.KeycardData;
