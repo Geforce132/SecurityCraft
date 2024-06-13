@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -101,7 +102,7 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+	public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
 		return false;
 	}
 
