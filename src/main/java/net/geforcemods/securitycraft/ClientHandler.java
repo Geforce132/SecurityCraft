@@ -55,6 +55,7 @@ import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
 import net.geforcemods.securitycraft.renderers.ReinforcedPistonRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
+import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
@@ -330,6 +331,7 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.SONIC_SECURITY_SYSTEM_BLOCK_ENTITY.get(), SonicSecuritySystemRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), DisplayCaseRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternTileEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), SecureRedstoneInterfaceRenderer::new);
 		//disguisable block entity renderers
 		ClientRegistry.bindTileEntityRenderer(SCContent.BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.CAGE_TRAP_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
@@ -344,7 +346,6 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
-		ClientRegistry.bindTileEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ScreenManager.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		ScreenManager.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);

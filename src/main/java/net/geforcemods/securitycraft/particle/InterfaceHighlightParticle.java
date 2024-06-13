@@ -38,6 +38,11 @@ public class InterfaceHighlightParticle extends SpriteTexturedParticle {
 		return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
 	}
 
+	@Override
+	protected int getLightColor(float partialTicks) {
+		return 0xF000F0;
+	}
+
 	public static class Provider implements IParticleFactory<InterfaceHighlightParticleOptions> {
 		private final IAnimatedSprite sprites;
 

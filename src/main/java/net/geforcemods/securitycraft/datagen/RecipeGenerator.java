@@ -461,6 +461,16 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', SCContent.REINFORCED_IRON_BLOCK.get())
 		.unlockedBy("has_iron", has(SCContent.REINFORCED_IRON_BLOCK.get()))
 		.save(consumer);
+		ShapedRecipeBuilder.shaped(SCContent.SECURE_REDSTONE_INTERFACE.get())
+		.pattern("TRB")
+		.pattern("SCS")
+		.define('T', Items.REDSTONE_TORCH)
+		.define('R', SCContent.PORTABLE_RADAR.get())
+		.define('B', Items.BOWL)
+		.define('S', SCContent.REINFORCED_SMOOTH_STONE.get())
+		.define('C', Items.COMPARATOR)
+		.unlockedBy("has_radar", has(SCContent.PORTABLE_RADAR.get()))
+		.save(consumer);
 		ShapedRecipeBuilder.shaped(SCContent.SECURITY_CAMERA.get())
 		.pattern("III")
 		.pattern("GRI")

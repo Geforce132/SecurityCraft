@@ -27,6 +27,9 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -35,10 +38,33 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	public static final BooleanProperty SENDER = BooleanProperty.create("sender");
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	//@formatter:off
+	private static final VoxelShape[] SENDER_SHAPES = {
+			VoxelShapes.or(Block.box(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 1.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //down
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 15.0D, 9.0D)), //up
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 9.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 1.0D, 9.0D, 9.0D, 9.0D)), //north
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 7.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 9.0D, 15.0D)), //south
+			VoxelShapes.or(Block.box(9.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(1.0D, 7.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //west
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 7.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 15.0D, 9.0D, 9.0D)) //east
+	};
+	private static final VoxelShape[] RECEIVER_SHAPES = {
+			VoxelShapes.or(Block.box(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 3.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //down
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 13.0D, 9.0D)), //up
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 9.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 3.0D, 9.0D, 9.0D, 9.0D)), //north
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 7.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 9.0D, 13.0D)), //south
+			VoxelShapes.or(Block.box(9.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(3.0D, 7.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //west
+			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 7.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 13.0D, 9.0D, 9.0D)) //east
+	};
+	//@formatter:on
 
 	public SecureRedstoneInterfaceBlock(AbstractBlock.Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(SENDER, false).setValue(FACING, Direction.UP));
+		registerDefaultState(defaultBlockState().setValue(SENDER, true).setValue(FACING, Direction.UP));
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		return (state.getValue(SENDER) ? SENDER_SHAPES : RECEIVER_SHAPES)[state.getValue(FACING).get3DDataValue()];
 	}
 
 	@Override

@@ -42,6 +42,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	private boolean sendExactPower = true;
 	private boolean receiveInvertedPower = false;
 	private boolean highlightConnections = false;
+	private float dishRotationDegrees = 0;
+	private float oDishRotationDegrees = 0;
 
 	public SecureRedstoneInterfaceBlockEntity() {
 		super(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get());
@@ -49,52 +51,61 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 	@Override
 	public void tick() {
-		if (level.isClientSide)
-			return;
+		if (!level.isClientSide) {
+			if (!tracked) {
+				if (isSender())
+					refreshPower();
 
-		if (!tracked) {
-			if (isSender())
-				refreshPower();
+				BlockEntityTracker.SECURE_REDSTONE_INTERFACE.track(this);
+				tracked = true;
+			}
+			else if (!refreshed) {
+				refreshed = true;
 
-			BlockEntityTracker.SECURE_REDSTONE_INTERFACE.track(this);
-			tracked = true;
-		}
-		else if (!refreshed) {
-			refreshed = true;
+				if (isSender())
+					tellSimilarReceiversToRefresh();
+			}
 
-			if (isSender())
-				tellSimilarReceiversToRefresh();
-		}
+			if (shouldHighlightConnections() && level.getGameTime() % 5 == 0) {
+				Collection<ServerPlayerEntity> players = TeamUtils.getOnlinePlayersFromOwner(level.getServer(), getOwner());
 
-		if (shouldHighlightConnections() && level.getGameTime() % 5 == 0) {
-			Collection<ServerPlayerEntity> players = TeamUtils.getOnlinePlayersFromOwner(level.getServer(), getOwner());
+				if (!players.isEmpty()) {
+					ServerWorld serverLevel = (ServerWorld) level;
+					Vector3d myPos = Vector3d.atCenterOf(worldPosition);
 
-			if (!players.isEmpty()) {
-				ServerWorld serverLevel = (ServerWorld) level;
-				Vector3d myPos = Vector3d.atCenterOf(worldPosition);
+					if (isSender()) {
+						for (SecureRedstoneInterfaceBlockEntity be : getReceiversISendTo()) {
+							if (!be.isDisabled()) {
+								Vector3d receiverPos = Vector3d.atCenterOf(be.worldPosition);
 
-				if (isSender()) {
-					for (SecureRedstoneInterfaceBlockEntity be : getReceiversISendTo()) {
-						if (!be.isDisabled()) {
-							Vector3d receiverPos = Vector3d.atCenterOf(be.worldPosition);
+								showParticleTrail(players, serverLevel, myPos, receiverPos, SENDER_PARTICLE_COLOR);
+							}
+						}
+					}
+					else {
+						for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
+							Vector3d senderPos = Vector3d.atCenterOf(be.worldPosition);
+							Vector3f color;
 
-							showParticleTrail(players, serverLevel, myPos, receiverPos, SENDER_PARTICLE_COLOR);
+							if (be.getPower() == 0)
+								color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL : RECEIVER_PARTICLE_COLOR_NO_SIGNAL;
+							else
+								color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR;
+
+							showParticleTrail(players, serverLevel, senderPos, myPos, color);
 						}
 					}
 				}
-				else {
-					for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
-						Vector3d senderPos = Vector3d.atCenterOf(be.worldPosition);
-						Vector3f color;
+			}
+		}
+		else {
+			oDishRotationDegrees = dishRotationDegrees;
 
-						if (be.getPower() == 0)
-							color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL : RECEIVER_PARTICLE_COLOR_NO_SIGNAL;
-						else
-							color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR;
+			if (!isDisabled()) {
+				dishRotationDegrees = oDishRotationDegrees + 0.05F;
 
-						showParticleTrail(players, serverLevel, senderPos, myPos, color);
-					}
-				}
+				if (dishRotationDegrees >= 360)
+					dishRotationDegrees = 0;
 			}
 		}
 	}
@@ -474,5 +485,13 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		return new ModuleType[] {
 				ModuleType.DISGUISE
 		};
+	}
+
+	public float getOriginalDishRotationDegrees() {
+		return oDishRotationDegrees;
+	}
+
+	public float getDishRotationDegrees() {
+		return dishRotationDegrees;
 	}
 }
