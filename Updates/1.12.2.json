@@ -1,6 +1,6 @@
 {
-	"version": "v1.9.9",
-	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/5207755",
-	"fileName": "[1.12.2] SecurityCraft v1.9.9",
-	"changelog": "New reinforced blocks, admin commands, passcode-protection removal, and a bunch of fixes"
+	"version": "v1.9.10",
+	"downloadURL": "https://www.curseforge.com/minecraft/mc-mods/security-craft/download/5424844",
+	"fileName": "[1.12.2] SecurityCraft v1.9.10",
+	"changelog": "https://github.com/Geforce132/SecurityCraft/blob/1.12.2/Changelog.md"
 }
