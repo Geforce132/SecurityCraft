@@ -28,7 +28,7 @@ public class SecureRedstoneInterfaceRenderer extends TileEntityRenderer<SecureRe
 	public void render(SecureRedstoneInterfaceBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
 
-		if (!be.isModuleEnabled(ModuleType.DISGUISE) && !be.isDisabled() && !be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER)) {
+		if (!be.isModuleEnabled(ModuleType.DISGUISE) && !be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER)) {
 			pose.translate(0.5D, 0.5D, 0.5D);
 			pose.mulPose(be.getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getRotation());
 			pose.translate(0.0D, -0.49999D, 0.0D);

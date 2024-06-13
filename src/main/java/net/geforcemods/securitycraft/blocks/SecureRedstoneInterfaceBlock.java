@@ -38,7 +38,6 @@ import net.minecraftforge.fml.network.PacketDistributor;
 public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	public static final BooleanProperty SENDER = BooleanProperty.create("sender");
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	//@formatter:off
 	private static final VoxelShape[] SENDER_SHAPES = {
 			VoxelShapes.or(Block.box(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 1.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //down
 			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 15.0D, 9.0D)), //up
@@ -55,7 +54,6 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 			VoxelShapes.or(Block.box(9.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(3.0D, 7.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //west
 			VoxelShapes.or(Block.box(0.0D, 0.0D, 0.0D, 7.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 13.0D, 9.0D, 9.0D)) //east
 	};
-	//@formatter:on
 
 	public SecureRedstoneInterfaceBlock(AbstractBlock.Properties properties) {
 		super(properties);
