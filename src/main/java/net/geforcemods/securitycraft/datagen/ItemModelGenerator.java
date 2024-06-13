@@ -138,6 +138,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleParent(SCContent.FLOOR_TRAP.get());
 		simpleParent(SCContent.KEYPAD_TRAPDOOR.get(), "keypad_trapdoor_bottom");
 		simpleParent(SCContent.SCANNER_TRAPDOOR.get(), "scanner_trapdoor_bottom");
+		simpleParent(SCContent.SECURE_REDSTONE_INTERFACE.get(), "secure_redstone_interface_sender");
 		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
 		simpleParent(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		simpleParent(SCContent.REINFORCED_GLASS.get());
