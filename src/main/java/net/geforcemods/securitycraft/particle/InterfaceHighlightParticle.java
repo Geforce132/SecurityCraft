@@ -31,4 +31,9 @@ public class InterfaceHighlightParticle extends Particle {
 		else
 			move(motionX, motionY, motionZ);
 	}
+
+	@Override
+	public int getBrightnessForRender(float partialTicks) {
+		return 0xF000F0;
+	}
 }

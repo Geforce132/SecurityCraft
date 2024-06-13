@@ -24,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockAccess;
@@ -32,10 +33,27 @@ import net.minecraft.world.World;
 public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	public static final PropertyBool SENDER = PropertyBool.create("sender");
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
+	private static final AxisAlignedBB[] SHAPES = {
+			makeShape(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D), //down
+			makeShape(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D), //up
+			makeShape(0.0D, 0.0D, 9.0D, 16.0D, 16.0D, 16.0D), //north
+			makeShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 7.0D), //south
+			makeShape(9.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D), //west
+			makeShape(0.0D, 0.0D, 0.0D, 7.0D, 16.0D, 16.0D) //east
+	};
+
+	private static AxisAlignedBB makeShape(double x1, double y1, double z1, double x2, double y2, double z2) {
+		return new AxisAlignedBB(x1 / 16.0D, y1 / 16.0D, z1 / 16.0D, x2 / 16.0D, y2 / 16.0D, z2 / 16.0D);
+	}
 
 	public SecureRedstoneInterfaceBlock(Material material) {
 		super(material);
-		setDefaultState(blockState.getBaseState().withProperty(SENDER, false).withProperty(FACING, EnumFacing.UP));
+		setDefaultState(blockState.getBaseState().withProperty(SENDER, true).withProperty(FACING, EnumFacing.UP));
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return SHAPES[state.getValue(FACING).getIndex()];
 	}
 
 	@Override

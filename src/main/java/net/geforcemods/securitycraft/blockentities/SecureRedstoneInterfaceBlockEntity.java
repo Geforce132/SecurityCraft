@@ -41,55 +41,66 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	private boolean sendExactPower = true;
 	private boolean receiveInvertedPower = false;
 	private boolean highlightConnections = false;
+	private float dishRotationDegrees = 0;
+	private float oDishRotationDegrees = 0;
 
 	@Override
 	public void update() {
-		if (world.isRemote)
-			return;
+		if (!world.isRemote) {
+			if (!tracked) {
+				if (isSender())
+					refreshPower();
 
-		if (!tracked) {
-			if (isSender())
-				refreshPower();
+				BlockEntityTracker.SECURE_REDSTONE_INTERFACE.track(this);
+				tracked = true;
+			}
+			else if (!refreshed) {
+				refreshed = true;
 
-			BlockEntityTracker.SECURE_REDSTONE_INTERFACE.track(this);
-			tracked = true;
-		}
-		else if (!refreshed) {
-			refreshed = true;
+				if (isSender())
+					tellSimilarReceiversToRefresh();
+			}
 
-			if (isSender())
-				tellSimilarReceiversToRefresh();
-		}
+			if (shouldHighlightConnections() && world.getTotalWorldTime() % 5 == 0) {
+				Collection<EntityPlayerMP> players = TeamUtils.getOnlinePlayersFromOwner(world.getMinecraftServer(), getOwner());
 
-		if (shouldHighlightConnections() && world.getTotalWorldTime() % 5 == 0) {
-			Collection<EntityPlayerMP> players = TeamUtils.getOnlinePlayersFromOwner(world.getMinecraftServer(), getOwner());
+				if (!players.isEmpty()) {
+					WorldServer serverLevel = (WorldServer) world;
+					Vec3d myPos = Utils.atCenterOf(pos);
 
-			if (!players.isEmpty()) {
-				WorldServer serverLevel = (WorldServer) world;
-				Vec3d myPos = Utils.atCenterOf(pos);
+					if (isSender()) {
+						for (SecureRedstoneInterfaceBlockEntity be : getReceiversISendTo()) {
+							if (!be.isDisabled()) {
+								Vec3d receiverPos = Utils.atCenterOf(be.pos);
 
-				if (isSender()) {
-					for (SecureRedstoneInterfaceBlockEntity be : getReceiversISendTo()) {
-						if (!be.isDisabled()) {
-							Vec3d receiverPos = Utils.atCenterOf(be.pos);
+								showParticleTrail(players, serverLevel, myPos, receiverPos, SENDER_PARTICLE_COLOR);
+							}
+						}
+					}
+					else {
+						for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
+							Vec3d senderPos = Utils.atCenterOf(be.pos);
+							Vec3d color;
 
-							showParticleTrail(players, serverLevel, myPos, receiverPos, SENDER_PARTICLE_COLOR);
+							if (be.getPower() == 0)
+								color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL : RECEIVER_PARTICLE_COLOR_NO_SIGNAL;
+							else
+								color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR;
+
+							showParticleTrail(players, serverLevel, senderPos, myPos, color);
 						}
 					}
 				}
-				else {
-					for (SecureRedstoneInterfaceBlockEntity be : getSendersThatSendToMe()) {
-						Vec3d senderPos = Utils.atCenterOf(be.pos);
-						Vec3d color;
+			}
+		}
+		else {
+			oDishRotationDegrees = dishRotationDegrees;
 
-						if (be.getPower() == 0)
-							color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR_NO_SIGNAL : RECEIVER_PARTICLE_COLOR_NO_SIGNAL;
-						else
-							color = be.isProtectedSignal() ? RECEIVER_PROTECTED_PARTICLE_COLOR : RECEIVER_PARTICLE_COLOR;
+			if (!isDisabled()) {
+				dishRotationDegrees = oDishRotationDegrees + 0.05F;
 
-						showParticleTrail(players, serverLevel, senderPos, myPos, color);
-					}
-				}
+				if (dishRotationDegrees >= 360)
+					dishRotationDegrees = 0;
 			}
 		}
 	}
@@ -483,5 +494,13 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		return new ModuleType[] {
 				ModuleType.DISGUISE
 		};
+	}
+
+	public float getOriginalDishRotationDegrees() {
+		return oDishRotationDegrees;
+	}
+
+	public float getDishRotationDegrees() {
+		return dishRotationDegrees;
 	}
 }

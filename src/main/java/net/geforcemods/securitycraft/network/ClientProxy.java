@@ -56,6 +56,7 @@ import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
 import net.geforcemods.securitycraft.renderers.ReinforcedPistonRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
+import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
@@ -224,6 +225,7 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(SonicSecuritySystemBlockEntity.class, new SonicSecuritySystemRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(DisplayCaseBlockEntity.class, new DisplayCaseRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ClaymoreBlockEntity.class, new ClaymoreRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(SecureRedstoneInterfaceBlockEntity.class, new SecureRedstoneInterfaceRenderer());
 		//disguisable tile entity renderers
 		ClientRegistry.bindTileEntitySpecialRenderer(BlockChangeDetectorBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(DisguisableBlockEntity.class, new DisguisableBlockEntityRenderer<>());
@@ -234,7 +236,6 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(KeypadFurnaceBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(LaserBlockBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(ProtectoBlockEntity.class, new DisguisableBlockEntityRenderer<>());
-		ClientRegistry.bindTileEntitySpecialRenderer(SecureRedstoneInterfaceBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 		ClientRegistry.bindTileEntitySpecialRenderer(UsernameLoggerBlockEntity.class, new DisguisableBlockEntityRenderer<>());
 
 		Item.getItemFromBlock(SCContent.keypadChest).setTileEntityItemStackRenderer(new BlockEntityItemRenderer(new KeypadChestBlockEntity()));
