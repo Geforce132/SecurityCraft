@@ -31,15 +31,41 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	public static final BooleanProperty SENDER = BooleanProperty.create("sender");
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	//@formatter:off
+	private static final VoxelShape[] SENDER_SHAPES = {
+			Shapes.or(Block.box(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 1.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //down
+			Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 15.0D, 9.0D)), //up
+			Shapes.or(Block.box(0.0D, 0.0D, 9.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 1.0D, 9.0D, 9.0D, 9.0D)), //north
+			Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 7.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 9.0D, 15.0D)), //south
+			Shapes.or(Block.box(9.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(1.0D, 7.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //west
+			Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 7.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 15.0D, 9.0D, 9.0D)) //east
+	};
+	private static final VoxelShape[] RECEIVER_SHAPES = {
+			Shapes.or(Block.box(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 3.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //down
+			Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 13.0D, 9.0D)), //up
+			Shapes.or(Block.box(0.0D, 0.0D, 9.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 3.0D, 9.0D, 9.0D, 9.0D)), //north
+			Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 7.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 9.0D, 13.0D)), //south
+			Shapes.or(Block.box(9.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(3.0D, 7.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //west
+			Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 7.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 13.0D, 9.0D, 9.0D)) //east
+	};
+	//@formatter:on
 
 	public SecureRedstoneInterfaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(SENDER, false).setValue(FACING, Direction.UP));
+		registerDefaultState(defaultBlockState().setValue(SENDER, true).setValue(FACING, Direction.UP));
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		return (state.getValue(SENDER) ? SENDER_SHAPES : RECEIVER_SHAPES)[state.getValue(FACING).get3DDataValue()];
 	}
 
 	@Override
@@ -113,7 +139,7 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return !level.isClientSide ? createTickerHelper(type, SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
+		return createTickerHelper(type, SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override
