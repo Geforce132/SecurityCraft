@@ -49,6 +49,8 @@ body:
       options:
         - v1.9.10
         - v1.9.10-beta1
+        - v1.9.10-beta2
+        - v1.9.10-beta3
         - v1.9.9
         - Older (update the mod and try again with the new version before continuing.)
     validations:
