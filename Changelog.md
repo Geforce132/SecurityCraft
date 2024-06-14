@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10-beta2 of SecurityCraft--------------------------
+
+- Fix: Passcodes set in prior Minecraft versions are no longer accepted
+
 --------------------------Changelog for v1.9.10-beta1 of SecurityCraft--------------------------
 
 - New: Server config setting "allow_camera_night_vision" to set whether players are able to activate night vision without having the actual potion effect

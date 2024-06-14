@@ -25,10 +25,7 @@ public class CheckPasscode implements CustomPacketPayload {
 	public static final StreamCodec<RegistryFriendlyByteBuf, CheckPasscode> STREAM_CODEC = new StreamCodec<>() {
 		@Override
 		public CheckPasscode decode(RegistryFriendlyByteBuf buf) {
-			if (buf.readBoolean())
-				return new CheckPasscode(buf.readBlockPos(), buf.readUtf(Integer.MAX_VALUE / 4));
-			else
-				return new CheckPasscode(buf.readVarInt(), buf.readUtf(Integer.MAX_VALUE / 4));
+			return new CheckPasscode(buf);
 		}
 
 		@Override
@@ -57,6 +54,15 @@ public class CheckPasscode implements CustomPacketPayload {
 	public CheckPasscode(int entityId, String passcode) {
 		this.entityId = entityId;
 		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
+	}
+
+	private CheckPasscode(RegistryFriendlyByteBuf buf) {
+		if (buf.readBoolean())
+			pos = buf.readBlockPos();
+		else
+			entityId = buf.readVarInt();
+
+		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	@Override

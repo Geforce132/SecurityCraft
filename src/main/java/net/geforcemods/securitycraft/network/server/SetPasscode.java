@@ -22,10 +22,7 @@ public class SetPasscode implements CustomPacketPayload {
 	public static final StreamCodec<RegistryFriendlyByteBuf, SetPasscode> STREAM_CODEC = new StreamCodec<>() {
 		@Override
 		public SetPasscode decode(RegistryFriendlyByteBuf buf) {
-			if (buf.readBoolean())
-				return new SetPasscode(buf.readBlockPos(), buf.readUtf(Integer.MAX_VALUE / 4));
-			else
-				return new SetPasscode(buf.readVarInt(), buf.readUtf(Integer.MAX_VALUE / 4));
+			return new SetPasscode(buf);
 		}
 
 		@Override
@@ -54,6 +51,15 @@ public class SetPasscode implements CustomPacketPayload {
 	public SetPasscode(int entityId, String passcode) {
 		this.entityId = entityId;
 		this.passcode = PasscodeUtils.hashPasscodeWithoutSalt(passcode);
+	}
+
+	private SetPasscode(RegistryFriendlyByteBuf buf) {
+		if (buf.readBoolean())
+			pos = buf.readBlockPos();
+		else
+			entityId = buf.readVarInt();
+
+		passcode = buf.readUtf(Integer.MAX_VALUE / 4);
 	}
 
 	@Override
