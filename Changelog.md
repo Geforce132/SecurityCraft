@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10-beta3 of SecurityCraft--------------------------
+
+- Fix: Crash when a Sentry shoots
+
 --------------------------Changelog for v1.9.10-beta2 of SecurityCraft--------------------------
 
 - Fix: Passcodes set in prior Minecraft versions are no longer accepted

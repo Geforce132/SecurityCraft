@@ -37,7 +37,7 @@ public class Bullet extends AbstractArrow {
 	}
 
 	public Bullet(Level level, Sentry shooter) {
-		super(SCContent.BULLET_ENTITY.get(), shooter, level, ItemStack.EMPTY, ItemStack.EMPTY);
+		super(SCContent.BULLET_ENTITY.get(), shooter, level, ItemStack.EMPTY, null);
 
 		Owner owner = shooter.getOwner();
 
