@@ -24,6 +24,7 @@ body:
       label: Minecraft version
       description: What version of Minecraft are you using?
       options:
+        - 1.21
         - 1.20.6
         - 1.20.4
         - 1.20.1
@@ -35,8 +36,8 @@ body:
       required: true
   - type: input
     attributes:
-      label: Forge version
-      description: What version of Forge are you using?
+      label: Forge/NeoForge version
+      description: What version of Forge/NeoForge are you using?
       placeholder: e.g. 47.1.0
     validations:
       required: true
@@ -46,9 +47,9 @@ body:
       label: SecurityCraft version
       description: What version of SecurityCraft are you using?
       options:
+        - v1.9.10
+        - v1.9.10-beta1
         - v1.9.9
-        - v1.9.9-beta1
-        - v1.9.8
         - Older (update the mod and try again with the new version before continuing.)
     validations:
       required: true
