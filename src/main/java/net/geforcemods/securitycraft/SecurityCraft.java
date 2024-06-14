@@ -35,7 +35,6 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -77,11 +76,8 @@ public class SecurityCraft {
 				ticketHelper.removeAllTickets(uuid);
 		}));
 	});
-	public static final boolean IS_A_SODIUM_MOD_INSTALLED = Util.make(() -> {
-		ModList modList = ModList.get();
-
-		return modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
-	});
+	//TODO: Support Sodium when it gets released for NeoForge
+	public static final boolean IS_EMBEDDIUM_INSTALLED = ModList.get().isLoaded("embeddium");
 
 	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);

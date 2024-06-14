@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.compat.sodium.SodiumCompat;
+import net.geforcemods.securitycraft.compat.embeddium.EmbeddiumCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.misc.IChunkStorageProvider;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -95,8 +95,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 				NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
 				cameraStorage.replace(i, chunk, null);
 
-				if (SecurityCraft.IS_A_SODIUM_MOD_INSTALLED)
-					SodiumCompat.onChunkStatusRemoved(level, x, z);
+				if (SecurityCraft.IS_EMBEDDIUM_INSTALLED)
+					EmbeddiumCompat.onChunkStatusRemoved(level, x, z);
 			}
 		}
 	}
@@ -124,8 +124,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 
 			level.onChunkLoaded(chunkPos);
 
-			if (SecurityCraft.IS_A_SODIUM_MOD_INSTALLED)
-				SodiumCompat.onChunkStatusAdded(level, x, z);
+			if (SecurityCraft.IS_EMBEDDIUM_INSTALLED)
+				EmbeddiumCompat.onChunkStatusAdded(level, x, z);
 
 			NeoForge.EVENT_BUS.post(new ChunkEvent.Load(chunk, false));
 			callback.setReturnValue(chunk);

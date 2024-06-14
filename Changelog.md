@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.10-beta2 of SecurityCraft--------------------------
 
 - Fix: Passcodes set in prior Minecraft versions are no longer accepted
+- Fix: Crash when viewing a camera while Embeddium is installed
 
 --------------------------Changelog for v1.9.10-beta1 of SecurityCraft--------------------------
 
