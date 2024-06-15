@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class SCManualPage {
@@ -51,8 +53,13 @@ public class SCManualPage {
 		if (item instanceof BlockItem) {
 			Block block = ((BlockItem) item).getBlock();
 
-			if (block.hasTileEntity(block.defaultBlockState()))
-				return block.createTileEntity(block.defaultBlockState(), Minecraft.getInstance().level);
+			if (block.hasTileEntity(block.defaultBlockState())) {
+				BlockState state = block.defaultBlockState();
+				TileEntity te = block.createTileEntity(state, Minecraft.getInstance().level);
+
+				te.blockState = state;
+				return te;
+			}
 		}
 
 		return null;
