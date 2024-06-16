@@ -21,6 +21,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final TagKey<Block> REINFORCED_CHERRY_LOGS = tag("reinforced/cherry_logs");
 		public static final TagKey<Block> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
+		public static final TagKey<Block> REINFORCED_CONCRETE = tag("reinforced/concrete");
 		public static final TagKey<Block> REINFORCED_CRIMSON_STEMS = tag("reinforced/crimson_stems");
 		public static final TagKey<Block> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
 		public static final TagKey<Block> REINFORCED_DIRT = tag("reinforced/dirt");
@@ -28,6 +29,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_FENCES = tag("reinforced/fences");
 		public static final TagKey<Block> REINFORCED_FENCE_GATES = tag("reinforced/fence_gates");
 		public static final TagKey<Block> REINFORCED_GLASS_PANES = tag("reinforced/glass_panes");
+		public static final TagKey<Block> REINFORCED_GLAZED_TERRACOTTA = tag("reinforced/glazed_terracotta");
 		public static final TagKey<Block> REINFORCED_ICE = tag("reinforced/ice");
 		public static final TagKey<Block> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final TagKey<Block> REINFORCED_LOGS = tag("reinforced/logs");
@@ -87,6 +89,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final TagKey<Item> REINFORCED_CHERRY_LOGS = tag("reinforced/cherry_logs");
 		public static final TagKey<Item> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
+		public static final TagKey<Item> REINFORCED_CONCRETE = tag("reinforced/concrete");
 		public static final TagKey<Item> REINFORCED_CRIMSON_STEMS = tag("reinforced/crimson_stems");
 		public static final TagKey<Item> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
 		public static final TagKey<Item> REINFORCED_DIRT = tag("reinforced/dirt");
@@ -94,6 +97,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_FENCES = tag("reinforced/fences");
 		public static final TagKey<Item> REINFORCED_FENCE_GATES = tag("reinforced/fence_gates");
 		public static final TagKey<Item> REINFORCED_GLASS_PANES = tag("reinforced/glass_panes");
+		public static final TagKey<Item> REINFORCED_GLAZED_TERRACOTTA = tag("reinforced/glazed_terracotta");
 		public static final TagKey<Item> REINFORCED_ICE = tag("reinforced/ice");
 		public static final TagKey<Item> REINFORCED_JUNGLE_LOGS = tag("reinforced/jungle_logs");
 		public static final TagKey<Item> REINFORCED_LOGS = tag("reinforced/logs");

@@ -75,12 +75,14 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		copy(SCTags.Blocks.REINFORCED_BUTTONS, SCTags.Items.REINFORCED_BUTTONS);
 		copy(SCTags.Blocks.REINFORCED_CHERRY_LOGS, SCTags.Items.REINFORCED_CHERRY_LOGS);
 		copy(SCTags.Blocks.REINFORCED_COBBLESTONE, SCTags.Items.REINFORCED_COBBLESTONE);
+		copy(SCTags.Blocks.REINFORCED_CONCRETE, SCTags.Items.REINFORCED_CONCRETE);
 		copy(SCTags.Blocks.REINFORCED_CRIMSON_STEMS, SCTags.Items.REINFORCED_CRIMSON_STEMS);
 		copy(SCTags.Blocks.REINFORCED_DARK_OAK_LOGS, SCTags.Items.REINFORCED_DARK_OAK_LOGS);
 		copy(SCTags.Blocks.REINFORCED_DIRT, SCTags.Items.REINFORCED_DIRT);
 		copy(SCTags.Blocks.REINFORCED_END_STONES, SCTags.Items.REINFORCED_END_STONES);
 		copy(SCTags.Blocks.REINFORCED_FENCES, SCTags.Items.REINFORCED_FENCES);
 		copy(SCTags.Blocks.REINFORCED_GLASS_PANES, SCTags.Items.REINFORCED_GLASS_PANES);
+		copy(SCTags.Blocks.REINFORCED_GLAZED_TERRACOTTA, SCTags.Items.REINFORCED_GLAZED_TERRACOTTA);
 		copy(SCTags.Blocks.REINFORCED_ICE, SCTags.Items.REINFORCED_ICE);
 		copy(SCTags.Blocks.REINFORCED_JUNGLE_LOGS, SCTags.Items.REINFORCED_JUNGLE_LOGS);
 		copy(SCTags.Blocks.REINFORCED_LOGS, SCTags.Items.REINFORCED_LOGS);
@@ -146,6 +148,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 
 		//NeoForge tags
 		tag(Tags.Items.BUCKETS).add(SCContent.FAKE_LAVA_BUCKET.get(), SCContent.FAKE_WATER_BUCKET.get());
+		tag(Tags.Items.CONCRETES).addTag(SCTags.Items.REINFORCED_CONCRETE);
 		tag(Tags.Items.DYED_BLACK).add(
 				SCContent.REINFORCED_BLACK_CARPET.get().asItem(),
 				SCContent.REINFORCED_BLACK_CONCRETE.get().asItem(),
@@ -275,6 +278,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.REINFORCED_YELLOW_TERRACOTTA.get().asItem(),
 				SCContent.REINFORCED_YELLOW_WOOL.get().asItem());
 		tag(Tags.Items.FENCE_GATES_WOODEN).addTag(SCTags.Items.REINFORCED_WOODEN_FENCE_GATES);
+		tag(Tags.Items.GLAZED_TERRACOTTAS).addTag(SCTags.Items.REINFORCED_GLAZED_TERRACOTTA);
 		//@formatter:on
 	}
 
