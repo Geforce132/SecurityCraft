@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
+
+- Fix: Crash when a Sentry shoots through a portal
+
 --------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
 
 - Fix: Passcodes set in prior Minecraft versions are no longer accepted

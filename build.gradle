@@ -8,7 +8,7 @@ plugins {
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.10.1'
+version = '1.9.10.2'
 group = 'net.geforcemods.securitycraft'
 
 base {
