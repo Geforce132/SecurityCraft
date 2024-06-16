@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.9.9-beta4 of SecurityCraft--------------------------
+
+- Fix: Compatibility with NeoForge 21.0.10-beta and newer
+- Misc.: The minimum required NeoForge version is now 21.0.10-beta
+
 --------------------------Changelog for v1.9.10-beta3 of SecurityCraft--------------------------
 
 - Fix: Crash when a Sentry shoots

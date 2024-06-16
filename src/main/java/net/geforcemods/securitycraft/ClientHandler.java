@@ -149,7 +149,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
+import net.neoforged.fml.common.asm.enumextension.EnumProxy;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.IArmPoseTransformer;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
@@ -198,7 +200,7 @@ public class ClientHandler {
 			SCContent.USERNAME_LOGGER.get()
 	});
 	//@formatter:on
-	public static final ArmPose TASER_ARM_POSE = ArmPose.create("securitycraft_taser", true, (model, entity, arm) -> {
+	public static final EnumProxy<ArmPose> TASER_ARM_POSE_PARAMS = new EnumProxy<>(ArmPose.class, true, (IArmPoseTransformer) (model, entity, arm) -> {
 		ModelPart leftArm = model.leftArm;
 		ModelPart rightArm = model.rightArm;
 

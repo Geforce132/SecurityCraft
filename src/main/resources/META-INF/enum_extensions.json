@@ -1,0 +1,13 @@
+{
+	"entries": [
+		{
+			"enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+			"name": "SECURITYCRAFT_TASER",
+			"constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+			"parameters": {
+				"class": "net/geforcemods/securitycraft/ClientHandler",
+				"field": "TASER_ARM_POSE_PARAMS"
+			}
+		}
+	]
+}

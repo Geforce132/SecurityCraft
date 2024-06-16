@@ -162,6 +162,8 @@ public class TaserItem extends Item {
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		consumer.accept(new IClientItemExtensions() {
+			private static final ArmPose TASER_ARM_POSE = ClientHandler.TASER_ARM_POSE_PARAMS.getValue();
+
 			//first person
 			@Override
 			public boolean applyForgeHandTransform(PoseStack pose, LocalPlayer player, HumanoidArm arm, ItemStack stack, float partialTick, float equippedProgress, float swingProgress) {
@@ -176,7 +178,7 @@ public class TaserItem extends Item {
 			//third person
 			@Override
 			public ArmPose getArmPose(LivingEntity entity, InteractionHand hand, ItemStack stack) {
-				return ClientHandler.TASER_ARM_POSE;
+				return TASER_ARM_POSE;
 			}
 		});
 	}

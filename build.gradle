@@ -8,7 +8,7 @@ plugins {
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.10-beta3'
+version = '1.9.10-beta4'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.0.8-beta'
+	implementation 'net.neoforged:neoforge:21.0.10-beta'
 
 //	implementation "curse.maven:architectury-api-419699:5383746" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5397531" //ftb teams dependency
@@ -76,7 +76,7 @@ dependencies {
 	implementation "curse.maven:the-one-probe-245211:5431197"
 	implementation "curse.maven:jade-324717:5427817"
 	implementation "curse.maven:betterf3-401648:5429132"
-//	implementation "curse.maven:cloth-config-348521:5287791" //betterf3 dependency
+	implementation "curse.maven:cloth-config-348521:5424576" //betterf3 dependency
 	implementation "curse.maven:wthit-forge-455982:5431877"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
