@@ -2,6 +2,7 @@
 
 - New: Block and item tags "securitycraft:reinforced/concrete" and "securitycraft:reinforced/glazed_terracotta"
 - Fix: Compatibility with NeoForge 21.0.10-beta and newer
+- Fix: Crash when a Sentry shoots through a portal
 - Misc.: The minimum required NeoForge version is now 21.0.10-beta
 
 --------------------------Changelog for v1.9.10-beta3 of SecurityCraft--------------------------
