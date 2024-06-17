@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -51,7 +52,7 @@ public class SetCameraView implements IMessage {
 						if (CameraController.previousCameraType >= 0 && CameraController.previousCameraType < 3)
 							mc.gameSettings.thirdPersonView = CameraController.previousCameraType;
 
-						mc.world.getChunk(entity.getPosition()).addEntity(entity);
+						mc.world.getChunk(new BlockPos(entity.posX, entity.posY, entity.posZ)).addEntity(entity);
 					}
 
 					mc.renderGlobal.loadRenderers();

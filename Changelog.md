@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
+
+- Fix: The player sometimes gets stuck after exiting a camera
+
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
 - New: Server config setting "allow_camera_night_vision" to set whether players are able to activate night vision without having the actual potion effect
