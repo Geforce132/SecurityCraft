@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
+
+- Fix: The Alarm ceases to emit any sound when selecting a different alarm sound
+
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
 
 - Fix: Crash when a Sentry shoots through a portal

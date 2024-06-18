@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -21,7 +20,7 @@ public class PlayAlarmSound implements CustomPacketPayload {
 			PlayAlarmSound packet = new PlayAlarmSound();
 
 			packet.bePos = buf.readBlockPos();
-			packet.sound = buf.readById(BuiltInRegistries.SOUND_EVENT.asHolderIdMap()::byId);
+			packet.sound = SoundEvent.STREAM_CODEC.decode(buf);
 			packet.soundX = buf.readInt();
 			packet.soundY = buf.readInt();
 			packet.soundZ = buf.readInt();
@@ -34,7 +33,7 @@ public class PlayAlarmSound implements CustomPacketPayload {
 		@Override
 		public void encode(RegistryFriendlyByteBuf buf, PlayAlarmSound packet) {
 			buf.writeBlockPos(packet.bePos);
-			buf.writeById(BuiltInRegistries.SOUND_EVENT.asHolderIdMap()::getId, packet.sound);
+			SoundEvent.STREAM_CODEC.encode(buf, packet.sound);
 			buf.writeInt(packet.soundX);
 			buf.writeInt(packet.soundY);
 			buf.writeInt(packet.soundZ);
