@@ -1,4 +1,8 @@
---------------------------Changelog for v1.9.9-beta4 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
+
+- Fix: The Alarm ceases to emit any sound when selecting a different alarm sound
+
+--------------------------Changelog for v1.9.10-beta4 of SecurityCraft--------------------------
 
 - New: Block and item tags "securitycraft:reinforced/concrete" and "securitycraft:reinforced/glazed_terracotta"
 - Fix: Compatibility with NeoForge 21.0.10-beta and newer
