@@ -98,6 +98,7 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 
 	@Override
 	public void removed(Player player) {
+		super.removed(player);
 		inventory.stopOpen(player);
 	}
 
