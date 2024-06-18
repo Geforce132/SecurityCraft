@@ -84,6 +84,7 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 
 	@Override
 	public void removed(Player player) {
+		super.removed(player);
 		keycardHolderInv.stopOpen(player);
 	}
 }
