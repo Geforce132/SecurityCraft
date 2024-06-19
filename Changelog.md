@@ -1,7 +1,8 @@
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
 - Fix: The Alarm ceases to emit any sound when selecting a different alarm sound
-- Fix: When closing the screen of a briefcase, disguise module or keycard holder, items carried by the mouse are removed
+- Fix: When closing the screen of a briefcase, disguise module or keycard holder, items carried by the mouse are deleted
+- Fix: Players are kicked from the world when a disguise module is removed from certain blocks
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
 
