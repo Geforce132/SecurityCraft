@@ -348,11 +348,13 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		NonNullList<ItemStack> modules = getInventory();
 
 		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty() && modules.get(i).getItem() instanceof ModuleItem moduleItem && moduleItem.getModuleType() == module) {
+			ItemStack moduleStack = modules.get(i);
+
+			if (!moduleStack.isEmpty() && moduleStack.getItem() instanceof ModuleItem moduleItem && moduleItem.getModuleType() == module) {
 				if (!toggled)
 					modules.set(i, ItemStack.EMPTY);
 
-				onModuleRemoved(modules.get(i), module, toggled);
+				onModuleRemoved(moduleStack, module, toggled);
 			}
 		}
 	}
