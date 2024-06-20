@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.components.NamedPositions;
+import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -24,6 +25,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CameraMonitorItem extends Item {
 	public static final int MAX_CAMERAS = 30;
@@ -79,7 +81,7 @@ public class CameraMonitorItem extends Item {
 		}
 
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			ClientHandler.displayCameraMonitorScreen(player.getInventory(), stack);
+			ClientHandler.displayCameraMonitorScreen(stack);
 
 		return InteractionResultHolder.consume(stack);
 	}
@@ -105,5 +107,12 @@ public class CameraMonitorItem extends Item {
 
 			return null;
 		});
+	}
+
+	public static void removeCameraOnClient(GlobalPos camera, ItemStack monitor) {
+		if (monitor.has(SCContent.BOUND_CAMERAS)) {
+			monitor.get(SCContent.BOUND_CAMERAS).remove(SCContent.BOUND_CAMERAS, monitor, camera);
+			PacketDistributor.sendToServer(new RemoveCameraTag(camera));
+		}
 	}
 }

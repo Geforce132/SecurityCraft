@@ -1,0 +1,45 @@
+package net.geforcemods.securitycraft.network.server;
+
+import java.util.Optional;
+
+import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+
+public record SyncFrame(BlockPos pos, Optional<GlobalPos> removedCamera, Optional<GlobalPos> currentCamera) implements CustomPacketPayload {
+	public static final CustomPacketPayload.Type<SyncFrame> TYPE = new CustomPacketPayload.Type<>(SecurityCraft.resLoc("sync_frame"));
+	//@formatter:off
+	public static final StreamCodec<ByteBuf, SyncFrame> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, SyncFrame::pos,
+			ByteBufCodecs.optional(GlobalPos.STREAM_CODEC), SyncFrame::removedCamera,
+			ByteBufCodecs.optional(GlobalPos.STREAM_CODEC), SyncFrame::currentCamera,
+			SyncFrame::new);
+	//@formatter:on
+
+	@Override
+	public Type<? extends CustomPacketPayload> type() {
+		return TYPE;
+	}
+
+	public void handle(IPayloadContext ctx) {
+		Player player = ctx.player();
+		Level level = player.level();
+		GlobalPos currentCamera = this.currentCamera.orElse(null);
+
+		if (level.getBlockEntity(pos) instanceof FrameBlockEntity be) {
+			if (be.isOwnedBy(player))
+				removedCamera.ifPresent(be::removeCamera);
+
+			if (be.isOwnedBy(player) || be.isAllowed(player))
+				be.switchCameras(currentCamera, player);
+		}
+	}
+}

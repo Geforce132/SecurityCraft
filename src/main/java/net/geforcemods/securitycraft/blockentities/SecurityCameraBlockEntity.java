@@ -1,5 +1,10 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
@@ -8,21 +13,27 @@ import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -32,15 +43,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
+	private static final List<SecurityCameraBlockEntity> RECENTLY_UNVIEWED_CAMERAS = new ArrayList<>();
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
+	private ChunkTrackingView cameraFeedChunks = null;
+	private Set<Long> linkedFrames = new HashSet<>();
+	private Set<ServerPlayer> playersRequestingChunks = new HashSet<>();
 	private boolean down = false, initialized = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
@@ -88,6 +104,20 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 			else
 				addToRotation = true;
 		}
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+
+		if (!level.isLoaded(worldPosition) || !(level.getBlockEntity(worldPosition) instanceof SecurityCameraBlockEntity))
+			unlinkAllFrames();
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
+		unlinkAllFrames();
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	@Override
@@ -222,6 +252,87 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		return down;
 	}
 
+	public void linkFrameForPlayer(ServerPlayer player, BlockPos framePos, int chunkLoadingDistance) {
+		if (linkedFrames.isEmpty()) {
+			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.track(this);
+			requestChunkSending(player, chunkLoadingDistance);
+
+			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
+
+			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
+				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, true, false);
+				}
+			}
+		}
+
+		linkedFrames.add(framePos.asLong());
+	}
+
+	public void unlinkFrame(BlockPos framePos) {
+		if (linkedFrames.remove(framePos.asLong()) && linkedFrames.isEmpty()) {
+			addRecentlyUnviewedCamera(this);
+			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
+
+			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
+			int chunkLoadingDistance = getChunkLoadingDistance();
+
+			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
+				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, false, false);
+				}
+			}
+		}
+	}
+
+	public void unlinkAllFrames() {
+		for (Long linkedFrame : new HashSet<>(linkedFrames)) {
+			unlinkFrame(BlockPos.of(linkedFrame));
+		}
+
+		if (level.isClientSide)
+			CameraController.FRAME_CAMERA_FEEDS.remove(new GlobalPos(level.dimension(), worldPosition));
+	}
+
+	public void requestChunkSending(ServerPlayer player, int chunkLoadingDistance) {
+		setChunkLoadingDistance(chunkLoadingDistance);
+		playersRequestingChunks.add(player);
+	}
+
+	public ChunkTrackingView getCameraFeedChunks(int chunkLoadingDistance) {
+		if (cameraFeedChunks == null)
+			cameraFeedChunks = ChunkTrackingView.of(new ChunkPos(worldPosition), chunkLoadingDistance);
+
+		return cameraFeedChunks;
+	}
+
+	public void setChunkLoadingDistance(int chunkLoadingDistance) {
+		cameraFeedChunks = ChunkTrackingView.of(new ChunkPos(worldPosition), chunkLoadingDistance);
+	}
+
+	public int getChunkLoadingDistance() {
+		return cameraFeedChunks instanceof ChunkTrackingView.Positioned positioned ? positioned.viewDistance() : 0;
+	}
+
+	public boolean shouldKeepChunkLoaded(int chunkX, int chunkZ) {
+		return cameraFeedChunks.contains(chunkX, chunkZ);
+	}
+
+	public boolean shouldSendChunksToPlayer(ServerPlayer player) {
+		return playersRequestingChunks.remove(player);
+	}
+
+	public static void addRecentlyUnviewedCamera(SecurityCameraBlockEntity camera) {
+		RECENTLY_UNVIEWED_CAMERAS.add(camera);
+	}
+
+	public static List<SecurityCameraBlockEntity> fetchRecentlyUnviewedCameras() {
+		List<SecurityCameraBlockEntity> cameras = new ArrayList<>(RECENTLY_UNVIEWED_CAMERAS);
+
+		RECENTLY_UNVIEWED_CAMERAS.clear();
+		return cameras;
+	}
+
 	public int getOpacity() {
 		return opacity.get();
 	}
@@ -230,14 +341,22 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		return movementSpeedOption.get();
 	}
 
-	public void setDefaultViewingDirection(Direction facing, float zoom) {
-		setDefaultViewingDirection(down ? 75F : 30F, switch (facing) {
+	public float getDefaultXRotation() {
+		return down ? 75F : 30F;
+	}
+
+	public float getDefaultYRotation(Direction facing) {
+		return switch (facing) {
 			case NORTH -> 180F;
 			case WEST -> 90F;
 			case SOUTH -> 0F;
 			case EAST -> 270F;
 			case DOWN, UP -> 0F;
-		}, zoom);
+		};
+	}
+
+	public void setDefaultViewingDirection(Direction facing, float zoom) {
+		setDefaultViewingDirection(getDefaultXRotation(), getDefaultYRotation(facing), zoom);
 	}
 
 	public void setDefaultViewingDirection(float initialXRotation, float initialYRotation, float initialZoom) {

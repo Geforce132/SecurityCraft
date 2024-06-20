@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ElectrifiedFenceAndGateBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -2888,7 +2889,9 @@ public class SCContent {
 
 		//@formatter:on
 		return BlockEntityType.Builder.of((pos, state) -> {
-			if (state.is(REINFORCED_OBSERVER))
+			if (state.is(FRAME))
+				return new FrameBlockEntity(pos, state);
+			else if (state.is(REINFORCED_OBSERVER))
 				return new ReinforcedObserverBlockEntity(pos, state);
 			else if (state.is(MINE))
 				return new MineBlockEntity(pos, state);

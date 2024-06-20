@@ -1069,7 +1069,6 @@
 	"messages.securitycraft:codebreakerDisabled": "暗号解読機はコンフィグファイルにより無効化されています",
 	"messages.securitycraft:command.sc.usage": "使用法： /sc connect または /sc disconnect または /sc contact または /sc resume",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
-	"messages.securitycraft:frame.rightclick": "現在、LookingGlass は 1.7.10 以降のバージョンに移植されていないため、フレーム内のカメラ モニターを表示することはできません。 将来のアップデートで、LookingGlass のようなライブラリ mod に依存せずにこの機能が復活する可能性がありますが、正確な時期は不明です。",
 	"messages.securitycraft:invScan.notConnected": "これは別のインベントリスキャナーブロックに接続されていません！",
 	"messages.securitycraft:keycardReader.differentOwner": "このカードがリンクされたキーカードリーダーは、使用しようとしているプレイヤーとは別のプレイヤーのものです！",
 	"messages.securitycraft:keycardReader.noUses": "このキーカードには使い道がありません！",

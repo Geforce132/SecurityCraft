@@ -1,11 +1,22 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
+import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.pipeline.TextureTarget;
+
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -18,20 +29,27 @@ import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirec
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.Util;
+import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -44,7 +62,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class CameraController {
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
-	private static ClientChunkCache.Storage cameraStorage;
 	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = Util.make(() -> {
 		Minecraft mc = Minecraft.getInstance();
 
@@ -62,6 +79,10 @@ public class CameraController {
 			return new ViewMovementKeyHandler[0];
 	});
 	private static int screenshotSoundCooldown = 0;
+	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
+	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new HashMap<>();
+	public static GlobalPos currentlyCapturedCamera;
+	public static ShaderInstance cameraMonitorShader;
 
 	private CameraController() {}
 
@@ -215,20 +236,70 @@ public class CameraController {
 		PacketDistributor.sendToServer(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot(), cam.getZoomAmount()));
 	}
 
-	public static ClientChunkCache.Storage getCameraStorage() {
-		return cameraStorage;
+	public static boolean isLinked(FrameBlockEntity be, GlobalPos cameraPos) {
+		return FRAME_LINKS.containsKey(cameraPos) && FRAME_LINKS.get(cameraPos).contains(be.getBlockPos());
 	}
 
-	public static void setCameraStorage(ClientChunkCache.Storage newStorage) {
-		cameraStorage = newStorage;
+	public static void addFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
+		Set<BlockPos> bes = FRAME_LINKS.getOrDefault(cameraPos, new HashSet<>());
+
+		bes.add(be.getBlockPos());
+		FRAME_LINKS.putIfAbsent(cameraPos, bes);
+		FRAME_CAMERA_FEEDS.putIfAbsent(cameraPos, new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX))); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
 	}
 
-	public static void setRenderPosition(Entity entity) {
-		if (entity instanceof SecurityCamera) {
-			SectionPos cameraPos = SectionPos.of(entity);
+	public static void removeFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
+		if (FRAME_LINKS.containsKey(cameraPos)) {
+			Set<BlockPos> linkedFrames = FRAME_LINKS.get(cameraPos);
 
-			cameraStorage.viewCenterX = cameraPos.x();
-			cameraStorage.viewCenterZ = cameraPos.z();
+			linkedFrames.remove(be.getBlockPos());
+
+			if (linkedFrames.isEmpty()) {
+				FRAME_LINKS.remove(cameraPos);
+				FRAME_CAMERA_FEEDS.remove(cameraPos);
+			}
+		}
+	}
+
+	public static RenderTarget getViewForFrame(GlobalPos cameraPos) {
+		return FRAME_CAMERA_FEEDS.containsKey(cameraPos) ? FRAME_CAMERA_FEEDS.get(cameraPos).renderTarget : null;
+	}
+
+	//adapted from Immersive Portals
+	public static void discoverVisibleSections(Camera playerCamera, Frustum cameraFrustum, ObjectArrayList<SectionRenderDispatcher.RenderSection> visibleSectionsList) {
+		ArrayDeque<SectionRenderDispatcher.RenderSection> queueToCheck = new ArrayDeque<>();
+		Set<Long> checkedChunks = new HashSet<>();
+		Vec3 cameraPos = playerCamera.getPosition();
+		BlockPos cameraBlockPos = BlockPos.containing(cameraPos);
+		SectionPos cameraSectionPos = SectionPos.of(cameraBlockPos);
+		SectionRenderDispatcher.RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
+
+		visibleSectionsList.clear();
+		cameraFrustum.prepare(cameraPos.x, cameraPos.y, cameraPos.z);
+		queueToCheck.add(startingSection);
+		visibleSectionsList.add(startingSection);
+
+		// breadth-first searching
+		while (!queueToCheck.isEmpty()) {
+			SectionRenderDispatcher.RenderSection currentSection = queueToCheck.poll();
+			BlockPos origin = currentSection.getOrigin();
+
+			for (Direction dir : Direction.values()) {
+				int cx = SectionPos.blockToSectionCoord(origin.getX()) + dir.getStepX();
+				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
+				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getStepZ();
+				long posAsLong = BlockPos.asLong(cx, cy, cz);
+
+				if (!checkedChunks.contains(posAsLong)) {
+					SectionRenderDispatcher.RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
+
+					if (neighbourSection != null && cameraFrustum.isVisible(neighbourSection.getBoundingBox())) {
+						queueToCheck.add(neighbourSection);
+						visibleSectionsList.add(neighbourSection);
+						checkedChunks.add(posAsLong);
+					}
+				}
+			}
 		}
 	}
 
@@ -263,6 +334,19 @@ public class CameraController {
 				action.accept(cam);
 				key.setDown(true);
 			}
+		}
+	}
+
+	public static class CameraFeed {
+		public final RenderTarget renderTarget;
+		public ArrayList<SectionRenderDispatcher.RenderSection> visibleSections;
+
+		public CameraFeed(RenderTarget renderTarget) {
+			this.renderTarget = renderTarget;
+		}
+
+		public void setup(ArrayList<SectionRenderDispatcher.RenderSection> visibleSections) {
+			this.visibleSections = visibleSections;
 		}
 	}
 }

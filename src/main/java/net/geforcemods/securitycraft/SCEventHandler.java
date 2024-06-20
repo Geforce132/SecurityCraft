@@ -32,7 +32,10 @@ import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
+import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
+import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -75,6 +78,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -188,8 +192,18 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLevelUnload(LevelEvent.Unload event) {
-		if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
+		LevelAccessor level = event.getLevel();
+
+		if (level instanceof ServerLevel serverLevel && serverLevel.dimension() == Level.OVERWORLD) {
 			SaltData.invalidate();
+			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
+		}
+		else if (level.isClientSide()) {
+			CameraController.FRAME_LINKS.clear();
+			CameraController.FRAME_CAMERA_FEEDS.clear();
+			CameraClientChunkCacheExtension.clear();
+			CameraViewAreaExtension.clear();
+		}
 	}
 
 	@SubscribeEvent

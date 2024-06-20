@@ -8,10 +8,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
@@ -29,6 +31,7 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(be -> be.getRange());
 	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
 	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
+	public static final BlockEntityTracker<SecurityCameraBlockEntity> FRAME_VIEWED_SECURITY_CAMERAS = new BlockEntityTracker<>(be -> 0);
 	private final Map<ResourceKey<Level>, Collection<BlockPos>> trackedBlockEntities = new ConcurrentHashMap<>();
 	private final Function<BE, Integer> range;
 
@@ -52,6 +55,13 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	 */
 	public void stopTracking(BE be) {
 		getTrackedBlockEntities(be.getLevel()).remove(be.getBlockPos());
+	}
+
+	/**
+	 * Removes all block entities from this tracker
+	 */
+	public void clear() {
+		trackedBlockEntities.clear();
 	}
 
 	/**
@@ -89,6 +99,22 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 		return iterate(level, (list, bePos) -> {
 			if (isInRange(pos, range, new Vec3(bePos.getX(), bePos.getY(), bePos.getZ())))
 				list.add((BE) level.getBlockEntity(bePos));
+		});
+	}
+
+	/**
+	 * Gets all block entities that are in the given level and satisfy the given condition
+	 *
+	 * @param level The level
+	 * @param condition The condition predicate block entities are checked against
+	 * @return A list of all block entities that are in given level and satisfy the given condition
+	 */
+	public List<BE> getBlockEntitiesWithCondition(Level level, Predicate<BE> condition) {
+		return iterate(level, (list, bePos) -> {
+			BE be = (BE) level.getBlockEntity(bePos);
+
+			if (be != null && condition.test(be))
+				list.add(be);
 		});
 	}
 
