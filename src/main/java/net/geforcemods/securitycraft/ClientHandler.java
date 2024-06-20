@@ -186,6 +186,7 @@ public class ClientHandler {
 			SCContent.KEYPAD.get(),
 			SCContent.KEYPAD_BARREL.get(),
 			SCContent.KEYPAD_BLAST_FURNACE.get(),
+			SCContent.KEYPAD_CHEST.get(),
 			SCContent.KEYPAD_FURNACE.get(),
 			SCContent.KEYPAD_SMOKER.get(),
 			SCContent.LASER_BLOCK.get(),

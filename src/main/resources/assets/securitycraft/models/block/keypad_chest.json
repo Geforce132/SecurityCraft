@@ -1,5 +1,5 @@
 {
-    "parent": "builtin/entity",
+    "parent": "block/block",
     "textures": {
         "particle": "block/iron_block"
     }

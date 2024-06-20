@@ -439,7 +439,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<KeypadBarrelBlock> KEYPAD_BARREL = BLOCKS.register("keypad_barrel", () -> new KeypadBarrelBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final DeferredBlock<KeypadChestBlock> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(MapColor.METAL).sound(SoundType.METAL)));
+	public static final DeferredBlock<KeypadChestBlock> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL)));
 	public static final DeferredBlock<KeypadDoorBlock> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK), BlockSetType.IRON));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
