@@ -195,6 +195,7 @@ public class ClientHandler {
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
+			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get(),

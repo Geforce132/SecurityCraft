@@ -1,10 +1,11 @@
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
-- New: More blocks now support the Disguise Module: Keypad Chest, Sonic Security System
+- New: More blocks now support the Disguise Module: Keypad Chest, Security Camera, Sonic Security System
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
 - Fix: The Alarm ceases to emit any sound when selecting a different alarm sound
 - Fix: When closing the screen of a briefcase, disguise module or keycard holder, items carried by the mouse are deleted
 - Fix: Players are kicked from the world when a disguise module is removed from certain blocks
+- Misc: Changed Security Camera head display
 
 --------------------------Changelog for v1.9.10-beta4 of SecurityCraft--------------------------
 
