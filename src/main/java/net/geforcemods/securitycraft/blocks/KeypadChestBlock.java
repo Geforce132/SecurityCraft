@@ -81,6 +81,11 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 				@Override
 				public Component getDisplayName() {
+					//makes sure Jade's overlay is not too wide when the chest is disguised
+					//one side effect is the title in the chest's screen is also changed
+					if (((KeypadChestBlockEntity) chest1).isModuleEnabled(ModuleType.DISGUISE))
+						return Utils.localize(IDisguisable.getDisguisedStateOrDefault(chest1.getBlockState(), chest1.getLevel(), chest1.getBlockPos()).getBlock().getDescriptionId());
+
 					if (chest1.hasCustomName())
 						return chest1.getDisplayName();
 					else
