@@ -512,7 +512,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(MapColor.METAL)));
 	@HasManualPage
-	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(prop(MapColor.METAL).sound(SoundType.METAL).isRedstoneConductor(SonicSecuritySystemBlock::isNormalCube).noCollission()));
+	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL).noCollission()));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<TrackMineBlock> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(MapColor.METAL, 0.7F).noCollission().sound(SoundType.METAL)));
 	@HasManualPage

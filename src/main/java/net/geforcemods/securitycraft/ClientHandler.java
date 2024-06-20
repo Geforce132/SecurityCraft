@@ -197,6 +197,7 @@ public class ClientHandler {
 			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
+			SCContent.SONIC_SECURITY_SYSTEM.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
 	});
