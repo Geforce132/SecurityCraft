@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.google.common.base.Suppliers;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -26,7 +27,6 @@ import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockE
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.components.CodebreakerData;
@@ -349,7 +349,7 @@ public class ClientHandler {
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(lockable instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-						if (DisguisableBlock.getDisguisedBlockState(level, bhr.getBlockPos()).isPresent())
+						if (IDisguisable.getDisguisedBlockState(level, bhr.getBlockPos()).isPresent())
 							return false;
 					}
 
@@ -523,11 +523,11 @@ public class ClientHandler {
 		event.register((state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
-			if (block instanceof DisguisableBlock disguisedBlock) {
+			if (block instanceof IDisguisable disguisedBlock) {
 				Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(level, pos).getItem());
 				BlockState defaultBlockState = blockFromItem.defaultBlockState();
 
-				if (!defaultBlockState.isAir() && !(blockFromItem instanceof DisguisableBlock))
+				if (!defaultBlockState.isAir() && !(blockFromItem instanceof IDisguisable))
 					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, level, pos, tintIndex);
 			}
 

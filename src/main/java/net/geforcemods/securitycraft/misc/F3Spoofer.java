@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ public class F3Spoofer {
 
 		if (FMLEnvironment.production) {
 			switch (originalBlock) {
-				case DisguisableBlock disguisable -> DisguisableBlock.getDisguisedStateOrDefault(originalState, Minecraft.getInstance().level, pos);
+				case IDisguisable disguisable -> IDisguisable.getDisguisedStateOrDefault(originalState, Minecraft.getInstance().level, pos);
 				case FurnaceMineBlock mine -> Blocks.FURNACE.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, originalState.getValue(BlockStateProperties.HORIZONTAL_FACING));
 				case BaseFullMineBlock mine -> mine.getBlockDisguisedAs().defaultBlockState();
 				default -> {

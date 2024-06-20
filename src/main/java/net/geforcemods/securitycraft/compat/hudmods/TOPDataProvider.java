@@ -12,7 +12,7 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -33,7 +33,7 @@ public class TOPDataProvider extends HudModHandler implements Function<ITheOnePr
 		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, level, state, data) -> {
 			ItemStack disguisedAs = ItemStack.EMPTY;
 
-			if (state.getBlock() instanceof DisguisableBlock disguisedBlock)
+			if (state.getBlock() instanceof IDisguisable disguisedBlock)
 				disguisedAs = disguisedBlock.getDisguisedStack(level, data.getPos());
 			else if (state.getBlock() instanceof IOverlayDisplay display) {
 				ItemStack displayStack = display.getDisplayStack(level, state, data.getPos());
