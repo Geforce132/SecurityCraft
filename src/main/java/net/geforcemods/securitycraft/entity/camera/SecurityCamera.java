@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -23,13 +20,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
 	public static final EntityDataAccessor<Float> ZOOM_AMOUNT = SynchedEntityData.<Float>defineId(SecurityCamera.class, EntityDataSerializers.FLOAT);
-	private static final List<Player> DISMOUNTED_PLAYERS = new ArrayList<>();
 	protected boolean zooming = false;
 	private ChunkTrackingView cameraChunks = null;
 	private boolean hasSentChunks = false;
@@ -107,10 +102,6 @@ public class SecurityCamera extends Entity {
 		this.hasSentChunks = hasSentChunks;
 	}
 
-	public static boolean hasRecentlyDismounted(Player player) {
-		return DISMOUNTED_PLAYERS.remove(player);
-	}
-
 	@Override
 	public void remove(RemovalReason reason) {
 		super.remove(reason);
@@ -122,7 +113,6 @@ public class SecurityCamera extends Entity {
 			discard();
 			player.camera = player;
 			PacketDistributor.sendToPlayer(player, new SetCameraView(player.getId()));
-			DISMOUNTED_PLAYERS.add(player);
 
 			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
 				player.removeEffect(MobEffects.NIGHT_VISION);

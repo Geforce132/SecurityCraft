@@ -1,12 +1,17 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
+import net.geforcemods.securitycraft.components.GlobalPositions;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +23,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -58,12 +66,48 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (stack.getItem() == SCContent.CAMERA_MONITOR.get()) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.rightclick"), ChatFormatting.RED);
+		if (stack.getItem() == SCContent.CAMERA_MONITOR.get() && level.getBlockEntity(pos) instanceof FrameBlockEntity be && be.isOwnedBy(player)) {
+			if (stack.has(SCContent.BOUND_CAMERAS.get())) {
+				GlobalPositions cameras = stack.get(SCContent.BOUND_CAMERAS.get());
+
+				if (!cameras.isEmpty()) {
+					be.setCameraPositions(stack);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.camerasSet"), ChatFormatting.GREEN);
+				}
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.emptyMonitor"), ChatFormatting.RED);
+			}
+
 			return ItemInteractionResult.SUCCESS;
 		}
+		else if (stack.getItem() == SCContent.KEY_PANEL.get()) //Conversion takes priority
+			return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
 
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	}
+
+	@Override
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+		if (level.getBlockEntity(pos) instanceof FrameBlockEntity be) {
+			boolean ownedByUser = be.isOwnedBy(player);
+
+			if (be.isDisabled())
+				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (ownedByUser || be.isAllowed(player)) {
+				if (!be.getCameraPositions().isEmpty()) {
+					if (level.isClientSide) {
+						if (!be.isActivated() && be.getCurrentCamera() != null)
+							be.setCurrentCameraAndUpdate(be.getCurrentCamera());
+						else
+							ClientHandler.displayFrameScreen(be, !ownedByUser);
+					}
+
+					return InteractionResult.SUCCESS;
+				}
+			}
+		}
+
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -97,5 +141,15 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new FrameBlockEntity(pos, state);
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return level.isClientSide ? createTickerHelper(type, SCContent.OWNABLE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
 	}
 }
