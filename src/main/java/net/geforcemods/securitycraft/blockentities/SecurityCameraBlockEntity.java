@@ -75,7 +75,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 		oCameraRotation = getCameraRotation();
 
-		if (!shutDown) {
+		if (!shutDown && !disabled.get()) {
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;

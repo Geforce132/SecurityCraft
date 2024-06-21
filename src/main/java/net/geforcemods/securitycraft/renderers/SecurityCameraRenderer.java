@@ -62,9 +62,7 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 		}
 
 		pose.mulPose(POSITIVE_X_180);
-
-		if (!be.isDisabled())
-			MODEL.rotateCameraY((float) MathHelper.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation()));
+		MODEL.rotateCameraY((float) MathHelper.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation()));
 
 		if (be.isShutDown())
 			MODEL.rotateCameraX(0.9F);

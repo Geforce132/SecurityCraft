@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
+
+- Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
+
 --------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
 
 - Fix: Crash when reading the SecurityCraft Manual
