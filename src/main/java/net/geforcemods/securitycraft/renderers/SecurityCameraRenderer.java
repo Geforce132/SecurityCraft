@@ -59,9 +59,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		}
 
 		pose.mulPose(POSITIVE_X_180);
-
-		if (!be.isDisabled())
-			model.rotateCameraY((float) Mth.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation()));
+		model.rotateCameraY((float) Mth.lerp(partialTicks, be.getOriginalCameraRotation(), be.getCameraRotation()));
 
 		if (be.isShutDown())
 			model.rotateCameraX(0.9F);
