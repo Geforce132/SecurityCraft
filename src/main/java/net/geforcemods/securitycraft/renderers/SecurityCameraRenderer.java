@@ -63,9 +63,7 @@ public class SecurityCameraRenderer extends TileEntitySpecialRenderer<SecurityCa
 		}
 
 		GlStateManager.rotate(180F, rotation, 0.0F, 1.0F);
-
-		if (!te.isDisabled())
-			MODEL.rotateCameraY((float) Utils.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation()));
+		MODEL.rotateCameraY((float) Utils.lerp(partialTicks, te.getOriginalCameraRotation(), te.getCameraRotation()));
 
 		if (te.isShutDown())
 			MODEL.rotateCameraX(0.9F);
