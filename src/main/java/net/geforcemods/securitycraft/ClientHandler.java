@@ -187,6 +187,7 @@ public class ClientHandler {
 			SCContent.KEYPAD_BARREL.get(),
 			SCContent.KEYPAD_BLAST_FURNACE.get(),
 			SCContent.KEYPAD_CHEST.get(),
+			SCContent.KEYPAD_DOOR.get(),
 			SCContent.KEYPAD_FURNACE.get(),
 			SCContent.KEYPAD_SMOKER.get(),
 			SCContent.LASER_BLOCK.get(),
@@ -195,6 +196,7 @@ public class ClientHandler {
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
+			SCContent.SCANNER_DOOR.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
@@ -451,11 +453,13 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SCANNER_DOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 	}
 

@@ -440,7 +440,7 @@ public class SCContent {
 	public static final DeferredBlock<KeypadBarrelBlock> KEYPAD_BARREL = BLOCKS.register("keypad_barrel", () -> new KeypadBarrelBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredBlock<KeypadChestBlock> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL)));
-	public static final DeferredBlock<KeypadDoorBlock> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK), BlockSetType.IRON));
+	public static final DeferredBlock<KeypadDoorBlock> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK), BlockSetType.IRON));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
 	public static final DeferredBlock<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.register("keypad_trapdoor", () -> new KeypadTrapDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never), BlockSetType.IRON));
@@ -483,7 +483,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
 	public static final DeferredBlock<RiftStabilizerBlock> RIFT_STABILIZER = BLOCKS.register("rift_stabilizer", () -> new RiftStabilizerBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL)));
-	public static final DeferredBlock<ScannerDoorBlock> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK), BlockSetType.IRON));
+	public static final DeferredBlock<ScannerDoorBlock> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK), BlockSetType.IRON));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.register("scanner_trapdoor", () -> new ScannerTrapDoorBlock(prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never), BlockSetType.IRON));

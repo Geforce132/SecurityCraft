@@ -30,6 +30,10 @@ public interface IDisguisable {
 			}
 		}
 
+		return getDefaultStack();
+	}
+
+	public default ItemStack getDefaultStack() {
 		return new ItemStack((Block) this);
 	}
 
