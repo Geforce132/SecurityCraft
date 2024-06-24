@@ -2247,10 +2247,10 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(MapColor.STONE).sound(SoundType.METAL).noOcclusion()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(propDisguisable()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop(MapColor.STONE).sound(SoundType.STONE)));
+	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(propDisguisable()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedLecternBlock> REINFORCED_LECTERN = BLOCKS.register("reinforced_lectern", () -> new ReinforcedLecternBlock(prop(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD)));

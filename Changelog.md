@@ -1,6 +1,6 @@
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
-- New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System
+- New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Reinforced Dispenser, Reinforced Dropper, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System
 - Change: Security Camera head display
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
 - Fix: The Alarm ceases to emit any sound when selecting a different alarm sound
