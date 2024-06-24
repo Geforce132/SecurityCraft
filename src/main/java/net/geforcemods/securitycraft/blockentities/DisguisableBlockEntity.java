@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -47,7 +47,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockState state = be.getBlockState();
 		Level level = be.getLevel();
 		BlockPos worldPosition = be.getBlockPos();
-		int newLight = DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
+		int newLight = IDisguisable.getDisguisedBlockStateFromStack(level, stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
 
 		if (!level.isClientSide) {
 			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
@@ -92,7 +92,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		else
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 
-		DisguisableBlock.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
+		IDisguisable.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
 			if (disguisedState.getLightEmission(level, worldPosition) > 0)
 				level.getAuxLightManager(worldPosition).removeLightAt(worldPosition);
 		});
@@ -146,7 +146,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public static ModelData getModelData(BlockEntity be) {
-		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(Blocks.AIR.defaultBlockState(), be.getLevel(), be.getBlockPos());
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(Blocks.AIR.defaultBlockState(), be.getLevel(), be.getBlockPos());
 
 		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
 	}

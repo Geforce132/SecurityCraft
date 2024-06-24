@@ -38,29 +38,22 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
-	//@formatter:off
-	private static final ResourceLocation[] TEXTURES = {
-			SecurityCraft.resLoc("textures/gui/container/customize0.png"),
-			SecurityCraft.resLoc("textures/gui/container/customize1.png"),
-			SecurityCraft.resLoc("textures/gui/container/customize2.png"),
-			SecurityCraft.resLoc("textures/gui/container/customize3.png"),
-			SecurityCraft.resLoc("textures/gui/container/customize4.png"),
-			SecurityCraft.resLoc("textures/gui/container/customize5.png")
-	};
-	//@formatter:on
 	private static final ResourceLocation CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
 	private static final ResourceLocation CANCEL_SPRITE = SecurityCraft.mcResLoc("container/beacon/cancel");
 	private final List<Rect2i> extraAreas = new ArrayList<>();
-	private IModuleInventory moduleInv;
-	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private AbstractWidget[] optionButtons;
 	private final int maxNumberOfModules;
+	private final ResourceLocation texture;
+	private final PictureButton[] descriptionButtons;
+	private IModuleInventory moduleInv;
+	private AbstractWidget[] optionButtons;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
+		texture = SecurityCraft.resLoc("textures/gui/container/customize" + maxNumberOfModules + ".png");
+		descriptionButtons = new PictureButton[maxNumberOfModules];
 		menu.addSlotListener(this);
 
 		for (ModuleType type : ModuleType.values()) {
@@ -166,7 +159,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(TEXTURES[maxNumberOfModules], leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(texture, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override
