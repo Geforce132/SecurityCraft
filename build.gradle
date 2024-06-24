@@ -8,7 +8,7 @@ plugins {
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.10-beta4'
+version = '1.9.10-beta5'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.0.16-beta'
+	implementation 'net.neoforged:neoforge:21.0.31-beta'
 
 	implementation "curse.maven:architectury-api-419699:5424664" //ftb teams dependency
 	implementation "curse.maven:ftb-library-forge-404465:5444534" //ftb teams dependency
