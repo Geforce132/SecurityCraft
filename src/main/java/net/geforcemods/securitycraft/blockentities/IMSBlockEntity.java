@@ -95,10 +95,10 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 				double accelerationY = e.getBoundingBox().minY + e.getBbHeight() / 2.0F - pos.getY() - launchHeight;
 				double accelerationZ = e.getZ() - pos.getZ();
 
-				level.addFreshEntity(new IMSBomb(level, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, new Vec3(accelerationX, accelerationY, accelerationZ), launchHeight, this));
-
-				if (!level.isClientSide)
+				if (!level.isClientSide) {
+					level.addFreshEntity(new IMSBomb(level, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, new Vec3(accelerationX, accelerationY, accelerationZ), launchHeight, this));
 					level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ARROW_SHOOT, SoundSource.PLAYERS, 1.0F, 1.0F);
+				}
 
 				bombsRemaining--;
 				updateBombCount = true;
