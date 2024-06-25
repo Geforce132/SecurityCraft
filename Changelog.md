@@ -8,6 +8,7 @@
 - Fix: Players are kicked from the world when a Disguise Module is removed from certain blocks
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguising reinforced observers can have visual issues
+- Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
 
