@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
@@ -130,6 +132,16 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 		guiGraphics.drawString(font, frequencyText, frequencyBox.getX(), frequencyBox.getY() - font.lineHeight - 1, 0x404040, false);
 		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040, false);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override

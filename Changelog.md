@@ -6,6 +6,7 @@
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguising reinforced observers can have visual issues
 - Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
+- Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
