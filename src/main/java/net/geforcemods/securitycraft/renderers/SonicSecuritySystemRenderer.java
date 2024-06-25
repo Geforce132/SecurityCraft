@@ -61,9 +61,9 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		}
 
 		if (!be.isModuleEnabled(ModuleType.DISGUISE)) {
-		pose.mulPose(POSITIVE_X_180);
-		model.setRadarRotation(Mth.lerp(partialTicks, be.getOriginalRadarRotationDegrees(), be.getRadarRotationDegrees()));
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+			pose.mulPose(POSITIVE_X_180);
+			model.setRadarRotation(Mth.lerp(partialTicks, be.getOriginalRadarRotationDegrees(), be.getRadarRotationDegrees()));
+			model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
 }
