@@ -90,10 +90,10 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
-import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent;
-import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
@@ -198,7 +198,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onLivingAttacked(LivingAttackEvent event) {
+	public static void onLivingAttacked(LivingIncomingDamageEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			Level level = player.level();
 			DamageSource damageSource = event.getSource();
@@ -215,7 +215,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onDamageTaken(LivingHurtEvent event) {
+	public static void onDamageTaken(LivingDamageEvent.Post event) {
 		LivingEntity entity = event.getEntity();
 		Level level = entity.level();
 

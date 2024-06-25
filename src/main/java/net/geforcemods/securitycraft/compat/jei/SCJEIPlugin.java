@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.compat.jei;
 
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.recipe.RecipeType;
@@ -22,7 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-// @JeiPlugin
+@JeiPlugin
 public class SCJEIPlugin implements IModPlugin {
 	public static final RecipeType<ReinforcerRecipe> VTS = RecipeType.create(SecurityCraft.MODID, "vanilla_to_securitycraft", ReinforcerRecipe.class);
 	public static final RecipeType<ReinforcerRecipe> STV = RecipeType.create(SecurityCraft.MODID, "securitycraft_to_vanilla", ReinforcerRecipe.class);

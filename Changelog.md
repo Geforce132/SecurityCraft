@@ -13,6 +13,13 @@
 - Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 
+--------------------------Changelog for v1.9.10-beta5 of SecurityCraft--------------------------
+
+- New: Readded JEI integration
+- Fix: Compatibility with NeoForge 21.0.31-beta and newer
+- Fix: Crash when a Sentry shoots through a portal
+- Misc.: The minimum required NeoForge version is now 21.0.31-beta
+
 --------------------------Changelog for v1.9.10-beta4 of SecurityCraft--------------------------
 
 - New: Block and item tags "securitycraft:reinforced/concrete" and "securitycraft:reinforced/glazed_terracotta"
