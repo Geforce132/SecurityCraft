@@ -86,6 +86,7 @@ public class ConfigHandler {
 		public DoubleValue laserDamage;
 		public IntValue incorrectPasscodeDamage;
 		public IntValue sentryBulletDamage;
+		public IntValue reinforcedSuffocationDamage;
 		public BooleanValue allowCameraNightVision;
 		public IntValue passcodeCheckCooldown;
 		public BooleanValue passcodeSpamLogWarningEnabled;
@@ -206,6 +207,10 @@ public class ConfigHandler {
 			sentryBulletDamage = builder
 					.comment("Set the amount of damage the default Sentry bullet inflicts onto the mobs it hits. This will not affect other projectiles the Sentry can use, like arrows. Default is one heart.")
 					.defineInRange("sentry_bullet_damage", 2, 0, Integer.MAX_VALUE);
+
+			reinforcedSuffocationDamage = builder
+					.comment("Set the amount of damage the player receives when they are suffocating in a reinforced block. The default is two and a half hearts. If the value is set to -1, vanilla suffocation damage will be used.")
+					.defineInRange("reinforced_suffocation_damage", 5, -1, Integer.MAX_VALUE);
 
 			allowCameraNightVision = builder
 					.comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
