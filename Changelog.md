@@ -1,7 +1,9 @@
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
 - New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Reinforced Dispenser, Reinforced Dropper, Reinforced Hopper, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System
+- New: Server config setting to set the amount of damage received when suffocating in a reinforced block
 - Change: Security Camera head display
+- Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguising reinforced observers can have visual issues
