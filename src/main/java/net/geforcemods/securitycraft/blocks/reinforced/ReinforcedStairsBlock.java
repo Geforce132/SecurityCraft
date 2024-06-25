@@ -51,7 +51,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 	private static final int[] SHAPE_BY_STATE = {
 			12, 5, 3, 10, 14, 13, 7, 11, 13, 7, 11, 14, 8, 4, 1, 2, 4, 1, 2, 8
 	};
-	private final Block modelBlock;
 
 	public ReinforcedStairsBlock(Block vB) {
 		this(SCContent.reinforcedCopy(vB), () -> vB);
@@ -65,7 +64,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 		super(properties, vB);
 
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(HALF, Half.BOTTOM).setValue(SHAPE, StairsShape.STRAIGHT).setValue(WATERLOGGED, false));
-		modelBlock = getVanillaBlock();
 	}
 
 	private static VoxelShape[] makeShapes(VoxelShape slabShape, VoxelShape nwCorner, VoxelShape neCorner, VoxelShape swCorner, VoxelShape seCorner) {
@@ -102,11 +100,6 @@ public class ReinforcedStairsBlock extends BaseReinforcedBlock implements Simple
 
 	private int getShapeIndex(BlockState state) {
 		return state.getValue(SHAPE).ordinal() * 4 + state.getValue(FACING).get2DDataValue();
-	}
-
-	@Override
-	public float getExplosionResistance() {
-		return modelBlock.getExplosionResistance();
 	}
 
 	@Override
