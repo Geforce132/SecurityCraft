@@ -31,6 +31,13 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.UNIVERSAL_KEY_CHANGER.get(),
 				SCContent.UNIVERSAL_OWNER_CHANGER.get())
 		.addTag(SCTags.Items.MODULES);
+		tag(SCTags.Items.KEYCARDS).add(
+				SCContent.KEYCARD_LVL_1.get(),
+				SCContent.KEYCARD_LVL_2.get(),
+				SCContent.KEYCARD_LVL_3.get(),
+				SCContent.KEYCARD_LVL_4.get(),
+				SCContent.KEYCARD_LVL_5.get());
+		tag(SCTags.Items.KEYCARD_HOLDER_CAN_HOLD).addTag(SCTags.Items.KEYCARDS).add(SCContent.LIMITED_USE_KEYCARD.getKey());
 		tag(SCTags.Items.MODULES).add(
 				SCContent.ALLOWLIST_MODULE.get(),
 				SCContent.DENYLIST_MODULE.get(),
