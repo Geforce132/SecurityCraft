@@ -1,11 +1,11 @@
---------------------------Changelog for v1.9.9-beta5 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.10-beta5 of SecurityCraft--------------------------
 
 - New: Readded JEI integration
 - Fix: Compatibility with NeoForge 21.0.31-beta and newer
 - Fix: Crash when a Sentry shoots through a portal
 - Misc.: The minimum required NeoForge version is now 21.0.31-beta
 
---------------------------Changelog for v1.9.9-beta4 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.10-beta4 of SecurityCraft--------------------------
 
 - New: Block and item tags "securitycraft:reinforced/concrete" and "securitycraft:reinforced/glazed_terracotta"
 - Fix: Compatibility with NeoForge 21.0.10-beta and newer
