@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.10-beta6 of SecurityCraft--------------------------
+
+- Fix: IMS bombs do not fly towards their target after ascending
+
 --------------------------Changelog for v1.9.10-beta5 of SecurityCraft--------------------------
 
 - New: Readded JEI integration
