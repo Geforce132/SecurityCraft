@@ -5,6 +5,7 @@
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguising reinforced observers can have visual issues
+- Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
