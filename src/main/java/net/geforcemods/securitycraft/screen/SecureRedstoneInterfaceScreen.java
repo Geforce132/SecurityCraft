@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -129,6 +130,16 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 		super.render(pose, mouseX, mouseY, partialTicks);
 		font.draw(pose, frequencyText, frequencyBox.getX(), frequencyBox.getY() - font.lineHeight - 1, 0x404040);
 		font.draw(pose, title, width / 2 - font.width(title) / 2, topPos + 6, 0x404040);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
