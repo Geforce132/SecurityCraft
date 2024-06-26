@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -65,7 +66,12 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return (state.getValue(SENDER) ? SENDER_SHAPES : RECEIVER_SHAPES)[state.getValue(FACING).get3DDataValue()];
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else
+			return (state.getValue(SENDER) ? SENDER_SHAPES : RECEIVER_SHAPES)[state.getValue(FACING).get3DDataValue()];
 	}
 
 	@Override
