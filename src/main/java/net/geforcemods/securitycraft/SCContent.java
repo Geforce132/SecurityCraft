@@ -470,7 +470,7 @@ public class SCContent {
 	public static final RegistryObject<Block> SECRET_WARPED_WALL_SIGN = BLOCKS.register("secret_warped_sign_wall", () -> new SecretWallSignBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_STEM).sound(SoundType.NETHER_WOOD).noCollission(), WoodType.WARPED));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(prop().noOcclusion()));
+	public static final RegistryObject<Block> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(propDisguisable()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(propDisguisable(Material.METAL)));
