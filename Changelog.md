@@ -6,6 +6,7 @@
 - New: Item tag "securitycraft:keycard_holder_can_hold" for all items that can be put into a Keycard Holder (contains the securitycraft:keycards item tag and the Limited Use Keycard by default)
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
+- Change: IMS bombs can no longer be diverted from their path using explosions 
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguising reinforced observers can have visual issues

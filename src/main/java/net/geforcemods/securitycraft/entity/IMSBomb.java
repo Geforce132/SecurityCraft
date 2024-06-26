@@ -109,6 +109,11 @@ public class IMSBomb extends Fireball {
 	}
 
 	@Override
+	public boolean ignoreExplosion() {
+		return true;
+	}
+
+	@Override
 	protected MovementEmission getMovementEmission() {
 		return MovementEmission.NONE;
 	}
