@@ -9,6 +9,7 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -37,6 +38,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		boolean recording = be.isRecording();
 
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay);
 		pose.translate(0.5D, 1.5D, 0.5D);
 
 		if (recording || be.isListening() && !be.isShutDown()) {
@@ -58,8 +60,10 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 			pose.popPose();
 		}
 
+		if (!be.isModuleEnabled(ModuleType.DISGUISE)) {
 		pose.mulPose(POSITIVE_X_180);
 		model.setRadarRotation(Mth.lerp(partialTicks, be.getOriginalRadarRotationDegrees(), be.getRadarRotationDegrees()));
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		}
 	}
 }

@@ -14,11 +14,9 @@ import net.minecraft.world.entity.Entity;
 
 public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	public final ModelPart dish;
-	public final ModelPart main;
 
 	public SonicSecuritySystemModel(ModelPart modelPart) {
 		dish = modelPart.getChild("dish");
-		main = modelPart.getChild("main");
 	}
 
 	public static LayerDefinition createLayer() {
@@ -37,11 +35,6 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 				.texOffs(0, 6).addBox(-2.5F, -1.5F, 1.5F, 1.0F, 3.0F, 1.0F)
 				.texOffs(0, 10).addBox(-2.5F, 1.5F, 1.5F, 5.0F, 1.0F, 1.0F),
 				PartPose.offset(0.0F, 10.5F, 0.0F));
-		partDefinition.addOrReplaceChild("main", CubeListBuilder.create()
-				.texOffs(0, 28).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 1.0F, 3.0F)
-				.texOffs(0, 25).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 1.0F, 2.0F)
-				.texOffs(12, 20).addBox(-0.5F, -13.0F, -0.5F, 1.0F, 11.0F, 1.0F),
-				PartPose.offset(0.0F, 24.0F, 0.0F));
 		//@formatter:on
 		return LayerDefinition.create(meshDefinition, 32, 32);
 	}
@@ -52,7 +45,6 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	@Override
 	public void renderToBuffer(PoseStack pose, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		dish.render(pose, buffer, packedLight, packedOverlay);
-		main.render(pose, buffer, packedLight, packedOverlay);
 	}
 
 	public void setRadarRotation(float rotation) {

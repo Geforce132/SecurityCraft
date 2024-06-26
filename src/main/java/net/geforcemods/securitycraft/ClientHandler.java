@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import com.google.common.base.Suppliers;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -28,7 +29,6 @@ import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockE
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
+import net.geforcemods.securitycraft.renderers.OwnableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
 import net.geforcemods.securitycraft.renderers.ReinforcedPistonHeadRenderer;
 import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
@@ -186,16 +187,26 @@ public class ClientHandler {
 			SCContent.KEYPAD.get(),
 			SCContent.KEYPAD_BARREL.get(),
 			SCContent.KEYPAD_BLAST_FURNACE.get(),
+			SCContent.KEYPAD_CHEST.get(),
+			SCContent.KEYPAD_DOOR.get(),
 			SCContent.KEYPAD_FURNACE.get(),
 			SCContent.KEYPAD_SMOKER.get(),
+			SCContent.KEYPAD_TRAPDOOR.get(),
 			SCContent.LASER_BLOCK.get(),
 			SCContent.PROJECTOR.get(),
 			SCContent.PROTECTO.get(),
+			SCContent.REINFORCED_DISPENSER.get(),
+			SCContent.REINFORCED_DROPPER.get(),
+			SCContent.REINFORCED_HOPPER.get(),
 			SCContent.REINFORCED_OBSERVER.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
+			SCContent.SCANNER_DOOR.get(),
+			SCContent.SCANNER_TRAPDOOR.get(),
+			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
+			SCContent.SONIC_SECURITY_SYSTEM.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
 	});
@@ -375,7 +386,7 @@ public class ClientHandler {
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(lockable instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-						if (DisguisableBlock.getDisguisedBlockState(level, bhr.getBlockPos()).isPresent())
+						if (IDisguisable.getDisguisedBlockState(level, bhr.getBlockPos()).isPresent())
 							return false;
 					}
 
@@ -432,6 +443,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, false));
 		event.registerBlockEntityRenderer(SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, true));
+		event.registerBlockEntityRenderer(SCContent.OWNABLE_BLOCK_ENTITY.get(), OwnableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), ReinforcedPistonHeadRenderer::new);
@@ -452,11 +464,18 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.KEYPAD_TRAPDOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SCANNER_DOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SCANNER_TRAPDOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 	}
 
@@ -529,11 +548,11 @@ public class ClientHandler {
 		event.register((state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
-			if (block instanceof DisguisableBlock disguisedBlock) {
+			if (block instanceof IDisguisable disguisedBlock) {
 				Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(level, pos).getItem());
 				BlockState defaultBlockState = blockFromItem.defaultBlockState();
 
-				if (!defaultBlockState.isAir() && !(blockFromItem instanceof DisguisableBlock))
+				if (!defaultBlockState.isAir() && !(blockFromItem instanceof IDisguisable))
 					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, level, pos, tintIndex);
 			}
 

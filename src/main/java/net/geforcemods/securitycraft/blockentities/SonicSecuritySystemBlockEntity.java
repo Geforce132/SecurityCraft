@@ -31,6 +31,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraftforge.client.model.data.ModelData;
 
 public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
@@ -157,9 +158,17 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-
+		DisguisableBlockEntity.onSetRemoved(this);
 		// Stop tracking SSSs when they are removed from the world
 		BlockEntityTracker.SONIC_SECURITY_SYSTEM.stopTracking(this);
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
+
+		super.onModuleInserted(stack, module, toggled);
 	}
 
 	@Override
@@ -168,6 +177,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 		}
+		else if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 
 		super.onModuleRemoved(stack, module, toggled);
 	}
@@ -507,6 +518,17 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	}
 
 	@Override
+	public void handleUpdateTag(CompoundTag tag) {
+		super.handleUpdateTag(tag);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
+	public ModelData getModelData() {
+		return DisguisableBlockEntity.getModelData(this);
+	}
+
+	@Override
 	public boolean isShutDown() {
 		return shutDown;
 	}
@@ -527,7 +549,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.REDSTONE
+				ModuleType.ALLOWLIST, ModuleType.REDSTONE, ModuleType.DISGUISE
 		};
 	}
 
