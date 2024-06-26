@@ -1,16 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.Optional;
-
-import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +13,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -34,7 +25,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, SimpleWaterloggedBlock {
+public abstract class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, SimpleWaterloggedBlock, IDisguisable {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	protected DisguisableBlock(BlockBehaviour.Properties properties) {
@@ -42,7 +33,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isNormalCube(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.isRedstoneConductor(level, pos);
@@ -51,7 +42,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isSuffocating(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = DisguisableBlock.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.isSuffocating(level, pos);
@@ -61,7 +52,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightEmission(level, pos);
@@ -76,7 +67,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getSoundType(level, pos, entity);
@@ -86,7 +77,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
@@ -96,7 +87,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getCollisionShape(level, pos, ctx);
@@ -106,7 +97,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getOcclusionShape(level, pos);
@@ -124,7 +115,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShadeBrightness(level, pos);
@@ -134,7 +125,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightBlock(level, pos);
@@ -149,57 +140,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
-		return getDisguisedStateOrDefault(state, level, pos);
-	}
-
-	public static BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
-		if (level instanceof LevelReader reader)
-			return getDisguisedBlockState(reader, pos).orElse(state);
-		else
-			return state;
-	}
-
-	public static Optional<BlockState> getDisguisedBlockState(LevelReader level, BlockPos pos) {
-		if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.isModuleEnabled(ModuleType.DISGUISE))
-			return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), be.getModule(ModuleType.DISGUISE));
-
-		return Optional.empty();
-	}
-
-	public static Optional<BlockState> getDisguisedBlockStateFromStack(Level level, ItemStack module) {
-		return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), module);
-	}
-
-	public static Optional<BlockState> getDisguisedBlockStateFromStack(HolderGetter<Block> holderGetter, ItemStack module) {
-		if (!module.isEmpty()) {
-			BlockState disguisedState = NbtUtils.readBlockState(holderGetter, module.getOrCreateTag().getCompound("SavedState"));
-
-			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
-				return Optional.of(disguisedState);
-			else { //fallback, mainly for upgrading old worlds from before the state selector existed
-				Block block = ModuleItem.getBlockAddon(module);
-
-				if (block != null)
-					return Optional.of(block.defaultBlockState());
-			}
-		}
-
-		return Optional.empty();
-	}
-
-	public ItemStack getDisguisedStack(BlockGetter level, BlockPos pos) {
-		if (level != null && level.getBlockEntity(pos) instanceof IModuleInventory be) {
-			ItemStack stack = be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
-
-			if (!stack.isEmpty()) {
-				Block block = ModuleItem.getBlockAddon(stack);
-
-				if (block != null)
-					return new ItemStack(block);
-			}
-		}
-
-		return new ItemStack(this);
+		return IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 	}
 
 	@Override

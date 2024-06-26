@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -49,7 +49,7 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 
-public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterloggedBlock {
+public class SecurityCameraBlock extends DisguisableBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty BEING_VIEWED = BooleanProperty.create("being_viewed");
@@ -78,16 +78,6 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 	}
 
 	@Override
-	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return Shapes.empty();
-	}
-
-	@Override
-	public RenderShape getRenderShape(BlockState state) {
-		return state.getValue(FACING) == Direction.DOWN ? RenderShape.MODEL : RenderShape.ENTITYBLOCK_ANIMATED;
-	}
-
-	@Override
 	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		//prevents dropping twice the amount of modules when breaking the block in creative mode
 		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
@@ -112,13 +102,19 @@ public class SecurityCameraBlock extends OwnableBlock implements SimpleWaterlogg
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		return switch (state.getValue(FACING)) {
-			case SOUTH -> SHAPE_SOUTH;
-			case NORTH -> SHAPE_NORTH;
-			case WEST -> SHAPE_WEST;
-			case DOWN -> SHAPE_DOWN;
-			default -> SHAPE;
-		};
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else {
+			return switch (state.getValue(FACING)) {
+				case SOUTH -> SHAPE_SOUTH;
+				case NORTH -> SHAPE_NORTH;
+				case WEST -> SHAPE_WEST;
+				case DOWN -> SHAPE_DOWN;
+				default -> SHAPE;
+			};
+		}
 	}
 
 	@Override

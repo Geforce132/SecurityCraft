@@ -40,28 +40,21 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
-	//@formatter:off
-	private static final ResourceLocation[] TEXTURES = {
-			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize3.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize4.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
-	};
-	//@formatter:on
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final List<Rect2i> extraAreas = new ArrayList<>();
-	private IModuleInventory moduleInv;
-	private PictureButton[] descriptionButtons = new PictureButton[5];
-	private AbstractWidget[] optionButtons;
 	private final int maxNumberOfModules;
+	private final ResourceLocation texture;
+	private final PictureButton[] descriptionButtons;
+	private IModuleInventory moduleInv;
+	private AbstractWidget[] optionButtons;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
+		texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/customize" + maxNumberOfModules + ".png");
+		descriptionButtons = new PictureButton[maxNumberOfModules];
 		menu.addSlotListener(this);
 
 		for (ModuleType type : ModuleType.values()) {
@@ -170,7 +163,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	@Override
 	protected void renderBg(PoseStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
-		RenderSystem._setShaderTexture(0, TEXTURES[maxNumberOfModules]);
+		RenderSystem._setShaderTexture(0, texture);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 

@@ -13,4 +13,9 @@ public class ReinforcedObserverBlockEntity extends DisguisableBlockEntity {
 	public ReinforcedObserverBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
+
+	@Override
+	public boolean shouldRender() {
+		return true;
+	}
 }
