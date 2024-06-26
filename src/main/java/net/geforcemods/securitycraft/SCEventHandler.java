@@ -200,8 +200,12 @@ public class SCEventHandler {
 			DamageSource damageSource = event.getSource();
 
 			if (!player.isCreative() && damageSource == DamageSource.IN_WALL && !player.isInvulnerableTo(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(), player.getBbWidth())) {
-				player.hurt(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
-				event.setCanceled(true);
+				int reinforcedSuffocationDamage = ConfigHandler.SERVER.reinforcedSuffocationDamage.get();
+
+				if (reinforcedSuffocationDamage != -1) {
+					player.hurt(CustomDamageSources.IN_REINFORCED_WALL, reinforcedSuffocationDamage);
+					event.setCanceled(true);
+				}
 			}
 		}
 	}
