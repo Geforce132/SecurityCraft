@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.Fireball;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -106,6 +107,11 @@ public class IMSBomb extends Fireball {
 	@Override
 	protected float getInertia() {
 		return isFast ? 1.5F : 1.0F;
+	}
+
+	@Override
+	public boolean ignoreExplosion(Explosion explosion) {
+		return true;
 	}
 
 	@Override
