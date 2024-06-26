@@ -12,6 +12,8 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.neoforged.neoforge.client.model.data.ModelData;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
 	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
@@ -60,6 +63,39 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 			default -> {
 			}
 		}
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
+	}
+
+	@Override
+	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		super.handleUpdateTag(tag, lookupProvider);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		DisguisableBlockEntity.onSetRemoved(this);
+	}
+
+	@Override
+	public ModelData getModelData() {
+		return DisguisableBlockEntity.getModelData(this);
 	}
 
 	public int getSignalLength() {
