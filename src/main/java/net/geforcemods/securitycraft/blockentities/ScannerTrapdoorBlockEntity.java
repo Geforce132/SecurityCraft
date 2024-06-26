@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
@@ -29,7 +28,7 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implements IViewActivated, ITickableTileEntity, ILockable {
+public class ScannerTrapdoorBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickableTileEntity, ILockable {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	protected IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", 0, 0, 400, 5); //20 seconds max
 	private DoubleOption maximumDistance = new DoubleOption(this::getBlockPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
@@ -56,7 +55,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 		if (!isConsideredInvisible(entity)) {
 			BlockState state = getBlockState();
 
-			if (!(entity instanceof PlayerEntity) || !(state.getValue(TrapDoorBlock.OPEN) ? hitResult.getDirection().getAxis() == state.getValue(HorizontalBlock.FACING).getAxis() : hitResult.getDirection().getAxis() == Axis.Y))
+			if (!(entity instanceof PlayerEntity) || (!isModuleEnabled(ModuleType.DISGUISE) && !(state.getValue(TrapDoorBlock.OPEN) ? hitResult.getDirection().getAxis() == state.getValue(HorizontalBlock.FACING).getAxis() : hitResult.getDirection().getAxis() == Axis.Y)))
 				return false;
 
 			PlayerEntity player = (PlayerEntity) entity;
@@ -127,7 +126,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
 		};
 	}
 

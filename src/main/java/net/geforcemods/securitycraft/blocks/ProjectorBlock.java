@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
@@ -63,7 +64,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);

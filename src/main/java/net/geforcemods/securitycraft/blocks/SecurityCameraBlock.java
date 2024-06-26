@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -10,7 +11,6 @@ import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,7 +47,7 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable {
+public class SecurityCameraBlock extends DisguisableBlock implements IWaterLoggable {
 	public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.UP);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty BEING_VIEWED = BooleanProperty.create("being_viewed");
@@ -77,16 +77,6 @@ public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable 
 		}
 
 		return ActionResultType.PASS;
-	}
-
-	@Override
-	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		return VoxelShapes.empty();
-	}
-
-	@Override
-	public BlockRenderType getRenderShape(BlockState state) {
-		return state.getValue(FACING) == Direction.DOWN ? BlockRenderType.MODEL : BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -122,18 +112,24 @@ public class SecurityCameraBlock extends OwnableBlock implements IWaterLoggable 
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		Direction dir = state.getValue(FACING);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
-		if (dir == Direction.SOUTH)
-			return SHAPE_SOUTH;
-		else if (dir == Direction.NORTH)
-			return SHAPE_NORTH;
-		else if (dir == Direction.WEST)
-			return SHAPE_WEST;
-		else if (dir == Direction.DOWN)
-			return SHAPE_DOWN;
-		else
-			return SHAPE;
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else {
+			Direction dir = state.getValue(FACING);
+
+			if (dir == Direction.SOUTH)
+				return SHAPE_SOUTH;
+			else if (dir == Direction.NORTH)
+				return SHAPE_NORTH;
+			else if (dir == Direction.WEST)
+				return SHAPE_WEST;
+			else if (dir == Direction.DOWN)
+				return SHAPE_DOWN;
+			else
+				return SHAPE;
+		}
 	}
 
 	@Override

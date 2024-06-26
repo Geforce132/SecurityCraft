@@ -46,29 +46,22 @@ import net.minecraftforge.fml.client.gui.widget.Slider.ISlider;
 
 @OnlyIn(Dist.CLIENT)
 public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, IContainerListener {
-	//@formatter:off
-	private static final ResourceLocation[] TEXTURES = {
-			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize3.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize4.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
-	};
-	//@formatter:on
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
+	private final int maxNumberOfModules;
+	private final ResourceLocation texture;
 	private IModuleInventory moduleInv;
 	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private Button[] optionButtons = {};
 	private List<TextHoverChecker> hoverCheckers = new ArrayList<>();
-	private final int maxNumberOfModules;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
 	public CustomizeBlockScreen(CustomizeBlockMenu menu, PlayerInventory inv, ITextComponent title) {
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
+		texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/customize" + maxNumberOfModules + ".png");
+		descriptionButtons = new PictureButton[maxNumberOfModules];
 		menu.addSlotListener(this);
 
 		for (ModuleType type : ModuleType.values()) {
@@ -181,7 +174,7 @@ public class CustomizeBlockScreen extends ContainerScreen<CustomizeBlockMenu> im
 	protected void renderBg(MatrixStack pose, float partialTicks, int mouseX, int mouseY) {
 		renderBackground(pose);
 		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
-		minecraft.getTextureManager().bind(TEXTURES[maxNumberOfModules]);
+		minecraft.getTextureManager().bind(texture);
 		blit(pose, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 

@@ -1,17 +1,20 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.HopperBlock;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -21,11 +24,14 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock {
+public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlock, IOverlayDisplay, IDisguisable {
 	public ReinforcedHopperBlock(AbstractBlock.Properties properties) {
 		super(properties);
 	}
@@ -92,6 +98,71 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	@Override
 	public Block getVanillaBlock() {
 		return Blocks.HOPPER;
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else
+			return super.getShape(state, level, pos, ctx);
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightValue(level, pos);
+		else
+			return super.getLightValue(state, level, pos);
+	}
+
+	@Override
+	public SoundType getSoundType(BlockState state, IWorldReader level, BlockPos pos, Entity entity) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getSoundType(level, pos, entity);
+		else
+			return super.getSoundType(state, level, pos, entity);
+	}
+
+	@Override
+	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShadeBrightness(level, pos);
+		else
+			return super.getShadeBrightness(state, level, pos);
+	}
+
+	@Override
+	public int getLightBlock(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightBlock(level, pos);
+		else
+			return super.getLightBlock(state, level, pos);
+	}
+
+	@Override
+	public ItemStack getDisplayStack(World level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos);
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(World level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos).getItem() == asItem();
+	}
+
+	@Override
+	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
+		return getDisguisedStack(level, pos);
 	}
 
 	public static class ExtractionBlock implements IExtractionBlock {

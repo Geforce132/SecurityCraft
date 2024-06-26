@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -28,7 +29,7 @@ public class ProtectoBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);

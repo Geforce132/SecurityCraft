@@ -7,10 +7,10 @@ import java.util.Set;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -57,7 +57,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 				if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(player)) {
 					Block block = be.getBlockState().getBlock();
 
-					if (!(block instanceof DisguisableBlock) || !DisguisableBlock.getDisguisedBlockState(level, pos).isPresent()) {
+					if (!(block instanceof IDisguisable) || !IDisguisable.getDisguisedBlockState(level, pos).isPresent()) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) be).getOwner().getName(), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}

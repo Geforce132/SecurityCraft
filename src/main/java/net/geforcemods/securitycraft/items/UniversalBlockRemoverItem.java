@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -9,7 +10,6 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
@@ -52,7 +52,7 @@ public class UniversalBlockRemoverItem extends Item {
 				return ActionResultType.PASS;
 
 			if (!((IOwnable) be).isOwnedBy(player)) {
-				if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) be.getBlockState().getBlock()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock)))
+				if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof IDisguisable) || (((BlockItem) ((IDisguisable) be.getBlockState().getBlock()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable)))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())), TextFormatting.RED);
 
 				return ActionResultType.FAIL;

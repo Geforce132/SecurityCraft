@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
@@ -43,7 +44,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);

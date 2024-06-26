@@ -44,6 +44,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -127,6 +128,12 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	}
 
 	@Override
+	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+		load(state, tag);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
 	public ITextComponent getDefaultName() {
 		return Utils.localize(SCContent.KEYPAD_CHEST.get().getDescriptionId());
 	}
@@ -206,12 +213,18 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		IModuleInventory.super.onModuleInserted(stack, module, toggled);
 		addOrRemoveModuleFromAttached(stack, false, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		addOrRemoveModuleFromAttached(stack, true, toggled);
 		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 	}
 
 	@Override
@@ -306,6 +319,12 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	}
 
 	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		DisguisableBlockEntity.onSetRemoved(this);
+	}
+
+	@Override
 	public byte[] getPasscode() {
 		return passcode == null || passcode.length == 0 ? null : passcode;
 	}
@@ -392,7 +411,7 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING, ModuleType.DISGUISE
 		};
 	}
 
@@ -416,6 +435,11 @@ public class KeypadChestBlockEntity extends ChestTileEntity implements IPasscode
 			onModuleInserted(getModule(module), module, true);
 		else
 			onModuleRemoved(getModule(module), module, true);
+	}
+
+	@Override
+	public IModelData getModelData() {
+		return DisguisableBlockEntity.DEFAULT_MODEL_DATA.get();
 	}
 
 	public boolean sendsAllowlistMessage() {

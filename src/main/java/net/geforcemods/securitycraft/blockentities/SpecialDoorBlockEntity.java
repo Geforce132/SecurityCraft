@@ -9,14 +9,18 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.data.IModelData;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
 	protected IntOption signalLength = new IntOption(this::getBlockPos, "signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
@@ -67,6 +71,39 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 			removeModule(moduleRemoved.moduleType, moduleRemoved.wasModuleToggled);
 		}
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
+	}
+
+	@Override
+	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+		super.handleUpdateTag(state, tag);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		DisguisableBlockEntity.onSetRemoved(this);
+	}
+
+	@Override
+	public IModelData getModelData() {
+		return DisguisableBlockEntity.DEFAULT_MODEL_DATA.get();
 	}
 
 	public int getSignalLength() {

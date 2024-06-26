@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -75,8 +75,8 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 		if (te != null) {
 			Block block = te.getBlockState().getBlock();
 
-			if (block instanceof DisguisableBlock) {
-				Optional<BlockState> disguisedState = DisguisableBlock.getDisguisedBlockState(level, pos);
+			if (block instanceof IDisguisable) {
+				Optional<BlockState> disguisedState = IDisguisable.getDisguisedBlockState(level, pos);
 
 				if (disguisedState.isPresent()) {
 					modelData.setData(DISGUISED_STATE, disguisedState.get());

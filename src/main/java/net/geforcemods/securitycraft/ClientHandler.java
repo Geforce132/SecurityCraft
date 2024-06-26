@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -24,7 +25,6 @@ import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockE
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -166,15 +166,25 @@ public class ClientHandler {
 			SCContent.KEYPAD.get(),
 			SCContent.KEYPAD_BARREL.get(),
 			SCContent.KEYPAD_BLAST_FURNACE.get(),
+			SCContent.KEYPAD_CHEST.get(),
+			SCContent.KEYPAD_DOOR.get(),
 			SCContent.KEYPAD_FURNACE.get(),
 			SCContent.KEYPAD_SMOKER.get(),
+			SCContent.KEYPAD_TRAPDOOR.get(),
 			SCContent.LASER_BLOCK.get(),
 			SCContent.PROJECTOR.get(),
 			SCContent.PROTECTO.get(),
+			SCContent.REINFORCED_DISPENSER.get(),
+			SCContent.REINFORCED_DROPPER.get(),
+			SCContent.REINFORCED_HOPPER.get(),
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
+			SCContent.SCANNER_DOOR.get(),
+			SCContent.SCANNER_TRAPDOOR.get(),
+			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
+			SCContent.SONIC_SECURITY_SYSTEM.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
 	};
@@ -341,11 +351,18 @@ public class ClientHandler {
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_TRAPDOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.PROTECTO_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.SCANNER_DOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
+		ClientRegistry.bindTileEntityRenderer(SCContent.SCANNER_TRAPDOOR_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ClientRegistry.bindTileEntityRenderer(SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), DisguisableBlockEntityRenderer::new);
 		ScreenManager.register(SCContent.BLOCK_CHANGE_DETECTOR_MENU.get(), BlockChangeDetectorScreen::new);
 		ScreenManager.register(SCContent.BLOCK_POCKET_MANAGER_MENU.get(), BlockPocketManagerScreen::new);
@@ -442,7 +459,7 @@ public class ClientHandler {
 
 				//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 				if (!(te instanceof IOwnable) || !((IOwnable) te).isOwnedBy(player)) {
-					if (DisguisableBlock.getDisguisedBlockState(_level, pos).isPresent())
+					if (IDisguisable.getDisguisedBlockState(_level, pos).isPresent())
 						return false;
 				}
 
@@ -535,10 +552,10 @@ public class ClientHandler {
 		event.getBlockColors().register((state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
-			if (block instanceof DisguisableBlock) {
-				Block blockFromItem = Block.byItem(((DisguisableBlock) block).getDisguisedStack(level, pos).getItem());
+			if (block instanceof IDisguisable) {
+				Block blockFromItem = Block.byItem(((IDisguisable) block).getDisguisedStack(level, pos).getItem());
 
-				if (blockFromItem != Blocks.AIR && !(blockFromItem instanceof DisguisableBlock))
+				if (blockFromItem != Blocks.AIR && !(blockFromItem instanceof IDisguisable))
 					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), level, pos, tintIndex);
 			}
 

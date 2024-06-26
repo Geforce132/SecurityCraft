@@ -3,11 +3,13 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -15,9 +17,12 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
+import net.minecraft.block.SoundType;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -42,6 +47,8 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IBlockReader;
@@ -51,7 +58,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class KeypadChestBlock extends ChestBlock {
+public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDisguisable {
 	private static final TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>> CONTAINER_MERGER = new TileEntityMerger.ICallback<ChestTileEntity, Optional<INamedContainerProvider>>() {
 		@Override
 		public Optional<INamedContainerProvider> acceptDouble(final ChestTileEntity chest1, final ChestTileEntity chest2) {
@@ -70,6 +77,11 @@ public class KeypadChestBlock extends ChestBlock {
 
 				@Override
 				public ITextComponent getDisplayName() {
+					//makes sure Jade's overlay is not too wide when the chest is disguised
+					//one side effect is the title in the chest's screen is also changed
+					if (((KeypadChestBlockEntity) chest1).isModuleEnabled(ModuleType.DISGUISE))
+						return Utils.localize(IDisguisable.getDisguisedStateOrDefault(chest1.getBlockState(), chest1.getLevel(), chest1.getBlockPos()).getBlock().getDescriptionId());
+
 					if (chest1.hasCustomName())
 						return chest1.getDisplayName();
 					else
@@ -242,6 +254,76 @@ public class KeypadChestBlock extends ChestBlock {
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else
+			return super.getShape(state, level, pos, ctx);
+	}
+
+	@Override
+	public int getLightValue(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightValue(level, pos);
+		else
+			return super.getLightValue(state, level, pos);
+	}
+
+	@Override
+	public SoundType getSoundType(BlockState state, IWorldReader level, BlockPos pos, Entity entity) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getSoundType(level, pos, entity);
+		else
+			return super.getSoundType(state, level, pos, entity);
+	}
+
+	@Override
+	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShadeBrightness(level, pos);
+		else
+			return super.getShadeBrightness(state, level, pos);
+	}
+
+	@Override
+	public int getLightBlock(BlockState state, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightBlock(level, pos);
+		else
+			return super.getLightBlock(state, level, pos);
+	}
+
+	@Override
+	public ItemStack getDisplayStack(World level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos);
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(World level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos).getItem() == asItem();
+	}
+
+	@Override
+	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
+		return getDisguisedStack(level, pos);
+	}
+
+	@Override
+	public BlockRenderType getRenderShape(BlockState state) {
+		return BlockRenderType.MODEL;
 	}
 
 	public static class Convertible implements IPasscodeConvertible {

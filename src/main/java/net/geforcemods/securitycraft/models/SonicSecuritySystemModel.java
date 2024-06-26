@@ -12,7 +12,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	public final ModelRenderer dish;
-	public final ModelRenderer main;
 
 	public SonicSecuritySystemModel() {
 		texWidth = 32;
@@ -29,12 +28,6 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 		dish.texOffs(0, 2).addBox(1.5F, -1.5F, 1.5F, 1.0F, 3.0F, 1.0F, 0.0F, false);
 		dish.texOffs(0, 6).addBox(-2.5F, -1.5F, 1.5F, 1.0F, 3.0F, 1.0F, 0.0F, false);
 		dish.texOffs(0, 10).addBox(-2.5F, 1.5F, 1.5F, 5.0F, 1.0F, 1.0F, 0.0F, false);
-
-		main = new ModelRenderer(this);
-		main.setPos(0.0F, 24.0F, 0.0F);
-		main.texOffs(0, 28).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 1.0F, 3.0F, 0.0F, false);
-		main.texOffs(0, 25).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 1.0F, 2.0F, 0.0F, false);
-		main.texOffs(12, 20).addBox(-0.5F, -13.0F, -0.5F, 1.0F, 11.0F, 1.0F, 0.0F, false);
 	}
 
 	@Override
@@ -43,7 +36,6 @@ public class SonicSecuritySystemModel extends EntityModel<Entity> {
 	@Override
 	public void renderToBuffer(MatrixStack pose, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		dish.render(pose, buffer, packedLight, packedOverlay);
-		main.render(pose, buffer, packedLight, packedOverlay);
 	}
 
 	public void setRadarRotation(float rotation) {

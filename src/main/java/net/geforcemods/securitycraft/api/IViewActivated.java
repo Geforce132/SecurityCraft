@@ -36,7 +36,7 @@ public interface IViewActivated {
 			for (LivingEntity entity : entities) {
 				double eyeHeight = entity.getEyeHeight();
 				Vector3d lookVec = new Vector3d(entity.getX() + (entity.getLookAngle().x * maximumDistance), (eyeHeight + entity.getY()) + (entity.getLookAngle().y * maximumDistance), entity.getZ() + (entity.getLookAngle().z * maximumDistance));
-				BlockRayTraceResult hitResult = level.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.COLLIDER, FluidMode.NONE, entity));
+				BlockRayTraceResult hitResult = level.clip(new RayTraceContext(new Vector3d(entity.getX(), entity.getY() + entity.getEyeHeight(), entity.getZ()), lookVec, BlockMode.OUTLINE, FluidMode.NONE, entity));
 
 				if (hitResult != null && hitResult.getBlockPos().getX() == pos.getX() && hitResult.getBlockPos().getY() == pos.getY() && hitResult.getBlockPos().getZ() == pos.getZ() && onEntityViewed(entity, hitResult))
 					setViewCooldown(getDefaultViewCooldown());

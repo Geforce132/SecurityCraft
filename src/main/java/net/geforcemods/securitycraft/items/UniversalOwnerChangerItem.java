@@ -2,11 +2,11 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -60,7 +60,7 @@ public class UniversalOwnerChangerItem extends Item {
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
 		if (!ownable.isOwnedBy(player) && !isDefault) {
-			if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof DisguisableBlock) || (((BlockItem) ((DisguisableBlock) be.getBlockState().getBlock()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock))) {
+			if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof IDisguisable) || (((BlockItem) ((IDisguisable) be.getBlockState().getBlock()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return ActionResultType.FAIL;
 			}

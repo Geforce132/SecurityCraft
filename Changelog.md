@@ -4,6 +4,9 @@
 
 --------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
 
+- New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Reinforced Dispenser, Reinforced Dropper, Reinforced Hopper, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System
+- Change: Security Camera head display
+- API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
 - Fix: Crash when reading the SecurityCraft Manual
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------

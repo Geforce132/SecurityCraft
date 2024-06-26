@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -42,7 +43,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.PacketDistributor;
 
-public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLoggable {
+public class SonicSecuritySystemBlock extends DisguisableBlock implements IWaterLoggable {
 	//@formatter:off
 	private static final VoxelShape SHAPE = Stream.of(
 			Block.box(5.5, 11, 5.5, 10.5, 16, 10.5),
@@ -59,10 +60,6 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
-	}
-
-	public static boolean isNormalCube(BlockState state, IBlockReader level, BlockPos pos) {
-		return false;
 	}
 
 	@Override
@@ -144,7 +141,12 @@ public class SonicSecuritySystemBlock extends OwnableBlock implements IWaterLogg
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
-		return SHAPE;
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, context);
+		else
+			return SHAPE;
 	}
 
 	@Override
