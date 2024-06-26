@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
@@ -46,8 +46,8 @@ public class HudModHandler {
 	public void addOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
 		boolean disguised = false;
 
-		if (block instanceof DisguisableBlock) {
-			Optional<BlockState> disguisedBlockState = DisguisableBlock.getDisguisedBlockState(level, pos);
+		if (block instanceof IDisguisable) {
+			Optional<BlockState> disguisedBlockState = IDisguisable.getDisguisedBlockState(level, pos);
 
 			if (disguisedBlockState.isPresent()) {
 				disguised = true;

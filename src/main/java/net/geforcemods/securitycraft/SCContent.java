@@ -366,11 +366,11 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final RegistryObject<Block> KEYPAD_BARREL = BLOCKS.register("keypad_barrel", () -> new KeypadBarrelBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(prop(Material.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.register("keypad_trapdoor", () -> new KeypadTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
+	public static final RegistryObject<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.register("keypad_trapdoor", () -> new KeypadTrapDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).isValidSpawn(SCContent::never)));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
 	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
@@ -410,10 +410,10 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
 	public static final RegistryObject<Block> RIFT_STABILIZER = BLOCKS.register("rift_stabilizer", () -> new RiftStabilizerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<Block> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.register("scanner_trapdoor", () -> new ScannerTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
+	public static final RegistryObject<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.register("scanner_trapdoor", () -> new ScannerTrapDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).isValidSpawn(SCContent::never)));
 	public static final RegistryObject<Block> SECRET_OAK_SIGN = BLOCKS.register("secret_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_OAK_WALL_SIGN = BLOCKS.register("secret_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.OAK));
 	public static final RegistryObject<Block> SECRET_SPRUCE_SIGN = BLOCKS.register("secret_spruce_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), WoodType.SPRUCE));
@@ -435,9 +435,9 @@ public class SCContent {
 	public static final RegistryObject<Block> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(prop().noOcclusion()));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(prop(Material.METAL)));
+	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(propDisguisable(Material.METAL)));
 	@HasManualPage
-	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(prop(Material.METAL).sound(SoundType.METAL).isRedstoneConductor(SonicSecuritySystemBlock::isNormalCube).noCollission()));
+	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.METAL, 0.7F).noCollission().sound(SoundType.METAL)));
 	@HasManualPage
@@ -2131,16 +2131,16 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(prop().isRedstoneConductor(SCContent::never)));
+	public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(propDisguisable().isRedstoneConductor(SCContent::never)));
 	@HasManualPage
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(prop(Material.METAL, MaterialColor.STONE).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(propDisguisable(Material.METAL, MaterialColor.STONE).sound(SoundType.METAL)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(prop()));
+	public static final RegistryObject<Block> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(propDisguisable()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(prop()));
+	public static final RegistryObject<Block> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(propDisguisable()));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_LECTERN = BLOCKS.register("reinforced_lectern", () -> new ReinforcedLecternBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
@@ -2680,6 +2680,10 @@ public class SCContent {
 
 	private static final BlockBehaviour.Properties propDisguisable(Material mat) {
 		return prop(mat).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
+	}
+
+	private static final BlockBehaviour.Properties propDisguisable(Material mat, MaterialColor color) {
+		return prop(mat, color).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
 	private static final BlockBehaviour.Properties glassProp(MaterialColor color) {

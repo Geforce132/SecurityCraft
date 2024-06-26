@@ -6,9 +6,9 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -90,7 +90,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		}
 		else {
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
-			DisguisableBlock.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
+			IDisguisable.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
 				if (disguisedState.getLightEmission(level, worldPosition) > 0)
 					level.getChunkSource().getLightEngine().checkBlock(worldPosition);
 			});

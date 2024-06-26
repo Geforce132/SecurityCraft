@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -86,6 +87,29 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
 		load(tag);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleInserted(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		DisguisableBlockEntity.onSetRemoved(this);
 	}
 
 	@Override
@@ -146,7 +170,7 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
 		};
 	}
 
@@ -173,5 +197,10 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 	@Override
 	public BlockPos myPos() {
 		return worldPosition;
+	}
+
+	@Override
+	public IModelData getModelData() {
+		return DisguisableBlockEntity.DEFAULT_MODEL_DATA.get();
 	}
 }

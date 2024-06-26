@@ -3,29 +3,63 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.ScannerTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseIronTrapDoorBlock;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.MinecraftForge;
 
-public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock {
+public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisguisable, IOverlayDisplay {
 	public ScannerTrapDoorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShape(level, pos, ctx);
+		else
+			return super.getShape(state, level, pos, ctx);
+	}
+
+	@Override
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this) {
+			if (state.getValue(OPEN))
+				return Shapes.empty();
+			else
+				return disguisedState.getShape(level, pos, ctx);
+		}
+		else
+			return super.getShape(state, level, pos, ctx);
 	}
 
 	@Override
@@ -58,5 +92,60 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock {
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return level.isClientSide ? null : BaseEntityBlock.createTickerHelper(type, SCContent.SCANNER_TRAPDOOR_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+	}
+
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+		return getDisguisedStack(level, pos);
+	}
+
+	@Override
+	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightEmission(level, pos);
+		else
+			return super.getLightEmission(state, level, pos);
+	}
+
+	@Override
+	public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getSoundType(level, pos, entity);
+		else
+			return super.getSoundType(state, level, pos, entity);
+	}
+
+	@Override
+	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getShadeBrightness(level, pos);
+		else
+			return super.getShadeBrightness(state, level, pos);
+	}
+
+	@Override
+	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getLightBlock(level, pos);
+		else
+			return super.getLightBlock(state, level, pos);
+	}
+
+	@Override
+	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos);
+	}
+
+	@Override
+	public boolean shouldShowSCInfo(Level level, BlockState state, BlockPos pos) {
+		return getDisguisedStack(level, pos).getItem() == asItem();
 	}
 }

@@ -6,7 +6,7 @@ import java.util.Random;
 
 import javax.annotation.Nonnull;
 
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
@@ -72,8 +72,8 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	public IModelData getModelData(BlockAndTintGetter level, BlockPos pos, BlockState state, IModelData modelData) {
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 
-		if (blockEntity != null && blockEntity.getBlockState().getBlock() instanceof DisguisableBlock) {
-			Optional<BlockState> disguisedState = DisguisableBlock.getDisguisedBlockState(level, pos);
+		if (blockEntity != null && blockEntity.getBlockState().getBlock() instanceof IDisguisable) {
+			Optional<BlockState> disguisedState = IDisguisable.getDisguisedBlockState(level, pos);
 
 			if (disguisedState.isPresent()) {
 				modelData.setData(DISGUISED_STATE, disguisedState.get());

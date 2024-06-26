@@ -42,6 +42,7 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraftforge.client.model.data.IModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -126,6 +127,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	@Override
 	public void handleUpdateTag(CompoundTag tag) {
 		load(tag);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
@@ -208,12 +210,18 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		IModuleInventory.super.onModuleInserted(stack, module, toggled);
 		addOrRemoveModuleFromAttached(stack, false, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		addOrRemoveModuleFromAttached(stack, true, toggled);
 		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 	}
 
 	@Override
@@ -299,6 +307,12 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 			otherHalf.setOwner(getOwner().getUUID(), getOwner().getName());
 
 		IOwnable.super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		DisguisableBlockEntity.onSetRemoved(this);
 	}
 
 	@Override
@@ -390,7 +404,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING, ModuleType.DISGUISE
 		};
 	}
 
@@ -414,6 +428,11 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 			onModuleInserted(getModule(module), module, true);
 		else
 			onModuleRemoved(getModule(module), module, true);
+	}
+
+	@Override
+	public IModelData getModelData() {
+		return DisguisableBlockEntity.DEFAULT_MODEL_DATA.get();
 	}
 
 	public boolean sendsAllowlistMessage() {

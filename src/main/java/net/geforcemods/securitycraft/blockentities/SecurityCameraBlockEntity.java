@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -40,7 +39,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 
-public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
+public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
@@ -178,7 +177,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.REDSTONE, ModuleType.ALLOWLIST, ModuleType.SMART
+				ModuleType.REDSTONE, ModuleType.ALLOWLIST, ModuleType.SMART, ModuleType.DISGUISE
 		};
 	}
 
@@ -190,6 +189,14 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	}
 
 	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
+
+		super.onModuleInserted(stack, module, toggled);
+	}
+
+	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
 
@@ -197,6 +204,8 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
 		else if (module == ModuleType.SMART)
 			setDefaultViewingDirection(getBlockState().getValue(SecurityCameraBlock.FACING));
+		else if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 	}
 
 	@Override

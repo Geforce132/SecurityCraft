@@ -57,7 +57,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		Direction.Axis facingAxis = ScannerDoorBlock.getFacingAxis(upperState);
 
 		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER && !isConsideredInvisible(entity)) {
-			if (!(entity instanceof Player player) || facingAxis != hitResult.getDirection().getAxis())
+			if (!(entity instanceof Player player) || (!isModuleEnabled(ModuleType.DISGUISE) && facingAxis != hitResult.getDirection().getAxis()))
 				return false;
 
 			if (!isLocked() && !isDisabled()) {
@@ -115,7 +115,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
 		};
 	}
 
