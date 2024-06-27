@@ -93,25 +93,29 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 	}
 
 	@Override
-	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random rand) {
-		BlockState upperState = level.getBlockState(pos);
+	public void tick(BlockState state, ServerWorld level, BlockPos upperPos, Random rand) {
+		BlockState upperState = level.getBlockState(upperPos);
 
 		if (!upperState.getValue(DoorBlock.OPEN))
 			return;
 
+		BlockPos lowerPos;
 		BlockState lowerState;
 
 		if (upperState.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER) {
+			lowerPos = upperPos;
 			lowerState = upperState;
-			pos = pos.above();
-			upperState = level.getBlockState(pos);
+			upperPos = upperPos.above();
+			upperState = level.getBlockState(upperPos);
 		}
-		else
-			lowerState = level.getBlockState(pos.below());
+		else {
+			lowerPos = upperPos.below();
+			lowerState = level.getBlockState(lowerPos);
+		}
 
-		level.setBlock(pos, upperState.setValue(DoorBlock.OPEN, false), 3);
-		level.setBlock(pos.below(), lowerState.setValue(DoorBlock.OPEN, false), 3);
-		level.levelEvent(null, 1011, pos, 0);
+		level.setBlockAndUpdate(upperPos, upperState.setValue(DoorBlock.OPEN, false));
+		level.setBlockAndUpdate(lowerPos, lowerState.setValue(DoorBlock.OPEN, false));
+		level.levelEvent(null, 1011, upperPos, 0);
 	}
 
 	@Override
