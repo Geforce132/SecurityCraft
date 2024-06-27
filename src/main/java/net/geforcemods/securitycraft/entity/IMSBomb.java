@@ -112,6 +112,11 @@ public class IMSBomb extends AbstractFireballEntity {
 	}
 
 	@Override
+	public boolean ignoreExplosion() {
+		return true;
+	}
+
+	@Override
 	protected boolean isMovementNoisy() {
 		return false;
 	}
