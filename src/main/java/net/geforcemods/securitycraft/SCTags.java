@@ -61,6 +61,8 @@ public class SCTags {
 		private Items() {}
 
 		public static final IOptionalNamedTag<Item> CAN_INTERACT_WITH_DOORS = tag("can_interact_with_doors");
+		public static final IOptionalNamedTag<Item> KEYCARDS = tag("keycards");
+		public static final IOptionalNamedTag<Item> KEYCARD_HOLDER_CAN_HOLD = tag("keycard_holder_can_hold");
 		public static final IOptionalNamedTag<Item> MODULES = tag("modules");
 		public static final IOptionalNamedTag<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final IOptionalNamedTag<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");

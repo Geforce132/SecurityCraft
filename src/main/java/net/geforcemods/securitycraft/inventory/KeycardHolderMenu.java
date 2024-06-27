@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
-import net.geforcemods.securitycraft.items.KeycardItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
@@ -20,7 +20,7 @@ public class KeycardHolderMenu extends Container {
 			addSlot(new Slot(keycardHolderInv, i, 44 + (i * 18), 20) {
 				@Override
 				public boolean mayPlace(ItemStack stack) {
-					return stack.getItem() instanceof KeycardItem;
+					return stack.getItem().is(SCTags.Items.KEYCARD_HOLDER_CAN_HOLD);
 				}
 			});
 		}

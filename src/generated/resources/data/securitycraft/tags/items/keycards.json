@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:keycard_lv1",
+    "securitycraft:keycard_lv2",
+    "securitycraft:keycard_lv3",
+    "securitycraft:keycard_lv4",
+    "securitycraft:keycard_lv5"
+  ]
+}
