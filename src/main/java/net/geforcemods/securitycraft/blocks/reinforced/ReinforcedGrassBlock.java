@@ -24,8 +24,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.TriState;
 
 public class ReinforcedGrassBlock extends GrassBlock implements IReinforcedBlock, EntityBlock {
 	public ReinforcedGrassBlock(BlockBehaviour.Properties properties) {
@@ -36,8 +36,8 @@ public class ReinforcedGrassBlock extends GrassBlock implements IReinforcedBlock
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource randomSource) {}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable) {
-		return SCContent.REINFORCED_DIRT.get().canSustainPlant(state, level, pos, facing, plantable);
+	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, BlockState plant) {
+		return SCContent.REINFORCED_DIRT.get().canSustainPlant(state, level, pos, facing, plant);
 	}
 
 	@Override
