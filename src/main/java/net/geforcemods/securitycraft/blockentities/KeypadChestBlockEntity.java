@@ -125,6 +125,18 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	}
 
 	@Override
+	public void onLoad() {
+		super.onLoad();
+		DisguisableBlockEntity.onLoad(this);
+	}
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+		DisguisableBlockEntity.onInvalidate(this);
+	}
+
+	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return BlockUtils.isAllowedToExtractFromProtectedObject(facing, this) ? (T) super.getCapability(capability, facing) : (T) getInsertOnlyHandler();
@@ -171,15 +183,19 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		IModuleInventory.super.onModuleInserted(stack, module, toggled);
-
 		addOrRemoveModuleFromAttached(stack, false, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onInsertDisguiseModule(this, stack, toggled);
 	}
 
 	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
-
 		addOrRemoveModuleFromAttached(stack, true, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onRemoveDisguiseModule(this, stack, toggled);
 	}
 
 	@Override
@@ -427,7 +443,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.REDSTONE, ModuleType.SMART, ModuleType.HARMING, ModuleType.DISGUISE
 		};
 	}
 

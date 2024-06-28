@@ -36,7 +36,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
@@ -52,7 +51,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class KeypadChestBlock extends OwnableBlock {
+public class KeypadChestBlock extends DisguisableBlock {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	protected static final AxisAlignedBB NORTH_CHEST_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0D, 0.9375D, 0.875D, 0.9375D);
 	protected static final AxisAlignedBB SOUTH_CHEST_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 1.0D);
@@ -67,11 +66,6 @@ public class KeypadChestBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-		return false;
-	}
-
-	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
 	}
@@ -82,20 +76,21 @@ public class KeypadChestBlock extends OwnableBlock {
 	}
 
 	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
-	}
-
-	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (world.getBlockState(pos.north()).getBlock() == this)
-			return NORTH_CHEST_AABB;
-		else if (world.getBlockState(pos.south()).getBlock() == this)
-			return SOUTH_CHEST_AABB;
-		else if (world.getBlockState(pos.west()).getBlock() == this)
-			return WEST_CHEST_AABB;
-		else
-			return world.getBlockState(pos.east()).getBlock() == this ? EAST_CHEST_AABB : NOT_CONNECTED_AABB;
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getBoundingBox(world, pos);
+		else {
+			if (world.getBlockState(pos.north()).getBlock() == this)
+				return NORTH_CHEST_AABB;
+			else if (world.getBlockState(pos.south()).getBlock() == this)
+				return SOUTH_CHEST_AABB;
+			else if (world.getBlockState(pos.west()).getBlock() == this)
+				return WEST_CHEST_AABB;
+			else
+				return world.getBlockState(pos.east()).getBlock() == this ? EAST_CHEST_AABB : NOT_CONNECTED_AABB;
+		}
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import mcjty.theoneprobe.api.IProbeInfoProvider;
 import mcjty.theoneprobe.api.ITheOneProbe;
 import mcjty.theoneprobe.api.ProbeMode;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blocks.FakeLavaBaseBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBaseBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
@@ -41,8 +41,8 @@ public class TOPDataProvider extends HudModHandler implements Function<ITheOnePr
 			String text = formatting + "Minecraft";
 
 			//split up so the display override does not work for every block
-			if (blockState.getBlock() instanceof DisguisableBlock) {
-				item = ((DisguisableBlock) blockState.getBlock()).getDisguisedStack(world, data.getPos());
+			if (blockState.getBlock() instanceof IDisguisable) {
+				item = ((IDisguisable) blockState.getBlock()).getDisguisedStack(world, data.getPos());
 				itemLabel = item;
 				text = formatting + Loader.instance().getIndexedModList().get(item.getItem().getRegistryName().getNamespace()).getName();
 				edited = true;

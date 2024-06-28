@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -29,7 +28,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
-public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickable, IEMPAffectedBE {
+public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity implements ITickable, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
@@ -535,7 +534,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.REDSTONE
+				ModuleType.ALLOWLIST, ModuleType.REDSTONE, ModuleType.DISGUISE
 		};
 	}
 

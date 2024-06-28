@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.minecraft.block.Block;
@@ -20,8 +20,8 @@ public class GuiOverlayDebugMixin {
 	public IBlockState securitycraft$spoofBlockState(IBlockState originalState) {
 		Block originalBlock = originalState.getBlock();
 
-		if (originalBlock instanceof DisguisableBlock) {
-			IBlockState disguisedState = ((DisguisableBlock) originalBlock).getDisguisedBlockState(Minecraft.getMinecraft().world, Minecraft.getMinecraft().objectMouseOver.getBlockPos());
+		if (originalBlock instanceof IDisguisable) {
+			IBlockState disguisedState = ((IDisguisable) originalBlock).getDisguisedBlockState(Minecraft.getMinecraft().world, Minecraft.getMinecraft().objectMouseOver.getBlockPos());
 
 			return disguisedState != null ? disguisedState : originalState;
 		}

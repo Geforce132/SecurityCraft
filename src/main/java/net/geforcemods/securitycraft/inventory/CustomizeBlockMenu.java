@@ -60,6 +60,14 @@ public class CustomizeBlockMenu extends Container {
 			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
 			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
 		}
+		else if (moduleInv.getMaxNumberOfModules() == 6) {
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 16, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 34, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlotToContainer(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
+		}
 
 		maxSlots = 36 + moduleInv.getMaxNumberOfModules();
 	}

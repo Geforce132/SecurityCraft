@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.compat.hudmods;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
@@ -31,8 +31,8 @@ public class HudModHandler {
 	public void addOwnerModuleNameInfo(World level, BlockPos pos, IBlockState state, Block block, TileEntity be, EntityPlayer player, Consumer<String> lineAdder, Predicate<String> configGetter) {
 		boolean disguised = false;
 
-		if (block instanceof DisguisableBlock) {
-			IBlockState disguisedBlockState = ((DisguisableBlock) block).getDisguisedBlockState(level, pos);
+		if (block instanceof IDisguisable) {
+			IBlockState disguisedBlockState = ((IDisguisable) block).getDisguisedBlockState(level, pos);
 
 			if (disguisedBlockState != null) {
 				disguised = true;

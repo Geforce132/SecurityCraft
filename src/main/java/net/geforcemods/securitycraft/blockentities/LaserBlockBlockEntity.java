@@ -19,16 +19,13 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
-import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -43,7 +40,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
@@ -188,7 +184,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		super.onModuleInserted(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE)
-			onInsertDisguiseModule(stack, toggled);
+			DisguisableBlockEntity.onInsertDisguiseModule(this, stack, toggled);
 		else if (module == ModuleType.SMART)
 			applyExistingSideConfig();
 	}
@@ -198,37 +194,11 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.DISGUISE)
-			onRemoveDisguiseModule(stack, toggled);
+			DisguisableBlockEntity.onRemoveDisguiseModule(this, stack, toggled);
 		else if (module == ModuleType.REDSTONE)
 			onRemoveRedstoneModule();
 		else if (module == ModuleType.SMART)
 			applyExistingSideConfig();
-	}
-
-	private void onInsertDisguiseModule(ItemStack stack, boolean toggled) {
-		if (!world.isRemote)
-			SecurityCraft.network.sendToAllTracking(new RefreshDiguisedModel(pos, true, stack, toggled), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
-		else {
-			IBlockState state = world.getBlockState(pos);
-
-			BlockEntityRenderDelegate.putDisguisedTeRenderer(this, stack);
-
-			if (state.getLightValue(world, pos) > 0)
-				world.checkLight(pos);
-		}
-	}
-
-	private void onRemoveDisguiseModule(ItemStack stack, boolean toggled) {
-		if (!world.isRemote)
-			SecurityCraft.network.sendToAllTracking(new RefreshDiguisedModel(pos, false, stack, toggled), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
-		else {
-			IBlockState disguisedState = ((DisguisableBlock) blockType).getDisguisedBlockStateFromStack(null, null, stack);
-
-			BlockEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);
-
-			if (disguisedState != null && disguisedState.getLightValue(world, pos) > 0)
-				world.checkLight(pos);
-		}
 	}
 
 	private void onRemoveRedstoneModule() {
@@ -309,9 +279,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	@Override
 	public void onLoad() {
 		super.onLoad();
-
-		if (world.isRemote)
-			BlockEntityRenderDelegate.putDisguisedTeRenderer(this, getModule(ModuleType.DISGUISE));
+		DisguisableBlockEntity.onLoad(this);
 	}
 
 	@Override
@@ -327,9 +295,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	@Override
 	public void invalidate() {
 		super.invalidate();
-
-		if (world.isRemote)
-			BlockEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(this);
+		DisguisableBlockEntity.onInvalidate(this);
 	}
 
 	@Override

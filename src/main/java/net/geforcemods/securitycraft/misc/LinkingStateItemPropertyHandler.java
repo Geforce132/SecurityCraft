@@ -5,11 +5,11 @@ import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
@@ -119,7 +119,7 @@ public class LinkingStateItemPropertyHandler {
 
 			//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 			if (!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) {
-				if (DisguisableBlock.getDisguisedBlockStateUnknown(_world, pos) != null)
+				if (IDisguisable.getDisguisedBlockStateUnknown(_world, pos) != null)
 					return false;
 			}
 

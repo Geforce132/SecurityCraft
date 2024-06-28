@@ -97,7 +97,7 @@ public class ReinforcedDispenserBlockEntity extends TileEntityDispenser implemen
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
 		};
 	}
 
@@ -119,6 +119,34 @@ public class ReinforcedDispenserBlockEntity extends TileEntityDispenser implemen
 	@Override
 	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
 		readFromNBT(packet.getNbtCompound());
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleInserted(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onInsertDisguiseModule(this, stack, toggled);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		IModuleInventory.super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onRemoveDisguiseModule(this, stack, toggled);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		DisguisableBlockEntity.onLoad(this);
+	}
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+		DisguisableBlockEntity.onInvalidate(this);
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.util.Calendar;
 
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blocks.KeypadChestBlock;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.model.ModelLargeChest;
@@ -34,122 +36,126 @@ public class KeypadChestRenderer extends TileEntitySpecialRenderer<KeypadChestBl
 
 	@Override
 	public void render(KeypadChestBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		int meta;
+		BlockEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
 
-		if (!te.hasWorld())
-			meta = 0;
-		else {
-			Block block = te.getBlockType();
-			meta = te.getBlockMetadata();
+		if (!te.isModuleEnabled(ModuleType.DISGUISE)) {
+			int meta;
 
-			if (block instanceof KeypadChestBlock) {
-				((KeypadChestBlock) block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
-				meta = te.getBlockMetadata();
-			}
-
-			te.checkForAdjacentChests();
-		}
-
-		if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null) {
-			ModelChest model;
-
-			if (te.adjacentChestXPos == null && te.adjacentChestZPos == null) {
-				model = smallModel;
-
-				if (destroyStage >= 0) {
-					bindTexture(DESTROY_STAGES[destroyStage]);
-					GlStateManager.matrixMode(5890);
-					GlStateManager.pushMatrix();
-					GlStateManager.scale(4.0F, 4.0F, 1.0F);
-					GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
-					GlStateManager.matrixMode(5888);
-				}
-				else if (isChristmas)
-					bindTexture(christmasNormal);
-				else if (te.lidAngle >= 0.9)
-					bindTexture(normalSingleActive);
-				else
-					bindTexture(normalSingleUnactive);
-			}
+			if (!te.hasWorld())
+				meta = 0;
 			else {
-				model = largeModel;
+				Block block = te.getBlockType();
+				meta = te.getBlockMetadata();
 
-				if (destroyStage >= 0) {
-					bindTexture(DESTROY_STAGES[destroyStage]);
-					GlStateManager.matrixMode(5890);
-					GlStateManager.pushMatrix();
-					GlStateManager.scale(8.0F, 4.0F, 1.0F);
-					GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
-					GlStateManager.matrixMode(5888);
+				if (block instanceof KeypadChestBlock) {
+					((KeypadChestBlock) block).checkForSurroundingChests(te.getWorld(), te.getPos(), te.getWorld().getBlockState(te.getPos()));
+					meta = te.getBlockMetadata();
 				}
-				else if (isChristmas)
-					bindTexture(christmasDouble);
-				else if (te.lidAngle >= 0.9)
-					bindTexture(normalDoubleActive);
-				else
-					bindTexture(normalDoubleUnactive);
+
+				te.checkForAdjacentChests();
 			}
 
-			GlStateManager.pushMatrix();
-			GlStateManager.enableRescaleNormal();
+			if (te.adjacentChestZNeg == null && te.adjacentChestXNeg == null) {
+				ModelChest model;
 
-			if (destroyStage < 0)
+				if (te.adjacentChestXPos == null && te.adjacentChestZPos == null) {
+					model = smallModel;
+
+					if (destroyStage >= 0) {
+						bindTexture(DESTROY_STAGES[destroyStage]);
+						GlStateManager.matrixMode(5890);
+						GlStateManager.pushMatrix();
+						GlStateManager.scale(4.0F, 4.0F, 1.0F);
+						GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
+						GlStateManager.matrixMode(5888);
+					}
+					else if (isChristmas)
+						bindTexture(christmasNormal);
+					else if (te.lidAngle >= 0.9)
+						bindTexture(normalSingleActive);
+					else
+						bindTexture(normalSingleUnactive);
+				}
+				else {
+					model = largeModel;
+
+					if (destroyStage >= 0) {
+						bindTexture(DESTROY_STAGES[destroyStage]);
+						GlStateManager.matrixMode(5890);
+						GlStateManager.pushMatrix();
+						GlStateManager.scale(8.0F, 4.0F, 1.0F);
+						GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
+						GlStateManager.matrixMode(5888);
+					}
+					else if (isChristmas)
+						bindTexture(christmasDouble);
+					else if (te.lidAngle >= 0.9)
+						bindTexture(normalDoubleActive);
+					else
+						bindTexture(normalDoubleUnactive);
+				}
+
+				GlStateManager.pushMatrix();
+				GlStateManager.enableRescaleNormal();
+
+				if (destroyStage < 0)
+					GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+				GlStateManager.translate((float) x, (float) y + 1.0F, (float) z + 1.0F);
+				GlStateManager.scale(1.0F, -1.0F, -1.0F);
+				GlStateManager.translate(0.5F, 0.5F, 0.5F);
+				short rotation = 0;
+
+				if (meta == 2)
+					rotation = 180;
+
+				if (meta == 3)
+					rotation = 0;
+
+				if (meta == 4)
+					rotation = 90;
+
+				if (meta == 5)
+					rotation = -90;
+
+				if (meta == 2 && te.adjacentChestXPos != null)
+					GlStateManager.translate(1.0F, 0.0F, 0.0F);
+
+				if (meta == 5 && te.adjacentChestZPos != null)
+					GlStateManager.translate(0.0F, 0.0F, -1.0F);
+
+				GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
+				GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+				float angle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
+				float adjacentAngle;
+
+				if (te.adjacentChestZNeg != null) {
+					adjacentAngle = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
+
+					if (adjacentAngle > angle)
+						angle = adjacentAngle;
+				}
+
+				if (te.adjacentChestXNeg != null) {
+					adjacentAngle = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
+
+					if (adjacentAngle > angle)
+						angle = adjacentAngle;
+				}
+
+				angle = 1.0F - angle;
+				angle = 1.0F - angle * angle * angle;
+				model.chestLid.rotateAngleX = -(angle * (float) Math.PI / 2.0F);
+				model.renderAll();
+				GlStateManager.disableRescaleNormal();
+				GlStateManager.popMatrix();
 				GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			GlStateManager.translate((float) x, (float) y + 1.0F, (float) z + 1.0F);
-			GlStateManager.scale(1.0F, -1.0F, -1.0F);
-			GlStateManager.translate(0.5F, 0.5F, 0.5F);
-			short rotation = 0;
-
-			if (meta == 2)
-				rotation = 180;
-
-			if (meta == 3)
-				rotation = 0;
-
-			if (meta == 4)
-				rotation = 90;
-
-			if (meta == 5)
-				rotation = -90;
-
-			if (meta == 2 && te.adjacentChestXPos != null)
-				GlStateManager.translate(1.0F, 0.0F, 0.0F);
-
-			if (meta == 5 && te.adjacentChestZPos != null)
-				GlStateManager.translate(0.0F, 0.0F, -1.0F);
-
-			GlStateManager.rotate(rotation, 0.0F, 1.0F, 0.0F);
-			GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-			float angle = te.prevLidAngle + (te.lidAngle - te.prevLidAngle) * partialTicks;
-			float adjacentAngle;
-
-			if (te.adjacentChestZNeg != null) {
-				adjacentAngle = te.adjacentChestZNeg.prevLidAngle + (te.adjacentChestZNeg.lidAngle - te.adjacentChestZNeg.prevLidAngle) * partialTicks;
-
-				if (adjacentAngle > angle)
-					angle = adjacentAngle;
-			}
-
-			if (te.adjacentChestXNeg != null) {
-				adjacentAngle = te.adjacentChestXNeg.prevLidAngle + (te.adjacentChestXNeg.lidAngle - te.adjacentChestXNeg.prevLidAngle) * partialTicks;
-
-				if (adjacentAngle > angle)
-					angle = adjacentAngle;
-			}
-
-			angle = 1.0F - angle;
-			angle = 1.0F - angle * angle * angle;
-			model.chestLid.rotateAngleX = -(angle * (float) Math.PI / 2.0F);
-			model.renderAll();
-			GlStateManager.disableRescaleNormal();
-			GlStateManager.popMatrix();
-			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-
-			if (destroyStage >= 0) {
-				GlStateManager.matrixMode(5890);
-				GlStateManager.popMatrix();
-				GlStateManager.matrixMode(5888);
+				if (destroyStage >= 0) {
+					GlStateManager.matrixMode(5890);
+					GlStateManager.popMatrix();
+					GlStateManager.matrixMode(5888);
+				}
 			}
 		}
 	}

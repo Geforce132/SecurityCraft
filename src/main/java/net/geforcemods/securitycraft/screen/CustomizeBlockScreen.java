@@ -46,20 +46,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class CustomizeBlockScreen extends GuiContainer implements IContainerListener, IHasExtraAreas {
-	//@formatter:off
-	private static final ResourceLocation[] TEXTURES = {
-			new ResourceLocation("securitycraft:textures/gui/container/customize0.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize1.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize2.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize3.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize4.png"),
-			new ResourceLocation("securitycraft:textures/gui/container/customize5.png")
-	};
-	//@formatter:on
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
 	private final List<Rectangle> extraAreas = new ArrayList<>();
+	private final int maxNumberOfModules;
+	private final ResourceLocation texture;
+	private final PictureButton[] descriptionButtons;
 	private IModuleInventory moduleInv;
-	private PictureButton[] descriptionButtons = new PictureButton[5];
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private final String title;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
@@ -68,6 +60,9 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 		super(new CustomizeBlockMenu(inventory, moduleInv));
 
 		this.moduleInv = moduleInv;
+		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
+		texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/customize" + maxNumberOfModules + ".png");
+		descriptionButtons = new PictureButton[maxNumberOfModules];
 
 		if (moduleInv instanceof TileEntity)
 			title = ((TileEntity) moduleInv).getDisplayName().getFormattedText();
@@ -177,7 +172,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 
 		drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		mc.getTextureManager().bindTexture(TEXTURES[moduleInv.getMaxNumberOfModules()]);
+		mc.getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(startX, startY, 0, 0, xSize, ySize);
 	}
 

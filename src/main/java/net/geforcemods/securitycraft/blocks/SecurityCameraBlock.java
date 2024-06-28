@@ -21,7 +21,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.EnumFacing.Plane;
@@ -39,9 +38,14 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 
-public class SecurityCameraBlock extends OwnableBlock {
+public class SecurityCameraBlock extends DisguisableBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
+	private static final AxisAlignedBB NORTH = new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
+	private static final AxisAlignedBB EAST = new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
+	private static final AxisAlignedBB SOUTH = new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
+	private static final AxisAlignedBB WEST = new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
+	private static final AxisAlignedBB DOWN = new AxisAlignedBB(5.0F / 16.0F, 1.0F - 2.0F / 16.0F, 5.0F / 16.0F, 11.0F / 16.0F, 1.0F, 11.0F / 16.0F);
 
 	public SecurityCameraBlock(Material material) {
 		super(material);
@@ -62,19 +66,6 @@ public class SecurityCameraBlock extends OwnableBlock {
 		}
 
 		return false;
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess access, BlockPos pos) {
-		return null;
-	}
-
-	@Override
-	public EnumBlockRenderType getRenderType(IBlockState state) {
-		if (state.getValue(FACING) == EnumFacing.DOWN)
-			return EnumBlockRenderType.MODEL;
-		else
-			return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override
@@ -122,20 +113,25 @@ public class SecurityCameraBlock extends OwnableBlock {
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-		EnumFacing dir = state.getValue(FACING);
-		float px = 1.0F / 16.0F; //one sixteenth of a block
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		IBlockState actualState = getDisguisedBlockState(world, pos);
 
-		if (dir == EnumFacing.SOUTH)
-			return new AxisAlignedBB(0.275F, 0.250F, 0.000F, 0.700F, 0.800F, 0.850F);
-		else if (dir == EnumFacing.NORTH)
-			return new AxisAlignedBB(0.275F, 0.250F, 0.150F, 0.700F, 0.800F, 1.000F);
-		else if (dir == EnumFacing.WEST)
-			return new AxisAlignedBB(0.125F, 0.250F, 0.275F, 1.000F, 0.800F, 0.725F);
-		else if (dir == EnumFacing.DOWN)
-			return new AxisAlignedBB(px * 5, 1.0F - px * 2, px * 5, px * 11, 1.0F, px * 11);
-		else
-			return new AxisAlignedBB(0.000F, 0.250F, 0.275F, 0.850F, 0.800F, 0.725F);
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getBoundingBox(world, pos);
+		else {
+			EnumFacing dir = state.getValue(FACING);
+
+			if (dir == EnumFacing.SOUTH)
+				return SOUTH;
+			else if (dir == EnumFacing.NORTH)
+				return NORTH;
+			else if (dir == EnumFacing.WEST)
+				return WEST;
+			else if (dir == EnumFacing.DOWN)
+				return DOWN;
+			else
+				return EAST;
+		}
 	}
 
 	@Override
@@ -204,10 +200,7 @@ public class SecurityCameraBlock extends OwnableBlock {
 
 	@Override
 	public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing side) {
-		if (side == EnumFacing.UP)
-			return false;
-		else
-			return world.isSideSolid(pos.offset(side.getOpposite()), side);
+		return side != EnumFacing.UP && world.isSideSolid(pos.offset(side.getOpposite()), side);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class SonicSecuritySystemModel extends ModelBase {
 	public final ModelRenderer radar;
-	public final ModelRenderer bb_main;
 
 	public SonicSecuritySystemModel() {
 		textureWidth = 32;
@@ -26,18 +25,11 @@ public class SonicSecuritySystemModel extends ModelBase {
 		radar.setTextureOffset(0, 2).addBox(1.5F, -1.5F, 1.5F, 1, 3, 1, 0.0F);
 		radar.setTextureOffset(0, 6).addBox(-2.5F, -1.5F, 1.5F, 1, 3, 1, 0.0F);
 		radar.setTextureOffset(0, 10).addBox(-2.5F, 1.5F, 1.5F, 5, 1, 1, 0.0F);
-
-		bb_main = new ModelRenderer(this);
-		bb_main.setRotationPoint(0.0F, 24.0F, 0.0F);
-		bb_main.setTextureOffset(0, 28).addBox(-1.5F, -1.0F, -1.5F, 3, 1, 3, 0.0F);
-		bb_main.setTextureOffset(0, 25).addBox(-1.0F, -2.0F, -1.0F, 2, 1, 2, 0.0F);
-		bb_main.setTextureOffset(12, 20).addBox(-0.5F, -13.0F, -0.5F, 1, 11, 1, 0.0F);
 	}
 
 	@Override
 	public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
 		radar.render(scale);
-		bb_main.render(scale);
 	}
 
 	public void setRadarRotation(float rotation) {

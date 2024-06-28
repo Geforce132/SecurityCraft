@@ -48,7 +48,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 		if (upperState.getValue(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.UPPER && !respectInvisibility.isConsideredInvisible(entity)) {
 			EnumFacing.Axis facingAxis = ScannerDoorBlock.getFacingAxis(lowerState);
 
-			if (!(entity instanceof EntityPlayer) || facingAxis != rayTraceResult.sideHit.getAxis())
+			if (!(entity instanceof EntityPlayer) || (!isModuleEnabled(ModuleType.DISGUISE) && facingAxis != rayTraceResult.sideHit.getAxis()))
 				return false;
 
 			EntityPlayer player = (EntityPlayer) entity;
@@ -104,7 +104,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
 		};
 	}
 

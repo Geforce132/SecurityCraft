@@ -2,11 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.List;
 
-import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.SoundType;
@@ -15,11 +13,8 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -32,7 +27,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
+public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, IDisguisable {
 	public DisguisableBlock(Material material) {
 		super(material);
 	}
@@ -110,65 +105,16 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
 
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
-		TileEntity te = world.getTileEntity(pos);
-
-		if (te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(ModuleType.DISGUISE)) {
-			ItemStack module = ((IModuleInventory) te).getModule(ModuleType.DISGUISE);
-
-			if (!module.hasTagCompound())
-				module.setTagCompound(new NBTTagCompound());
-
-			IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
-
-			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
-				return disguisedState.getBlockFaceShape(world, pos, face);
-			else {
-				Block block = ModuleItem.getBlockAddon(module);
-
-				if (block == null)
-					return BlockFaceShape.SOLID;
-				else
-					return block.getDefaultState().getBlockFaceShape(world, pos, face);
-			}
-		}
-
-		return BlockFaceShape.SOLID;
+		return IDisguisable.getDisguisedBlockFaceShape(world, state, pos, face);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		if (!(world.getTileEntity(pos) instanceof IModuleInventory))
-			return true;
-
-		IModuleInventory te = (IModuleInventory) world.getTileEntity(pos);
-
-		if (te.isModuleEnabled(ModuleType.DISGUISE)) {
-			ItemStack disguiseModule = te.getModule(ModuleType.DISGUISE);
-
-			if (!disguiseModule.hasTagCompound())
-				disguiseModule.setTagCompound(new NBTTagCompound());
-
-			IBlockState disguisedState = NBTUtil.readBlockState(disguiseModule.getTagCompound().getCompoundTag("SavedState"));
-
-			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR) {
-				// If this block has a disguise module added with a transparent block inserted.
-				if (!disguisedState.isOpaqueCube() || !disguisedState.isFullCube())
-					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side));
-			}
-			else {
-				Block blockToDisguiseAs = ModuleItem.getBlockAddon(disguiseModule);
-
-				// If this block has a disguise module added with a transparent block inserted.
-				if (blockToDisguiseAs != null && (!blockToDisguiseAs.getDefaultState().isOpaqueCube() || !blockToDisguiseAs.getDefaultState().isFullCube()))
-					return checkForSideTransparency(world, world.getBlockState(pos.offset(side)), pos.offset(side));
-			}
-		}
-
-		return true;
+	public boolean shouldSideBeRendered(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return IDisguisable.shouldDisguisedSideBeRendered(state, world, pos, side);
 	}
 
-	public boolean checkForSideTransparency(IBlockAccess world, IBlockState neighborState, BlockPos neighborPos) {
+	public static boolean checkForSideTransparency(IBlockAccess world, IBlockState neighborState, BlockPos neighborPos) {
 		Block neighborBlock = neighborState.getBlock();
 
 		if (neighborBlock.isAir(neighborState, world, neighborPos))
@@ -190,60 +136,6 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay {
 		IBlockState disguisedState = getDisguisedBlockState(world, pos);
 
 		return disguisedState != null ? disguisedState : state;
-	}
-
-	public static IBlockState getDisguisedBlockStateUnknown(IBlockAccess world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
-
-		if (state.getBlock() instanceof DisguisableBlock)
-			return ((DisguisableBlock) state.getBlock()).getDisguisedBlockState(world, pos);
-		else
-			return null;
-	}
-
-	public IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
-		TileEntity tile = world.getTileEntity(pos);
-
-		if (tile instanceof IModuleInventory) {
-			IModuleInventory te = (IModuleInventory) tile;
-
-			return getDisguisedBlockStateFromStack(world, pos, te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
-		}
-
-		return null;
-	}
-
-	public IBlockState getDisguisedBlockStateFromStack(IBlockAccess world, BlockPos pos, ItemStack module) {
-		if (!module.isEmpty()) {
-			if (!module.hasTagCompound())
-				module.setTagCompound(new NBTTagCompound());
-
-			IBlockState disguisedState = NBTUtil.readBlockState(module.getTagCompound().getCompoundTag("SavedState"));
-
-			if (disguisedState != null && disguisedState.getBlock() != Blocks.AIR)
-				return disguisedState;
-			else if (world != null && pos != null) { //fallback, mainly for upgrading old worlds from before the state selector existed
-				ItemStack disguisedStack = ModuleItem.getAddonAsStack(module);
-				Block block = Block.getBlockFromItem(disguisedStack.getItem());
-				boolean hasMeta = disguisedStack.getHasSubtypes();
-
-				disguisedState = hasMeta ? block.getStateFromMeta(disguisedStack.getItemDamage()) : block.getDefaultState();
-
-				if (block != this)
-					return disguisedState.getActualState(world, pos);
-			}
-		}
-
-		return null;
-	}
-
-	public ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
-		IBlockState disguisedState = getDisguisedBlockState(world, pos);
-
-		if (disguisedState != null)
-			return new ItemStack(disguisedState.getBlock(), 1, disguisedState.getBlock().getMetaFromState(disguisedState));
-
-		return new ItemStack(this);
 	}
 
 	@Override

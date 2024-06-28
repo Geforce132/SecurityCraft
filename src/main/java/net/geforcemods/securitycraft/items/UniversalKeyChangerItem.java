@@ -2,10 +2,10 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -42,7 +42,7 @@ public class UniversalKeyChangerItem extends Item {
 				player.openGui(SecurityCraft.instance, Screens.KEY_CHANGER.ordinal(), level, pos.getX(), pos.getY(), pos.getZ());
 				return EnumActionResult.SUCCESS;
 			}
-			else if (!(te.getBlockType() instanceof DisguisableBlock) || (((ItemBlock) ((DisguisableBlock) te.getBlockType()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof DisguisableBlock)) {
+			else if (!(te.getBlockType() instanceof IDisguisable) || (((ItemBlock) ((IDisguisable) te.getBlockType()).getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}

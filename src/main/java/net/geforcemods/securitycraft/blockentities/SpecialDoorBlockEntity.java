@@ -9,10 +9,12 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDoor.EnumDoorHalf;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -58,6 +60,34 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 
 			removeModule(moduleRemoved.moduleType, moduleRemoved.wasModuleToggled);
 		}
+	}
+
+	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onInsertDisguiseModule(this, stack, toggled);
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.DISGUISE)
+			DisguisableBlockEntity.onRemoveDisguiseModule(this, stack, toggled);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		DisguisableBlockEntity.onLoad(this);
+	}
+
+	@Override
+	public void invalidate() {
+		super.invalidate();
+		DisguisableBlockEntity.onInvalidate(this);
 	}
 
 	public int getSignalLength() {

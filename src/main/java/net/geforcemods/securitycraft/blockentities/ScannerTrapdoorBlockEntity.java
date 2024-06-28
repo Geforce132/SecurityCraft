@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
@@ -29,7 +28,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 
-public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implements IViewActivated, ITickable, ILockable {
+public class ScannerTrapdoorBlockEntity extends DisguisableBlockEntity implements IViewActivated, ITickable, ILockable {
 	private BooleanOption sendMessage = new BooleanOption("sendMessage", true);
 	protected IntOption signalLength = new IntOption(this::getPos, "signalLength", 0, 0, 400, 5); //20 seconds max
 	private DoubleOption maximumDistance = new DoubleOption(this::getPos, "maximumDistance", 5.0D, 0.1D, 25.0D, 0.1D) {
@@ -52,7 +51,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 		if (!respectInvisibility.isConsideredInvisible(entity)) {
 			IBlockState state = world.getBlockState(pos);
 
-			if (!(entity instanceof EntityPlayer) || !(state.getValue(BlockTrapDoor.OPEN) ? hitResult.sideHit.getAxis() == state.getValue(BlockHorizontal.FACING).getAxis() : hitResult.sideHit.getAxis() == Axis.Y))
+			if (!(entity instanceof EntityPlayer) || (!isModuleEnabled(ModuleType.DISGUISE) && !(state.getValue(BlockTrapDoor.OPEN) ? hitResult.sideHit.getAxis() == state.getValue(BlockHorizontal.FACING).getAxis() : hitResult.sideHit.getAxis() == Axis.Y)))
 				return false;
 
 			EntityPlayer player = (EntityPlayer) entity;
@@ -124,7 +123,7 @@ public class ScannerTrapdoorBlockEntity extends CustomizableBlockEntity implemen
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST
+				ModuleType.ALLOWLIST, ModuleType.DISGUISE
 		};
 	}
 

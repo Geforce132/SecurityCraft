@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.renderers;
 
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
+import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -26,6 +28,8 @@ public class SonicSecuritySystemRenderer extends TileEntitySpecialRenderer<Sonic
 
 		boolean recording = te.isRecording();
 
+		BlockEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
+
 		if (recording || te.isListening() && !te.isShutDown()) {
 			EntityPlayer player = Minecraft.getMinecraft().player;
 
@@ -34,11 +38,13 @@ public class SonicSecuritySystemRenderer extends TileEntitySpecialRenderer<Sonic
 			setLightmapDisabled(false);
 		}
 
-		GlStateManager.translate(x + 0.5D, y + 1.5D, z + 0.5D);
-		GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
-		MODEL.setRadarRotation(Utils.lerp(partialTicks, te.getOriginalRadarRotationDegrees(), te.getRadarRotationDegrees()));
-		MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
-		GlStateManager.popMatrix();
+		if (!te.isModuleEnabled(ModuleType.DISGUISE)) {
+			GlStateManager.translate(x + 0.5D, y + 1.5D, z + 0.5D);
+			GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
+			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+			MODEL.setRadarRotation(Utils.lerp(partialTicks, te.getOriginalRadarRotationDegrees(), te.getRadarRotationDegrees()));
+			MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+			GlStateManager.popMatrix();
+		}
 	}
 }
