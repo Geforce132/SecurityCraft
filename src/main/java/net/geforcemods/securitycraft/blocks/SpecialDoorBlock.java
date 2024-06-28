@@ -110,25 +110,29 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	}
 
 	@Override
-	public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
-		IBlockState upperState = world.getBlockState(pos);
+	public void updateTick(World world, BlockPos upperPos, IBlockState state, Random random) {
+		IBlockState upperState = world.getBlockState(upperPos);
 
 		if (!upperState.getValue(BlockDoor.OPEN))
 			return;
 
+		BlockPos lowerPos;
 		IBlockState lowerState;
 
 		if (upperState.getValue(BlockDoor.HALF) == EnumDoorHalf.LOWER) {
+			lowerPos = upperPos;
 			lowerState = upperState;
-			pos = pos.up();
-			upperState = world.getBlockState(pos);
+			upperPos = upperPos.up();
+			upperState = world.getBlockState(upperPos);
 		}
-		else
-			lowerState = world.getBlockState(pos.down());
+		else {
+			lowerPos = upperPos.down();
+			lowerState = world.getBlockState(lowerPos);
+		}
 
-		world.setBlockState(pos, upperState.withProperty(BlockDoor.OPEN, false), 3);
-		world.setBlockState(pos.down(), lowerState.withProperty(BlockDoor.OPEN, false), 3);
-		world.playEvent(null, 1011, pos, 0);
+		world.setBlockState(upperPos, upperState.withProperty(BlockDoor.OPEN, false));
+		world.setBlockState(lowerPos, lowerState.withProperty(BlockDoor.OPEN, false));
+		world.playEvent(null, 1011, upperPos, 0);
 	}
 
 	@Override
