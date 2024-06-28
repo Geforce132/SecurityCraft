@@ -64,8 +64,4 @@ public class OwnableBlockEntity extends TileEntity implements IOwnable {
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 	}
-
-	public boolean shouldRender() {
-		return false;
-	}
 }

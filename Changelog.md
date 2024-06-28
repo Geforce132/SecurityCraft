@@ -1,9 +1,5 @@
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
-- Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
-
---------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
-
 - New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Reinforced Dispenser, Reinforced Dropper, Reinforced Hopper, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System
 - New: Server config setting to set the amount of damage received when suffocating in a reinforced block
 - New: Item tag "securitycraft:keycards" for all keycards (this notably exclused the Limited Use Keycard, as it's merely a crafting component)
@@ -11,10 +7,14 @@
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions 
-- API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
-- Fix: Crash when reading the SecurityCraft Manual
+- API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
+- Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
+
+--------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
+
+- Fix: Crash when reading the SecurityCraft Manual
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
