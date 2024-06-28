@@ -187,6 +187,9 @@ public class SecureRedstoneInterfaceScreen extends GuiScreen {
 			frequencyBox.textboxKeyTyped(typedChar, keyCode);
 		else
 			super.keyTyped(typedChar, keyCode);
+
+		if (mc.gameSettings.keyBindInventory.isActiveAndMatches(keyCode))
+			mc.player.closeScreen();
 	}
 
 	@Override
