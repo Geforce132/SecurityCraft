@@ -91,8 +91,11 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickable
 				double accelerationY = e.getEntityBoundingBox().minY + e.height / 2.0F - pos.getY() - launchHeight;
 				double accelerationZ = e.posZ - pos.getZ();
 
-				world.spawnEntity(new IMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
-				world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+				if (!world.isRemote) {
+					world.spawnEntity(new IMSBomb(world, pos.getX() + addToX, pos.getY(), pos.getZ() + addToZ, accelerationX, accelerationY, accelerationZ, launchHeight, this));
+					world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F);
+				}
+
 				bombsRemaining--;
 				updateBombCount = true;
 			});

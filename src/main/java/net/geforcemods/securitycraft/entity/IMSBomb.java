@@ -103,6 +103,11 @@ public class IMSBomb extends EntityFireball {
 	}
 
 	@Override
+	public boolean isImmuneToExplosions() {
+		return true;
+	}
+
+	@Override
 	protected boolean canTriggerWalking() {
 		return false;
 	}
