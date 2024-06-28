@@ -7,7 +7,7 @@
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions 
-- API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interfaces
+- API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - Fix: The Alarm ceases to emit any sound when selecting a different sound
 - Fix: When closing the screen of a Briefcase, Disguise Module or Keycard Holder, items carried by the mouse are deleted
 - Fix: Players are kicked from the world when a Disguise Module is removed from certain blocks
