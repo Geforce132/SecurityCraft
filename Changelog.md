@@ -17,6 +17,12 @@
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 - Fix: Reinforced stairs can be destroyed through explosions
 
+--------------------------Changelog for v1.9.10-beta6 of SecurityCraft--------------------------
+
+- Fix: IMS bombs do not fly towards their target after ascending
+- Fix: Compatibility with NeoForge 21.0.39-beta and newer
+- Misc.: The minimum required NeoForge version is now 21.0.39-beta
+
 --------------------------Changelog for v1.9.10-beta5 of SecurityCraft--------------------------
 
 - New: Readded JEI integration

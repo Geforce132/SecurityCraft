@@ -12,6 +12,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.EntityType;
@@ -26,10 +27,11 @@ import net.minecraft.world.phys.Vec3;
 
 public class IMSBomb extends Fireball {
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.defineId(IMSBomb.class, Owner.getSerializer());
+	private static final EntityDataAccessor<Integer> LAUNCH_TIME = SynchedEntityData.defineId(IMSBomb.class, EntityDataSerializers.INT);
 	private int ticksFlying = 0;
-	private int launchTime;
 	private boolean launching = true;
 	private boolean isFast;
+	private Vec3 upwardsSpeed;
 
 	public IMSBomb(EntityType<IMSBomb> type, Level level) {
 		super(SCContent.IMS_BOMB_ENTITY.get(), level);
@@ -40,28 +42,26 @@ public class IMSBomb extends Fireball {
 
 		Owner owner = be.getOwner();
 
-		launchTime = height * 3; //the ims bomb entity travels upwards by 1/3 blocks per tick
 		entityData.set(OWNER, new Owner(owner.getName(), owner.getUUID()));
+		entityData.set(LAUNCH_TIME, height * 3); //the ims bomb entity travels upwards by 1/3 blocks per tick
 		isFast = be.isModuleEnabled(ModuleType.SPEED);
 	}
 
 	@Override
 	public void tick() {
 		if (!launching)
-			super.tick();
+ 			super.tick();
 		else {
-			if (ticksFlying == 0)
-				setDeltaMovement(getDeltaMovement().x, isFast ? 0.66F : 0.33F, getDeltaMovement().z);
-
 			//move up before homing onto target
-			if (ticksFlying < launchTime) {
+			if (ticksFlying < getLaunchTime()) {
+				if (upwardsSpeed == null)
+					upwardsSpeed = new Vec3(0, isFast ? 0.66F : 0.33F, 0);
+
 				ticksFlying += isFast ? 2 : 1;
-				move(MoverType.SELF, getDeltaMovement());
+				move(MoverType.SELF, upwardsSpeed);
 			}
-			else {
-				setDeltaMovement(0.0D, 0.0D, 0.0D);
+			else
 				launching = false;
-			}
 		}
 	}
 
@@ -78,7 +78,6 @@ public class IMSBomb extends Fireball {
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putInt("launchTime", launchTime);
 		tag.putInt("ticksFlying", ticksFlying);
 		tag.putBoolean("launching", launching);
 		tag.putBoolean("isFast", isFast);
@@ -87,7 +86,6 @@ public class IMSBomb extends Fireball {
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		launchTime = tag.getInt("launchTime");
 		ticksFlying = tag.getInt("ticksFlying");
 		launching = tag.getBoolean("launching");
 		isFast = tag.getBoolean("isFast");
@@ -100,10 +98,15 @@ public class IMSBomb extends Fireball {
 		return entityData.get(OWNER);
 	}
 
+	public int getLaunchTime() {
+		return entityData.get(LAUNCH_TIME);
+	}
+
 	@Override
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(OWNER, new Owner());
+		builder.define(LAUNCH_TIME, 0);
 	}
 
 	@Override

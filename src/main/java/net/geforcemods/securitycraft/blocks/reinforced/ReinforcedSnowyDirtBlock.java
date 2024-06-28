@@ -23,8 +23,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
-import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.TriState;
 
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, EntityBlock {
 	private Block vanillaBlock;
@@ -41,8 +41,8 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	}
 
 	@Override
-	public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, IPlantable plantable) {
-		return SCContent.REINFORCED_DIRT.get().canSustainPlant(state, level, pos, facing, plantable);
+	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, BlockState plant) {
+		return SCContent.REINFORCED_DIRT.get().canSustainPlant(state, level, pos, facing, plant);
 	}
 
 	@Override
