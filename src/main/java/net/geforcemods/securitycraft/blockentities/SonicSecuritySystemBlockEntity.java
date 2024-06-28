@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -40,9 +39,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.neoforged.neoforge.client.model.data.ModelData;
 
-public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
+public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
@@ -167,17 +165,8 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-		DisguisableBlockEntity.onSetRemoved(this);
 		// Stop tracking SSSs when they are removed from the world
 		BlockEntityTracker.SONIC_SECURITY_SYSTEM.stopTracking(this);
-	}
-
-	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
-		if (module == ModuleType.DISGUISE)
-			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
-
-		super.onModuleInserted(stack, module, toggled);
 	}
 
 	@Override
@@ -186,8 +175,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 			level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(SonicSecuritySystemBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get(), Direction.DOWN);
 		}
-		else if (module == ModuleType.DISGUISE)
-			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 
 		super.onModuleRemoved(stack, module, toggled);
 	}
@@ -486,17 +473,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	private void sync() {
 		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-	}
-
-	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
-		DisguisableBlockEntity.onHandleUpdateTag(this);
-	}
-
-	@Override
-	public ModelData getModelData() {
-		return DisguisableBlockEntity.getModelData(this);
 	}
 
 	@Override
