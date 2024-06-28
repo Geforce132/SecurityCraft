@@ -189,14 +189,6 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
-		if (module == ModuleType.DISGUISE)
-			DisguisableBlockEntity.onDisguiseModuleInserted(this, stack, toggled);
-
-		super.onModuleInserted(stack, module, toggled);
-	}
-
-	@Override
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
 
@@ -204,8 +196,6 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
 		else if (module == ModuleType.SMART)
 			setDefaultViewingDirection(getBlockState().getValue(SecurityCameraBlock.FACING));
-		else if (module == ModuleType.DISGUISE)
-			DisguisableBlockEntity.onDisguiseModuleRemoved(this, stack, toggled);
 	}
 
 	@Override
