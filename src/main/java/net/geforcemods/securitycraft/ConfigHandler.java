@@ -177,6 +177,11 @@ public class ConfigHandler {
 	@Comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
 	public static String[] sentryAttackableEntitiesDenylist = {};
 
+	@Name("Reinforced Suffocation Damage")
+	@Comment("Set the amount of damage the player receives when they are suffocating in a reinforced block. The default is two and a half hearts. If the value is set to -1, vanilla suffocation damage will be used.")
+	@RangeInt(min = -1)
+	public static int reinforcedSuffocationDamage = 5;
+
 	@Name("Allow Camera Night Vision")
 	@Comment("Set this to false to disallow players to activate night vision without having the potion effect when looking through cameras.")
 	public static boolean allowCameraNightVision = true;

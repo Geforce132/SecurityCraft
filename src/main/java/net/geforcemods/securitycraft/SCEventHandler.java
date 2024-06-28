@@ -230,16 +230,18 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingAttackEvent event) {
-		EntityLivingBase entity = event.getEntityLiving();
+		if (ConfigHandler.reinforcedSuffocationDamage != -1) {
+			EntityLivingBase entity = event.getEntityLiving();
 
-		if (entity instanceof EntityPlayerMP) {
-			EntityPlayerMP player = (EntityPlayerMP) entity;
-			World level = player.world;
-			DamageSource damageSource = event.getSource();
+			if (entity instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) entity;
+				World level = player.world;
+				DamageSource damageSource = event.getSource();
 
-			if (!player.isCreative() && damageSource == DamageSource.IN_WALL && !player.isEntityInvulnerable(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyeHeight())) {
-				player.attackEntityFrom(CustomDamageSources.IN_REINFORCED_WALL, 10.0F);
-				event.setCanceled(true);
+				if (!player.isCreative() && damageSource == DamageSource.IN_WALL && !player.isEntityInvulnerable(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyeHeight())) {
+					player.attackEntityFrom(CustomDamageSources.IN_REINFORCED_WALL, ConfigHandler.reinforcedSuffocationDamage);
+					event.setCanceled(true);
+				}
 			}
 		}
 	}
