@@ -1,17 +1,11 @@
 package net.geforcemods.securitycraft;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
@@ -27,22 +21,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBl
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.hudmods.TOPDataProvider;
-import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.ConfigAttackTargetCheck;
-import net.geforcemods.securitycraft.misc.PageGroup;
-import net.geforcemods.securitycraft.misc.SCManualPage;
-import net.geforcemods.securitycraft.util.HasManualPage;
-import net.geforcemods.securitycraft.util.Reinforced;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -59,8 +41,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 
 @Mod(SecurityCraft.MODID)
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
@@ -123,62 +103,12 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
-		collectSCContentData();
 		IReinforcedCauldronInteraction.bootStrap();
 	}
 
 	@SubscribeEvent
 	public static void onRegisterTicketControllers(RegisterTicketControllersEvent event) {
 		event.register(CAMERA_TICKET_CONTROLLER);
-	}
-
-	public static void collectSCContentData() {
-		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
-
-		for (Field field : SCContent.class.getFields()) {
-			try {
-				if (field.isAnnotationPresent(Reinforced.class)) {
-					Block block = ((DeferredBlock<Block>) field.get(null)).get();
-					IReinforcedBlock rb = (IReinforcedBlock) block;
-
-					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
-					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
-				}
-
-				if (field.isAnnotationPresent(HasManualPage.class)) {
-					Object o = ((DeferredHolder<?, ?>) field.get(null)).get();
-					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
-					Item item = ((ItemLike) o).asItem();
-					PageGroup group = hmp.value();
-					boolean wasNotAdded = false;
-					Component title = Component.translatable("");
-					String key = "help.";
-
-					if (group != PageGroup.NONE) {
-						if (!groupStacks.containsKey(group)) {
-							groupStacks.put(group, new ArrayList<>());
-							title = Utils.localize(group.getTitle());
-							key += group.getSpecialInfoKey();
-							wasNotAdded = true;
-						}
-
-						groupStacks.get(group).add(new ItemStack(item));
-					}
-					else {
-						title = Utils.localize(item.getDescriptionId());
-						key += item.getDescriptionId().substring(5) + ".info";
-					}
-
-					if (group == PageGroup.NONE || wasNotAdded)
-						SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
-				}
-			}
-			catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-
-		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream())));
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {
