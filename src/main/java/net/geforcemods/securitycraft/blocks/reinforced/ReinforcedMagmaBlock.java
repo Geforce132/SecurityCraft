@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -39,7 +40,7 @@ public class ReinforcedMagmaBlock extends BaseReinforcedBlock {
 
 	@Override
 	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-		if (!entity.isSteppingCarefully() && entity instanceof LivingEntity && level.getBlockEntity(pos) instanceof OwnableBlockEntity ownable && !ownable.isOwnedBy(entity))
+		if (!entity.isSteppingCarefully() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && level.getBlockEntity(pos) instanceof OwnableBlockEntity ownable && !ownable.isOwnedBy(entity))
 			entity.hurt(level.damageSources().hotFloor(), 1.0F);
 
 		super.stepOn(level, pos, state, entity);
