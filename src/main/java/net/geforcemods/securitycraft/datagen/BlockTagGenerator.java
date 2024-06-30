@@ -441,7 +441,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GREEN_STAINED_GLASS.get(),
 				SCContent.REINFORCED_RED_STAINED_GLASS.get(),
 				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
-		tag(BlockTags.INFINIBURN_OVERWORLD).add(SCContent.REINFORCED_NETHERRACK.get());
+		tag(BlockTags.INFINIBURN_OVERWORLD).add(SCContent.REINFORCED_NETHERRACK.get(), SCContent.REINFORCED_MAGMA_BLOCK.get());
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				SCContent.CRYSTAL_QUARTZ_SLAB.get(),
 				SCContent.SMOOTH_CRYSTAL_QUARTZ.get(),
@@ -542,10 +542,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_MUD.get());
 		tag(BlockTags.SNIFFER_EGG_HATCH_BOOST).add(SCContent.REINFORCED_MOSS_BLOCK.get());
 		tag(BlockTags.SNOW).add(SCContent.REINFORCED_SNOW_BLOCK.get());
-		tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(SCContent.REINFORCED_MUD.get());
+		tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_MUD.get());
 		tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(SCContent.REINFORCED_ICE.get(), SCContent.REINFORCED_PACKED_ICE.get());
-		tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
-		tag(BlockTags.SOUL_SPEED_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.SOUL_SPEED_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		tag(BlockTags.STONE_BUTTONS).add(
 				SCContent.REINFORCED_STONE_BUTTON.get(),
@@ -557,7 +557,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.VIBRATION_RESONATORS).add(SCContent.REINFORCED_AMETHYST_BLOCK.get());
 		tag(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
 		tag(BlockTags.WALL_HANGING_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_HANGING_SIGNS);
-		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.WOODEN_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES);
 		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
 		//@formatter:on

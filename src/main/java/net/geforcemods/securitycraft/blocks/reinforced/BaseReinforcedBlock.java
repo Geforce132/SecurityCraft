@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.FungusBlock;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.MangrovePropaguleBlock;
 import net.minecraft.world.level.block.NetherSproutsBlock;
+import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraft.world.level.block.RootsBlock;
 import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.WitherRoseBlock;
@@ -63,7 +64,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			else if (plantable instanceof WaterlilyBlock)
 				condition = level.getFluidState(soilPos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(soilPos.above()).getType() == Fluids.EMPTY;
 			else if (plantable instanceof WitherRoseBlock)
-				condition = soilState.is(SCContent.REINFORCED_NETHERRACK.get()) || soilState.is(SCContent.REINFORCED_SOUL_SOIL.get()) || soilState.is(SCTags.Blocks.REINFORCED_DIRT);
+				condition = soilState.is(SCContent.REINFORCED_NETHERRACK.get()) || soilState.is(SCContent.REINFORCED_SOUL_SAND.get()) || soilState.is(SCContent.REINFORCED_SOUL_SOIL.get()) || soilState.is(SCTags.Blocks.REINFORCED_DIRT);
+			else if (plantable instanceof NetherWartBlock)
+				condition = soilState.is(SCContent.REINFORCED_SOUL_SAND.get());
 
 			if (condition)
 				return TriState.TRUE;
