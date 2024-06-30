@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
