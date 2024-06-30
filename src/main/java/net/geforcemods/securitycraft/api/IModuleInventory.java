@@ -181,10 +181,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return ItemStack.EMPTY;
 		else {
 			if (!simulate) {
-				if (this instanceof LinkableBlockEntity) {
-					LinkableBlockEntity be = (LinkableBlockEntity) this;
+				if (stack.getItem() instanceof ModuleItem) {
+					onModuleRemoved(stack, ((ModuleItem) stack.getItem()).getModuleType(), false);
 
-					be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
+					if (this instanceof LinkableBlockEntity) {
+						LinkableBlockEntity be = (LinkableBlockEntity) this;
+
+						be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
+					}
 				}
 
 				return getInventory().set(slot, ItemStack.EMPTY).copy();
