@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.FungusBlock;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.MangrovePropaguleBlock;
 import net.minecraft.world.level.block.NetherSproutsBlock;
+import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraft.world.level.block.RootsBlock;
 import net.minecraft.world.level.block.WaterlilyBlock;
 import net.minecraft.world.level.block.WitherRoseBlock;
@@ -34,6 +35,10 @@ import net.minecraftforge.common.PlantType;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
+
+	public BaseReinforcedBlock(Block vB) {
+		this(SCContent.reinforcedCopy(vB), () -> vB);
+	}
 
 	public BaseReinforcedBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
@@ -66,7 +71,9 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			else if (plantable instanceof WaterlilyBlock)
 				condition = level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
 			else if (plantable instanceof WitherRoseBlock)
-				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
+				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SAND.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || state.is(SCTags.Blocks.REINFORCED_DIRT);
+			else if (plantable instanceof NetherWartBlock)
+				condition = state.is(SCContent.REINFORCED_SOUL_SAND.get());
 
 			if (condition)
 				return true;
