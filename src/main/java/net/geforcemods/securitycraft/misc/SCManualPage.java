@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,7 @@ public record SCManualPage(Item item, PageGroup group, Component title, Componen
 				return ((EntityBlock) block).newBlockEntity(BlockPos.ZERO, block.defaultBlockState());
 		}
 		else if (item instanceof BoatItem boatItem)
-			return boatItem.getBoat(null, BlockHitResult.miss(Vec3.ZERO, Direction.NORTH, BlockPos.ZERO), item.getDefaultInstance(), null);
+			return boatItem.getBoat(ClientHandler.getClientLevel(), BlockHitResult.miss(Vec3.ZERO, Direction.NORTH, BlockPos.ZERO), item.getDefaultInstance(), null);
 
 		return null;
 	}
