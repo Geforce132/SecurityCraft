@@ -148,6 +148,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLavaCauldronBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLecternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMagmaBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
@@ -163,6 +164,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQ
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSoulSandBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
@@ -1161,6 +1163,10 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
+	public static final RegistryObject<ReinforcedSoulSandBlock> REINFORCED_SOUL_SAND = BLOCKS.register("reinforced_soul_sand", () -> new ReinforcedSoulSandBlock(Blocks.SOUL_SAND));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_SOUL_SOIL = BLOCKS.register("reinforced_soul_soil", () -> new BaseReinforcedBlock(prop(Material.DIRT, MaterialColor.COLOR_BROWN).sound(SoundType.SOUL_SOIL), Blocks.SOUL_SOIL));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
@@ -1486,6 +1492,10 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_RED_SANDSTONE_STAIRS = BLOCKS.register("reinforced_red_sandstone_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.RED_SANDSTONE_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedMagmaBlock> REINFORCED_MAGMA_BLOCK = BLOCKS.register("reinforced_magma_block", () -> new ReinforcedMagmaBlock(Blocks.MAGMA_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2660,6 +2670,10 @@ public class SCContent {
 
 	private static final BlockBehaviour.Properties prop(Material mat) {
 		return BlockBehaviour.Properties.of(mat).strength(-1.0F, Float.MAX_VALUE);
+	}
+
+	public static final BlockBehaviour.Properties reinforcedCopy(Block block) {
+		return BlockBehaviour.Properties.copy(block).strength(-1.0F, Float.MAX_VALUE);
 	}
 
 	private static final BlockBehaviour.Properties prop(Material mat, float hardness) {

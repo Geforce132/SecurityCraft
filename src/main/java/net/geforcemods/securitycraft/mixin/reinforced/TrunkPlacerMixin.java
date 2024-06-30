@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin.reinforceddirt;
+package net.geforcemods.securitycraft.mixin.reinforced;
 
 import java.util.Random;
 import java.util.function.BiConsumer;

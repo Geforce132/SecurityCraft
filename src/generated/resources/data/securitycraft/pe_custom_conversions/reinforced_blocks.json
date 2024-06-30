@@ -909,6 +909,12 @@
         ]
       },
       {
+        "output": "securitycraft:reinforced_soul_sand",
+        "ingredients": [
+          "minecraft:soul_sand"
+        ]
+      },
+      {
         "output": "securitycraft:reinforced_soul_soil",
         "ingredients": [
           "minecraft:soul_soil"
@@ -1398,6 +1404,12 @@
         "output": "securitycraft:reinforced_red_sandstone_stairs",
         "ingredients": [
           "minecraft:red_sandstone_stairs"
+        ]
+      },
+      {
+        "output": "securitycraft:reinforced_magma_block",
+        "ingredients": [
+          "minecraft:magma_block"
         ]
       },
       {
