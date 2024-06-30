@@ -1,11 +1,8 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
@@ -22,7 +19,6 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -43,12 +39,9 @@ import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
-import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
-import net.geforcemods.securitycraft.misc.PageGroup;
-import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -111,7 +104,6 @@ import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
-import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -142,13 +134,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SnowyDirtBlock;
@@ -163,7 +152,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
@@ -172,7 +160,6 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientHandler {
@@ -702,58 +689,6 @@ public class ClientHandler {
 			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
 		return tintReinforcedBlocks ? FastColor.ARGB32.multiply(tint, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
-	}
-
-	@SubscribeEvent
-	public static void generateManualPages(FMLLoadCompleteEvent event) {
-		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
-
-		SCManualItem.PAGES.clear();
-
-		for (Field field : SCContent.class.getFields()) {
-			try {
-				if (field.isAnnotationPresent(Reinforced.class)) {
-					Block block = ((DeferredBlock<Block>) field.get(null)).get();
-					IReinforcedBlock rb = (IReinforcedBlock) block;
-
-					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
-					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
-				}
-
-				if (field.isAnnotationPresent(HasManualPage.class)) {
-					Object o = ((DeferredHolder<?, ?>) field.get(null)).get();
-					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
-					Item item = ((ItemLike) o).asItem();
-					PageGroup group = hmp.value();
-					boolean wasNotAdded = false;
-					Component title = Component.translatable("");
-					String key = "help.";
-
-					if (group != PageGroup.NONE) {
-						if (!groupStacks.containsKey(group)) {
-							groupStacks.put(group, new ArrayList<>());
-							title = Utils.localize(group.getTitle());
-							key += group.getSpecialInfoKey();
-							wasNotAdded = true;
-						}
-
-						groupStacks.get(group).add(new ItemStack(item));
-					}
-					else {
-						title = Utils.localize(item.getDescriptionId());
-						key += item.getDescriptionId().substring(5) + ".info";
-					}
-
-					if (group == PageGroup.NONE || wasNotAdded)
-						SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
-				}
-			}
-			catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
-
-		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream())));
 	}
 
 	public static Player getClientPlayer() {
