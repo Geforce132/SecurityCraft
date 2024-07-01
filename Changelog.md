@@ -13,6 +13,7 @@
 - Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 - Fix: Module dupe
+- Fix: Secure Redstone Interface loot table error
 
 --------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
 
