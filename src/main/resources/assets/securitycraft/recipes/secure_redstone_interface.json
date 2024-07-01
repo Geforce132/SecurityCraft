@@ -15,7 +15,8 @@
       "item": "minecraft:bowl"
     },
     "S": {
-      "item": "securitycraft:reinforced_stone"
+      "item": "securitycraft:reinforced_stone",
+	  "data": 0
     },
     "C": {
       "item": "minecraft:comparator"

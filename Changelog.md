@@ -9,6 +9,7 @@
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
+- Fix: Secure Redstone Interface recipe
 
 --------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
 
