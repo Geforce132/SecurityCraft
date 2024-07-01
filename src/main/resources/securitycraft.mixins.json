@@ -21,9 +21,10 @@
 		"piston.WorldMixin",
 		"portal.TeleporterMixin",
 		"potion.BrewingStandContainerMixin",
-		"reinforceddirt.AbstractTrunkPlacerMixin",
-		"reinforceddirt.TreeFeatureMixin",
-		"reinforcedlectern.WritableAndWrittenBookItemMixin"
+		"reinforced.AbstractTrunkPlacerMixin",
+		"reinforced.BubbleColumnBlockMixin",
+		"reinforced.TreeFeatureMixin",
+		"reinforced.WritableAndWrittenBookItemMixin"
 	],
 	"minVersion": "0.8"
 }

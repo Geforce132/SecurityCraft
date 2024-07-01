@@ -17,6 +17,7 @@ import net.minecraft.block.FungusBlock;
 import net.minecraft.block.LilyPadBlock;
 import net.minecraft.block.NetherRootsBlock;
 import net.minecraft.block.NetherSproutsBlock;
+import net.minecraft.block.NetherWartBlock;
 import net.minecraft.block.WitherRoseBlock;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.fluid.FluidState;
@@ -31,6 +32,10 @@ import net.minecraftforge.common.PlantType;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
+
+	public BaseReinforcedBlock(Block vB) {
+		this(SCContent.reinforcedCopy(vB), () -> vB);
+	}
 
 	public BaseReinforcedBlock(AbstractBlock.Properties properties, Block vB) {
 		this(properties, () -> vB);
@@ -64,9 +69,11 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			else if (plantable instanceof LilyPadBlock)
 				condition = level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
 			else if (plantable instanceof WitherRoseBlock)
-				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
+				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SAND.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 			else if (plantable instanceof DeadBushBlock)
 				condition = state.is(SCTags.Blocks.REINFORCED_SAND) || state.is(SCContent.REINFORCED_TERRACOTTA.get()) || state.is(SCTags.Blocks.REINFORCED_TERRACOTTA) || state.is(SCContent.REINFORCED_DIRT.get()) || state.is(SCContent.REINFORCED_COARSE_DIRT.get()) || state.is(SCContent.REINFORCED_PODZOL.get());
+			else if (plantable instanceof NetherWartBlock)
+				condition = state.is(SCContent.REINFORCED_SOUL_SAND.get());
 
 			if (condition)
 				return true;

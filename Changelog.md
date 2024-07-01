@@ -4,6 +4,7 @@
 - New: Server config setting to set the amount of damage received when suffocating in a reinforced block
 - New: Item tag "securitycraft:keycards" for all keycards (this notably exclused the Limited Use Keycard, as it's merely a crafting component)
 - New: Item tag "securitycraft:keycard_holder_can_hold" for all items that can be put into a Keycard Holder (contains the securitycraft:keycards item tag and the Limited Use Keycard by default)
+- New: Reinforced Soul Sand and Reinforced Magma Block
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions 
