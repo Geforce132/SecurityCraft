@@ -8,6 +8,7 @@
 		"camera.GameRendererMixin",
 		"camera.MinecraftMixin",
 		"camera.WorldRendererMixin",
+		"dev.GlDebugTextUtilsMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugOverlayGuiMixin",
 		"taser.BipedModelMixin"
