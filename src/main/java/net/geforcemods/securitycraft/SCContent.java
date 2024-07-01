@@ -272,6 +272,9 @@ public class SCContent {
 	public static Block reinforcedLever;
 	@Reinforced
 	@Tinted
+	public static Block reinforcedMagmaBlock;
+	@Reinforced
+	@Tinted
 	public static Block reinforcedMetals;
 	@Reinforced
 	@Tinted
@@ -340,6 +343,9 @@ public class SCContent {
 	@Reinforced
 	@Tinted
 	public static Block reinforcedSnowBlock;
+	@Reinforced
+	@Tinted
+	public static Block reinforcedSoulSand;
 	@Reinforced
 	public static Block reinforcedStainedGlass;
 	@Reinforced
@@ -440,7 +446,7 @@ public class SCContent {
 	public static ScannerTrapDoorBlock scannerTrapdoor;
 	public static Block secretSignStanding;
 	public static Block secretSignWall;
-    public static Block secureRedstoneInterface;
+	public static Block secureRedstoneInterface;
 	public static Block securityCamera;
 	public static Block sentryDisguise;
 	public static Block sonicSecuritySystem;

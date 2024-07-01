@@ -91,6 +91,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedIronTrapDoorBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLadderBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLapisAndCoalBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMagmaBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMetalsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMyceliumBlock;
@@ -111,6 +112,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSandBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSandstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabsBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSoulSandBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedHardenedClayBlock;
@@ -335,6 +337,8 @@ public class SetupHandler {
 		SCContent.reinforcedDarkOakFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.DARK_OAK, Blocks.DARK_OAK_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_dark_oak_fence_gate").setTranslationKey("securitycraft:reinforced_dark_oak_fence_gate");
 		SCContent.reinforcedAcaciaFenceGate = new ReinforcedFenceGateBlock(BlockPlanks.EnumType.ACACIA, Blocks.ACACIA_FENCE_GATE).setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_acacia_fence_gate").setTranslationKey("securitycraft:reinforced_acacia_fence_gate");
 		SCContent.secureRedstoneInterface = new SecureRedstoneInterfaceBlock(Material.ROCK).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("secure_redstone_interface").setTranslationKey("securitycraft:secure_redstone_interface");
+		SCContent.reinforcedMagmaBlock = new ReinforcedMagmaBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_magma_block").setTranslationKey("securitycraft:reinforced_magma_block");
+		SCContent.reinforcedSoulSand = new ReinforcedSoulSandBlock().setBlockUnbreakable().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_soul_sand").setTranslationKey("securitycraft:reinforced_soul_sand");
 
 		//mines
 		SCContent.mine = (MineBlock) new MineBlock(Material.IRON).setHardness(!ConfigHandler.ableToBreakMines ? -1F : 1F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("mine").setTranslationKey("securitycraft:mine");

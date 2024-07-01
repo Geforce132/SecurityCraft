@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockDeadBush;
 import net.minecraft.block.BlockLilyPad;
+import net.minecraft.block.BlockNetherWart;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
@@ -63,6 +64,8 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 				condition = world.getBlockState(pos).getBlock() == SCContent.fakeWater;
 			else if (plantable instanceof BlockDeadBush)
 				condition = state.getBlock() == SCContent.reinforcedSand || state.getBlock() == SCContent.reinforcedHardenedClay || state.getBlock() == SCContent.reinforcedStainedHardenedClay || state.getBlock() == SCContent.reinforcedDirt;
+			if (plantable instanceof BlockNetherWart)
+				condition = state.getBlock() == SCContent.reinforcedSoulSand;
 
 			if (condition)
 				return true;
@@ -71,6 +74,8 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 		switch (plantType) {
 			case Desert:
 				return state.getBlock() == SCContent.reinforcedSand || state.getBlock() == SCContent.reinforcedHardenedClay || state.getBlock() == SCContent.reinforcedStainedHardenedClay;
+			case Nether:
+				return state.getBlock() == SCContent.reinforcedSoulSand;
 			case Plains:
 				return state.getBlock() == SCContent.reinforcedGrass || state.getBlock() == SCContent.reinforcedDirt;
 			case Beach:

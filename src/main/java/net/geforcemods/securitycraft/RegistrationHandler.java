@@ -363,6 +363,8 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedDarkOakFenceGate, PageGroup.FENCE_GATES);
 		registerBlock(event, SCContent.reinforcedAcaciaFenceGate, PageGroup.FENCE_GATES);
 		registerBlock(event, SCContent.secureRedstoneInterface);
+		registerBlock(event, SCContent.reinforcedMagmaBlock);
+		registerBlock(event, SCContent.reinforcedSoulSand);
 
 		//block mines
 		registerBlockMine(event, SCContent.stoneMine);
@@ -957,6 +959,8 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedDarkOakFenceGate, 0, "reinforced_dark_oak_fence_gate");
 		registerInventoryModel(SCContent.reinforcedAcaciaFenceGate, 0, "reinforced_acacia_fence_gate");
 		registerInventoryModel(SCContent.secureRedstoneInterface, 0, "secure_redstone_interface");
+		registerInventoryModel(SCContent.reinforcedMagmaBlock, 0, "reinforced_magma_block");
+		registerInventoryModel(SCContent.reinforcedSoulSand, 0, "reinforced_soul_sand");
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");
