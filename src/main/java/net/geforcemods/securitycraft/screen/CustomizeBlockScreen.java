@@ -52,7 +52,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 	private final ResourceLocation texture;
 	private final PictureButton[] descriptionButtons;
 	private IModuleInventory moduleInv;
-	private HoverChecker[] hoverCheckers = new HoverChecker[10];
+	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private final String title;
 	private EnumMap<ModuleType, Boolean> indicators = new EnumMap<>(ModuleType.class);
 
@@ -92,7 +92,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 
 			descriptionButtons[i] = new ModuleButton(i, guiLeft + 127 + column * 22, (guiTop + 16) + (Math.floorDiv(i, numberOfColumns) * 22), 20, 20, itemRender, moduleInv.acceptedModules()[i].getItem(), this::moduleButtonClicked);
 			buttonList.add(descriptionButtons[i]);
-			hoverCheckers[i] = new HoverChecker(descriptionButtons[i]);
+			hoverCheckers.add(new HoverChecker(descriptionButtons[i]));
 			descriptionButtons[i].enabled = moduleInv.hasModule(moduleInv.acceptedModules()[i]);
 		}
 
@@ -120,7 +120,7 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 					}
 
 					buttonList.add(optionButtons[i]);
-					hoverCheckers[i + moduleInv.getMaxNumberOfModules()] = new HoverChecker(optionButtons[i]);
+					hoverCheckers.add(new HoverChecker(optionButtons[i]));
 				}
 
 				for (GuiButton button : optionButtons) {
@@ -151,12 +151,16 @@ public class CustomizeBlockScreen extends GuiContainer implements IContainerList
 
 		renderHoveredToolTip(mouseX, mouseY);
 
-		for (int i = 0; i < hoverCheckers.length; i++)
-			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY))
+		for (int i = 0; i < hoverCheckers.size(); i++) {
+			HoverChecker hoverChecker = hoverCheckers.get(i);
+
+			if (hoverChecker != null && hoverChecker.checkHover(mouseX, mouseY)) {
 				if (i < moduleInv.getMaxNumberOfModules())
 					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(getModuleDescription(i), 150), mouseX, mouseY, mc.fontRenderer);
 				else
 					drawHoveringText(mc.fontRenderer.listFormattedStringToWidth(getOptionDescription(i), 150), mouseX, mouseY, mc.fontRenderer);
+			}
+		}
 	}
 
 	@Override
