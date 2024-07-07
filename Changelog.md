@@ -17,6 +17,8 @@
 - Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 - Fix: Reinforced stairs can be destroyed through explosions
+- Fix: Potential crash when hovering over specific items of SecurityCraft in the inventory
+- Fix: Note info tooltips on items are positioned out of place sometimes
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
 

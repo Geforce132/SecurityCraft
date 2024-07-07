@@ -132,13 +132,21 @@ public class SCClientEventHandler {
 		TooltipContext ctx = event.getContext();
 		List<Component> tooltip = event.getToolTip();
 		TooltipFlag flag = event.getFlags();
+		int nextIndex = 0;
 
 		for (int i = 0; i < COMPONENTS_WITH_GLOBAL_TOOLTIP.size(); i++) {
 			TooltipProvider tooltipProvider = stack.get(COMPONENTS_WITH_GLOBAL_TOOLTIP.get(i));
-			final int index = i + 1;
 
-			if (tooltipProvider != null)
-				tooltipProvider.addToTooltip(ctx, line -> tooltip.add(index, line), flag); //add after item name
+			if (tooltipProvider != null) {
+				final int index = nextIndex++ + 1; //add in order of global tooltip components list, after item name
+
+				tooltipProvider.addToTooltip(ctx, line -> {
+					if (index >= tooltip.size())
+						tooltip.add(line);
+					else
+						tooltip.add(index, line);
+				}, flag);
+			}
 		}
 	}
 
