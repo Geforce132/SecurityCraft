@@ -258,7 +258,7 @@ public class SCEventHandler {
 
 				if (state.is(SCContent.REINFORCED_LECTERN.get())) {
 					ReinforcedLecternBlockEntity be = (ReinforcedLecternBlockEntity) level.getBlockEntity(pos);
-					Player player = event.getEntity();
+					Player player = event.getPlayer();
 
 					if (be.isOwnedBy(player) && LecternBlock.tryPlaceBook(player, level, pos, state, stack)) {
 						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
@@ -469,7 +469,7 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingSetAttackTarget(LivingChangeTargetEvent event) {
-		if (event.getNewTarget() instanceof Sentry)
+		if (event.getNewAboutToBeSetTarget() instanceof Sentry)
 			event.setCanceled(true);
 	}
 

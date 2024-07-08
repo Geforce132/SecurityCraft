@@ -20,6 +20,11 @@
 - Fix: Potential crash when hovering over specific items of SecurityCraft in the inventory
 - Fix: Note info tooltips on items are positioned out of place sometimes
 
+--------------------------Changelog for v1.9.10-beta7 of SecurityCraft--------------------------
+
+- Fix: Compatibility with NeoForge 21.0.66-beta and newer
+- Misc.: The minimum required NeoForge version is now 21.0.76-beta
+
 --------------------------Changelog for v1.9.10-beta6 of SecurityCraft--------------------------
 
 - Fix: IMS bombs do not fly towards their target after ascending
