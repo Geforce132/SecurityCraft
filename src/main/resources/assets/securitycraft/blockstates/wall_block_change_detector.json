@@ -1,0 +1,42 @@
+{
+  "variants": {
+    "facing=east,powered=false": {
+      "model": "securitycraft:block_change_detector",
+      "y": 90,
+      "x": 90
+    },
+    "facing=east,powered=true": {
+      "model": "securitycraft:block_change_detector_active",
+      "y": 90,
+      "x": 90
+    },
+    "facing=north,powered=false": {
+      "model": "securitycraft:block_change_detector",
+      "x": 90
+    },
+    "facing=north,powered=true": {
+      "model": "securitycraft:block_change_detector_active",
+      "x": 90
+    },
+    "facing=south,powered=false": {
+      "model": "securitycraft:block_change_detector",
+      "x": 90,
+	  "y": 180
+    },
+    "facing=south,powered=true": {
+      "model": "securitycraft:block_change_detector_active",
+      "x": 90,
+	  "y": 180
+    },
+    "facing=west,powered=false": {
+      "model": "securitycraft:block_change_detector",
+      "y": 270,
+      "x": 90
+    },
+    "facing=west,powered=true": {
+      "model": "securitycraft:block_change_detector_active",
+      "y": 270,
+      "x": 90
+    }
+  }
+}

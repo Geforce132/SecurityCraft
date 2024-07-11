@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -73,6 +72,6 @@ public class BlockChangeDetectorMenu extends GenericMenu {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, SCContent.blockChangeDetector);
+		return BlockUtils.isWithinUsableDistance(te.getWorld(), te.getPos(), player, te.getBlockType());
 	}
 }

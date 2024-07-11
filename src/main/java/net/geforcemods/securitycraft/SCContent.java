@@ -21,7 +21,8 @@ public class SCContent {
 	 */
 	@Deprecated
 	public static Block alarmLit;
-	public static Block blockChangeDetector;
+	public static Block blockChangeDetectorFloorCeiling;
+	public static Block blockChangeDetectorWall;
 	@Tinted(customTint = 0x15b3a2)
 	public static Block blockPocketManager;
 	@Tinted(customTint = 0x15b3a2)
@@ -460,6 +461,7 @@ public class SCContent {
 	//Items
 	public static Item adminTool;
 	public static Item briefcase;
+	public static Item blockChangeDetectorItem;
 	public static Item cameraMonitor;
 	public static Item codebreaker;
 	public static Item crystalQuartzItem;

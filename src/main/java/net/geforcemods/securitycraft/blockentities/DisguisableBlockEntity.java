@@ -58,7 +58,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 			if (!world.isRemote)
 				SecurityCraft.network.sendToAllTracking(new RefreshDiguisedModel(pos, false, stack, toggled), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 0));
 			else {
-				IBlockState disguisedState = ((IDisguisable) te.blockType).getDisguisedBlockStateFromStack(null, null, stack);
+				IBlockState disguisedState = ((IDisguisable) te.getBlockType()).getDisguisedBlockStateFromStack(null, null, stack);
 
 				BlockEntityRenderDelegate.DISGUISED_BLOCK.removeDelegateOf(te);
 

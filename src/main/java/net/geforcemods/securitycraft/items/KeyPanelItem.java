@@ -16,7 +16,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class KeyPanelItem extends BasePanelItem {
+public class KeyPanelItem extends FloorCeilingWallBlockItem {
 	public KeyPanelItem() {
 		super(SCContent.keyPanelFloorCeilingBlock, SCContent.keyPanelWallBlock);
 	}

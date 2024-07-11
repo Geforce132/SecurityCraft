@@ -60,10 +60,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements INameSetter 
 
 	@Override
 	public ITextComponent getDefaultName() {
-		if (blockType == null)
-			blockType = world.getBlockState(pos).getBlock();
-
-		return Utils.localize(blockType);
+		return Utils.localize(getBlockType());
 	}
 
 	@Override

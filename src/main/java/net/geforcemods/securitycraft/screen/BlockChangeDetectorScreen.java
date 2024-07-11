@@ -107,7 +107,7 @@ public class BlockChangeDetectorScreen extends GuiContainer implements IContaine
 		}));
 		showAllCheckbox = addButton(new CallbackCheckbox(2, settingsX, guiTop + 65, 20, 20, "", false, isSelected -> changeEntryList.updateFilteredEntries(), 0x404040));
 		highlightInWorldCheckbox = addButton(new CallbackCheckbox(3, settingsX, guiTop + 90, 20, 20, "", be.isShowingHighlights(), isSelected -> be.showHighlights(isSelected), 0x404040));
-		colorChooser = new ColorChooser(settingsX, guiTop + 135, previousColor, SCContent.blockChangeDetector) {
+		colorChooser = new ColorChooser(settingsX, guiTop + 135, previousColor, SCContent.blockChangeDetectorFloorCeiling) {
 			@Override
 			public void onColorChange() {
 				be.setColor(getRGBColor());

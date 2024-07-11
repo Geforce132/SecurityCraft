@@ -1,7 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
@@ -10,27 +13,24 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockChangeDetectorBlock extends DisguisableBlock {
+public abstract class BlockChangeDetectorBlock extends DisguisableBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
-	public static final AxisAlignedBB SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 9.0D / 16.0D, 1.0D);
 
-	public BlockChangeDetectorBlock(Material material) {
+	protected BlockChangeDetectorBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
 	}
@@ -48,11 +48,6 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	@Override
 	public boolean isFullCube(IBlockState state) {
 		return false;
-	}
-
-	@Override
-	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return SHAPE;
 	}
 
 	@Override
@@ -89,9 +84,11 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
 		if (state.getValue(POWERED)) {
 			world.setBlockState(pos, state.withProperty(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, this);
+			BlockUtils.updateIndirectNeighbors(world, pos, this, getConnectedDirection(state).getOpposite());
 		}
 	}
+
+	public abstract EnumFacing getConnectedDirection(IBlockState state);
 
 	@Override
 	public boolean canProvidePower(IBlockState state) {
@@ -110,32 +107,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public int getStrongPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-		return state.getValue(POWERED) ? 15 : 0;
-	}
-
-	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-	}
-
-	@Override
-	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getHorizontalIndex() + (state.getValue(POWERED) ? 4 : 0);
-	}
-
-	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		boolean powered = meta >= 4;
-
-		if (powered)
-			meta -= 4;
-
-		return getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
-	}
-
-	@Override
-	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING, POWERED);
+		return state.getValue(POWERED) && getConnectedDirection(state) == side ? 15 : 0;
 	}
 
 	@Override
@@ -151,5 +123,15 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new BlockChangeDetectorBlockEntity();
+	}
+
+	@Override
+	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+		return Arrays.asList(new ItemStack(SCContent.blockChangeDetectorItem));
+	}
+
+	@Override
+	public ItemStack getDefaultStack() {
+		return new ItemStack(SCContent.blockChangeDetectorItem);
 	}
 }

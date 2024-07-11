@@ -16,10 +16,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BasePanelItem extends ItemBlock {
+public class FloorCeilingWallBlockItem extends ItemBlock {
 	private final Block floorCeilingBlock, wallBlock;
 
-	public BasePanelItem(Block floorCeilingBlock, Block wallBlock) {
+	public FloorCeilingWallBlockItem(Block floorCeilingBlock, Block wallBlock) {
 		super(floorCeilingBlock);
 		this.floorCeilingBlock = floorCeilingBlock;
 		this.wallBlock = wallBlock;
@@ -30,7 +30,7 @@ public class BasePanelItem extends ItemBlock {
 		ItemStack stack = player.getHeldItem(hand);
 		IBlockState state = world.getBlockState(pos);
 
-		//respect replaceable blocks when trying placing the key panel
+		//respect replaceable blocks when trying placing the block
 		if (state.getBlock().isReplaceable(world, pos)) {
 			pos = pos.offset(facing.getOpposite());
 			state = world.getBlockState(pos);

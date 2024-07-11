@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -74,10 +73,10 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			int signalLength = getSignalLength();
 
 			world.setBlockState(thisPos, thisState.cycleProperty(BlockChangeDetectorBlock.POWERED));
-			BlockUtils.updateIndirectNeighbors(world, thisPos, SCContent.blockChangeDetector);
+			BlockUtils.updateIndirectNeighbors(world, thisPos, getBlockType());
 
 			if (signalLength > 0)
-				world.scheduleUpdate(thisPos, SCContent.blockChangeDetector, signalLength);
+				world.scheduleUpdate(thisPos, getBlockType(), signalLength);
 		}
 
 		entries.add(new ChangeEntry(player.getName(), player.getGameProfile().getId(), System.currentTimeMillis(), action, changedPos, state));
@@ -130,7 +129,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public <T> void onOptionChanged(Option<T> option) {
 		if (option == signalLength) {
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockChangeDetectorBlock.POWERED, false));
-			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.blockChangeDetector);
+			BlockUtils.updateIndirectNeighbors(world, pos, getBlockType(), ((BlockChangeDetectorBlock) getBlockType()).getConnectedDirection(world.getBlockState(pos)).getOpposite());
 		}
 	}
 

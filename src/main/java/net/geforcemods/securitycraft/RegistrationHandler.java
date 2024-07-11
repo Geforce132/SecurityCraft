@@ -320,7 +320,8 @@ public class RegistrationHandler {
 		event.getRegistry().register(SCContent.keyPanelFloorCeilingBlock);
 		event.getRegistry().register(SCContent.keyPanelWallBlock);
 		registerBlock(event, SCContent.sonicSecuritySystem, (ItemBlock) SCContent.sonicSecuritySystemItem, PageGroup.SINGLE_ITEM);
-		registerBlock(event, SCContent.blockChangeDetector);
+		event.getRegistry().register(SCContent.blockChangeDetectorFloorCeiling);
+		event.getRegistry().register(SCContent.blockChangeDetectorWall);
 		event.getRegistry().register(SCContent.sentryDisguise);
 		registerBlock(event, SCContent.reinforcedEndRod, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedWhiteGlazedTerracotta, PageGroup.REINFORCED);
@@ -450,6 +451,7 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.keycardHolder);
 		registerItem(event, SCContent.lens);
 		registerItem(event, SCContent.keycardLock);
+		registerItem(event, SCContent.blockChangeDetectorItem);
 
 		SecurityCraft.proxy.registerVariants();
 		pageTypeBlocks.forEach((pageType, list) -> {
@@ -919,7 +921,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.projector, 0, "projector");
 		registerInventoryModel(SCContent.keypadDoor, 0, "keypad_door");
 		registerInventoryModel(SCContent.reinforcedCauldron, 0, "reinforced_cauldron");
-		registerInventoryModel(SCContent.blockChangeDetector, 0, "block_change_detector");
 		registerInventoryModel(SCContent.reinforcedEndRod, 0, "reinforced_end_rod");
 		registerInventoryModel(SCContent.reinforcedWhiteGlazedTerracotta, 0, "reinforced_white_glazed_terracotta");
 		registerInventoryModel(SCContent.reinforcedOrangeGlazedTerracotta, 0, "reinforced_orange_glazed_terracotta");
@@ -1008,6 +1009,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.keycardHolder, 0, "keycard_holder");
 		registerInventoryModel(SCContent.lens, 0, "lens");
 		registerInventoryModel(SCContent.keycardLock, 0, "keycard_lock");
+		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
 		//mines
 		registerInventoryModel(SCContent.mine, 0, "mine");

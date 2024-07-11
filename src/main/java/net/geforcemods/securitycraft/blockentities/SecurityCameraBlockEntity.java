@@ -172,8 +172,8 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 			IBlockState newState = world.getBlockState(pos).withProperty(SecurityCameraBlock.POWERED, false);
 
 			world.setBlockState(pos, newState);
-			world.notifyNeighborsOfStateChange(pos, blockType, false);
-			world.notifyNeighborsOfStateChange(pos.offset(newState.getValue(SecurityCameraBlock.FACING).getOpposite()), blockType, false);
+			world.notifyNeighborsOfStateChange(pos, getBlockType(), false);
+			world.notifyNeighborsOfStateChange(pos.offset(newState.getValue(SecurityCameraBlock.FACING).getOpposite()), getBlockType(), false);
 		}
 		else if (module == ModuleType.SMART)
 			setDefaultViewingDirection(world.getBlockState(pos).getValue(SecurityCameraBlock.FACING));
