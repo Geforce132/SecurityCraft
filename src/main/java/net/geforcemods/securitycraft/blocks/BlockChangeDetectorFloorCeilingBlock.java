@@ -24,7 +24,12 @@ public class BlockChangeDetectorFloorCeilingBlock extends BlockChangeDetectorBlo
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return state.getValue(FLOOR) ? FLOOR_SHAPE : CEILING_SHAPE;
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getBoundingBox(world, pos);
+		else
+			return state.getValue(FLOOR) ? FLOOR_SHAPE : CEILING_SHAPE;
 	}
 
 	@Override

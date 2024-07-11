@@ -32,17 +32,23 @@ public class BlockChangeDetectorWallBlock extends BlockChangeDetectorBlock {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		switch (state.getValue(FACING)) {
-			case NORTH:
-				return WALL_N;
-			case EAST:
-				return WALL_E;
-			case SOUTH:
-				return WALL_S;
-			case WEST:
-				return WALL_W;
-			default:
-				return NULL_AABB;
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getBoundingBox(world, pos);
+		else {
+			switch (state.getValue(FACING)) {
+				case NORTH:
+					return WALL_N;
+				case EAST:
+					return WALL_E;
+				case SOUTH:
+					return WALL_S;
+				case WEST:
+					return WALL_W;
+				default:
+					return NULL_AABB;
+			}
 		}
 	}
 
