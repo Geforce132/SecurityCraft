@@ -160,7 +160,7 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements IWaterL
 			level.getBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
-	protected static Direction getConnectedDirection(BlockState state) {
+	public static Direction getConnectedDirection(BlockState state) {
 		switch (state.getValue(FACE)) {
 			case CEILING:
 				return Direction.DOWN;
