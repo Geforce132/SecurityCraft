@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 
 public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 	protected AbstractReinforcerRecipe(CraftingBookCategory category) {
@@ -75,7 +75,7 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 			ItemStack stack = inv.getItem(i);
 
 			if (stack.getItem() instanceof UniversalBlockReinforcerItem) {
-				if (stack.hurt(1, ServerLifecycleHooks.getCurrentServer().overworld().getRandom(), null))
+				if (stack.hurt(1, CommonHooks.getCraftingPlayer().getRandom(), null))
 					stack.setCount(0);
 
 				newInv.set(i, stack.copy());
