@@ -5,6 +5,8 @@ import java.util.Map;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +15,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 
 public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 	protected AbstractReinforcerRecipe(CraftingBookCategory category) {
@@ -75,7 +77,12 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 			ItemStack stack = inv.getItem(i);
 
 			if (stack.getItem() instanceof UniversalBlockReinforcerItem) {
-				stack.hurtAndBreak(1, ServerLifecycleHooks.getCurrentServer().overworld(), null, item -> {});
+				Player player = CommonHooks.getCraftingPlayer();
+				Level level = player.level();
+
+				if (!level.isClientSide)
+					stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
+
 				newInv.set(i, stack.copy());
 			}
 		}
