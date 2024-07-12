@@ -20,6 +20,7 @@
 - Fix: Reinforced stairs can be destroyed through explosions
 - Fix: Potential crash when hovering over specific items of SecurityCraft in the inventory
 - Fix: Note info tooltips on items are positioned out of place sometimes
+- Fix: Client crash when trying to un-/reinforce blocks in a crafting table
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
 
