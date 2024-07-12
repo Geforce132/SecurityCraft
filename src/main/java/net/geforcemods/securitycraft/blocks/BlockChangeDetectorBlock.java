@@ -27,9 +27,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -39,11 +42,17 @@ import net.minecraftforge.network.NetworkHooks;
 public class BlockChangeDetectorBlock extends DisguisableBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final VoxelShape SHAPE = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D), Block.box(7.0D, 9.0D, 7.0D, 9.0D, 16.0D, 9.0D));
+	public static final EnumProperty<AttachFace> FACE = BlockStateProperties.ATTACH_FACE;
+	public static final VoxelShape FLOOR = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 9.0D, 16.0D), Block.box(7.0D, 9.0D, 7.0D, 9.0D, 16.0D, 9.0D));
+	public static final VoxelShape CEILING = Shapes.or(Block.box(0.0D, 7.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 0.0D, 7.0D, 9.0D, 7.0D, 9.0D));
+	public static final VoxelShape WALL_N = Shapes.or(Block.box(0.0D, 0.0D, 7.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 7.0D, 0.0D, 9.0D, 9.0D, 7.0D));
+	public static final VoxelShape WALL_E = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 9.0D, 16.0D, 16.0D), Block.box(9.0D, 7.0D, 7.0D, 16.0D, 9.0D, 9.0D));
+	public static final VoxelShape WALL_S = Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 9.0D), Block.box(7.0D, 7.0D, 9.0D, 9.0D, 9.0D, 16.0D));
+	public static final VoxelShape WALL_W = Shapes.or(Block.box(7.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(0.0D, 7.0D, 7.0D, 7.0D, 9.0D, 9.0D));
 
 	public BlockChangeDetectorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(FACE, AttachFace.FLOOR).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -52,13 +61,34 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
-		else
-			return SHAPE;
+		else {
+			return switch (state.getValue(FACE)) {
+				case FLOOR -> FLOOR;
+				case CEILING -> CEILING;
+				case WALL -> switch (state.getValue(FACING)) {
+					case NORTH -> WALL_N;
+					case EAST -> WALL_E;
+					case SOUTH -> WALL_S;
+					case WEST -> WALL_W;
+					default -> Shapes.empty();
+				};
+			};
+		}
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Direction direction = ctx.getClickedFace();
+		BlockState state;
+
+		if (direction.getAxis() == Direction.Axis.Y)
+			state = defaultBlockState().setValue(FACE, direction == Direction.UP ? AttachFace.FLOOR : AttachFace.CEILING).setValue(FACING, ctx.getHorizontalDirection().getOpposite());
+		else
+			state = defaultBlockState().setValue(FACE, AttachFace.WALL).setValue(FACING, direction);
+
+		return state.setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER);
 	}
 
 	@Override
@@ -81,7 +111,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
 		if (state.getValue(POWERED)) {
 			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));
-			BlockUtils.updateIndirectNeighbors(level, pos, this);
+			BlockUtils.updateIndirectNeighbors(level, pos, this, AbstractPanelBlock.getConnectedDirection(state).getOpposite());
 		}
 	}
 
@@ -102,12 +132,12 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 
 	@Override
 	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
-		return state.getValue(POWERED) ? 15 : 0;
+		return state.getValue(POWERED) && AbstractPanelBlock.getConnectedDirection(state) == side ? 15 : 0;
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, WATERLOGGED);
+		builder.add(FACING, POWERED, WATERLOGGED, FACE);
 	}
 
 	@Override

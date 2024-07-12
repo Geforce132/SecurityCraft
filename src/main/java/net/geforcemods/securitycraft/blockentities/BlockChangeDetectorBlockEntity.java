@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.blocks.AbstractPanelBlock;
 import net.geforcemods.securitycraft.blocks.BlockChangeDetectorBlock;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -72,7 +73,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			int signalLength = getSignalLength();
 
 			level.setBlockAndUpdate(worldPosition, getBlockState().cycle(BlockChangeDetectorBlock.POWERED));
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get());
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), AbstractPanelBlock.getConnectedDirection(getBlockState()).getOpposite());
 
 			if (signalLength > 0)
 				level.scheduleTick(worldPosition, SCContent.BLOCK_CHANGE_DETECTOR.get(), signalLength);
