@@ -6,6 +6,7 @@
 - New: Item tag "securitycraft:keycard_holder_can_hold" for all items that can be put into a Keycard Holder (contains the securitycraft:keycards item tag and the Limited Use Keycard by default)
 - New: Reinforced Soul Sand and Reinforced Magma Block
 - New: The Block Change Detector can now be placed on walls and the ceiling
+- New: Russian translation (Thanks cutiegin!)
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions 
@@ -20,7 +21,7 @@
 - Fix: Reinforced stairs can be destroyed through explosions
 - Fix: Potential crash when hovering over specific items of SecurityCraft in the inventory
 - Fix: Note info tooltips on items are positioned out of place sometimes
-- Fix: Client crash when trying to un-/reinforce blocks in a crafting table
+- Fix: Client crash when trying to un-/reinforce blocks in a crafting table on a server
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
 
