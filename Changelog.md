@@ -4,6 +4,7 @@
 - New: Server config setting to set the amount of damage received when suffocating in a reinforced block
 - New: Reinforced Soul Sand and Reinforced Magma Block
 - New: The Block Change Detector can now be placed on walls and the ceiling
+- New: Russian translation (Thanks cutiegin!)
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions
