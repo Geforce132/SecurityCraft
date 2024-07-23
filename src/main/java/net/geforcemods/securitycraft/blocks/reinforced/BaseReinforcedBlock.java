@@ -67,7 +67,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			else if (plantable instanceof FungusBlock)
 				condition = state.is(SCContent.REINFORCED_MYCELIUM.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 			else if (plantable instanceof LilyPadBlock)
-				condition = level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
+				condition = (level.getFluidState(pos).getType() == SCContent.FAKE_WATER.get() || state.is(SCContent.REINFORCED_ICE.get())) && level.getFluidState(pos.above()).getType() == Fluids.EMPTY;
 			else if (plantable instanceof WitherRoseBlock)
 				condition = state.is(SCContent.REINFORCED_NETHERRACK.get()) || state.is(SCContent.REINFORCED_SOUL_SAND.get()) || state.is(SCContent.REINFORCED_SOUL_SOIL.get()) || bushCondition;
 			else if (plantable instanceof DeadBushBlock)
