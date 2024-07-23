@@ -15,6 +15,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -25,7 +26,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 public class FakeLiquidBucketItem extends ItemBucket {
 	private Block containedBlock;
@@ -149,5 +152,10 @@ public class FakeLiquidBucketItem extends ItemBucket {
 		}
 
 		return false;
+	}
+
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+		return new FluidBucketWrapper(stack);
 	}
 }
