@@ -18,6 +18,7 @@
 - Fix: Secure Redstone Interface loot table error
 - Fix: The Protecto can attack armor stands
 - Fix: The Protecto attacks when it shouldn't
+- Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
 
 --------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
 
