@@ -19,6 +19,7 @@
 - Fix: The Protecto can attack armor stands
 - Fix: The Protecto attacks when it shouldn't
 - Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
+- Fix: Lily pads cannot be placed on Reinforced Ice
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
