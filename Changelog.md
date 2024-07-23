@@ -17,6 +17,8 @@
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 - Fix: The Protecto can attack armor stands
 - Fix: The Protecto attacks when it shouldn't
+- Fix: Fake Water can be placed in the nether
+- Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
