@@ -14,7 +14,7 @@ import net.minecraftforge.fml.network.NetworkEvent;
 
 public class SetDefaultCameraViewingDirection {
 	private int id;
-	private float initialXRotation, initialYRotation;
+	private float initialXRotation, initialYRotation, initialZoom;
 
 	public SetDefaultCameraViewingDirection() {}
 
@@ -22,18 +22,21 @@ public class SetDefaultCameraViewingDirection {
 		id = cam.getId();
 		initialXRotation = cam.xRot;
 		initialYRotation = cam.yRot;
+		initialZoom = cam.getZoomAmount();
 	}
 
 	public SetDefaultCameraViewingDirection(PacketBuffer buf) {
 		id = buf.readVarInt();
 		initialXRotation = buf.readFloat();
 		initialYRotation = buf.readFloat();
+		initialZoom = buf.readFloat();
 	}
 
 	public void encode(PacketBuffer buf) {
 		buf.writeVarInt(id);
 		buf.writeFloat(initialXRotation);
 		buf.writeFloat(initialYRotation);
+		buf.writeFloat(initialZoom);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
@@ -53,7 +56,7 @@ public class SetDefaultCameraViewingDirection {
 				}
 
 				if (be.isModuleEnabled(ModuleType.SMART)) {
-					be.setDefaultViewingDirection(initialXRotation, initialYRotation);
+					be.setDefaultViewingDirection(initialXRotation, initialYRotation, initialZoom);
 					player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.direction_set"), true);
 				}
 				else

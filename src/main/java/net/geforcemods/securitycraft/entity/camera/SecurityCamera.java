@@ -13,6 +13,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -24,8 +27,8 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
+	public static final DataParameter<Float> ZOOM_AMOUNT = EntityDataManager.<Float>defineId(SecurityCamera.class, DataSerializers.FLOAT);
 	private static final List<PlayerEntity> DISMOUNTED_PLAYERS = new ArrayList<>();
-	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
 	private int initialChunkLoadingDistance = 0;
 	private boolean hasSentChunks = false;
@@ -63,6 +66,7 @@ public class SecurityCamera extends Entity {
 
 		setPos(x, y, z);
 		setRot(be.getInitialYRotation(), be.getInitialXRotation());
+		setZoomAmount(be.getInitialZoom());
 	}
 
 	@Override
@@ -77,7 +81,11 @@ public class SecurityCamera extends Entity {
 	}
 
 	public float getZoomAmount() {
-		return zoomAmount;
+		return entityData.get(ZOOM_AMOUNT);
+	}
+
+	public void setZoomAmount(float zoomAmount) {
+		entityData.set(ZOOM_AMOUNT, zoomAmount);
 	}
 
 	public boolean isCameraDown() {
@@ -143,13 +151,19 @@ public class SecurityCamera extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {}
+	protected void defineSynchedData() {
+		entityData.define(ZOOM_AMOUNT, 1.0F);
+	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundNBT tag) {}
+	public void addAdditionalSaveData(CompoundNBT tag) {
+		tag.putFloat("zoom_amount", getZoomAmount());
+	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundNBT tag) {}
+	public void readAdditionalSaveData(CompoundNBT tag) {
+		entityData.set(ZOOM_AMOUNT, tag.getFloat("zoom_amount"));
+	}
 
 	@Override
 	public IPacket<?> getAddEntityPacket() {
