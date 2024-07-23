@@ -13,6 +13,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerLevel;
@@ -25,8 +27,8 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
+	public static final EntityDataAccessor<Float> ZOOM_AMOUNT = SynchedEntityData.<Float>defineId(SecurityCamera.class, EntityDataSerializers.FLOAT);
 	private static final List<Player> DISMOUNTED_PLAYERS = new ArrayList<>();
-	protected float zoomAmount = 1F;
 	protected boolean zooming = false;
 	private ChunkTrackingView cameraChunks = null;
 	private boolean hasSentChunks = false;
@@ -56,6 +58,7 @@ public class SecurityCamera extends Entity {
 
 		setPos(x, y, z);
 		setRot(be.getInitialYRotation(), be.getInitialXRotation());
+		setZoomAmount(be.getInitialZoom());
 	}
 
 	@Override
@@ -72,7 +75,11 @@ public class SecurityCamera extends Entity {
 	}
 
 	public float getZoomAmount() {
-		return zoomAmount;
+		return entityData.get(ZOOM_AMOUNT);
+	}
+
+	public void setZoomAmount(float zoomAmount) {
+		entityData.set(ZOOM_AMOUNT, zoomAmount);
 	}
 
 	public boolean isCameraDown() {
@@ -142,13 +149,19 @@ public class SecurityCamera extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {}
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(ZOOM_AMOUNT, 1.0F);
+	}
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag) {}
+	public void addAdditionalSaveData(CompoundTag tag) {
+		tag.putFloat("zoom_amount", getZoomAmount());
+	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {}
+	public void readAdditionalSaveData(CompoundTag tag) {
+		entityData.set(ZOOM_AMOUNT, tag.getFloat("zoom_amount"));
+	}
 
 	@Override
 	public Packet<ClientGamePacketListener> getAddEntityPacket() {

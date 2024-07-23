@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record SetDefaultCameraViewingDirection(int id, float initialXRotation, float initialYRotation) implements CustomPacketPayload {
+public record SetDefaultCameraViewingDirection(int id, float initialXRotation, float initialYRotation, float initialZoom) implements CustomPacketPayload {
 
 	public static final Type<SetDefaultCameraViewingDirection> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "set_default_camera_viewing_direction"));
 	//@formatter:off
@@ -21,6 +21,7 @@ public record SetDefaultCameraViewingDirection(int id, float initialXRotation, f
 			ByteBufCodecs.VAR_INT, SetDefaultCameraViewingDirection::id,
 			ByteBufCodecs.FLOAT, SetDefaultCameraViewingDirection::initialXRotation,
 			ByteBufCodecs.FLOAT, SetDefaultCameraViewingDirection::initialYRotation,
+			ByteBufCodecs.FLOAT, SetDefaultCameraViewingDirection::initialZoom,
 			SetDefaultCameraViewingDirection::new);
 	//@formatter:on
 	@Override
@@ -38,7 +39,7 @@ public record SetDefaultCameraViewingDirection(int id, float initialXRotation, f
 			}
 
 			if (be.isModuleEnabled(ModuleType.SMART)) {
-				be.setDefaultViewingDirection(initialXRotation, initialYRotation);
+				be.setDefaultViewingDirection(initialXRotation, initialYRotation, initialZoom);
 				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.direction_set"), true);
 			}
 			else
