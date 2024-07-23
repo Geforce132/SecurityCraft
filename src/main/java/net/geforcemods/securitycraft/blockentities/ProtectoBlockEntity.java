@@ -50,7 +50,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				boolean shouldDeactivate = false;
 
 				for (LivingEntity entity : entities) {
-					if (!(entity instanceof Sentry) && !respectInvisibility.isConsideredInvisible(entity)) {
+					if (!(entity instanceof Sentry || entity instanceof ArmorStand) && !respectInvisibility.isConsideredInvisible(entity)) {
 						if (entity instanceof Player player && (player.isCreative() || !player.canBeSeenByAnyone() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity)) || entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity))
 							continue;
 
