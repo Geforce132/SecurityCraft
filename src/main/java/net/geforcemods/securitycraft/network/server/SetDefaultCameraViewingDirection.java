@@ -14,7 +14,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 public class SetDefaultCameraViewingDirection implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(SecurityCraft.MODID, "set_default_camera_viewing_direction");
 	private int id;
-	private float initialXRotation, initialYRotation;
+	private float initialXRotation, initialYRotation, initialZoom;
 
 	public SetDefaultCameraViewingDirection() {}
 
@@ -22,12 +22,14 @@ public class SetDefaultCameraViewingDirection implements CustomPacketPayload {
 		id = cam.getId();
 		initialXRotation = cam.getXRot();
 		initialYRotation = cam.getYRot();
+		initialZoom = cam.getZoomAmount();
 	}
 
 	public SetDefaultCameraViewingDirection(FriendlyByteBuf buf) {
 		id = buf.readVarInt();
 		initialXRotation = buf.readFloat();
 		initialYRotation = buf.readFloat();
+		initialZoom = buf.readFloat();
 	}
 
 	@Override
@@ -35,6 +37,7 @@ public class SetDefaultCameraViewingDirection implements CustomPacketPayload {
 		buf.writeVarInt(id);
 		buf.writeFloat(initialXRotation);
 		buf.writeFloat(initialYRotation);
+		buf.writeFloat(initialZoom);
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public class SetDefaultCameraViewingDirection implements CustomPacketPayload {
 			}
 
 			if (be.isModuleEnabled(ModuleType.SMART)) {
-				be.setDefaultViewingDirection(initialXRotation, initialYRotation);
+				be.setDefaultViewingDirection(initialXRotation, initialYRotation, initialZoom);
 				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.direction_set"), true);
 			}
 			else

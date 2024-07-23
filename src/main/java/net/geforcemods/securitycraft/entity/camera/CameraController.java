@@ -54,8 +54,8 @@ public class CameraController {
 				//@formatter:off
 				new ViewMovementKeyHandler(mc.options.keyUp, CameraController::moveViewUp),
 				new ViewMovementKeyHandler(mc.options.keyDown, CameraController::moveViewDown),
-				new ViewMovementKeyHandler(mc.options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - getMovementSpeed(cam) * cam.zoomAmount)),
-				new ViewMovementKeyHandler(mc.options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + getMovementSpeed(cam) * cam.zoomAmount))
+				new ViewMovementKeyHandler(mc.options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - getMovementSpeed(cam) * cam.getZoomAmount())),
+				new ViewMovementKeyHandler(mc.options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + getMovementSpeed(cam) * cam.getZoomAmount()))
 				//@formatter:on
 			};
 		}
@@ -134,7 +134,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.getXRot() - getMovementSpeed(cam) * cam.zoomAmount;
+		float next = cam.getXRot() - getMovementSpeed(cam) * cam.getZoomAmount();
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -145,7 +145,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.getXRot() + getMovementSpeed(cam) * cam.zoomAmount;
+		float next = cam.getXRot() + getMovementSpeed(cam) * cam.getZoomAmount();
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -183,7 +183,7 @@ public class CameraController {
 			Minecraft.getInstance().level.playLocalSound(cam.blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
-		cam.zoomAmount = Math.max(cam.zoomAmount - 0.1F, 0.1F);
+		cam.setZoomAmount(Math.max(cam.getZoomAmount() - 0.1F, 0.1F));
 	}
 
 	public static void zoomOut(SecurityCamera cam) {
@@ -191,7 +191,7 @@ public class CameraController {
 			Minecraft.getInstance().level.playLocalSound(cam.blockPosition(), SCSounds.CAMERAZOOMIN.event, SoundSource.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
-		cam.zoomAmount = Math.min(cam.zoomAmount + 0.1F, 1.4F);
+		cam.setZoomAmount(Math.min(cam.getZoomAmount() + 0.1F, 1.4F));
 	}
 
 	public static void toggleRedstone(SecurityCamera cam) {
