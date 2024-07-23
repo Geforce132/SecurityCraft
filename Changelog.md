@@ -17,6 +17,7 @@
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 - Fix: Client crash when trying to un-/reinforce blocks in a crafting table on a server
 - Fix: The Protecto can attack armor stands
+- Fix: The Protecto attacks when it shouldn't
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
