@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ITickable;
@@ -44,7 +45,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				boolean shouldDeactivate = false;
 
 				for (EntityLivingBase entity : entities) {
-					if (!(entity instanceof Sentry) && !respectInvisibility.isConsideredInvisible(entity)) {
+					if (!(entity instanceof Sentry || entity instanceof EntityArmorStand) && !respectInvisibility.isConsideredInvisible(entity)) {
 						if (entity instanceof EntityPlayer) {
 							EntityPlayer player = (EntityPlayer) entity;
 
