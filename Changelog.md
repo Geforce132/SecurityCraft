@@ -8,6 +8,7 @@
 - New: The Block Change Detector can now be placed on walls and the ceiling
 - New: Russian translation (Thanks cutiegin!)
 - New: The Smart Module in a Security Camera now also saves the zoom amount
+- New: Support for NeoForge's configuration screen
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions 
@@ -28,6 +29,7 @@
 - Fix: Fake Water can be placed in the nether
 - Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
 - Fix: Lily pads cannot be placed on Reinforced Ice
+- Misc.: The minimum required NeoForge version is now 21.0.110-beta
 
 --------------------------Changelog for v1.9.10-beta7 of SecurityCraft--------------------------
 

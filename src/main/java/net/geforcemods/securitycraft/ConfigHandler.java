@@ -37,11 +37,11 @@ public class ConfigHandler {
 		Client(ModConfigSpec.Builder builder) {
 			//@formatter:off
 			sayThanksMessage = builder
-					.comment("Display a 'tip' message at spawn?")
+					.comment("Send a welcome message containing tips when joining the world")
 					.define("sayThanksMessage", true);
 
 			reinforcedBlockTint = builder
-					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This setting can be overridden by servers.")
+					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? Servers can force this setting on clients if the server config setting \"force_reinforced_block_tint\" is set to true.")
 					.define("reinforced_block_tint", true);
 
 			reinforcedBlockTintColor = builder
@@ -98,7 +98,7 @@ public class ConfigHandler {
 					.define("ableToBreakMines", true);
 
 			smallerMineExplosion = builder
-					.comment("Should mines' explosions be smaller than usual.")
+					.comment("Should mines' explosions be smaller than usual?")
 					.define("smallerMineExplosion", false);
 
 			mineExplodesWhenInCreative = builder
@@ -110,23 +110,23 @@ public class ConfigHandler {
 					.define("mineExplosionsBreakBlocks", true);
 
 			laserBlockRange = builder
-					.comment("From how many blocks away can a laser block connect to another laser block?")
+					.comment("At most from how many blocks away can a laser block connect to another laser block?")
 					.defineInRange("laserBlockRange", 5, 0, Integer.MAX_VALUE);
 
 			inventoryScannerRange = builder
-					.comment("From how many blocks away can an inventory scanner connect to another inventory scanner?")
+					.comment("At most from how many blocks away can an inventory scanner connect to another inventory scanner?")
 					.defineInRange("inventoryScannerRange", 2, 0, Integer.MAX_VALUE);
 
 			maxAlarmRange = builder
-					.comment("What is the maximum value that can be set for an alarm's range option? Do note, that this may be limited by chunk loading distance. Higher values may also not be finetuneable.")
+					.comment("What is the maximum value that can be set for an alarm's range option? Do note, that this may be limited by chunk loading distance. Higher values may also lead to the setting being less finetuneable.")
 					.defineInRange("maxAlarmRange", 100, 1, Integer.MAX_VALUE);
 
 			allowBlockClaim = builder
-					.comment("Allow claiming unowned blocks?")
+					.comment("Allows to claim blocks that do not have an owner by rightclicking them with the Universal Owner Changer.")
 					.define("allowBlockClaim", false);
 
 			reinforcedBlockTint = builder
-					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? This does nothing unless force_reinforced_block_tint is set to true.")
+					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? Servers can force this setting on clients if the server config \"force_reinforced_block_tint\" is set to true.")
 					.define("reinforced_block_tint", true);
 
 			forceReinforcedBlockTint = builder
@@ -198,11 +198,11 @@ public class ConfigHandler {
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_allowlist", List.of(), String.class::isInstance);
+					.defineList("sentry_attackable_entities_allowlist", List.of(), () -> "minecraft:pig", String.class::isInstance);
 
 			sentryAttackableEntitiesDenylist = builder
 					.comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_denylist", List.of(), String.class::isInstance);
+					.defineList("sentry_attackable_entities_denylist", List.of(), () -> "minecraft:pig", String.class::isInstance);
 			//@formatter:on
 		}
 	}
