@@ -17,6 +17,7 @@
 - Fix: Module dupe
 - Fix: Secure Redstone Interface loot table error
 - Fix: The Protecto can attack armor stands
+- Fix: The Protecto attacks when it shouldn't
 
 --------------------------Changelog for v1.9.10.1 of SecurityCraft--------------------------
 

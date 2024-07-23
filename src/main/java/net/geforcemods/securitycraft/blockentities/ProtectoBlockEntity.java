@@ -34,10 +34,10 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 
 	@Override
 	public void tick() {
-		if (isDisabled() || cooldown++ < ticksBetweenAttacks)
-			return;
-
 		if (level.isRaining() && level.canSeeSkyFromBelowWater(worldPosition)) {
+			if (isDisabled() || cooldown++ < ticksBetweenAttacks)
+				return;
+
 			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(worldPosition).inflate(ATTACK_RANGE));
 
 			if (!getBlockState().getValue(ProtectoBlock.ACTIVATED))
@@ -62,11 +62,11 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 					}
 				}
 
-				if (shouldDeactivate)
+				if (shouldDeactivate) {
 					level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
+					cooldown = 0;
+				}
 			}
-
-			cooldown = 0;
 		}
 		else if (getBlockState().getValue(ProtectoBlock.ACTIVATED))
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(ProtectoBlock.ACTIVATED, false));
