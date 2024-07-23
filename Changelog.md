@@ -23,6 +23,7 @@
 - Fix: Note info tooltips on items are positioned out of place sometimes
 - Fix: Client crash when trying to un-/reinforce blocks in a crafting table on a server
 - Fix: The Protecto can attack armor stands
+- Fix: The Protecto attacks when it shouldn't
 
 --------------------------Changelog for v1.9.10-beta7 of SecurityCraft--------------------------
 
