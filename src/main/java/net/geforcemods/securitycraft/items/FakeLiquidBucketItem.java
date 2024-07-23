@@ -18,20 +18,18 @@ public class FakeLiquidBucketItem extends BucketItem {
 		super(supplier, builder);
 
 		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
-			private final DefaultDispenseItemBehavior instance = new DefaultDispenseItemBehavior();
-
 			@Override
 			public ItemStack execute(BlockSource source, ItemStack stack) {
 				DispensibleContainerItem bucket = (DispensibleContainerItem) stack.getItem();
-				BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
+				BlockPos dispenseAt = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
 				Level level = source.level();
 
-				if (bucket.emptyContents(null, level, pos, null)) {
-					bucket.checkExtraContent(null, level, stack, pos);
+				if (bucket.emptyContents(null, level, dispenseAt, null, stack)) {
+					bucket.checkExtraContent(null, level, stack, dispenseAt);
 					return new ItemStack(Items.BUCKET);
 				}
 				else
-					return instance.dispense(source, stack);
+					return dispense(source, stack);
 			}
 		});
 	}

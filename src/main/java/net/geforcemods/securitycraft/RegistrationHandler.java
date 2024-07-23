@@ -96,6 +96,7 @@ import net.neoforged.neoforge.common.crafting.NBTIngredient;
 import net.neoforged.neoforge.common.util.MutableHashedLinkedMap;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
@@ -228,8 +229,10 @@ public class RegistrationHandler {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), ReinforcedDispenserBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
-		event.registerEntity(Capabilities.ItemHandler.ENTITY, SCContent.SECURITY_SEA_BOAT_ENTITY.get(), (boat, void_) -> SecuritySeaBoat.getCapability(boat, null));
+		event.registerEntity(Capabilities.ItemHandler.ENTITY, SCContent.SECURITY_SEA_BOAT_ENTITY.get(), (boat, ctx) -> SecuritySeaBoat.getCapability(boat, null));
 		event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION, SCContent.SECURITY_SEA_BOAT_ENTITY.get(), SecuritySeaBoat::getCapability);
+		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_WATER_BUCKET);
+		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_LAVA_BUCKET);
 	}
 
 	@SubscribeEvent
