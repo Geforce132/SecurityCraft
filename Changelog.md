@@ -27,6 +27,7 @@
 - Fix: The Protecto attacks when it shouldn't
 - Fix: Fake Water can be placed in the nether
 - Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
+- Fix: Lily pads cannot be placed on Reinforced Ice
 
 --------------------------Changelog for v1.9.10-beta7 of SecurityCraft--------------------------
 
