@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -231,11 +232,11 @@ public class ConfigHandler {
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_allowlist", new ArrayList<>(), String.class::isInstance);
+					.defineListAllowEmpty(Arrays.asList("sentry_attackable_entities_allowlist"), ArrayList::new, String.class::isInstance);
 
 			sentryAttackableEntitiesDenylist = builder
 					.comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_denylist", new ArrayList<>(), String.class::isInstance);
+					.defineListAllowEmpty(Arrays.asList("sentry_attackable_entities_denylist"), ArrayList::new, String.class::isInstance);
 			//@formatter:on
 		}
 	}
