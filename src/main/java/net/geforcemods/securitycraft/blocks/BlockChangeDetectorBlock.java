@@ -134,4 +134,9 @@ public abstract class BlockChangeDetectorBlock extends DisguisableBlock {
 	public ItemStack getDefaultStack() {
 		return new ItemStack(SCContent.blockChangeDetectorItem);
 	}
+
+	@Override
+	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
+		return getDisguisedStack(world, pos).getItem() == SCContent.blockChangeDetectorItem;
+	}
 }
