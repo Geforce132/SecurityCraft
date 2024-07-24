@@ -39,8 +39,8 @@ public class CameraController {
 	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = {
 			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindForward, CameraController::moveViewUp),
 			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindBack, CameraController::moveViewDown),
-			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindLeft, cam -> moveViewHorizontally(cam, cam.rotationYaw - getMovementSpeed(cam) * cam.zoomAmount)),
-			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindRight, cam -> moveViewHorizontally(cam, cam.rotationYaw + getMovementSpeed(cam) * cam.zoomAmount))
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindLeft, cam -> moveViewHorizontally(cam, cam.rotationYaw - getMovementSpeed(cam) * cam.getZoomAmount())),
+			new ViewMovementKeyHandler(Minecraft.getMinecraft().gameSettings.keyBindRight, cam -> moveViewHorizontally(cam, cam.rotationYaw + getMovementSpeed(cam) * cam.getZoomAmount()))
 	};
 	//@formatter:on
 	private static int screenshotSoundCooldown = 0;
@@ -110,7 +110,7 @@ public class CameraController {
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
-		float next = cam.rotationPitch - getMovementSpeed(cam) * cam.zoomAmount;
+		float next = cam.rotationPitch - getMovementSpeed(cam) * cam.getZoomAmount();
 
 		if (cam.isCameraDown()) {
 			if (next > 40F)
@@ -121,7 +121,7 @@ public class CameraController {
 	}
 
 	public static void moveViewDown(SecurityCamera cam) {
-		float next = cam.rotationPitch + getMovementSpeed(cam) * cam.zoomAmount;
+		float next = cam.rotationPitch + getMovementSpeed(cam) * cam.getZoomAmount();
 
 		if (cam.isCameraDown()) {
 			if (next < 90F)
@@ -173,7 +173,7 @@ public class CameraController {
 			Minecraft.getMinecraft().world.playSound(new BlockPos(cam.posX, cam.posY, cam.posZ), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
-		cam.zoomAmount = Math.max(cam.zoomAmount - 0.1F, 0.1F);
+		cam.setZoomAmount(Math.max(cam.getZoomAmount() - 0.1F, 0.1F));
 	}
 
 	public static void zoomOut(SecurityCamera cam) {
@@ -181,7 +181,7 @@ public class CameraController {
 			Minecraft.getMinecraft().world.playSound(new BlockPos(cam.posX, cam.posY, cam.posZ), SCSounds.CAMERAZOOMIN.event, SoundCategory.BLOCKS, 1.0F, 1.0F, true);
 
 		cam.zooming = true;
-		cam.zoomAmount = Math.min(cam.zoomAmount + 0.1F, 1.4F);
+		cam.setZoomAmount(Math.min(cam.getZoomAmount() + 0.1F, 1.4F));
 	}
 
 	public static void toggleRedstone(SecurityCamera cam) {

@@ -10,6 +10,9 @@ import net.minecraft.entity.EntityTrackerEntry;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -20,7 +23,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public class SecurityCamera extends Entity implements IEMPAffected {
-	protected float zoomAmount = 1F;
+	public static final DataParameter<Float> ZOOM_AMOUNT = EntityDataManager.<Float>createKey(SecurityCamera.class, DataSerializers.FLOAT);
 	protected boolean zooming = false;
 	private Ticket chunkTicket;
 	private SecurityCameraBlockEntity be;
@@ -57,6 +60,7 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 
 		setPosition(x, y, z);
 		setRotation(be.getInitialYRotation(), be.getInitialXRotation());
+		setZoomAmount(be.getInitialZoom());
 	}
 
 	@Override
@@ -71,7 +75,11 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 	}
 
 	public float getZoomAmount() {
-		return zoomAmount;
+		return dataManager.get(ZOOM_AMOUNT);
+	}
+
+	public void setZoomAmount(float zoomAmount) {
+		dataManager.set(ZOOM_AMOUNT, zoomAmount);
 	}
 
 	public boolean isCameraDown() {
@@ -162,13 +170,19 @@ public class SecurityCamera extends Entity implements IEMPAffected {
 	public void setShutDown(boolean shutDown) {}
 
 	@Override
-	protected void entityInit() {}
+	protected void entityInit() {
+		dataManager.register(ZOOM_AMOUNT, 1.0F);
+	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound tag) {}
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		tag.setFloat("zoom_amount", getZoomAmount());
+	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound tag) {}
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		dataManager.set(ZOOM_AMOUNT, tag.getFloat("zoom_amount"));
+	}
 
 	public SecurityCameraBlockEntity getBlockEntity() {
 		if (be == null) {

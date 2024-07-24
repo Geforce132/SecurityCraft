@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class SetDefaultCameraViewingDirection implements IMessage {
 	private int id;
-	private float initialXRotation, initialYRotation;
+	private float initialXRotation, initialYRotation, initialZoom;
 
 	public SetDefaultCameraViewingDirection() {}
 
@@ -23,6 +23,7 @@ public class SetDefaultCameraViewingDirection implements IMessage {
 		id = cam.getEntityId();
 		initialXRotation = cam.rotationPitch;
 		initialYRotation = cam.rotationYaw;
+		initialZoom = cam.getZoomAmount();
 	}
 
 	@Override
@@ -30,6 +31,7 @@ public class SetDefaultCameraViewingDirection implements IMessage {
 		id = buf.readInt();
 		initialXRotation = buf.readFloat();
 		initialYRotation = buf.readFloat();
+		initialZoom = buf.readFloat();
 	}
 
 	@Override
@@ -37,6 +39,7 @@ public class SetDefaultCameraViewingDirection implements IMessage {
 		buf.writeInt(id);
 		buf.writeFloat(initialXRotation);
 		buf.writeFloat(initialYRotation);
+		buf.writeFloat(initialZoom);
 	}
 
 	public static class Handler implements IMessageHandler<SetDefaultCameraViewingDirection, IMessage> {
@@ -58,7 +61,7 @@ public class SetDefaultCameraViewingDirection implements IMessage {
 						}
 
 						if (be.isModuleEnabled(ModuleType.SMART)) {
-							be.setDefaultViewingDirection(message.initialXRotation, message.initialYRotation);
+							be.setDefaultViewingDirection(message.initialXRotation, message.initialYRotation, message.initialZoom);
 							player.sendStatusMessage(Utils.localize("messages.securitycraft:security_camera.direction_set"), true);
 						}
 						else
