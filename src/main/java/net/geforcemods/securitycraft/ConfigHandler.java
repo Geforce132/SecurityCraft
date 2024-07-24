@@ -230,11 +230,11 @@ public class ConfigHandler {
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_allowlist", List.of(), String.class::isInstance);
+					.defineListAllowEmpty("sentry_attackable_entities_allowlist", List.of(), String.class::isInstance);
 
 			sentryAttackableEntitiesDenylist = builder
 					.comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
-					.defineList("sentry_attackable_entities_denylist", List.of(), String.class::isInstance);
+					.defineListAllowEmpty("sentry_attackable_entities_denylist", List.of(), String.class::isInstance);
 			//@formatter:on
 		}
 	}
