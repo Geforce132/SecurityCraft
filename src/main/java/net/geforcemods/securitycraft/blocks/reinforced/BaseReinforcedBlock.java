@@ -61,7 +61,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 			boolean condition = false;
 
 			if (plantable instanceof BlockLilyPad)
-				condition = world.getBlockState(pos).getBlock() == SCContent.fakeWater;
+				condition = state.getBlock() == SCContent.fakeWater || state.getBlock() == SCContent.reinforcedIce;
 			else if (plantable instanceof BlockDeadBush)
 				condition = state.getBlock() == SCContent.reinforcedSand || state.getBlock() == SCContent.reinforcedHardenedClay || state.getBlock() == SCContent.reinforcedStainedHardenedClay || state.getBlock() == SCContent.reinforcedDirt;
 			if (plantable instanceof BlockNetherWart)
