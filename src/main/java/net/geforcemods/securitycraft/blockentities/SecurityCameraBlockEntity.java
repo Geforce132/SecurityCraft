@@ -121,7 +121,9 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		lens.setInventorySlotContents(0, new ItemStack(tag.getCompoundTag("lens")));
 		initialXRotation = tag.getFloat("initial_x_rotation");
 		initialYRotation = tag.getFloat("initial_y_rotation");
-		initialZoom = tag.getFloat("initial_zoom");
+
+		if (tag.hasKey("initial_zoom"))
+			initialZoom = tag.getFloat("initial_zoom");
 	}
 
 	@Override
