@@ -36,9 +36,9 @@ public class HudModHandler {
 	protected static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	protected static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
 	protected static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent ALLOWLIST_MODULE = Component.translatable(ModuleType.ALLOWLIST.getTranslationKey()).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent DISGUISE_MODULE = Component.translatable(ModuleType.DISGUISE.getTranslationKey()).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent SPEED_MODULE = Component.translatable(ModuleType.SPEED.getTranslationKey()).withStyle(ChatFormatting.GRAY);
 
 	protected HudModHandler() {}
 
@@ -69,7 +69,14 @@ public class HudModHandler {
 			lineAdder.accept(EQUIPPED);
 
 			for (ModuleType module : inv.getInsertedModules()) {
-				lineAdder.accept(Component.literal("- ").append(Component.translatable(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
+				MutableComponent prefix;
+
+				if (inv.isModuleEnabled(module))
+					prefix = Component.literal("✔ ").withStyle(ChatFormatting.GREEN);
+				else
+					prefix = Component.literal("✕ ").withStyle(ChatFormatting.RED);
+
+				lineAdder.accept(prefix.append(Component.translatable(module.getTranslationKey()).withStyle(ChatFormatting.GRAY)));
 			}
 		}
 
