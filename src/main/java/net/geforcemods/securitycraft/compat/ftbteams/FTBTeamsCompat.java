@@ -26,7 +26,7 @@ public class FTBTeamsCompat {
 		try {
 			Team team = FTBTeamsAPI.getPlayerTeam(UUID.fromString(owner.getUUID()));
 
-			if (team != null)
+			if (team != null && team.getMembers().size() > 1)
 				return new TeamRepresentation(team.getDisplayName(), team.getColor());
 		}
 		catch (IllegalArgumentException e) {}
