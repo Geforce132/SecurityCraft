@@ -63,7 +63,7 @@ public class FTBTeamsCompat {
 				}
 			}
 
-			if (team != null)
+			if (team != null && team.getMembers().size() > 1)
 				return new TeamRepresentation(team.getProperty(TeamProperties.DISPLAY_NAME), team.getProperty(TeamProperties.COLOR).toStyle().getColor().getValue());
 		}
 		catch (IllegalArgumentException e) {}
