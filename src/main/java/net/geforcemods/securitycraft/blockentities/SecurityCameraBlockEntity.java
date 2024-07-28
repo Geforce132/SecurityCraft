@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
@@ -38,14 +37,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
-public class SecurityCameraBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
+public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
 	private boolean down = false, initialized = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
-	private float initialXRotation, initialYRotation;
+	private float initialXRotation, initialYRotation, initialZoom = 1.0F;
 	private DoubleOption rotationSpeedOption = new DoubleOption("rotationSpeed", 0.018D, 0.01D, 0.025D, 0.001D);
 	private DoubleOption movementSpeedOption = new DoubleOption("movementSpeed", 2.0D, 0.0D, 20.0D, 0.1D);
 	private BooleanOption shouldRotateOption = new BooleanOption("shouldRotate", true);
@@ -68,12 +67,12 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 			down = facing == Direction.DOWN;
 
 			if (!isModuleEnabled(ModuleType.SMART))
-				setDefaultViewingDirection(facing);
+				setDefaultViewingDirection(facing, initialZoom);
 		}
 
 		oCameraRotation = getCameraRotation();
 
-		if (!shutDown) {
+		if (!shutDown && !disabled.get()) {
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 				return;
@@ -98,6 +97,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		tag.put("lens", lens.createTag(lookupProvider));
 		tag.putFloat("initial_x_rotation", initialXRotation);
 		tag.putFloat("initial_y_rotation", initialYRotation);
+		tag.putFloat("initial_zoom", initialZoom);
 	}
 
 	@Override
@@ -107,6 +107,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
 		initialXRotation = tag.getFloat("initial_x_rotation");
 		initialYRotation = tag.getFloat("initial_y_rotation");
+
+		if (tag.contains("initial_zoom"))
+			initialZoom = tag.getFloat("initial_zoom");
 	}
 
 	public static IItemHandler getCapability(SecurityCameraBlockEntity be, Direction side) {
@@ -139,7 +142,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.REDSTONE, ModuleType.ALLOWLIST, ModuleType.SMART
+				ModuleType.REDSTONE, ModuleType.ALLOWLIST, ModuleType.SMART, ModuleType.DISGUISE
 		};
 	}
 
@@ -157,7 +160,7 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		if (module == ModuleType.REDSTONE)
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecurityCameraBlock.POWERED, false));
 		else if (module == ModuleType.SMART)
-			setDefaultViewingDirection(getBlockState().getValue(SecurityCameraBlock.FACING));
+			setDefaultViewingDirection(getBlockState().getValue(SecurityCameraBlock.FACING), initialZoom);
 	}
 
 	@Override
@@ -227,19 +230,20 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 		return movementSpeedOption.get();
 	}
 
-	public void setDefaultViewingDirection(Direction facing) {
+	public void setDefaultViewingDirection(Direction facing, float zoom) {
 		setDefaultViewingDirection(down ? 75F : 30F, switch (facing) {
 			case NORTH -> 180F;
 			case WEST -> 90F;
 			case SOUTH -> 0F;
 			case EAST -> 270F;
 			case DOWN, UP -> 0F;
-		});
+		}, zoom);
 	}
 
-	public void setDefaultViewingDirection(float initialXRotation, float initialYRotation) {
+	public void setDefaultViewingDirection(float initialXRotation, float initialYRotation, float initialZoom) {
 		this.initialXRotation = initialXRotation;
 		this.initialYRotation = initialYRotation;
+		this.initialZoom = initialZoom;
 		setChanged();
 	}
 
@@ -249,5 +253,9 @@ public class SecurityCameraBlockEntity extends CustomizableBlockEntity implement
 
 	public float getInitialYRotation() {
 		return initialYRotation;
+	}
+
+	public float getInitialZoom() {
+		return initialZoom;
 	}
 }

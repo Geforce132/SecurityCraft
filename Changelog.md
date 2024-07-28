@@ -1,3 +1,41 @@
+--------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
+
+- New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Reinforced Dispenser, Reinforced Dropper, Reinforced Hopper, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System
+- New: Server config setting to set the amount of damage received when suffocating in a reinforced block
+- New: Item tag "securitycraft:keycards" for all keycards (this notably exclused the Limited Use Keycard, as it's merely a crafting component)
+- New: Item tag "securitycraft:keycard_holder_can_hold" for all items that can be put into a Keycard Holder (contains the securitycraft:keycards item tag and the Limited Use Keycard by default)
+- New: Reinforced Soul Sand and Reinforced Magma Block
+- New: The Block Change Detector can now be placed on walls and the ceiling
+- New: Russian translation (Thanks cutiegin!)
+- New: The Smart Module in a Security Camera now also saves the zoom amount
+- New: Support for NeoForge's configuration screen
+- New: HUD mods like Jade and The One Probe now show whether an installed module is disabled
+- Change: Security Camera head display
+- Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
+- Change: IMS bombs can no longer be diverted from their path using explosions
+- Change: The "(team)" suffix for owners is now only shown when the team has more than one player in it
+- API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
+- Fix: The Alarm ceases to emit any sound when selecting a different sound
+- Fix: When closing the screen of a Briefcase, Disguise Module or Keycard Holder, items carried by the mouse are deleted
+- Fix: Players are kicked from the world when a Disguise Module is removed from certain blocks
+- Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
+- Fix: Disguising reinforced observers can have visual issues
+- Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
+- Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
+- Fix: Reinforced stairs can be destroyed through explosions
+- Fix: Potential crash when hovering over specific items of SecurityCraft in the inventory
+- Fix: Note info tooltips on items are positioned out of place sometimes
+- Fix: Client crash when trying to un-/reinforce blocks in a crafting table on a server
+- Fix: The Protecto can attack armor stands
+- Fix: The Protecto attacks when it shouldn't
+- Fix: Fake Water can be placed in the nether
+- Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
+- Fix: Lily pads cannot be placed on Reinforced Ice
+- Fix: The Block Change Detector keeps outputting a redstone signal when all its entries are cleared
+- Fix: The Denylist Module does not work
+- Fix: Option slider text shows the value in the incorrect position
+- Misc.: The minimum required NeoForge version is now 21.0.110-beta
+
 --------------------------Changelog for v1.9.10-beta7 of SecurityCraft--------------------------
 
 - Fix: Compatibility with NeoForge 21.0.66-beta and newer

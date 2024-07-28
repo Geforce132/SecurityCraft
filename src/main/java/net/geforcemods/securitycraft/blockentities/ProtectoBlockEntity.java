@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -37,10 +38,10 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (isDisabled() || cooldown++ < ticksBetweenAttacks)
-			return;
-
 		if (level.isRaining() && level.canSeeSkyFromBelowWater(pos)) {
+			if (isDisabled() || cooldown++ < ticksBetweenAttacks)
+				return;
+
 			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos).inflate(ATTACK_RANGE));
 
 			if (!state.getValue(ProtectoBlock.ACTIVATED))
@@ -50,7 +51,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 				boolean shouldDeactivate = false;
 
 				for (LivingEntity entity : entities) {
-					if (!(entity instanceof Sentry) && !respectInvisibility.isConsideredInvisible(entity)) {
+					if (!(entity instanceof Sentry || entity instanceof ArmorStand) && !respectInvisibility.isConsideredInvisible(entity)) {
 						if (entity instanceof Player player && (player.isCreative() || !player.canBeSeenByAnyone() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity)) || entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity))
 							continue;
 
@@ -61,11 +62,11 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 					}
 				}
 
-				if (shouldDeactivate)
+				if (shouldDeactivate) {
 					level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, false));
+					cooldown = 0;
+				}
 			}
-
-			cooldown = 0;
 		}
 		else if (state.getValue(ProtectoBlock.ACTIVATED))
 			level.setBlockAndUpdate(pos, state.setValue(ProtectoBlock.ACTIVATED, false));

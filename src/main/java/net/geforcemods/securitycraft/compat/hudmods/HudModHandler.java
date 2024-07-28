@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -36,17 +36,17 @@ public class HudModHandler {
 	protected static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	protected static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
 	protected static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent ALLOWLIST_MODULE = Component.translatable(ModuleType.ALLOWLIST.getTranslationKey()).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent DISGUISE_MODULE = Component.translatable(ModuleType.DISGUISE.getTranslationKey()).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent SPEED_MODULE = Component.translatable(ModuleType.SPEED.getTranslationKey()).withStyle(ChatFormatting.GRAY);
 
 	protected HudModHandler() {}
 
 	public void addDisguisedOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
 		boolean disguised = false;
 
-		if (block instanceof DisguisableBlock) {
-			Optional<BlockState> disguisedBlockState = DisguisableBlock.getDisguisedBlockState(level, pos);
+		if (block instanceof IDisguisable) {
+			Optional<BlockState> disguisedBlockState = IDisguisable.getDisguisedBlockState(level, pos);
 
 			if (disguisedBlockState.isPresent()) {
 				disguised = true;
@@ -69,7 +69,14 @@ public class HudModHandler {
 			lineAdder.accept(EQUIPPED);
 
 			for (ModuleType module : inv.getInsertedModules()) {
-				lineAdder.accept(Component.literal("- ").append(Component.translatable(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
+				MutableComponent prefix;
+
+				if (inv.isModuleEnabled(module))
+					prefix = Component.literal("✔ ").withStyle(ChatFormatting.GREEN);
+				else
+					prefix = Component.literal("✕ ").withStyle(ChatFormatting.RED);
+
+				lineAdder.accept(prefix.append(Component.translatable(module.getTranslationKey()).withStyle(ChatFormatting.GRAY)));
 			}
 		}
 

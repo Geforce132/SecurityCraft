@@ -2,7 +2,13 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.Calendar;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
@@ -29,6 +35,14 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 
 		if (calendar.get(2) + 1 == 12 && calendar.get(5) >= 24 && calendar.get(5) <= 26)
 			isChristmas = true;
+	}
+
+	@Override
+	public void render(ChestBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, poseStack, buffer, packedLight, packedOverlay);
+
+		if (be instanceof IModuleInventory moduleInv && !moduleInv.isModuleEnabled(ModuleType.DISGUISE))
+			super.render(be, partialTicks, poseStack, buffer, packedLight, packedOverlay);
 	}
 
 	@Override

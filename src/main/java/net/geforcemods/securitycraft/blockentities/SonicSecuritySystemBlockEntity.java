@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -40,7 +39,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
-public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
+public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
 	private static final int PING_DELAY = 100;
 	/**
@@ -165,7 +164,6 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-
 		// Stop tracking SSSs when they are removed from the world
 		BlockEntityTracker.SONIC_SECURITY_SYSTEM.stopTracking(this);
 	}
@@ -497,7 +495,7 @@ public class SonicSecuritySystemBlockEntity extends CustomizableBlockEntity impl
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.REDSTONE
+				ModuleType.ALLOWLIST, ModuleType.REDSTONE, ModuleType.DISGUISE
 		};
 	}
 

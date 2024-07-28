@@ -85,6 +85,7 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 
 	@Override
 	public void removed(Player player) {
+		super.removed(player);
 		briefcaseInventory.stopOpen(player);
 	}
 }

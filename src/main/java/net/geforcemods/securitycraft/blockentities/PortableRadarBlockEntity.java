@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
@@ -34,7 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class PortableRadarBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 25.0D, 1.0D, 50.0D, 1.0D);
+	private IntOption searchRadiusOption = new IntOption("searchRadius", 25, 1, 50, 1);
 	private IntOption searchDelayOption = new IntOption("searchDelay", 4, 4, 10, 1);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -53,7 +52,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			ticksUntilNextSearch = getSearchDelay();
 
 			AABB area = new AABB(pos).inflate(getSearchRadius());
-			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && e.canBeSeenByAnyone() && !respectInvisibility.isConsideredInvisible(e));
+			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && ((!isModuleEnabled(ModuleType.DENYLIST) && !isAllowed(e)) || isDenied(e)) && e.canBeSeenByAnyone() && !respectInvisibility.isConsideredInvisible(e));
 			List<Owner> closebyOwners = closebyPlayers.stream().map(Owner::new).toList();
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
@@ -121,7 +120,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.REDSTONE, ModuleType.ALLOWLIST
+				ModuleType.REDSTONE, ModuleType.ALLOWLIST, ModuleType.DENYLIST
 		};
 	}
 
