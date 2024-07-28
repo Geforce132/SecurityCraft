@@ -55,8 +55,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
@@ -82,10 +80,8 @@ public class SecurityCraft {
 	public static final boolean IS_EMBEDDIUM_INSTALLED = ModList.get().isLoaded("embeddium");
 
 	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
-		container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(RegistrationHandler::registerBrewingRecipes);
-		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		container.registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);
