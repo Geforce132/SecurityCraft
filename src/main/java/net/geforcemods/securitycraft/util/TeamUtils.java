@@ -56,7 +56,7 @@ public class TeamUtils {
 	public static TeamRepresentation getTeamRepresentation(Owner owner) {
 		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
-		if (team != null) {
+		if (team != null && team.getPlayers().size() > 1) {
 			Integer color = team.getColor().getColor();
 
 			return new TeamRepresentation(team.getDisplayName().getString(), color == null ? ChatFormatting.GRAY.getColor() : color);
