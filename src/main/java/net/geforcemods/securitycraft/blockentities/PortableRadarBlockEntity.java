@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
@@ -34,7 +33,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class PortableRadarBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	private DoubleOption searchRadiusOption = new DoubleOption("searchRadius", 25.0D, 1.0D, 50.0D, 1.0D);
+	private IntOption searchRadiusOption = new IntOption("searchRadius", 25, 1, 50, 1);
 	private IntOption searchDelayOption = new IntOption("searchDelay", 4, 4, 10, 1);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private DisabledOption disabled = new DisabledOption(false);
