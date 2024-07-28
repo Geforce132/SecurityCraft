@@ -33,6 +33,7 @@
 - Fix: Lily pads cannot be placed on Reinforced Ice
 - Fix: The Block Change Detector keeps outputting a redstone signal when all its entries are cleared
 - Fix: The Denylist Module does not work
+- Fix: Option slider text shows the value in the incorrect position
 - Misc.: The minimum required NeoForge version is now 21.0.110-beta
 
 --------------------------Changelog for v1.9.10-beta7 of SecurityCraft--------------------------
