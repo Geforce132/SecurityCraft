@@ -70,14 +70,14 @@ dependencies {
 	implementation 'net.neoforged:neoforge:21.0.143'
 
 	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
-	implementation "curse.maven:ftb-library-forge-404465:5482367" //ftb teams dependency
+	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
 	implementation "curse.maven:ftb-teams-forge-404468:5448371"
-	implementation "curse.maven:jei-238222:5556170"
+	implementation "curse.maven:jei-238222:5567933"
 	implementation "curse.maven:the-one-probe-245211:5502323"
-	implementation "curse.maven:jade-324717:5529595"
+	implementation "curse.maven:jade-324717:5572926"
 	implementation "curse.maven:betterf3-401648:5439910"
 	implementation "curse.maven:cloth-config-348521:5553805" //betterf3 dependency
-	implementation "curse.maven:wthit-forge-455982:5481222"
+	implementation "curse.maven:wthit-forge-455982:5568827"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 	implementation "curse.maven:embeddium-908741:5556146"
