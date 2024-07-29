@@ -21,6 +21,7 @@
 - Fix: The Protecto attacks when it shouldn't
 - Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
 - Fix: Lily pads cannot be placed on Reinforced Ice
+- Fix: The Block Change Detector keeps outputting a redstone signal when all its entries are cleared
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
