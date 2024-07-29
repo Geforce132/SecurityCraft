@@ -23,6 +23,7 @@
 - Fix: Buckets containing Fake Water/Lava are incompatible with tanks of other mods
 - Fix: Lily pads cannot be placed on Reinforced Ice
 - Fix: The Block Change Detector keeps outputting a redstone signal when all its entries are cleared
+- Fix: Option slider text shows the value in the incorrect position
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 

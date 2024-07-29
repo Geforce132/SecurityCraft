@@ -99,7 +99,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 								doubleOption.setValue(slider.getValue());
 								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
 								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
-							});
+							}) {
+								@Override
+								protected void updateMessage() {
+									setMessage(getOptionButtonTitle(option));
+								}
+							};
 						}
 						else if (option instanceof IntOption intOption) {
 							final int sliderIndex = i;
@@ -108,7 +113,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 								intOption.setValue(slider.getValueInt());
 								hoverCheckers.set(sliderIndex, new TextHoverChecker(optionButtons[sliderIndex], getOptionDescription(sliderIndex)));
 								SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
-							});
+							}) {
+								@Override
+								protected void updateMessage() {
+									setMessage(getOptionButtonTitle(option));
+								}
+							};
 						}
 
 						optionButtons[i].setFGColor(14737632);
