@@ -69,7 +69,14 @@ public class HudModHandler {
 			lineAdder.accept(EQUIPPED);
 
 			for (ModuleType module : inv.getInsertedModules()) {
-				lineAdder.accept(Component.literal("- ").append(Component.translatable(module.getTranslationKey())).withStyle(ChatFormatting.GRAY));
+				MutableComponent prefix;
+
+				if (inv.isModuleEnabled(module))
+					prefix = Component.literal("✔ ").withStyle(ChatFormatting.GREEN);
+				else
+					prefix = Component.literal("✕ ").withStyle(ChatFormatting.RED);
+
+				lineAdder.accept(prefix.append(Component.translatable(module.getTranslationKey()).withStyle(ChatFormatting.GRAY)));
 			}
 		}
 
