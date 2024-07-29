@@ -63,10 +63,19 @@ public class HudModHandler {
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
 		if (configGetter.test(SHOW_MODULES) && be instanceof IModuleInventory && !((IModuleInventory) be).getInsertedModules().isEmpty() && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
+			IModuleInventory inv = (IModuleInventory) be;
+
 			lineAdder.accept(EQUIPPED);
 
-			for (ModuleType module : ((IModuleInventory) be).getInsertedModules()) {
-				lineAdder.accept(new StringTextComponent("- ").append(new TranslationTextComponent(module.getTranslationKey())).withStyle(TextFormatting.GRAY));
+			for (ModuleType module : inv.getInsertedModules()) {
+				IFormattableTextComponent prefix;
+
+				if (inv.isModuleEnabled(module))
+					prefix = new StringTextComponent("✔ ").withStyle(TextFormatting.GREEN);
+				else
+					prefix = new StringTextComponent("✕ ").withStyle(TextFormatting.RED);
+
+				lineAdder.accept(prefix.append(new TranslationTextComponent(module.getTranslationKey()).withStyle(TextFormatting.GRAY)));
 			}
 		}
 
