@@ -100,7 +100,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
 								else
 									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(menu.entityId, option, doubleOption.get()));
-							});
+							}) {
+								@Override
+								protected void updateMessage() {
+									setMessage(getOptionButtonTitle(option));
+								}
+							};
 						}
 						else if (option instanceof IntOption intOption) {
 							final int sliderIndex = i;
@@ -113,7 +118,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
 								else
 									SecurityCraft.CHANNEL.sendToServer(new UpdateSliderValue(menu.entityId, option, intOption.get()));
-							});
+							}) {
+								@Override
+								protected void updateMessage() {
+									setMessage(getOptionButtonTitle(option));
+								}
+							};
 						}
 
 						optionButtons[i].setFGColor(14737632);
