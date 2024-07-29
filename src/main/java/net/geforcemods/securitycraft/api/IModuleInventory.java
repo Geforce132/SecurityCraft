@@ -511,7 +511,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 		if (!isModuleEnabled(ModuleType.DENYLIST))
 			return false;
 
-		ListModuleData listModuleData = getModule(ModuleType.ALLOWLIST).get(SCContent.LIST_MODULE_DATA);
+		ListModuleData listModuleData = getModule(ModuleType.DENYLIST).get(SCContent.LIST_MODULE_DATA);
 
 		if (listModuleData != null) {
 			if (listModuleData.affectEveryone()) {
