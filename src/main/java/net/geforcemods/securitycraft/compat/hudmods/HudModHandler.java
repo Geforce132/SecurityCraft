@@ -36,9 +36,9 @@ public class HudModHandler {
 	protected static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	protected static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
 	protected static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent ALLOWLIST_MODULE = Component.translatable(ModuleType.ALLOWLIST.getTranslationKey()).withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent DISGUISE_MODULE = Component.translatable(ModuleType.DISGUISE.getTranslationKey()).withStyle(ChatFormatting.GRAY);
-	protected static final MutableComponent SPEED_MODULE = Component.translatable(ModuleType.SPEED.getTranslationKey()).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent ALLOWLIST_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.ALLOWLIST.getTranslationKey())).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent DISGUISE_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.DISGUISE.getTranslationKey())).withStyle(ChatFormatting.GRAY);
+	protected static final MutableComponent SPEED_MODULE = Component.literal("- ").append(Component.translatable(ModuleType.SPEED.getTranslationKey())).withStyle(ChatFormatting.GRAY);
 
 	protected HudModHandler() {}
 
