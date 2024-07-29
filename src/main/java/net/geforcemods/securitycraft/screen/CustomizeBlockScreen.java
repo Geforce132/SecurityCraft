@@ -99,7 +99,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
 								else
 									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(menu.entityId, option, doubleOption.get()));
-							});
+							}) {
+								@Override
+								protected void updateMessage() {
+									setMessage(getOptionButtonTitle(option));
+								}
+							};
 						}
 						else if (option instanceof IntOption intOption) {
 							final int sliderIndex = i;
@@ -112,7 +117,12 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
 								else
 									PacketDistributor.SERVER.noArg().send(new UpdateSliderValue(menu.entityId, option, intOption.get()));
-							});
+							}) {
+								@Override
+								protected void updateMessage() {
+									setMessage(getOptionButtonTitle(option));
+								}
+							};
 						}
 
 						optionButtons[i].setFGColor(14737632);
