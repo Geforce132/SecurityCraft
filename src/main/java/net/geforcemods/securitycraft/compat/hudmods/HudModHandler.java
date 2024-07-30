@@ -18,6 +18,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 
@@ -48,10 +53,19 @@ public class HudModHandler {
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
 		if (configGetter.test(SHOW_MODULES) && be instanceof IModuleInventory && !((IModuleInventory) be).getInsertedModules().isEmpty() && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
+			IModuleInventory inv = (IModuleInventory) be;
+
 			lineAdder.accept(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
-			for (ModuleType module : ((IModuleInventory) be).getInsertedModules()) {
-				lineAdder.accept("- " + Utils.localize(module.getTranslationKey()).getFormattedText());
+			for (ModuleType module : inv.getInsertedModules()) {
+				ITextComponent prefix;
+
+				if (inv.isModuleEnabled(module))
+					prefix = new TextComponentString("✔ ").setStyle(new Style().setColor(TextFormatting.GREEN));
+				else
+					prefix = new TextComponentString("✕ ").setStyle(new Style().setColor(TextFormatting.RED));
+
+				lineAdder.accept(prefix.appendSibling(new TextComponentTranslation(module.getTranslationKey()).setStyle(Utils.GRAY_STYLE)).getFormattedText());
 			}
 		}
 
