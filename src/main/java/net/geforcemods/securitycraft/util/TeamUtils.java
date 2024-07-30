@@ -65,7 +65,7 @@ public class TeamUtils {
 
 		ScorePlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
-		if (team != null) {
+		if (team != null && team.getMembershipCollection().size() > 1) {
 			TextFormatting color = team.getColor();
 
 			return new TeamRepresentation(team.getDisplayName(), !color.isColor() ? TextFormatting.GRAY : color);

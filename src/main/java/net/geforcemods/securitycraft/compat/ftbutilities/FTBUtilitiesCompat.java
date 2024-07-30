@@ -29,7 +29,7 @@ public class FTBUtilitiesCompat {
 			try {
 				ForgePlayer player = Universe.get().getPlayer(UUID.fromString(owner.getUUID()));
 
-				if (player != null && player.team != null)
+				if (player != null && player.team != null && player.team.getMembers().size() > 1)
 					return new TeamRepresentation(player.team.getTitle().getFormattedText(), player.team.getColor().getTextFormatting());
 			}
 			catch (IllegalArgumentException e) {}

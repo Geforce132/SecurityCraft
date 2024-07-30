@@ -10,6 +10,7 @@
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions
+- Change: The "(team)" suffix for owners is now only shown when the team has more than one player in it
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
