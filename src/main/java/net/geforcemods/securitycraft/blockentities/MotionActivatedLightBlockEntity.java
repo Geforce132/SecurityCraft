@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
-import net.geforcemods.securitycraft.api.Option.DoubleOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -20,7 +20,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 
 public class MotionActivatedLightBlockEntity extends CustomizableBlockEntity implements ITickable {
 	private static final int TICKS_BETWEEN_ATTACKS = 5;
-	private DoubleOption searchRadiusOption = new DoubleOption(this::getPos, "searchRadius", 5.0D, 5.0D, 20.0D, 1.0D);
+	private IntOption searchRadiusOption = new IntOption(this::getPos, "searchRadius", 5, 5, 20, 1);
 	private DisabledOption disabled = new DisabledOption(false);
 	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
