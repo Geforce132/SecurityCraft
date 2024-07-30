@@ -46,7 +46,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			ticksUntilNextSearch = getSearchDelay();
 
 			AxisAlignedBB area = new AxisAlignedBB(pos).grow(getSearchRadius(), getSearchRadius(), getSearchRadius());
-			List<EntityPlayer> closebyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && !isAllowed(e) && !e.isSpectator() && !respectInvisibility.isConsideredInvisible(e));
+			List<EntityPlayer> closebyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && ((!isModuleEnabled(ModuleType.DENYLIST) && !isAllowed(e)) || isDenied(e)) && !e.isSpectator() && !respectInvisibility.isConsideredInvisible(e));
 			List<Owner> closebyOwners = closebyPlayers.stream().map(Owner::new).collect(Collectors.toList());
 
 			if (isModuleEnabled(ModuleType.REDSTONE)) {
@@ -114,7 +114,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.REDSTONE, ModuleType.ALLOWLIST
+				ModuleType.REDSTONE, ModuleType.ALLOWLIST, ModuleType.DENYLIST
 		};
 	}
 
