@@ -65,7 +65,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return defaultBlockState().setValue(FACING, ctx.getPlayer().getDirection().getOpposite());
+		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
