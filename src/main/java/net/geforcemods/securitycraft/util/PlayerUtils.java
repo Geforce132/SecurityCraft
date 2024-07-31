@@ -85,7 +85,7 @@ public class PlayerUtils {
 	}
 
 	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient) {
-		if (player.level.isClientSide == shouldSendFromClient) {
+		if (player != null && player.level.isClientSide == shouldSendFromClient) {
 			//@formatter:off
 			player.sendMessage(new TextComponent("[")
 					.append(prefix.setStyle(Style.EMPTY.withColor(color)))
