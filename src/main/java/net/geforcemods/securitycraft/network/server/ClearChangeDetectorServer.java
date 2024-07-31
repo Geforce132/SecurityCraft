@@ -41,10 +41,9 @@ public class ClearChangeDetectorServer implements CustomPacketPayload {
 
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
-        Level level = player.level();
+		Level level = player.level();
 
 		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
-			BlockPos pos = be.getBlockPos();
 			BlockState state = be.getBlockState();
 
 			be.getEntries().clear();
