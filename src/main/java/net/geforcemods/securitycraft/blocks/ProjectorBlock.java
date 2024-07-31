@@ -162,7 +162,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getPlayer().getDirection().getOpposite()).setValue(HANGING, ctx.getClickedFace() == Direction.DOWN);
+		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()).setValue(HANGING, ctx.getClickedFace() == Direction.DOWN);
 	}
 
 	@Override

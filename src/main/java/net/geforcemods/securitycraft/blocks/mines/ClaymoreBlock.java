@@ -119,7 +119,7 @@ public class ClaymoreBlock extends ExplosiveBlock implements IWaterLoggable {
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
-		return defaultBlockState().setValue(FACING, ctx.getPlayer().getDirection()).setValue(DEACTIVATED, false).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
+		return defaultBlockState().setValue(FACING, ctx.getHorizontalDirection()).setValue(DEACTIVATED, false).setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == Fluids.WATER);
 	}
 
 	@Override
