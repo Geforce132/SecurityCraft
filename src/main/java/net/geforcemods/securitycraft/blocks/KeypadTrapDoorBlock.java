@@ -69,11 +69,11 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 
 	@Override
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
-		if (state.getValue(OPEN))
+		KeypadTrapdoorBlockEntity be = (KeypadTrapdoorBlockEntity) level.getBlockEntity(pos);
+
+		if (state.getValue(OPEN) && be.getSignalLength() > 0)
 			return ActionResultType.PASS;
 		else if (!level.isClientSide) {
-			KeypadTrapdoorBlockEntity be = (KeypadTrapdoorBlockEntity) level.getBlockEntity(pos);
-
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {
@@ -96,9 +96,11 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 	}
 
 	public void activate(BlockState state, World level, BlockPos pos, int signalLength) {
-		level.setBlockAndUpdate(pos, state.setValue(OPEN, true));
-		level.getBlockTicks().scheduleTick(pos, this, signalLength);
+		level.setBlockAndUpdate(pos, state.cycle(OPEN));
 		playSound(null, level, pos, true);
+
+		if (signalLength > 0)
+			level.getBlockTicks().scheduleTick(pos, this, signalLength);
 	}
 
 	@Override
