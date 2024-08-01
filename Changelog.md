@@ -26,6 +26,7 @@
 - Fix: The Block Change Detector keeps outputting a redstone signal when all its entries are cleared
 - Fix: Option slider text shows the value in the incorrect position
 - Fix: Potential crash
+- Fix Setting the signal length option to 0 on a Keypad Trapdoor makes the trapdoor not open at all
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
