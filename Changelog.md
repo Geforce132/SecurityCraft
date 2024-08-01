@@ -36,6 +36,7 @@
 - Fix: The Denylist Module does not work
 - Fix: Option slider text shows the value in the incorrect position
 - Fix: Potential crash
+- Fix Setting the signal length option to 0 on a Keypad Trapdoor makes the trapdoor not open at all
 - Misc.: The minimum required NeoForge version is now 21.0.110-beta
 
 --------------------------Changelog for v1.9.10-beta7 of SecurityCraft--------------------------
