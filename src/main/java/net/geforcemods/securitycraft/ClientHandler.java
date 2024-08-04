@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Suppliers;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IDisguisable;
@@ -56,8 +57,10 @@ import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
+import net.geforcemods.securitycraft.renderers.DisplayCaseItemRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
+import net.geforcemods.securitycraft.renderers.KeypadChestItemRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.OwnableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
@@ -111,7 +114,9 @@ import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
@@ -128,8 +133,11 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -159,6 +167,8 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -491,6 +501,52 @@ public class ClientHandler {
 	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(SCContent.FLOOR_TRAP_CLOUD.get(), FloorTrapCloudParticle.Provider::new);
 		event.registerSpriteSet(SCContent.INTERFACE_HIGHLIGHT.get(), InterfaceHighlightParticle.Provider::new);
+	}
+
+	@SubscribeEvent
+	public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
+		BlockEntityWithoutLevelRenderer displayCaseItemRenderer = new DisplayCaseItemRenderer(false);
+		BlockEntityWithoutLevelRenderer glowDisplayCaseItemRenderer = new DisplayCaseItemRenderer(true);
+		BlockEntityWithoutLevelRenderer keypadChestItemRenderer = new KeypadChestItemRenderer();
+
+		event.registerItem(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return displayCaseItemRenderer;
+			}
+		}, SCContent.DISPLAY_CASE_ITEM.get());
+		event.registerItem(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return glowDisplayCaseItemRenderer;
+			}
+		}, SCContent.GLOW_DISPLAY_CASE_ITEM.get());
+		event.registerItem(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return keypadChestItemRenderer;
+			}
+		}, SCContent.KEYPAD_CHEST_ITEM.get());
+		event.registerItem(new IClientItemExtensions() {
+			private static final ArmPose TASER_ARM_POSE = ClientHandler.TASER_ARM_POSE_PARAMS.getValue();
+
+			//first person
+			@Override
+			public boolean applyForgeHandTransform(PoseStack pose, LocalPlayer player, HumanoidArm arm, ItemStack stack, float partialTick, float equippedProgress, float swingProgress) {
+				if (swingProgress < 0.001F) {
+					pose.translate(0.02F, -0.4F, -0.5F);
+					return true;
+				}
+
+				return false;
+			}
+
+			//third person
+			@Override
+			public ArmPose getArmPose(LivingEntity entity, InteractionHand hand, ItemStack stack) {
+				return TASER_ARM_POSE;
+			}
+		}, SCContent.TASER.get(), SCContent.TASER_POWERED.get());
 	}
 
 	private static void initTint() {

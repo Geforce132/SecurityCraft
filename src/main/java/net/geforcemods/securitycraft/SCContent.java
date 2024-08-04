@@ -224,12 +224,10 @@ import net.geforcemods.securitycraft.items.AdminToolItem;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
-import net.geforcemods.securitycraft.items.DisplayCaseItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
-import net.geforcemods.securitycraft.items.KeypadChestItem;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -2684,12 +2682,12 @@ public class SCContent {
 	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT).component(SUCCESS_CHANCE, 0.33D)));
 	@HasManualPage
 	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
-	public static final DeferredItem<DisplayCaseItem> DISPLAY_CASE_ITEM = ITEMS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.DISPLAY_CASE.get(), itemProp(), false));
+	public static final DeferredItem<BlockItem> DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(DISPLAY_CASE_PATH, SCContent.DISPLAY_CASE, itemProp());
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<FakeLiquidBucketItem> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA.get(), itemProp(1)));
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<FakeLiquidBucketItem> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER.get(), itemProp(1)));
-	public static final DeferredItem<DisplayCaseItem> GLOW_DISPLAY_CASE_ITEM = ITEMS.register(GLOW_DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.GLOW_DISPLAY_CASE.get(), itemProp(), true));
+	public static final DeferredItem<BlockItem> GLOW_DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(GLOW_DISPLAY_CASE_PATH, SCContent.GLOW_DISPLAY_CASE, itemProp());
 	@HasManualPage
 	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage(PageGroup.KEYCARDS)
@@ -2704,7 +2702,7 @@ public class SCContent {
 	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.register("keycard_lv5", () -> new KeycardItem(itemProp(), 4));
 	@HasManualPage
 	public static final DeferredItem<KeyPanelItem> KEY_PANEL = ITEMS.register("keypad_item", () -> new KeyPanelItem(itemProp()));
-	public static final DeferredItem<KeypadChestItem> KEYPAD_CHEST_ITEM = ITEMS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestItem(SCContent.KEYPAD_CHEST.get(), itemProp()));
+	public static final DeferredItem<BlockItem> KEYPAD_CHEST_ITEM = ITEMS.registerSimpleBlockItem(KEYPAD_CHEST_PATH, SCContent.KEYPAD_CHEST, itemProp());
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> KEYPAD_DOOR_ITEM = ITEMS.register("keypad_door_item", () -> new DoubleHighBlockItem(KEYPAD_DOOR.get(), itemProp()));
 	@HasManualPage
