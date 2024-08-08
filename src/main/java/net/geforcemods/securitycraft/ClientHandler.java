@@ -109,7 +109,6 @@ import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.LecternTileEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemModelsProperties;
@@ -609,8 +608,8 @@ public class ClientHandler {
 					ItemStack stack = lensGetter.apply(be);
 					Item item = stack.getItem();
 
-					if (item instanceof DyeableArmorItem)
-						return ((DyeableArmorItem) item).getColor(stack);
+					if (item instanceof IDyeableArmorItem)
+						return ((IDyeableArmorItem) item).getColor(stack);
 
 					break;
 				}
