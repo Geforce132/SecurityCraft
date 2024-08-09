@@ -2505,78 +2505,103 @@ public class SCContent {
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn(), WoodType.WARPED, Blocks.WARPED_FENCE_GATE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_COPPER = BLOCKS.register("reinforced_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_COPPER_BLOCK.get()), Blocks.CHISELED_COPPER));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CHISELED_COPPER = BLOCKS.register("reinforced_exposed_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_EXPOSED_COPPER.get()), Blocks.EXPOSED_CHISELED_COPPER));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CHISELED_COPPER = BLOCKS.register("reinforced_weathered_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_WEATHERED_COPPER.get()), Blocks.WEATHERED_CHISELED_COPPER));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CHISELED_COPPER = BLOCKS.register("reinforced_oxidized_chiseled_copper", () -> new BaseReinforcedBlock(BlockBehaviour.Properties.ofFullCopy(REINFORCED_OXIDIZED_COPPER.get()), Blocks.OXIDIZED_CHISELED_COPPER));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_COPPER_GRATE = BLOCKS.register("reinforced_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.COPPER_GRATE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_EXPOSED_COPPER_GRATE = BLOCKS.register("reinforced_exposed_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.EXPOSED_COPPER_GRATE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_WEATHERED_COPPER_GRATE = BLOCKS.register("reinforced_weathered_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.WEATHERED_COPPER_GRATE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_OXIDIZED_COPPER_GRATE = BLOCKS.register("reinforced_oxidized_copper_grate", () -> new ReinforcedCopperGrateBlock(Blocks.OXIDIZED_COPPER_GRATE));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_COPPER_BULB = BLOCKS.register("reinforced_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.COPPER_BULB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_EXPOSED_COPPER_BULB = BLOCKS.register("reinforced_exposed_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.EXPOSED_COPPER_BULB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_WEATHERED_COPPER_BULB = BLOCKS.register("reinforced_weathered_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.WEATHERED_COPPER_BULB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_OXIDIZED_COPPER_BULB = BLOCKS.register("reinforced_oxidized_copper_bulb", () -> new ReinforcedCopperBulbBlock(Blocks.OXIDIZED_COPPER_BULB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF = BLOCKS.register("reinforced_chiseled_tuff", () -> new BaseReinforcedBlock(Blocks.CHISELED_TUFF));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_STAIRS = BLOCKS.register("reinforced_tuff_stairs", () -> new ReinforcedStairsBlock(Blocks.TUFF_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_SLAB = BLOCKS.register("reinforced_tuff_slab", () -> new ReinforcedSlabBlock(Blocks.TUFF_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_WALL = BLOCKS.register("reinforced_tuff_wall", () -> new ReinforcedWallBlock(Blocks.TUFF_WALL));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_TUFF = BLOCKS.register("reinforced_polished_tuff", () -> new BaseReinforcedBlock(Blocks.POLISHED_TUFF));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_TUFF_STAIRS = BLOCKS.register("reinforced_polished_tuff_stairs", () -> new ReinforcedStairsBlock(Blocks.POLISHED_TUFF_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_TUFF_SLAB = BLOCKS.register("reinforced_polished_tuff_slab", () -> new ReinforcedSlabBlock(Blocks.POLISHED_TUFF_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_TUFF_WALL = BLOCKS.register("reinforced_polished_tuff_wall", () -> new ReinforcedWallBlock(Blocks.POLISHED_TUFF_WALL));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TUFF_BRICKS = BLOCKS.register("reinforced_tuff_bricks", () -> new BaseReinforcedBlock(Blocks.TUFF_BRICKS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_BRICK_STAIRS = BLOCKS.register("reinforced_tuff_brick_stairs", () -> new ReinforcedStairsBlock(Blocks.TUFF_BRICK_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_BRICK_SLAB = BLOCKS.register("reinforced_tuff_brick_slab", () -> new ReinforcedSlabBlock(Blocks.TUFF_BRICK_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_BRICK_WALL = BLOCKS.register("reinforced_tuff_brick_wall", () -> new ReinforcedWallBlock(Blocks.TUFF_BRICK_WALL));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF_BRICKS = BLOCKS.register("reinforced_chiseled_tuff_bricks", () -> new BaseReinforcedBlock(Blocks.CHISELED_TUFF_BRICKS));
 
@@ -2601,9 +2626,11 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_smooth_crystal_quartz", () -> new BaseReinforcedBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ));
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2613,18 +2640,23 @@ public class SCContent {
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("reinforced_crystal_quartz_bricks", () -> new BaseReinforcedBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BRICKS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedRotatedCrystalQuartzPillar> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_PILLAR));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MapColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_smooth_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2, itemGroup = SCItemGroup.MANUAL)
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MapColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2635,6 +2667,7 @@ public class SCContent {
 	@Reinforced
 	public static final DeferredBlock<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(MapColor.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
 	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never)));
+	@OwnableBE
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop().noLootTable().pushReaction(PushReaction.BLOCK)));
 	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SometimesVisibleBlock(propDisguisable().noLootTable().pushReaction(PushReaction.BLOCK)));
@@ -2835,7 +2868,9 @@ public class SCContent {
 			SCContent.LASER_FIELD.get(),
 			SCContent.INVENTORY_SCANNER_FIELD.get(),
 			SCContent.ELECTRIFIED_IRON_FENCE.get(),
+			SCContent.COBBLED_DEEPSLATE_MINE.get(),
 			SCContent.COBBLESTONE_MINE.get(),
+			SCContent.DEEPSLATE_MINE.get(),
 			SCContent.DIAMOND_ORE_MINE.get(),
 			SCContent.DIRT_MINE.get(),
 			SCContent.GRAVEL_MINE.get(),
