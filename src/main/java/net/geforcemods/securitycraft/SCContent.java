@@ -2013,9 +2013,11 @@ public class SCContent {
 	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_smooth_crystal_quartz", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ));
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2025,18 +2027,23 @@ public class SCContent {
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("reinforced_crystal_quartz_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BRICKS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_PILLAR));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_smooth_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS));
 	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
 	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB));
 	@HasManualPage(PageGroup.REINFORCED)
@@ -2047,6 +2054,7 @@ public class SCContent {
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_GRASS_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedGrassPathBlock(prop(Material.DIRT).sound(SoundType.GRASS), Blocks.GRASS_PATH));
 	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noDrops().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never)));
+	@OwnableBE
 	@Reinforced(registerBlockItem = false)
 	public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
 	public static final RegistryObject<Block> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SometimesVisibleBlock(propDisguisable(Material.AIR).noDrops()));
