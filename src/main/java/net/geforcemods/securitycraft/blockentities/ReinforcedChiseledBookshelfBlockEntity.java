@@ -29,6 +29,11 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 	}
 
 	@Override
+	public boolean isValidBlockState(BlockState state) {
+		return getType().isValid(state);
+	}
+
+	@Override
 	public BlockEntityType<?> getType() {
 		return SCContent.REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY.get();
 	}

@@ -36,6 +36,11 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	}
 
 	@Override
+	public boolean isValidBlockState(BlockState state) {
+		return getType().isValid(state);
+	}
+
+	@Override
 	public BlockEntityType<?> getType() {
 		return SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get();
 	}

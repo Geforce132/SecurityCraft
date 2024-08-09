@@ -102,6 +102,11 @@ public class BrushableMineBlockEntity extends BrushableBlockEntity implements IO
 	}
 
 	@Override
+	public boolean isValidBlockState(BlockState state) {
+		return getType().isValid(state);
+	}
+
+	@Override
 	public BlockEntityType<?> getType() {
 		return SCContent.BRUSHABLE_MINE_BLOCK_ENTITY.get();
 	}
