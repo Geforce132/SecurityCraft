@@ -19,19 +19,20 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item.TooltipContext;
@@ -92,12 +93,17 @@ public class SCClientEventHandler {
 				BlockEntity be = level.getBlockEntity(bcdPos);
 
 				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
+					int packedColor = bcd.getColor();
+					float r = FastColor.ARGB32.red(packedColor) / 255.0F;
+					float g = FastColor.ARGB32.green(packedColor) / 255.0F;
+					float b = FastColor.ARGB32.blue(packedColor) / 255.0F;
+
 					for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 						BlockPos pos = changeEntry.pos();
 
 						pose.pushPose();
 						pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-						ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose, 0, 1, 0, 1, 1, bcd.getColor());
+						LevelRenderer.renderLineBox(pose, BCDBuffer.INSTANCE.getBuffer(RenderType.lines()), 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
 						pose.popPose();
 					}
 				}

@@ -9,9 +9,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -21,8 +19,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -93,39 +89,6 @@ public class ClientUtils {
 		quaternion.mul(new Quaternionf(0.0F, (float) Math.sin(y / 2.0F), 0.0F, (float) Math.cos(y / 2.0F)));
 		quaternion.mul(new Quaternionf(0.0F, 0.0F, (float) Math.sin(z / 2.0F), (float) Math.cos(z / 2.0F)));
 		return quaternion;
-	}
-
-	public static void renderBoxInLevel(MultiBufferSource buffer, PoseStack poseStack, int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
-		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
-		PoseStack.Pose pose = poseStack.last();
-		int r = rgbColor >> 16 & 255;
-		int g = rgbColor >> 8 & 255;
-		int b = rgbColor & 255;
-
-		builder.addVertex(pose, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
-		builder.addVertex(pose, minX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
-		builder.addVertex(pose, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
-		builder.addVertex(pose, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
-		builder.addVertex(pose, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
-		builder.addVertex(pose, maxX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
-		builder.addVertex(pose, maxX, height, minZ).setColor(r, g, b, 255).setNormal(pose, -1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, minX, height, minZ).setColor(r, g, b, 255).setNormal(pose, -1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, minX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
-		builder.addVertex(pose, minX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
-		builder.addVertex(pose, minX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, -1.0F, 0.0F);
-		builder.addVertex(pose, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, -1.0F, 0.0F);
-		builder.addVertex(pose, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, -1.0F);
-		builder.addVertex(pose, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, -1.0F);
-		builder.addVertex(pose, minX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
-		builder.addVertex(pose, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
-		builder.addVertex(pose, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
-		builder.addVertex(pose, maxX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
-		builder.addVertex(pose, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
 	}
 
 	public static void fillHorizontalGradient(GuiGraphics guiGraphics, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
