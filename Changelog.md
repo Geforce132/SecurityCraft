@@ -37,6 +37,7 @@
 - Fix: Option slider text shows the value in the incorrect position
 - Fix: Potential crash
 - Fix: Setting the signal length option to 0 on a Keypad Trapdoor makes the trapdoor not open at all
+- Fix: Block Pocket and Block Change Detector outline/block highlights are drawn too thin at certain angles
 
 --------------------------Changelog for v1.9.10-beta8 of SecurityCraft--------------------------
 

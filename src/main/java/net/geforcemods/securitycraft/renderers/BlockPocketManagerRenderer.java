@@ -41,7 +41,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 			backZ = half + 1 + offset;
 		}
 
-		ClientUtils.renderBoxInLevel(buffer, pose.last().pose(), leftX, rightX, frontZ, backZ, size, be.getColor());
+		ClientUtils.renderBoxInLevel(buffer, pose, leftX, rightX, frontZ, backZ, size, be.getColor());
 	}
 
 	@Override

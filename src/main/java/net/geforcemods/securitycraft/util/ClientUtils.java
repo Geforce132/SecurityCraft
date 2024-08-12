@@ -9,6 +9,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
@@ -94,39 +95,37 @@ public class ClientUtils {
 		return quaternion;
 	}
 
-	public static void renderBoxInLevel(MultiBufferSource buffer, Matrix4f positionMatrix, int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
+	public static void renderBoxInLevel(MultiBufferSource buffer, PoseStack poseStack, int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
 		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
+		PoseStack.Pose pose = poseStack.last();
 		int r = rgbColor >> 16 & 255;
 		int g = rgbColor >> 8 & 255;
 		int b = rgbColor & 255;
 
-		//bottom lines
-		builder.addVertex(positionMatrix, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(0.0F, 0.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(0.0F, 0.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		//top lines
-		builder.addVertex(positionMatrix, minX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		//corner edge lines
-		builder.addVertex(positionMatrix, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, minX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, maxX, height, minZ).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		builder.addVertex(pose, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		builder.addVertex(pose, minX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		builder.addVertex(pose, minX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		builder.addVertex(pose, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		builder.addVertex(pose, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		builder.addVertex(pose, maxX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		builder.addVertex(pose, maxX, height, minZ).setColor(r, g, b, 255).setNormal(pose, -1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, minX, height, minZ).setColor(r, g, b, 255).setNormal(pose, -1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, minX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		builder.addVertex(pose, minX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		builder.addVertex(pose, minX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, -1.0F, 0.0F);
+		builder.addVertex(pose, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, -1.0F, 0.0F);
+		builder.addVertex(pose, minX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, -1.0F);
+		builder.addVertex(pose, maxX, 0.0F, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, -1.0F);
+		builder.addVertex(pose, minX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 1.0F, 0.0F, 0.0F);
+		builder.addVertex(pose, maxX, 0.0F, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		builder.addVertex(pose, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 1.0F, 0.0F);
+		builder.addVertex(pose, maxX, height, minZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
+		builder.addVertex(pose, maxX, height, maxZ).setColor(r, g, b, 255).setNormal(pose, 0.0F, 0.0F, 1.0F);
 	}
 
 	public static void fillHorizontalGradient(GuiGraphics guiGraphics, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
