@@ -6,14 +6,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -93,41 +90,6 @@ public class ClientUtils {
 		quaternion.mul(new Quaternion(0.0F, (float) Math.sin(y / 2.0F), 0.0F, (float) Math.cos(y / 2.0F)));
 		quaternion.mul(new Quaternion(0.0F, 0.0F, (float) Math.sin(z / 2.0F), (float) Math.cos(z / 2.0F)));
 		return quaternion;
-	}
-
-	public static void renderBoxInLevel(IRenderTypeBuffer buffer, Matrix4f positionMatrix, int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
-		IVertexBuilder builder = buffer.getBuffer(RenderType.lines());
-		int r = rgbColor >> 16 & 255;
-		int g = rgbColor >> 8 & 255;
-		int b = rgbColor & 255;
-
-		//bottom lines
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		//top lines
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		//corner edge lines
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 	}
 
 	public static void fillHorizontalGradient(MatrixStack pose, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {

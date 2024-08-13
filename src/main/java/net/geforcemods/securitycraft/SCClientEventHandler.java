@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
@@ -28,12 +27,14 @@ import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ColorHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
@@ -90,12 +91,17 @@ public class SCClientEventHandler {
 			BlockChangeDetectorBlockEntity bcd = (BlockChangeDetectorBlockEntity) be;
 
 			if (bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
+				int packedColor = bcd.getColor();
+				float r = ColorHelper.PackedColor.red(packedColor) / 255.0F;
+				float g = ColorHelper.PackedColor.green(packedColor) / 255.0F;
+				float b = ColorHelper.PackedColor.blue(packedColor) / 255.0F;
+
 				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 					BlockPos pos = changeEntry.pos;
 
 					pose.pushPose();
 					pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-					ClientUtils.renderBoxInLevel(BCDBuffer.INSTANCE, pose.last().pose(), 0, 1, 0, 1, 1, bcd.getColor());
+					WorldRenderer.renderLineBox(pose, BCDBuffer.INSTANCE.getBuffer(RenderType.lines()), 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
 					pose.popPose();
 				}
 			}

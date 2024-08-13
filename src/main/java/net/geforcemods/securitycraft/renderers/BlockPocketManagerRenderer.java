@@ -4,11 +4,13 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.util.ColorHelper;
 import net.minecraft.util.Direction;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,6 +36,10 @@ public class BlockPocketManagerRenderer extends TileEntityRenderer<BlockPocketMa
 		int rightX = half + 1 + offset;
 		int frontZ = facing == Direction.NORTH || facing == Direction.WEST ? 0 : 1;
 		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1 - size;
+		int packedColor = be.getColor();
+		float r = ColorHelper.PackedColor.red(packedColor) / 255.0F;
+		float g = ColorHelper.PackedColor.green(packedColor) / 255.0F;
+		float b = ColorHelper.PackedColor.blue(packedColor) / 255.0F;
 
 		//x- and z-values get switched when the manager's direction is west or east
 		if (facing == Direction.EAST || facing == Direction.WEST) {
@@ -43,7 +49,7 @@ public class BlockPocketManagerRenderer extends TileEntityRenderer<BlockPocketMa
 			backZ = half + 1 + offset;
 		}
 
-		ClientUtils.renderBoxInLevel(buffer, pose.last().pose(), leftX, rightX, frontZ, backZ, size, be.getColor());
+		WorldRenderer.renderLineBox(pose, buffer.getBuffer(RenderType.lines()), leftX, 0, frontZ, rightX, size, backZ, r, g, b, 1.0F);
 	}
 
 	@Override
