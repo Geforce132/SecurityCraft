@@ -21,6 +21,7 @@
 - Fix: Lily pads cannot be placed on Reinforced Ice
 - Fix: The Block Change Detector keeps outputting a redstone signal when all its entries are cleared
 - Fix Setting the signal length option to 0 on a Keypad Trapdoor makes the trapdoor not open at all
+- Fix: Block Pocket and Block Change Detector outline/block highlights are drawn too thin at certain angles
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
 

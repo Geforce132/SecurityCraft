@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 
@@ -20,40 +21,22 @@ public class ClientUtils {
 		return Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
 	}
 
-	public static void renderBoxInLevel(int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
-		BufferBuilder builder = Tessellator.getInstance().getBuffer();
-		int r = rgbColor >> 16 & 255;
-		int g = rgbColor >> 8 & 255;
-		int b = rgbColor & 255;
+	public static void renderBoxInLevel(double minX, double maxX, double minZ, double maxZ, double height, int rgbColor) {
+		float r = (rgbColor >> 16 & 0xFF) / 255.0F;
+		float g = (rgbColor >> 8 & 0xFF) / 255.0F;
+		float b = (rgbColor & 0xFF) / 255.0F;
+		double shrinkFactor = 0.002F;
 
-		//comments are for facing north, other EnumFacings work but names don't match
+		minX += shrinkFactor;
+		minZ += shrinkFactor;
+		maxX -= shrinkFactor;
+		maxZ -= shrinkFactor;
+		height -= shrinkFactor;
 		GlStateManager.glLineWidth(2F);
 		GlStateManager.disableTexture2D();
 		GlStateManager.disableLighting();
 		Minecraft.getMinecraft().entityRenderer.disableLightmap();
-		builder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
-		//bottom points
-		builder.pos(minX, 0.0F, minZ).color(r, g, b, 255).endVertex();
-		builder.pos(maxX, 0.0F, minZ).color(r, g, b, 255).endVertex();
-		builder.pos(maxX, 0.0F, maxZ).color(r, g, b, 255).endVertex();
-		builder.pos(minX, 0.0F, maxZ).color(r, g, b, 255).endVertex();
-		builder.pos(minX, 0.0F, minZ).color(r, g, b, 255).endVertex();
-		//remaining lines on the left face
-		builder.pos(minX, height, minZ).color(r, g, b, 255).endVertex();
-		builder.pos(minX, height, maxZ).color(r, g, b, 255).endVertex();
-		builder.pos(minX, 0, maxZ).color(r, g, b, 255).endVertex();
-		//remaining lines of back face
-		builder.pos(minX, height, maxZ).color(0, 0, 0, 0).endVertex(); //going back up, but line is invisible
-		builder.pos(maxX, height, maxZ).color(r, g, b, 255).endVertex();
-		builder.pos(maxX, 0, maxZ).color(r, g, b, 255).endVertex();
-		//remaining lines of right face
-		builder.pos(maxX, height, maxZ).color(0, 0, 0, 0).endVertex(); //going back up, but line is invisible
-		builder.pos(maxX, height, minZ).color(r, g, b, 255).endVertex();
-		builder.pos(maxX, 0, minZ).color(r, g, b, 255).endVertex();
-		//remaining line at the top front
-		builder.pos(maxX, height, minZ).color(0, 0, 0, 0).endVertex(); //going back up, but line is invisible
-		builder.pos(minX, height, minZ).color(r, g, b, 255).endVertex();
-		Tessellator.getInstance().draw();
+		RenderGlobal.drawBoundingBox(minX, shrinkFactor, minZ, maxX, height, maxZ, r, g, b, 1.0F);
 		GlStateManager.enableLighting();
 		Minecraft.getMinecraft().entityRenderer.enableLightmap();
 		GlStateManager.enableTexture2D();
