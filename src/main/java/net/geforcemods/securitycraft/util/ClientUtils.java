@@ -11,7 +11,6 @@ import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
@@ -19,8 +18,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -91,41 +88,6 @@ public class ClientUtils {
 		quaternion.mul(new Quaternionf(0.0F, (float) Math.sin(y / 2.0F), 0.0F, (float) Math.cos(y / 2.0F)));
 		quaternion.mul(new Quaternionf(0.0F, 0.0F, (float) Math.sin(z / 2.0F), (float) Math.cos(z / 2.0F)));
 		return quaternion;
-	}
-
-	public static void renderBoxInLevel(MultiBufferSource buffer, Matrix4f positionMatrix, int minX, int maxX, int minZ, int maxZ, int height, int rgbColor) {
-		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
-		int r = rgbColor >> 16 & 255;
-		int g = rgbColor >> 8 & 255;
-		int b = rgbColor & 255;
-
-		//bottom lines
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(0.0F, 0.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		//top lines
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		//corner edge lines
-		builder.vertex(positionMatrix, minX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, minX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, maxZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, 0.0F, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
-		builder.vertex(positionMatrix, maxX, height, minZ).color(r, g, b, 255).normal(1.0F, 1.0F, 1.0F).endVertex();
 	}
 
 	public static void fillHorizontalGradient(PoseStack pose, int zLevel, int left, int top, int right, int bottom, int fromColor, int toColor) {
