@@ -127,6 +127,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		tag(ItemTags.DYEABLE).add(SCContent.BRIEFCASE.get(), SCContent.LENS.get());
 		tag(ItemTags.FENCE_GATES).add(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get().asItem());
 		tag(ItemTags.FENCES).add(SCContent.ELECTRIFIED_IRON_FENCE.get().asItem());
+		tag(ItemTags.HANGING_SIGNS).addTag(SCTags.Items.SECRET_HANGING_SIGNS);
 		tag(ItemTags.PIGLIN_LOVED).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get().asItem(),
 				SCContent.GILDED_BLACKSTONE_MINE.get().asItem(),
