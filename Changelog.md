@@ -39,6 +39,10 @@
 - Fix: Setting the signal length option to 0 on a Keypad Trapdoor makes the trapdoor not open at all
 - Fix: Block Pocket and Block Change Detector outline/block highlights are drawn too thin at certain angles
 
+--------------------------Changelog for v1.9.10-beta9 of SecurityCraft--------------------------
+
+- Fix: Crash when pushing or pulling reinforced blocks with reinforced pistons
+
 --------------------------Changelog for v1.9.10-beta8 of SecurityCraft--------------------------
 
 - Fix: Compatibility with Minecraft 1.21.1

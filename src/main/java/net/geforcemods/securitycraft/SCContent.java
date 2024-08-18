@@ -2697,6 +2697,7 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(MapColor.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
+	@OwnableBE
 	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never)));
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
@@ -2929,7 +2930,8 @@ public class SCContent {
 			SCContent.DEEPSLATE_REDSTONE_ORE_MINE.get(),
 			SCContent.COPPER_ORE_MINE.get(),
 			SCContent.NETHERRACK_MINE.get(),
-			SCContent.END_STONE_MINE.get()).build(null));
+			SCContent.END_STONE_MINE.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeypadBlockEntity>> KEYPAD_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad", () -> BlockEntityType.Builder.of(KeypadBlockEntity::new, SCContent.KEYPAD.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LaserBlockBlockEntity>> LASER_BLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("laser_block", () -> BlockEntityType.Builder.of(LaserBlockBlockEntity::new, SCContent.LASER_BLOCK.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CageTrapBlockEntity>> CAGE_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("cage_trap", () -> BlockEntityType.Builder.of(CageTrapBlockEntity::new, SCContent.CAGE_TRAP.get()).build(null));
@@ -3002,7 +3004,8 @@ public class SCContent {
 			SCContent.BLOCK_POCKET_WALL.get(),
 			SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get(),
 			SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(),
-			SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get()).build(null));
+			SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AllowlistOnlyBlockEntity>> ALLOWLIST_ONLY_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_pressure_plate", () -> BlockEntityType.Builder.of(AllowlistOnlyBlockEntity::new,
 			SCContent.REINFORCED_STONE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get(),
@@ -3031,19 +3034,25 @@ public class SCContent {
 			SCContent.REINFORCED_WARPED_BUTTON.get(),
 			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
 			SCContent.REINFORCED_LEVER.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedHopperBlockEntity>> REINFORCED_HOPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_hopper", () -> BlockEntityType.Builder.of(ReinforcedHopperBlockEntity::new, SCContent.REINFORCED_HOPPER.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedHopperBlockEntity>> REINFORCED_HOPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_hopper", () -> BlockEntityType.Builder.of(ReinforcedHopperBlockEntity::new,
+			SCContent.REINFORCED_HOPPER.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ProjectorBlockEntity>> PROJECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("projector", () -> BlockEntityType.Builder.of(ProjectorBlockEntity::new, SCContent.PROJECTOR.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeypadDoorBlockEntity>> KEYPAD_DOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_door", () -> BlockEntityType.Builder.of(KeypadDoorBlockEntity::new, SCContent.KEYPAD_DOOR.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedIronBarsBlockEntity>> REINFORCED_IRON_BARS_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_iron_bars", () -> BlockEntityType.Builder.of(ReinforcedIronBarsBlockEntity::new, SCContent.REINFORCED_IRON_BARS.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedIronBarsBlockEntity>> REINFORCED_IRON_BARS_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_iron_bars", () -> BlockEntityType.Builder.of(ReinforcedIronBarsBlockEntity::new,
+			SCContent.REINFORCED_IRON_BARS.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedCauldronBlockEntity>> REINFORCED_CAULDRON_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_cauldron", () -> BlockEntityType.Builder.of(ReinforcedCauldronBlockEntity::new,
 			SCContent.REINFORCED_CAULDRON.get(),
 			SCContent.REINFORCED_WATER_CAULDRON.get(),
 			SCContent.REINFORCED_LAVA_CAULDRON.get(),
-			SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get()).build(null));
+			SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedPistonMovingBlockEntity>> REINFORCED_PISTON_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_piston", () -> BlockEntityType.Builder.of(ReinforcedPistonMovingBlockEntity::new, SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ValidationOwnableBlockEntity>> VALIDATION_OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("validation_ownable", () -> BlockEntityType.Builder.of(ValidationOwnableBlockEntity::new,
 			SCContent.REINFORCED_PISTON.get(),
-			SCContent.REINFORCED_STICKY_PISTON.get()).build(null));
+			SCContent.REINFORCED_STICKY_PISTON.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeyPanelBlockEntity>> KEY_PANEL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("key_panel", () -> BlockEntityType.Builder.of(KeyPanelBlockEntity::new, SCContent.KEY_PANEL_BLOCK.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SonicSecuritySystemBlockEntity>> SONIC_SECURITY_SYSTEM_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("sonic_security_system", () -> BlockEntityType.Builder.of(SonicSecuritySystemBlockEntity::new, SCContent.SONIC_SECURITY_SYSTEM.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BlockChangeDetectorBlockEntity>> BLOCK_CHANGE_DETECTOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("block_change_detector", () -> BlockEntityType.Builder.of(BlockChangeDetectorBlockEntity::new, SCContent.BLOCK_CHANGE_DETECTOR.get()).build(null));
@@ -3053,13 +3062,19 @@ public class SCContent {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GlowDisplayCaseBlockEntity>> GLOW_DISPLAY_CASE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register(GLOW_DISPLAY_CASE_PATH, () -> BlockEntityType.Builder.of(GlowDisplayCaseBlockEntity::new, SCContent.GLOW_DISPLAY_CASE.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeypadBarrelBlockEntity>> KEYPAD_BARREL_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_barrel", () -> BlockEntityType.Builder.of(KeypadBarrelBlockEntity::new, SCContent.KEYPAD_BARREL.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BrushableMineBlockEntity>> BRUSHABLE_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("brushable_mine", () -> BlockEntityType.Builder.of(BrushableMineBlockEntity::new, SCContent.SUSPICIOUS_SAND_MINE.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedChiseledBookshelfBlockEntity>> REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_chiseled_bookshelf", () -> BlockEntityType.Builder.of(ReinforcedChiseledBookshelfBlockEntity::new, SCContent.REINFORCED_CHISELED_BOOKSHELF.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedChiseledBookshelfBlockEntity>> REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_chiseled_bookshelf", () -> BlockEntityType.Builder.of(ReinforcedChiseledBookshelfBlockEntity::new,
+			SCContent.REINFORCED_CHISELED_BOOKSHELF.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeypadTrapdoorBlockEntity>> KEYPAD_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keypad_trapdoor", () -> BlockEntityType.Builder.of(KeypadTrapdoorBlockEntity::new, SCContent.KEYPAD_TRAPDOOR.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FloorTrapBlockEntity>> FLOOR_TRAP_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("floor_trap", () -> BlockEntityType.Builder.of(FloorTrapBlockEntity::new, SCContent.FLOOR_TRAP.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<KeycardLockBlockEntity>> KEYCARD_LOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("keycard_lock", () -> BlockEntityType.Builder.of(KeycardLockBlockEntity::new, SCContent.KEYCARD_LOCK.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ScannerTrapdoorBlockEntity>> SCANNER_TRAPDOOR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("scanner_trapdoor", () -> BlockEntityType.Builder.of(ScannerTrapdoorBlockEntity::new, SCContent.SCANNER_TRAPDOOR.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDispenserBlockEntity>> REINFORCED_DISPENSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dispenser", () -> BlockEntityType.Builder.of(ReinforcedDispenserBlockEntity::new, SCContent.REINFORCED_DISPENSER.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDropperBlockEntity>> REINFORCED_DROPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dropper", () -> BlockEntityType.Builder.of(ReinforcedDropperBlockEntity::new, SCContent.REINFORCED_DROPPER.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDispenserBlockEntity>> REINFORCED_DISPENSER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dispenser", () -> BlockEntityType.Builder.of(ReinforcedDispenserBlockEntity::new,
+			SCContent.REINFORCED_DISPENSER.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedDropperBlockEntity>> REINFORCED_DROPPER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_dropper", () -> BlockEntityType.Builder.of(ReinforcedDropperBlockEntity::new,
+			SCContent.REINFORCED_DROPPER.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedFenceGateBlockEntity>> REINFORCED_FENCE_GATE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_fence_gate", () -> BlockEntityType.Builder.of(ReinforcedFenceGateBlockEntity::new,
 			SCContent.REINFORCED_OAK_FENCE_GATE.get(),
 			SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(),
@@ -3071,8 +3086,11 @@ public class SCContent {
 			SCContent.REINFORCED_CHERRY_FENCE_GATE.get(),
 			SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(),
 			SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
-			SCContent.REINFORCED_WARPED_FENCE_GATE.get()).build(null));
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedLecternBlockEntity>> REINFORCED_LECTERN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_lectern", () -> BlockEntityType.Builder.of(ReinforcedLecternBlockEntity::new, SCContent.REINFORCED_LECTERN.get()).build(null));
+			SCContent.REINFORCED_WARPED_FENCE_GATE.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedLecternBlockEntity>> REINFORCED_LECTERN_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_lectern", () -> BlockEntityType.Builder.of(ReinforcedLecternBlockEntity::new,
+			SCContent.REINFORCED_LECTERN.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> BlockEntityType.Builder.of(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()).build(null));
 
 	//entity types
