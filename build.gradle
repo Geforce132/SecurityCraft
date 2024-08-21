@@ -48,12 +48,12 @@ runs {
 
 	server {
 		workingDirectory project.file('run/server')
-		programArgument '-nogui'
+		argument '-nogui'
 	}
 
 	data {
 		workingDirectory project.file('run/data')
-		programArguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
 	}
 }
 
