@@ -241,10 +241,9 @@ public class CameraController {
 	}
 
 	public static void addFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
-		Set<BlockPos> bes = FRAME_LINKS.getOrDefault(cameraPos, new HashSet<>());
+		Set<BlockPos> bes = FRAME_LINKS.computeIfAbsent(cameraPos, p -> new HashSet<>());
 
 		bes.add(be.getBlockPos());
-		FRAME_LINKS.putIfAbsent(cameraPos, bes);
 		FRAME_CAMERA_FEEDS.putIfAbsent(cameraPos, new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX))); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
 	}
 
