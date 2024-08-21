@@ -8,6 +8,7 @@
 /.settings
 *.launch
 /run
+/runs
 /src/generated/resources/.cache/*
 /.idea
 /logs
