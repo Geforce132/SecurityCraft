@@ -254,10 +254,10 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public void linkFrameForPlayer(ServerPlayer player, BlockPos framePos, int chunkLoadingDistance) {
 		if (linkedFrames.isEmpty()) {
+			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
+
 			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.track(this);
 			requestChunkSending(player, chunkLoadingDistance);
-
-			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
 
 			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
@@ -271,11 +271,11 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public void unlinkFrame(BlockPos framePos) {
 		if (linkedFrames.remove(framePos.asLong()) && linkedFrames.isEmpty()) {
-			addRecentlyUnviewedCamera(this);
-			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
-
 			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
 			int chunkLoadingDistance = getChunkLoadingDistance();
+
+			addRecentlyUnviewedCamera(this);
+			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
 
 			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
@@ -291,7 +291,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		if (level.isClientSide)
-			CameraController.FRAME_CAMERA_FEEDS.remove(new GlobalPos(level.dimension(), worldPosition));
+			CameraController.FRAME_CAMERA_FEEDS.remove(GlobalPos.of(level.dimension(), worldPosition));
 	}
 
 	public void requestChunkSending(ServerPlayer player, int chunkLoadingDistance) {

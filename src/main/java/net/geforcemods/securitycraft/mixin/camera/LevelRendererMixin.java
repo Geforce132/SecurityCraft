@@ -45,9 +45,9 @@ public class LevelRendererMixin {
 	}
 
 	/**
-	 * When rendering the world in a frame, we capture the necessary visible sections ourselves, which vanilla usually does in
-	 * setupRender, so we no-op in that method when a frame feed is rendered. When Embeddium is installed, we let that mod
-	 * capture the visible sections for us, so we need to run setupRender (which Embeddium hooks into).
+	 * When rendering the world in a frame, the necessary visible sections are captured manually. Vanilla usually does this in
+	 * setupRender, so that method is exited early when a frame feed is rendered. However when Embeddium is installed, it already
+	 * captures the visible sections in using its own hooks into setupRender, so the early exit is not required.
 	 */
 	@Inject(method = "setupRender", at = @At(value = "HEAD"), cancellable = true)
 	public void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
