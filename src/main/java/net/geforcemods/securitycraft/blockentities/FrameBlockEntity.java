@@ -8,10 +8,11 @@ import java.util.Optional;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.network.client.RemoveFrameLink;
 import net.geforcemods.securitycraft.network.server.SyncFrame;
-import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -22,16 +23,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class FrameBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity { //TODO: Changelog entry
-	private Option.DisabledOption disabled = new Option.DisabledOption(false);
+public class FrameBlockEntity extends CustomizableBlockEntity { //TODO: Changelog entry
+	private DisabledOption disabled = new DisabledOption(false);
 	private List<GlobalPos> cameraPositions = new ArrayList<>();
 	private GlobalPos currentCamera;
 	private boolean activated;
@@ -41,9 +42,9 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	@Override
-	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (currentCamera != null && disabled.get())
-			CameraController.removeFrameLink(this, currentCamera);
+	public <T> void onOptionChanged(Option<T> option) {
+		if (!level.isClientSide && option.getName().equals(disabled.getName()) && disabled.get())
+			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, level.getChunk(worldPosition).getPos(), new RemoveFrameLink(worldPosition));
 	}
 
 	@Override
@@ -63,16 +64,18 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		for (int i = 0; i < cameras.size(); i++) {
 			CompoundTag cameraTag = cameras.getCompound(i);
+
 			cameraPositions.add(cameraTag.isEmpty() ? null : GlobalPos.CODEC.parse(NbtOps.INSTANCE, cameraTag).getOrThrow());
 		}
 
-		if (tag.contains("currentCamera"))
-			currentCamera = GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("currentCamera")).getOrThrow();
+		if (tag.contains("current_camera"))
+			currentCamera = GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("current_camera")).getOrThrow();
 	}
 
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
+
 		ListTag camerasTag = new ListTag();
 
 		for (GlobalPos camera : cameraPositions) {
@@ -82,12 +85,12 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		tag.put("cameras", camerasTag);
 
 		if (currentCamera != null)
-			tag.put("currentCamera", GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, currentCamera).getOrThrow());
+			tag.put("current_camera", GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, currentCamera).getOrThrow());
 	}
 
 	public void setCameraPositions(ItemStack cameraMonitor) {
-		if (cameraMonitor.has(SCContent.BOUND_CAMERAS.get()))
-			cameraPositions = new ArrayList<>(cameraMonitor.get(SCContent.BOUND_CAMERAS.get()).positions());
+		if (cameraMonitor.has(SCContent.BOUND_CAMERAS))
+			cameraPositions = new ArrayList<>(cameraMonitor.get(SCContent.BOUND_CAMERAS).positions());
 	}
 
 	public List<GlobalPos> getCameraPositions() {
@@ -123,13 +126,15 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (!isDisabled()) {
 			setCurrentCamera(newCameraPos);
-			this.activated = shouldBeActive;
+			activated = shouldBeActive;
 
 			if (!level.isClientSide) {
 				if (previousCameraPos != null && level.getBlockEntity(previousCameraPos.pos()) instanceof SecurityCameraBlockEntity previousCamera)
 					previousCamera.unlinkFrame(worldPosition);
 
-				if (shouldBeActive && player instanceof ServerPlayer serverPlayer) {
+				if (shouldBeActive) {
+					ServerPlayer serverPlayer = (ServerPlayer) player;
+
 					if (level.dimension() == newCameraPos.dimension() && level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera) {
 						if (newCamera.isOwnedBy(player) || newCamera.isAllowed(player))
 							newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(serverPlayer.requestedViewDistance(), 2, serverPlayer.server.getPlayerList().getViewDistance()));

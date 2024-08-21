@@ -4,7 +4,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.components.GlobalPositions;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -67,8 +64,8 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (stack.getItem() == SCContent.CAMERA_MONITOR.get() && level.getBlockEntity(pos) instanceof FrameBlockEntity be && be.isOwnedBy(player)) {
-			if (stack.has(SCContent.BOUND_CAMERAS.get())) {
-				GlobalPositions cameras = stack.get(SCContent.BOUND_CAMERAS.get());
+			if (stack.has(SCContent.BOUND_CAMERAS)) {
+				GlobalPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 				if (!cameras.isEmpty()) {
 					be.setCameraPositions(stack);
@@ -93,17 +90,15 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (ownedByUser || be.isAllowed(player)) {
-				if (!be.getCameraPositions().isEmpty()) {
-					if (level.isClientSide) {
-						if (!be.isActivated() && be.getCurrentCamera() != null)
-							be.setCurrentCameraAndUpdate(be.getCurrentCamera());
-						else
-							ClientHandler.displayFrameScreen(be, !ownedByUser);
-					}
-
-					return InteractionResult.SUCCESS;
+			else if ((ownedByUser || be.isAllowed(player)) && !be.getCameraPositions().isEmpty()) {
+				if (level.isClientSide) {
+					if (!be.isActivated() && be.getCurrentCamera() != null)
+						be.setCurrentCameraAndUpdate(be.getCurrentCamera());
+					else
+						ClientHandler.displayFrameScreen(be, !ownedByUser);
 				}
+
+				return InteractionResult.SUCCESS;
 			}
 		}
 
@@ -146,10 +141,5 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new FrameBlockEntity(pos, state);
-	}
-
-	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return level.isClientSide ? createTickerHelper(type, SCContent.OWNABLE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
 	}
 }

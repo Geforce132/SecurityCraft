@@ -266,6 +266,7 @@ public class CameraController {
 	}
 
 	//adapted from Immersive Portals
+	// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
 	public static void discoverVisibleSections(Camera playerCamera, Frustum cameraFrustum, ObjectArrayList<SectionRenderDispatcher.RenderSection> visibleSectionsList) {
 		ArrayDeque<SectionRenderDispatcher.RenderSection> queueToCheck = new ArrayDeque<>();
 		Set<Long> checkedChunks = new HashSet<>();

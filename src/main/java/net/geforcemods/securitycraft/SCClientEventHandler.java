@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.compat.embeddium.EmbeddiumCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.CameraController.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
@@ -156,11 +157,11 @@ public class SCClientEventHandler {
 	public static void onRenderFramePost(RenderFrameEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
-		DeltaTracker partialTick = event.getPartialTick();
 
 		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty())
 			return;
 
+		DeltaTracker partialTick = event.getPartialTick();
 		Level level = player.level();
 		Camera camera = mc.gameRenderer.getMainCamera();
 
@@ -170,7 +171,6 @@ public class SCClientEventHandler {
 		int oldHeight = window.getHeight();
 		List<SectionRenderDispatcher.RenderSection> oldVisibleSections = mc.levelRenderer.visibleSections.clone();
 		int oldServerRenderDistance = mc.options.serverRenderDistance;
-
 		double oldX = player.getX();
 		double oldXO = player.xOld;
 		double oldY = player.getY();
@@ -200,16 +200,16 @@ public class SCClientEventHandler {
 				if (!be.isOwnedBy(player) && !be.isAllowed(player))
 					continue;
 
-				CameraController.CameraFeed feed = cameraView.getValue();
+				CameraFeed feed = cameraView.getValue();
 				RenderTarget frameTarget = feed.renderTarget;
-				Entity securityCamera = new Marker(EntityType.MARKER, level); //We are using a separate entity instead of moving the player to allow the player to see itself
+				Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 				Vec3 cameraEntityPos = new Vec3(cameraPos.getX() + 0.5D, cameraPos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, cameraPos.getZ() + 0.5D);
 				float cameraXRot = be.getDefaultXRotation();
 				float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING));
 
 				securityCamera.setPos(cameraEntityPos);
 				window.setWidth(100);
-				window.setHeight(100); //Different values have no effect to my knowledge, it's just important that the window is sized in an 1:1 ratio
+				window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 				mc.options.setCameraType(CameraType.FIRST_PERSON);
 				mc.setCameraEntity(securityCamera);
 				securityCamera.setXRot(cameraXRot);
@@ -218,7 +218,7 @@ public class SCClientEventHandler {
 				mc.renderBuffers().bufferSource().endBatch(); //Makes sure that main world rendering is done
 				CameraController.currentlyCapturedCamera = cameraView.getKey();
 
-				//mc.options.setServerRenderDistance(CameraController.cameraViewDistance); //TODO Should we implement a serverconfig that limits frame chunk loading distance? Or/And a client one that limits frame render distance? (Current behaviour is just to take whatever the server/client currently has)
+				//mc.options.setServerRenderDistance(CameraController.cameraViewDistance); //TODO: Limit frame render distance through client config to match behavior of how players receive server chunks
 
 				if (feed.visibleSections != null) {
 					mc.levelRenderer.visibleSections.clear();

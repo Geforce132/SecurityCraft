@@ -6,7 +6,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 
-public class CameraViewAreaExtension { //plagiarized from Immersive Portals
+// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
+public class CameraViewAreaExtension { //taken from Immersive Portals
 	private static final Long2ObjectOpenHashMap<Column> SECTION_COLUMNS = new Long2ObjectOpenHashMap<>();
 	private static SectionRenderDispatcher sectionRenderDispatcher;
 	public static int minHeight;

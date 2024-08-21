@@ -79,12 +79,7 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	 * @see {@link #getBlockEntitiesInRange(Level, BlockPos)}
 	 */
 	public List<BE> getBlockEntitiesInRange(Level level, Vec3 pos) {
-		return iterate(level, (list, bePos) -> {
-			BE be = (BE) level.getBlockEntity(bePos);
-
-			if (be != null && canReach(be, pos))
-				list.add(be);
-		});
+		return getBlockEntitiesWithCondition(level, be -> canReach(be, pos));
 	}
 
 	/**

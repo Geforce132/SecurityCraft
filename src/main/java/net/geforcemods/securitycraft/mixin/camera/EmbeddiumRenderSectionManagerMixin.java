@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import net.geforcemods.securitycraft.compat.embeddium.IEmbeddiumRenderSectionManagerAccessor;
 
+// TODO: Javadoc
 @Mixin(RenderSectionManager.class)
 public class EmbeddiumRenderSectionManagerMixin implements IEmbeddiumRenderSectionManagerAccessor {
 	@Shadow

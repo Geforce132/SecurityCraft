@@ -14,7 +14,9 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 
-public class CameraClientChunkCacheExtension { //plagiarized from Immersive Portals
+// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
+// TODO: As per Immersive Portals' license, it needs to be included in the derivative work
+public class CameraClientChunkCacheExtension { //taken from Immersive Portals
 	// the most chunk accesses are from the main thread,
 	// so we use two maps to reduce synchronization.
 	// the main thread accesses this map, without synchronization
@@ -22,7 +24,7 @@ public class CameraClientChunkCacheExtension { //plagiarized from Immersive Port
 	// other threads read this map, with synchronization
 	//private static final Long2ObjectOpenHashMap<LevelChunk> chunkMapForOtherThreads =
 	//		new Long2ObjectOpenHashMap<>();
-	//TODO this impl is currently not threadsafe, should we make it? ImmPtl does it (see comments above)
+	//TODO: make threadsafe
 
 	public static void drop(ClientLevel level, ChunkPos chunkPos) {
 		LevelChunk chunk = CHUNK_MAP.get(chunkPos.toLong());

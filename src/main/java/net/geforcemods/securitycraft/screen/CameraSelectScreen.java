@@ -70,10 +70,9 @@ public class CameraSelectScreen extends Screen {
 			int aboveCameraButton = y - 8;
 			GlobalPos view = cameras.get(camID - 1);
 			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, view), Button.DEFAULT_NARRATION));
-			Button unbindButton = SmallButton.createWithX(x + 19, aboveCameraButton, button -> unbindButtonClicked(button, view, camID));
 
 			if (onUnbindCamera != null)
-				addRenderableWidget(unbindButton);
+				addRenderableWidget(SmallButton.createWithX(x + 19, aboveCameraButton, button -> unbindButtonClicked(button, view, camID))).active = view != null;
 
 			cameraButtons[i] = cameraButton;
 			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(Component.literal("" + camID)));
@@ -112,10 +111,8 @@ public class CameraSelectScreen extends Screen {
 					tpButton.setTooltip(Tooltip.create(Component.translatable("chat.coordinates.tooltip")));
 				}
 			}
-			else {
+			else
 				cameraButton.active = false;
-				unbindButton.active = false;
-			}
 		}
 
 		if (hasStopButton) {
