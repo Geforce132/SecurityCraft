@@ -113,6 +113,11 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 	}
 
 	@Override
+	public boolean isValidBlockState(BlockState state) {
+		return getType().isValid(state);
+	}
+
+	@Override
 	public BlockEntityType<?> getType() {
 		return SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get();
 	}

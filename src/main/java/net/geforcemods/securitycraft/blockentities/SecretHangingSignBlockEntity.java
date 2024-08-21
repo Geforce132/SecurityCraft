@@ -45,6 +45,11 @@ public class SecretHangingSignBlockEntity extends HangingSignBlockEntity impleme
 	}
 
 	@Override
+	public boolean isValidBlockState(BlockState state) {
+		return getType().isValid(state);
+	}
+
+	@Override
 	public BlockEntityType<?> getType() {
 		return SCContent.SECRET_HANGING_SIGN_BLOCK_ENTITY.get();
 	}
