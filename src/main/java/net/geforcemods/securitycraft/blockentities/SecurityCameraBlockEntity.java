@@ -324,10 +324,9 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public static void addRecentlyUnviewedCamera(SecurityCameraBlockEntity camera) {
 		for (ServerPlayer player : camera.level.getServer().getPlayerList().getPlayers()) {
-			Set<SecurityCameraBlockEntity> unviewingCameras = RECENTLY_UNVIEWED_CAMERAS.getOrDefault(player, new HashSet<>());
+			Set<SecurityCameraBlockEntity> unviewingCameras = RECENTLY_UNVIEWED_CAMERAS.computeIfAbsent(player, p -> new HashSet<>());
 
 			unviewingCameras.add(camera);
-			RECENTLY_UNVIEWED_CAMERAS.putIfAbsent(player, unviewingCameras);
 		}
 	}
 
