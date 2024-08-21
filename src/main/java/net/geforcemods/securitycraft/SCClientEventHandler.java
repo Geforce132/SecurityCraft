@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -38,7 +37,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -196,59 +194,60 @@ public class SCClientEventHandler {
 		mc.gameRenderer.setPanoramicMode(true);
 		mc.levelRenderer.graphicsChanged();
 
-		for (Map.Entry<GlobalPos, CameraController.CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
-			if (!cameraView.getKey().dimension().equals(level.dimension()))
-				continue;
+		//@formatter:off
+		CameraController.FRAME_CAMERA_FEEDS.entrySet()
+		.stream()
+		.filter(cameraView -> cameraView.getKey().dimension().equals(level.dimension()))
+		.forEach(cameraView -> { //@formatter:on
+					BlockPos cameraPos = cameraView.getKey().pos();
 
-			BlockPos cameraPos = cameraView.getKey().pos();
+					if (level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity be) {
+						if (!be.isOwnedBy(player) && !be.isAllowed(player))
+							return;
 
-			if (level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity be) {
-				if (!be.isOwnedBy(player) && !be.isAllowed(player))
-					continue;
+						CameraFeed feed = cameraView.getValue();
+						RenderTarget frameTarget = feed.renderTarget;
+						Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
+						Vec3 cameraEntityPos = new Vec3(cameraPos.getX() + 0.5D, cameraPos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, cameraPos.getZ() + 0.5D);
+						float cameraXRot = be.getDefaultXRotation();
+						float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING));
 
-				CameraFeed feed = cameraView.getValue();
-				RenderTarget frameTarget = feed.renderTarget;
-				Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
-				Vec3 cameraEntityPos = new Vec3(cameraPos.getX() + 0.5D, cameraPos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, cameraPos.getZ() + 0.5D);
-				float cameraXRot = be.getDefaultXRotation();
-				float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING));
+						securityCamera.setPos(cameraEntityPos);
+						window.setWidth(100);
+						window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
+						mc.options.setCameraType(CameraType.FIRST_PERSON);
+						mc.setCameraEntity(securityCamera);
+						securityCamera.setXRot(cameraXRot);
+						securityCamera.setYRot(cameraYRot);
+						camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
+						mc.renderBuffers().bufferSource().endBatch(); //Makes sure that main world rendering is done
+						CameraController.currentlyCapturedCamera = cameraView.getKey();
 
-				securityCamera.setPos(cameraEntityPos);
-				window.setWidth(100);
-				window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
-				mc.options.setCameraType(CameraType.FIRST_PERSON);
-				mc.setCameraEntity(securityCamera);
-				securityCamera.setXRot(cameraXRot);
-				securityCamera.setYRot(cameraYRot);
-				camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
-				mc.renderBuffers().bufferSource().endBatch(); //Makes sure that main world rendering is done
-				CameraController.currentlyCapturedCamera = cameraView.getKey();
+						//mc.options.setServerRenderDistance(CameraController.cameraViewDistance); //TODO: Limit frame render distance through client config to match behavior of how players receive server chunks
 
-				//mc.options.setServerRenderDistance(CameraController.cameraViewDistance); //TODO: Limit frame render distance through client config to match behavior of how players receive server chunks
+						if (feed.visibleSections != null) {
+							mc.levelRenderer.visibleSections.clear();
+							mc.levelRenderer.visibleSections.addAll(feed.visibleSections);
+						}
 
-				if (feed.visibleSections != null) {
-					mc.levelRenderer.visibleSections.clear();
-					mc.levelRenderer.visibleSections.addAll(feed.visibleSections);
-				}
+						//TODO: Sodium support
+						if (SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.EMBEDDIUM)
+							EmbeddiumCompat.setEmptyRenderLists();
 
-				//TODO: Sodium support
-				if (SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.EMBEDDIUM)
-					EmbeddiumCompat.setEmptyRenderLists();
+						frameTarget.bindWrite(true);
+						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
+						frameTarget.unbindWrite();
 
-				frameTarget.bindWrite(true);
-				mc.gameRenderer.renderLevel(DeltaTracker.ONE);
-				frameTarget.unbindWrite();
+						//TODO: Sodium support
+						if (SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.EMBEDDIUM)
+							EmbeddiumCompat.setPreviousRenderLists();
 
-				//TODO: Sodium support
-				if (SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.EMBEDDIUM)
-					EmbeddiumCompat.setPreviousRenderLists();
-
-				if (feed.visibleSections == null) { //Set up the visible sections in the frame's frustum when they haven't been set up yet
-					CameraController.discoverVisibleSections(camera, new Frustum(mc.levelRenderer.getFrustum()).offsetToFullyIncludeCameraCube(8), mc.levelRenderer.visibleSections);
-					feed.setup(new ArrayList<>(mc.levelRenderer.visibleSections));
-				}
-			}
-		}
+						if (feed.visibleSections == null) { //Set up the visible sections in the frame's frustum when they haven't been set up yet
+							CameraController.discoverVisibleSections(camera, new Frustum(mc.levelRenderer.getFrustum()).offsetToFullyIncludeCameraCube(8), mc.levelRenderer.visibleSections);
+							feed.setup(new ArrayList<>(mc.levelRenderer.visibleSections));
+						}
+					}
+				});
 
 		mc.setCameraEntity(oldCamEntity);
 		player.setPosRaw(oldX, oldY, oldZ);
