@@ -47,6 +47,7 @@ public abstract class ChunkMapMixin {
 	@Inject(method = "updateChunkTracking", at = @At(value = "HEAD"))
 	private void securitycraft$onUpdateChunkTracking(ServerPlayer player, CallbackInfo callback) {
 		Level level = player.level();
+		int viewDistance = getPlayerViewDistance(player);
 
 		if (player.getCamera() instanceof SecurityCamera camera) {
 			if (!camera.hasSentChunks()) {
@@ -56,13 +57,24 @@ public abstract class ChunkMapMixin {
 		}
 
 		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldSendChunksToPlayer(player))) {
-			ChunkTrackingView.difference(player.getChunkTrackingView(), viewedCamera.getCameraFeedChunks(getPlayerViewDistance(player)), chunkPos -> markChunkPendingToSend(player, chunkPos), chunkPos -> {});
+			ChunkTrackingView.difference(player.getChunkTrackingView(), viewedCamera.getCameraFeedChunks(viewDistance), chunkPos -> markChunkPendingToSend(player, chunkPos), chunkPos -> {});
 		}
 
-		for (SecurityCameraBlockEntity viewedCamera : SecurityCameraBlockEntity.fetchRecentlyUnviewedCameras()) {
+		Set<ChunkTrackingView> unviewedChunkViews = new HashSet<>();
+
+		if (SecurityCameraBlockEntity.hasRecentlyUnviewedCameras(player)) {
+			for (SecurityCameraBlockEntity viewedCamera : SecurityCameraBlockEntity.fetchRecentlyUnviewedCameras(player)) {
+				unviewedChunkViews.add(viewedCamera.getCameraFeedChunks(viewDistance));
+			}
+		}
+
+		if (SecurityCamera.hasRecentlyDismounted(player))
+			unviewedChunkViews.add(ChunkTrackingView.of(new ChunkPos(SecurityCamera.fetchRecentDismountLocation(player)), viewDistance));
+
+		for (ChunkTrackingView unviewedChunkView : unviewedChunkViews) {
 			Set<ChunkPos> droppingChunks = new HashSet<>();
 
-			ChunkTrackingView.difference(viewedCamera.getCameraFeedChunks(getPlayerViewDistance(player)), player.getChunkTrackingView(), chunkPos -> {}, droppingChunks::add);
+			ChunkTrackingView.difference(unviewedChunkView, player.getChunkTrackingView(), chunkPos -> {}, droppingChunks::add);
 
 			for (ChunkPos pos : droppingChunks) {
 				if (BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldKeepChunkLoaded(pos.x, pos.z)).isEmpty())

@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -50,7 +50,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
-	private static final List<SecurityCameraBlockEntity> RECENTLY_UNVIEWED_CAMERAS = new ArrayList<>();
+	private static final Map<ServerPlayer, Set<SecurityCameraBlockEntity>> RECENTLY_UNVIEWED_CAMERAS = new HashMap<>();
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
@@ -323,14 +323,20 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public static void addRecentlyUnviewedCamera(SecurityCameraBlockEntity camera) {
-		RECENTLY_UNVIEWED_CAMERAS.add(camera);
+		for (ServerPlayer player : camera.level.getServer().getPlayerList().getPlayers()) {
+			Set<SecurityCameraBlockEntity> unviewingCameras = RECENTLY_UNVIEWED_CAMERAS.getOrDefault(player, new HashSet<>());
+
+			unviewingCameras.add(camera);
+			RECENTLY_UNVIEWED_CAMERAS.putIfAbsent(player, unviewingCameras);
+		}
 	}
 
-	public static List<SecurityCameraBlockEntity> fetchRecentlyUnviewedCameras() {
-		List<SecurityCameraBlockEntity> cameras = new ArrayList<>(RECENTLY_UNVIEWED_CAMERAS);
+	public static boolean hasRecentlyUnviewedCameras(ServerPlayer player) {
+		return RECENTLY_UNVIEWED_CAMERAS.containsKey(player);
+	}
 
-		RECENTLY_UNVIEWED_CAMERAS.clear();
-		return cameras;
+	public static Set<SecurityCameraBlockEntity> fetchRecentlyUnviewedCameras(ServerPlayer player) {
+		return RECENTLY_UNVIEWED_CAMERAS.remove(player);
 	}
 
 	public int getOpacity() {
