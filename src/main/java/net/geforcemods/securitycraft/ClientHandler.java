@@ -68,6 +68,7 @@ import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseItemRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
+import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestItemRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
@@ -475,6 +476,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, false));
 		event.registerBlockEntityRenderer(SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, true));
+		event.registerBlockEntityRenderer(SCContent.FRAME_BLOCK_ENTITY.get(), FrameBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.OWNABLE_BLOCK_ENTITY.get(), OwnableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
