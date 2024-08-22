@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.145'
+	id 'net.neoforged.gradle.userdev' version '7.0.+'
 }
 
 import groovy.json.JsonOutput
@@ -48,12 +48,12 @@ runs {
 
 	server {
 		workingDirectory project.file('run/server')
-		programArgument '-nogui'
+		argument '-nogui'
 	}
 
 	data {
 		workingDirectory project.file('run/data')
-		programArguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
 	}
 }
 
