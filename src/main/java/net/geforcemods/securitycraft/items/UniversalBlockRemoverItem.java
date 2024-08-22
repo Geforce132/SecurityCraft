@@ -89,7 +89,7 @@ public class UniversalBlockRemoverItem extends Item {
 					new CageTrapBlock.BlockModifier(level, new BlockPos.MutableBlockPos().set(originalPos), ((IOwnable) be).getOwner()).loop((w, p, o) -> {
 						BlockEntity otherBe = w.getBlockEntity(p);
 
-						if (otherBe instanceof IOwnable ownable && o.owns(ownable)) {
+						if (otherBe instanceof IOwnable otherOwnable && o.owns(otherOwnable)) {
 							Block b = w.getBlockState(p).getBlock();
 
 							if (b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
