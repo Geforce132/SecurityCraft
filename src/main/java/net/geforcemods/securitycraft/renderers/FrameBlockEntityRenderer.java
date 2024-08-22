@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -32,7 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class FrameBlockEntityRenderer {
+public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity> {
 	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	private static final ResourceLocation INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final ResourceLocation CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
@@ -50,7 +51,8 @@ public class FrameBlockEntityRenderer {
 
 	public FrameBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
-	public static void render(FrameBlockEntity be, float partialTick, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+	@Override
+	public void render(FrameBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		Player player = Minecraft.getInstance().player;
 
 		if (be.isDisabled() || (!be.isOwnedBy(player) && !be.isAllowed(player)) || be.getCameraPositions().isEmpty())
@@ -135,7 +137,7 @@ public class FrameBlockEntityRenderer {
 		}
 	}
 
-	private static void renderTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal) {
+	private void renderTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal) {
 		VertexConsumer bufferBuilder = buffer.getBuffer(RenderType.entitySolid(texture));
 		Pose last = pose.last();
 		Matrix4f lastPose = last.pose();
@@ -152,7 +154,7 @@ public class FrameBlockEntityRenderer {
 			bufferSource.endBatch();
 	}
 
-	private static void renderOverlay(PoseStack pose, MultiBufferSource buffer, int color, float xStart, float xEnd, float zStart, float zEnd) {
+	private void renderOverlay(PoseStack pose, MultiBufferSource buffer, int color, float xStart, float xEnd, float zStart, float zEnd) {
 		VertexConsumer bufferBuilder = buffer.getBuffer(RenderType.gui());
 
 		bufferBuilder.addVertex(pose.last().pose(), xStart, 0.125F, zStart).setColor(color);

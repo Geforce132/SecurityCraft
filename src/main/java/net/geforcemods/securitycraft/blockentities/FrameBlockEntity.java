@@ -38,7 +38,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity { //TODO: Changelo
 	private boolean activated;
 
 	public FrameBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.OWNABLE_BLOCK_ENTITY.get(), pos, state);
+		super(SCContent.FRAME_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override

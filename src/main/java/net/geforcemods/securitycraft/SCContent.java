@@ -2881,9 +2881,7 @@ public class SCContent {
 
 		//@formatter:on
 		return BlockEntityType.Builder.of((pos, state) -> {
-			if (state.is(FRAME))
-				return new FrameBlockEntity(pos, state);
-			else if (state.is(REINFORCED_OBSERVER))
+			if (state.is(REINFORCED_OBSERVER))
 				return new ReinforcedObserverBlockEntity(pos, state);
 			else if (state.is(MINE))
 				return new MineBlockEntity(pos, state);
@@ -3095,6 +3093,7 @@ public class SCContent {
 			SCContent.REINFORCED_LECTERN.get(),
 			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> BlockEntityType.Builder.of(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FrameBlockEntity>> FRAME_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("frame", () -> BlockEntityType.Builder.of(FrameBlockEntity::new, SCContent.FRAME.get()).build(null));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
