@@ -24,7 +24,7 @@ body:
       label: Minecraft version
       description: What version of Minecraft are you using?
       options:
-        - 1.21
+        - 1.21.1
         - 1.20.6
         - 1.20.4
         - 1.20.1
@@ -50,6 +50,8 @@ body:
         - v1.9.10.2
         - v1.9.10.1
         - v1.9.10
+        - v1.9.10-beta9
+        - v1.9.10-beta8
         - v1.9.10-beta7
         - v1.9.10-beta6
         - v1.9.10-beta5
