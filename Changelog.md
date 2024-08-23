@@ -42,6 +42,7 @@
 --------------------------Changelog for v1.9.10-beta9 of SecurityCraft--------------------------
 
 - Fix: Crash when pushing or pulling reinforced blocks with reinforced pistons
+- Fix: Startup crash when other modded boats are present
 
 --------------------------Changelog for v1.9.10-beta8 of SecurityCraft--------------------------
 
