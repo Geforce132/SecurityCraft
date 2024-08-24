@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import org.apache.logging.log4j.util.TriConsumer;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -105,26 +105,25 @@ public class CageTrapBlock extends DisguisableBlock {
 					return;
 
 				BlockPos topMiddle = pos.above(4);
-				String ownerName = cageTrap.getOwner().getName();
+				Owner owner = cageTrap.getOwner();
+				String ownerUUID = owner.getUUID();
+				String ownerName = owner.getName();
 
-				BlockModifier placer = new BlockModifier(level, new BlockPos.Mutable().set(pos), cageTrap.getOwner());
-
-				placer.loop((w, p, o) -> {
-					if (w.isEmptyBlock(p)) {
-						if (p.equals(topMiddle))
-							w.setBlockAndUpdate(p, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
+				loopIronBarPositions(pos.mutable(), barPos -> {
+					if (level.isEmptyBlock(barPos)) {
+						if (barPos.equals(topMiddle))
+							level.setBlockAndUpdate(barPos, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
 						else
-							w.setBlockAndUpdate(p, ((ReinforcedPaneBlock) SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(w, p));
+							level.setBlockAndUpdate(barPos, ((ReinforcedPaneBlock) SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(level, barPos));
 					}
-				});
-				placer.loop((w, p, o) -> {
-					TileEntity te = w.getBlockEntity(p);
 
-					if (te instanceof IOwnable)
-						((IOwnable) te).setOwner(o.getUUID(), o.getName());
+					TileEntity barBe = level.getBlockEntity(barPos);
 
-					if (te instanceof ReinforcedIronBarsBlockEntity)
-						((ReinforcedIronBarsBlockEntity) te).setCanDrop(false);
+					if (barBe instanceof IOwnable)
+						((IOwnable) barBe).setOwner(ownerUUID, ownerName);
+
+					if (barBe instanceof ReinforcedIronBarsBlockEntity)
+						((ReinforcedIronBarsBlockEntity) barBe).setCanDrop(false);
 				});
 				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
 				level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
@@ -178,37 +177,23 @@ public class CageTrapBlock extends DisguisableBlock {
 		return new CageTrapBlockEntity();
 	}
 
-	public static class BlockModifier {
-		private World level;
-		private BlockPos.Mutable pos;
-		private BlockPos origin;
-		private Owner owner;
+	public static void loopIronBarPositions(BlockPos.Mutable pos, Consumer<BlockPos.Mutable> positionAction) {
+		pos.move(-1, 1, -1);
 
-		public BlockModifier(World level, BlockPos.Mutable origin, Owner owner) {
-			this.level = level;
-			pos = origin.move(-1, 1, -1);
-			this.origin = origin.immutable();
-			this.owner = owner;
-		}
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 3; x++) {
+				for (int z = 0; z < 3; z++) {
+					//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
+					if (!(x == 1 && z == 1 && y != 3))
+						positionAction.accept(pos);
 
-		public void loop(TriConsumer<World, BlockPos.Mutable, Owner> ifTrue) {
-			for (int y = 0; y < 4; y++) {
-				for (int x = 0; x < 3; x++) {
-					for (int z = 0; z < 3; z++) {
-						//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
-						if (!(x == 1 && z == 1 && y != 3))
-							ifTrue.accept(level, pos, owner);
-
-						pos.move(0, 0, 1);
-					}
-
-					pos.move(1, 0, -3);
+					pos.move(0, 0, 1);
 				}
 
-				pos.move(-3, 1, 0);
+				pos.move(1, 0, -3);
 			}
 
-			pos.set(origin); //reset the mutable block pos for the next usage
+			pos.move(-3, 1, 0);
 		}
 	}
 }
