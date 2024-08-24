@@ -5,7 +5,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -26,8 +25,6 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
@@ -88,6 +85,7 @@ public class SCClientEventHandler {
 			PoseStack pose = event.getPoseStack();
 			Minecraft mc = Minecraft.getInstance();
 			Level level = mc.level;
+			VertexConsumer consumer = mc.renderBuffers().bufferSource().getBuffer(ClientHandler.OVERLAY_LINES);
 
 			for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
 				BlockEntity be = level.getBlockEntity(bcdPos);
@@ -103,7 +101,7 @@ public class SCClientEventHandler {
 
 						pose.pushPose();
 						pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-						LevelRenderer.renderLineBox(pose, BCDBuffer.INSTANCE.getBuffer(RenderType.lines()), 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
+						LevelRenderer.renderLineBox(pose, consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
 						pose.popPose();
 					}
 				}
@@ -218,42 +216,6 @@ public class SCClientEventHandler {
 		}
 		else
 			CameraRedstoneModuleState.ACTIVATED.render(guiGraphics, 12, 2);
-	}
-
-	private enum BCDBuffer implements MultiBufferSource {
-		INSTANCE;
-
-		private final RenderType overlayLines = new OverlayLines(RenderType.lines());
-
-		@Override
-		public VertexConsumer getBuffer(RenderType renderType) {
-			return Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(overlayLines);
-		}
-
-		private static class OverlayLines extends RenderType {
-			private final RenderType normalLines;
-
-			private OverlayLines(RenderType normalLines) {
-				super("overlay_lines", normalLines.format(), normalLines.mode(), normalLines.bufferSize(), normalLines.affectsCrumbling(), normalLines.sortOnUpload, normalLines::setupRenderState, normalLines::clearRenderState);
-				this.normalLines = normalLines;
-			}
-
-			@Override
-			public void setupRenderState() {
-				normalLines.setupRenderState();
-
-				RenderTarget renderTarget = Minecraft.getInstance().levelRenderer.entityTarget();
-
-				if (renderTarget != null)
-					renderTarget.bindWrite(false);
-			}
-
-			@Override
-			public void clearRenderState() {
-				Minecraft.getInstance().getMainRenderTarget().bindWrite(false);
-				normalLines.clearRenderState();
-			}
-		}
 	}
 
 	public record CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {

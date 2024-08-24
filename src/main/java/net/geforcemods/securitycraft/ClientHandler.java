@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.OptionalDouble;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -10,7 +11,9 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Suppliers;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IDisguisable;
@@ -118,6 +121,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -220,6 +224,20 @@ public class ClientHandler {
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
 	});
+    public static final RenderType.CompositeRenderType OVERLAY_LINES = RenderType.create(
+			"overlay_lines",
+			DefaultVertexFormat.POSITION_COLOR_NORMAL,
+			VertexFormat.Mode.LINES,
+			1536,
+			RenderType.CompositeState.builder()
+				.setShaderState(RenderStateShard.RENDERTYPE_LINES_SHADER)
+				.setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty()))
+				.setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
+				.setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+				.setOutputState(RenderStateShard.OUTLINE_TARGET)
+				.setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
+				.setCullState(RenderStateShard.NO_CULL)
+				.createCompositeState(false));
 	//@formatter:on
 	public static final EnumProxy<ArmPose> TASER_ARM_POSE_PARAMS = new EnumProxy<>(ArmPose.class, true, (IArmPoseTransformer) (model, entity, arm) -> {
 		ModelPart leftArm = model.leftArm;
