@@ -130,7 +130,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				String ownerName = owner.getName();
 
 				loopIronBarPositions(new BlockPos.MutableBlockPos(pos), barPos -> {
-					if (world.isAirBlock(barPos)) {
+					if (world.isAirBlock(barPos) || world.getBlockState(barPos).getMaterial().isReplaceable()) {
 						if (barPos.equals(topMiddle))
 							world.setBlockState(barPos, SCContent.horizontalReinforcedIronBars.getDefaultState());
 						else

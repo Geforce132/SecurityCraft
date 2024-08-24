@@ -8,6 +8,7 @@
 - New: The Smart Module in a Security Camera now also saves the zoom amount
 - New: HUD mods like Jade and The One Probe now show whether an installed module is disabled
 - New: ɥsᴉꞁᵷuƎ (uʍoᗡ ǝpᴉsd∩) translation
+- New: The cage of a Cage Trap can now replace replaceable blocks like fern or dead bush
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions
