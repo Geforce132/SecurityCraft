@@ -1,8 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.List;
-
-import org.apache.logging.log4j.util.TriConsumer;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -126,25 +125,25 @@ public class CageTrapBlock extends DisguisableBlock {
 					return;
 
 				BlockPos topMiddle = pos.up(4);
-				String ownerName = cageTrap.getOwner().getName();
-				BlockModifier placer = new BlockModifier(world, new MutableBlockPos(pos), cageTrap.getOwner());
+				Owner owner = cageTrap.getOwner();
+				String ownerUUID = owner.getUUID();
+				String ownerName = owner.getName();
 
-				placer.loop((w, p, o) -> {
-					if (w.isAirBlock(p)) {
-						if (p.equals(topMiddle))
-							w.setBlockState(p, SCContent.horizontalReinforcedIronBars.getDefaultState());
+				loopIronBarPositions(new BlockPos.MutableBlockPos(pos), barPos -> {
+					if (world.isAirBlock(barPos)) {
+						if (barPos.equals(topMiddle))
+							world.setBlockState(barPos, SCContent.horizontalReinforcedIronBars.getDefaultState());
 						else
-							w.setBlockState(p, ((ReinforcedIronBarsBlock) SCContent.reinforcedIronBars).getActualState(SCContent.reinforcedIronBars.getDefaultState(), w, p));
+							world.setBlockState(barPos, ((ReinforcedIronBarsBlock) SCContent.reinforcedIronBars).getActualState(SCContent.reinforcedIronBars.getDefaultState(), world, barPos));
 					}
-				});
-				placer.loop((w, p, o) -> {
-					TileEntity te = w.getTileEntity(p);
 
-					if (te instanceof IOwnable)
-						((IOwnable) te).setOwner(o.getUUID(), o.getName());
+					TileEntity barBe = world.getTileEntity(barPos);
 
-					if (te instanceof ReinforcedIronBarsBlockEntity)
-						((ReinforcedIronBarsBlockEntity) te).setCanDrop(false);
+					if (barBe instanceof IOwnable)
+						((IOwnable) barBe).setOwner(ownerUUID, ownerName);
+
+					if (barBe instanceof ReinforcedIronBarsBlockEntity)
+						((ReinforcedIronBarsBlockEntity) barBe).setCanDrop(false);
 				});
 				world.setBlockState(pos, getDefaultState().withProperty(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);
@@ -208,37 +207,23 @@ public class CageTrapBlock extends DisguisableBlock {
 		return new CageTrapBlockEntity();
 	}
 
-	public static class BlockModifier {
-		private World world;
-		private MutableBlockPos pos;
-		private BlockPos origin;
-		private Owner owner;
+	public static void loopIronBarPositions(MutableBlockPos pos, Consumer<MutableBlockPos> positionAction) {
+		pos.setPos(pos.getX() - 1, pos.getY() + 1, pos.getZ() - 1);
 
-		public BlockModifier(World world, MutableBlockPos origin, Owner owner) {
-			this.world = world;
-			pos = origin.setPos(origin.getX() - 1, origin.getY() + 1, origin.getZ() - 1);
-			this.origin = origin.toImmutable();
-			this.owner = owner;
-		}
+		for (int y = 0; y < 4; y++) {
+			for (int x = 0; x < 3; x++) {
+				for (int z = 0; z < 3; z++) {
+					//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
+					if (!(x == 1 && z == 1 && y != 3))
+						positionAction.accept(pos);
 
-		public void loop(TriConsumer<World, MutableBlockPos, Owner> ifTrue) {
-			for (int y = 0; y < 4; y++) {
-				for (int x = 0; x < 3; x++) {
-					for (int z = 0; z < 3; z++) {
-						//skip the middle column above the cage trap, but not the place where the horizontal iron bars are
-						if (!(x == 1 && z == 1 && y != 3))
-							ifTrue.accept(world, pos, owner);
-
-						pos.setPos(pos.getX(), pos.getY(), pos.getZ() + 1);
-					}
-
-					pos.setPos(pos.getX() + 1, pos.getY(), pos.getZ() - 3);
+					pos.setPos(pos.getX(), pos.getY(), pos.getZ() + 1);
 				}
 
-				pos.setPos(pos.getX() - 3, pos.getY() + 1, pos.getZ());
+				pos.setPos(pos.getX() + 1, pos.getY(), pos.getZ() - 3);
 			}
 
-			pos.setPos(origin); //reset the mutable block pos for the next usage
+			pos.setPos(pos.getX() - 3, pos.getY() + 1, pos.getZ());
 		}
 	}
 }
