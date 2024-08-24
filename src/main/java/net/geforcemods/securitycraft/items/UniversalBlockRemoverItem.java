@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.CageTrapBlock;
@@ -81,17 +82,18 @@ public class UniversalBlockRemoverItem extends Item {
 				BlockPos middlePos = originalPos.above(4);
 
 				if (!level.isClientSide) {
-					new CageTrapBlock.BlockModifier(level, new BlockPos.MutableBlockPos().set(originalPos), ((IOwnable) be).getOwner()).loop((w, p, o) -> {
-						BlockEntity otherBe = w.getBlockEntity(p);
+					Owner owner = ((IOwnable) be).getOwner();
 
-						if (otherBe instanceof IOwnable ownable && o.owns(ownable)) {
-							Block b = w.getBlockState(p).getBlock();
+					CageTrapBlock.loopIronBarPositions(originalPos.mutable(), barPos -> {
+						BlockEntity barBe = level.getBlockEntity(barPos);
 
-							if (b == SCContent.REINFORCED_IRON_BARS.get() || (p.equals(middlePos) && b == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
-								w.destroyBlock(p, false);
+						if (barBe instanceof IOwnable ownable && owner.owns(ownable)) {
+							Block barBlock = level.getBlockState(barPos).getBlock();
+
+							if (barBlock == SCContent.REINFORCED_IRON_BARS.get() || (barPos.equals(middlePos) && barBlock == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
+								level.destroyBlock(barPos, false);
 						}
 					});
-
 					level.destroyBlock(originalPos, true);
 					stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(ctx.getHand()));
 				}
