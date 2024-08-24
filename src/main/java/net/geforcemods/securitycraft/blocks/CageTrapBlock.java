@@ -109,7 +109,7 @@ public class CageTrapBlock extends DisguisableBlock {
 				String ownerName = owner.getName();
 
 				loopIronBarPositions(pos.mutable(), barPos -> {
-					if (level.isEmptyBlock(barPos)) {
+					if (level.isEmptyBlock(barPos) || level.getBlockState(barPos).getMaterial().isReplaceable()) {
 						if (barPos.equals(topMiddle))
 							level.setBlockAndUpdate(barPos, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
 						else
