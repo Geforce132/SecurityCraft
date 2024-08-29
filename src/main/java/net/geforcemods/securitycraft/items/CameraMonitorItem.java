@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.items;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -18,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -86,10 +89,14 @@ public class CameraMonitorItem extends Item {
 	public ActionResult<ItemStack> use(World level, PlayerEntity player, Hand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!stack.hasTag() || !hasCameraAdded(stack.getTag())) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
-			return ActionResult.pass(stack);
+		if (!stack.hasTag()) {
+			if (!hasCameraAdded(stack.getTag())) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), TextFormatting.RED);
+				return ActionResult.pass(stack);
+			}
 		}
+		else
+			updateTagWithNames(stack, level);
 
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			ClientHandler.displayCameraMonitorScreen(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
@@ -144,17 +151,24 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public static List<GlobalPos> getCameraPositions(CompoundNBT tag) {
-		List<GlobalPos> list = new ArrayList<>();
+	public static List<Pair<GlobalPos, String>> getCameraPositions(CompoundNBT tag) {
+		List<Pair<GlobalPos, String>> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {
 			if (tag != null && tag.contains("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
+				BlockPos pos = new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]));
+				String nameKey = "camera" + i + "_name";
+				String cameraName = null;
+
+				if (tag.contains(nameKey))
+					cameraName = tag.getString(nameKey);
+
 				//default to overworld if there is no dimension saved
-				list.add(GlobalPos.of(coords.length == 4 ? RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(coords[3])) : World.OVERWORLD, new BlockPos(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]))));
+				list.add(Pair.of(GlobalPos.of(coords.length == 4 ? RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(coords[3])) : World.OVERWORLD, pos), cameraName));
 			}
 			else
-				list.add(null);
+				list.add(Pair.of(null, null));
 		}
 
 		return list;
@@ -172,5 +186,33 @@ public class CameraMonitorItem extends Item {
 		}
 
 		return amount;
+	}
+
+	private void updateTagWithNames(ItemStack stack, World level) {
+		if (!stack.hasTag())
+			return;
+
+		CompoundNBT tag = stack.getTag();
+
+		for (int i = 1; i <= 30; i++) {
+			String cameraString = tag.getString("Camera" + i);
+			String[] globalPos = cameraString.split(" ");
+			String nameKey = "camera" + i + "_name";
+
+			if (globalPos.length == 3 || (globalPos.length == 4 && level.dimension().location().toString().equals(globalPos[3]))) {
+				BlockPos camPos = new BlockPos(Integer.parseInt(globalPos[0]), Integer.parseInt(globalPos[1]), Integer.parseInt(globalPos[2]));
+
+				if (level.isLoaded(camPos)) {
+					TileEntity be = level.getBlockEntity(camPos);
+
+					if (be instanceof SecurityCameraBlockEntity && ((SecurityCameraBlockEntity) be).hasCustomName()) {
+						tag.putString(nameKey, ((SecurityCameraBlockEntity) be).getCustomName().getString());
+						continue;
+					}
+
+					tag.remove(nameKey);
+				}
+			}
+		}
 	}
 }

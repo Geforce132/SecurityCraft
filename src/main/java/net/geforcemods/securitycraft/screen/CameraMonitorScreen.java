@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -48,6 +50,7 @@ public class CameraMonitorScreen extends Screen {
 	private HoverChecker[] hoverCheckers = new HoverChecker[10];
 	private TextHoverChecker[] tpHoverCheckers = new TextHoverChecker[10];
 	private SecurityCameraBlockEntity[] cameraBEs = new SecurityCameraBlockEntity[10];
+	private String[] cameraNames = new String[10];
 	private ResourceLocation[] cameraViewDim = new ResourceLocation[10];
 	private CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int xSize = 176, ySize = 166, leftPos, topPos;
@@ -73,7 +76,7 @@ public class CameraMonitorScreen extends Screen {
 
 		Button prevPageButton = addButton(new ExtendedButton(width / 2 - 25, height / 2 + 57, 20, 20, new StringTextComponent("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1))));
 		Button nextPageButton = addButton(new ExtendedButton(width / 2 + 5, height / 2 + 57, 20, 20, new StringTextComponent(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1))));
-		List<GlobalPos> views = CameraMonitorItem.getCameraPositions(nbtTag);
+		List<Pair<GlobalPos, String>> views = CameraMonitorItem.getCameraPositions(nbtTag);
 		World level = Minecraft.getInstance().level;
 		StringTextComponent xText = new StringTextComponent("x");
 		ClientPlayerEntity player = Minecraft.getInstance().player;
@@ -84,7 +87,8 @@ public class CameraMonitorScreen extends Screen {
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
 			int aboveCameraButton = y - 8;
-			GlobalPos view = views.get(camID - 1);
+			Pair<GlobalPos, String> pair = views.get(camID - 1);
+			GlobalPos view = pair.getLeft();
 			CameraButton cameraButton = addButton(new CameraButton(buttonId, x, y, 20, 20, StringTextComponent.EMPTY, this::cameraButtonClicked));
 			CameraButton unbindButton = addButton(new CameraButton(buttonId, x + 19, aboveCameraButton, 8, 8, xText, this::unbindButtonClicked));
 
@@ -100,7 +104,11 @@ public class CameraMonitorScreen extends Screen {
 				TileEntity te = level.getBlockEntity(pos);
 
 				cameraBEs[i] = te instanceof SecurityCameraBlockEntity ? (SecurityCameraBlockEntity) te : null;
+				cameraNames[i] = pair.getRight();
 				hoverCheckers[i] = new HoverChecker(cameraButton);
+
+				if (cameraNames[i] == null && cameraBEs[i] != null && cameraBEs[i].hasCustomName())
+					cameraNames[i] = cameraBEs[i].getCustomName().getString();
 
 				if (cameraBEs[i] != null) {
 					BlockState state = level.getBlockState(pos);
@@ -165,15 +173,11 @@ public class CameraMonitorScreen extends Screen {
 		font.draw(pose, selectCameras, leftPos + xSize / 2 - font.width(selectCameras) / 2, topPos + 6, 4210752);
 
 		for (int i = 0; i < hoverCheckers.length; i++) {
-			if (hoverCheckers[i] != null && cameraBEs[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
-				if (cameraBEs[i].isDisabled() || cameraBEs[i].isShutDown()) {
+			if (hoverCheckers[i] != null && hoverCheckers[i].checkHover(mouseX, mouseY)) {
+				if (cameraBEs[i] != null && (cameraBEs[i].isDisabled() || cameraBEs[i].isShutDown()))
 					renderTooltip(pose, Utils.localize("gui.securitycraft:scManual.disabled"), mouseX, mouseY);
-					break;
-				}
-				else if (cameraBEs[i].hasCustomName()) {
-					renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBEs[i].getCustomName()), 150), mouseX, mouseY);
-					break;
-				}
+				else if (cameraNames[i] != null)
+					renderTooltip(pose, font.split(Utils.localize("gui.securitycraft:monitor.cameraName", cameraNames[i]), 150), mouseX, mouseY);
 			}
 		}
 
@@ -185,7 +189,7 @@ public class CameraMonitorScreen extends Screen {
 
 	protected void cameraButtonClicked(Button button) {
 		int camID = ((CameraButton) button).camId + (page - 1) * 10;
-		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).pos();
+		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).getLeft().pos();
 		TileEntity te = minecraft.level.getBlockEntity(cameraPos);
 
 		if (te instanceof SecurityCameraBlockEntity) {
@@ -206,7 +210,7 @@ public class CameraMonitorScreen extends Screen {
 		int i = (camID - 1) % 10;
 
 		SecurityCraft.channel.sendToServer(new RemoveCameraTag(camID));
-		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
+		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).getLeft()));
 		button.active = false;
 		cameraButtons[i].active = false;
 		redstoneModuleStates[i] = null;
