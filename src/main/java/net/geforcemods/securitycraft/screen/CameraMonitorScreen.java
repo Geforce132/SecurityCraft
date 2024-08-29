@@ -7,7 +7,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.components.GlobalPositions;
+import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -60,8 +60,8 @@ public class CameraMonitorScreen extends Screen {
 
 		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page - 1)), Button.DEFAULT_NARRATION));
 		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, page + 1)), Button.DEFAULT_NARRATION));
-		GlobalPositions cameras = cameraMonitor.getOrDefault(SCContent.BOUND_CAMERAS, GlobalPositions.sized(CameraMonitorItem.MAX_CAMERAS));
-		List<GlobalPos> views = cameras.positions();
+		NamedPositions cameras = cameraMonitor.getOrDefault(SCContent.BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS);
+		List<NamedPositions.Entry> views = cameras.positions();
 		Level level = Minecraft.getInstance().level;
 		LocalPlayer player = Minecraft.getInstance().player;
 
@@ -71,16 +71,18 @@ public class CameraMonitorScreen extends Screen {
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
 			int aboveCameraButton = y - 8;
-			GlobalPos view = views.get(camID - 1);
-			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, view), Button.DEFAULT_NARRATION));
-			Button unbindButton = addRenderableWidget(SmallButton.createWithX(x + 19, aboveCameraButton, button -> unbindButtonClicked(button, view, camID)));
+			NamedPositions.Entry view = views.get(camID - 1);
+			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, view.globalPos()), Button.DEFAULT_NARRATION));
+			Button unbindButton = addRenderableWidget(SmallButton.createWithX(x + 19, aboveCameraButton, button -> unbindButtonClicked(button, view.globalPos(), camID)));
 
 			cameraButtons[i] = cameraButton;
 			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(Component.literal("" + camID)));
 
 			if (view != null) {
-				BlockPos pos = view.pos();
+				GlobalPos globalPos = view.globalPos();
+				BlockPos pos = globalPos.pos();
 				SecurityCameraBlockEntity cameraBe = level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cameraEntity ? cameraEntity : null;
+				String cameraName = view.name().orElse(null);
 
 				if (cameraBe != null) {
 					BlockState state = level.getBlockState(pos);
@@ -89,8 +91,8 @@ public class CameraMonitorScreen extends Screen {
 						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:scManual.disabled")));
 						cameraButton.active = false;
 					}
-					else if (cameraBe.hasCustomName())
-						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBe.getCustomName())));
+					else if (cameraName == null && cameraBe.hasCustomName())
+						cameraName = cameraBe.getCustomName().getString();
 
 					if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 						if (!cameraBe.isModuleEnabled(ModuleType.REDSTONE))
@@ -102,10 +104,13 @@ public class CameraMonitorScreen extends Screen {
 						redstoneModuleStates[i] = CameraRedstoneModuleState.ACTIVATED;
 				}
 
+				if (cameraButton.active && cameraName != null)
+					cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraName)));
+
 				//op check is done on the server through the command
 				if (player.isCreative()) {
 					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), b -> {
-						player.connection.sendUnsignedCommand(String.format("execute in %s run tp %s %s %s", view.dimension().location(), pos.getX(), pos.getY(), pos.getZ()));
+						player.connection.sendUnsignedCommand(String.format("execute in %s run tp %s %s %s", globalPos.dimension().location(), pos.getX(), pos.getY(), pos.getZ()));
 						minecraft.setScreen(null);
 					}));
 
@@ -163,7 +168,7 @@ public class CameraMonitorScreen extends Screen {
 			Button cameraButton = cameraButtons[i];
 
 			PacketDistributor.sendToServer(new RemoveCameraTag(camera));
-			cameraMonitor.get(SCContent.BOUND_CAMERAS).remove(SCContent.BOUND_CAMERAS, cameraMonitor, camera);
+			cameraMonitor.getOrDefault(SCContent.BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS).remove(SCContent.BOUND_CAMERAS, cameraMonitor, camera);
 			button.active = false;
 			cameraButton.active = false;
 			cameraButton.setTooltip(null);

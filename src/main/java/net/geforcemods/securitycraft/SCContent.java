@@ -188,11 +188,11 @@ import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.components.ListModuleData;
+import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.components.Notes;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.components.SavedBlockState;
-import net.geforcemods.securitycraft.components.SentryPositions;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
@@ -354,10 +354,10 @@ public class SCContent {
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<OwnerData>> OWNER_DATA = DATA_COMPONENTS.registerComponentType("owner", builder -> builder.persistent(OwnerData.CODEC).networkSynchronized(OwnerData.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<PasscodeData>> PASSCODE_DATA = DATA_COMPONENTS.registerComponentType("passcode_data", builder -> builder.persistent(PasscodeData.CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<CodebreakerData>> CODEBREAKER_DATA = DATA_COMPONENTS.registerComponentType("codebreaker_data", builder -> builder.persistent(CodebreakerData.CODEC).networkSynchronized(CodebreakerData.STREAM_CODEC).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPositions>> BOUND_CAMERAS = DATA_COMPONENTS.registerComponentType("bound_cameras", builder -> builder.persistent(GlobalPositions.codec(CameraMonitorItem.MAX_CAMERAS)).networkSynchronized(GlobalPositions.streamCodec(CameraMonitorItem.MAX_CAMERAS)).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<NamedPositions>> BOUND_CAMERAS = DATA_COMPONENTS.registerComponentType("bound_cameras", builder -> builder.persistent(NamedPositions.codec(CameraMonitorItem.MAX_CAMERAS)).networkSynchronized(NamedPositions.streamCodec(CameraMonitorItem.MAX_CAMERAS)).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPositions>> BOUND_MINES = DATA_COMPONENTS.registerComponentType("bound_mines", builder -> builder.persistent(GlobalPositions.codec(MineRemoteAccessToolItem.MAX_MINES)).networkSynchronized(GlobalPositions.streamCodec(MineRemoteAccessToolItem.MAX_MINES)).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<GlobalPositions>> SSS_LINKED_BLOCKS = DATA_COMPONENTS.registerComponentType("sss_linked_blocks", builder -> builder.persistent(GlobalPositions.codec(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS)).networkSynchronized(GlobalPositions.streamCodec(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS)).cacheEncoding());
-	public static final DeferredHolder<DataComponentType<?>, DataComponentType<SentryPositions>> BOUND_SENTRIES = DATA_COMPONENTS.registerComponentType("bound_sentries", builder -> builder.persistent(SentryPositions.CODEC).networkSynchronized(SentryPositions.STREAM_CODEC).cacheEncoding());
+	public static final DeferredHolder<DataComponentType<?>, DataComponentType<NamedPositions>> BOUND_SENTRIES = DATA_COMPONENTS.registerComponentType("bound_sentries", builder -> builder.persistent(NamedPositions.codec(SentryRemoteAccessToolItem.MAX_SENTRIES)).networkSynchronized(NamedPositions.streamCodec(SentryRemoteAccessToolItem.MAX_SENTRIES)).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Notes>> NOTES = DATA_COMPONENTS.registerComponentType("notes", builder -> builder.persistent(Notes.CODEC).networkSynchronized(Notes.STREAM_CODEC).cacheEncoding());
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> UNREINFORCING = DATA_COMPONENTS.registerComponentType("unreinforcing", builder -> builder.persistent(Codec.unit(Unit.INSTANCE)));
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<ListModuleData>> LIST_MODULE_DATA = DATA_COMPONENTS.registerComponentType("list_module_data", builder -> builder.persistent(ListModuleData.CODEC).networkSynchronized(ListModuleData.STREAM_CODEC).cacheEncoding());
@@ -2712,7 +2712,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.register("briefcase", () -> new BriefcaseItem(itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY)));
 	@HasManualPage
-	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(BOUND_CAMERAS, GlobalPositions.sized(CameraMonitorItem.MAX_CAMERAS))));
+	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.register("camera_monitor", () -> new CameraMonitorItem(itemProp(1).component(BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS)));
 	@HasManualPage
 	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.register("codebreaker", () -> new CodebreakerItem(itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT).component(SUCCESS_CHANCE, 0.33D)));
 	@HasManualPage
@@ -2751,7 +2751,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(BOUND_MINES, GlobalPositions.sized(MineRemoteAccessToolItem.MAX_MINES))));
 	@HasManualPage
-	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(BOUND_SENTRIES, SentryPositions.sized(SentryPositions.MAX_SENTRIES))));
+	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(BOUND_SENTRIES, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS)));
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> RIFT_STABILIZER_ITEM = ITEMS.register("rift_stabilizer", () -> new DoubleHighBlockItem(RIFT_STABILIZER.get(), itemProp()));
 	@HasManualPage

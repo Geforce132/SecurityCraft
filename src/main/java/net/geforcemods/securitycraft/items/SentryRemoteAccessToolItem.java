@@ -1,11 +1,10 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.components.SentryPositions;
+import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
@@ -30,6 +29,9 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SentryRemoteAccessToolItem extends Item {
+	public static final int MAX_SENTRIES = 12;
+	public static final NamedPositions DEFAULT_NAMED_POSITIONS = NamedPositions.sized(MAX_SENTRIES);
+
 	public SentryRemoteAccessToolItem(Item.Properties properties) {
 		super(properties);
 	}
@@ -39,7 +41,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!level.isClientSide) {
-			updateTagWithNames(stack, level);
+			updateComponentWithNames(stack, level);
 			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 		}
 
@@ -63,7 +65,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				return InteractionResult.FAIL;
 			}
 
-			SentryPositions positions = stack.get(SCContent.BOUND_SENTRIES);
+			NamedPositions positions = stack.get(SCContent.BOUND_SENTRIES);
 
 			if (positions != null) {
 				GlobalPos globalPos = new GlobalPos(level.dimension(), pos);
@@ -81,7 +83,7 @@ public class SentryRemoteAccessToolItem extends Item {
 			}
 		}
 		else if (!level.isClientSide) {
-			updateTagWithNames(stack, level);
+			updateComponentWithNames(stack, level);
 			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 		}
 
@@ -90,13 +92,13 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		SentryPositions positions = stack.get(SCContent.BOUND_SENTRIES);
+		NamedPositions positions = stack.get(SCContent.BOUND_SENTRIES);
 
 		if (positions != null && !positions.isEmpty()) {
-			List<SentryPositions.Entry> entries = positions.positions();
+			List<NamedPositions.Entry> entries = positions.positions();
 
-			for (int i = 0; i < SentryPositions.MAX_SENTRIES; i++) {
-				SentryPositions.Entry entry = entries.get(i);
+			for (int i = 0; i < SentryRemoteAccessToolItem.MAX_SENTRIES; i++) {
+				NamedPositions.Entry entry = entries.get(i);
 
 				if (entry == null)
 					tooltip.add(Component.literal(ChatFormatting.GRAY + "---"));
@@ -121,42 +123,18 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 	}
 
-	private void updateTagWithNames(ItemStack stack, Level level) {
-		SentryPositions positions = stack.get(SCContent.BOUND_SENTRIES);
+	public static void updateComponentWithNames(ItemStack stack, Level level) {
+		NamedPositions.updateComponentWithNames(SCContent.BOUND_SENTRIES, stack, entry -> {
+			GlobalPos globalPos = entry.globalPos();
 
-		if (positions != null && !positions.isEmpty()) {
-			List<SentryPositions.Entry> newEntries = new ArrayList<>(positions.positions());
-			boolean changed = false;
+			if (level.dimension().equals(globalPos.dimension()) && level.isLoaded(globalPos.pos())) {
+				List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(globalPos.pos()));
 
-			for (int i = 0; i < newEntries.size(); i++) {
-				SentryPositions.Entry entry = newEntries.get(i);
-
-				if (entry != null) {
-					GlobalPos globalPos = entry.globalPos();
-
-					if (level.dimension().equals(globalPos.dimension()) && level.isLoaded(globalPos.pos())) {
-						List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(globalPos.pos()));
-
-						if (!sentries.isEmpty()) {
-							Sentry sentry = sentries.get(0);
-
-							if (sentry.hasCustomName()) {
-								newEntries.set(i, new SentryPositions.Entry(globalPos, Optional.of(sentry.getCustomName().getString())));
-								changed = true;
-								continue;
-							}
-						}
-					}
-					else
-						continue;
-
-					newEntries.set(i, new SentryPositions.Entry(globalPos, Optional.empty()));
-					changed = true;
-				}
+				if (!sentries.isEmpty())
+					return sentries.get(0);
 			}
 
-			if (changed)
-				stack.set(SCContent.BOUND_SENTRIES, new SentryPositions(newEntries));
-		}
+			return null;
+		});
 	}
 }

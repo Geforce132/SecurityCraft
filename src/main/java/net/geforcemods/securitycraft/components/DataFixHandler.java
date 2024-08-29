@@ -16,6 +16,7 @@ import com.mojang.serialization.Dynamic;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
+import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
 import net.minecraft.util.datafix.fixes.References;
@@ -282,7 +283,7 @@ public class DataFixHandler {
 	private static void fixSentryRemoteAccessTool(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic) {
 		List<Dynamic<?>> positions = new ArrayList<>();
 
-		for (int i = 1; i <= SentryPositions.MAX_SENTRIES; i++) {
+		for (int i = 1; i <= SentryRemoteAccessToolItem.MAX_SENTRIES; i++) {
 			Optional<? extends Dynamic<?>> sentry = itemStackData.removeTag("sentry" + i).result();
 
 			if (sentry.isPresent()) {
