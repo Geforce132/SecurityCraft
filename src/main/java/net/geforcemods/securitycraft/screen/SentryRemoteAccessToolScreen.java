@@ -8,9 +8,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.components.SentryPositions;
+import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
+import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.screen.components.IToggleableButton;
@@ -102,7 +103,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				addRenderableWidget(guiButtons[i][j]);
 			}
 
-			SentryPositions.Entry entry = getSentryEntry(i);
+			NamedPositions.Entry entry = getSentryEntry(i);
 
 			if (entry != null) {
 				GlobalPos globalPos = entry.globalPos();
@@ -206,7 +207,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	 * Change the sentry mode, and update GUI buttons state
 	 */
 	protected SetSentryMode.Info performSingleAction(int sentry, int mode, int targets) {
-		SentryPositions.Entry entry = getSentryEntry(sentry);
+		NamedPositions.Entry entry = getSentryEntry(sentry);
 
 		if (entry != null && entry.globalPos() != null) {
 			List<Sentry> sentries = Minecraft.getInstance().player.level().getEntitiesOfClass(Sentry.class, new AABB(entry.globalPos().pos()));
@@ -236,7 +237,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	private void unbindSentry(int sentry) {
-		SentryPositions.Entry entry = getSentryEntry(sentry);
+		NamedPositions.Entry entry = getSentryEntry(sentry);
 
 		if (entry != null && entry.globalPos() != null)
 			removeTagFromToolAndUpdate(srat, entry.globalPos());
@@ -316,11 +317,11 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	/**
 	 * @param sentry 0 based
 	 */
-	private SentryPositions.Entry getSentryEntry(int sentry) {
+	private NamedPositions.Entry getSentryEntry(int sentry) {
 		if (srat.getItem() == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get()) {
-			SentryPositions positions = srat.get(SCContent.BOUND_SENTRIES);
+			NamedPositions positions = srat.get(SCContent.BOUND_SENTRIES);
 
-			if (positions != null && sentry >= 0 && sentry < SentryPositions.MAX_SENTRIES)
+			if (positions != null && sentry >= 0 && sentry < SentryRemoteAccessToolItem.MAX_SENTRIES)
 				return positions.positions().get(sentry);
 		}
 
@@ -328,7 +329,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
-		stack.getOrDefault(SCContent.BOUND_SENTRIES, SentryPositions.DEFAULT).remove(SCContent.BOUND_SENTRIES, stack, pos);
+		stack.getOrDefault(SCContent.BOUND_SENTRIES, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS).remove(SCContent.BOUND_SENTRIES, stack, pos);
 		PacketDistributor.sendToServer(new RemoveSentryFromSRAT(pos));
 	}
 

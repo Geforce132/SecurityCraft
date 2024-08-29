@@ -36,8 +36,8 @@ import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.components.CodebreakerData;
 import net.geforcemods.securitycraft.components.GlobalPositionComponent;
 import net.geforcemods.securitycraft.components.GlobalPositions;
+import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.components.SavedBlockState;
-import net.geforcemods.securitycraft.components.SentryPositions;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -330,7 +330,7 @@ public class ClientHandler {
 					return EMPTY_STATE;
 
 				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, SCContent.BOUND_CAMERAS.get());
-				GlobalPositions positions = stack.get(SCContent.BOUND_CAMERAS);
+				NamedPositions positions = stack.get(SCContent.BOUND_CAMERAS);
 
 				if (positions != null && positions.isEmpty()) {
 					if (linkingState == NOT_LINKED_STATE)
@@ -361,7 +361,7 @@ public class ClientHandler {
 				if (!(entity instanceof Player))
 					return EMPTY_STATE;
 
-				SentryPositions positions = stack.get(SCContent.BOUND_SENTRIES);
+				NamedPositions positions = stack.get(SCContent.BOUND_SENTRIES);
 
 				if (positions != null && Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
 					float linkingState = positions.isPositionAdded(new GlobalPos(level.dimension(), sentry.blockPosition())) ? LINKED_STATE : NOT_LINKED_STATE;

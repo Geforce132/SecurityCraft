@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.components.SentryPositions;
+import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -30,7 +30,7 @@ public record RemoveSentryFromSRAT(GlobalPos globalPos) implements CustomPacketP
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
 		if (!stack.isEmpty()) {
-			SentryPositions sentries = stack.get(SCContent.BOUND_SENTRIES);
+			NamedPositions sentries = stack.get(SCContent.BOUND_SENTRIES);
 
 			if (sentries != null)
 				sentries.remove(SCContent.BOUND_SENTRIES, stack, globalPos);
