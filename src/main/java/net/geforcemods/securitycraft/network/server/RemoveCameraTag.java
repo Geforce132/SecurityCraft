@@ -36,7 +36,7 @@ public class RemoveCameraTag implements IMessage {
 				ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(context.getServerHandler().player, SCContent.cameraMonitor);
 
 				if (!monitor.isEmpty())
-					monitor.getTagCompound().removeTag(CameraMonitorItem.getTagNameFromPosition(monitor.getTagCompound(), CameraMonitorItem.getCameraPositions(monitor.getTagCompound()).get(message.camID - 1)));
+					monitor.getTagCompound().removeTag(CameraMonitorItem.getTagNameFromPosition(monitor.getTagCompound(), CameraMonitorItem.getCameraPositions(monitor.getTagCompound()).get(message.camID - 1).getLeft()));
 			});
 
 			return null;
