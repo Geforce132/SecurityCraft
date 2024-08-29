@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.screen;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -61,7 +63,7 @@ public class CameraMonitorScreen extends Screen {
 
 		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page - 1)), Button.DEFAULT_NARRATION));
 		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraMonitorScreen(playerInventory, cameraMonitor, nbtTag, page + 1)), Button.DEFAULT_NARRATION));
-		List<GlobalPos> views = CameraMonitorItem.getCameraPositions(nbtTag);
+		List<Pair<GlobalPos, String>> views = CameraMonitorItem.getCameraPositions(nbtTag);
 		Level level = Minecraft.getInstance().level;
 		LocalPlayer player = Minecraft.getInstance().player;
 
@@ -71,7 +73,8 @@ public class CameraMonitorScreen extends Screen {
 			int x = leftPos + 18 + (i % 5) * 30;
 			int y = topPos + 30 + (i / 5) * 55;
 			int aboveCameraButton = y - 8;
-			GlobalPos view = views.get(camID - 1);
+			Pair<GlobalPos, String> pair = views.get(camID - 1);
+			GlobalPos view = pair.getLeft();
 			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, buttonId), Button.DEFAULT_NARRATION));
 			Button unbindButton = addRenderableWidget(SmallButton.createWithX(x + 19, y - 8, button -> unbindButtonClicked(button, buttonId)));
 
@@ -81,6 +84,7 @@ public class CameraMonitorScreen extends Screen {
 			if (view != null) {
 				BlockPos pos = view.pos();
 				SecurityCameraBlockEntity cameraBe = level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity camera ? camera : null;
+				String cameraName = pair.getRight();
 
 				if (cameraBe != null) {
 					BlockState state = level.getBlockState(pos);
@@ -89,8 +93,8 @@ public class CameraMonitorScreen extends Screen {
 						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:scManual.disabled")));
 						cameraButton.active = false;
 					}
-					else if (cameraBe.hasCustomName())
-						cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraBe.getCustomName())));
+					else if (cameraName != null && cameraBe.hasCustomName())
+						cameraName = cameraBe.getCustomName().getString();
 
 					if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 						if (!cameraBe.isModuleEnabled(ModuleType.REDSTONE))
@@ -101,6 +105,9 @@ public class CameraMonitorScreen extends Screen {
 					else
 						redstoneModuleStates[i] = CameraRedstoneModuleState.ACTIVATED;
 				}
+
+				if (cameraButton.active && cameraName != null)
+					cameraButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:monitor.cameraName", cameraName)));
 
 				//op check is done on the server through the command
 				if (player.isCreative()) {
@@ -152,7 +159,7 @@ public class CameraMonitorScreen extends Screen {
 
 	private void cameraButtonClicked(Button button, int buttonId) {
 		int camID = buttonId + (page - 1) * 10;
-		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).pos();
+		BlockPos cameraPos = CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).getLeft().pos();
 
 		if (minecraft.level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity camera && (camera.isDisabled() || camera.isShutDown())) {
 			button.active = false;
@@ -169,7 +176,7 @@ public class CameraMonitorScreen extends Screen {
 		Button cameraButton = cameraButtons[i];
 
 		PacketDistributor.SERVER.noArg().send(new RemoveCameraTag(camID));
-		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1)));
+		nbtTag.remove(CameraMonitorItem.getTagNameFromPosition(nbtTag, CameraMonitorItem.getCameraPositions(nbtTag).get(camID - 1).getLeft()));
 		button.active = false;
 		cameraButton.active = false;
 		cameraButton.setTooltip(null);
