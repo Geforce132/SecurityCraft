@@ -83,7 +83,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
@@ -216,7 +215,7 @@ public class SCEventHandler {
 	public static void onLevelLoad(WorldEvent.Load event) {
 		World world = event.getWorld();
 
-		if (world instanceof WorldServer && world.provider.getDimensionType() == DimensionType.OVERWORLD)
+		if (world instanceof WorldServer && world.provider.getDimension() == 0)
 			SaltData.refreshLevel(((WorldServer) world));
 	}
 
@@ -224,7 +223,7 @@ public class SCEventHandler {
 	public static void onLevelUnload(WorldEvent.Unload event) {
 		World level = event.getWorld();
 
-		if (level instanceof WorldServer && level.provider.getDimensionType() == DimensionType.OVERWORLD)
+		if (level instanceof WorldServer && level.provider.getDimension() == 0)
 			SaltData.invalidate();
 	}
 
