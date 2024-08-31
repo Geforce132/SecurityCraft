@@ -243,7 +243,7 @@ public class SCClientEventHandler {
 							EmbeddiumCompat.setPreviousRenderLists();
 
 						if (feed.visibleSections == null) { //Set up the visible sections in the frame's frustum when they haven't been set up yet
-							CameraController.discoverVisibleSections(camera, new Frustum(mc.levelRenderer.getFrustum()).offsetToFullyIncludeCameraCube(8), mc.levelRenderer.visibleSections);
+							CameraController.discoverVisibleSections(camera, new Frustum(mc.levelRenderer.getFrustum()).offsetToFullyIncludeCameraCube(8), mc.options.getEffectiveRenderDistance(), mc.levelRenderer.visibleSections);
 							feed.setup(new ArrayList<>(mc.levelRenderer.visibleSections));
 						}
 					}

@@ -43,6 +43,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
+import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -266,7 +267,7 @@ public class CameraController {
 
 	//adapted from Immersive Portals
 	// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
-	public static void discoverVisibleSections(Camera playerCamera, Frustum cameraFrustum, ObjectArrayList<SectionRenderDispatcher.RenderSection> visibleSectionsList) {
+	public static void discoverVisibleSections(Camera playerCamera, Frustum cameraFrustum, int viewDistance, ObjectArrayList<SectionRenderDispatcher.RenderSection> visibleSectionsList) {
 		ArrayDeque<SectionRenderDispatcher.RenderSection> queueToCheck = new ArrayDeque<>();
 		Set<Long> checkedChunks = new HashSet<>();
 		Vec3 cameraPos = playerCamera.getPosition();
@@ -289,6 +290,9 @@ public class CameraController {
 				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
 				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getStepZ();
 				long posAsLong = BlockPos.asLong(cx, cy, cz);
+
+				if (!ChunkTrackingView.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz))
+					return;
 
 				if (!checkedChunks.contains(posAsLong)) {
 					SectionRenderDispatcher.RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
