@@ -64,6 +64,17 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
+
+	exclusiveContent {
+		forRepository {
+			maven {
+				url "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 dependencies {
@@ -81,6 +92,7 @@ dependencies {
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 	implementation "curse.maven:embeddium-908741:5556146"
+//	implementation "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {

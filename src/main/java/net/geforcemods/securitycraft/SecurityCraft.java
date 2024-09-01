@@ -76,8 +76,6 @@ public class SecurityCraft {
 				ticketHelper.removeAllTickets(uuid);
 		}));
 	});
-	//TODO: Support Sodium when it gets released for NeoForge
-	public static final boolean IS_EMBEDDIUM_INSTALLED = ModList.get().isLoaded("embeddium");
 
 	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
