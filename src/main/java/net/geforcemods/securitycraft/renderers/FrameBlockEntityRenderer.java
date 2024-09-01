@@ -74,22 +74,22 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			case Direction.NORTH:
 				xStart = bottom;
 				xEnd = top;
-				zStart = zEnd = 0.0624F;
+				zStart = zEnd = 0.05F;
 				break;
 			case Direction.SOUTH:
 				xStart = top;
 				xEnd = bottom;
-				zStart = zEnd = 0.9376F;
+				zStart = zEnd = 0.95F;
 				break;
 			case Direction.WEST:
 				zStart = top;
 				zEnd = bottom;
-				xStart = xEnd = 0.0624F;
+				xStart = xEnd = 0.05F;
 				break;
 			case Direction.EAST:
 				zStart = bottom;
 				zEnd = top;
-				xStart = xEnd = 0.9376F;
+				xStart = xEnd = 0.95F;
 				break;
 			default:
 		}
