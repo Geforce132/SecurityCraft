@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -29,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class CameraSelectScreen extends Screen {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
-	private final Component selectCameras = Utils.localize("gui.securitycraft:monitor.selectCameras");
 	private final List<NamedPositions.Entry> cameras;
 	private final Consumer<GlobalPos> onUnbindCamera;
 	private final Consumer<GlobalPos> onViewCamera;
@@ -37,18 +35,18 @@ public class CameraSelectScreen extends Screen {
 	private final Button[] cameraButtons = new Button[10];
 	private final CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int xSize = 176, ySize = 166, leftPos, topPos;
-	private int page = 1;
+	private int page;
 
 	public CameraSelectScreen(List<NamedPositions.Entry> cameras, Consumer<GlobalPos> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton) {
-		super(Component.translatable(SCContent.CAMERA_MONITOR.get().getDescriptionId()));
+		this(cameras, onUnbindCamera, onViewCamera, hasStopButton, 1);
+	}
+
+	public CameraSelectScreen(List<NamedPositions.Entry> cameras, Consumer<GlobalPos> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton, int page) {
+		super(Utils.localize("gui.securitycraft:monitor.selectCameras"));
 		this.cameras = cameras;
 		this.onUnbindCamera = onUnbindCamera;
 		this.onViewCamera = onViewCamera;
 		this.hasStopButton = hasStopButton;
-	}
-
-	public CameraSelectScreen(List<NamedPositions.Entry> cameras, Consumer<GlobalPos> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton, int page) {
-		this(cameras, onUnbindCamera, onViewCamera, hasStopButton);
 		this.page = page;
 	}
 
@@ -143,7 +141,7 @@ public class CameraSelectScreen extends Screen {
 				redstoneModuleState.render(guiGraphics, button.getX() + 4, button.getY() + 25);
 		}
 
-		guiGraphics.drawString(font, selectCameras, leftPos + xSize / 2 - font.width(selectCameras) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, title, leftPos + xSize / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
 	}
 
 	@Override
