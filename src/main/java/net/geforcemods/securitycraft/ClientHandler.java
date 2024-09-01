@@ -780,11 +780,11 @@ public class ClientHandler {
 	}
 
 	public static void displayCameraMonitorScreen(ItemStack stack) {
-		Minecraft.getInstance().setScreen(new CameraSelectScreen(stack.getOrDefault(SCContent.BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS).positions(), pos -> CameraMonitorItem.removeCameraOnClient(pos, stack), pos -> PacketDistributor.sendToServer(new MountCamera(pos.pos())), false));
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(stack.getOrDefault(SCContent.BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS).positions(), pos -> CameraMonitorItem.removeCameraOnClient(pos, stack), pos -> PacketDistributor.sendToServer(new MountCamera(pos.pos())), false, false));
 	}
 
 	public static void displayFrameScreen(FrameBlockEntity be, boolean readOnly) {
-		Minecraft.getInstance().setScreen(new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true));
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null));
 	}
 
 	public static void displaySCManualScreen() {

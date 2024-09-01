@@ -32,21 +32,23 @@ public class CameraSelectScreen extends Screen {
 	private final Consumer<GlobalPos> onUnbindCamera;
 	private final Consumer<GlobalPos> onViewCamera;
 	private final boolean hasStopButton;
+	private final boolean initialStopButtonState;
 	private final Button[] cameraButtons = new Button[10];
 	private final CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int xSize = 176, ySize = 166, leftPos, topPos;
 	private int page;
 
-	public CameraSelectScreen(List<NamedPositions.Entry> cameras, Consumer<GlobalPos> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton) {
-		this(cameras, onUnbindCamera, onViewCamera, hasStopButton, 1);
+	public CameraSelectScreen(List<NamedPositions.Entry> cameras, Consumer<GlobalPos> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton, boolean initialStopButtonState) {
+		this(cameras, onUnbindCamera, onViewCamera, hasStopButton, initialStopButtonState, 1);
 	}
 
-	public CameraSelectScreen(List<NamedPositions.Entry> cameras, Consumer<GlobalPos> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton, int page) {
+	public CameraSelectScreen(List<NamedPositions.Entry> cameras, Consumer<GlobalPos> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton, boolean initialStopButtonState, int page) {
 		super(Utils.localize("gui.securitycraft:monitor.selectCameras"));
 		this.cameras = cameras;
 		this.onUnbindCamera = onUnbindCamera;
 		this.onViewCamera = onViewCamera;
 		this.hasStopButton = hasStopButton;
+		this.initialStopButtonState = initialStopButtonState;
 		this.page = page;
 	}
 
@@ -56,8 +58,8 @@ public class CameraSelectScreen extends Screen {
 		leftPos = (width - xSize) / 2;
 		topPos = (height - ySize) / 2;
 
-		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraSelectScreen(cameras, onUnbindCamera, onViewCamera, hasStopButton, page - 1)), Button.DEFAULT_NARRATION));
-		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraSelectScreen(cameras, onUnbindCamera, onViewCamera, hasStopButton, page + 1)), Button.DEFAULT_NARRATION));
+		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> minecraft.setScreen(new CameraSelectScreen(cameras, onUnbindCamera, onViewCamera, hasStopButton, initialStopButtonState, page - 1)), Button.DEFAULT_NARRATION));
+		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> minecraft.setScreen(new CameraSelectScreen(cameras, onUnbindCamera, onViewCamera, hasStopButton, initialStopButtonState, page + 1)), Button.DEFAULT_NARRATION));
 		Level level = Minecraft.getInstance().level;
 		LocalPlayer player = Minecraft.getInstance().player;
 
@@ -120,9 +122,12 @@ public class CameraSelectScreen extends Screen {
 		}
 
 		if (hasStopButton) {
-			Button stopViewingButton = addRenderableWidget(new Button(width / 2 - 55, height / 2 + 57, 20, 20, Component.literal("x"), b -> cameraButtonClicked(b, null), Button.DEFAULT_NARRATION));
+			Button stopViewingButton = addRenderableWidget(new Button(width / 2 - 55, height / 2 + 57, 20, 20, Component.literal("x"), b -> viewCamera(null), Button.DEFAULT_NARRATION));
 
-			stopViewingButton.setTooltip(Tooltip.create(Component.translatable("gui.securitycraft:monitor.stopViewing")));
+			stopViewingButton.active = initialStopButtonState;
+
+			if (initialStopButtonState)
+				stopViewingButton.setTooltip(Tooltip.create(Component.translatable("gui.securitycraft:monitor.stopViewing")));
 		}
 
 		prevPageButton.active = page != 1;
@@ -151,15 +156,19 @@ public class CameraSelectScreen extends Screen {
 	}
 
 	private void cameraButtonClicked(Button button, GlobalPos camera) {
-		if (camera != null || hasStopButton) {
-			if (camera != null && minecraft.level.getBlockEntity(camera.pos()) instanceof SecurityCameraBlockEntity cameraEntity && (cameraEntity.isDisabled() || cameraEntity.isShutDown())) {
+		if (camera != null) {
+			if (minecraft.level.getBlockEntity(camera.pos()) instanceof SecurityCameraBlockEntity cameraEntity && (cameraEntity.isDisabled() || cameraEntity.isShutDown())) {
 				button.active = false;
 				return;
 			}
 
-			onViewCamera.accept(camera);
-			Minecraft.getInstance().player.closeContainer();
+			viewCamera(camera);
 		}
+	}
+
+	private void viewCamera(GlobalPos camera) {
+		onViewCamera.accept(camera);
+		Minecraft.getInstance().player.closeContainer();
 	}
 
 	private void unbindButtonClicked(Button button, GlobalPos camera, int camID) {
