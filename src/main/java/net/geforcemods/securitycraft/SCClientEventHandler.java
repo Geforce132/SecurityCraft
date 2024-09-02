@@ -16,8 +16,6 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.compat.embeddium.EmbeddiumCompat;
-import net.geforcemods.securitycraft.compat.ium.IumCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraController.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
@@ -230,17 +228,11 @@ public class SCClientEventHandler {
 							mc.levelRenderer.visibleSections.addAll(feed.visibleSections);
 						}
 
-						//TODO: Sodium support
-						if (SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.EMBEDDIUM)
-							EmbeddiumCompat.setEmptyRenderLists();
-
+						SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
 						frameTarget.bindWrite(true);
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 						frameTarget.unbindWrite();
-
-						//TODO: Sodium support
-						if (SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.EMBEDDIUM)
-							EmbeddiumCompat.setPreviousRenderLists();
+						SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
 
 						if (feed.visibleSections == null) { //Set up the visible sections in the frame's frustum when they haven't been set up yet
 							CameraController.discoverVisibleSections(camera, new Frustum(mc.levelRenderer.getFrustum()).offsetToFullyIncludeCameraCube(8), mc.options.getEffectiveRenderDistance(), mc.levelRenderer.visibleSections);

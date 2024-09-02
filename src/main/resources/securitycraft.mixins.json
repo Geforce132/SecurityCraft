@@ -16,8 +16,6 @@
 	"mixins": [
 		"boat.BoatMixin",
 		"camera.ChunkMapMixin",
-		"camera.EmbeddiumRenderSectionManagerMixin",
-		"camera.IEmbeddiumWorldRendererAccessor",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
