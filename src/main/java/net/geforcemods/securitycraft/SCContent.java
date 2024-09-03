@@ -474,14 +474,14 @@ public class SCContent {
 	public static final RegistryObject<Block> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(propDisguisable()));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(propDisguisable(MapColor.METAL)));
+	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(propDisguisable(MapColor.METAL, false)));
 	@HasManualPage
-	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL).noCollission()));
+	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(propDisguisable(MapColor.METAL, false).sound(SoundType.METAL).noCollission()));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(MapColor.METAL, 0.7F).noCollission().sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(propDisguisable(MapColor.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(propDisguisable(MapColor.METAL, false).sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new UsernameLoggerBlock(propDisguisable()));
@@ -3034,11 +3034,20 @@ public class SCContent {
 	}
 
 	private static final BlockBehaviour.Properties propDisguisable() {
-		return propDisguisable(MapColor.STONE);
+		return propDisguisable(MapColor.STONE, true);
 	}
 
 	private static final BlockBehaviour.Properties propDisguisable(MapColor color) {
-		return prop(color).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
+		return propDisguisable(color, true);
+	}
+
+	private static final BlockBehaviour.Properties propDisguisable(MapColor color, boolean forceSolidOn) {
+		BlockBehaviour.Properties props = prop(color).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
+
+		if (forceSolidOn)
+			props = props.forceSolidOn();
+
+		return props;
 	}
 
 	private static final BlockBehaviour.Properties glassProp(MapColor color) {
