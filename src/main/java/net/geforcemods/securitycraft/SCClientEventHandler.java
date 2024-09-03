@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -33,7 +32,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
-import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
@@ -194,9 +192,9 @@ public class SCClientEventHandler {
 
 		//@formatter:off
 		CameraController.FRAME_CAMERA_FEEDS.entrySet()
-		.stream()
-		.filter(cameraView -> cameraView.getKey().dimension().equals(level.dimension()))
-		.forEach(cameraView -> { //@formatter:on
+				.stream()
+				.filter(cameraView -> cameraView.getKey().dimension().equals(level.dimension()))
+				.forEach(cameraView -> { //@formatter:on
 					BlockPos cameraPos = cameraView.getKey().pos();
 
 					if (level.getBlockEntity(cameraPos) instanceof SecurityCameraBlockEntity be) {
@@ -204,7 +202,7 @@ public class SCClientEventHandler {
 							return;
 
 						CameraFeed feed = cameraView.getValue();
-						RenderTarget frameTarget = feed.renderTarget;
+						RenderTarget frameTarget = feed.renderTarget();
 						Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 						Vec3 cameraEntityPos = new Vec3(cameraPos.getX() + 0.5D, cameraPos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, cameraPos.getZ() + 0.5D);
 						float cameraXRot = be.getDefaultXRotation();
@@ -223,9 +221,9 @@ public class SCClientEventHandler {
 
 						//mc.options.setServerRenderDistance(CameraController.cameraViewDistance); //TODO: Limit frame render distance through client config to match behavior of how players receive server chunks
 
-						if (feed.visibleSections != null) {
+						if (feed.visibleSections() != null) {
 							mc.levelRenderer.visibleSections.clear();
-							mc.levelRenderer.visibleSections.addAll(feed.visibleSections);
+							mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 						}
 
 						SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
@@ -233,11 +231,6 @@ public class SCClientEventHandler {
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 						frameTarget.unbindWrite();
 						SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
-
-						if (feed.visibleSections == null) { //Set up the visible sections in the frame's frustum when they haven't been set up yet
-							CameraController.discoverVisibleSections(camera, new Frustum(mc.levelRenderer.getFrustum()).offsetToFullyIncludeCameraCube(8), mc.options.getEffectiveRenderDistance(), mc.levelRenderer.visibleSections);
-							feed.setup(new ArrayList<>(mc.levelRenderer.visibleSections));
-						}
 					}
 				});
 

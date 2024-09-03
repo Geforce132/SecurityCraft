@@ -47,7 +47,10 @@ public class CameraViewAreaExtension { //taken from Immersive Portals
 	}
 
 	public static void setDirty(int cx, int cy, int cz, boolean playerChanged) {
-		provideRenderSectionByChunkPos(cx, cy, cz).setDirty(playerChanged);
+		SectionRenderDispatcher.RenderSection section = rawFetch(cx, cy, cz, false);
+
+		if (section != null)
+			section.setDirty(playerChanged);
 	}
 
 	public static void onChunkUnload(int sectionX, int sectionZ) {
@@ -76,6 +79,12 @@ public class CameraViewAreaExtension { //taken from Immersive Portals
 	}
 
 	public static void clear() {
+		for (Column column : SECTION_COLUMNS.values()) {
+			for (SectionRenderDispatcher.RenderSection section : column.sections) {
+				section.releaseBuffers();
+			}
+		}
+
 		SECTION_COLUMNS.clear();
 	}
 

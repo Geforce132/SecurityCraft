@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -29,7 +29,6 @@ import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirec
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.Util;
-import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -37,7 +36,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
-import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -50,7 +49,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -245,7 +243,15 @@ public class CameraController {
 		Set<BlockPos> bes = FRAME_LINKS.computeIfAbsent(cameraPos, p -> new HashSet<>());
 
 		bes.add(be.getBlockPos());
-		FRAME_CAMERA_FEEDS.putIfAbsent(cameraPos, new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX))); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
+		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, pos -> new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), computeVisibleSections(pos.pos()))); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
+	}
+
+	private static List<SectionRenderDispatcher.RenderSection> computeVisibleSections(BlockPos cameraPos) {
+		Minecraft mc = Minecraft.getInstance();
+		List<SectionRenderDispatcher.RenderSection> visibleSections = new ObjectArrayList<>();
+
+		CameraController.discoverVisibleSections(cameraPos, mc.options.getEffectiveRenderDistance(), visibleSections);
+		return visibleSections;
 	}
 
 	public static void removeFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
@@ -267,16 +273,13 @@ public class CameraController {
 
 	//adapted from Immersive Portals
 	// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
-	public static void discoverVisibleSections(Camera playerCamera, Frustum cameraFrustum, int viewDistance, ObjectArrayList<SectionRenderDispatcher.RenderSection> visibleSectionsList) {
+	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, List<SectionRenderDispatcher.RenderSection> visibleSectionsList) {
 		ArrayDeque<SectionRenderDispatcher.RenderSection> queueToCheck = new ArrayDeque<>();
 		Set<Long> checkedChunks = new HashSet<>();
-		Vec3 cameraPos = playerCamera.getPosition();
-		BlockPos cameraBlockPos = BlockPos.containing(cameraPos);
-		SectionPos cameraSectionPos = SectionPos.of(cameraBlockPos);
+		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
 		SectionRenderDispatcher.RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
 
 		visibleSectionsList.clear();
-		cameraFrustum.prepare(cameraPos.x, cameraPos.y, cameraPos.z);
 		queueToCheck.add(startingSection);
 		visibleSectionsList.add(startingSection);
 
@@ -292,12 +295,12 @@ public class CameraController {
 				long posAsLong = BlockPos.asLong(cx, cy, cz);
 
 				if (!ChunkTrackingView.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz))
-					return;
+					continue;
 
 				if (!checkedChunks.contains(posAsLong)) {
 					SectionRenderDispatcher.RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
 
-					if (neighbourSection != null && cameraFrustum.isVisible(neighbourSection.getBoundingBox())) {
+					if (neighbourSection != null) {
 						queueToCheck.add(neighbourSection);
 						visibleSectionsList.add(neighbourSection);
 						checkedChunks.add(posAsLong);
@@ -341,16 +344,6 @@ public class CameraController {
 		}
 	}
 
-	public static class CameraFeed {
-		public final RenderTarget renderTarget;
-		public ArrayList<SectionRenderDispatcher.RenderSection> visibleSections;
-
-		public CameraFeed(RenderTarget renderTarget) {
-			this.renderTarget = renderTarget;
-		}
-
-		public void setup(ArrayList<SectionRenderDispatcher.RenderSection> visibleSections) {
-			this.visibleSections = visibleSections;
-		}
+	public record CameraFeed (RenderTarget renderTarget, List<RenderSection> visibleSections) {
 	}
 }
