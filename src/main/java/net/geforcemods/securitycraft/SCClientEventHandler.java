@@ -221,11 +221,8 @@ public class SCClientEventHandler {
 
 						//mc.options.setServerRenderDistance(CameraController.cameraViewDistance); //TODO: Limit frame render distance through client config to match behavior of how players receive server chunks
 
-						if (feed.visibleSections() != null) {
-							mc.levelRenderer.visibleSections.clear();
-							mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
-						}
-
+						mc.levelRenderer.visibleSections.clear();
+						mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 						SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
 						frameTarget.bindWrite(true);
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);

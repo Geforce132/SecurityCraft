@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +36,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -246,9 +246,9 @@ public class CameraController {
 		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, pos -> new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), computeVisibleSections(pos.pos()))); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
 	}
 
-	private static List<SectionRenderDispatcher.RenderSection> computeVisibleSections(BlockPos cameraPos) {
+	private static List<RenderSection> computeVisibleSections(BlockPos cameraPos) {
 		Minecraft mc = Minecraft.getInstance();
-		List<SectionRenderDispatcher.RenderSection> visibleSections = new ObjectArrayList<>();
+		List<RenderSection> visibleSections = new ObjectArrayList<>();
 
 		CameraController.discoverVisibleSections(cameraPos, mc.options.getEffectiveRenderDistance(), visibleSections);
 		return visibleSections;
@@ -273,11 +273,11 @@ public class CameraController {
 
 	//adapted from Immersive Portals
 	// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
-	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, List<SectionRenderDispatcher.RenderSection> visibleSectionsList) {
-		ArrayDeque<SectionRenderDispatcher.RenderSection> queueToCheck = new ArrayDeque<>();
+	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, List<RenderSection> visibleSectionsList) {
+		Deque<RenderSection> queueToCheck = new ArrayDeque<>();
 		Set<Long> checkedChunks = new HashSet<>();
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
-		SectionRenderDispatcher.RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
+		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
 
 		visibleSectionsList.clear();
 		queueToCheck.add(startingSection);
@@ -285,7 +285,7 @@ public class CameraController {
 
 		// breadth-first searching
 		while (!queueToCheck.isEmpty()) {
-			SectionRenderDispatcher.RenderSection currentSection = queueToCheck.poll();
+			RenderSection currentSection = queueToCheck.poll();
 			BlockPos origin = currentSection.getOrigin();
 
 			for (Direction dir : Direction.values()) {
@@ -298,7 +298,7 @@ public class CameraController {
 					continue;
 
 				if (!checkedChunks.contains(posAsLong)) {
-					SectionRenderDispatcher.RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
+					RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
 
 					if (neighbourSection != null) {
 						queueToCheck.add(neighbourSection);
@@ -344,6 +344,5 @@ public class CameraController {
 		}
 	}
 
-	public record CameraFeed (RenderTarget renderTarget, List<RenderSection> visibleSections) {
-	}
+	public record CameraFeed(RenderTarget renderTarget, List<RenderSection> visibleSections) {}
 }
