@@ -37,6 +37,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -206,7 +207,7 @@ public class SCClientEventHandler {
 						Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 						Vec3 cameraEntityPos = new Vec3(cameraPos.getX() + 0.5D, cameraPos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, cameraPos.getZ() + 0.5D);
 						float cameraXRot = be.getDefaultXRotation();
-						float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING));
+						float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(partialTick.getGameTimeDeltaPartialTick(false), be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
 
 						securityCamera.setPos(cameraEntityPos);
 						window.setWidth(100);

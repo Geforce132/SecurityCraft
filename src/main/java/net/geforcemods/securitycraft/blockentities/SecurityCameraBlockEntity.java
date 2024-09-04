@@ -36,6 +36,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.MenuProvider;
@@ -94,12 +95,23 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				return;
 			}
 
-			if (addToRotation && getCameraRotation() <= 1.55F)
+			if (down) {
+				cameraRotation = getCameraRotation() + rotationSpeedOption.get();
+
+				if (oCameraRotation >= Mth.TWO_PI) {
+					cameraRotation %= Mth.TWO_PI;
+					oCameraRotation %= Mth.TWO_PI;
+				}
+
+				return;
+			}
+
+			if (addToRotation && getCameraRotation() <= Mth.HALF_PI)
 				cameraRotation = getCameraRotation() + rotationSpeedOption.get();
 			else
 				addToRotation = false;
 
-			if (!addToRotation && getCameraRotation() >= -1.55F)
+			if (!addToRotation && getCameraRotation() >= -Mth.HALF_PI)
 				cameraRotation = getCameraRotation() - rotationSpeedOption.get();
 			else
 				addToRotation = true;
