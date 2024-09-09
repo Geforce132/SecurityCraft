@@ -43,6 +43,7 @@
 - Fix: Cameras do not work from far away when using Sodium
 - Fix: Signs cannot be placed on some blocks
 - Fix: Rain falls directly through disguisable blocks
+- Fix: The Reinforced Lectern is at the wrong position in the creative tab
 
 --------------------------Changelog for v1.9.10-beta9 of SecurityCraft--------------------------
 
