@@ -171,6 +171,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 			be.dropAllModules();
 			//TODO: Does something need to be done in case the Frame shows a camera feed?
+			//No, because the Frame BE's remove method takes care of it
 			level.setBlockAndUpdate(pos, SCContent.KEYPAD.get().defaultBlockState().setValue(KeypadBlock.FACING, level.getBlockState(pos).getValue(FrameBlock.FACING)).setValue(KeypadBlock.POWERED, false));
 			((IOwnable) level.getBlockEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 			return true;

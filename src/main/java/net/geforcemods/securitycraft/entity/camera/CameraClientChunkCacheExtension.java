@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.geforcemods.securitycraft.SecurityCraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,31 +17,44 @@ import net.neoforged.neoforge.event.level.ChunkEvent;
 // TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
 // TODO: As per Immersive Portals' license, it needs to be included in the derivative work
 public class CameraClientChunkCacheExtension { //taken from Immersive Portals
-	// the most chunk accesses are from the main thread,
-	// so we use two maps to reduce synchronization.
-	// the main thread accesses this map, without synchronization
 	private static final Long2ObjectOpenHashMap<LevelChunk> CHUNK_MAP = new Long2ObjectOpenHashMap<>();
-	// other threads read this map, with synchronization
-	//private static final Long2ObjectOpenHashMap<LevelChunk> chunkMapForOtherThreads =
-	//		new Long2ObjectOpenHashMap<>();
-	//TODO: make threadsafe
+	private static final Long2ObjectOpenHashMap<LevelChunk> CHUNK_MAP_OTHER_THREADS = new Long2ObjectOpenHashMap<>();
 
 	public static void drop(ClientLevel level, ChunkPos chunkPos) {
-		LevelChunk chunk = CHUNK_MAP.get(chunkPos.toLong());
+		if (Minecraft.getInstance().isSameThread()) {
+			long chunkPosLong = chunkPos.toLong();
+			LevelChunk chunk = CHUNK_MAP.get(chunkPosLong);
 
-		if (chunk != null) {
-			CHUNK_MAP.remove(chunkPos.toLong());
-			NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
-			level.unload(chunk);
-			SecurityCraftClient.INSTALLED_IUM_MOD.onChunkStatusRemoved(level, chunkPos.x, chunkPos.z);
+			if (chunk != null) {
+				CHUNK_MAP.remove(chunkPosLong);
+
+				synchronized (CHUNK_MAP_OTHER_THREADS) {
+					CHUNK_MAP_OTHER_THREADS.remove(chunkPosLong);
+				}
+
+				NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
+				level.unload(chunk);
+				SecurityCraftClient.INSTALLED_IUM_MOD.onChunkStatusRemoved(level, chunkPos.x, chunkPos.z);
+			}
 		}
 	}
 
 	public static LevelChunk getChunk(int x, int z) {
-		return CHUNK_MAP.get(ChunkPos.asLong(x, z));
+		long chunkPos = ChunkPos.asLong(x, z);
+
+		if (Minecraft.getInstance().isSameThread())
+			return CHUNK_MAP.get(chunkPos);
+		else {
+			synchronized (CHUNK_MAP_OTHER_THREADS) {
+				return CHUNK_MAP_OTHER_THREADS.get(chunkPos);
+			}
+		}
 	}
 
 	public static LevelChunk replaceWithPacketData(ClientLevel level, int x, int z, FriendlyByteBuf packetData, CompoundTag chunkTag, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> tagOutput) {
+		if (!Minecraft.getInstance().isSameThread())
+			throw new RuntimeException("replaceWithPacketData called off-thread, this shouldn't happen!");
+
 		long chunkPos = ChunkPos.asLong(x, z);
 		LevelChunk chunk = CHUNK_MAP.get(chunkPos);
 
@@ -48,6 +62,10 @@ public class CameraClientChunkCacheExtension { //taken from Immersive Portals
 			chunk = new LevelChunk(level, new ChunkPos(x, z));
 			chunk.replaceWithPacketData(packetData, chunkTag, tagOutput);
 			CHUNK_MAP.put(chunkPos, chunk);
+
+			synchronized (CHUNK_MAP_OTHER_THREADS) {
+				CHUNK_MAP_OTHER_THREADS.put(chunkPos, chunk);
+			}
 		}
 		else
 			chunk.replaceWithPacketData(packetData, chunkTag, tagOutput);
@@ -60,5 +78,6 @@ public class CameraClientChunkCacheExtension { //taken from Immersive Portals
 
 	public static void clear() {
 		CHUNK_MAP.clear();
+		CHUNK_MAP_OTHER_THREADS.clear();
 	}
 }
