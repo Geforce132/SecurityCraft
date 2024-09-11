@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,7 +13,6 @@ import java.util.function.Consumer;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -36,6 +36,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.CompiledSection;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -243,15 +244,19 @@ public class CameraController {
 		Set<BlockPos> bes = FRAME_LINKS.computeIfAbsent(cameraPos, p -> new HashSet<>());
 
 		bes.add(be.getBlockPos());
-		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, pos -> new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), computeVisibleSections(pos.pos()))); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
+		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, pos -> setupCameraSections(cameraPos.pos()));
 	}
 
-	private static List<RenderSection> computeVisibleSections(BlockPos cameraPos) {
-		Minecraft mc = Minecraft.getInstance();
-		List<RenderSection> visibleSections = new ObjectArrayList<>();
+	private static CameraFeed setupCameraSections(BlockPos cameraPos) {
+		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
+		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
+		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), new ArrayList<>(), new ArrayList<>(), new HashSet<>()); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
 
-		CameraController.discoverVisibleSections(cameraPos, mc.options.getEffectiveRenderDistance(), visibleSections);
-		return visibleSections;
+		cameraFeed.sectionQueue.add(startingSection);
+		cameraFeed.visibleSections.add(startingSection);
+		cameraFeed.visibleSectionPositions.add(startingSection.getOrigin().asLong());
+		CameraController.discoverVisibleSections(cameraPos, Minecraft.getInstance().options.getEffectiveRenderDistance(), cameraFeed);
+		return cameraFeed;
 	}
 
 	public static void removeFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
@@ -273,37 +278,55 @@ public class CameraController {
 
 	//adapted from Immersive Portals
 	// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
-	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, List<RenderSection> visibleSectionsList) {
-		Deque<RenderSection> queueToCheck = new ArrayDeque<>();
-		Set<Long> checkedChunks = new HashSet<>();
+	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, CameraFeed feed) {
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
-		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
+		List<RenderSection> visibleSections = feed.visibleSections;
+		List<RenderSection> sectionQueue = feed.sectionQueue;
+		Set<Long> visibleSectionPositions = feed.visibleSectionPositions;
+		Deque<RenderSection> queueToCheck = new ArrayDeque<>(sectionQueue);
 
-		visibleSectionsList.clear();
-		queueToCheck.add(startingSection);
-		visibleSectionsList.add(startingSection);
+		sectionQueue.clear();
 
-		// breadth-first searching
 		while (!queueToCheck.isEmpty()) {
 			RenderSection currentSection = queueToCheck.poll();
 			BlockPos origin = currentSection.getOrigin();
+			CompiledSection currentCompiledSection = currentSection.getCompiled();
 
+			if (currentCompiledSection == CompiledSection.UNCOMPILED) {
+				sectionQueue.add(currentSection);
+				continue;
+			}
+
+			//Once a section in the queue is compiled, it knows which neighbours it can and cannot see. We use this information to more cleverly determine which chunks the player can actually see
 			for (Direction dir : Direction.values()) {
 				int cx = SectionPos.blockToSectionCoord(origin.getX()) + dir.getStepX();
 				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
 				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getStepZ();
-				long posAsLong = BlockPos.asLong(cx, cy, cz);
 
 				if (!ChunkTrackingView.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz))
 					continue;
 
-				if (!checkedChunks.contains(posAsLong)) {
-					RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
+				RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
 
-					if (neighbourSection != null) {
-						queueToCheck.add(neighbourSection);
-						visibleSectionsList.add(neighbourSection);
-						checkedChunks.add(posAsLong);
+				if (neighbourSection != null) {
+					long neighbourPosAsLong = neighbourSection.getOrigin().asLong();
+
+					if (!visibleSectionPositions.contains(neighbourPosAsLong)) {
+						boolean canSeeNeighborFace = false;
+
+						for (int j = 0; j < Direction.values().length; j++) {
+							if (currentCompiledSection.facesCanSeeEachother(Direction.values()[j].getOpposite(), dir)) {
+								canSeeNeighborFace = true;
+								break;
+							}
+						}
+
+						if (!canSeeNeighborFace)
+							continue;
+
+						visibleSections.add(neighbourSection); //We add yet uncompiled render sections to the visible sections list, so Minecraft will schedule to compile them
+						visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
+						sectionQueue.add(neighbourSection);
 					}
 				}
 			}
@@ -344,5 +367,5 @@ public class CameraController {
 		}
 	}
 
-	public record CameraFeed(RenderTarget renderTarget, List<RenderSection> visibleSections) {}
+	public record CameraFeed(RenderTarget renderTarget, List<RenderSection> visibleSections, List<RenderSection> sectionQueue, Set<Long> visibleSectionPositions) {}
 }

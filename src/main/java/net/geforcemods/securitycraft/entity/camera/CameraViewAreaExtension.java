@@ -2,13 +2,14 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
-import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.Level;
 
 // TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
 public class CameraViewAreaExtension { //taken from Immersive Portals
-	private static final Long2ObjectOpenHashMap<Column> SECTION_COLUMNS = new Long2ObjectOpenHashMap<>();
+	private static final Long2ObjectOpenHashMap<RenderSection> SECTIONS = new Long2ObjectOpenHashMap<>();
 	private static SectionRenderDispatcher sectionRenderDispatcher;
 	public static int minHeight;
 	public static int minSectionY;
@@ -23,27 +24,14 @@ public class CameraViewAreaExtension { //taken from Immersive Portals
 		sectionsCountY = maxSectionY - minSectionY;
 	}
 
-	public static SectionRenderDispatcher.RenderSection provideRenderSectionByChunkPos(int cx, int cy, int cz) {
-		Column column = provideColumn(ChunkPos.asLong(cx, cz));
-		int offsetChunkY = Mth.clamp(cy - minSectionY, 0, sectionsCountY - 1);
-
-		return column.sections[offsetChunkY];
+	public static RenderSection provideSection(long sectionPos) {
+		return SECTIONS.computeIfAbsent(sectionPos, CameraViewAreaExtension::createSection);
 	}
 
-	public static Column provideColumn(long sectionPos) {
-		return SECTION_COLUMNS.computeIfAbsent(sectionPos, CameraViewAreaExtension::createColumn);
-	}
+	private static RenderSection createSection(long sectionPos) {
+		BlockPos sectionOrigin = SectionPos.of(sectionPos).origin();
 
-	private static Column createColumn(long sectionPos) {
-		SectionRenderDispatcher.RenderSection[] array = new SectionRenderDispatcher.RenderSection[sectionsCountY];
-		int sectionX = ChunkPos.getX(sectionPos);
-		int sectionZ = ChunkPos.getZ(sectionPos);
-
-		for (int offsetCY = 0; offsetCY < sectionsCountY; offsetCY++) {
-			array[offsetCY] = sectionRenderDispatcher.new RenderSection(0, sectionX << 4, (offsetCY << 4) + minHeight, sectionZ << 4);
-		}
-
-		return new Column(array);
+		return sectionRenderDispatcher.new RenderSection(0, sectionOrigin.getX(), sectionOrigin.getY(), sectionOrigin.getZ());
 	}
 
 	public static void setDirty(int cx, int cy, int cz, boolean playerChanged) {
@@ -54,13 +42,12 @@ public class CameraViewAreaExtension { //taken from Immersive Portals
 	}
 
 	public static void onChunkUnload(int sectionX, int sectionZ) {
-		long sectionPos = ChunkPos.asLong(sectionX, sectionZ);
-		Column column = SECTION_COLUMNS.get(sectionPos);
+		for (int sectionY = minSectionY; sectionY < maxSectionY; sectionY++) {
+			long sectionPos = SectionPos.asLong(sectionX, sectionY, sectionZ);
+			RenderSection section = SECTIONS.get(sectionPos);
 
-		if (column != null) {
-			for (SectionRenderDispatcher.RenderSection renderSection : column.sections) {
-				renderSection.reset();
-			}
+			if (section != null)
+				section.reset();
 		}
 	}
 
@@ -68,31 +55,16 @@ public class CameraViewAreaExtension { //taken from Immersive Portals
 		if (cy < minSectionY || cy >= maxSectionY)
 			return null;
 
-		long chunkPos = ChunkPos.asLong(cx, cz);
-		int yOffset = cy - minSectionY;
-		Column column = generateNew ? provideColumn(chunkPos) : SECTION_COLUMNS.get(chunkPos);
+		long sectionPos = SectionPos.asLong(cx, cy, cz);
 
-		if (column == null)
-			return null;
-
-		return column.sections[yOffset];
+		return generateNew ? provideSection(sectionPos) : SECTIONS.get(sectionPos);
 	}
 
 	public static void clear() {
-		for (Column column : SECTION_COLUMNS.values()) {
-			for (SectionRenderDispatcher.RenderSection section : column.sections) {
-				section.releaseBuffers();
-			}
+		for (SectionRenderDispatcher.RenderSection section : SECTIONS.values()) {
+			section.releaseBuffers();
 		}
 
-		SECTION_COLUMNS.clear();
-	}
-
-	public static class Column {
-		public SectionRenderDispatcher.RenderSection[] sections;
-
-		public Column(SectionRenderDispatcher.RenderSection[] sections) {
-			this.sections = sections;
-		}
+		SECTIONS.clear();
 	}
 }

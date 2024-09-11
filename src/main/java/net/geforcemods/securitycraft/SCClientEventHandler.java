@@ -225,6 +225,7 @@ public class SCClientEventHandler {
 						mc.levelRenderer.visibleSections.clear();
 						mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 						SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
+						CameraController.discoverVisibleSections(cameraPos, Minecraft.getInstance().options.getEffectiveRenderDistance(), feed);
 						frameTarget.bindWrite(true);
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 						frameTarget.unbindWrite();
