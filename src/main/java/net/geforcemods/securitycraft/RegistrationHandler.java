@@ -366,9 +366,11 @@ public class RegistrationHandler {
 		}
 		else if (tabKey.equals(SCCreativeModeTabs.DECORATION_TAB.getKey())) {
 			try {
+				event.insertAfter(new ItemStack(SCContent.REINFORCED_LADDER.get()), new ItemStack(SCContent.REINFORCED_SCAFFOLDING_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 				event.insertAfter(new ItemStack(SCContent.REINFORCED_LECTERN.get()), new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			}
 			catch (IllegalArgumentException e) {
+				event.accept(new ItemStack(SCContent.REINFORCED_SCAFFOLDING_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 				event.accept(new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			}
 
