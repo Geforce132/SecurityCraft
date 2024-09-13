@@ -1364,6 +1364,8 @@
 	"option.securitycraft.security_camera.shouldRotate.description": "Should the camera rotate?",
 	"option.securitycraft.sonic_security_system.signalLength": "Time active: %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "How long should the sonic security system unlock blocks/give off a redstone signal after hearing the correct tune? (In ticks, 20 ticks = 1 second)",
+	"option.securitycraft.username_logger.repeatedLogInterval": "Log interval: %s",
+	"option.securitycraft.username_logger.repeatedLogInterval.description": "How many seconds have to pass until the same player can be logged again.",
 	"option.securitycraft.username_logger.searchRadius": "Search radius: %s",
 	"option.securitycraft.username_logger.searchRadius.description": "The range in blocks in which the username logger searches for players.",
 	"securitycraft.configuration.ableToBreakMines": "Able to break mines",

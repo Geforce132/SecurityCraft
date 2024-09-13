@@ -1355,6 +1355,8 @@
 	"option.securitycraft.security_camera.shouldRotate.description": "Soll die Kamera rotieren?",
 	"option.securitycraft.sonic_security_system.signalLength": "Zeit aktiv: %s",
 	"option.securitycraft.sonic_security_system.signalLength.description": "Wie lange soll das Schallsicherheitssystem Blöcke entsperren/ein Redstonesignal ausgeben, nachdem die korrekte Melodie gespielt wurde? (In Ticks, 20 Ticks = 1 Sekunde)",
+	"option.securitycraft.username_logger.repeatedLogInterval": "Protokoll-Intervall: %s",
+	"option.securitycraft.username_logger.repeatedLogInterval.description": "Wie viele Sekunden verstreichen müssen, bis derselbe Spieler wieder protokolliert werden kann.",
 	"option.securitycraft.username_logger.searchRadius": "Suchradius: %s",
 	"option.securitycraft.username_logger.searchRadius.description": "Der Radius in Blöcken, in dem der Protokollierer nach Spielern sucht.",
 	"securitycraft.configuration.ableToBreakMines": "Minen können zerbrochen werden",
