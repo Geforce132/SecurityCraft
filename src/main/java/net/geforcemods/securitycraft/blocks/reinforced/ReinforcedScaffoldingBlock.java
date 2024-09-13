@@ -81,7 +81,7 @@ public class ReinforcedScaffoldingBlock extends ScaffoldingBlock implements Enti
 	}
 
 	public boolean ownsScaffolding(BlockGetter level, BlockPos pos, Entity entity) {
-		return level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(entity);
+		return !(entity instanceof LivingEntity) || level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(entity);
 	}
 
 	@Override

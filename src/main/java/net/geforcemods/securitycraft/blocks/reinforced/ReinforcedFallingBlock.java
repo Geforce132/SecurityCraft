@@ -34,8 +34,8 @@ public class ReinforcedFallingBlock extends BaseReinforcedBlock implements Falla
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
 			BlockEntity be = level.getBlockEntity(pos);
-
 			FallingBlockEntity entity = FallingBlockEntity.fall(level, pos, level.getBlockState(pos));
+
 			entity.blockData = be.saveWithoutMetadata(level.registryAccess());
 			level.addFreshEntity(entity);
 		}
