@@ -5,6 +5,7 @@
 - New: Item tag "securitycraft:keycards" for all keycards (this notably exclused the Limited Use Keycard, as it's merely a crafting component)
 - New: Item tag "securitycraft:keycard_holder_can_hold" for all items that can be put into a Keycard Holder (contains the securitycraft:keycards item tag and the Limited Use Keycard by default)
 - New: Reinforced Soul Sand and Reinforced Magma Block
+- New: Reinforced Scaffolding
 - New: The Block Change Detector can now be placed on walls and the ceiling
 - New: Russian translation (Thanks cutiegin!)
 - New: The Smart Module in a Security Camera now also saves the zoom amount
@@ -17,6 +18,7 @@
 - Change: IMS bombs can no longer be diverted from their path using explosions
 - Change: The "(team)" suffix for owners is now only shown when the team has more than one player in it
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
+- Fix: Turning to a specific page in the SecurityCraft Manual can crash the game
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguising reinforced observers can have visual issues
 - Fix: Disguised secure redstone interfaces have incorrect collision, and are see-through
