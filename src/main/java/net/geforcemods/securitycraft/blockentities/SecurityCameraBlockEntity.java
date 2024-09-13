@@ -358,6 +358,10 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		return movementSpeedOption.get();
 	}
 
+	public boolean shouldRotate() {
+		return shouldRotateOption.get();
+	}
+
 	public float getDefaultXRotation() {
 		return down ? 75F : 30F;
 	}

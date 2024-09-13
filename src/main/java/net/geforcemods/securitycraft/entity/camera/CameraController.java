@@ -250,11 +250,11 @@ public class CameraController {
 	private static CameraFeed setupCameraSections(BlockPos cameraPos) {
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
 		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
-		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), new ArrayList<>(), new ArrayList<>(), new HashSet<>()); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
+		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>()); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
 
-		cameraFeed.sectionQueue.add(startingSection);
-		cameraFeed.visibleSections.add(startingSection);
-		cameraFeed.visibleSectionPositions.add(startingSection.getOrigin().asLong());
+		cameraFeed.compilingSectionsQueue.add(startingSection);
+		cameraFeed.sectionsInRange.add(startingSection);
+		cameraFeed.sectionsInRangePositions.add(startingSection.getOrigin().asLong());
 		CameraController.discoverVisibleSections(cameraPos, Minecraft.getInstance().options.getEffectiveRenderDistance(), cameraFeed);
 		return cameraFeed;
 	}
@@ -280,9 +280,9 @@ public class CameraController {
 	// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
 	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, CameraFeed feed) {
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
-		List<RenderSection> visibleSections = feed.visibleSections;
-		List<RenderSection> sectionQueue = feed.sectionQueue;
-		Set<Long> visibleSectionPositions = feed.visibleSectionPositions;
+		List<RenderSection> visibleSections = feed.sectionsInRange;
+		List<RenderSection> sectionQueue = feed.compilingSectionsQueue;
+		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
 		Deque<RenderSection> queueToCheck = new ArrayDeque<>(sectionQueue);
 
 		sectionQueue.clear();
@@ -367,5 +367,5 @@ public class CameraController {
 		}
 	}
 
-	public record CameraFeed(RenderTarget renderTarget, List<RenderSection> visibleSections, List<RenderSection> sectionQueue, Set<Long> visibleSectionPositions) {}
+	public record CameraFeed(RenderTarget renderTarget, List<RenderSection> sectionsInRange, Set<Long> sectionsInRangePositions, List<RenderSection> visibleSections, List<RenderSection> compilingSectionsQueue) {}
 }

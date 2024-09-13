@@ -32,6 +32,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
+import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
@@ -230,6 +232,17 @@ public class SCClientEventHandler {
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 						frameTarget.unbindWrite();
 						SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
+
+						Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum());
+
+						if (be.shouldRotate() || feed.visibleSections().isEmpty()) {
+							feed.visibleSections().clear();
+
+							for (RenderSection section : feed.sectionsInRange()) {
+								if (frustum.isVisible(section.getBoundingBox()))
+									feed.visibleSections().add(section);
+							}
+						}
 					}
 				});
 
