@@ -53,7 +53,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity { //TODO: Changelo
 		super.setRemoved();
 
 		if (currentCamera != null && activated)
-			switchCameras(null, null);
+			switchCameras(null, null, 0);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity { //TODO: Changelo
 			currentCamera = null;
 		}
 
-		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), Optional.of(cameraPos), Optional.ofNullable(currentCamera)));
+		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(), Optional.of(cameraPos), Optional.ofNullable(currentCamera)));
 	}
 
 	public void removeCamera(GlobalPos cameraPos) {
@@ -123,11 +123,13 @@ public class FrameBlockEntity extends CustomizableBlockEntity { //TODO: Changelo
 	}
 
 	public void setCurrentCameraAndUpdate(GlobalPos camera) {
-		switchCameras(camera, null);
-		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), Optional.empty(), Optional.ofNullable(currentCamera)));
+		int requestedRenderDistance = CameraController.getFrameFeedViewDistance();
+
+		switchCameras(camera, null, requestedRenderDistance);
+		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCamera)));
 	}
 
-	public void switchCameras(GlobalPos newCameraPos, Player player) {
+	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance) {
 		GlobalPos previousCameraPos = getCurrentCamera();
 		boolean shouldBeActive = newCameraPos != null;
 
@@ -144,7 +146,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity { //TODO: Changelo
 
 					if (level.dimension() == newCameraPos.dimension() && level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera) {
 						if (newCamera.isOwnedBy(player) || newCamera.isAllowed(player))
-							newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(serverPlayer.requestedViewDistance(), 2, serverPlayer.server.getPlayerList().getViewDistance()));
+							newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(requestedRenderDistance, 2, serverPlayer.server.getPlayerList().getViewDistance()));
 						else
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", newCamera.getOwner().getName()), ChatFormatting.RED);
 					}

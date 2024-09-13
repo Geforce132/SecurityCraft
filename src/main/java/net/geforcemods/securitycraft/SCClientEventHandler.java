@@ -192,6 +192,11 @@ public class SCClientEventHandler {
 		mc.gameRenderer.setRenderHand(false);
 		mc.gameRenderer.setPanoramicMode(true);
 		mc.levelRenderer.graphicsChanged();
+		mc.options.setServerRenderDistance(CameraController.getFrameFeedViewDistance());
+		window.setWidth(100);
+		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
+		mc.options.setCameraType(CameraType.FIRST_PERSON);
+		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
 
 		//@formatter:off
 		CameraController.FRAME_CAMERA_FEEDS.entrySet()
@@ -212,22 +217,15 @@ public class SCClientEventHandler {
 						float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(partialTick.getGameTimeDeltaPartialTick(false), be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
 
 						securityCamera.setPos(cameraEntityPos);
-						window.setWidth(100);
-						window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
-						mc.options.setCameraType(CameraType.FIRST_PERSON);
 						mc.setCameraEntity(securityCamera);
 						securityCamera.setXRot(cameraXRot);
 						securityCamera.setYRot(cameraYRot);
-						camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
-						mc.renderBuffers().bufferSource().endBatch(); //Makes sure that main world rendering is done
+						mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
 						CameraController.currentlyCapturedCamera = cameraView.getKey();
-
-						//mc.options.setServerRenderDistance(CameraController.cameraViewDistance); //TODO: Limit frame render distance through client config to match behavior of how players receive server chunks
-
 						mc.levelRenderer.visibleSections.clear();
 						mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 						SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
-						CameraController.discoverVisibleSections(cameraPos, Minecraft.getInstance().options.getEffectiveRenderDistance(), feed);
+						CameraController.discoverVisibleSections(cameraPos, CameraController.getFrameFeedViewDistance(), feed);
 						frameTarget.bindWrite(true);
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 						frameTarget.unbindWrite();

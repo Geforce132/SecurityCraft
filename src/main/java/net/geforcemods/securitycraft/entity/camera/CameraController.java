@@ -255,7 +255,7 @@ public class CameraController {
 		cameraFeed.compilingSectionsQueue.add(startingSection);
 		cameraFeed.sectionsInRange.add(startingSection);
 		cameraFeed.sectionsInRangePositions.add(startingSection.getOrigin().asLong());
-		CameraController.discoverVisibleSections(cameraPos, Minecraft.getInstance().options.getEffectiveRenderDistance(), cameraFeed);
+		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(), cameraFeed);
 		return cameraFeed;
 	}
 
@@ -331,6 +331,10 @@ public class CameraController {
 				}
 			}
 		}
+	}
+
+	public static int getFrameFeedViewDistance() {
+		return Math.min(ConfigHandler.CLIENT.frameFeedRenderDistance.get(), Minecraft.getInstance().options.getEffectiveRenderDistance());
 	}
 
 	public static float getMovementSpeed(SecurityCamera cam) {

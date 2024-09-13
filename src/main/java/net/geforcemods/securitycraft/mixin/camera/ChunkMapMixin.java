@@ -57,14 +57,14 @@ public abstract class ChunkMapMixin {
 		}
 
 		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldSendChunksToPlayer(player))) {
-			ChunkTrackingView.difference(player.getChunkTrackingView(), viewedCamera.getCameraFeedChunks(viewDistance), chunkPos -> markChunkPendingToSend(player, chunkPos), chunkPos -> {});
+			ChunkTrackingView.difference(player.getChunkTrackingView(), viewedCamera.getCameraFeedChunks(player), chunkPos -> markChunkPendingToSend(player, chunkPos), chunkPos -> {});
 		}
 
 		Set<ChunkTrackingView> unviewedChunkViews = new HashSet<>();
 
 		if (SecurityCameraBlockEntity.hasRecentlyUnviewedCameras(player)) {
 			for (SecurityCameraBlockEntity viewedCamera : SecurityCameraBlockEntity.fetchRecentlyUnviewedCameras(player)) {
-				unviewedChunkViews.add(viewedCamera.getCameraFeedChunks(viewDistance));
+				unviewedChunkViews.add(viewedCamera.getCameraFeedChunks(player));
 			}
 		}
 

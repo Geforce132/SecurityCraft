@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -34,6 +35,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ChunkTrackingView;
+import net.minecraft.server.level.ChunkTrackingView.Positioned;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -55,7 +57,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
-	private ChunkTrackingView cameraFeedChunks = null;
+	private Map<UUID, ChunkTrackingView> cameraFeedChunks = new HashMap<>();
 	private Set<Long> linkedFrames = new HashSet<>();
 	private Set<ServerPlayer> playersRequestingChunks = new HashSet<>();
 	private boolean down = false, initialized = false;
@@ -284,13 +286,13 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	public void unlinkFrame(BlockPos framePos) {
 		if (linkedFrames.remove(framePos.asLong()) && linkedFrames.isEmpty()) {
 			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
-			int chunkLoadingDistance = getChunkLoadingDistance();
+			int maxChunkLoadingDistance = cameraFeedChunks.values().stream().mapToInt(view -> view instanceof Positioned positioned ? positioned.viewDistance() : 0).max().orElse(0);
 
 			addRecentlyUnviewedCamera(this);
 			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
 
-			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
-				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
+			for (int x = cameraChunkPos.getX() - maxChunkLoadingDistance; x <= cameraChunkPos.getX() + maxChunkLoadingDistance; x++) {
+				for (int z = cameraChunkPos.getZ() - maxChunkLoadingDistance; z <= cameraChunkPos.getZ() + maxChunkLoadingDistance; z++) {
 					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, false, false);
 				}
 			}
@@ -307,27 +309,25 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public void requestChunkSending(ServerPlayer player, int chunkLoadingDistance) {
-		setChunkLoadingDistance(chunkLoadingDistance);
+		setChunkLoadingDistance(player, chunkLoadingDistance);
 		playersRequestingChunks.add(player);
 	}
 
-	public ChunkTrackingView getCameraFeedChunks(int chunkLoadingDistance) {
-		if (cameraFeedChunks == null)
-			cameraFeedChunks = ChunkTrackingView.of(new ChunkPos(worldPosition), chunkLoadingDistance);
-
-		return cameraFeedChunks;
+	public ChunkTrackingView getCameraFeedChunks(ServerPlayer player) {
+		return cameraFeedChunks.get(player.getUUID());
 	}
 
-	public void setChunkLoadingDistance(int chunkLoadingDistance) {
-		cameraFeedChunks = ChunkTrackingView.of(new ChunkPos(worldPosition), chunkLoadingDistance);
-	}
-
-	public int getChunkLoadingDistance() {
-		return cameraFeedChunks instanceof ChunkTrackingView.Positioned positioned ? positioned.viewDistance() : 0;
+	public void setChunkLoadingDistance(ServerPlayer player, int chunkLoadingDistance) {
+		cameraFeedChunks.put(player.getUUID(), ChunkTrackingView.of(new ChunkPos(worldPosition), chunkLoadingDistance));
 	}
 
 	public boolean shouldKeepChunkLoaded(int chunkX, int chunkZ) {
-		return cameraFeedChunks.contains(chunkX, chunkZ);
+		for (ChunkTrackingView view : cameraFeedChunks.values()) {
+			if (view.contains(chunkX, chunkZ))
+				return true;
+		}
+
+		return false;
 	}
 
 	public boolean shouldSendChunksToPlayer(ServerPlayer player) {

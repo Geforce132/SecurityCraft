@@ -14,12 +14,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record SyncFrame(BlockPos pos, Optional<GlobalPos> removedCamera, Optional<GlobalPos> currentCamera) implements CustomPacketPayload {
+public record SyncFrame(BlockPos pos, int requestedRenderDistance, Optional<GlobalPos> removedCamera, Optional<GlobalPos> currentCamera) implements CustomPacketPayload {
 
 	public static final CustomPacketPayload.Type<SyncFrame> TYPE = new CustomPacketPayload.Type<>(SecurityCraft.resLoc("sync_frame"));
 	//@formatter:off
 	public static final StreamCodec<ByteBuf, SyncFrame> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncFrame::pos,
+			ByteBufCodecs.INT, SyncFrame::requestedRenderDistance,
 			ByteBufCodecs.optional(GlobalPos.STREAM_CODEC), SyncFrame::removedCamera,
 			ByteBufCodecs.optional(GlobalPos.STREAM_CODEC), SyncFrame::currentCamera,
 			SyncFrame::new);
@@ -41,7 +42,7 @@ public record SyncFrame(BlockPos pos, Optional<GlobalPos> removedCamera, Optiona
 				removedCamera.ifPresent(be::removeCamera);
 
 			if (isOwner || be.isAllowed(player))
-				be.switchCameras(currentCamera, player);
+				be.switchCameras(currentCamera, player, requestedRenderDistance);
 		}
 	}
 }
