@@ -34,6 +34,7 @@
 - Fix: Potential crash
 - Fix: Setting the signal length option to 0 on a Keypad Trapdoor makes the trapdoor not open at all
 - Fix: Block Pocket and Block Change Detector outline/block highlights are drawn too thin at certain angles
+- Fix: The Reinforced Lectern is at the wrong position in the creative tab
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
 
