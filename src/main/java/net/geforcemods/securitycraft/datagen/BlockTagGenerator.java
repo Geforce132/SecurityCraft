@@ -369,7 +369,9 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_WATER_CAULDRON.get(),
 				SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get());
 		tag(BlockTags.CEILING_HANGING_SIGNS).addTag(SCTags.Blocks.SECRET_CEILING_HANGING_SIGNS);
-		tag(BlockTags.CLIMBABLE).add(SCContent.REINFORCED_LADDER.get());
+		tag(BlockTags.CLIMBABLE).add(
+				SCContent.REINFORCED_LADDER.get(),
+				SCContent.REINFORCED_SCAFFOLDING.get());
 		tag(BlockTags.CRYSTAL_SOUND_BLOCKS).add(SCContent.REINFORCED_AMETHYST_BLOCK.get());
 		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.DEAD_BUSH_MAY_PLACE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_DIRT);
