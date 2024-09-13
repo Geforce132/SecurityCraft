@@ -162,6 +162,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRootedDirtBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedScaffoldingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSoulSandBlock;
@@ -210,6 +211,7 @@ import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
+import net.geforcemods.securitycraft.items.ReinforcedScaffoldingBlockItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.SecretSignItem;
 import net.geforcemods.securitycraft.items.SentryItem;
@@ -2114,6 +2116,9 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final RegistryObject<Block> REINFORCED_BLACK_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_black_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.BLACK.getMaterialColor()), Blocks.BLACK_GLAZED_TERRACOTTA));
+	@OwnableBE
+	@Reinforced(registerBlockItem = false)
+	public static final RegistryObject<Block> REINFORCED_SCAFFOLDING = BLOCKS.register("reinforced_scaffolding", () -> new ReinforcedScaffoldingBlock(reinforcedCopy(Blocks.SCAFFOLDING)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2380,6 +2385,8 @@ public class SCContent {
 	public static final RegistryObject<Item> SCANNER_DOOR_ITEM = ITEMS.register("scanner_door_item", () -> new DoubleHighBlockItem(SCANNER_DOOR.get(), itemProp(SecurityCraft.DECORATION_TAB)));
 	@HasManualPage
 	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
+	@HasManualPage(PageGroup.REINFORCED)
+	public static final RegistryObject<Item> REINFORCED_SCAFFOLDING_ITEM = ITEMS.register("reinforced_scaffolding", () -> new ReinforcedScaffoldingBlockItem(itemProp(SecurityCraft.DECORATION_TAB, 1)));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB, 16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), "item.securitycraft.secret_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
