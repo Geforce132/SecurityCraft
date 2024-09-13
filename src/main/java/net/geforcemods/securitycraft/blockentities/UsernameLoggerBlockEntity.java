@@ -25,6 +25,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
+	private IntOption repeatedLogInterval = new IntOption(this::getBlockPos, "repeatedLogInterval", 1, 1, 120, 1);
 	private String[] players = new String[100];
 	private String[] uuids = new String[100];
 	private long[] timestamps = new long[100];
@@ -73,8 +74,10 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
+		long timeout = repeatedLogInterval.get() * 1000L;
+
 		for (int i = 0; i < getPlayers().length; i++) {
-			if (getPlayers()[i] != null && getPlayers()[i].equals(username) && (getTimestamps()[i] + 1000L) > timestamp) //was within the last second that the same player was last added
+			if (getPlayers()[i] != null && getPlayers()[i].equals(username) && (getTimestamps()[i] + timeout) > timestamp) //was within the timeout that the same player was last added
 				return true;
 		}
 
@@ -122,7 +125,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
-				searchRadius, disabled, ignoreOwner, respectInvisibility
+				searchRadius, disabled, ignoreOwner, respectInvisibility, repeatedLogInterval
 		};
 	}
 
