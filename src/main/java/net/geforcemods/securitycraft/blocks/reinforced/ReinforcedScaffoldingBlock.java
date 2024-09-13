@@ -55,6 +55,14 @@ public class ReinforcedScaffoldingBlock extends ScaffoldingBlock implements Enti
 	}
 
 	@Override
+	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		if (ctx instanceof EntityCollisionContext ectx && ownsScaffolding(level, pos, ectx.getEntity()))
+			return super.getShape(state, level, pos, ctx);
+		else
+			return state.getValue(BOTTOM) ? UNSTABLE_SHAPE : STABLE_SHAPE;
+	}
+
+	@Override
 	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		if (ctx instanceof EntityCollisionContext ectx && ownsScaffolding(level, pos, ectx.getEntity()))
 			return super.getCollisionShape(state, level, pos, ctx);

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedScaffoldingBlock;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -31,6 +32,10 @@ public class ReinforcedScaffoldingBlockItem extends ScaffoldingBlockItem {
 			return ReinforcedScaffoldingBlock.getDistance(level, pos) == 7 ? null : ctx;
 		else {
 			Player player = ctx.getPlayer();
+
+			if (level.getBlockEntity(pos) instanceof IOwnable scaffolding && !scaffolding.isOwnedBy(player))
+				return ctx;
+
 			Direction direction;
 			int distance = 0;
 			int maxBuildHeight = level.getMaxBuildHeight();
