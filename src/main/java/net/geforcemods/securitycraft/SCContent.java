@@ -2386,7 +2386,7 @@ public class SCContent {
 	@HasManualPage
 	public static final RegistryObject<Item> SC_MANUAL = ITEMS.register("sc_manual", () -> new SCManualItem(itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
 	@HasManualPage(PageGroup.REINFORCED)
-	public static final RegistryObject<Item> REINFORCED_SCAFFOLDING_ITEM = ITEMS.register("reinforced_scaffolding", () -> new ReinforcedScaffoldingBlockItem(itemProp(SecurityCraft.DECORATION_TAB, 1)));
+	public static final RegistryObject<Item> REINFORCED_SCAFFOLDING_ITEM = ITEMS.register("reinforced_scaffolding", () -> new ReinforcedScaffoldingBlockItem(itemProp(SecurityCraft.DECORATION_TAB)));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_OAK_SIGN_ITEM = ITEMS.register("secret_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB, 16), SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), "item.securitycraft.secret_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
