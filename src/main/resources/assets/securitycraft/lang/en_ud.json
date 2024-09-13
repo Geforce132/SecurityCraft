@@ -1364,6 +1364,8 @@
 	"option.securitycraft.security_camera.shouldRotate.description": "¿ǝʇɐʇoɹ ɐɹǝɯɐɔ ǝɥʇ pꞁnoɥS",
 	"option.securitycraft.sonic_security_system.signalLength": "%s :ǝʌᴉʇɔɐ ǝɯᴉ⟘",
 	"option.securitycraft.sonic_security_system.signalLength.description": "(puoɔǝs ⥝ = sʞɔᴉʇ 0ᘔ 'sʞɔᴉʇ uI) ¿ǝunʇ ʇɔǝɹɹoɔ ǝɥʇ ᵷuᴉɹɐǝɥ ɹǝʇɟɐ ꞁɐuᵷᴉs ǝuoʇspǝɹ ɐ ɟɟo ǝʌᴉᵷ/sʞɔoꞁq ʞɔoꞁun ɯǝʇsʎs ʎʇᴉɹnɔǝs ɔᴉuos ǝɥʇ pꞁnoɥs ᵷuoꞁ ʍoH",
+	"option.securitycraft.username_logger.repeatedLogInterval": "%s :ꞁɐʌɹǝʇuᴉ ᵷoꞀ",
+	"option.securitycraft.username_logger.repeatedLogInterval.description": "˙uᴉɐᵷɐ pǝᵷᵷoꞁ ǝq uɐɔ ɹǝʎɐꞁd ǝɯɐs ǝɥʇ ꞁᴉʇun ssɐd oʇ ǝʌɐɥ spuoɔǝs ʎuɐɯ ʍoH",
 	"option.securitycraft.username_logger.searchRadius": "%s :snᴉpɐɹ ɥɔɹɐǝS",
 	"option.securitycraft.username_logger.searchRadius.description": "˙sɹǝʎɐꞁd ɹoɟ sǝɥɔɹɐǝs ɹǝᵷᵷoꞁ ǝɯɐuɹǝsn ǝɥʇ ɥɔᴉɥʍ uᴉ sʞɔoꞁq uᴉ ǝᵷuɐɹ ǝɥ⟘",
 	"securitycraft.option.default": "(%s ɟo ʇꞁnɐɟǝᗡ)",
