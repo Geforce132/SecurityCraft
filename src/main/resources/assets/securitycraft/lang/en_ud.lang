@@ -721,6 +721,8 @@ option.securitycraft:securityCamera.shouldRotate.description=¿ǝʇɐʇoɹ ɐɹ�
 option.securitycraft:securityCamera.shouldRotate=%s :ǝʇɐʇoɹ pꞁnoɥS
 option.securitycraft:sonic_security_system.signalLength.description=(puoɔǝs ⥝ = sʞɔᴉʇ 0ᘔ 'sʞɔᴉʇ uI) ¿ǝunʇ ʇɔǝɹɹoɔ ǝɥʇ ᵷuᴉɹɐǝɥ ɹǝʇɟɐ ꞁɐuᵷᴉs ǝuoʇspǝɹ ɐ ɟɟo ǝʌᴉᵷ/sʞɔoꞁq ʞɔoꞁun ɯǝʇsʎs ʎʇᴉɹnɔǝs ɔᴉuos ǝɥʇ pꞁnoɥs ᵷuoꞁ ʍoH
 option.securitycraft:sonic_security_system.signalLength=%s :ǝʌᴉʇɔɐ ǝɯᴉ⟘
+option.securitycraft:usernameLogger.repeatedLogInterval.description=˙uᴉɐᵷɐ pǝᵷᵷoꞁ ǝq uɐɔ ɹǝʎɐꞁd ǝɯɐs ǝɥʇ ꞁᴉʇun ssɐd oʇ ǝʌɐɥ spuoɔǝs ʎuɐɯ ʍoH
+option.securitycraft:usernameLogger.repeatedLogInterval=%s :ꞁɐʌɹǝʇuᴉ ᵷoꞀ
 option.securitycraft:usernameLogger.searchRadius.description=˙sɹǝʎɐꞁd ɹoɟ sǝɥɔɹɐǝs ɹǝᵷᵷoꞁ ǝɯɐuɹǝsn ǝɥʇ ɥɔᴉɥʍ uᴉ sʞɔoꞁq uᴉ ǝᵷuɐɹ ǝɥ⟘
 option.securitycraft:usernameLogger.searchRadius=%s :snᴉpɐɹ ɥɔɹɐǝS
 securitycraft.generic_value=%s :%s
