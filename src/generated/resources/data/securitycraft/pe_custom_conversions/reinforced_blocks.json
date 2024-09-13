@@ -2362,6 +2362,12 @@
       },
       {
         "ingredients": [
+          "minecraft:scaffolding"
+        ],
+        "output": "securitycraft:reinforced_scaffolding"
+      },
+      {
+        "ingredients": [
           "minecraft:lantern"
         ],
         "output": "securitycraft:reinforced_lantern"
