@@ -23,7 +23,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
-	private IntOption repeatedLogInterval = new IntOption(this::getBlockPos, "repeatedLogInterval", 1, 1, 120, 1);
+	private IntOption repeatedLogInterval = new IntOption(this::getPos, "repeatedLogInterval", 1, 1, 120, 1);
 	private String[] players = new String[100];
 	private String[] uuids = new String[100];
 	private long[] timestamps = new long[100];
