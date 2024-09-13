@@ -94,6 +94,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.KEYPAD_CHEST_ITEM,
 				SCContent.LENS,
 				SCContent.REDSTONE_MODULE,
+				SCContent.REINFORCED_SCAFFOLDING_ITEM,
 				SCContent.SPEED_MODULE,
 				SCContent.TASER,
 				SCContent.TASER_POWERED,
@@ -143,6 +144,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
 		simpleParent(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "reinforced_iron_trapdoor_bottom");
+		parent(name(SCContent.REINFORCED_SCAFFOLDING_ITEM.get()), modBlock("reinforced_scaffolding_stable"));
 		reinforcedWallInventory(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(), "mossy_stone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_STONE_BRICK_WALL.get(), "stone_bricks");
@@ -279,5 +281,9 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	private String name(Block block) {
 		return block.getRegistryName().getPath();
+	}
+
+	private String name(Item item) {
+		return item.getRegistryName().getPath();
 	}
 }

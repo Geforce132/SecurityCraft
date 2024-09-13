@@ -298,6 +298,7 @@ public class ClientHandler {
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_IRON_TRAPDOOR.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LANTERN.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LADDER.get(), cutout);
+		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_SCAFFOLDING.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_SOUL_LANTERN.get(), cutout);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), translucent);
 		RenderTypeLookup.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get(), translucent);
@@ -431,7 +432,7 @@ public class ClientHandler {
 				return EMPTY_STATE;
 
 			if (Minecraft.getInstance().crosshairPickEntity instanceof Sentry) {
-				float linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), ((Sentry) Minecraft.getInstance().crosshairPickEntity).blockPosition());
+				float linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getOrCreateTag(), Minecraft.getInstance().crosshairPickEntity.blockPosition());
 
 				if (!SentryRemoteAccessToolItem.hasSentryAdded(stack.getTag())) {
 					if (linkingState == NOT_LINKED_STATE)
