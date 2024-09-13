@@ -723,6 +723,8 @@ option.securitycraft:securityCamera.shouldRotate.description=Должна ли �
 option.securitycraft:securityCamera.shouldRotate=Должна вращаться: %s
 option.securitycraft:sonic_security_system.signalLength.description=Как долго звуковая система безопасности должна разблокировать блоки/выдавать сигнал редстоуна после услышания правильной мелодии? (В тиках, 20 тиков = 1 секунда)
 option.securitycraft:sonic_security_system.signalLength=Активное время: %s
+option.securitycraft:usernameLogger.repeatedLogInterval.description=Сколько секунд должно пройти, прежде чем тот же игрок может быть снова записан.
+option.securitycraft:usernameLogger.repeatedLogInterval=Интервал записи: %s
 option.securitycraft:usernameLogger.searchRadius.description=Диапазон в блоках, в котором регистратор имён пользователей ищет игроков.
 option.securitycraft:usernameLogger.searchRadius=Радиус поиска: %s
 securitycraft.generic_value=%s: %s
