@@ -1379,6 +1379,8 @@
 	"securitycraft.configuration.enable_team_ownership.tooltip": "Wenn aktiviert, besitzt jeder Spieler in einem Scoreboard-Team (oder FTB Teams Party) alle Blöcke jedes anderen Spielers im selben Team.\nDies erlaubt es Spielern im selben Team, die verstärkten Blöcke des jeweils Anderen zu zerbrechen, Optionen zu ändern, Module hinzuzufügen oder zu entfernen, und Zugriff auf alle anderen Besitzer-restriktierten Dinge.",
 	"securitycraft.configuration.force_reinforced_block_tint": "Verfärbung verstärkter Blöcke erzwingen",
 	"securitycraft.configuration.force_reinforced_block_tint.tooltip": "Wenn aktiviert, überschreibt der Server die Einstellung von reinforced_block_tint für jeden Spieler.",
+	"securitycraft.configuration.frame_feed_render_distance": "Rahmenübertragungs-Sichtweite",
+	"securitycraft.configuration.frame_feed_render_distance.tooltip": "Bestimmt den Radius, in welchem die Chunks, die innerhalb einer Rahmenübertragung liegen, geladen und angezeigt werden. Falls diese Konfiguration einen höheren Wert als die \"Sichtweite\"-Option oder die \"view-distance\"-Servereinstellung hat, wird stattdessen der kleinere Wert verwendet.",
 	"securitycraft.configuration.in_world_un_reinforcing": "In-der-Welt-Verstärken aktivieren",
 	"securitycraft.configuration.in_world_un_reinforcing.tooltip": "Wenn deaktiviert, kann der Universelle Blockverstärker Blöcke, die in der Welt platziert sind, nicht mehr verstärken, bzw. deren Verstärkung entfernen.",
 	"securitycraft.configuration.incorrectPasscodeDamage": "Schaden für inkorrektes Passwort",
