@@ -93,7 +93,6 @@ import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -726,17 +725,8 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, true));
 	}
 
-	public static void displayUsernameLoggerScreen(BlockPos pos) {
-		TileEntity te = Minecraft.getInstance().level.getBlockEntity(pos);
-
-		if (te instanceof UsernameLoggerBlockEntity) {
-			UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) te;
-
-			if (be.isDisabled())
-				getClientPlayer().displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else
-				Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
-		}
+	public static void displayUsernameLoggerScreen(UsernameLoggerBlockEntity be) {
+		Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
 	}
 
 	public static void displayUniversalKeyChangerScreen(TileEntity be) {
