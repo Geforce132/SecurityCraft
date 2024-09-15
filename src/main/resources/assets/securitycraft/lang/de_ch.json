@@ -1227,7 +1227,7 @@
 	"module.securitycraft.trophy_system.smart_module.description": "Ein schlaues Modul in einem Trophy-System lässt dich einstellen, welche Arten von Projektilen das Trophy-System anvisieren darf.",
 	"module.securitycraft.trophy_system.speed_module.description": "Ein Schnelligkeits-Modul in einem Trophy-System erlaubt es seine Ziele doppelt so schnell zu zerstören.",
 	"module.securitycraft.trophy_system.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Trophy-System lässt es Projektile, die von zugelassenen Spielern geworfen wurden, sowie Kugeln ihrer Geschütze und Bomben ihrer I.M.S. ignorieren.",
-	"module.securitycraft.username_logger.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die zugelassenen Spieler protokolliert werden.",
+	"module.securitycraft.username_logger.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Nutzernamen-Protokollierer verhindert, dass die zugelassenen Spieler protokolliert werden. Außerdem können zugelassene Spieler die Liste an protokollierten Spielern einsehen.",
 	"option.generic.disabled": "Deaktiviert: %s",
 	"option.generic.disabled.description": "Soll dieser Block deaktiviert werden, sodass er bis zum Reaktivieren nicht mehr funktioniert?",
 	"option.generic.ignoreOwner": "Besitzer ignorieren: %s",
