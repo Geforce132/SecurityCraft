@@ -18,6 +18,7 @@
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions
 - Change: The "(team)" suffix for owners is now only shown when the team has more than one player in it
+- Change: Only the owner and allowlisted players are now able to access a Username Logger
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - Fix: Turning to a specific page in the SecurityCraft Manual can crash the game
 - Fix: The Alarm ceases to emit any sound when selecting a different sound

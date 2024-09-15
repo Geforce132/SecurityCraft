@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
@@ -151,6 +152,11 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displaySonicSecuritySystemScreen(sss);
 
 				break;
+			case USERNAME_LOGGER:
+				if (level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity logger)
+					ClientHandler.displayUsernameLoggerScreen(logger);
+
+				break;
 			default:
 				throw new IllegalStateException("Unhandled data type: " + dataType.name());
 		}
@@ -169,7 +175,8 @@ public class OpenScreen implements CustomPacketPayload {
 		SET_PASSCODE(true),
 		SET_PASSCODE_FOR_BRIEFCASE(false),
 		SET_PASSCODE_FOR_ENTITY(false),
-		SONIC_SECURITY_SYSTEM(true);
+		SONIC_SECURITY_SYSTEM(true),
+		USERNAME_LOGGER(true);
 
 		public final boolean needsPosition;
 
