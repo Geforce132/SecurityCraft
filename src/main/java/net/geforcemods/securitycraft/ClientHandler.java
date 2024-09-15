@@ -735,13 +735,8 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, true));
 	}
 
-	public static void displayUsernameLoggerScreen(BlockPos pos) {
-		if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be) {
-			if (be.isDisabled())
-				getClientPlayer().displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else
-				Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
-		}
+	public static void displayUsernameLoggerScreen(UsernameLoggerBlockEntity be) {
+		Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
 	}
 
 	public static void displayUniversalKeyChangerScreen(BlockEntity be) {
