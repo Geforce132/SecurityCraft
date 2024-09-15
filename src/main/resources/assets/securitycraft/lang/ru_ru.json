@@ -1277,7 +1277,7 @@
 	"module.securitycraft.trophy_system.smart_module.description": "Добавление умного модуля к системе трофеев позволит вам настроить, какие типы снарядов система трофеев может целиться.",
 	"module.securitycraft.trophy_system.speed_module.description": "Добавление модуля скорости к системе трофеев позволяет ей уничтожать цели в два раза быстрее.",
 	"module.securitycraft.trophy_system.whitelist_module.description": "Добавление модуля списка разрешений к системе трофеев заставит его игнорировать снаряды, брошенные перечисленными игроками, а также пули их турелей и бомбы ИСМ",
-	"module.securitycraft.username_logger.whitelist_module.description": "Добавление модуля списка разрешений к регистратору имён пользователей предотвратит регистрацию перечисленных игроков.",
+	"module.securitycraft.username_logger.whitelist_module.description": "Добавление модуля списка разрешений к регистратору имён пользователей предотвратит регистрацию перечисленных игроков, а также позволит им получить доступ к списку зарегистрированных игроков.",
 	"option.generic.disabled": "Отключено: %s",
 	"option.generic.disabled.description": "Должен ли этот блок быть отключён, то есть он больше не будет работать, пока его снова не включат?",
 	"option.generic.ignoreOwner": "Игнорировать владельца: %s",
