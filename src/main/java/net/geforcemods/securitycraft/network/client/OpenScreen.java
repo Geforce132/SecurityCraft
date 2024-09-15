@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -124,6 +125,11 @@ public class OpenScreen {
 					ClientHandler.displayUniversalKeyChangerScreen((BlockEntity) passcodeProtected);
 
 				break;
+			case USERNAME_LOGGER:
+				if (Minecraft.getInstance().level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity logger)
+					ClientHandler.displayUsernameLoggerScreen(logger);
+
+				break;
 			default:
 				throw new IllegalStateException("Unhandled data type: " + dataType.name());
 		}
@@ -139,7 +145,8 @@ public class OpenScreen {
 		SET_BRIEFCASE_PASSCODE(false),
 		SET_PASSCODE(true),
 		SONIC_SECURITY_SYSTEM(true),
-		UNIVERSAL_KEY_CHANGER(true);
+		UNIVERSAL_KEY_CHANGER(true),
+		USERNAME_LOGGER(true);
 
 		public final boolean needsPosition;
 
