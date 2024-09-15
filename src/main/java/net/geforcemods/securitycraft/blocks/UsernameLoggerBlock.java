@@ -42,7 +42,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 		if (tile instanceof UsernameLoggerBlockEntity) {
 			UsernameLoggerBlockEntity te = (UsernameLoggerBlockEntity) tile;
 
-			if (!world.isRemote) {
+			if (!world.isRemote && (te.isOwnedBy(player) || te.isAllowed(player))) {
 				if (te.isDisabled())
 					player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
