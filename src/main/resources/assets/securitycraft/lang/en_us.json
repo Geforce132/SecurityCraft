@@ -1265,7 +1265,7 @@
 	"module.securitycraft.trophy_system.smart_module.description": "Adding a smart module to a Trophy System will allow you to configure which projectile types the Trophy System is allowed to target.",
 	"module.securitycraft.trophy_system.speed_module.description": "Adding a speed module to a Trophy System allows it to destroy targets twice as fast.",
 	"module.securitycraft.trophy_system.whitelist_module.description": "Adding an allowlist module to a Trophy System will make it ignore projectiles thrown by listed players, as well as their Sentries' bullets and I.M.S.' bombs.",
-	"module.securitycraft.username_logger.whitelist_module.description": "Adding an allowlist module to a Username Logger will prevent the listed players from being logged.",
+	"module.securitycraft.username_logger.whitelist_module.description": "Adding an allowlist module to a Username Logger will prevent the listed players from being logged, as well as allow them to access the list of logged players.",
 	"option.generic.disabled": "Disabled: %s",
 	"option.generic.disabled.description": "Should this block be disabled, making it no longer work until it is enabled again?",
 	"option.generic.ignoreOwner": "Ignore Owner: %s",

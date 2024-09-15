@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -114,7 +113,7 @@ public class CageTrapBlock extends DisguisableBlock {
 						if (barPos.equals(topMiddle))
 							level.setBlockAndUpdate(barPos, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
 						else
-							level.setBlockAndUpdate(barPos, ((ReinforcedPaneBlock) SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(level, barPos));
+							level.setBlockAndUpdate(barPos, SCContent.REINFORCED_IRON_BARS.get().getStateForPlacement(level, barPos));
 					}
 
 					BlockEntity barBe = level.getBlockEntity(barPos);
