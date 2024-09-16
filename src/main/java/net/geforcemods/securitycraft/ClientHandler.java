@@ -101,7 +101,6 @@ import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
