@@ -334,7 +334,7 @@ public class CameraController {
 	}
 
 	public static int getFrameFeedViewDistance() {
-		return Math.min(ConfigHandler.CLIENT.frameFeedRenderDistance.get(), Minecraft.getInstance().options.getEffectiveRenderDistance());
+		return Math.min(ConfigHandler.CLIENT.frameFeedRenderDistance.get(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), Minecraft.getInstance().options.getEffectiveRenderDistance()));
 	}
 
 	public static float getMovementSpeed(SecurityCamera cam) {

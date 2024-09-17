@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.components.NamedPositions;
@@ -64,7 +65,9 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (stack.getItem() == SCContent.CAMERA_MONITOR.get() && level.getBlockEntity(pos) instanceof FrameBlockEntity be && be.isOwnedBy(player)) {
-			if (stack.has(SCContent.BOUND_CAMERAS.get())) {
+			if (!ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.disabled"), ChatFormatting.RED);
+			else if (stack.has(SCContent.BOUND_CAMERAS.get())) {
 				NamedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 				if (!cameras.isEmpty()) {
@@ -90,6 +93,8 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (!ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.disabled"), ChatFormatting.RED);
 			else if ((ownedByUser || be.isAllowed(player)) && !be.getCameraPositions().isEmpty()) {
 				if (level.isClientSide) {
 					if (!be.isActivated() && be.getCurrentCamera() != null)
@@ -97,9 +102,9 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 					else
 						ClientHandler.displayFrameScreen(be, !ownedByUser);
 				}
-
-				return InteractionResult.SUCCESS;
 			}
+
+			return InteractionResult.SUCCESS;
 		}
 
 		return InteractionResult.PASS;

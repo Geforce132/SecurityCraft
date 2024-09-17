@@ -161,7 +161,7 @@ public class SCClientEventHandler {
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
 
-		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty())
+		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
 		DeltaTracker partialTick = event.getPartialTick();
