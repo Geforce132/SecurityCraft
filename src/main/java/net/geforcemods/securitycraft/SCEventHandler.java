@@ -707,7 +707,7 @@ public class SCEventHandler {
 
 		if (riftStabilizer != null) {
 			BlockPos pos = riftStabilizer.getPos();
-			Vec3d centerPos = new AxisAlignedBB(pos).getCenter();
+			Vec3d centerPos = getCenter(new AxisAlignedBB(pos));
 			Vec3d from = targetPosProhibited ? target : source;
 			Vec3d distance = from.subtract(centerPos);
 
@@ -778,5 +778,9 @@ public class SCEventHandler {
 
 	private static boolean isOutdated() {
 		return ForgeVersion.getResult(Loader.instance().activeModContainer()).status == Status.OUTDATED;
+	}
+
+	private static Vec3d getCenter(AxisAlignedBB vec) {
+		return new Vec3d(vec.minX + (vec.maxX - vec.minX) * 0.5D, vec.minY + (vec.maxY - vec.minY) * 0.5D, vec.minZ + (vec.maxZ - vec.minZ) * 0.5D);
 	}
 }
