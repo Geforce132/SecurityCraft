@@ -59,7 +59,7 @@ public class ConfigHandler {
 
 			frameFeedRenderDistance = builder
 					.comment("Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.")
-					.defineInRange("frame_feed_render_distance", 12, 2, 32);
+					.defineInRange("frame_feed_render_distance", 16, 2, 32);
 			//@formatter:on
 		}
 	}
@@ -228,7 +228,7 @@ public class ConfigHandler {
 
 			frameFeedViewDistance = builder
 					.comment("Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.")
-					.defineInRange("frame_feed_view_distance", 24, 2, 32);
+					.defineInRange("frame_feed_view_distance", 16, 2, 32);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
