@@ -48,6 +48,7 @@
 - Fix: Signs cannot be placed on some blocks
 - Fix: Rain falls directly through disguisable blocks
 - Fix: The Reinforced Lectern is at the wrong position in the creative tab
+- Fix: A Secure Redstone Interface in receiver mode does not update its neighboring blocks when the signal becomes un-/protected
 - Misc.: Performance improvements for the Secure Redstone Interface
 
 --------------------------Changelog for v1.9.10-beta9 of SecurityCraft--------------------------

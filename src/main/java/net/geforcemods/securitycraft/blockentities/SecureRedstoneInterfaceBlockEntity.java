@@ -278,7 +278,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (receivesInvertedPower())
 				highestPower = 15 - highestPower;
 
-			this.protectedSignal = protectedSignal;
+			if (this.protectedSignal != protectedSignal) {
+				this.protectedSignal = protectedSignal;
+				updateNeighbors();
+			}
+
 			setPower(highestPower);
 		}
 	}
