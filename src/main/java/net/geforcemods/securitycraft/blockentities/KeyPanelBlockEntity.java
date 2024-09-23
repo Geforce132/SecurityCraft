@@ -14,9 +14,11 @@ import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractPanelBlock;
 import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -24,6 +26,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPasscodeProtected, ILockable {
@@ -126,6 +129,17 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 		}
 
 		super.onOptionChanged(option);
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
+		level.setBlockAndUpdate(pos, state.setValue(AbstractPanelBlock.POWERED, false));
+		level.updateNeighborsAt(pos, state.getBlock());
+		level.updateNeighborsAt(pos.relative(AbstractPanelBlock.getConnectedDirection(state).getOpposite()), state.getBlock());
+		SaltData.removeSalt(getSaltKey());
+		passcode = null;
+		saltKey = null;
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	@Override
