@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedObserverBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
@@ -55,14 +56,21 @@ public class ReinforcedObserverBlock extends DisguisableBlock implements IReinfo
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		boolean shouldUpdate = true;
+
 		if (state.getValue(POWERED))
 			level.setBlock(pos, state.setValue(POWERED, false), 2);
 		else {
-			level.setBlock(pos, state.setValue(POWERED, true), 2);
-			level.scheduleTick(pos, this, 2);
+			if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.getOwner().isValidated()) {
+				level.setBlock(pos, state.setValue(POWERED, true), 2);
+				level.scheduleTick(pos, this, 2);
+			}
+			else
+				shouldUpdate = false;
 		}
 
-		updateNeighborsInFront(level, pos, state);
+		if (shouldUpdate)
+			updateNeighborsInFront(level, pos, state);
 	}
 
 	@Override
