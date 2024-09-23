@@ -93,10 +93,8 @@ public class KeypadBlock extends DisguisableBlock {
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			if (state.getValue(POWERED)) {
-				level.updateNeighborsAt(pos, this);
+			if (state.getValue(POWERED))
 				BlockUtils.updateIndirectNeighbors(level, pos, this);
-			}
 
 			if (level.getBlockEntity(pos) instanceof IPasscodeProtected be)
 				SaltData.removeSalt(be.getSaltKey());

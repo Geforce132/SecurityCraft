@@ -118,7 +118,7 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 
 			if (state.getValue(POWERED)) {
 				level.updateNeighborsAt(pos, this);
-				level.updateNeighborsAt(pos.relative(state.getValue(FACING).getOpposite()), this);
+				level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
 			}
 
 			if (be instanceof IPasscodeProtected passcodeProtected)
