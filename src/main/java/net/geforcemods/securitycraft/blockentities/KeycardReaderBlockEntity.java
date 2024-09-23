@@ -34,16 +34,17 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements MenuProvider, ILockable, ICodebreakable {
-	private boolean[] acceptedLevels = {
+	protected boolean[] acceptedLevels = {
 			true, false, false, false, false
 	};
-	private int signature = 0;
+	protected int signature = 0;
 	protected BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	protected IntOption signalLength = new SignalLengthOption(60);
 	protected DisabledOption disabled = new DisabledOption(false);
@@ -279,6 +280,22 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
 		return new KeycardReaderMenu(windowId, inv, level, worldPosition);
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
+		reset();
+		level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock());
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
+	}
+
+	public void reset() {
+		acceptedLevels = new boolean[] {
+				true, false, false, false, false
+		};
+		signature = 0;
+		setChanged();
 	}
 
 	@Override
