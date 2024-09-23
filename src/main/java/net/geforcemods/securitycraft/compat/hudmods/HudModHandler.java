@@ -26,6 +26,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -43,26 +44,35 @@ public class HudModHandler {
 	protected HudModHandler() {}
 
 	public void addDisguisedOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
-		boolean disguised = false;
+		if (be == null)
+			return;
 
 		if (block instanceof IDisguisable) {
 			Optional<BlockState> disguisedBlockState = IDisguisable.getDisguisedBlockState(level, pos);
 
 			if (disguisedBlockState.isPresent()) {
-				disguised = true;
-				block = disguisedBlockState.get().getBlock();
+				BlockState disguisedState = disguisedBlockState.get();
+
+				block = disguisedState.getBlock();
+
+				if (block instanceof EntityBlock entityBlock && entityBlock.newBlockEntity(pos, disguisedState) instanceof IOwnable)
+					addOwnerInfo(be, lineAdder, configGetter);
+
+				if (!(block instanceof IOverlayDisplay display) || !display.shouldShowSCInfo(level, state, pos))
+					return;
 			}
 		}
-
-		if (be == null || disguised || block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, state, pos))
-			return;
 
 		addOwnerModuleNameInfo(be, player, lineAdder, configGetter);
 	}
 
-	public void addOwnerModuleNameInfo(Object obj, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+	public void addOwnerInfo(Object obj, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
 		if (configGetter.test(SHOW_OWNER) && obj instanceof IOwnable ownable)
 			lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
+	}
+
+	public void addOwnerModuleNameInfo(Object obj, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+		addOwnerInfo(obj, lineAdder, configGetter);
 
 		//if the object is ownable, show modules only when it's owned, otherwise always show
 		if (configGetter.test(SHOW_MODULES) && obj instanceof IModuleInventory inv && !inv.getInsertedModules().isEmpty() && (!(obj instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
