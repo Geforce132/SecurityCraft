@@ -48,6 +48,7 @@
 - Fix: Signs cannot be placed on some blocks
 - Fix: Rain falls directly through disguisable blocks
 - Fix: A Secure Redstone Interface in receiver mode does not update its neighboring blocks when the signal becomes un-/protected
+- Fix: Jade/WTHIT/TOP don't show the owner of an ownable block that is disguised with another ownable block
 - Misc.: Performance improvements for the Secure Redstone Interface
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
