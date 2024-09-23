@@ -27,6 +27,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -43,26 +44,39 @@ public class HudModHandler {
 
 	protected HudModHandler() {}
 
-	public void addOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
-		boolean disguised = false;
+	public void addDisguisedOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+		if (be == null)
+			return;
 
 		if (block instanceof IDisguisable) {
 			Optional<BlockState> disguisedBlockState = IDisguisable.getDisguisedBlockState(level, pos);
 
 			if (disguisedBlockState.isPresent()) {
-				disguised = true;
-				block = disguisedBlockState.get().getBlock();
+				BlockState disguisedState = disguisedBlockState.get();
+
+				block = disguisedState.getBlock();
+
+				if (block instanceof EntityBlock entityBlock && !(block instanceof IDisguisable) && entityBlock.newBlockEntity(pos, disguisedState) instanceof IOwnable)
+					addOwnerInfo(be, lineAdder, configGetter);
+
+				if (!(block instanceof IOverlayDisplay display) || !display.shouldShowSCInfo(level, state, pos))
+					return;
 			}
 		}
 
-		if (be == null || disguised || block instanceof IOverlayDisplay display && !display.shouldShowSCInfo(level, state, pos))
-			return;
+		addOwnerModuleNameInfo(be, player, lineAdder, configGetter);
+	}
 
-		if (configGetter.test(SHOW_OWNER) && be instanceof IOwnable ownable)
+	public void addOwnerInfo(Object obj, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+		if (configGetter.test(SHOW_OWNER) && obj instanceof IOwnable ownable)
 			lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
+	}
+
+	public void addOwnerModuleNameInfo(Object obj, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+		addOwnerInfo(obj, lineAdder, configGetter);
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if (configGetter.test(SHOW_MODULES) && be instanceof IModuleInventory inv && !inv.getInsertedModules().isEmpty() && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (configGetter.test(SHOW_MODULES) && obj instanceof IModuleInventory inv && !inv.getInsertedModules().isEmpty() && (!(obj instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			lineAdder.accept(EQUIPPED);
 
 			for (ModuleType module : inv.getInsertedModules()) {
@@ -77,7 +91,7 @@ public class HudModHandler {
 			}
 		}
 
-		if (configGetter.test(SHOW_CUSTOM_NAME) && be instanceof Nameable nameable && nameable.hasCustomName()) {
+		if (configGetter.test(SHOW_CUSTOM_NAME) && obj instanceof Nameable nameable && nameable.hasCustomName()) {
 			Component text = nameable.getCustomName();
 			Component name = text == null ? TextComponent.EMPTY : text;
 
@@ -89,8 +103,7 @@ public class HudModHandler {
 		if (entity instanceof Sentry sentry) {
 			SentryMode mode = sentry.getMode();
 
-			if (configGetter.test(SHOW_OWNER))
-				lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).withStyle(ChatFormatting.GRAY));
+			addOwnerInfo(sentry, lineAdder, configGetter);
 
 			if (configGetter.test(SHOW_MODULES) && sentry.isOwnedBy(player) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
 				lineAdder.accept(EQUIPPED);
