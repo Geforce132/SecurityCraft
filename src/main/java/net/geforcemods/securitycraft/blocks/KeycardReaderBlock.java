@@ -91,10 +91,8 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && state.getValue(POWERED)) {
-			level.updateNeighborsAt(pos, this);
+		if (!state.is(newState.getBlock()) && state.getValue(POWERED))
 			BlockUtils.updateIndirectNeighbors(level, pos, this);
-		}
 
 		super.onRemove(state, level, pos, newState, isMoving);
 	}

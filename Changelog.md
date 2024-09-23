@@ -19,6 +19,7 @@
 - Change: IMS bombs can no longer be diverted from their path using explosions
 - Change: The "(team)" suffix for owners is now only shown when the team has more than one player in it
 - Change: Only the owner and allowlisted players are now able to access a Username Logger
+- Change: Several blocks that can open reinforced doors now reset their state and data when the owner is changed (e.g. Keycard Reader loses its signature and levels, Keypad no longer has a passcode, ...)
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - Fix: Turning to a specific page in the SecurityCraft Manual can crash the game
 - Fix: The Alarm ceases to emit any sound when selecting a different sound
