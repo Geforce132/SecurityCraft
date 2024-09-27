@@ -278,6 +278,6 @@ public class ReinforcedRedSandstoneAndPurpurSlabsBlock extends BlockSlab impleme
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return true;
+		return state.getBlock() == this;
 	}
 }

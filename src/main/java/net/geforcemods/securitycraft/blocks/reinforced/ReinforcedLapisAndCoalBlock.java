@@ -72,7 +72,7 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return true;
+		return state.getBlock() == this;
 	}
 
 	@Override

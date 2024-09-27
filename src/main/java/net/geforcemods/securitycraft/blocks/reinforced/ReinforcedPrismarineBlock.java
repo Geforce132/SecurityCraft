@@ -64,7 +64,7 @@ public class ReinforcedPrismarineBlock extends BlockPrismarine implements ITileE
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return true;
+		return state.getBlock() == this;
 	}
 
 	@Override

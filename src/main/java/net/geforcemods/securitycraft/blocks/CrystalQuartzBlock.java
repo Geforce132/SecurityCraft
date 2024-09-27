@@ -38,6 +38,6 @@ public class CrystalQuartzBlock extends BlockQuartz implements IOverlayDisplay {
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return true;
+		return state.getBlock() == this;
 	}
 }

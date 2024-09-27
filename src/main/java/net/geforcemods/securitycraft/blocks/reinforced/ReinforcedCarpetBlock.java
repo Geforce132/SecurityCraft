@@ -64,7 +64,7 @@ public class ReinforcedCarpetBlock extends BlockCarpet implements ITileEntityPro
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return true;
+		return state.getBlock() == this;
 	}
 
 	@Override

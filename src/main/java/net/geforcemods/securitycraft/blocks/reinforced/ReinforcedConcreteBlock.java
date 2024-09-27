@@ -69,7 +69,7 @@ public class ReinforcedConcreteBlock extends BlockColored implements ITileEntity
 
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
-		return true;
+		return state.getBlock() == this;
 	}
 
 	@Override
