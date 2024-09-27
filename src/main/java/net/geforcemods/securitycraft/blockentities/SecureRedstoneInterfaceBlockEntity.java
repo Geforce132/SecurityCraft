@@ -43,6 +43,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	private boolean highlightConnections = false;
 	private float dishRotationDegrees = 0;
 	private float oDishRotationDegrees = 0;
+	private boolean changed = false;
+	private boolean updateNeighbors = false;
 
 	@Override
 	public void update() {
@@ -59,6 +61,20 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 				if (isSender())
 					tellSimilarReceiversToRefresh();
+			}
+
+			if (changed || updateNeighbors) {
+				IBlockState state = world.getBlockState(pos);
+
+				if (changed) {
+					world.notifyBlockUpdate(pos, state, state, 2);
+					changed = false;
+				}
+
+				if (updateNeighbors) {
+					BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock(), state.getValue(SecureRedstoneInterfaceBlock.FACING).getOpposite());
+					updateNeighbors = false;
+				}
 			}
 
 			if (shouldHighlightConnections() && world.getTotalWorldTime() % 5 == 0) {
@@ -203,12 +219,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 			world.setBlockState(pos, state.withProperty(SecureRedstoneInterfaceBlock.SENDER, sender));
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
 
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
 
-			updateNeighbors(state);
+			updateNeighbors();
 		}
 	}
 
@@ -277,14 +292,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.power = power;
 
 		if (!world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
-
 			if (isSender())
 				tellSimilarReceiversToRefresh();
 
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
-			updateNeighbors(state);
+			updateNeighbors();
 		}
 	}
 
@@ -306,17 +318,14 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.protectedSignal = protectedSignal;
 
 		if (!world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
-
 			refreshPower();
 
 			if (isSender())
 				tellSimilarReceiversToRefresh();
 			else
-				updateNeighbors(state);
+				updateNeighbors();
 
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
 		}
 	}
 
@@ -331,12 +340,9 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.sendExactPower = sendExactPower;
 
 		if (!world.isRemote && isSender()) {
-			IBlockState state = world.getBlockState(pos);
-
 			refreshPower();
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
-			updateNeighbors(state);
+			updateNeighbors();
 		}
 	}
 
@@ -351,12 +357,9 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.receiveInvertedPower = receiveInvertedPower;
 
 		if (!world.isRemote && !isSender()) {
-			IBlockState state = world.getBlockState(pos);
-
 			refreshPower();
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
-			updateNeighbors(state);
+			updateNeighbors();
 		}
 	}
 
@@ -391,7 +394,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.frequency = frequency;
 
 		if (!world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
 			Owner owner = getOwner();
 			int range = getSenderRange();
 
@@ -403,7 +405,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 				refreshPower();
 
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
 		}
 	}
 
@@ -426,13 +427,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		this.senderRange = senderRange;
 
 		if (!world.isRemote && !isDisabled() && isSender()) {
-			IBlockState state = world.getBlockState(pos);
 			Owner owner = getOwner();
 			int frequency = getFrequency();
 
 			tellSimilarReceiversToRefresh(owner, frequency, Math.max(oldRange, senderRange));
 			markDirty();
-			world.notifyBlockUpdate(pos, state, state, 2);
 		}
 	}
 
@@ -467,15 +466,12 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	}
 
 	public void setHighlightConnections(boolean highlightConnections) {
-		IBlockState state = world.getBlockState(pos);
-
 		this.highlightConnections = highlightConnections;
 		markDirty();
-		world.notifyBlockUpdate(pos, state, state, 2);
 	}
 
-	public void updateNeighbors(IBlockState state) {
-		BlockUtils.updateIndirectNeighbors(world, pos, state.getBlock(), state.getValue(SecureRedstoneInterfaceBlock.FACING).getOpposite());
+	public void updateNeighbors() {
+		updateNeighbors = true;
 	}
 
 	public boolean isDisabled() {
@@ -502,5 +498,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 	public float getDishRotationDegrees() {
 		return dishRotationDegrees;
+	}
+
+	@Override
+	public void markDirty() {
+		changed = true;
+		super.markDirty();
 	}
 }

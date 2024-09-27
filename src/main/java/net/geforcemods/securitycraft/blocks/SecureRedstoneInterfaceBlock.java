@@ -127,7 +127,7 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 			if (be.isSender())
 				be.tellSimilarReceiversToRefresh();
 			else
-				be.updateNeighbors(state);
+				be.updateNeighbors();
 		}
 
 		super.breakBlock(level, pos, state);
