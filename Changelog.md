@@ -20,6 +20,7 @@
 - Change: The "(team)" suffix for owners is now only shown when the team has more than one player in it
 - Change: Only the owner and allowlisted players are now able to access a Username Logger
 - Change: Several blocks that can open reinforced doors now reset their state and data when the owner is changed (e.g. Keycard Reader loses its signature and levels, Keypad no longer has a passcode, ...)
+- Change: A Reinforced Observer now needs to be validated by the new owner after the owner was changed
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: Disguising reinforced observers can have visual issues
