@@ -22,7 +22,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -45,7 +44,7 @@ public class UniversalBlockRemoverItem extends Item {
 				return EnumActionResult.PASS;
 
 			if (!((IOwnable) tileEntity).isOwnedBy(player)) {
-				if (!(block instanceof IBlockMine) && (!(tileEntity.getBlockType() instanceof IDisguisable) || (((ItemBlock) ((IDisguisable) tileEntity.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof IDisguisable))) {
+				if (!(block instanceof IBlockMine) && (!(tileEntity.getBlockType() instanceof IDisguisable) || (((IDisguisable) tileEntity.getBlockType()).getDisguisedBlockState(world, pos).getBlock() instanceof IDisguisable))) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalBlockRemover.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) tileEntity).getOwner())), TextFormatting.RED);
 					return EnumActionResult.SUCCESS;
 				}
