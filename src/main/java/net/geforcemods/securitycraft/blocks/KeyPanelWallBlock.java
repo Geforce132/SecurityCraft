@@ -65,7 +65,7 @@ public class KeyPanelWallBlock extends KeyPanelBlock {
 	}
 
 	@Override
-	protected EnumFacing getConnectedDirection(IBlockState state) {
+	public EnumFacing getConnectedDirection(IBlockState state) {
 		return state.getValue(FACING);
 	}
 

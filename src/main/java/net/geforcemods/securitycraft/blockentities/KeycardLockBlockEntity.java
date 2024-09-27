@@ -59,12 +59,13 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 		return setUp;
 	}
 
+	@Override
 	public void reset() {
+		super.reset();
 		setUp = false;
-		setAcceptedLevels(new boolean[] {
+		acceptedLevels = new boolean[] {
 				false, false, false, false, false
-		});
-		setSignature(0);
+		};
 	}
 
 	@Override

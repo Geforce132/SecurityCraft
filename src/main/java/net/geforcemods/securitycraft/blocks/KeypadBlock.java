@@ -88,10 +88,8 @@ public class KeypadBlock extends DisguisableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (state.getValue(POWERED)) {
-			world.notifyNeighborsOfStateChange(pos, this, false);
+		if (state.getValue(POWERED))
 			BlockUtils.updateIndirectNeighbors(world, pos, this);
-		}
 
 		if (te instanceof IPasscodeProtected)
 			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());

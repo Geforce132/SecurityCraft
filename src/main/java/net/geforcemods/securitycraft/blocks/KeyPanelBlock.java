@@ -106,7 +106,7 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 			world.scheduleUpdate(pos, this, signalLength);
 	}
 
-	protected abstract EnumFacing getConnectedDirection(IBlockState state);
+	public abstract EnumFacing getConnectedDirection(IBlockState state);
 
 	@Override
 	public void onBlockHarvested(World world, BlockPos pos, IBlockState state, EntityPlayer player) {

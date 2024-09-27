@@ -27,16 +27,18 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements ILockable, ICodebreakable {
-	private boolean[] acceptedLevels = {
+	protected boolean[] acceptedLevels = {
 			true, false, false, false, false
 	};
-	private int signature = 0;
+	protected int signature = 0;
 	protected BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	protected IntOption signalLength = new SignalLengthOption(this::getPos, 60);
 	protected DisabledOption disabled = new DisabledOption(false);
@@ -215,6 +217,22 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			world.setBlockState(pos, world.getBlockState(pos).withProperty(KeycardReaderBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.keycardReader);
 		}
+	}
+
+	@Override
+	public void onOwnerChanged(IBlockState state, World level, BlockPos pos, EntityPlayer player, Owner oldOwner, Owner newOwner) {
+		reset();
+		level.setBlockState(pos, state.withProperty(KeycardReaderBlock.POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock());
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
+	}
+
+	public void reset() {
+		acceptedLevels = new boolean[] {
+				true, false, false, false, false
+		};
+		signature = 0;
+		markDirty();
 	}
 
 	public void setAcceptedLevels(boolean[] acceptedLevels) {

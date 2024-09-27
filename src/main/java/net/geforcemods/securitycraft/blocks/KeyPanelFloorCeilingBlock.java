@@ -89,7 +89,7 @@ public class KeyPanelFloorCeilingBlock extends KeyPanelBlock {
 	}
 
 	@Override
-	protected EnumFacing getConnectedDirection(IBlockState state) {
+	public EnumFacing getConnectedDirection(IBlockState state) {
 		return state.getValue(FLOOR) ? EnumFacing.UP : EnumFacing.DOWN;
 	}
 
