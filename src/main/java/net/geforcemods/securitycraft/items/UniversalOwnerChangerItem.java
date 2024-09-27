@@ -14,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -58,7 +57,7 @@ public class UniversalOwnerChangerItem extends Item {
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
 		if (!ownable.isOwnedBy(player) && !isDefault) {
-			if (!(block instanceof IBlockMine) && (!(te.getBlockType() instanceof IDisguisable) || (((ItemBlock) ((IDisguisable) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof IDisguisable))) {
+			if (!(block instanceof IBlockMine) && (!(te.getBlockType() instanceof IDisguisable) || (((IDisguisable) te.getBlockType()).getDisguisedBlockState(world, pos).getBlock() instanceof IDisguisable))) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}

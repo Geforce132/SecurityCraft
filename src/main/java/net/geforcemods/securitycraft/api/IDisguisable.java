@@ -21,8 +21,14 @@ public interface IDisguisable {
 	public default ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
 		IBlockState disguisedState = getDisguisedBlockState(world, pos);
 
-		if (disguisedState != null)
-			return new ItemStack(disguisedState.getBlock(), 1, disguisedState.getBlock().getMetaFromState(disguisedState));
+		if (disguisedState != null) {
+			ItemStack stack = new ItemStack(disguisedState.getBlock());
+
+			if (stack.getItem().getHasSubtypes())
+				stack.setItemDamage(disguisedState.getBlock().getMetaFromState(disguisedState));
+
+			return stack;
+		}
 
 		return getDefaultStack();
 	}

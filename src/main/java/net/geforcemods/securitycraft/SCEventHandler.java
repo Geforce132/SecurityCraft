@@ -419,7 +419,7 @@ public class SCEventHandler {
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
 				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
-					if (!(te.getBlockType() instanceof IDisguisable) || (((ItemBlock) ((IDisguisable) te.getBlockType()).getDisguisedStack(world, pos).getItem()).getBlock() instanceof IDisguisable))
+					if (!(te.getBlockType() instanceof IDisguisable) || (((IDisguisable) te.getBlockType()).getDisguisedBlockState(world, pos).getBlock() instanceof IDisguisable))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalBlockModifier), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
 
 					return;

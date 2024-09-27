@@ -32,6 +32,7 @@
 - Fix: A Secure Redstone Interface in receiver mode does not update its neighboring blocks when the signal becomes un-/protected
 - Fix: Jade/WTHIT/TOP don't show the owner of an ownable block that is disguised with another ownable block
 - Fix: Un-/reinforcing extended pistons leaves a headless piston base behind
+- Fix: HUD mods incorrectly display some blocks when they are used as a disguise
 - Misc.: Performance improvements for the Secure Redstone Interface
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------
