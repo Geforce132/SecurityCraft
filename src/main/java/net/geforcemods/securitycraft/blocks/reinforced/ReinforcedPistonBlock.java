@@ -355,6 +355,16 @@ public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlo
 		return isSticky ? Blocks.STICKY_PISTON : Blocks.PISTON;
 	}
 
+	@Override
+	public BlockState convertToVanilla(World level, BlockPos pos, BlockState reinforcedState) {
+		return IReinforcedBlock.super.convertToVanilla(level, pos, reinforcedState).setValue(EXTENDED, false);
+	}
+
+	@Override
+	public BlockState convertToReinforced(World level, BlockPos pos, BlockState vanillaState) {
+		return IReinforcedBlock.super.convertToReinforced(level, pos, vanillaState).setValue(EXTENDED, false);
+	}
+
 	private static boolean isSameOwner(BlockPos blockPos, BlockPos pistonPos, World level) {
 		TileEntity pistonBe = level.getBlockEntity(pistonPos);
 		IOwnable blockBe = (IOwnable) level.getBlockEntity(blockPos);
