@@ -77,11 +77,7 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 
 		level.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
 		playSound(player, level, pos, newPowered);
-		notifyNeighbors(level, pos, switch (state.getValue(FACE)) {
-			case WALL -> state.getValue(FACING);
-			case CEILING -> Direction.DOWN;
-			case FLOOR -> Direction.UP;
-		});
+		notifyNeighbors(level, pos, getConnectedDirection(state));
 		return InteractionResult.SUCCESS;
 	}
 
