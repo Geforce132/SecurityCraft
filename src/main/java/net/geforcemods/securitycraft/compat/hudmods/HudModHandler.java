@@ -33,27 +33,38 @@ public class HudModHandler {
 
 	protected HudModHandler() {}
 
-	public void addOwnerModuleNameInfo(World level, BlockPos pos, IBlockState state, Block block, TileEntity be, EntityPlayer player, Consumer<String> lineAdder, Predicate<String> configGetter) {
-		boolean disguised = false;
+	public void addDisguisedOwnerModuleNameInfo(World level, BlockPos pos, IBlockState state, Block block, TileEntity be, EntityPlayer player, Consumer<String> lineAdder, Predicate<String> configGetter) {
+		if (be == null)
+			return;
 
 		if (block instanceof IDisguisable) {
-			IBlockState disguisedBlockState = ((IDisguisable) block).getDisguisedBlockState(level, pos);
+			IBlockState disguisedState = ((IDisguisable) block).getDisguisedBlockState(level, pos);
 
-			if (disguisedBlockState != null) {
-				disguised = true;
-				block = disguisedBlockState.getBlock();
+			if (disguisedState != null) {
+				block = disguisedState.getBlock();
+
+				if (block.hasTileEntity(disguisedState) && !(block instanceof IDisguisable) && block.createTileEntity(level, disguisedState) instanceof IOwnable)
+					addOwnerInfo(be, lineAdder, configGetter);
+
+				if (!(block instanceof IOverlayDisplay) || !((IOverlayDisplay) block).shouldShowSCInfo(level, state, pos))
+					return;
 			}
 		}
 
-		if (be == null || disguised || block instanceof IOverlayDisplay && !((IOverlayDisplay) block).shouldShowSCInfo(level, state, pos))
-			return;
+		addOwnerModuleNameInfo(be, player, lineAdder, configGetter);
+	}
 
-		if (configGetter.test(SHOW_OWNER) && be instanceof IOwnable)
-			lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())).getFormattedText());
+	public void addOwnerInfo(Object obj, Consumer<String> lineAdder, Predicate<String> configGetter) {
+		if (configGetter.test(SHOW_OWNER) && obj instanceof IOwnable)
+			lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(((IOwnable) obj).getOwner())).getFormattedText());
+	}
+
+	public void addOwnerModuleNameInfo(Object obj, EntityPlayer player, Consumer<String> lineAdder, Predicate<String> configGetter) {
+		addOwnerInfo(obj, lineAdder, configGetter);
 
 		//if the te is ownable, show modules only when it's owned, otherwise always show
-		if (configGetter.test(SHOW_MODULES) && be instanceof IModuleInventory && !((IModuleInventory) be).getInsertedModules().isEmpty() && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
-			IModuleInventory inv = (IModuleInventory) be;
+		if (configGetter.test(SHOW_MODULES) && obj instanceof IModuleInventory && !((IModuleInventory) obj).getInsertedModules().isEmpty() && (!(obj instanceof IOwnable) || ((IOwnable) obj).isOwnedBy(player))) {
+			IModuleInventory inv = (IModuleInventory) obj;
 
 			lineAdder.accept(Utils.localize("waila.securitycraft:equipped").getFormattedText());
 
@@ -69,8 +80,8 @@ public class HudModHandler {
 			}
 		}
 
-		if (configGetter.test(SHOW_CUSTOM_NAME) && be instanceof IWorldNameable && ((IWorldNameable) be).hasCustomName()) {
-			String name = ((IWorldNameable) be).getName();
+		if (configGetter.test(SHOW_CUSTOM_NAME) && obj instanceof IWorldNameable && ((IWorldNameable) obj).hasCustomName()) {
+			String name = ((IWorldNameable) obj).getName();
 
 			lineAdder.accept(Utils.localize("waila.securitycraft:customName").getFormattedText() + " " + name);
 		}
@@ -81,8 +92,7 @@ public class HudModHandler {
 			Sentry sentry = (Sentry) entity;
 			SentryMode mode = sentry.getMode();
 
-			if (configGetter.test(SHOW_OWNER))
-				lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).getFormattedText());
+			addOwnerInfo(sentry, lineAdder, configGetter);
 
 			if (configGetter.test(SHOW_MODULES) && sentry.isOwnedBy(player) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
 				lineAdder.accept(Utils.localize("waila.securitycraft:equipped").getFormattedText());

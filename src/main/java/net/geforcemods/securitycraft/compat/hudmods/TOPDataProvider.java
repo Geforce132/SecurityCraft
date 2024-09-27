@@ -90,7 +90,7 @@ public class TOPDataProvider extends HudModHandler implements Function<ITheOnePr
 			public void addProbeInfo(ProbeMode mode, IProbeInfo probeInfo, EntityPlayer player, World level, IBlockState state, IProbeHitData data) {
 				BlockPos pos = data.getPos();
 
-				addOwnerModuleNameInfo(level, pos, state, state.getBlock(), level.getTileEntity(pos), player, string -> probeInfo.text(TextFormatting.GRAY + string), $ -> true);
+				addDisguisedOwnerModuleNameInfo(level, pos, state, state.getBlock(), level.getTileEntity(pos), player, string -> probeInfo.text(TextFormatting.GRAY + string), $ -> true);
 			}
 		});
 		theOneProbe.registerEntityProvider(new IProbeInfoEntityProvider() {

@@ -64,7 +64,7 @@ public final class WailaDataProvider extends HudModHandler implements IWailaPlug
 		IBlockState state = data.getBlockState();
 		Block block = data.getBlock();
 
-		addOwnerModuleNameInfo(level, pos, state, block, data.getTileEntity(), data.getPlayer(), tooltip::add, config::getConfig);
+		addDisguisedOwnerModuleNameInfo(level, pos, state, block, data.getTileEntity(), data.getPlayer(), tooltip::add, config::getConfig);
 		return tooltip;
 	}
 
