@@ -55,7 +55,7 @@ public class HudModHandler {
 
 				block = disguisedState.getBlock();
 
-				if (block instanceof EntityBlock entityBlock && entityBlock.newBlockEntity(pos, disguisedState) instanceof IOwnable)
+				if (block instanceof EntityBlock entityBlock && !(block instanceof IDisguisable) && entityBlock.newBlockEntity(pos, disguisedState) instanceof IOwnable)
 					addOwnerInfo(be, lineAdder, configGetter);
 
 				if (!(block instanceof IOverlayDisplay display) || !display.shouldShowSCInfo(level, state, pos))
