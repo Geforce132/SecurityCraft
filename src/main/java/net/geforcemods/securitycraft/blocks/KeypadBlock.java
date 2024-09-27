@@ -95,10 +95,8 @@ public class KeypadBlock extends DisguisableBlock {
 		if (!state.is(newState.getBlock())) {
 			TileEntity be = level.getBlockEntity(pos);
 
-			if (state.getValue(POWERED)) {
-				level.updateNeighborsAt(pos, this);
+			if (state.getValue(POWERED))
 				BlockUtils.updateIndirectNeighbors(level, pos, this);
-			}
 
 			if (be instanceof IPasscodeProtected)
 				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());

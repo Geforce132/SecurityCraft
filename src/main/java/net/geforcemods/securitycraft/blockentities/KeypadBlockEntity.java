@@ -13,8 +13,10 @@ import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -22,6 +24,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasscodeProtected, ILockable {
 	private byte[] passcode;
@@ -142,6 +146,16 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 		return new Option[] {
 				sendAllowlistMessage, sendDenylistMessage, signalLength, disabled, smartModuleCooldown
 		};
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player, Owner oldOwner, Owner newOwner) {
+		level.setBlockAndUpdate(pos, state.setValue(KeypadBlock.POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock());
+		SaltData.removeSalt(getSaltKey());
+		passcode = null;
+		saltKey = null;
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 	}
 
 	public boolean sendsAllowlistMessage() {

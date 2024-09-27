@@ -33,17 +33,19 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements INamedContainerProvider, ILockable, ICodebreakable {
-	private boolean[] acceptedLevels = {
+	protected boolean[] acceptedLevels = {
 			true, false, false, false, false
 	};
-	private int signature = 0;
+	protected int signature = 0;
 	protected BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	protected IntOption signalLength = new SignalLengthOption(this::getBlockPos, 60);
 	protected DisabledOption disabled = new DisabledOption(false);
@@ -276,6 +278,22 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	@Override
 	public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
 		return new KeycardReaderMenu(windowId, inv, level, worldPosition);
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, World level, BlockPos pos, PlayerEntity player, Owner oldOwner, Owner newOwner) {
+		reset();
+		level.setBlockAndUpdate(pos, state.setValue(BlockStateProperties.POWERED, false));
+		BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock());
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
+	}
+
+	public void reset() {
+		acceptedLevels = new boolean[] {
+				true, false, false, false, false
+		};
+		signature = 0;
+		setChanged();
 	}
 
 	@Override
