@@ -74,7 +74,7 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 		BlockState state = data.getBlockState();
 		Block block = data.getBlock();
 
-		addOwnerModuleNameInfo(level, pos, state, block, data.getTileEntity(), data.getPlayer(), tooltip::add, config::get);
+		addDisguisedOwnerModuleNameInfo(level, pos, state, block, data.getTileEntity(), data.getPlayer(), tooltip::add, config::get);
 	}
 
 	@Override
