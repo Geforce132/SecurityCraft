@@ -44,6 +44,8 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	private boolean highlightConnections = false;
 	private float dishRotationDegrees = 0;
 	private float oDishRotationDegrees = 0;
+	private boolean changed = false;
+	private boolean updateNeighbors = false;
 
 	public SecureRedstoneInterfaceBlockEntity() {
 		super(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get());
@@ -64,6 +66,16 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 				if (isSender())
 					tellSimilarReceiversToRefresh();
+			}
+
+			if (changed) {
+				level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
+				changed = false;
+			}
+
+			if (updateNeighbors) {
+				BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock(), getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getOpposite());
+				updateNeighbors = false;
 			}
 
 			if (shouldHighlightConnections() && level.getGameTime() % 5 == 0) {
@@ -206,7 +218,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		if (!level.isClientSide) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureRedstoneInterfaceBlock.SENDER, sender));
 			setChanged();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
@@ -284,7 +295,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 				tellSimilarReceiversToRefresh();
 
 			setChanged();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			updateNeighbors();
 		}
 	}
@@ -315,7 +325,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 				updateNeighbors();
 
 			setChanged();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
 	}
 
@@ -332,7 +341,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		if (!level.isClientSide && isSender()) {
 			refreshPower();
 			setChanged();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			updateNeighbors();
 		}
 	}
@@ -350,7 +358,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		if (!level.isClientSide && !isSender()) {
 			refreshPower();
 			setChanged();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 			updateNeighbors();
 		}
 	}
@@ -397,7 +404,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 				refreshPower();
 
 			setChanged();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
 	}
 
@@ -425,7 +431,6 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 			tellSimilarReceiversToRefresh(owner, frequency, Math.max(oldRange, senderRange));
 			setChanged();
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}
 	}
 
@@ -462,11 +467,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	public void setHighlightConnections(boolean highlightConnections) {
 		this.highlightConnections = highlightConnections;
 		setChanged();
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
 	public void updateNeighbors() {
-		BlockUtils.updateIndirectNeighbors(level, worldPosition, getBlockState().getBlock(), getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getOpposite());
+		updateNeighbors = true;
 	}
 
 	public boolean isDisabled() {
@@ -493,5 +497,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 
 	public float getDishRotationDegrees() {
 		return dishRotationDegrees;
+	}
+
+	@Override
+	public void setChanged() {
+		changed = true;
+		super.setChanged();
 	}
 }
