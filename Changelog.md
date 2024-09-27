@@ -37,6 +37,7 @@
 - Fix: Block Pocket and Block Change Detector outline/block highlights are drawn too thin at certain angles
 - Fix: A Secure Redstone Interface in receiver mode does not update its neighboring blocks when the signal becomes un-/protected
 - Fix: Jade/WTHIT/TOP don't show the owner of an ownable block that is disguised with another ownable block
+- Fix: Un-/reinforcing extended pistons leaves a headless piston base behind
 - Misc.: Performance improvements for the Secure Redstone Interface
 
 --------------------------Changelog for v1.9.10 of SecurityCraft--------------------------
