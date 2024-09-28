@@ -102,8 +102,7 @@ public class HudModHandler {
 		if (entity instanceof Sentry sentry) {
 			SentryMode mode = sentry.getMode();
 
-			if (configGetter.test(SHOW_OWNER))
-				lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(sentry.getOwner())).withStyle(ChatFormatting.GRAY));
+			addOwnerInfo(sentry, lineAdder, configGetter);
 
 			if (configGetter.test(SHOW_MODULES) && sentry.isOwnedBy(player) && (!sentry.getAllowlistModule().isEmpty() || !sentry.getDisguiseModule().isEmpty() || sentry.hasSpeedModule())) {
 				lineAdder.accept(EQUIPPED);
