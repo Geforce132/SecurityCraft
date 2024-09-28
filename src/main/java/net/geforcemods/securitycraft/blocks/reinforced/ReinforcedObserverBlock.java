@@ -56,8 +56,6 @@ public class ReinforcedObserverBlock extends DisguisableBlock implements IReinfo
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-		boolean shouldUpdate = true;
-
 		if (state.getValue(POWERED))
 			level.setBlock(pos, state.setValue(POWERED, false), 2);
 		else {
@@ -66,11 +64,10 @@ public class ReinforcedObserverBlock extends DisguisableBlock implements IReinfo
 				level.scheduleTick(pos, this, 2);
 			}
 			else
-				shouldUpdate = false;
+				return;
 		}
 
-		if (shouldUpdate)
-			updateNeighborsInFront(level, pos, state);
+		updateNeighborsInFront(level, pos, state);
 	}
 
 	@Override
