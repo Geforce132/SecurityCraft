@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.network.server;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -51,8 +53,11 @@ public class SetBriefcasePasscodeAndOwner implements IMessage {
 						tag.setString("ownerUUID", player.getUniqueID().toString());
 					}
 
-					if (!message.passcode.isEmpty() && !tag.hasKey("passcode"))
-						BriefcaseItem.hashAndSetPasscode(tag, message.passcode, p -> {});
+					if (!message.passcode.isEmpty() && !tag.hasKey("passcode")) {
+						BriefcaseItem.hashAndSetPasscode(tag, message.passcode, p -> {
+							player.openGui(SecurityCraft.instance, Screens.BRIEFCASE_INSERT_CODE.ordinal(), player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
+						});
+					}
 				}
 			});
 

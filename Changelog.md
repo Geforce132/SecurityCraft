@@ -18,6 +18,7 @@
 - Change: Only the owner and allowlisted players are now able to access a Username Logger
 - Change: Several blocks that can open reinforced doors now reset their state and data when the owner is changed (e.g. Keycard Reader loses its signature and levels, Keypad no longer has a passcode, ...)
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
+- API: New overrides for IPasscodeProtected#hashAndSetPasscode that take in a consumer that's run after setting the passcode
 - Fix: Disabled security cameras sometimes start rotating again when near other rotating cameras
 - Fix: The Secure Redstone Interface screen cannot be closed by pressing the inventory key
 - Fix: The Protecto can attack armor stands
@@ -32,7 +33,8 @@
 - Fix: A Secure Redstone Interface in receiver mode does not update its neighboring blocks when the signal becomes un-/protected
 - Fix: Jade/WTHIT/TOP don't show the owner of an ownable block that is disguised with another ownable block
 - Fix: Un-/reinforcing extended pistons leaves a headless piston base behind
-- Fix: HUD mods incorrectly display some blocks when they are used as a disguise
+- Fix: HUD mods display some blocks incorrectly when they are used as a disguise
+- Fix: The screen to enter a passcode does not show after setting a new passcode
 - Misc.: Performance improvements for the Secure Redstone Interface
 
 --------------------------Changelog for v1.9.10.2 of SecurityCraft--------------------------

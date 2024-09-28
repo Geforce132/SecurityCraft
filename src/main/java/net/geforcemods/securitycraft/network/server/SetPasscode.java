@@ -57,9 +57,9 @@ public class SetPasscode implements IMessage {
 				TileEntity tile = world.getTileEntity(pos);
 
 				if (tile instanceof IPasscodeProtected && (!(tile instanceof IOwnable) || ((IOwnable) tile).isOwnedBy(player))) {
-					IPasscodeProtected be = ((IPasscodeProtected) tile);
+					IPasscodeProtected be = (IPasscodeProtected) tile;
 
-					be.hashAndSetPasscode(message.passcode);
+					be.hashAndSetPasscode(message.passcode, b -> be.openPasscodeGUI(player.world, pos, player));
 
 					if (be instanceof KeypadChestBlockEntity)
 						checkAndUpdateAdjacentChest(((KeypadChestBlockEntity) be), world, pos, message.passcode, be.getSalt());
