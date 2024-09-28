@@ -14,6 +14,7 @@
 - New: The cage of a Cage Trap can now replace replaceable blocks like fern or dead bush
 - New: The Camera Monitor now displays the last known name of a camera if the camera is out of range
 - New: Option in the Username Logger to set the time that has to pass until the same player can be logged again
+- New: The Inventory Scanner can now detect and remove items in bundles
 - Change: Security Camera head display
 - Change: The damage taken when suffocating in a reinforced block is now halved (from 5 hearts to two and a half hearts)
 - Change: IMS bombs can no longer be diverted from their path using explosions
@@ -21,6 +22,7 @@
 - Change: Only the owner and allowlisted players are now able to access a Username Logger
 - Change: Several blocks that can open reinforced doors now reset their state and data when the owner is changed (e.g. Keycard Reader loses its signature and levels, Keypad no longer has a passcode, ...)
 - Change: A Reinforced Observer now needs to be validated by the new owner after the owner was changed
+- Change: The Inventory Scanner now supports all items that save their inventory the same way as shulker boxes
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - API: New overrides for IPasscodeProtected#hashAndSetPasscode that take in a consumer that's run after setting the passcode
 - Fix: Turning to a specific page in the SecurityCraft Manual can crash the game
