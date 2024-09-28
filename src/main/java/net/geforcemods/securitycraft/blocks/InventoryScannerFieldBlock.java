@@ -12,7 +12,6 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -158,7 +157,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 						itemFound = true;
 						break;
 					}
-					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
+					else if (checkForContainer(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
 						itemFound = true;
 						break;
 					}
@@ -193,15 +192,15 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 				return true;
 			}
-			else if (checkForShulkerBox(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
+			else if (checkForContainer(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
 				return true;
 		}
 
 		return false;
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		if (item != null && !item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
+	private static boolean checkForContainer(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+		if (item != null && !item.isEmpty() && item.getTag() != null) {
 			ListNBT list = item.getTag().getCompound("BlockEntityTag").getList("Items", NBT.TAG_COMPOUND);
 
 			for (int i = 0; i < list.size(); i++) {
