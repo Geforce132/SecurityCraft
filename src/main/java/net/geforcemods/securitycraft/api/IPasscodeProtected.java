@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -111,7 +112,17 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param passcode The passcode
 	 */
 	default void hashAndSetPasscode(String passcode) {
-		hashAndSetPasscode(passcode, PasscodeUtils.generateSalt());
+		hashAndSetPasscode(passcode, b -> {});
+	}
+
+	/**
+	 * Hashes and stores the given passcode using a new, randomly generated salt.
+	 *
+	 * @param passcode The passcode
+	 * @param afterSetting Code to run after the passcode has been set
+	 */
+	default void hashAndSetPasscode(String passcode, Consumer<byte[]> afterSetting) {
+		hashAndSetPasscode(passcode, PasscodeUtils.generateSalt(), afterSetting);
 	}
 
 	/**
@@ -121,9 +132,22 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param salt The salt used for hashing
 	 */
 	default void hashAndSetPasscode(String passcode, byte[] salt) {
+		hashAndSetPasscode(passcode, salt, b -> {});
+	}
+
+	/**
+	 * Hashes and stores the given passcode using the given salt.
+	 *
+	 * @param passcode The passcode
+	 * @param salt The salt used for hashing
+	 * @param afterSetting Code to run after the passcode has been set
+	 */
+	default void hashAndSetPasscode(String passcode, byte[] salt, Consumer<byte[]> afterSetting) {
+		Consumer<byte[]> afterHashing = this::setPasscode;
+
 		SaltData.removeSalt(getSaltKey());
 		setSaltKey(SaltData.putSalt(salt));
-		PasscodeUtils.hashPasscode(passcode, salt, this::setPasscode);
+		PasscodeUtils.hashPasscode(passcode, salt, afterHashing.andThen(afterSetting));
 	}
 
 	/**

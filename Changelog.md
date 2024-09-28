@@ -23,6 +23,7 @@
 - Change: Several blocks that can open reinforced doors now reset their state and data when the owner is changed (e.g. Keycard Reader loses its signature and levels, Keypad no longer has a passcode, ...)
 - Change: A Reinforced Observer now needs to be validated by the new owner after the owner was changed
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
+- API: New overrides for IPasscodeProtected#hashAndSetPasscode that take in a consumer that's run after setting the passcode
 - Fix: Turning to a specific page in the SecurityCraft Manual can crash the game
 - Fix: The Alarm ceases to emit any sound when selecting a different sound
 - Fix: When closing the screen of a Briefcase, Disguise Module or Keycard Holder, items carried by the mouse are deleted
@@ -54,6 +55,7 @@
 - Fix: Jade/WTHIT/TOP don't show the owner of an ownable block that is disguised with another ownable block
 - Fix: Disguised blocks are not hidden in F3
 - Fix: Un-/reinforcing extended pistons leaves a headless piston base behind
+- Fix: The screen to enter a passcode does not show after setting a new passcode
 - Misc.: Performance improvements for the Secure Redstone Interface
 
 --------------------------Changelog for v1.9.10-beta9 of SecurityCraft--------------------------
