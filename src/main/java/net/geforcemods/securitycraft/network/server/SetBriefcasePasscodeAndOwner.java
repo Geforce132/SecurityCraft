@@ -3,14 +3,18 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SetBriefcasePasscodeAndOwner {
 	private String passcode;
@@ -41,8 +45,11 @@ public class SetBriefcasePasscodeAndOwner {
 				tag.putString("ownerUUID", player.getUUID().toString());
 			}
 
-			if (!passcode.isEmpty() && !tag.contains("passcode"))
-				BriefcaseItem.hashAndSetPasscode(tag, passcode, p -> {});
+			if (!passcode.isEmpty() && !tag.contains("passcode")) {
+				BriefcaseItem.hashAndSetPasscode(tag, passcode, p -> {
+					SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(OpenScreen.DataType.CHECK_BRIEFCASE_PASSCODE));
+				});
+			}
 		}
 	}
 }

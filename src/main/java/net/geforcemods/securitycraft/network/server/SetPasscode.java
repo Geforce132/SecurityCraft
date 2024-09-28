@@ -50,9 +50,9 @@ public class SetPasscode {
 		TileEntity te = level.getBlockEntity(pos);
 
 		if (te instanceof IPasscodeProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
-			IPasscodeProtected be = ((IPasscodeProtected) te);
+			IPasscodeProtected be = (IPasscodeProtected) te;
 
-			be.hashAndSetPasscode(passcode);
+			be.hashAndSetPasscode(passcode, b -> be.openPasscodeGUI(level, pos, player));
 
 			if (be instanceof KeypadChestBlockEntity)
 				checkAndUpdateAdjacentChest(((KeypadChestBlockEntity) be), level, pos, passcode, be.getSalt());
