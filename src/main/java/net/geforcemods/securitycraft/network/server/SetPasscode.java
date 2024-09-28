@@ -61,7 +61,7 @@ public class SetPasscode {
 		IPasscodeProtected passcodeProtected = getPasscodeProtected(level);
 
 		if (passcodeProtected != null && (!(passcodeProtected instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-			passcodeProtected.hashAndSetPasscode(passcode);
+			passcodeProtected.hashAndSetPasscode(passcode, b -> passcodeProtected.openPasscodeGUI(level, pos, player));
 
 			if (pos != null) {
 				if (passcodeProtected instanceof KeypadChestBlockEntity chestBe)
