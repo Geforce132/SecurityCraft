@@ -42,7 +42,7 @@ public class SetPasscode {
 		Level level = player.level;
 
 		if (level.getBlockEntity(pos) instanceof IPasscodeProtected be && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
-			be.hashAndSetPasscode(passcode);
+			be.hashAndSetPasscode(passcode, b -> be.openPasscodeGUI(level, pos, player));
 
 			if (be instanceof KeypadChestBlockEntity chestBe)
 				checkAndUpdateAdjacentChest(chestBe, level, pos, passcode, be.getSalt());
