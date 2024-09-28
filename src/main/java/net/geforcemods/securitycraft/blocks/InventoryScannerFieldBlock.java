@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
@@ -11,18 +12,19 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -157,7 +159,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 						itemFound = true;
 						break;
 					}
-					else if (checkForShulkerBox(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
+					else if (checkForContainer(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || checkForBundle(stackToCheck, prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
 						itemFound = true;
 						break;
 					}
@@ -192,15 +194,15 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 				return true;
 			}
-			else if (checkForShulkerBox(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
+			else if (checkForContainer(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || checkForBundle(entity.getItem(), prohibitedItem, be, hasSmartModule, hasStorageModule, hasRedstoneModule))
 				return true;
 		}
 
 		return false;
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		if (item != null && !item.isEmpty() && item.getTag() != null && Block.byItem(item.getItem()) instanceof ShulkerBoxBlock) {
+	private static boolean checkForContainer(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+		if (item != null && !item.isEmpty() && item.getTag() != null) {
 			ListTag list = item.getTag().getCompound("BlockEntityTag").getList("Items", Tag.TAG_COMPOUND);
 
 			for (int i = 0; i < list.size(); i++) {
@@ -214,6 +216,35 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 							Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
 
 						list.remove(i);
+					}
+
+					if (hasRedstoneModule)
+						updateInventoryScannerPower(be);
+
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean checkForBundle(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+		if (item != null && item.getItem() instanceof BundleItem) {
+			List<ItemStack> items = BundleItem.getContents(item).collect(Collectors.toList());
+
+			for (int i = 0; i < items.size(); i++) {
+				ItemStack itemInChest = items.get(i);
+
+				if (areItemsEqual(itemInChest, stackToCheck, hasSmartModule)) {
+					if (hasStorageModule) {
+						ItemStack remainder = be.addItemToStorage(itemInChest);
+
+						if (!remainder.isEmpty())
+							Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
+
+						items.remove(i);
+						item.getTag().put("Items", items.stream().map(stack -> stack.save(new CompoundTag())).collect(ListTag::new, ListTag::add, ListTag::addAll));
 					}
 
 					if (hasRedstoneModule)
