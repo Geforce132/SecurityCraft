@@ -22,7 +22,7 @@
 - Change: Only the owner and allowlisted players are now able to access a Username Logger
 - Change: Several blocks that can open reinforced doors now reset their state and data when the owner is changed (e.g. Keycard Reader loses its signature and levels, Keypad no longer has a passcode, ...)
 - Change: A Reinforced Observer now needs to be validated by the new owner after the owner was changed
-- Change: The Inventory Scanner now checks for the minecraft:container component and thus is no longer limited to shulker boxes
+- Change: The Inventory Scanner now supports all items that save their inventory the same way as shulker boxes
 - API: New interface IDisguisable to abstract away from the DisguisableBlock class. This means blocks no longer need to extend it to be disguisable, but instead need to implement the interface
 - API: New overrides for IPasscodeProtected#hashAndSetPasscode that take in a consumer that's run after setting the passcode
 - Fix: Turning to a specific page in the SecurityCraft Manual can crash the game

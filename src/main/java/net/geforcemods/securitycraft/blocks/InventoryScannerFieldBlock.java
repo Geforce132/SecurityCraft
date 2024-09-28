@@ -203,9 +203,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 	private static boolean checkForContainer(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
 		if (item != null && item.has(DataComponents.CONTAINER)) {
-			NonNullList<ItemStack> list = NonNullList.withSize(27, ItemStack.EMPTY);
+			ItemContainerContents contents = item.get(DataComponents.CONTAINER);
+			NonNullList<ItemStack> list = NonNullList.withSize(contents.getSlots(), ItemStack.EMPTY);
 
-			item.get(DataComponents.CONTAINER).copyInto(list);
+			contents.copyInto(list);
 
 			for (int i = 0; i < list.size(); i++) {
 				ItemStack itemInChest = list.get(i);
