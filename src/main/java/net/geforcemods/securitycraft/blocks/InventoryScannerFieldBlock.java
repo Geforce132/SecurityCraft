@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -170,7 +169,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 						itemFound = true;
 						break;
 					}
-					else if (checkForShulkerBox(stackToCheck, prohibitedItem, te, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
+					else if (checkForContainer(stackToCheck, prohibitedItem, te, hasSmartModule, hasStorageModule, hasRedstoneModule)) {
 						itemFound = true;
 						break;
 					}
@@ -205,15 +204,15 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 
 				return true;
 			}
-			else if (checkForShulkerBox(entity.getItem(), prohibitedItem, te, hasSmartModule, hasStorageModule, hasRedstoneModule))
+			else if (checkForContainer(entity.getItem(), prohibitedItem, te, hasSmartModule, hasStorageModule, hasRedstoneModule))
 				return true;
 		}
 
 		return false;
 	}
 
-	private static boolean checkForShulkerBox(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
-		if (item != null && !item.isEmpty() && item.getTagCompound() != null && Block.getBlockFromItem(item.getItem()) instanceof BlockShulkerBox) {
+	private static boolean checkForContainer(ItemStack item, ItemStack stackToCheck, InventoryScannerBlockEntity te, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+		if (item != null && !item.isEmpty() && item.getTagCompound() != null) {
 			NBTTagList list = item.getTagCompound().getCompoundTag("BlockEntityTag").getTagList("Items", NBT.TAG_COMPOUND);
 
 			for (int i = 0; i < list.tagCount(); i++) {
