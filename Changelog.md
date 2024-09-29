@@ -58,6 +58,7 @@
 - Fix: Disguised blocks are not hidden in F3
 - Fix: Un-/reinforcing extended pistons leaves a headless piston base behind
 - Fix: The screen to enter a passcode does not show after setting a new passcode
+- Fix: Creative inventory crash when the lens is not in the minecraft:dyeable tag
 - Misc.: Performance improvements for the Secure Redstone Interface
 
 --------------------------Changelog for v1.9.10-beta9 of SecurityCraft--------------------------
