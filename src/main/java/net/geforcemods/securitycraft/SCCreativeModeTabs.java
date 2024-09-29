@@ -107,12 +107,17 @@ public class SCCreativeModeTabs {
 
 				int colorAmount = SecurityCraft.RANDOM.nextInt(1, 4);
 				List<DyeItem> list = new ArrayList<>();
+				ItemStack coloredLens = ItemStack.EMPTY;
 
 				for (int i = 0; i < colorAmount; i++) {
 					list.add(DyeItem.byColor(DyeColor.byId(SecurityCraft.RANDOM.nextInt(16))));
 				}
 
-				output.accept(DyeableLeatherItem.dyeArmor(new ItemStack(SCContent.LENS.get()), list));
+				coloredLens = DyeableLeatherItem.dyeArmor(new ItemStack(SCContent.LENS.get()), list);
+
+				if (!coloredLens.isEmpty())
+					output.accept(coloredLens);
+
 				output.accept(new ItemStack(SCContent.ALLOWLIST_MODULE.get()));
 				output.accept(new ItemStack(SCContent.DENYLIST_MODULE.get()));
 				output.accept(new ItemStack(SCContent.DISGUISE_MODULE.get()));
