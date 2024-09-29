@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
+import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.CollapsibleTextList;
 import net.geforcemods.securitycraft.screen.components.ColorChooser;
 import net.geforcemods.securitycraft.screen.components.ColorChooserButton;
@@ -29,7 +30,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
@@ -51,7 +51,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker smartModuleHoverChecker;
-	private Checkbox showAllCheckbox;
+	private CallbackCheckbox showAllCheckbox;
 	private ColorChooser colorChooser;
 	private final DetectionMode previousMode;
 	private final boolean wasShowingHighlights;
@@ -84,7 +84,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		boolean isOwner = be.isOwnedBy(minecraft.player);
 		int settingsX = leftPos + 173;
 		Button modeButton, colorChooserButton;
-		Checkbox highlightInWorldCheckbox;
+		CallbackCheckbox highlightInWorldCheckbox;
 
 		modeButton = addRenderableWidget(new ModeButton(settingsX, topPos + 19, 20, 20, be.getMode().ordinal(), DetectionMode.values().length, b -> {
 			be.setMode(DetectionMode.values()[((ModeButton) b).getCurrentIndex()]);
@@ -92,18 +92,8 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			changeEntryList.updateFilteredEntries();
 			be.updateFilteredEntries();
 		}));
-		//@formatter:off
-		showAllCheckbox = addRenderableWidget(Checkbox.builder(Component.empty(), minecraft.font)
-				.pos(settingsX, topPos + 65)
-				.selected(false)
-				.onValueChange((checkbox, isSelected) -> changeEntryList.updateFilteredEntries())
-				.build());
-		highlightInWorldCheckbox = addRenderableWidget(Checkbox.builder(Component.empty(), minecraft.font)
-				.pos(settingsX, topPos + 90)
-				.selected(be.isShowingHighlights())
-				.onValueChange((checkbox, isSelected) -> be.showHighlights(isSelected))
-				.build());
-		//@formatter:on
+		showAllCheckbox = addRenderableWidget(new CallbackCheckbox(settingsX, topPos + 65, 20, 20, Component.empty(), false, isSelected -> changeEntryList.updateFilteredEntries(), 0));
+		highlightInWorldCheckbox = addRenderableWidget(new CallbackCheckbox(settingsX, topPos + 90, 20, 20, Component.empty(), be.isShowingHighlights(), be::showHighlights, 0));
 		colorChooser = addRenderableWidget(new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
 			@Override
 			public void onColorChange() {
