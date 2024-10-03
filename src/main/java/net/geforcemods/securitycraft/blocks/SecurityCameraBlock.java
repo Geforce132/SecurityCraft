@@ -135,6 +135,16 @@ public class SecurityCameraBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		IBlockState actualState = getDisguisedBlockState(world, pos);
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getBoundingBox(world, pos);
+		else
+			return NULL_AABB;
+	}
+
+	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		IBlockState state = getDefaultState().withProperty(FACING, facing);
 
