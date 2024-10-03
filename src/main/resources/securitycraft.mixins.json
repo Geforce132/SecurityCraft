@@ -22,7 +22,7 @@
 		"potion.BrewingStandMenuMixin",
 		"reinforced.BubbleColumnBlockMixin",
 		"reinforced.TrunkPlacerMixin",
-		"reinforced.WritableAndWrittenBookItemMixin",
+		"reinforced.WritableAndWrittenBookItemMixin"
 	],
 	"minVersion": "0.8"
 }
