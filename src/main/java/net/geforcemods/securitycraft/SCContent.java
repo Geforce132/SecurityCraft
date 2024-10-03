@@ -476,7 +476,7 @@ public class SCContent {
 	public static final RegistryObject<Block> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(propDisguisable()));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(propDisguisable(MapColor.METAL, false)));
+	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(propDisguisable(MapColor.METAL, false).noCollission()));
 	@HasManualPage
 	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(propDisguisable(MapColor.METAL, false).sound(SoundType.METAL).noCollission()));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
