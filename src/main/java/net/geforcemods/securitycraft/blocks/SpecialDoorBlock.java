@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -67,7 +68,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 
 	//redstone signals should not be able to open these doors
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {}
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
@@ -190,16 +191,6 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 			return disguisedState.getShadeBrightness(level, pos);
 		else
 			return super.getShadeBrightness(state, level, pos);
-	}
-
-	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
-
-		if (disguisedState.getBlock() != this)
-			return disguisedState.getLightBlock(level, pos);
-		else
-			return super.getLightBlock(state, level, pos);
 	}
 
 	@Override

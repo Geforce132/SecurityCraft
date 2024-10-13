@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
+import java.util.List;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
@@ -10,7 +12,7 @@ public class IngredientDisplay implements Renderable {
 	private static final int DISPLAY_LENGTH = 20;
 	private final int x;
 	private final int y;
-	private ItemStack[] stacks;
+	private Ingredient ingredient;
 	private int currentRenderingStack = 0;
 	private float ticksToChange = DISPLAY_LENGTH;
 
@@ -21,10 +23,10 @@ public class IngredientDisplay implements Renderable {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		if (stacks == null || stacks.length == 0)
+		if (ingredient == null)
 			return;
 
-		guiGraphics.renderItem(stacks[currentRenderingStack], x, y);
+		guiGraphics.renderItem(ingredient.stacks().get(currentRenderingStack), x, y);
 
 		if (!Screen.hasShiftDown()) {
 			ticksToChange -= partialTick;
@@ -37,21 +39,33 @@ public class IngredientDisplay implements Renderable {
 	}
 
 	public void setIngredient(Ingredient ingredient) {
-		stacks = ingredient.getItems();
+		this.ingredient = ingredient;
 		currentRenderingStack = 0;
 		ticksToChange = DISPLAY_LENGTH;
 	}
 
 	public ItemStack getCurrentStack() {
-		return currentRenderingStack >= 0 && currentRenderingStack < stacks.length && stacks.length != 0 ? stacks[currentRenderingStack] : ItemStack.EMPTY;
+		if (ingredient != null) {
+			List<ItemStack> stacks = ingredient.stacks();
+
+			return currentRenderingStack >= 0 && currentRenderingStack < stacks.size() && !stacks.isEmpty() ? stacks.get(currentRenderingStack) : ItemStack.EMPTY;
+		}
+		else
+			return ItemStack.EMPTY;
 	}
 
 	public void changeRenderingStack(double direction) {
-		currentRenderingStack += Math.signum(direction);
-
-		if (currentRenderingStack < 0)
-			currentRenderingStack = stacks.length - 1;
-		else if (currentRenderingStack >= stacks.length)
+		if (ingredient == null)
 			currentRenderingStack = 0;
+		else {
+			int size = ingredient.stacks().size();
+
+			currentRenderingStack += Math.signum(direction);
+
+			if (currentRenderingStack < 0)
+				currentRenderingStack = size - 1;
+			else if (currentRenderingStack >= size)
+				currentRenderingStack = 0;
+		}
 	}
 }

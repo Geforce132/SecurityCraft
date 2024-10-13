@@ -16,7 +16,6 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -65,14 +64,14 @@ public class CameraMonitorItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		NamedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 		if (cameras != null) {
 			if (cameras.isEmpty()) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.rightclickToView"), ChatFormatting.RED);
-				return InteractionResultHolder.pass(stack);
+				return InteractionResult.PASS;
 			}
 
 			updateComponentWithNames(stack, level);
@@ -81,7 +80,7 @@ public class CameraMonitorItem extends Item {
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			ClientHandler.displayCameraMonitorScreen(player.getInventory(), stack);
 
-		return InteractionResultHolder.consume(stack);
+		return InteractionResult.CONSUME;
 	}
 
 	@Override

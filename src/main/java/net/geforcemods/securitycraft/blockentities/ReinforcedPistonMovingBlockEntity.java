@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -301,9 +302,13 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 				}
 
 				level.setBlock(worldPosition, pushedState, 3);
-				level.neighborChanged(worldPosition, pushedState.getBlock(), worldPosition);
+				level.neighborChanged(worldPosition, pushedState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, getPushDirection(), null));
 			}
 		}
+	}
+
+	public Direction getPushDirection() {
+		return extending ? direction : direction.getOpposite();
 	}
 
 	public static void tick(Level level, BlockPos pos, BlockState state, ReinforcedPistonMovingBlockEntity be) {
@@ -348,7 +353,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 						}
 
 						level.setBlock(pos, pushedState, 67);
-						level.neighborChanged(pos, pushedState.getBlock(), pos);
+						level.neighborChanged(pos, pushedState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, be.getPushDirection(), null));
 					}
 				}
 			}
@@ -371,7 +376,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 		super.loadAdditional(tag, lookupProvider);
 
-		holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
+		holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK;
 		movedState = NbtUtils.readBlockState(holderGetter, tag.getCompound("blockState"));
 		direction = Direction.from3DDataValue(tag.getInt("facing"));
 		progress = tag.getFloat("progress");

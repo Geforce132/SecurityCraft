@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -78,7 +79,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(menu.isLvl1 ? TEXTURE_LVL1 : TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderType::guiTextured, menu.isLvl1 ? TEXTURE_LVL1 : TEXTURE, leftPos, topPos, 0.0F, 0.0F, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

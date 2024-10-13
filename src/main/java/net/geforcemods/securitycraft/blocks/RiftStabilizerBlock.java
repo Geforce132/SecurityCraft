@@ -22,8 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.SignalGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,7 +36,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -47,7 +46,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RiftStabilizerBlock extends DisguisableBlock {
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private static final VoxelShape SHAPE_LOWER = Shapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(2, 0, 2, 14, 16, 14));
@@ -87,7 +86,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 		BlockPos pos = ctx.getClickedPos();
 		Level level = ctx.getLevel();
 
-		return pos.getY() < level.getMaxBuildHeight() - 1 && level.getBlockState(pos.above()).canBeReplaced(ctx) ? super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()) : null;
+		return pos.getY() < level.getMaxY() - 1 && level.getBlockState(pos.above()).canBeReplaced(ctx) ? super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()) : null;
 	}
 
 	@Override
@@ -106,13 +105,13 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		DoubleBlockHalf half = state.getValue(HALF);
 
 		if (facing.getAxis() == Direction.Axis.Y && half == DoubleBlockHalf.LOWER == (facing == Direction.UP))
 			return facingState.is(this) && facingState.getValue(HALF) != half ? state.setValue(POWERED, facingState.getValue(POWERED)) : Blocks.AIR.defaultBlockState();
 		else
-			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+			return half == DoubleBlockHalf.LOWER && facing == Direction.DOWN && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -24,7 +25,7 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, Orientation orientation, boolean movedByPiston) {
 		if (pos.getY() == neighborPos.getY() && level.getBlockEntity(pos) instanceof FloorTrapBlockEntity trap1 && trap1.isModuleEnabled(ModuleType.SMART) && level.getBlockEntity(neighborPos) instanceof FloorTrapBlockEntity trap2 && trap1.getOwner().owns(trap2) && level.getBlockState(neighborPos).getValue(INVISIBLE)) {
 			if (trap1.shouldDisappearInstantlyInChains())
 				trap1.scheduleDisappear(0, true);
@@ -44,7 +45,7 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 

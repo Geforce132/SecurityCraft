@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.redstone.Orientation;
 
 public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implements IReinforcedBlock {
 	public ReinforcedIronTrapDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
@@ -18,7 +19,7 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean flag) {
 		boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
 		if (hasActiveSCBlock != state.getValue(OPEN)) {

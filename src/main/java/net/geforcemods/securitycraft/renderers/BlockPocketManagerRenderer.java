@@ -5,13 +5,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.AABB;
 
 public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity> {
@@ -35,9 +35,9 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		int frontZ = facing == Direction.NORTH || facing == Direction.WEST ? 0 : 1;
 		int backZ = facing == Direction.NORTH || facing == Direction.WEST ? size : 1 - size;
 		int packedColor = be.getColor();
-		float r = FastColor.ARGB32.red(packedColor) / 255.0F;
-		float g = FastColor.ARGB32.green(packedColor) / 255.0F;
-		float b = FastColor.ARGB32.blue(packedColor) / 255.0F;
+		float r = ARGB.red(packedColor) / 255.0F;
+		float g = ARGB.green(packedColor) / 255.0F;
+		float b = ARGB.blue(packedColor) / 255.0F;
 
 		//x- and z-values get switched when the manager's direction is west or east
 		if (facing == Direction.EAST || facing == Direction.WEST) {
@@ -47,7 +47,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 			backZ = half + 1 + offset;
 		}
 
-		LevelRenderer.renderLineBox(pose, buffer.getBuffer(RenderType.lines()), leftX, 0, frontZ, rightX, size, backZ, r, g, b, 1.0F);
+		ShapeRenderer.renderLineBox(pose, buffer.getBuffer(RenderType.lines()), leftX, 0, frontZ, rightX, size, backZ, r, g, b, 1.0F);
 	}
 
 	@Override

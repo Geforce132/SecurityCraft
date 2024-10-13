@@ -73,7 +73,7 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(getSkinTexture(be.getPlayerProfile())));
 			Pose last = pose.last();
 			Matrix4f positionMatrix = last.pose();
-			Vec3i normalVector = direction.getNormal();
+			Vec3i normalVector = direction.getUnitVec3i();
 			BlockPos offsetPos = be.getBlockPos().relative(direction);
 
 			combinedLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));

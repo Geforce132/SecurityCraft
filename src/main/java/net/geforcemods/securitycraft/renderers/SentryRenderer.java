@@ -36,7 +36,7 @@ public class SentryRenderer extends EntityRenderer<Sentry> {
 		pose.scale(scale, scale, scale);
 		pose.translate(0.0D, 1.5D, 0.0D);
 		pose.scale(-1, -1, 1); //rotate model rightside up
-		RenderSystem._setShaderTexture(0, getTextureLocation(entity));
+		RenderSystem.setShaderTexture(0, getTextureLocation(entity));
 		model.renderBase(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		pose.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.getOriginalHeadRotation(), entity.getHeadRotation())));
 		pose.translate(0.0F, entity.getHeadYTranslation(partialTicks), 0.0F);

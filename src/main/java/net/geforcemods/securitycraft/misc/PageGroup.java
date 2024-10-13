@@ -20,7 +20,7 @@ public enum PageGroup {
 	private final boolean hasRecipeGrid;
 	private final String title;
 	private final String specialInfoKey;
-	private Ingredient items = Ingredient.EMPTY;
+	private Ingredient items = null;
 
 	PageGroup(boolean hasRecipeGrid, String title, String specialInfoKey) {
 		this.hasRecipeGrid = hasRecipeGrid;

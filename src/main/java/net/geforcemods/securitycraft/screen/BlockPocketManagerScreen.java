@@ -24,6 +24,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -186,7 +187,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(hasStorageModule ? TEXTURE_STORAGE : TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderType::guiTextured, hasStorageModule ? TEXTURE_STORAGE : TEXTURE, leftPos, topPos, 0.0F, 0.0F, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

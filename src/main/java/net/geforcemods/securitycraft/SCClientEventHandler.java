@@ -24,12 +24,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item.TooltipContext;
@@ -92,16 +93,16 @@ public class SCClientEventHandler {
 
 				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
 					int packedColor = bcd.getColor();
-					float r = FastColor.ARGB32.red(packedColor) / 255.0F;
-					float g = FastColor.ARGB32.green(packedColor) / 255.0F;
-					float b = FastColor.ARGB32.blue(packedColor) / 255.0F;
+					float r = ARGB.red(packedColor) / 255.0F;
+					float g = ARGB.green(packedColor) / 255.0F;
+					float b = ARGB.blue(packedColor) / 255.0F;
 
 					for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 						BlockPos pos = changeEntry.pos();
 
 						pose.pushPose();
 						pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-						LevelRenderer.renderLineBox(pose, consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
+						ShapeRenderer.renderLineBox(pose, consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
 						pose.popPose();
 					}
 				}
@@ -200,13 +201,13 @@ public class SCClientEventHandler {
 		}
 
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		guiGraphics.blitSprite(BACKGROUND_SPRITE, 5, 0, 90, 20);
-		guiGraphics.blitSprite(LIVE_SPRITE, window.getGuiScaledWidth() - 70, 5, 65, 16);
+		guiGraphics.blitSprite(RenderType::guiTextured, BACKGROUND_SPRITE, 5, 0, 90, 20);
+		guiGraphics.blitSprite(RenderType::guiTextured, LIVE_SPRITE, window.getGuiScaledWidth() - 70, 5, 65, 16);
 
 		if (!mc.player.hasEffect(MobEffects.NIGHT_VISION))
-			guiGraphics.blitSprite(NIGHT_VISION_INACTIVE_SPRITE, 28, 4, 16, 9);
+			guiGraphics.blitSprite(RenderType::guiTextured, NIGHT_VISION_INACTIVE_SPRITE, 28, 4, 16, 9);
 		else
-			guiGraphics.blit(NIGHT_VISION, 27, -1, 0, 0, 18, 18, 18, 18);
+			guiGraphics.blit(RenderType::guiTextured, NIGHT_VISION, 27, -1, 0, 0, 18, 18, 18, 18);
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!be.isModuleEnabled(ModuleType.REDSTONE))

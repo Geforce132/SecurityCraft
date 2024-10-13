@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.redstone.Orientation;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock {
@@ -34,7 +36,7 @@ public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock
 	}
 
 	@Override
-	public void onExplosionHit(BlockState state, Level level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> dropConsumer) {} //disallow wind charges to open the gate
+	public void onExplosionHit(BlockState state, ServerLevel level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> dropConsumer) {} //disallow wind charges to open the gate
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
@@ -50,7 +52,7 @@ public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {
 		if (!level.isClientSide) {
 			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 

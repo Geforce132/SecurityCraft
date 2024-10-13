@@ -35,14 +35,15 @@ import net.geforcemods.securitycraft.screen.components.HoverChecker;
 import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.ClickEvent;
@@ -97,7 +98,7 @@ public class SCManualScreen extends Screen {
 	private final Component ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
-	private NonNullList<Ingredient> recipe;
+	private List<Ingredient> recipe;
 	private IngredientDisplay[] displays = new IngredientDisplay[9];
 	private int startX = -1;
 	private List<FormattedText> subpages = new ArrayList<>();
@@ -147,7 +148,7 @@ public class SCManualScreen extends Screen {
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		renderTransparentBackground(guiGraphics);
-		guiGraphics.blit(currentPage == -1 ? TITLE_PAGE : (recipe != null && !recipe.isEmpty() ? PAGE : PAGE_WITH_SCROLL), startX, 5, 0, 0, 256, 250);
+		guiGraphics.blit(RenderType::guiTextured, currentPage == -1 ? TITLE_PAGE : (recipe != null && !recipe.isEmpty() ? PAGE : PAGE_WITH_SCROLL), startX, 5, 0.0F, 0.0F, 0, 0, 256, 250);
 
 		for (Renderable renderable : renderables) {
 			renderable.render(guiGraphics, mouseX, mouseY, partialTicks);
@@ -165,14 +166,14 @@ public class SCManualScreen extends Screen {
 			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0, false);
 			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
 			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
-			guiGraphics.blitSprite(ownable ? OWNABLE_HIGHLIGHTED_SPRITE : OWNABLE_SPRITE, startX + 29, 118, 16, 16);
-			guiGraphics.blitSprite(passcodeProtected ? PASSCODE_PROTECTED_HIGHLIGHTED_SPRITE : PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);
-			guiGraphics.blitSprite(viewActivated ? VIEW_ACTIVATED_HIGHLIGHTED_SPRITE : VIEW_ACTIVATED_SPRITE, startX + 82, 118, 16, 16);
-			guiGraphics.blitSprite(explosive ? EXPLOSIVE_HIGHLIGHTED_SPRITE : EXPLOSIVE_SPRITE, startX + 107, 116, 18, 18);
-			guiGraphics.blitSprite(hasOptions ? HAS_OPTIONS_HIGHLIGHTED_SPRITE : HAS_OPTIONS_SPRITE, startX + 136, 118, 16, 16);
-			guiGraphics.blitSprite(hasModules ? HAS_MODULES_HIGHLIGHTED_SPRITE : HAS_MODULES_SPRITE, startX + 163, 118, 16, 16);
-			guiGraphics.blitSprite(lockable ? LOCKABLE_HIGHLIGHTED_SPRITE : LOCKABLE_SPRITE, startX + 189, 118, 16, 16);
-			guiGraphics.blitSprite(hasOptions || hasModules ? CUSTOMIZABLE_HIGHLIGHTED_SPRITE : CUSTOMIZABLE_SPRITE, startX + 213, 117, 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, ownable ? OWNABLE_HIGHLIGHTED_SPRITE : OWNABLE_SPRITE, startX + 29, 118, 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, passcodeProtected ? PASSCODE_PROTECTED_HIGHLIGHTED_SPRITE : PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, viewActivated ? VIEW_ACTIVATED_HIGHLIGHTED_SPRITE : VIEW_ACTIVATED_SPRITE, startX + 82, 118, 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, explosive ? EXPLOSIVE_HIGHLIGHTED_SPRITE : EXPLOSIVE_SPRITE, startX + 107, 116, 18, 18);
+			guiGraphics.blitSprite(RenderType::guiTextured, hasOptions ? HAS_OPTIONS_HIGHLIGHTED_SPRITE : HAS_OPTIONS_SPRITE, startX + 136, 118, 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, hasModules ? HAS_MODULES_HIGHLIGHTED_SPRITE : HAS_MODULES_SPRITE, startX + 163, 118, 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, lockable ? LOCKABLE_HIGHLIGHTED_SPRITE : LOCKABLE_SPRITE, startX + 189, 118, 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, hasOptions || hasModules ? CUSTOMIZABLE_HIGHLIGHTED_SPRITE : CUSTOMIZABLE_SPRITE, startX + 213, 117, 16, 16);
 
 			for (int i = 0; i < hoverCheckers.size(); i++) {
 				HoverChecker chc = hoverCheckers.get(i);
@@ -310,10 +311,10 @@ public class SCManualScreen extends Screen {
 
 		if (currentPage < 0) {
 			for (IngredientDisplay display : displays) {
-				display.setIngredient(Ingredient.EMPTY);
+				display.setIngredient(null);
 			}
 
-			pageIcon.setIngredient(Ingredient.EMPTY);
+			pageIcon.setIngredient(null);
 			recipe = null;
 			nextSubpage.visible = false;
 			previousSubpage.visible = false;
@@ -344,34 +345,28 @@ public class SCManualScreen extends Screen {
 			Level level = Minecraft.getInstance().level;
 			RegistryAccess registryAccess = level.registryAccess();
 
-			for (RecipeHolder<?> recipeHolder : level.getRecipeManager().getRecipes()) {
+			for (RecipeHolder<?> recipeHolder : level.getServer().getRecipeManager().getRecipes()) {
 				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
-					ItemStack resultItem = shapedRecipe.getResultItem(registryAccess);
+					ItemStack resultItem = shapedRecipe.assemble(null, registryAccess);
 
 					if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && resultItem.has(DataComponents.DYED_COLOR))) {
-						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
-						NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(9, Ingredient.EMPTY);
+						List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
+						List<Ingredient> recipeItems = Arrays.asList(Util.make(new Ingredient[9], array -> Arrays.fill(array, null)));
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							recipeItems.set(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()), ingredients.get(i));
+							recipeItems.set(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()), ingredients.get(i).orElse(null));
 						}
 
 						this.recipe = recipeItems;
 						break;
 					}
 				}
-				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && shapelessRecipe.getResultItem(registryAccess).is(item)) {
+				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && shapelessRecipe.assemble(null, registryAccess).is(item)) {
 					//don't show keycard reset recipes
-					if (recipeHolder.id().getPath().endsWith("_reset"))
+					if (recipeHolder.id().location().getPath().endsWith("_reset"))
 						continue;
 
-					NonNullList<Ingredient> recipeItems = NonNullList.<Ingredient>withSize(shapelessRecipe.getIngredients().size(), Ingredient.EMPTY);
-
-					for (int i = 0; i < recipeItems.size(); i++) {
-						recipeItems.set(i, shapelessRecipe.getIngredients().get(i));
-					}
-
-					this.recipe = recipeItems;
+					this.recipe = new ArrayList<>(shapelessRecipe.placementInfo().ingredients());
 					break;
 				}
 			}
@@ -380,61 +375,67 @@ public class SCManualScreen extends Screen {
 			Level level = Minecraft.getInstance().level;
 			RegistryAccess registryAccess = level.registryAccess();
 			Map<Integer, ItemStack[]> recipeStacks = new HashMap<>();
-			List<Item> pageItems = Arrays.stream(pageGroup.getItems().getItems()).map(ItemStack::getItem).toList();
+			List<Item> pageItems = pageGroup.getItems().stacks().stream().map(ItemStack::getItem).toList();
 			int stacksLeft = pageItems.size();
 
 			for (int i = 0; i < 9; i++) {
 				recipeStacks.put(i, new ItemStack[pageItems.size()]);
 			}
 
-			for (RecipeHolder<?> recipeHolder : Minecraft.getInstance().level.getRecipeManager().getRecipes()) {
+			for (RecipeHolder<?> recipeHolder : Minecraft.getInstance().level.getServer().getRecipeManager().getRecipes()) {
 				if (stacksLeft == 0)
 					break;
 
 				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
-					if (!shapedRecipe.getResultItem(registryAccess).isEmpty() && pageItems.contains(shapedRecipe.getResultItem(registryAccess).getItem())) {
-						NonNullList<Ingredient> ingredients = shapedRecipe.getIngredients();
+					ItemStack resultItem = shapedRecipe.assemble(null, registryAccess);
+
+					if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
+						List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							ItemStack[] items = ingredients.get(i).getItems();
+							List<ItemStack> items = ingredients.get(i).map(Ingredient::stacks).orElse(List.of());
 
-							if (items.length == 0)
+							if (items.isEmpty())
 								continue;
 
-							int indexToAddAt = pageItems.indexOf(shapedRecipe.getResultItem(registryAccess).getItem());
+							int indexToAddAt = pageItems.indexOf(resultItem.getItem());
 
 							//first item needs to suffice since multiple recipes are being cycled through
-							recipeStacks.get(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()))[indexToAddAt] = items[0];
+							recipeStacks.get(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()))[indexToAddAt] = items.get(0);
 						}
 
 						stacksLeft--;
 					}
 				}
-				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && !shapelessRecipe.getResultItem(registryAccess).isEmpty() && pageItems.contains(shapelessRecipe.getResultItem(registryAccess).getItem())) {
-					//don't show keycard reset recipes
-					if (recipeHolder.id().getPath().endsWith("_reset"))
-						continue;
+				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe) {
+					ItemStack resultItem = shapelessRecipe.assemble(null, registryAccess);
 
-					NonNullList<Ingredient> ingredients = shapelessRecipe.getIngredients();
-
-					for (int i = 0; i < ingredients.size(); i++) {
-						ItemStack[] items = ingredients.get(i).getItems();
-
-						if (items.length == 0)
+					if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
+						//don't show keycard reset recipes
+						if (recipeHolder.id().location().getPath().endsWith("_reset"))
 							continue;
 
-						int indexToAddAt = pageItems.indexOf(shapelessRecipe.getResultItem(registryAccess).getItem());
+						List<Ingredient> ingredients = shapelessRecipe.placementInfo().ingredients();
 
-						//first item needs to suffice since multiple recipes are being cycled through
-						recipeStacks.get(i)[indexToAddAt] = items[0];
+						for (int i = 0; i < ingredients.size(); i++) {
+							List<ItemStack> items = ingredients.get(i).stacks();
+
+							if (items.isEmpty())
+								continue;
+
+							int indexToAddAt = pageItems.indexOf(resultItem.getItem());
+
+							//first item needs to suffice since multiple recipes are being cycled through
+							recipeStacks.get(i)[indexToAddAt] = items.get(0);
+						}
+
+						stacksLeft--;
 					}
-
-					stacksLeft--;
 				}
 			}
 
-			recipe = NonNullList.withSize(9, Ingredient.EMPTY);
-			recipeStacks.forEach((i, stackArray) -> recipe.set(i, Ingredient.of(Arrays.stream(stackArray).map(s -> s == null ? ItemStack.EMPTY : s))));
+			recipe = Arrays.asList(Util.make(new Ingredient[9], array -> Arrays.fill(array, null)));
+			recipeStacks.forEach((i, stackArray) -> recipe.set(i, null));
 		}
 
 		if (page.hasRecipeDescription()) {
@@ -540,7 +541,7 @@ public class SCManualScreen extends Screen {
 					int index = (i * 3) + j;
 
 					if (index >= recipe.size())
-						displays[index].setIngredient(Ingredient.EMPTY);
+						displays[index].setIngredient(null);
 					else
 						displays[index].setIngredient(recipe.get(index));
 				}
@@ -548,7 +549,7 @@ public class SCManualScreen extends Screen {
 		}
 		else {
 			for (IngredientDisplay display : displays) {
-				display.setIngredient(Ingredient.EMPTY);
+				display.setIngredient(null);
 			}
 		}
 
@@ -710,7 +711,7 @@ public class SCManualScreen extends Screen {
 
 		@Override
 		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-			guiGraphics.blitSprite(isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
+			guiGraphics.blitSprite(RenderType::guiTextured, isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
 		}
 	}
 
@@ -722,7 +723,7 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			guiGraphics.blitSprite(isHoveredOrFocused() ? LINK_OUT_HIGHLIGHTED_SPRITE : LINK_OUT_SPRITE, getX(), getY(), 16, 16);
+			guiGraphics.blitSprite(RenderType::guiTextured, isHoveredOrFocused() ? LINK_OUT_HIGHLIGHTED_SPRITE : LINK_OUT_SPRITE, getX(), getY(), 16, 16);
 		}
 	}
 

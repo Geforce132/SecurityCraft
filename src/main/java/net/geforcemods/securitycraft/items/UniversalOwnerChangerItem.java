@@ -17,7 +17,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -41,7 +40,7 @@ public class UniversalOwnerChangerItem extends Item {
 
 		//prioritize handling the briefcase
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
-			return handleBriefcase(player, stack).getResult();
+			return handleBriefcase(player, stack);
 
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
@@ -106,21 +105,21 @@ public class UniversalOwnerChangerItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack ownerChanger = player.getItemInHand(hand);
 
 		if (!ownerChanger.has(DataComponents.CUSTOM_NAME)) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.noName"), ChatFormatting.RED);
-			return InteractionResultHolder.fail(ownerChanger);
+			return InteractionResult.FAIL;
 		}
 
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get())
 			return handleBriefcase(player, ownerChanger);
 
-		return InteractionResultHolder.pass(ownerChanger);
+		return InteractionResult.PASS;
 	}
 
-	private InteractionResultHolder<ItemStack> handleBriefcase(Player player, ItemStack ownerChanger) {
+	private InteractionResult handleBriefcase(Player player, ItemStack ownerChanger) {
 		ItemStack briefcase = player.getOffhandItem();
 
 		if (BriefcaseItem.isOwnedBy(briefcase, player)) {
@@ -128,11 +127,11 @@ public class UniversalOwnerChangerItem extends Item {
 
 			briefcase.set(SCContent.OWNER_DATA, new OwnerData(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", true));
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
-			return InteractionResultHolder.success(ownerChanger);
+			return InteractionResult.SUCCESS_SERVER;
 		}
 		else
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.briefcase.notOwned"), ChatFormatting.RED);
 
-		return InteractionResultHolder.consume(ownerChanger);
+		return InteractionResult.CONSUME;
 	}
 }

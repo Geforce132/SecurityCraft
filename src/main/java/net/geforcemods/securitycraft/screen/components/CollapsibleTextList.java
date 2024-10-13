@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -64,7 +65,7 @@ public class CollapsibleTextList extends Button {
 		Font font = Minecraft.getInstance().font;
 		int heightOffset = (height - 8) / 2;
 
-		guiGraphics.blitSprite(SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
+		guiGraphics.blitSprite(RenderType::guiTextured, SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
 		guiGraphics.drawCenteredString(font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		int renderedLines = 0;

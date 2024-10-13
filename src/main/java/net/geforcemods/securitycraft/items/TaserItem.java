@@ -6,10 +6,12 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -42,7 +45,7 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (!stack.isDamaged()) {
@@ -55,17 +58,17 @@ public class TaserItem extends Item {
 					else
 						player.setItemInHand(hand, new ItemStack(SCContent.TASER.get(), 1));
 
-					return InteractionResultHolder.success(stack);
+					return InteractionResult.SUCCESS_SERVER;
 				}
 				else if (player.getInventory().contains(oneRedstone)) {
-					int redstoneSlot = player.getInventory().findSlotMatchingUnusedItem(oneRedstone);
+					int redstoneSlot = player.getInventory().findSlotMatchingCraftingIngredient(oneRedstone.getItemHolder());
 					ItemStack redstoneStack;
 
 					if (redstoneSlot == -1) {
 						if (player.getOffhandItem().getItem() == Items.REDSTONE)
 							redstoneStack = player.getOffhandItem();
 						else
-							return InteractionResultHolder.pass(stack);
+							return InteractionResult.PASS;
 					}
 					else
 						redstoneStack = player.getInventory().getItem(redstoneSlot);
@@ -78,10 +81,10 @@ public class TaserItem extends Item {
 						player.getInventory().setItem(redstoneSlot, redstoneStack);
 
 					player.setItemInHand(hand, new ItemStack(SCContent.TASER_POWERED.get(), 1));
-					return InteractionResultHolder.success(stack);
+					return InteractionResult.SUCCESS_SERVER;
 				}
 
-				return InteractionResultHolder.pass(stack);
+				return InteractionResult.PASS;
 			}
 
 			int range = 11;
@@ -98,7 +101,7 @@ public class TaserItem extends Item {
 				LivingEntity entity = (LivingEntity) hitResult.getEntity();
 				double damage = powered ? ConfigHandler.SERVER.poweredTaserDamage.get() : ConfigHandler.SERVER.taserDamage.get();
 
-				if ((damage == 0.0D || entity.hurt(CustomDamageSources.taser(player), (float) damage)) && !entity.isBlocking()) {
+				if (level instanceof ServerLevel serverLevel && (damage == 0.0D || entity.hurtServer(serverLevel, CustomDamageSources.taser(player), (float) damage)) && !entity.isBlocking()) {
 					List<MobEffectInstance> effects = stack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).customEffects();
 
 					effects.forEach(entity::addEffect);
@@ -116,10 +119,10 @@ public class TaserItem extends Item {
 					stack.hurtAndBreak(150, player, LivingEntity.getSlotForHand(hand));
 			}
 
-			return InteractionResultHolder.consume(stack);
+			return InteractionResult.CONSUME;
 		}
 
-		return InteractionResultHolder.pass(stack);
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -129,7 +132,7 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack) {
+	public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
 		return false;
 	}
 

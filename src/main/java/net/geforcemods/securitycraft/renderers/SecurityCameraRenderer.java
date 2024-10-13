@@ -22,7 +22,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -89,7 +89,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 			else
 				model.cameraRotationPoint2.visible = false;
 
-			model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, FastColor.ARGB32.colorFromFloat(1.0F, r, g, b));
+			model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(1.0F, r, g, b));
 			model.cameraRotationPoint2.visible = true;
 		}
 	}

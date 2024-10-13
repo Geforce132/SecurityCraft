@@ -9,6 +9,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -53,7 +54,7 @@ public class SentryItem extends Item {
 		if (replacesTargetedBlock)
 			level.removeBlock(pos, false);
 
-		Sentry entity = SCContent.SENTRY_ENTITY.get().create(level);
+		Sentry entity = SCContent.SENTRY_ENTITY.get().create(level, EntitySpawnReason.SPAWN_ITEM_USE);
 
 		entity.setPos(pos.getX() + 0.5F, pos.getY(), pos.getZ() + 0.5F);
 		entity.setUpSentry(player);

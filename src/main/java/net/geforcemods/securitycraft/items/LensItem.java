@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,10 +15,10 @@ public class LensItem extends Item {
 	}
 
 	@Override
-	public String getDescriptionId(ItemStack stack) {
+	public Component getName(ItemStack stack) {
 		if (stack.has(DataComponents.DYED_COLOR))
-			return "item.securitycraft.colored_lens";
+			return Component.translatable("item.securitycraft.colored_lens");
 		else
-			return super.getDescriptionId(stack);
+			return super.getName(stack);
 	}
 }

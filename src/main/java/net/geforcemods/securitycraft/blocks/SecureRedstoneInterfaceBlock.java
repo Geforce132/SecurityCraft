@@ -30,7 +30,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -39,7 +40,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	public static final BooleanProperty SENDER = BooleanProperty.create("sender");
-	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 	private static final VoxelShape[] SENDER_SHAPES = {
 			Shapes.or(Block.box(0.0D, 9.0D, 0.0D, 16.0D, 16.0D, 16.0D), Block.box(7.0D, 1.0D, 7.0D, 9.0D, 9.0D, 9.0D)), //down
 			Shapes.or(Block.box(0.0D, 0.0D, 0.0D, 16.0D, 7.0D, 16.0D), Block.box(7.0D, 7.0D, 7.0D, 9.0D, 15.0D, 9.0D)), //up
@@ -96,7 +97,7 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
+	protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, Orientation orientation, boolean movedByPiston) {
 		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isSender() && !be.isDisabled())
 			be.refreshPower();
 	}

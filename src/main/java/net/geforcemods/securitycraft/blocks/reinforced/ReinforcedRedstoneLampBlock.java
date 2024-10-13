@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 
 public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	public static final BooleanProperty LIT = RedstoneTorchBlock.LIT;
@@ -30,7 +31,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {
 		if (!level.isClientSide) {
 			boolean isLit = state.getValue(LIT);
 

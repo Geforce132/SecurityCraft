@@ -31,7 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -39,7 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ProjectorBlock extends DisguisableBlock {
 	private static final MutableComponent TOOLTIP = Component.translatable("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
 	private static final VoxelShape FLOOR_NORTH = Shapes.or(Block.box(12, 0, 12, 15, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(9, 2, 15, 14, 7, 16), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15));
 	private static final VoxelShape FLOOR_SOUTH = Shapes.or(Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 2, 1, 15, 7, 15), Block.box(2, 2, 0, 7, 7, 1), Block.box(1, 0, 12, 4, 2, 15), Block.box(12, 0, 12, 15, 2, 15), Block.box(12, 0, 1, 15, 2, 4));
@@ -108,7 +109,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isActivatedByRedstone()) {
 			be.setActive(level.hasNeighborSignal(pos));
 			level.sendBlockUpdated(pos, state, state, 3);

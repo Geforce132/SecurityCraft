@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -52,7 +53,7 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 	public void animateTick(Level level, BlockPos pos, FluidState state, RandomSource random) {
 		BlockPos posAbove = pos.above();
 
-		if (level.getBlockState(posAbove).isAir() && !level.getBlockState(posAbove).isSolidRender(level, posAbove)) {
+		if (level.getBlockState(posAbove).isAir() && !level.getBlockState(posAbove).isSolidRender()) {
 			if (random.nextInt(100) == 0) {
 				double x = pos.getX() + random.nextFloat();
 				double y = pos.getY() + 1;
@@ -68,7 +69,7 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 	}
 
 	@Override
-	public void randomTick(Level level, BlockPos pos, FluidState state, RandomSource random) {
+	public void randomTick(ServerLevel level, BlockPos pos, FluidState state, RandomSource random) {
 		if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
 			int i = random.nextInt(3);
 
@@ -119,7 +120,7 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 	}
 
 	private boolean isFlammable(LevelReader level, BlockPos pos, Direction face) {
-		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() < level.getMaxBuildHeight() && !level.hasChunkAt(pos))
+		if (pos.getY() >= level.getMinY() && pos.getY() < level.getMaxY() && !level.hasChunkAt(pos))
 			return false;
 
 		BlockState state = level.getBlockState(pos);
@@ -134,12 +135,12 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 	}
 
 	@Override
-	protected boolean canConvertToSource(Level level) {
+	protected boolean canConvertToSource(ServerLevel level) {
 		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_LAVA_SOURCE_CONVERSION);
 	}
 
 	@Override
-	public boolean canConvertToSource(FluidState state, Level level, BlockPos pos) {
+	public boolean canConvertToSource(FluidState state, ServerLevel level, BlockPos pos) {
 		return canConvertToSource(level);
 	}
 

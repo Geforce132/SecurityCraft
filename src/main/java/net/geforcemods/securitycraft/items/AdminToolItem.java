@@ -18,7 +18,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -46,7 +45,7 @@ public class AdminToolItem extends Item {
 				return InteractionResult.FAIL;
 			}
 
-			InteractionResult briefcaseResult = handleBriefcase(player, ctx.getHand()).getResult();
+			InteractionResult briefcaseResult = handleBriefcase(player, ctx.getHand());
 
 			if (briefcaseResult != InteractionResult.PASS)
 				return briefcaseResult;
@@ -116,18 +115,16 @@ public class AdminToolItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		if (!player.isCreative()) {
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:adminTool.needCreative"), ChatFormatting.DARK_PURPLE);
-			return InteractionResultHolder.fail(player.getItemInHand(hand));
+			return InteractionResult.FAIL;
 		}
 		else
 			return handleBriefcase(player, hand);
 	}
 
-	private InteractionResultHolder<ItemStack> handleBriefcase(Player player, InteractionHand hand) {
-		ItemStack adminTool = player.getItemInHand(hand);
-
+	private InteractionResult handleBriefcase(Player player, InteractionHand hand) {
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
 			ItemStack briefcase = player.getOffhandItem();
 			MutableComponent adminToolName = Utils.localize(getDescriptionId());
@@ -137,9 +134,9 @@ public class AdminToolItem extends Item {
 
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.name", ownerName.isEmpty() ? "????" : ownerName), ChatFormatting.DARK_PURPLE);
 			PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.owner.uuid", ownerUUID.isEmpty() ? "????" : ownerUUID), ChatFormatting.DARK_PURPLE);
-			return InteractionResultHolder.success(adminTool);
+			return InteractionResult.SUCCESS_SERVER;
 		}
 
-		return InteractionResultHolder.pass(adminTool);
+		return InteractionResult.PASS;
 	}
 }

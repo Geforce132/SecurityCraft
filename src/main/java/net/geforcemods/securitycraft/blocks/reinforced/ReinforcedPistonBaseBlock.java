@@ -180,11 +180,11 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	}
 
 	public static boolean isPushable(BlockState state, Level level, BlockPos pistonPos, BlockPos pos, Direction facing, boolean destroyBlocks, Direction direction) {
-		if (pos.getY() >= level.getMinBuildHeight() && pos.getY() <= level.getMaxBuildHeight() - 1 && level.getWorldBorder().isWithinBounds(pos)) {
+		if (pos.getY() >= level.getMinY() && pos.getY() <= level.getMaxY() - 1 && level.getWorldBorder().isWithinBounds(pos)) {
 			if (state.isAir())
 				return true;
 			else if (!state.is(Blocks.OBSIDIAN) && !state.is(Blocks.CRYING_OBSIDIAN) && !state.is(Blocks.RESPAWN_ANCHOR) && !state.is(Blocks.REINFORCED_DEEPSLATE) && !state.is(SCContent.REINFORCED_OBSIDIAN.get()) && !state.is(SCContent.REINFORCED_CRYING_OBSIDIAN.get())) {
-				if ((facing == Direction.DOWN && pos.getY() == level.getMinBuildHeight()) || (facing == Direction.UP && pos.getY() == level.getMaxBuildHeight() - 1))
+				if ((facing == Direction.DOWN && pos.getY() == level.getMinY()) || (facing == Direction.UP && pos.getY() == level.getMaxY() - 1))
 					return false;
 				else {
 					boolean isPushableSCBlock = state.getBlock() instanceof IReinforcedBlock || state.getBlock() instanceof ElectrifiedIronFenceBlock || state.getBlock() instanceof ElectrifiedIronFenceGateBlock;

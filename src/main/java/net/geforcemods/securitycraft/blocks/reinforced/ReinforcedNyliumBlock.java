@@ -36,7 +36,7 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
 		BlockPos upperPos = pos.above();
 		ChunkGenerator chunkGenerator = level.getChunkSource().getGenerator();
-		Registry<ConfiguredFeature<?, ?>> registry = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE);
+		Registry<ConfiguredFeature<?, ?>> registry = level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE);
 
 		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get()))
 			place(registry, NetherFeatures.CRIMSON_FOREST_VEGETATION_BONEMEAL, level, chunkGenerator, random, upperPos);
@@ -50,6 +50,6 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 	}
 
 	private void place(Registry<ConfiguredFeature<?, ?>> registry, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, ServerLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos pos) {
-		registry.getHolder(configuredFeatureKey).ifPresent(configuredFeature -> configuredFeature.value().place(level, chunkGenerator, random, pos));
+		registry.get(configuredFeatureKey).ifPresent(configuredFeature -> configuredFeature.value().place(level, chunkGenerator, random, pos));
 	}
 }

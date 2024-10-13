@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -251,7 +252,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 			if (moduleInv.isModuleEnabled(ModuleType.SMART))
 				startCooldown();
 
-			if (moduleInv.isModuleEnabled(ModuleType.HARMING) && player.hurt(CustomDamageSources.incorrectPasscode(player.level().registryAccess()), ConfigHandler.SERVER.incorrectPasscodeDamage.get()))
+			if (player.level() instanceof ServerLevel level && moduleInv.isModuleEnabled(ModuleType.HARMING) && player.hurtServer(level, CustomDamageSources.incorrectPasscode(level.registryAccess()), ConfigHandler.SERVER.incorrectPasscodeDamage.get()))
 				player.closeContainer();
 		}
 	}

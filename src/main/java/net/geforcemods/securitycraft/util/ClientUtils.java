@@ -18,7 +18,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -49,16 +49,16 @@ public class ClientUtils {
 
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-		RenderSystem._setShaderTexture(0, MODULE_TEXTURES[module.ordinal()]);
+		RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
+		RenderSystem.setShaderTexture(0, MODULE_TEXTURES[module.ordinal()]);
 		drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 
 		if (module == ModuleType.REDSTONE) {
-			RenderSystem._setShaderTexture(0, REDSTONE_TEXTURE);
+			RenderSystem.setShaderTexture(0, REDSTONE_TEXTURE);
 			drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 		else if (module == ModuleType.SPEED) {
-			RenderSystem._setShaderTexture(0, SUGAR_TEXTURE);
+			RenderSystem.setShaderTexture(0, SUGAR_TEXTURE);
 			drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
 		}
 
@@ -106,7 +106,7 @@ public class ClientUtils {
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		RenderSystem.setShader(CoreShaders.POSITION_COLOR);
 		buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		buffer.addVertex(mat, right, top, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
 		buffer.addVertex(mat, left, top, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);

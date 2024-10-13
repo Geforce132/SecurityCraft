@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,11 +26,11 @@ public class ReinforcedChiseledBookshelfBlock extends ChiseledBookShelfBlock imp
 	}
 
 	@Override
-	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedChiseledBookshelfBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
 			return super.useItemOn(stack, state, level, pos, player, hand, hit);
 
-		return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.PASS;
 	}
 
 	@Override

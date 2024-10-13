@@ -20,8 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -34,9 +34,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -45,7 +46,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
-	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_EAST = Block.box(0, 4, 4, 8, 12, 12);
 	private static final VoxelShape SHAPE_WEST = Block.box(8, 4, 4, 16, 12, 12);
@@ -89,7 +90,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean flag) {
 		if (!canSurvive(state, level, pos))
 			level.destroyBlock(pos, true);
 	}
@@ -104,11 +105,11 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		if (state.getValue(WATERLOGGED))
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
 	}
 
 	@Override

@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.function.Consumer;
 
-import org.joml.Vector3f;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.items.KeycardItem;
@@ -16,9 +14,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,11 +33,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class KeycardReaderBlock extends DisguisableBlock {
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public KeycardReaderBlock(BlockBehaviour.Properties properties) {
@@ -47,7 +47,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		return useItemOn(stack, state, level, pos, player, hand, be -> {
 			//only allow the owner and players on the allowlist to open the gui
 			if (be.isOwnedBy(player) || be.isAllowed(player))
@@ -55,7 +55,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 		});
 	}
 
-	public static <BE extends KeycardReaderBlockEntity> ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, Consumer<BE> noKeycardRightclick) {
+	public static <BE extends KeycardReaderBlockEntity> InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, Consumer<BE> noKeycardRightclick) {
 		if (!level.isClientSide) {
 			BE be = (BE) level.getBlockEntity(pos);
 
@@ -78,7 +78,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 			}
 		}
 
-		return ItemInteractionResult.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -108,13 +108,13 @@ public class KeycardReaderBlock extends DisguisableBlock {
 			float r = 0.6F + 0.4F;
 			float g = Math.max(0.0F, 0.7F - 0.5F);
 			float b = Math.max(0.0F, 0.6F - 0.7F);
-			Vector3f vec = new Vector3f(r, g, b);
+			int color = ARGB.color(new Vec3(r, g, b));
 
-			level.addParticle(new DustParticleOptions(vec, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

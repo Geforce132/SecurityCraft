@@ -61,7 +61,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -200,10 +199,10 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingIncomingDamageEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
-			Level level = player.level();
+			ServerLevel level = player.serverLevel();
 			DamageSource damageSource = event.getSource();
 
-			if (!player.isCreative() && damageSource.equals(level.damageSources().inWall()) && !player.isInvulnerableTo(damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(), player.getBbWidth())) {
+			if (!player.isCreative() && damageSource.equals(level.damageSources().inWall()) && !player.isInvulnerableTo(level, damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(), player.getBbWidth())) {
 				int reinforcedSuffocationDamage = ConfigHandler.SERVER.reinforcedSuffocationDamage.get();
 
 				if (reinforcedSuffocationDamage != -1) {
@@ -262,7 +261,7 @@ public class SCEventHandler {
 
 					if (be.isOwnedBy(player) && LecternBlock.tryPlaceBook(player, level, pos, state, stack)) {
 						player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-						event.setCancellationResult(ItemInteractionResult.sidedSuccess(level.isClientSide));
+						event.setCancellationResult(InteractionResult.SUCCESS);
 					}
 
 					event.setCanceled(true);

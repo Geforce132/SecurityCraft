@@ -38,7 +38,7 @@ public class ReinforcedScaffoldingBlockItem extends ScaffoldingBlockItem {
 
 			Direction direction;
 			int distance = 0;
-			int maxBuildHeight = level.getMaxBuildHeight();
+			int maxBuildHeight = level.getMaxY();
 			BlockPos.MutableBlockPos mutable;
 
 			if (ctx.isSecondaryUseActive())

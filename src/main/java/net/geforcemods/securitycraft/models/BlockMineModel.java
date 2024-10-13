@@ -6,8 +6,8 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.BakedOverrides;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -69,7 +69,7 @@ public class BlockMineModel implements BakedModel {
 	}
 
 	@Override
-	public ItemOverrides getOverrides() {
-		return defaultModel == null ? ItemOverrides.EMPTY : defaultModel.getOverrides();
+	public BakedOverrides overrides() {
+		return defaultModel == null ? BakedOverrides.EMPTY : defaultModel.overrides();
 	}
 }

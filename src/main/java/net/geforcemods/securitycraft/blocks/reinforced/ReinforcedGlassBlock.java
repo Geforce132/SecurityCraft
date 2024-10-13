@@ -15,7 +15,7 @@ public class ReinforcedGlassBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState states) {
 		return true;
 	}
 

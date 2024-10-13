@@ -6,7 +6,7 @@ import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -44,13 +44,13 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock {
 	}
 
 	@Override
-	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.isClientSide)
 			spawnParticles(level, pos);
 		else
 			activate(state, level, pos);
 
-		return stack.getItem() instanceof BlockItem && (new BlockPlaceContext(player, hand, stack, hit)).canPlace() ? ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.SUCCESS;
+		return stack.getItem() instanceof BlockItem && (new BlockPlaceContext(player, hand, stack, hit)).canPlace() ? InteractionResult.PASS : InteractionResult.SUCCESS;
 	}
 
 	private static void activate(BlockState state, Level level, BlockPos pos) {
@@ -83,7 +83,7 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock {
 		for (Direction direction : Direction.values()) {
 			BlockPos offsetPos = pos.relative(direction);
 
-			if (!level.getBlockState(offsetPos).isSolidRender(level, offsetPos)) {
+			if (!level.getBlockState(offsetPos).isSolidRender()) {
 				Direction.Axis axis = direction.getAxis();
 				double d1 = axis == Direction.Axis.X ? 0.5D + 0.5625D * direction.getStepX() : (double) random.nextFloat();
 				double d2 = axis == Direction.Axis.Y ? 0.5D + 0.5625D * direction.getStepY() : (double) random.nextFloat();

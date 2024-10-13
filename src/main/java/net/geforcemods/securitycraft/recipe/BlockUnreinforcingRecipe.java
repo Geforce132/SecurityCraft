@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 
@@ -26,7 +27,7 @@ public class BlockUnreinforcingRecipe extends AbstractReinforcerRecipe {
 	}
 
 	@Override
-	public RecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<? extends CustomRecipe> getSerializer() {
 		return SCContent.BLOCK_UNREINFORCING_RECIPE_SERIALIZER.get();
 	}
 }

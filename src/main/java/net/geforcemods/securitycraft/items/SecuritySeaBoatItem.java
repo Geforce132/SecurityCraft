@@ -4,7 +4,7 @@ import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -23,13 +23,13 @@ public class SecuritySeaBoatItem extends BoatItem {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
 
 		if (!level.getFluidState(hitResult.getBlockPos()).is(FluidTags.LAVA))
 			return super.use(level, player, hand);
 		else
-			return InteractionResultHolder.fail(player.getItemInHand(hand));
+			return InteractionResult.FAIL;
 	}
 
 	@Override

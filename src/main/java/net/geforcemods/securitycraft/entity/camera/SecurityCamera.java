@@ -20,6 +20,7 @@ import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -73,6 +74,11 @@ public class SecurityCamera extends Entity {
 
 		if (!level.isClientSide && level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			discard();
+	}
+
+	@Override
+	public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+		return false;
 	}
 
 	public float getZoomAmount() {

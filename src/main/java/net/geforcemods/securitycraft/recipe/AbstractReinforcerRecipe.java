@@ -90,9 +90,4 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 
 		return newInv;
 	}
-
-	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
 }

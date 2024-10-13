@@ -16,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -36,7 +35,7 @@ public class UniversalKeyChangerItem extends Item {
 		Player player = ctx.getPlayer();
 		InteractionHand hand = ctx.getHand();
 		Level level = ctx.getLevel();
-		InteractionResult briefcaseResult = handleBriefcase(level, player, hand).getResult();
+		InteractionResult briefcaseResult = handleBriefcase(level, player, hand);
 
 		if (briefcaseResult != InteractionResult.PASS)
 			return briefcaseResult;
@@ -63,13 +62,11 @@ public class UniversalKeyChangerItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		return handleBriefcase(level, player, hand);
 	}
 
-	private InteractionResultHolder<ItemStack> handleBriefcase(Level level, Player player, InteractionHand hand) {
-		ItemStack keyChanger = player.getItemInHand(hand);
-
+	private InteractionResult handleBriefcase(Level level, Player player, InteractionHand hand) {
 		if (hand == InteractionHand.MAIN_HAND && player.getOffhandItem().getItem() == SCContent.BRIEFCASE.get()) {
 			ItemStack briefcase = player.getOffhandItem();
 
@@ -82,7 +79,7 @@ public class UniversalKeyChangerItem extends Item {
 
 					briefcase.remove(SCContent.PASSCODE_DATA);
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.passcodeReset"), ChatFormatting.GREEN);
-					return InteractionResultHolder.success(keyChanger);
+					return InteractionResult.SUCCESS_SERVER;
 				}
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.noPasscode"), ChatFormatting.RED);
@@ -90,9 +87,9 @@ public class UniversalKeyChangerItem extends Item {
 			else
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.briefcase.notOwned"), ChatFormatting.RED);
 
-			return InteractionResultHolder.consume(keyChanger);
+			return InteractionResult.CONSUME;
 		}
 
-		return InteractionResultHolder.pass(keyChanger);
+		return InteractionResult.PASS;
 	}
 }

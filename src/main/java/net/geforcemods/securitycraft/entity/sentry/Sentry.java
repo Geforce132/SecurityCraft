@@ -39,10 +39,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.RangedAttackMob;
@@ -184,7 +184,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			player.closeContainer();
 
 			if (player.isCrouching())
-				kill();
+				kill(null);
 			else if (item == Items.REDSTONE && isShutDown()) {
 				reactivate();
 
@@ -192,7 +192,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 					player.getMainHandItem().shrink(1);
 			}
 			else if (item == SCContent.UNIVERSAL_BLOCK_REMOVER.get()) {
-				kill();
+				kill(null);
 
 				if (!player.isCreative())
 					player.getMainHandItem().hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
@@ -255,7 +255,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			return InteractionResult.SUCCESS;
 		}
 		else if (!isOwnedBy(player) && hand == InteractionHand.MAIN_HAND && player.isCreative() && (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get()))
-			kill();
+			kill(null);
 
 		return super.mobInteract(player, hand);
 	}
@@ -280,7 +280,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	@Override
-	public void kill() {
+	public void kill(ServerLevel level) {
 		remove(RemovalReason.KILLED);
 		gameEvent(GameEvent.ENTITY_DIE);
 	}
@@ -368,7 +368,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 						ItemStack extracted = handler.extractItem(i, 1, false);
 
 						pdb = projectileDispenseBehavior;
-						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, projectileY, 0.0D), extracted, Direction.getNearest(x, y, z));
+						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, projectileY, 0.0D), extracted, Direction.getApproximateNearest(x, y, z));
 						throwableEntity.setOwner(this);
 						shootSound = null;
 						break;
@@ -610,12 +610,12 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	//start: disallow sentry to take damage
 	@Override
-	public boolean doHurtTarget(Entity entity) {
+	public boolean doHurtTarget(ServerLevel level, Entity entity) {
 		return false;
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
 		return false;
 	}
 
@@ -631,7 +631,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	//end: disallow sentry to take damage
 
 	@Override
-	public boolean checkSpawnRules(LevelAccessor level, MobSpawnType reason) {
+	public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
 		return false;
 	}
 

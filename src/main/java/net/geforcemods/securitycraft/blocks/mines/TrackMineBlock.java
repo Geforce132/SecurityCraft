@@ -7,10 +7,11 @@ import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -33,16 +34,16 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	}
 
 	@Override
-	public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack heldItem, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (heldItem.is(SCContent.MINE_REMOTE_ACCESS_TOOL.get()))
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 
 		if (heldItem.getItem() == SCContent.WIRE_CUTTERS.get() && isActive(level, pos) && isDefusable() && defuseMine(level, pos)) {
 			if (!player.isCreative())
 				player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
 			level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		if (heldItem.is(Items.FLINT_AND_STEEL) && !isActive(level, pos) && activateMine(level, pos)) {
@@ -50,10 +51,10 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 				player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
 			level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.TRY_WITH_EMPTY_HAND;
 	}
 
 	@Override
@@ -72,7 +73,9 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			level.destroyBlock(pos, false);
 			level.explode(cart, pos.getX(), pos.getY() + 1, pos.getZ(), ConfigHandler.SERVER.smallerMineExplosion.get() ? 3.0F : 6.0F, ConfigHandler.SERVER.shouldSpawnFire.get(), BlockUtils.getExplosionInteraction());
-			cart.kill();
+
+			if (level instanceof ServerLevel serverLevel)
+				cart.kill(serverLevel);
 		}
 	}
 

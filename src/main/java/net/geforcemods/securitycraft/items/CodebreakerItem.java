@@ -14,7 +14,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -35,7 +35,7 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack codebreaker = player.getItemInHand(hand);
 
 		if (hand == InteractionHand.MAIN_HAND) {
@@ -54,7 +54,7 @@ public class CodebreakerItem extends Item {
 
 						if (!level.isClientSide) {
 							if (!player.isCreative() && codebreaker.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
-								return InteractionResultHolder.pass(codebreaker);
+								return InteractionResult.PASS;
 
 							boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
 
@@ -79,11 +79,11 @@ public class CodebreakerItem extends Item {
 					}
 				}
 
-				return InteractionResultHolder.success(codebreaker);
+				return InteractionResult.SUCCESS_SERVER;
 			}
 		}
 
-		return InteractionResultHolder.pass(codebreaker);
+		return InteractionResult.PASS;
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack) {
+	public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
 		return false;
 	}
 

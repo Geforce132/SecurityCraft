@@ -175,7 +175,7 @@ public class SecurityCraft {
 			}
 		}
 
-		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream())));
+		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream().map(ItemStack::getItem))));
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {

@@ -32,7 +32,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -124,7 +124,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			activate();
 	}
 
-	public ItemInteractionResult onRightClickWithActionItem(ItemStack stack, InteractionHand hand, Player player, boolean isCodebreaker, boolean isKeycardHolder) {
+	public InteractionResult onRightClickWithActionItem(ItemStack stack, InteractionHand hand, Player player, boolean isCodebreaker, boolean isKeycardHolder) {
 		if (isCodebreaker) {
 			double chance = CodebreakerItem.getSuccessChance(stack);
 
@@ -132,7 +132,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:codebreakerDisabled"), ChatFormatting.RED);
 			else {
 				if (!player.isCreative() && (isOwnedBy(player) || stack.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed()))
-					return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+					return InteractionResult.TRY_WITH_EMPTY_HAND;
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
 
@@ -157,7 +157,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 						feedback = insertCard(keycardStack, player);
 
 						if (feedback == null)
-							return ItemInteractionResult.SUCCESS;
+							return InteractionResult.SUCCESS;
 					}
 				}
 
@@ -174,7 +174,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			}
 		}
 
-		return ItemInteractionResult.SUCCESS;
+		return InteractionResult.SUCCESS;
 	}
 
 	public MutableComponent insertCard(ItemStack stack, Player player) {

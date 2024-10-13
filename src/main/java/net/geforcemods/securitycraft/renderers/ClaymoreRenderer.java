@@ -38,7 +38,7 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 
 		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
 		Matrix4f positionMatrix = pose.last().pose();
-		Vec3i normal = claymoreFacing.getNormal();
+		Vec3i normal = claymoreFacing.getUnitVec3i();
 		float multiplier = 0.0625F;
 		float xzStart = 9.0F * multiplier;
 		float y = 4.5F * multiplier;

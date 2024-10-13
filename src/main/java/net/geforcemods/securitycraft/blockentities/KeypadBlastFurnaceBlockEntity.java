@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class KeypadBlastFurnaceBlockEntity extends AbstractKeypadFurnaceBlockEntity {
@@ -15,8 +16,8 @@ public class KeypadBlastFurnaceBlockEntity extends AbstractKeypadFurnaceBlockEnt
 	}
 
 	@Override
-	protected int getBurnDuration(ItemStack fuel) {
-		return super.getBurnDuration(fuel) / 2;
+	protected int getBurnDuration(FuelValues fuelValues, ItemStack fuel) {
+		return super.getBurnDuration(fuelValues, fuel) / 2;
 	}
 
 	@Override

@@ -10,6 +10,8 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -17,8 +19,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -31,10 +33,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -42,7 +45,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBlock {
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape NORTH = Stream.of(Block.box(4, 0, 8, 12, 6, 9), Block.box(5, 0, 7, 11, 6, 8), Block.box(6, 6, 8, 10, 7, 9)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
@@ -68,7 +71,7 @@ public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBl
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, Orientation orientation, boolean flag) {
 		if (level.getBlockState(pos.below()).isAir())
 			level.destroyBlock(pos, true);
 	}
@@ -79,11 +82,11 @@ public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBl
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		if (state.getValue(WATERLOGGED))
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
 	}
 
 	@Override
@@ -104,8 +107,8 @@ public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBl
 	}
 
 	@Override
-	public void wasExploded(Level level, BlockPos pos, Explosion explosion) {
-		if (!level.isClientSide && level.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
+	public void wasExploded(ServerLevel level, BlockPos pos, Explosion explosion) {
+		if (level.getBlockState(pos).hasProperty(ClaymoreBlock.DEACTIVATED) && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			if (pos.equals(BlockPos.containing(explosion.center())))
 				return;
 

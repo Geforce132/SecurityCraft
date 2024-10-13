@@ -10,6 +10,8 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerEntity;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
@@ -40,6 +42,11 @@ public class BouncingBetty extends Entity {
 	@Override
 	protected MovementEmission getMovementEmission() {
 		return MovementEmission.NONE;
+	}
+
+	@Override
+	public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
+		return false;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.blockentities.AbstractKeypadFurnaceBlockEnt
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.RecipeBookType;
+import net.minecraft.world.item.crafting.RecipePropertySet;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
@@ -14,6 +15,6 @@ public class KeypadBlastFurnaceMenu extends AbstractKeypadFurnaceMenu {
 	}
 
 	public KeypadBlastFurnaceMenu(int windowId, Inventory inventory, AbstractKeypadFurnaceBlockEntity be) {
-		super(SCContent.KEYPAD_BLAST_FURNACE_MENU.get(), RecipeType.BLASTING, RecipeBookType.BLAST_FURNACE, windowId, inventory, be);
+		super(SCContent.KEYPAD_BLAST_FURNACE_MENU.get(), RecipeType.BLASTING, RecipePropertySet.BLAST_FURNACE_INPUT, RecipeBookType.BLAST_FURNACE, windowId, inventory, be);
 	}
 }

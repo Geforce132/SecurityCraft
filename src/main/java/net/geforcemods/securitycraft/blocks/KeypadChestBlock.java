@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -106,7 +107,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	};
 
 	public KeypadChestBlock(BlockBehaviour.Properties properties) {
-		super(properties, SCContent.KEYPAD_CHEST_BLOCK_ENTITY);
+		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY, properties);
 	}
 
 	@Override
@@ -292,16 +293,6 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
-
-		if (disguisedState.getBlock() != this)
-			return disguisedState.getLightBlock(level, pos);
-		else
-			return super.getLightBlock(state, level, pos);
-	}
-
-	@Override
 	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
 		return IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 	}
@@ -379,12 +370,8 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 			if (protect)
 				convertedBlock = SCContent.KEYPAD_CHEST.get();
-			else {
-				convertedBlock = BuiltInRegistries.BLOCK.get(((KeypadChestBlockEntity) chest).getPreviousChest());
-
-				if (convertedBlock == Blocks.AIR)
-					convertedBlock = Blocks.CHEST;
-			}
+			else
+				convertedBlock = BuiltInRegistries.BLOCK.get(((KeypadChestBlockEntity) chest).getPreviousChest()).map(Reference::value).orElse(Blocks.CHEST);
 
 			chest.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated
 			tag = chest.saveWithFullMetadata(level.registryAccess());

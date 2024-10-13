@@ -81,10 +81,10 @@ public class PlayerUtils {
 	public static void sendMessageToPlayer(Player player, MutableComponent prefix, MutableComponent text, ChatFormatting color, boolean shouldSendFromClient) {
 		if (player != null && player.level().isClientSide == shouldSendFromClient) {
 			//@formatter:off
-			player.sendSystemMessage(Component.literal("[")
+			player.displayClientMessage(Component.literal("[")
 					.append(prefix.setStyle(Style.EMPTY.withColor(color)))
 					.append(Component.literal("] ")).setStyle(Style.EMPTY.withColor(ChatFormatting.WHITE))
-					.append(text));
+					.append(text), false);
 			//@formatter:on
 		}
 	}

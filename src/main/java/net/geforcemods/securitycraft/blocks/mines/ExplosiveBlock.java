@@ -15,7 +15,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,9 +37,9 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 	}
 
 	@Override
-	public ItemInteractionResult useItemOn(ItemStack heldItem, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public InteractionResult useItemOn(ItemStack heldItem, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (heldItem.is(SCContent.MINE_REMOTE_ACCESS_TOOL.get()))
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 
 		if (heldItem.getItem() == SCContent.WIRE_CUTTERS.get() && isActive(level, pos) && isDefusable()) {
 			if (defuseMine(level, pos)) {
@@ -50,7 +49,7 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 				level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
 
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
 		if (heldItem.is(Items.FLINT_AND_STEEL) && !isActive(level, pos) && activateMine(level, pos)) {
@@ -58,10 +57,10 @@ public abstract class ExplosiveBlock extends OwnableBlock implements IExplosive 
 				player.getItemInHand(hand).hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
 			level.playSound(null, pos, SoundEvents.TRIPWIRE_CLICK_ON, SoundSource.BLOCKS, 1.0F, 1.0F);
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.TRY_WITH_EMPTY_HAND;
 	}
 
 	@Override

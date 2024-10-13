@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +22,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -43,14 +43,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 
 public class KeypadBarrelBlock extends DisguisableBlock {
-	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final EnumProperty<LidFacing> LID_FACING = EnumProperty.create("lid_facing", LidFacing.class);
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty FROG = BooleanProperty.create("frog");
@@ -72,15 +71,15 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	}
 
 	@Override
-	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		KeypadBarrelBlockEntity be = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
 
 		if (stack.is(Items.FROG_SPAWN_EGG) && be.isOwnedBy(player)) {
 			level.setBlockAndUpdate(pos, state.cycle(FROG));
-			return ItemInteractionResult.SUCCESS;
+			return InteractionResult.SUCCESS;
 		}
 
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.TRY_WITH_EMPTY_HAND;
 	}
 
 	@Override
@@ -226,10 +225,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 			};
 			CompoundTag tag;
 			BarrelBlockEntity barrel;
-			Block convertedBlock = BuiltInRegistries.BLOCK.get(keypadBarrel.getPreviousBarrel());
-
-			if (convertedBlock == Blocks.AIR)
-				convertedBlock = Blocks.BARREL;
+			Block convertedBlock = BuiltInRegistries.BLOCK.get(keypadBarrel.getPreviousBarrel()).map(Reference::value).orElse(Blocks.BARREL);
 
 			keypadBarrel.dropAllModules();
 			keypadBarrel.unpackLootTable(player); //generate loot (if any), so items don't spill out when converting and no additional loot table is generated

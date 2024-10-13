@@ -19,26 +19,26 @@ public class CustomDamageSources {
 	private CustomDamageSources() {}
 
 	public static DamageSource laser(RegistryAccess registryAccess) {
-		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(LASER));
+		return new DamageSource(registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(LASER));
 	}
 
 	public static DamageSource fakeWater(RegistryAccess registryAccess) {
-		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(FAKE_WATER));
+		return new DamageSource(registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(FAKE_WATER));
 	}
 
 	public static DamageSource electricity(RegistryAccess registryAccess) {
-		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ELECTRICITY));
+		return new DamageSource(registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(ELECTRICITY));
 	}
 
 	public static DamageSource taser(Entity shooter) {
-		return new DamageSource(shooter.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(TASER), null, shooter);
+		return new DamageSource(shooter.level().registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(TASER), null, shooter);
 	}
 
 	public static DamageSource incorrectPasscode(RegistryAccess registryAccess) {
-		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(INCORRECT_PASSCODE));
+		return new DamageSource(registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(INCORRECT_PASSCODE));
 	}
 
 	public static DamageSource inReinforcedWall(RegistryAccess registryAccess) {
-		return new DamageSource(registryAccess.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(IN_REINFORCED_WALL));
+		return new DamageSource(registryAccess.lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(IN_REINFORCED_WALL));
 	}
 }

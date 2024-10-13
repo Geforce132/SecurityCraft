@@ -58,7 +58,7 @@ public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockM
 		if (level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be)
 			be.checkReset();
 
-		if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight())
+		if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinY())
 			FallingBlockEntity.fall(level, pos, state).disableDrop();
 	}
 

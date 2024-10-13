@@ -13,6 +13,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.blockentities.BrushableMineBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -62,7 +63,7 @@ public class BrushItemMixin {
 	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"), cancellable = true)
 	private void securitycraft$checkForSuspiciousMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, @Local Player player, @Local BlockHitResult blockHitResult, @Local BlockPos pos, @Local BlockState brushedState) {
 		if (!level.isClientSide() && brushedState.is(SCTags.Blocks.SUSPICIOUS_MINES) && level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
-			boolean brushFinished = be.brush(level.getGameTime(), player, blockHitResult.getDirection());
+			boolean brushFinished = be.brush(level.getGameTime(), (ServerLevel) level, player, blockHitResult.getDirection(), stack);
 
 			if (brushFinished)
 				stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);

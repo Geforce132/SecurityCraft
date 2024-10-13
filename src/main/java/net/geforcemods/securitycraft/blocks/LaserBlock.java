@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import org.joml.Vector3f;
-
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -17,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -37,7 +36,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class LaserBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
@@ -167,7 +168,7 @@ public class LaserBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean flag) {
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean flag) {
 		setLaser(level, pos, null);
 	}
 
@@ -210,13 +211,13 @@ public class LaserBlock extends DisguisableBlock {
 			float r = 0.6F + 0.4F;
 			float g = Math.max(0.0F, 0.7F - 0.5F);
 			float b = Math.max(0.0F, 0.6F - 0.7F);
-			Vector3f vec = new Vector3f(r, g, b);
+			int color = ARGB.color(new Vec3(r, g, b));
 
-			level.addParticle(new DustParticleOptions(vec, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(vec, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

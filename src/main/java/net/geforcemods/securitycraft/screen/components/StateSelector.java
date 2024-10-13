@@ -158,7 +158,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		guiGraphics.blit(TEXTURE, xStart, yStart, 0, 0, 193, 150);
+		guiGraphics.blit(RenderType::guiTextured, TEXTURE, xStart, yStart, 0.0F, 0.0F, 0, 0, 193, 150);
 	}
 
 	public void updateButtons(boolean updateInfo, boolean slotChanged) {
@@ -269,7 +269,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			float b = (color & 255) / 255.0F;
 
 			for (RenderType renderType : blockModel.getRenderTypes(state, minecraft.level.random, ModelData.EMPTY)) {
-				blockRenderer.getModelRenderer().renderModel(pose.last(), bufferSource.getBuffer(RenderTypeHelper.getEntityRenderType(renderType, false)), state, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+				blockRenderer.getModelRenderer().renderModel(pose.last(), bufferSource.getBuffer(RenderTypeHelper.getEntityRenderType(renderType)), state, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
 			}
 		}
 	}

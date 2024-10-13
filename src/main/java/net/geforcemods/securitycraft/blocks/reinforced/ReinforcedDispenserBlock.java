@@ -10,6 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,8 +20,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -116,11 +117,11 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		if (state.getValue(WATERLOGGED))
-			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
 	}
 
 	@Override
@@ -167,16 +168,6 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 			return disguisedState.getShadeBrightness(level, pos);
 		else
 			return super.getShadeBrightness(state, level, pos);
-	}
-
-	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
-
-		if (disguisedState.getBlock() != this)
-			return disguisedState.getLightBlock(level, pos);
-		else
-			return super.getLightBlock(state, level, pos);
 	}
 
 	@Override

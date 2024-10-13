@@ -31,7 +31,7 @@ public record SyncTrophySystem(BlockPos pos, ResourceLocation projectileTypeLoca
 	}
 
 	public void handle(IPayloadContext ctx) {
-		EntityType<?> projectileType = BuiltInRegistries.ENTITY_TYPE.get(projectileTypeLocation);
+		EntityType<?> projectileType = BuiltInRegistries.ENTITY_TYPE.get(projectileTypeLocation).orElseThrow().value();
 
 		Player player = ctx.player();
 		Level level = player.level();

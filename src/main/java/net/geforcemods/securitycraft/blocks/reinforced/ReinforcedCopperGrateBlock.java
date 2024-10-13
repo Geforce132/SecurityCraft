@@ -2,9 +2,11 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,7 +38,7 @@ public class ReinforcedCopperGrateBlock extends BaseReinforcedBlock implements S
 	}
 
 	@Override
-	protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+	protected boolean propagatesSkylightDown(BlockState state) {
 		return true;
 	}
 
@@ -47,11 +49,11 @@ public class ReinforcedCopperGrateBlock extends BaseReinforcedBlock implements S
 	}
 
 	@Override
-	protected BlockState updateShape(BlockState state, Direction direction, BlockState state2, LevelAccessor level, BlockPos pos, BlockPos pos2) {
+	protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		if (state.getValue(WATERLOGGED))
-			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+			tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 
-		return super.updateShape(state, direction, state2, level, pos, pos2);
+		return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
 	}
 
 	@Override

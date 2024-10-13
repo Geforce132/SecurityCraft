@@ -43,6 +43,6 @@ public class WireCuttersItem extends Item {
 			}
 		}
 
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.SUCCESS;
 	}
 }

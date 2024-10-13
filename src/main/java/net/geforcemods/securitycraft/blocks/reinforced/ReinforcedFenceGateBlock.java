@@ -50,7 +50,7 @@ public class ReinforcedFenceGateBlock extends OwnableFenceGateBlock implements I
 			level.gameEvent(player, isOpen ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 		}
 
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.SUCCESS;
 	}
 
 	@Override

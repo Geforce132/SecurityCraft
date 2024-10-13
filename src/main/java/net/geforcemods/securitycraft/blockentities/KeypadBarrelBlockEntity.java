@@ -376,7 +376,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 			case SIDEWAYS -> state.getValue(KeypadBarrelBlock.HORIZONTAL_FACING);
 			case DOWN -> Direction.DOWN;
 		};
-		Vec3i facingNormal = normalFacing.getNormal();
+		Vec3i facingNormal = normalFacing.getUnitVec3i();
 		double x = worldPosition.getX() + 0.5D + facingNormal.getX() / 2.0D;
 		double y = worldPosition.getY() + 0.5D + facingNormal.getY() / 2.0D;
 		double z = worldPosition.getZ() + 0.5D + facingNormal.getZ() / 2.0D;

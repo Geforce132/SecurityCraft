@@ -24,7 +24,7 @@ public class SometimesVisibleBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state) {
 		return state.getValue(INVISIBLE);
 	}
 
@@ -48,8 +48,8 @@ public class SometimesVisibleBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-		return state.getValue(INVISIBLE) ? Shapes.empty() : super.getOcclusionShape(state, level, pos);
+	public VoxelShape getOcclusionShape(BlockState state) {
+		return state.getValue(INVISIBLE) ? Shapes.empty() : super.getOcclusionShape(state);
 	}
 
 	@Override

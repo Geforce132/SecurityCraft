@@ -18,7 +18,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -75,7 +74,7 @@ public class ModuleItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
 		if (canBeCustomized()) {
@@ -83,7 +82,7 @@ public class ModuleItem extends Item {
 				if (level.isClientSide)
 					ClientHandler.displayEditModuleScreen(stack);
 
-				return InteractionResultHolder.consume(stack);
+				return InteractionResult.CONSUME;
 			}
 			else if (module == ModuleType.DISGUISE) {
 				if (!level.isClientSide) {
@@ -100,11 +99,11 @@ public class ModuleItem extends Item {
 					});
 				}
 
-				return InteractionResultHolder.consume(stack);
+				return InteractionResult.CONSUME;
 			}
 		}
 
-		return InteractionResultHolder.pass(stack);
+		return InteractionResult.PASS;
 	}
 
 	@Override

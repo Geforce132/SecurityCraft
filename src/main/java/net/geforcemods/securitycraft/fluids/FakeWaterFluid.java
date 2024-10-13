@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
@@ -63,12 +64,12 @@ public abstract class FakeWaterFluid extends BaseFlowingFluid {
 	}
 
 	@Override
-	protected boolean canConvertToSource(Level level) {
+	protected boolean canConvertToSource(ServerLevel level) {
 		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_WATER_SOURCE_CONVERSION);
 	}
 
 	@Override
-	public boolean canConvertToSource(FluidState state, Level level, BlockPos pos) {
+	public boolean canConvertToSource(FluidState state, ServerLevel level, BlockPos pos) {
 		return canConvertToSource(level);
 	}
 

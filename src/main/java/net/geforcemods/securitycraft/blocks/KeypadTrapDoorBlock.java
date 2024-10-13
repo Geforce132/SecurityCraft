@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.redstone.Orientation;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -122,7 +123,7 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean flag) {}
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean flag) {}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
@@ -168,16 +169,6 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 			return disguisedState.getShadeBrightness(level, pos);
 		else
 			return super.getShadeBrightness(state, level, pos);
-	}
-
-	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
-
-		if (disguisedState.getBlock() != this)
-			return disguisedState.getLightBlock(level, pos);
-		else
-			return super.getLightBlock(state, level, pos);
 	}
 
 	@Override

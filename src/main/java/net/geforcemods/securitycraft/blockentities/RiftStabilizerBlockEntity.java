@@ -38,9 +38,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
-import net.neoforged.neoforge.event.entity.EntityTeleportEvent.ChorusFruit;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderEntity;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderPearl;
+import net.neoforged.neoforge.event.entity.EntityTeleportEvent.ItemConsumption;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.SpreadPlayersCommand;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -338,7 +338,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public enum TeleportationType {
-		CHORUS_FRUIT(Items.CHORUS_FRUIT.getDescriptionId()),
+		CHORUS_FRUIT(Items.CHORUS_FRUIT.getDescriptionId()), //TODO: item consumption description id
 		ENDER_PEARL(Items.ENDER_PEARL.getDescriptionId()),
 		ENDERMAN(EntityType.ENDERMAN.getDescriptionId()),
 		SHULKER(EntityType.SHULKER.getDescriptionId()),
@@ -352,7 +352,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		public static TeleportationType getTypeFromEvent(EntityTeleportEvent event) {
 			return switch (event) {
-				case ChorusFruit fruit -> CHORUS_FRUIT;
+				case ItemConsumption fruit -> CHORUS_FRUIT;
 				case EnderPearl pearl -> ENDER_PEARL;
 				case EnderEntity ender when ender.getEntityLiving() instanceof EnderMan -> ENDERMAN;
 				case EnderEntity ender when ender.getEntityLiving() instanceof Shulker -> SHULKER;

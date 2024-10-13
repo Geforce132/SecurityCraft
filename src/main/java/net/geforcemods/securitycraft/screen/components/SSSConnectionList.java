@@ -19,6 +19,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
@@ -109,7 +110,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
 			RenderSystem.disableBlend();
 
-			guiGraphics.blitSprite(CANCEL_SPRITE, left + 2, slotTop - 2, 11, 11);
+			guiGraphics.blitSprite(RenderType::guiTextured, CANCEL_SPRITE, left + 2, slotTop - 2, 11, 11);
 		}
 
 		int i = 0;

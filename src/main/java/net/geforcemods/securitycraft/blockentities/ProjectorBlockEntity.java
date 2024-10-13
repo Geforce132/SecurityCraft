@@ -83,7 +83,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 		if (!tag.contains("SavedState"))
 			resetSavedState();
 		else
-			setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("SavedState")));
+			setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK, tag.getCompound("SavedState")));
 	}
 
 	public int getProjectionWidth() {

@@ -31,6 +31,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
@@ -101,7 +102,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, AbstractKeypadFurnaceBlockEntity be) {
 		if (!be.isDisabled())
-			AbstractFurnaceBlockEntity.serverTick(level, pos, state, be);
+			AbstractFurnaceBlockEntity.serverTick((ServerLevel) level, pos, state, be);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,7 +37,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack heldItem = player.getItemInHand(hand);
 
 		if (!level.isClientSide) {
@@ -55,7 +55,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
 
-		return InteractionResultHolder.consume(heldItem);
+		return InteractionResult.CONSUME;
 	}
 
 	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak

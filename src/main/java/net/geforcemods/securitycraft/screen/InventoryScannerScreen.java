@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -76,6 +77,6 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
+		guiGraphics.blit(RenderType::guiTextured, hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY, leftPos, topPos, 0.0F, 0.0F, 0, 0, imageWidth, imageHeight + 30);
 	}
 }

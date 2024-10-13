@@ -134,16 +134,6 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
-
-		if (disguisedState.getBlock() != this)
-			return disguisedState.getLightBlock(level, pos);
-		else
-			return super.getLightBlock(state, level, pos);
-	}
-
-	@Override
 	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
 		return IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 	}

@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,7 +33,7 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(texture, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0.0F, 0.0F, 0, 0, imageWidth, imageHeight);
 	}
 
 	public static class Briefcase extends ItemInventoryScreen<BriefcaseMenu> {

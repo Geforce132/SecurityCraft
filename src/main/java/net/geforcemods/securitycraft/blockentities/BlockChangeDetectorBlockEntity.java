@@ -343,7 +343,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		}
 
 		public static ChangeEntry load(Level level, CompoundTag tag) {
-			HolderGetter<Block> holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup();
+			HolderGetter<Block> holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK;
 			int actionOrdinal = tag.getInt("action");
 
 			if (actionOrdinal < 0 || actionOrdinal >= DetectionMode.values().length)

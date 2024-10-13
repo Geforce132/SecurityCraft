@@ -6,7 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -51,9 +52,9 @@ public class PictureButton extends Button {
 			Minecraft mc = Minecraft.getInstance();
 			Font font = mc.font;
 
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			RenderSystem.setShader(CoreShaders.POSITION_TEX);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			guiGraphics.blitSprite(SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
+			guiGraphics.blitSprite(RenderType::guiTextured, SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
 
 			if (!blockToRender.isEmpty()) {
 				guiGraphics.renderItem(blockToRender, getX() + 2, getY() + 3);
@@ -64,7 +65,7 @@ public class PictureButton extends Button {
 				guiGraphics.renderItemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
 			}
 			else if (getSpriteLocation() != null)
-				guiGraphics.blitSprite(getSpriteLocation(), getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight);
+				guiGraphics.blitSprite(RenderType::guiTextured, getSpriteLocation(), getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight);
 		}
 	}
 

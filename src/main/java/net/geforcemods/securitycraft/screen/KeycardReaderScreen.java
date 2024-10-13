@@ -24,6 +24,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -262,7 +263,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			int left = leftPos + 34;
 			int top = topPos + 55;
 
-			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, left, top, 32, 32);
+			guiGraphics.blitSprite(RenderType::guiTextured, WARNING_HIGHLIGHTED_SPRITE, left, top, 32, 32);
 
 			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
 				guiGraphics.renderComponentTooltip(font, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
@@ -277,7 +278,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderType::guiTextured, TEXTURE, leftPos, topPos, 0.0F, 0.0F, 0, 0, imageWidth, imageHeight);
 	}
 
 	@Override

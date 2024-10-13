@@ -115,7 +115,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 			if (sendsDenylistMessage())
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.SUCCESS;
 		}
 
 		if (player.isSecondaryUseActive()) {
@@ -123,7 +123,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 				if (!level.isClientSide)
 					handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.SUCCESS;
 			}
 			else if (stack.is(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
 				if (!level.isClientSide) {
@@ -133,7 +133,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.SUCCESS;
 			}
 			else if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
 				if (!level.isClientSide) {
@@ -147,7 +147,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
 				}
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.SUCCESS;
 			}
 			else if (stack.is(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())) {
 				if (isOwnedBy(player)) {
@@ -173,7 +173,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
 
-				return InteractionResult.sidedSuccess(level.isClientSide);
+				return InteractionResult.SUCCESS;
 			}
 			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get())) {
 				if (isOwnedBy(player) || player.isCreative())
@@ -188,7 +188,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 			else
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:security_sea_boat.cant_enter", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
 
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.SUCCESS;
 		}
 
 		return super.interact(player, hand);

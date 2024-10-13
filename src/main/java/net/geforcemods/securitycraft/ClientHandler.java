@@ -136,7 +136,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
@@ -732,7 +732,7 @@ public class ClientHandler {
 		else
 			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
-		return tintReinforcedBlocks ? FastColor.ARGB32.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
+		return tintReinforcedBlocks ? ARGB.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
 	}
 
 	public static Player getClientPlayer() {

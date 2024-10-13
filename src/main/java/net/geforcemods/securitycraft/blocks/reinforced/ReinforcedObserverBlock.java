@@ -15,7 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -27,12 +28,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
+import net.minecraft.world.level.redstone.Orientation;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedObserverBlock extends DisguisableBlock implements IReinforcedBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
 	public ReinforcedObserverBlock(BlockBehaviour.Properties properties) {
 		super(properties);
@@ -71,19 +74,20 @@ public class ReinforcedObserverBlock extends DisguisableBlock implements IReinfo
 	}
 
 	@Override
-	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		if (!level.isClientSide() && state.getValue(FACING) == facing && !state.getValue(POWERED) && !level.getBlockTicks().hasScheduledTick(currentPos, this))
-			level.scheduleTick(currentPos, this, 2);
+	public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
+		if (!level.isClientSide() && state.getValue(FACING) == facing && !state.getValue(POWERED) && !tickAccess.getBlockTicks().hasScheduledTick(pos, this))
+			tickAccess.scheduleTick(pos, this, 2);
 
-		return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+		return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
 	}
 
 	protected void updateNeighborsInFront(Level level, BlockPos pos, BlockState state) {
 		Direction direction = state.getValue(FACING);
 		BlockPos relativePos = pos.relative(direction.getOpposite());
+		Orientation orientation = ExperimentalRedstoneUtils.initialOrientation(level, direction.getOpposite(), null);
 
-		level.neighborChanged(relativePos, this, pos);
-		level.updateNeighborsAtExceptFromFacing(relativePos, this, direction);
+		level.neighborChanged(relativePos, this, orientation);
+		level.updateNeighborsAtExceptFromFacing(relativePos, this, direction, orientation);
 	}
 
 	@Override

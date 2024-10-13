@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -12,12 +10,12 @@ public class ReinforcedTintedGlassBlock extends ReinforcedGlassBlock {
 	}
 
 	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+	public boolean propagatesSkylightDown(BlockState state) {
 		return false;
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		return level.getMaxLightLevel();
+	public int getLightBlock(BlockState state) {
+		return 15;
 	}
 }
