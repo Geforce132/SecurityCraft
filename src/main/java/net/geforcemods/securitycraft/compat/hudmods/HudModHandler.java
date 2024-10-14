@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
+import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -124,7 +124,7 @@ public class HudModHandler {
 
 			lineAdder.accept(modeDescription.withStyle(ChatFormatting.GRAY));
 		}
-		else if (entity instanceof SecuritySeaBoat boat)
+		else if (entity instanceof AbstractSecuritySeaBoat boat)
 			addOwnerModuleNameInfo(boat, player, lineAdder, configGetter);
 	}
 }

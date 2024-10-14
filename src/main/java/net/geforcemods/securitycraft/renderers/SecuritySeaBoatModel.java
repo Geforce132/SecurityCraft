@@ -1,13 +1,15 @@
 package net.geforcemods.securitycraft.renderers;
 
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.minecraft.client.model.ChestBoatModel;
+import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.geom.ModelPart;
 
-public class SecuritySeaBoatModel extends ChestBoatModel {
+public class SecuritySeaBoatModel extends BoatModel {
 	public SecuritySeaBoatModel(ModelPart modelPart) {
 		super(modelPart);
 	}
@@ -15,7 +17,7 @@ public class SecuritySeaBoatModel extends ChestBoatModel {
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int packedARGB) {
 		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedARGB);
-		var parts = parts();
+		List<ModelPart> parts = allParts();
 
 		//The last three parts are the chest, and that one should not get tinted
 		for (int i = 0; i < parts.size() - 2; i++) {

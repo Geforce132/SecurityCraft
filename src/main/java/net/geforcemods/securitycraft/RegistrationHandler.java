@@ -15,7 +15,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
+import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -70,6 +70,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -218,10 +219,22 @@ public class RegistrationHandler {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), ReinforcedDispenserBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
-		event.registerEntity(Capabilities.ItemHandler.ENTITY, SCContent.SECURITY_SEA_BOAT_ENTITY.get(), (boat, ctx) -> SecuritySeaBoat.getCapability(boat, null));
-		event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION, SCContent.SECURITY_SEA_BOAT_ENTITY.get(), SecuritySeaBoat::getCapability);
+		registerSecuritySeaBoatCapabilities(event, SCContent.OAK_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.SPRUCE_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.BIRCH_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.JUNGLE_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.ACACIA_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.DARK_OAK_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.MANGROVE_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.CHERRY_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.BAMBOO_SECURITY_SEA_RAFT_ENTITY.get());
 		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_WATER_BUCKET);
 		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_LAVA_BUCKET);
+	}
+
+	private static void registerSecuritySeaBoatCapabilities(RegisterCapabilitiesEvent event, EntityType<? extends AbstractSecuritySeaBoat> boatType) {
+		event.registerEntity(Capabilities.ItemHandler.ENTITY, boatType, (boat, ctx) -> AbstractSecuritySeaBoat.getCapability(boat, null));
+		event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION, boatType, AbstractSecuritySeaBoat::getCapability);
 	}
 
 	@SubscribeEvent

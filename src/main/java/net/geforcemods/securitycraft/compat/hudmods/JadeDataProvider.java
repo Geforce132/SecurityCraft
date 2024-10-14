@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
 import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
+import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -37,7 +37,7 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 
 		registration.registerBlockComponent(new SecurityCraftBlockInfo(), Block.class);
 		registration.registerEntityComponent(new SecurityCraftEntityInfo(), Sentry.class);
-		registration.registerEntityComponent(new SecurityCraftEntityInfo(), SecuritySeaBoat.class);
+		registration.registerEntityComponent(new SecurityCraftEntityInfo(), AbstractSecuritySeaBoat.class);
 
 		registration.addBeforeRenderCallback((tooltip, rect, guiGraphics, accessor) -> ClientHandler.isPlayerMountedOnCamera());
 		registration.addRayTraceCallback((hit, accessor, original) -> {

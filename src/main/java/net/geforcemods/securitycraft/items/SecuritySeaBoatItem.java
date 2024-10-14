@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.items;
 
-import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
+import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.AbstractBoat;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +19,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class SecuritySeaBoatItem extends BoatItem {
-	public SecuritySeaBoatItem(Boat.Type type, Item.Properties properties) {
-		super(true, type, properties);
+	private final EntityType<? extends AbstractSecuritySeaBoat> entityType;
+
+	public SecuritySeaBoatItem(EntityType<? extends AbstractSecuritySeaBoat> entityType, Item.Properties properties) {
+		super(entityType, properties);
+		this.entityType = entityType;
 	}
 
 	@Override
@@ -33,12 +37,17 @@ public class SecuritySeaBoatItem extends BoatItem {
 	}
 
 	@Override
-	public Boat getBoat(Level level, HitResult hitResult, ItemStack stack, Player player) {
-		Vec3 vec3 = hitResult.getLocation();
-		SecuritySeaBoat boat = new SecuritySeaBoat(level, vec3.x, vec3.y, vec3.z);
+	public AbstractBoat getBoat(Level level, HitResult hitResult, ItemStack stack, Player player) {
+		AbstractSecuritySeaBoat boat = entityType.create(level, EntitySpawnReason.SPAWN_ITEM_USE);
 
-		if (level instanceof ServerLevel serverLevel)
-			EntityType.createDefaultStackConfig(serverLevel, stack, player).accept(boat);
+		if (boat != null) {
+			Vec3 vec3 = hitResult.getLocation();
+
+			boat.setInitialPos(vec3.x, vec3.y, vec3.z);
+
+			if (level instanceof ServerLevel serverLevel)
+				EntityType.<AbstractBoat>createDefaultStackConfig(serverLevel, stack, player).accept(boat);
+		}
 
 		boat.setOwner(player);
 		return boat;

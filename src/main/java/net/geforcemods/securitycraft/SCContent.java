@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import com.google.common.base.Predicates;
 import com.mojang.serialization.Codec;
@@ -197,6 +198,7 @@ import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
+import net.geforcemods.securitycraft.entity.SecuritySeaRaft;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -280,7 +282,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -2810,23 +2811,23 @@ public class SCContent {
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.register("secret_warped_hanging_sign", () -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), itemProp(16)));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> OAK_SECURITY_SEA_BOAT = ITEMS.register("oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.OAK, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> OAK_SECURITY_SEA_BOAT = ITEMS.register("oak_security_sea_boat", () -> new SecuritySeaBoatItem(getOakSecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> SPRUCE_SECURITY_SEA_BOAT = ITEMS.register("spruce_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.SPRUCE, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> SPRUCE_SECURITY_SEA_BOAT = ITEMS.register("spruce_security_sea_boat", () -> new SecuritySeaBoatItem(getSpruceSecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> BIRCH_SECURITY_SEA_BOAT = ITEMS.register("birch_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.BIRCH, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> BIRCH_SECURITY_SEA_BOAT = ITEMS.register("birch_security_sea_boat", () -> new SecuritySeaBoatItem(getBirchSecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> JUNGLE_SECURITY_SEA_BOAT = ITEMS.register("jungle_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.JUNGLE, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> JUNGLE_SECURITY_SEA_BOAT = ITEMS.register("jungle_security_sea_boat", () -> new SecuritySeaBoatItem(getJungleSecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> ACACIA_SECURITY_SEA_BOAT = ITEMS.register("acacia_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.ACACIA, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> ACACIA_SECURITY_SEA_BOAT = ITEMS.register("acacia_security_sea_boat", () -> new SecuritySeaBoatItem(getAcaciaSecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> DARK_OAK_SECURITY_SEA_BOAT = ITEMS.register("dark_oak_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.DARK_OAK, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> DARK_OAK_SECURITY_SEA_BOAT = ITEMS.register("dark_oak_security_sea_boat", () -> new SecuritySeaBoatItem(getDarkOakSecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.register("mangrove_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.MANGROVE, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.register("mangrove_security_sea_boat", () -> new SecuritySeaBoatItem(getMangroveSecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.register("cherry_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.CHERRY, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.register("cherry_security_sea_boat", () -> new SecuritySeaBoatItem(getCherrySecuritySeaBoat(), itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.register("bamboo_security_sea_raft", () -> new SecuritySeaBoatItem(Boat.Type.BAMBOO, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.register("bamboo_security_sea_raft", () -> new SecuritySeaBoatItem(getBambooSecuritySeaRaft(), itemProp(1).fireResistant()));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(SSS_LINKED_BLOCKS, GlobalPositions.sized(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS))));
@@ -3138,13 +3139,16 @@ public class SCContent {
 			.setUpdateInterval(1)
 			.setShouldReceiveVelocityUpdates(true)
 			.build(scEntityId("bullet")));
-	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> SECURITY_SEA_BOAT_ENTITY = ENTITY_TYPES.register("security_sea_boat",
-			() -> EntityType.Builder.<SecuritySeaBoat>of(SecuritySeaBoat::new, MobCategory.MISC)
-			.sized(1.375F, 0.5625F)
-			.clientTrackingRange(10)
-			.fireImmune()
-			.build(scEntityId("security_sea_boat")));
 	//@formatter:on
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> OAK_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("oak_security_sea_boat", OAK_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> SPRUCE_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("spruce_security_sea_boat", SPRUCE_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> BIRCH_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("birch_security_sea_boat", BIRCH_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> JUNGLE_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("jungle_security_sea_boat", JUNGLE_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> ACACIA_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("acacia_security_sea_boat", ACACIA_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> DARK_OAK_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("dark_oak_security_sea_boat", DARK_OAK_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> MANGROVE_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("mangrove_security_sea_boat", MANGROVE_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> CHERRY_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("cherry_security_sea_boat", CHERRY_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaRaft>> BAMBOO_SECURITY_SEA_RAFT_ENTITY = securitySeaRaft("bamboo_security_sea_raft", BAMBOO_SECURITY_SEA_RAFT::asItem);
 
 	//container types
 	public static final DeferredHolder<MenuType<?>, MenuType<BlockReinforcerMenu>> BLOCK_REINFORCER_MENU = MENU_TYPES.register("block_reinforcer", () -> IMenuTypeExtension.create((windowId, inv, data) -> new BlockReinforcerMenu(windowId, inv, data.readBoolean())));
@@ -3279,8 +3283,70 @@ public class SCContent {
 		return new ReinforcedPressurePlateBlock(prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn(), vanillaBlock, blockSetType);
 	}
 
+	private static DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> securitySeaBoat(String name, Supplier<Item> dropItem) {
+		//@formatter:off
+		return ENTITY_TYPES.register(name,
+			() -> EntityType.Builder.<SecuritySeaBoat>of((type, level) -> new SecuritySeaBoat(type, level, dropItem), MobCategory.MISC)
+		    .noLootTable()
+			.sized(1.375F, 0.5625F)
+		    .eyeHeight(0.5625F)
+			.clientTrackingRange(10)
+			.fireImmune()
+			.build(scEntityId(name)));
+		//@formatter:on
+	}
+
+	private static DeferredHolder<EntityType<?>, EntityType<SecuritySeaRaft>> securitySeaRaft(String name, Supplier<Item> dropItem) {
+		//@formatter:off
+		return ENTITY_TYPES.register(name,
+			() -> EntityType.Builder.<SecuritySeaRaft>of((type, level) -> new SecuritySeaRaft(type, level, dropItem), MobCategory.MISC)
+		    .noLootTable()
+			.sized(1.375F, 0.5625F)
+		    .eyeHeight(0.5625F)
+			.clientTrackingRange(10)
+			.fireImmune()
+			.build(scEntityId(name)));
+		//@formatter:on
+	}
+
 	private static ResourceKey<EntityType<?>> scEntityId(String path) {
 		return ResourceKey.create(Registries.ENTITY_TYPE, SecurityCraft.resLoc(path));
+	}
+
+	public static EntityType<SecuritySeaBoat> getOakSecuritySeaBoat() {
+		return OAK_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getSpruceSecuritySeaBoat() {
+		return SPRUCE_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getBirchSecuritySeaBoat() {
+		return BIRCH_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getJungleSecuritySeaBoat() {
+		return JUNGLE_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getAcaciaSecuritySeaBoat() {
+		return ACACIA_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getDarkOakSecuritySeaBoat() {
+		return DARK_OAK_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getMangroveSecuritySeaBoat() {
+		return MANGROVE_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getCherrySecuritySeaBoat() {
+		return CHERRY_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaRaft> getBambooSecuritySeaRaft() {
+		return BAMBOO_SECURITY_SEA_RAFT_ENTITY.get();
 	}
 
 	private SCContent() {}
