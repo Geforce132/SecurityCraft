@@ -11,10 +11,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
+public class IMSBombRenderer extends EntityRenderer<IMSBomb, EntityRenderState> {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/ims_bomb.png");
 	private final IMSBombModel model;
 
@@ -25,15 +26,15 @@ public class IMSBombRenderer extends EntityRenderer<IMSBomb> {
 	}
 
 	@Override
-	public void render(IMSBomb imsBomb, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
+	public void render(EntityRenderState state, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		pose.translate(-0.1D, 0, 0.1D);
 		pose.scale(1.4F, 1.4F, 1.4F);
-		RenderSystem.setShaderTexture(0, getTextureLocation(imsBomb));
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(imsBomb))), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
+		RenderSystem.setShaderTexture(0, TEXTURE);
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(IMSBomb imsBomb) {
-		return TEXTURE;
+	public EntityRenderState createRenderState() {
+		return new EntityRenderState();
 	}
 }

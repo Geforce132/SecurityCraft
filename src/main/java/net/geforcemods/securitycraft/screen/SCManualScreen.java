@@ -32,7 +32,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.screen.components.HoverChecker;
-import net.geforcemods.securitycraft.screen.components.IngredientDisplay;
+import net.geforcemods.securitycraft.screen.components.ItemStacksDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
@@ -61,6 +61,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -99,7 +100,7 @@ public class SCManualScreen extends Screen {
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
 	private List<Ingredient> recipe;
-	private IngredientDisplay[] displays = new IngredientDisplay[9];
+	private ItemStacksDisplay[] displays = new ItemStacksDisplay[9];
 	private int startX = -1;
 	private List<FormattedText> subpages = new ArrayList<>();
 	private List<FormattedCharSequence> author = new ArrayList<>();
@@ -110,7 +111,7 @@ public class SCManualScreen extends Screen {
 	private Button nextSubpage;
 	private Button previousSubpage;
 	private boolean explosive, ownable, passcodeProtected, viewActivated, hasOptions, lockable, hasModules;
-	private IngredientDisplay pageIcon;
+	private ItemStacksDisplay pageIcon;
 	private Component pageTitle, designedBy;
 
 	public SCManualScreen() {
@@ -131,11 +132,11 @@ public class SCManualScreen extends Screen {
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				displays[(i * 3) + j] = addRenderableOnly(new IngredientDisplay((startX + 101) + (j * 19), 145 + (i * 19)));
+				displays[(i * 3) + j] = addRenderableOnly(new ItemStacksDisplay((startX + 101) + (j * 19), 145 + (i * 19)));
 			}
 		}
 
-		pageIcon = addRenderableOnly(new IngredientDisplay(startX + 19, 22));
+		pageIcon = addRenderableOnly(new ItemStacksDisplay(startX + 19, 22));
 		updateRecipeAndIcons();
 		SCManualItem.PAGES.sort((page1, page2) -> {
 			String key1 = page1.title().getString();
@@ -226,7 +227,7 @@ public class SCManualScreen extends Screen {
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		if (Screen.hasShiftDown()) {
-			for (IngredientDisplay display : displays) {
+			for (ItemStacksDisplay display : displays) {
 				if (display != null)
 					display.changeRenderingStack(-scrollY);
 			}
@@ -310,11 +311,11 @@ public class SCManualScreen extends Screen {
 		patreonLinkButton.visible = currentPage == -1;
 
 		if (currentPage < 0) {
-			for (IngredientDisplay display : displays) {
-				display.setIngredient(null);
+			for (ItemStacksDisplay display : displays) {
+				display.setStacks(null);
 			}
 
-			pageIcon.setIngredient(null);
+			pageIcon.setStacks(null);
 			recipe = null;
 			nextSubpage.visible = false;
 			previousSubpage.visible = false;
@@ -375,7 +376,7 @@ public class SCManualScreen extends Screen {
 			Level level = Minecraft.getInstance().level;
 			RegistryAccess registryAccess = level.registryAccess();
 			Map<Integer, ItemStack[]> recipeStacks = new HashMap<>();
-			List<Item> pageItems = pageGroup.getItems().stacks().stream().map(ItemStack::getItem).toList();
+			List<Item> pageItems = pageGroup.getItems().stream().map(ItemStack::getItem).toList();
 			int stacksLeft = pageItems.size();
 
 			for (int i = 0; i < 9; i++) {
@@ -393,7 +394,7 @@ public class SCManualScreen extends Screen {
 						List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							List<ItemStack> items = ingredients.get(i).map(Ingredient::stacks).orElse(List.of());
+							List<ItemStack> items = ingredients.get(i).map(ingredient -> ingredient.display().resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level))).orElse(List.of());
 
 							if (items.isEmpty())
 								continue;
@@ -418,7 +419,7 @@ public class SCManualScreen extends Screen {
 						List<Ingredient> ingredients = shapelessRecipe.placementInfo().ingredients();
 
 						for (int i = 0; i < ingredients.size(); i++) {
-							List<ItemStack> items = ingredients.get(i).stacks();
+							List<ItemStack> items = ingredients.get(i).display().resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level));
 
 							if (items.isEmpty())
 								continue;
@@ -460,9 +461,9 @@ public class SCManualScreen extends Screen {
 		pageTitle = page.title();
 
 		if (pageGroup != PageGroup.NONE)
-			pageIcon.setIngredient(pageGroup.getItems());
+			pageIcon.setStacks(pageGroup.getItems());
 		else
-			pageIcon.setIngredient(Ingredient.of(page.item()));
+			pageIcon.setStacks(List.of(new ItemStack(page.item())));
 
 		resetBlockEntityInfo();
 
@@ -541,15 +542,15 @@ public class SCManualScreen extends Screen {
 					int index = (i * 3) + j;
 
 					if (index >= recipe.size())
-						displays[index].setIngredient(null);
+						displays[index].setStacks(null);
 					else
-						displays[index].setIngredient(recipe.get(index));
+						displays[index].setStacks(recipe.get(index).display().resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level)));
 				}
 			}
 		}
 		else {
-			for (IngredientDisplay display : displays) {
-				display.setIngredient(null);
+			for (ItemStacksDisplay display : displays) {
+				display.setStacks(null);
 			}
 		}
 

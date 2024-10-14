@@ -11,10 +11,11 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.state.ArrowRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class BulletRenderer extends EntityRenderer<Bullet> {
+public class BulletRenderer extends EntityRenderer<Bullet, ArrowRenderState> {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/bullet.png");
 	private final BulletModel model;
 
@@ -25,13 +26,13 @@ public class BulletRenderer extends EntityRenderer<Bullet> {
 	}
 
 	@Override
-	public void render(Bullet entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
-		pose.mulPose(Axis.YP.rotationDegrees(entity.getYRot()));
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(getTextureLocation(entity))), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
+	public void render(ArrowRenderState state, PoseStack pose, MultiBufferSource buffer, int packedLight) {
+		pose.mulPose(Axis.YP.rotationDegrees(state.yRot));
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Bullet entity) {
-		return TEXTURE;
+	public ArrowRenderState createRenderState() {
+		return new ArrowRenderState();
 	}
 }

@@ -1,9 +1,5 @@
 package net.geforcemods.securitycraft.models;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -11,18 +7,16 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
-public class SecurityCameraModel extends EntityModel<SecurityCamera> {
+public class SecurityCameraModel extends EntityModel<EntityRenderState> {
 	public static final float DEFAULT_X_ROT = 0.2617993877991494F;
-	private ModelPart attachment;
-	private ModelPart stickTop;
 	private ModelPart cameraRotationPoint1;
 	public final ModelPart cameraRotationPoint2;
 
 	public SecurityCameraModel(ModelPart modelPart) {
-		attachment = modelPart.getChild("attachment");
-		stickTop = modelPart.getChild("stick_top");
-		stickTop.xRot = -(DEFAULT_X_ROT * 2);
+		super(modelPart);
+		modelPart.getChild("stick_top").xRot = -(DEFAULT_X_ROT * 2);
 		cameraRotationPoint1 = setUpRotationPoint(modelPart, "camera_rotation_point_1", "camera_body");
 		cameraRotationPoint2 = setUpRotationPoint(modelPart, "camera_rotation_point_2", "camera_lens");
 	}
@@ -47,17 +41,6 @@ public class SecurityCameraModel extends EntityModel<SecurityCamera> {
 	private static PartDefinition defineRotationPoint(PartDefinition parent, String name) {
 		return parent.addOrReplaceChild(name, CubeListBuilder.create().texOffs(0, 25).addBox(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F), PartPose.offset(0.0F, 14.0F, 3.0F));
 	}
-
-	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
-		attachment.render(pose, builder, packedLight, packedOverlay);
-		stickTop.render(pose, builder, packedLight, packedOverlay);
-		cameraRotationPoint1.render(pose, builder, packedLight, packedOverlay);
-		cameraRotationPoint2.render(pose, builder, packedLight, packedOverlay, packedARGB);
-	}
-
-	@Override
-	public void setupAnim(SecurityCamera entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
 	public void rotateCameraX(float rot) {
 		cameraRotationPoint1.xRot = rot;

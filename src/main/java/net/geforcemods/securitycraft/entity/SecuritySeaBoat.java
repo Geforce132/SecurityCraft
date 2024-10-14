@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -35,6 +34,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -175,9 +175,9 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 
 				return InteractionResult.SUCCESS;
 			}
-			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get())) {
+			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && !level.isClientSide) {
 				if (isOwnedBy(player) || player.isCreative())
-					destroy(damageSources().playerAttack(player));
+					destroy((ServerLevel) level, damageSources().playerAttack(player));
 				else
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
 			}
@@ -278,22 +278,17 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
-	public boolean hurt(DamageSource source, float amount) {
+	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
 		Entity entity = source.getEntity();
 
 		if (!(entity instanceof Player player) || isOwnedBy(player) || player.isCreative())
-			return super.hurt(source, amount);
+			return super.hurtServer(level, source, amount);
 		else
 			return false;
 	}
 
 	@Override
-	public boolean isInvulnerableTo(DamageSource source) {
-		return !source.is(SCTags.DamageTypes.SECURITY_SEA_BOAT_VULNERABLE_TO) || super.isInvulnerableTo(source);
-	}
-
-	@Override
-	public void chestVehicleDestroyed(DamageSource damageSource, Level level, Entity entity) {
+	public void chestVehicleDestroyed(DamageSource damageSource, ServerLevel level, Entity entity) {
 		super.chestVehicleDestroyed(damageSource, level, entity);
 		SaltData.removeSalt(getSaltKey());
 	}

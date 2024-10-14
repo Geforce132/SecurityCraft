@@ -10,23 +10,21 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.inventory.InventoryMenu;
 
-public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
+public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, BouncingBettyRenderState> {
 	public BouncingBettyRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
 		shadowRadius = 0.5F;
 	}
 
 	@Override
-	public void render(BouncingBetty entity, float entityYaw, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight) {
+	public void render(BouncingBettyRenderState state, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		pose.pushPose();
 		pose.translate(0.0D, 0.5D, 0.0D);
 
-		if (entity.getFuse() - partialTicks + 1.0F < 10.0F) {
-			float alpha = 1.0F - (entity.getFuse() - partialTicks + 1.0F) / 10.0F;
+		if (state.fuse < 10.0F) {
+			float alpha = 1.0F - state.fuse / 10.0F;
 			alpha = Mth.clamp(alpha, 0.0F, 1.0F);
 			alpha *= alpha;
 			alpha *= alpha;
@@ -39,11 +37,17 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty> {
 		pose.mulPose(Axis.YP.rotationDegrees(90.0F));
 		Minecraft.getInstance().getBlockRenderer().renderSingleBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, buffer, packedLight, OverlayTexture.NO_OVERLAY);
 		pose.popPose();
-		super.render(entity, entityYaw, partialTicks, pose, buffer, packedLight);
+		super.render(state, pose, buffer, packedLight);
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(BouncingBetty entity) {
-		return InventoryMenu.BLOCK_ATLAS;
+	public BouncingBettyRenderState createRenderState() {
+		return new BouncingBettyRenderState();
+	}
+
+	@Override
+	public void extractRenderState(BouncingBetty entity, BouncingBettyRenderState state, float partialTicks) {
+		super.extractRenderState(entity, state, partialTicks);
+		state.fuse = entity.getFuse() - partialTicks + 1.0F;
 	}
 }

@@ -2,10 +2,7 @@ package net.geforcemods.securitycraft.models;
 
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.geforcemods.securitycraft.renderers.SentryRenderState;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,27 +11,21 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
-public class SentryModel extends EntityModel<Sentry> {
-	public final ModelPart base;
-	public final ModelPart body;
-	public final ModelPart neck;
-	public final ModelPart head;
-	public final ModelPart hair;
-	public final ModelPart rightEye;
-	public final ModelPart leftEye;
-	public final ModelPart nose;
+public class SentryModel extends EntityModel<SentryRenderState> {
 	private final List<ModelPart> headPartList;
 
 	public SentryModel(ModelPart modelPart) {
-		base = modelPart.getChild("base");
-		body = modelPart.getChild("body");
-		neck = modelPart.getChild("neck");
-		head = modelPart.getChild("head");
-		hair = modelPart.getChild("hair");
-		rightEye = modelPart.getChild("right_eye");
-		leftEye = modelPart.getChild("left_eye");
-		nose = modelPart.getChild("nose");
-		headPartList = List.of(head, neck, rightEye, body, nose, leftEye, hair);
+		super(modelPart);
+		//@formatter:off
+		headPartList = List.of(
+				modelPart.getChild("head"),
+				modelPart.getChild("neck"),
+				modelPart.getChild("right_eye"),
+				modelPart.getChild("body"),
+				modelPart.getChild("nose"),
+				modelPart.getChild("left_eye"),
+				modelPart.getChild("hair"));
+		//@formatter:on
 	}
 
 	public static LayerDefinition createLayer() {
@@ -52,15 +43,11 @@ public class SentryModel extends EntityModel<Sentry> {
 		return LayerDefinition.create(meshDefinition, 64, 64);
 	}
 
-	public void renderBase(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
-		base.render(pose, builder, packedLight, packedOverlay, packedARGB);
-	}
-
 	@Override
-	public void renderToBuffer(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
-		headPartList.forEach(part -> part.render(pose, builder, packedLight, packedOverlay));
+	public void setupAnim(SentryRenderState state) {
+		headPartList.forEach(part -> {
+			part.y = state.headY;
+			part.yRot = state.headRotation;
+		});
 	}
-
-	@Override
-	public void setupAnim(Sentry entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 }
