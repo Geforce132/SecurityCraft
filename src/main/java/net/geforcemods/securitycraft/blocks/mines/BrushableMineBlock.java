@@ -56,7 +56,7 @@ public class BrushableMineBlock extends FallingBlockMineBlock implements IBlockM
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be)
-			be.checkReset();
+			be.checkReset(level);
 
 		if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinY())
 			FallingBlockEntity.fall(level, pos, state).disableDrop();

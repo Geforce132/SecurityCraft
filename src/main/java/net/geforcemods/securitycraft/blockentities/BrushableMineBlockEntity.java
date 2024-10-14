@@ -41,7 +41,7 @@ public class BrushableMineBlockEntity extends BrushableBlockEntity implements IO
 			int previousCompletionState = getCompletionState();
 
 			if (++brushCount >= 10) {
-				brushingCompleted(player);
+				brushingCompleted(level, player, stack);
 				return true;
 			}
 			else {
@@ -62,7 +62,7 @@ public class BrushableMineBlockEntity extends BrushableBlockEntity implements IO
 	}
 
 	@Override
-	public void checkReset() {
+	public void checkReset(ServerLevel level) {
 		if (level != null) {
 			if (brushCount != 0 && level.getGameTime() >= brushCountResetsAtTick) {
 				int previousCompletionState = getCompletionState();
@@ -88,11 +88,11 @@ public class BrushableMineBlockEntity extends BrushableBlockEntity implements IO
 	}
 
 	@Override
-	public void brushingCompleted(Player player) {
+	public void brushingCompleted(ServerLevel level, Player player, ItemStack stack) {
 		if (level != null && level.getServer() != null) {
 			Block turnInto = Blocks.AIR;
 
-			dropContent(player);
+			dropContent(level, player, stack);
 			level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_BRUSH_BLOCK_COMPLETE, getBlockPos(), Block.getId(getBlockState()));
 
 			if (getBlockState().getBlock() instanceof BrushableMineBlock brushableMineBlock)

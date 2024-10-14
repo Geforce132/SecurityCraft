@@ -92,7 +92,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 
 			if (chunk != null && chunk.getPos().x == x && chunk.getPos().z == z) {
 				NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
-				cameraStorage.replace(i, chunk, null);
+				cameraStorage.replace(i, chunk);
 				SecurityCraftClient.INSTALLED_IUM_MOD.onChunkStatusRemoved(level, x, z);
 			}
 		}
