@@ -57,9 +57,4 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new SecretSignBlockEntity(pos, state);
 	}
-
-	@Override
-	public String getDescriptionId() {
-		return super.getDescriptionId().replace("_standing", "");
-	}
 }
