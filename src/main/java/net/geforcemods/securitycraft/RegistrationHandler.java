@@ -113,8 +113,9 @@ public class RegistrationHandler {
 				try {
 					if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
 						SCItemGroup group = field.getAnnotation(Reinforced.class).itemGroup();
-						Block block = ((DeferredBlock<Block>) field.get(null)).get();
-						Item blockItem = new BlockItem(block, new Item.Properties().fireResistant());
+						DeferredBlock<Block> deferredBlock = (DeferredBlock<Block>) field.get(null);
+						Block block = deferredBlock.get();
+						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().location().getPath(), new Item.Properties().fireResistant()));
 
 						helper.register(Utils.getRegistryName(block), blockItem);
 
@@ -123,8 +124,9 @@ public class RegistrationHandler {
 					}
 					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 						SCItemGroup group = field.getAnnotation(RegisterItemBlock.class).value();
-						Block block = ((DeferredBlock<Block>) field.get(null)).get();
-						Item blockItem = new BlockItem(block, new Item.Properties());
+						DeferredBlock<Block> deferredBlock = (DeferredBlock<Block>) field.get(null);
+						Block block = deferredBlock.get();
+						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().location().getPath(), new Item.Properties()));
 
 						helper.register(Utils.getRegistryName(block), blockItem);
 

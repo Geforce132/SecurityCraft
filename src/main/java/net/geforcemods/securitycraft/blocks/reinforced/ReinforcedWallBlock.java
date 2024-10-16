@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -21,10 +20,6 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock, EntityBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
-
-	public ReinforcedWallBlock(Block vanillaBlock) {
-		this(SCContent.reinforcedCopy(vanillaBlock), vanillaBlock);
-	}
 
 	public ReinforcedWallBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {
 		super(properties);

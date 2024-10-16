@@ -9,6 +9,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,8 +23,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ReinforcedCopperGrateBlock extends BaseReinforcedBlock implements SimpleWaterloggedBlock {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	public ReinforcedCopperGrateBlock(Block vanillaBlock) {
-		super(vanillaBlock);
+	public ReinforcedCopperGrateBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {
+		super(properties, vanillaBlock);
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
