@@ -26,7 +26,8 @@ public class ItemStacksDisplay implements Renderable {
 		if (stacks == null)
 			return;
 
-		guiGraphics.renderItem(stacks.get(currentRenderingStack), x, y);
+		if (currentRenderingStack >= 0 && currentRenderingStack < stacks.size())
+			guiGraphics.renderItem(stacks.get(currentRenderingStack), x, y);
 
 		if (!Screen.hasShiftDown()) {
 			ticksToChange -= partialTick;
