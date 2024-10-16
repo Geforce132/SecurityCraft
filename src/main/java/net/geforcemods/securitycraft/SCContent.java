@@ -2768,27 +2768,27 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	public static final DeferredItem<ReinforcedScaffoldingBlockItem> REINFORCED_SCAFFOLDING_ITEM = ITEMS.registerItem("reinforced_scaffolding", ReinforcedScaffoldingBlockItem::new, itemProp().useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_OAK_SIGN_ITEM = ITEMS.registerItem("secret_sign_item", p -> new SignItem(SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_OAK_SIGN_ITEM = ITEMS.registerItem("secret_sign_item", p -> new SignItem(SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_SPRUCE_SIGN_ITEM = ITEMS.registerItem("secret_spruce_sign_item", p -> new SignItem(SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_SPRUCE_SIGN_ITEM = ITEMS.registerItem("secret_spruce_sign_item", p -> new SignItem(SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_spruce_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_BIRCH_SIGN_ITEM = ITEMS.registerItem("secret_birch_sign_item", p -> new SignItem(SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_BIRCH_SIGN_ITEM = ITEMS.registerItem("secret_birch_sign_item", p -> new SignItem(SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_birch_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_JUNGLE_SIGN_ITEM = ITEMS.registerItem("secret_jungle_sign_item", p -> new SignItem(SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_JUNGLE_SIGN_ITEM = ITEMS.registerItem("secret_jungle_sign_item", p -> new SignItem(SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_jungle_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_ACACIA_SIGN_ITEM = ITEMS.registerItem("secret_acacia_sign_item", p -> new SignItem(SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_ACACIA_SIGN_ITEM = ITEMS.registerItem("secret_acacia_sign_item", p -> new SignItem(SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_acacia_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.registerItem("secret_dark_oak_sign_item", p -> new SignItem(SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.registerItem("secret_dark_oak_sign_item", p -> new SignItem(SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_dark_oak_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_MANGROVE_SIGN_ITEM = ITEMS.registerItem("secret_mangrove_sign_item", p -> new SignItem(SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_MANGROVE_SIGN_ITEM = ITEMS.registerItem("secret_mangrove_sign_item", p -> new SignItem(SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_mangrove_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_CHERRY_SIGN_ITEM = ITEMS.registerItem("secret_cherry_sign_item", p -> new SignItem(SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_CHERRY_SIGN_ITEM = ITEMS.registerItem("secret_cherry_sign_item", p -> new SignItem(SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_cherry_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_BAMBOO_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_sign_item", p -> new SignItem(SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_BAMBOO_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_sign_item", p -> new SignItem(SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_bamboo_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_CRIMSON_SIGN_ITEM = ITEMS.registerItem("secret_crimson_sign_item", p -> new SignItem(SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_CRIMSON_SIGN_ITEM = ITEMS.registerItem("secret_crimson_sign_item", p -> new SignItem(SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_crimson_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_WARPED_SIGN_ITEM = ITEMS.registerItem("secret_warped_sign_item", p -> new SignItem(SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<SignItem> SECRET_WARPED_SIGN_ITEM = ITEMS.registerItem("secret_warped_sign_item", p -> new SignItem(SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_warped_sign"));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_OAK_HANGING_SIGN.get(), SCContent.SECRET_OAK_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
