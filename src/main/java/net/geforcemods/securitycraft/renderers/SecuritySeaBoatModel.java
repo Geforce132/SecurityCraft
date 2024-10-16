@@ -19,13 +19,10 @@ public class SecuritySeaBoatModel extends BoatModel {
 		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedARGB);
 		List<ModelPart> parts = allParts();
 
-		//The last three parts are the chest, and that one should not get tinted
-		for (int i = 0; i < parts.size() - 2; i++) {
-			parts.get(i).render(poseStack, buffer, packedLight, packedOverlay, tinted);
-		}
+		for (int i = 0; i < parts.size(); i++) {
+			boolean isChestPart = i == 1 || i == 7 || i == 10;
 
-		for (int i = parts.size() - 3; i < parts.size(); i++) {
-			parts.get(i).render(poseStack, buffer, packedLight, packedOverlay, packedARGB);
+			parts.get(i).render(poseStack, buffer, packedLight, packedOverlay, isChestPart ? packedARGB : tinted);
 		}
 	}
 }
