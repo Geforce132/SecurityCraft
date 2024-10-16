@@ -20,6 +20,7 @@
 		"datafix.BoatSplitFixMixin",
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
+		"datafix.V4067Mixin",
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
 		"suspiciousmines.BrushItemMixin"

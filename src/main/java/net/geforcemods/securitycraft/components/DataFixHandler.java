@@ -149,15 +149,7 @@ public class DataFixHandler {
 				"InstalledWhitelist", References.ITEM_STACK.in(schema),
 				"InstalledModule", References.ITEM_STACK.in(schema)));
 		schema.registerSimple(map, "securitycraft:bullet");
-		registerInventoryAndModules(schema, map, "securitycraft:oak_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:spruce_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:birch_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:jungle_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:acacia_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:dark_oak_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:mangrove_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:cherry_security_sea_boat");
-		registerInventoryAndModules(schema, map, "securitycraft:bamboo_security_sea_raft");
+		registerInventoryAndModules(schema, map, "securitycraft:security_sea_boat");
 		//@formatter:on
 	}
 
@@ -410,7 +402,7 @@ public class DataFixHandler {
 		//@formatter:on
 	}
 
-	private static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String type) {
+	public static void registerInventoryAndModules(Schema schema, Map<String, Supplier<TypeTemplate>> map, String type) {
 		registerInventoryAndModules(schema, map, type, "Items");
 	}
 

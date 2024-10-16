@@ -13,7 +13,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.util.datafix.fixes.BoatSplitFix;
 
 /**
- * Splits security sea boats up into a separate entity type per woord type
+ * Splits security sea boats up into a separate entity type per wood type
  */
 @Mixin(BoatSplitFix.class)
 public class BoatSplitFixMixin {
@@ -23,9 +23,9 @@ public class BoatSplitFixMixin {
 			cir.setReturnValue(true);
 	}
 
-	@ModifyVariable(method = "method_64402", at = @At("STORE"), ordinal = 1)
-	private String securitycraft$mapSecuritySeaBoat(String orElse, @Local Optional<String> oldType) {
-		if (oldType.get().equals("securitycraft:security_sea_boat")) {
+	@ModifyVariable(method = "lambda$makeRule$1", at = @At("STORE"), ordinal = 0)
+	private static String securitycraft$mapSecuritySeaBoat(String orElse, @Local(ordinal = 0) Optional<String> entityId, @Local(ordinal = 1) Optional<String> oldType) {
+		if (entityId.get().equals("securitycraft:security_sea_boat")) {
 			return oldType.map(type -> switch (type) {
 				case "spruce" -> "securitycraft:spruce_security_sea_boat";
 				case "birch" -> "securitycraft:birch_security_sea_boat";
