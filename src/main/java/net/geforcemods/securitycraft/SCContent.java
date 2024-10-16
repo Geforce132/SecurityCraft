@@ -2715,7 +2715,7 @@ public class SCContent {
 	//items
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<AdminToolItem> ADMIN_TOOL = ITEMS.registerItem("admin_tool", AdminToolItem::new, itemProp(1));
-	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerSimpleBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant().useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerSimpleBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant());
 	@HasManualPage
 	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.registerItem("briefcase", BriefcaseItem::new, itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
 	@HasManualPage
@@ -2724,12 +2724,12 @@ public class SCContent {
 	public static final DeferredItem<CodebreakerItem> CODEBREAKER = registerItem("codebreaker", CodebreakerItem::new, () -> itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT).component(SUCCESS_CHANCE, 0.33D));
 	@HasManualPage
 	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
-	public static final DeferredItem<BlockItem> DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(DISPLAY_CASE_PATH, SCContent.DISPLAY_CASE, itemProp().useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(DISPLAY_CASE_PATH, SCContent.DISPLAY_CASE, itemProp());
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<FakeLiquidBucketItem> FAKE_LAVA_BUCKET = ITEMS.registerItem("bucket_f_lava", p -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA.get(), p), itemProp(1));
 	@HasManualPage(hasRecipeDescription = true)
 	public static final DeferredItem<FakeLiquidBucketItem> FAKE_WATER_BUCKET = ITEMS.registerItem("bucket_f_water", p -> new FakeLiquidBucketItem(SCContent.FAKE_WATER.get(), p), itemProp(1));
-	public static final DeferredItem<BlockItem> GLOW_DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(GLOW_DISPLAY_CASE_PATH, SCContent.GLOW_DISPLAY_CASE, itemProp().useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> GLOW_DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(GLOW_DISPLAY_CASE_PATH, SCContent.GLOW_DISPLAY_CASE, itemProp());
 	@HasManualPage
 	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.registerItem("keycard_holder", KeycardHolderItem::new, itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
 	@HasManualPage(PageGroup.KEYCARDS)
@@ -2744,7 +2744,7 @@ public class SCContent {
 	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.registerItem("keycard_lv5", p -> new KeycardItem(p, 4), itemProp());
 	@HasManualPage
 	public static final DeferredItem<KeyPanelItem> KEY_PANEL = ITEMS.registerItem("keypad_item", KeyPanelItem::new, itemProp());
-	public static final DeferredItem<BlockItem> KEYPAD_CHEST_ITEM = ITEMS.registerSimpleBlockItem(KEYPAD_CHEST_PATH, SCContent.KEYPAD_CHEST, itemProp().useBlockDescriptionPrefix());
+	public static final DeferredItem<BlockItem> KEYPAD_CHEST_ITEM = ITEMS.registerSimpleBlockItem(KEYPAD_CHEST_PATH, SCContent.KEYPAD_CHEST, itemProp());
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> KEYPAD_DOOR_ITEM = ITEMS.registerItem("keypad_door_item", p -> new DoubleHighBlockItem(KEYPAD_DOOR.get(), p), itemProp());
 	@HasManualPage
