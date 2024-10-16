@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "G": {
-      "tag": "securitycraft:reinforced/wooden_fence_gates"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "G": "#securitycraft:reinforced/wooden_fence_gates",
+    "I": "#c:ingots/iron"
   },
   "pattern": [
     " I ",

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:book"
-    },
-    {
-      "item": "minecraft:iron_bars"
-    }
+    "minecraft:book",
+    "minecraft:iron_bars"
   ],
   "result": {
     "count": 1,

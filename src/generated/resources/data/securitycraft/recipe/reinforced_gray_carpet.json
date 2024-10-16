@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_carpets",
   "key": {
-    "M": {
-      "item": "securitycraft:reinforced_gray_wool"
-    }
+    "M": "securitycraft:reinforced_gray_wool"
   },
   "pattern": [
     "MM"

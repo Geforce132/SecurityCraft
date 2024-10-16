@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_deepslate_tiles"
-    }
+    "B": "securitycraft:reinforced_deepslate_tiles"
   },
   "pattern": [
     "B  ",

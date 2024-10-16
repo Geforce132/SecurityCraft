@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "securitycraft:door_indestructible_iron_item"
-    },
-    {
-      "item": "securitycraft:retinal_scanner"
-    }
+    "securitycraft:door_indestructible_iron_item",
+    "securitycraft:retinal_scanner"
   ],
   "result": {
     "count": 1,

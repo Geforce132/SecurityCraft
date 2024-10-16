@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "item": "securitycraft:reinforced_crystal_quartz_block"
-    },
-    "I": {
-      "item": "securitycraft:reinforced_iron_block"
-    },
-    "R": {
-      "item": "securitycraft:reinforced_redstone_block"
-    }
+    "C": "securitycraft:reinforced_crystal_quartz_block",
+    "I": "securitycraft:reinforced_iron_block",
+    "R": "securitycraft:reinforced_redstone_block"
   },
   "pattern": [
     "CIC",

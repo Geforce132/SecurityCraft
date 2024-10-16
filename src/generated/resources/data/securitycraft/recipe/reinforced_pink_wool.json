@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:reinforced_wool",
   "ingredients": [
-    {
-      "tag": "c:dyes/pink"
-    },
-    {
-      "tag": "securitycraft:reinforced/wool"
-    }
+    "#c:dyes/pink",
+    "#securitycraft:reinforced/wool"
   ],
   "result": {
     "count": 1,

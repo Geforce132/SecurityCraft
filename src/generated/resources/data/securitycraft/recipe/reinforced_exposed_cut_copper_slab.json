@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:slabs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_exposed_cut_copper"
-    }
+    "B": "securitycraft:reinforced_exposed_cut_copper"
   },
   "pattern": [
     "BBB"

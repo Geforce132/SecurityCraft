@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "D": {
-      "item": "minecraft:bowl"
-    },
-    "I": {
-      "item": "minecraft:iron_block"
-    },
-    "R": {
-      "item": "securitycraft:portable_radar"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "D": "minecraft:bowl",
+    "I": "minecraft:iron_block",
+    "R": "securitycraft:portable_radar",
+    "S": "minecraft:stick"
   },
   "pattern": [
     " RD",

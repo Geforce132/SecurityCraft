@@ -3,21 +3,11 @@
   "category": "equipment",
   "group": "securitycraft:universal_block_reinforcer",
   "key": {
-    "E": {
-      "item": "securitycraft:reinforced_emerald_block"
-    },
-    "G": {
-      "item": "securitycraft:reinforced_pink_stained_glass"
-    },
-    "N": {
-      "tag": "c:nether_stars"
-    },
-    "R": {
-      "item": "securitycraft:reinforced_redstone_block"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "E": "securitycraft:reinforced_emerald_block",
+    "G": "securitycraft:reinforced_pink_stained_glass",
+    "N": "#c:nether_stars",
+    "R": "securitycraft:reinforced_redstone_block",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     " EG",

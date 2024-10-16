@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "securitycraft:reinforced_cobblestone"
-  },
+  "ingredient": "securitycraft:reinforced_cobblestone",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_stone"

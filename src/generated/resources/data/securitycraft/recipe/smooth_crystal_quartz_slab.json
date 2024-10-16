@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:slabs",
   "key": {
-    "B": {
-      "item": "securitycraft:smooth_crystal_quartz"
-    }
+    "B": "securitycraft:smooth_crystal_quartz"
   },
   "pattern": [
     "BBB"

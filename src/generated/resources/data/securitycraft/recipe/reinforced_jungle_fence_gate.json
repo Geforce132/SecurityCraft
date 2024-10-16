@@ -3,12 +3,8 @@
   "category": "redstone",
   "group": "securitycraft:reinforced_fence_gates",
   "key": {
-    "M": {
-      "item": "securitycraft:reinforced_jungle_planks"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "M": "securitycraft:reinforced_jungle_planks",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     "SMS",

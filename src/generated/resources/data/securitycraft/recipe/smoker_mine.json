@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:smoker"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:smoker",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

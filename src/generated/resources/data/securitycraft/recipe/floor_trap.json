@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "L": {
-      "tag": "securitycraft:reinforced/stone_pressure_plates"
-    },
-    "P": {
-      "item": "securitycraft:reinforced_piston"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "I": "#c:ingots/iron",
+    "L": "#securitycraft:reinforced/stone_pressure_plates",
+    "P": "securitycraft:reinforced_piston",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "ILI",

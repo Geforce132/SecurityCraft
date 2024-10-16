@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:dirt"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:dirt",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

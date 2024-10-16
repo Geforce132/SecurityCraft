@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "securitycraft:reinforced_end_stone"
-  },
+  "ingredient": "securitycraft:reinforced_end_stone",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_end_stone_brick_wall"

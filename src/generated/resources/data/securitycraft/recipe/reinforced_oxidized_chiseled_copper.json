@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "S": {
-      "item": "securitycraft:reinforced_oxidized_cut_copper_slab"
-    }
+    "S": "securitycraft:reinforced_oxidized_cut_copper_slab"
   },
   "pattern": [
     "S",

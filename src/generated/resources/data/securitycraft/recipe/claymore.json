@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "securitycraft:bouncing_betty"
-    },
-    "G": {
-      "tag": "c:gunpowders"
-    },
-    "H": {
-      "item": "minecraft:tripwire_hook"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    },
-    "S": {
-      "tag": "c:strings"
-    }
+    "B": "securitycraft:bouncing_betty",
+    "G": "#c:gunpowders",
+    "H": "minecraft:tripwire_hook",
+    "R": "#c:dusts/redstone",
+    "S": "#c:strings"
   },
   "pattern": [
     "HSH",

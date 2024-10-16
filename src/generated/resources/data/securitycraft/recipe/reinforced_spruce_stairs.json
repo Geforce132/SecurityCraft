@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_spruce_planks"
-    }
+    "B": "securitycraft:reinforced_spruce_planks"
   },
   "pattern": [
     "B  ",

@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:suspicious_gravel"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:suspicious_gravel",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

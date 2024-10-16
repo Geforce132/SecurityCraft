@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:bark",
   "key": {
-    "L": {
-      "item": "securitycraft:reinforced_oak_log"
-    }
+    "L": "securitycraft:reinforced_oak_log"
   },
   "pattern": [
     "LL",

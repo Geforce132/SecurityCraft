@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "G": {
-      "item": "securitycraft:reinforced_glass"
-    },
-    "N": {
-      "item": "minecraft:note_block"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "G": "securitycraft:reinforced_glass",
+    "N": "minecraft:note_block",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "GGG",

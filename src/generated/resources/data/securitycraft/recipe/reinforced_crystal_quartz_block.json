@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "securitycraft:block_pocket_wall"
-    }
+    "securitycraft:block_pocket_wall"
   ],
   "result": {
     "count": 1,

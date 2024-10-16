@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:cobblestone"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:cobblestone",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

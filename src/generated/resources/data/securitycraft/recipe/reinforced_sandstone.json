@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_sand"
-    }
+    "B": "securitycraft:reinforced_sand"
   },
   "pattern": [
     "BB",

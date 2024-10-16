@@ -2,21 +2,11 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_iron_block"
-    },
-    "D": {
-      "item": "securitycraft:reinforced_dispenser"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "item": "securitycraft:portable_radar"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "B": "securitycraft:reinforced_iron_block",
+    "D": "securitycraft:reinforced_dispenser",
+    "I": "#c:ingots/iron",
+    "P": "securitycraft:portable_radar",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "RDR",

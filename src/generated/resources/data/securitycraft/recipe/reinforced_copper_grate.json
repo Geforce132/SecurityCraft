@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "C": {
-      "item": "securitycraft:reinforced_copper_block"
-    }
+    "C": "securitycraft:reinforced_copper_block"
   },
   "pattern": [
     " C ",

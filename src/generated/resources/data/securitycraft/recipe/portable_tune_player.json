@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "N": {
-      "item": "minecraft:note_block"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "I": "#c:ingots/iron",
+    "N": "minecraft:note_block",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "IRN"

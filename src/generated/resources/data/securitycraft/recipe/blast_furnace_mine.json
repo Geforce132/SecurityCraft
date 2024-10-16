@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:blast_furnace"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:blast_furnace",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

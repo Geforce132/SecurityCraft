@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:gilded_blackstone"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:gilded_blackstone",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

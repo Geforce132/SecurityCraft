@@ -4,15 +4,9 @@
   "group": "securitycraft:stairs",
   "key": {
     "B": [
-      {
-        "item": "securitycraft:reinforced_crystal_quartz_block"
-      },
-      {
-        "item": "securitycraft:reinforced_crystal_quartz_pillar"
-      },
-      {
-        "item": "securitycraft:reinforced_chiseled_crystal_quartz_block"
-      }
+      "securitycraft:reinforced_crystal_quartz_block",
+      "securitycraft:reinforced_crystal_quartz_pillar",
+      "securitycraft:reinforced_chiseled_crystal_quartz_block"
     ]
   },
   "pattern": [

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "C": {
-      "item": "securitycraft:reinforced_cobblestone"
-    },
-    "Q": {
-      "tag": "c:gems/quartz"
-    }
+    "C": "securitycraft:reinforced_cobblestone",
+    "Q": "#c:gems/quartz"
   },
   "pattern": [
     "CQ",

@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "C": {
-      "tag": "c:chests/ender"
-    },
-    "L": {
-      "item": "securitycraft:laser_block"
-    },
-    "S": {
-      "tag": "securitycraft:reinforced/stone_crafting_materials"
-    }
+    "C": "#c:chests/ender",
+    "L": "securitycraft:laser_block",
+    "S": "#securitycraft:reinforced/stone_crafting_materials"
   },
   "pattern": [
     "SSS",

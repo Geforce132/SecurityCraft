@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "securitycraft:reinforced_stone_bricks"
-    },
-    {
-      "item": "securitycraft:reinforced_moss_block"
-    }
+    "securitycraft:reinforced_stone_bricks",
+    "securitycraft:reinforced_moss_block"
   ],
   "result": {
     "count": 1,

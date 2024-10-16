@@ -4,15 +4,9 @@
   "group": "securitycraft:slabs",
   "key": {
     "B": [
-      {
-        "item": "securitycraft:reinforced_quartz_block"
-      },
-      {
-        "item": "securitycraft:reinforced_quartz_pillar"
-      },
-      {
-        "item": "securitycraft:reinforced_chiseled_quartz_block"
-      }
+      "securitycraft:reinforced_quartz_block",
+      "securitycraft:reinforced_quartz_pillar",
+      "securitycraft:reinforced_chiseled_quartz_block"
     ]
   },
   "pattern": [

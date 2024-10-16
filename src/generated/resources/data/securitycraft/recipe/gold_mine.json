@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:gold_ore"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:gold_ore",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

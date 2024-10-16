@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/cherry_logs"
-    }
+    "#securitycraft:reinforced/cherry_logs"
   ],
   "result": {
     "count": 4,

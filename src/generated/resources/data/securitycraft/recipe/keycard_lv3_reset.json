@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "securitycraft:keycard_lv3"
-    }
+    "securitycraft:keycard_lv3"
   ],
   "result": {
     "count": 1,

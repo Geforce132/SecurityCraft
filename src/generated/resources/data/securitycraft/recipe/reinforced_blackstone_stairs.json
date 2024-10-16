@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_blackstone"
-    }
+    "B": "securitycraft:reinforced_blackstone"
   },
   "pattern": [
     "B  ",

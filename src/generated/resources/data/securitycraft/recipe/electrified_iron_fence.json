@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "F": {
-      "tag": "securitycraft:reinforced/wooden_fences"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "F": "#securitycraft:reinforced/wooden_fences",
+    "I": "#c:ingots/iron"
   },
   "pattern": [
     " I ",

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "securitycraft:reinforced_diorite"
-    },
-    {
-      "item": "securitycraft:reinforced_cobblestone"
-    }
+    "securitycraft:reinforced_diorite",
+    "securitycraft:reinforced_cobblestone"
   ],
   "result": {
     "count": 2,

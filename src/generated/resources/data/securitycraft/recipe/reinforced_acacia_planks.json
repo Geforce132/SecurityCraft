@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/acacia_logs"
-    }
+    "#securitycraft:reinforced/acacia_logs"
   ],
   "result": {
     "count": 4,

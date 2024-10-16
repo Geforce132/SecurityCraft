@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_smooth_crystal_quartz"
-    }
+    "B": "securitycraft:reinforced_smooth_crystal_quartz"
   },
   "pattern": [
     "B  ",

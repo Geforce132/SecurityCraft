@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:netherrack"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:netherrack",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

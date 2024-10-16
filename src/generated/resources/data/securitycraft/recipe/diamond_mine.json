@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:diamond_ore"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:diamond_ore",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

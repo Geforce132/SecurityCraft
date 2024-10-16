@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "building",
   "ingredients": [
-    {
-      "item": "securitycraft:reinforced_cobblestone"
-    },
-    {
-      "item": "minecraft:vine"
-    }
+    "securitycraft:reinforced_cobblestone",
+    "minecraft:vine"
   ],
   "result": {
     "count": 1,

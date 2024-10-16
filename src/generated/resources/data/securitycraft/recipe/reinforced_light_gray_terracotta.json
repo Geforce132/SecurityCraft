@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:reinforced_terracotta",
   "key": {
-    "D": {
-      "tag": "c:dyes/light_gray"
-    },
-    "T": {
-      "item": "securitycraft:reinforced_hardened_clay"
-    }
+    "D": "#c:dyes/light_gray",
+    "T": "securitycraft:reinforced_hardened_clay"
   },
   "pattern": [
     "TTT",

@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_packed_mud"
-    }
+    "B": "securitycraft:reinforced_packed_mud"
   },
   "pattern": [
     "BB",

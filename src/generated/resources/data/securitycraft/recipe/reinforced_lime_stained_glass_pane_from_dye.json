@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:reinforced_glass_panes",
   "key": {
-    "D": {
-      "tag": "c:dyes/lime"
-    },
-    "G": {
-      "item": "securitycraft:reinforced_glass_pane"
-    }
+    "D": "#c:dyes/lime",
+    "G": "securitycraft:reinforced_glass_pane"
   },
   "pattern": [
     "GGG",

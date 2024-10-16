@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:deepslate_copper_ore"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:deepslate_copper_ore",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

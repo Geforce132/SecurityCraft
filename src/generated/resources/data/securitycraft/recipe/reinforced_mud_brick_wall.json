@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:walls",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_mud_bricks"
-    }
+    "B": "securitycraft:reinforced_mud_bricks"
   },
   "pattern": [
     "BBB",

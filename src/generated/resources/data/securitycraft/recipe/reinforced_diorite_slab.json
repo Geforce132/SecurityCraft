@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:slabs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_diorite"
-    }
+    "B": "securitycraft:reinforced_diorite"
   },
   "pattern": [
     "BBB"

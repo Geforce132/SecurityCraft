@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "securitycraft:reinforced_pressure_plates",
   "key": {
-    "S": {
-      "item": "securitycraft:reinforced_spruce_planks"
-    }
+    "S": "securitycraft:reinforced_spruce_planks"
   },
   "pattern": [
     "SS"

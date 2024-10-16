@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:cobbled_deepslate"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:cobbled_deepslate",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "securitycraft:reinforced_iron_trapdoor"
-    },
-    {
-      "item": "securitycraft:retinal_scanner"
-    }
+    "securitycraft:reinforced_iron_trapdoor",
+    "securitycraft:retinal_scanner"
   ],
   "result": {
     "count": 1,

@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "tag": "securitycraft:reinforced/sand"
-  },
+  "ingredient": "#securitycraft:reinforced/sand",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_glass"

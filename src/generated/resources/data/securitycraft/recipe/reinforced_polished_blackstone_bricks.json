@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_polished_blackstone"
-    }
+    "B": "securitycraft:reinforced_polished_blackstone"
   },
   "pattern": [
     "BB",

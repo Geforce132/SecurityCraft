@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "M": {
-      "item": "securitycraft:reinforced_nether_bricks"
-    },
-    "S": {
-      "tag": "c:bricks/nether"
-    }
+    "M": "securitycraft:reinforced_nether_bricks",
+    "S": "#c:bricks/nether"
   },
   "pattern": [
     "MSM",

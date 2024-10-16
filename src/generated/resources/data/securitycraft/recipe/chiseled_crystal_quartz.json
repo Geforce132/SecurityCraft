@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "S": {
-      "item": "securitycraft:crystal_quartz_slab"
-    }
+    "S": "securitycraft:crystal_quartz_slab"
   },
   "pattern": [
     "S",

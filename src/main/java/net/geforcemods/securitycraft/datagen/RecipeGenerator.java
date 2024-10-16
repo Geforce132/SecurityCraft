@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
@@ -1744,7 +1743,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addSimpleCookingRecipe(TagKey<Item> input, ItemLike output, float xp, int time) {
 		//@formatter:off
-		SimpleCookingRecipeBuilder.smelting(Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(input)), RecipeCategory.BUILDING_BLOCKS, output, xp, time)
+		SimpleCookingRecipeBuilder.smelting(tag(input), RecipeCategory.BUILDING_BLOCKS, output, xp, time)
 		.unlockedBy("has_item", has(input))
 		.save(this.output);
 		//@formatter:on

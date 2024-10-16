@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "securitycraft:reinforced_buttons",
   "ingredients": [
-    {
-      "item": "securitycraft:reinforced_polished_blackstone"
-    }
+    "securitycraft:reinforced_polished_blackstone"
   ],
   "result": {
     "count": 1,

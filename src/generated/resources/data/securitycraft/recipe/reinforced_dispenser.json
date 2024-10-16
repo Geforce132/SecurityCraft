@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "B": {
-      "item": "minecraft:bow"
-    },
-    "C": {
-      "item": "securitycraft:reinforced_cobblestone"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "B": "minecraft:bow",
+    "C": "securitycraft:reinforced_cobblestone",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     "CCC",

@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "equipment",
   "ingredients": [
-    {
-      "item": "securitycraft:universal_block_modifier"
-    },
-    {
-      "item": "minecraft:name_tag"
-    }
+    "securitycraft:universal_block_modifier",
+    "minecraft:name_tag"
   ],
   "result": {
     "count": 1,

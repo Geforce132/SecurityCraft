@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:walls",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_cobblestone"
-    }
+    "B": "securitycraft:reinforced_cobblestone"
   },
   "pattern": [
     "BBB",

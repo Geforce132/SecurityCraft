@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "securitycraft:reinforced_andesite"
-  },
+  "ingredient": "securitycraft:reinforced_andesite",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_polished_andesite_stairs"

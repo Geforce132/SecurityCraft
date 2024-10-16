@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/mangrove_logs"
-    }
+    "#securitycraft:reinforced/mangrove_logs"
   ],
   "result": {
     "count": 4,

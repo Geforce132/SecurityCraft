@@ -2,18 +2,10 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "D": {
-      "tag": "c:gems/diamond"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    }
+    "D": "#c:gems/diamond",
+    "I": "#c:ingots/iron",
+    "S": "#c:rods/wooden",
+    "T": "minecraft:redstone_torch"
   },
   "pattern": [
     "ITI",

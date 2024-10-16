@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:bark",
   "key": {
-    "L": {
-      "item": "securitycraft:reinforced_cherry_log"
-    }
+    "L": "securitycraft:reinforced_cherry_log"
   },
   "pattern": [
     "LL",

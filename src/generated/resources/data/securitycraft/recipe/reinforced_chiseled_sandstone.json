@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "S": {
-      "item": "securitycraft:reinforced_sandstone_slab"
-    }
+    "S": "securitycraft:reinforced_sandstone_slab"
   },
   "pattern": [
     "S",

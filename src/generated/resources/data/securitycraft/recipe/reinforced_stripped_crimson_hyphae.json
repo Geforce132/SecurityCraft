@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:bark",
   "key": {
-    "L": {
-      "item": "securitycraft:reinforced_stripped_crimson_stem"
-    }
+    "L": "securitycraft:reinforced_stripped_crimson_stem"
   },
   "pattern": [
     "LL",

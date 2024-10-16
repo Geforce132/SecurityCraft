@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_ice"
-    }
+    "B": "securitycraft:reinforced_ice"
   },
   "pattern": [
     "BBB",

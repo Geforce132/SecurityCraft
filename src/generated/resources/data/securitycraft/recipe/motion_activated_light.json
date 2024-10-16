@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "L": {
-      "item": "minecraft:redstone_lamp"
-    },
-    "R": {
-      "item": "securitycraft:portable_radar"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "L": "minecraft:redstone_lamp",
+    "R": "securitycraft:portable_radar",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     "L",

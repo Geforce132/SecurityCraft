@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:reinforced_carpets",
   "ingredients": [
-    {
-      "tag": "c:dyes/green"
-    },
-    {
-      "tag": "securitycraft:reinforced/wool_carpets"
-    }
+    "#c:dyes/green",
+    "#securitycraft:reinforced/wool_carpets"
   ],
   "result": {
     "count": 1,

@@ -3,21 +3,11 @@
   "category": "equipment",
   "group": "securitycraft:universal_block_reinforcer",
   "key": {
-    "D": {
-      "tag": "c:gems/diamond"
-    },
-    "G": {
-      "tag": "c:glass_blocks/colorless"
-    },
-    "L": {
-      "item": "securitycraft:laser_block"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "D": "#c:gems/diamond",
+    "G": "#c:glass_blocks/colorless",
+    "L": "securitycraft:laser_block",
+    "R": "#c:dusts/redstone",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     " DG",

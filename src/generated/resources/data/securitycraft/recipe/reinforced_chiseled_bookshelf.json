@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "P": {
-      "tag": "securitycraft:reinforced/planks"
-    },
-    "S": {
-      "tag": "securitycraft:reinforced/wooden_slabs"
-    }
+    "P": "#securitycraft:reinforced/planks",
+    "S": "#securitycraft:reinforced/wooden_slabs"
   },
   "pattern": [
     "PPP",

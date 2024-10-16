@@ -2,24 +2,12 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "D": {
-      "tag": "c:gems/diamond"
-    },
-    "E": {
-      "tag": "c:gems/emerald"
-    },
-    "G": {
-      "tag": "c:ingots/gold"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    },
-    "S": {
-      "tag": "c:nether_stars"
-    },
-    "T": {
-      "item": "minecraft:redstone_torch"
-    }
+    "D": "#c:gems/diamond",
+    "E": "#c:gems/emerald",
+    "G": "#c:ingots/gold",
+    "R": "#c:dusts/redstone",
+    "S": "#c:nether_stars",
+    "T": "minecraft:redstone_torch"
   },
   "pattern": [
     "DTD",

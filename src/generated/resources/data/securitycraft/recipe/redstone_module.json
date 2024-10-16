@@ -3,15 +3,9 @@
   "category": "misc",
   "group": "securitycraft:modules",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "P": {
-      "item": "minecraft:paper"
-    },
-    "S": {
-      "tag": "c:dusts/redstone"
-    }
+    "I": "#c:ingots/iron",
+    "P": "minecraft:paper",
+    "S": "#c:dusts/redstone"
   },
   "pattern": [
     "III",

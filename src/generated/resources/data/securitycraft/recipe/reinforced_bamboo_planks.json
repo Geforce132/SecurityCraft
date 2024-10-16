@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/bamboo_blocks"
-    }
+    "#securitycraft:reinforced/bamboo_blocks"
   ],
   "result": {
     "count": 2,

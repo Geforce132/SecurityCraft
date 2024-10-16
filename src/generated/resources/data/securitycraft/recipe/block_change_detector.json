@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "L": {
-      "item": "securitycraft:username_logger"
-    },
-    "R": {
-      "item": "minecraft:redstone_torch"
-    }
+    "I": "#c:ingots/iron",
+    "L": "securitycraft:username_logger",
+    "R": "minecraft:redstone_torch"
   },
   "pattern": [
     "IRI",

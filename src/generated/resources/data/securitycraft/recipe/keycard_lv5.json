@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "securitycraft:keycards",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "S": {
-      "tag": "c:dyes/purple"
-    }
+    "I": "#c:ingots/iron",
+    "S": "#c:dyes/purple"
   },
   "pattern": [
     "III",

@@ -3,12 +3,8 @@
   "category": "misc",
   "group": "securitycraft:security_sea_boats",
   "key": {
-    "C": {
-      "item": "securitycraft:keypad_chest"
-    },
-    "P": {
-      "item": "securitycraft:reinforced_oak_planks"
-    }
+    "C": "securitycraft:keypad_chest",
+    "P": "securitycraft:reinforced_oak_planks"
   },
   "pattern": [
     "PCP",

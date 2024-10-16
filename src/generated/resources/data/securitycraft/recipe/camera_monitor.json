@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "item": "securitycraft:reinforced_glass_pane"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "G": "securitycraft:reinforced_glass_pane",
+    "I": "#c:ingots/iron"
   },
   "pattern": [
     "III",

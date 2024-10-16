@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_glass_panes",
   "key": {
-    "G": {
-      "item": "securitycraft:reinforced_yellow_stained_glass"
-    }
+    "G": "securitycraft:reinforced_yellow_stained_glass"
   },
   "pattern": [
     "GGG",

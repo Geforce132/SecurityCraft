@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_bamboo_mosaic"
-    }
+    "B": "securitycraft:reinforced_bamboo_mosaic"
   },
   "pattern": [
     "B  ",

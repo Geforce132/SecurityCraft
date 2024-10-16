@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.35,
-  "ingredient": {
-    "item": "securitycraft:reinforced_clay"
-  },
+  "ingredient": "securitycraft:reinforced_clay",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_hardened_clay"

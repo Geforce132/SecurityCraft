@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "building",
   "key": {
-    "B": {
-      "item": "minecraft:book"
-    },
-    "P": {
-      "tag": "securitycraft:reinforced/planks"
-    }
+    "B": "minecraft:book",
+    "P": "#securitycraft:reinforced/planks"
   },
   "pattern": [
     "PPP",

@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:walls",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_deepslate_bricks"
-    }
+    "B": "securitycraft:reinforced_deepslate_bricks"
   },
   "pattern": [
     "BBB",

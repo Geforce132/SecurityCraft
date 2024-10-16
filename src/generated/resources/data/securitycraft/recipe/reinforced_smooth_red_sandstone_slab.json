@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:slabs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_smooth_red_sandstone"
-    }
+    "B": "securitycraft:reinforced_smooth_red_sandstone"
   },
   "pattern": [
     "BBB"

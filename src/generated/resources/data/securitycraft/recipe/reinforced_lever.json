@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "C": {
-      "tag": "securitycraft:reinforced/cobblestone"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    }
+    "C": "#securitycraft:reinforced/cobblestone",
+    "S": "#c:rods/wooden"
   },
   "pattern": [
     "S",

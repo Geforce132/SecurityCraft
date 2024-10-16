@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/warped_stems"
-    }
+    "#securitycraft:reinforced/warped_stems"
   ],
   "result": {
     "count": 4,

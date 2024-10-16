@@ -3,9 +3,7 @@
   "category": "redstone",
   "group": "securitycraft:reinforced_buttons",
   "ingredients": [
-    {
-      "item": "securitycraft:reinforced_crimson_planks"
-    }
+    "securitycraft:reinforced_crimson_planks"
   ],
   "result": {
     "count": 1,

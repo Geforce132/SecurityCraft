@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_mossy_cobblestone"
-    }
+    "B": "securitycraft:reinforced_mossy_cobblestone"
   },
   "pattern": [
     "B  ",

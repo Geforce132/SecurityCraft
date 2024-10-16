@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:slabs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_bamboo_planks"
-    }
+    "B": "securitycraft:reinforced_bamboo_planks"
   },
   "pattern": [
     "BBB"

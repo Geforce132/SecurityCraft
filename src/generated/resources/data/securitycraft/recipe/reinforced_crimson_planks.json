@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/crimson_stems"
-    }
+    "#securitycraft:reinforced/crimson_stems"
   ],
   "result": {
     "count": 4,

@@ -3,12 +3,8 @@
   "category": "building",
   "group": "securitycraft:block_mines",
   "ingredients": [
-    {
-      "item": "minecraft:ancient_debris"
-    },
-    {
-      "item": "securitycraft:mine"
-    }
+    "minecraft:ancient_debris",
+    "securitycraft:mine"
   ],
   "result": {
     "count": 1,

@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:stairs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_dark_prismarine"
-    }
+    "B": "securitycraft:reinforced_dark_prismarine"
   },
   "pattern": [
     "B  ",

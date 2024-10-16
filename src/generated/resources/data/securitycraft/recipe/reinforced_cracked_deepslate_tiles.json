@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "securitycraft:reinforced_deepslate_tiles"
-  },
+  "ingredient": "securitycraft:reinforced_deepslate_tiles",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_cracked_deepslate_tiles"

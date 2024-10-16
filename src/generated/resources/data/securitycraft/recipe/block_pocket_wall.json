@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "securitycraft:reinforced_crystal_quartz_block"
-    }
+    "securitycraft:reinforced_crystal_quartz_block"
   ],
   "result": {
     "count": 1,

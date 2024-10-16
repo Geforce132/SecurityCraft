@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "securitycraft:bouncing_betty"
-    },
-    "I": {
-      "item": "securitycraft:reinforced_iron_block"
-    },
-    "P": {
-      "item": "securitycraft:portable_radar"
-    }
+    "B": "securitycraft:bouncing_betty",
+    "I": "securitycraft:reinforced_iron_block",
+    "P": "securitycraft:portable_radar"
   },
   "pattern": [
     "BPB",

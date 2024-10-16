@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "S": {
-      "item": "minecraft:shears"
-    }
+    "I": "#c:ingots/iron",
+    "S": "minecraft:shears"
   },
   "pattern": [
     "SII"

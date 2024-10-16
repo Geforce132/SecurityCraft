@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "tag": "c:gunpowders"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    }
+    "G": "#c:gunpowders",
+    "I": "#c:ingots/iron"
   },
   "pattern": [
     " I ",

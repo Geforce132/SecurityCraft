@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "H": {
-      "item": "securitycraft:reinforced_hopper"
-    },
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "L": {
-      "tag": "c:leathers"
-    }
+    "H": "securitycraft:reinforced_hopper",
+    "I": "#c:ingots/iron",
+    "L": "#c:leathers"
   },
   "pattern": [
     "IHI",

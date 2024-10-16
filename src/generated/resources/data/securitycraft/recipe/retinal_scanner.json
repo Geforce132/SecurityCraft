@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": {
-      "item": "minecraft:ender_eye"
-    },
-    "S": {
-      "tag": "securitycraft:reinforced/stone_crafting_materials"
-    }
+    "E": "minecraft:ender_eye",
+    "S": "#securitycraft:reinforced/stone_crafting_materials"
   },
   "pattern": [
     "SSS",

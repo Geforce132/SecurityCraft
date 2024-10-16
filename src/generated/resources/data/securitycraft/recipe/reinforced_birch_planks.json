@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/birch_logs"
-    }
+    "#securitycraft:reinforced/birch_logs"
   ],
   "result": {
     "count": 4,

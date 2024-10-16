@@ -1,8 +1,6 @@
 {
   "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "securitycraft:reinforced_stone_bricks"
-  },
+  "ingredient": "securitycraft:reinforced_stone_bricks",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_chiseled_stone_bricks"

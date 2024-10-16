@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_iron_block"
-    },
-    "S": {
-      "tag": "c:rods/wooden"
-    },
-    "T": {
-      "item": "securitycraft:sentry"
-    }
+    "B": "securitycraft:reinforced_iron_block",
+    "S": "#c:rods/wooden",
+    "T": "securitycraft:sentry"
   },
   "pattern": [
     " T ",

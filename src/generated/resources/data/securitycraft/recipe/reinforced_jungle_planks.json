@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:reinforced_planks",
   "ingredients": [
-    {
-      "tag": "securitycraft:reinforced/jungle_logs"
-    }
+    "#securitycraft:reinforced/jungle_logs"
   ],
   "result": {
     "count": 4,

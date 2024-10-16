@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "I": {
-      "tag": "c:ingots/iron"
-    },
-    "L": {
-      "item": "securitycraft:laser_block"
-    },
-    "R": {
-      "tag": "c:dusts/redstone"
-    }
+    "I": "#c:ingots/iron",
+    "L": "securitycraft:laser_block",
+    "R": "#c:dusts/redstone"
   },
   "pattern": [
     " RL",

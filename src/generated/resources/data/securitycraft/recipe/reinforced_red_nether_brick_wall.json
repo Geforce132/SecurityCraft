@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:walls",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_red_nether_bricks"
-    }
+    "B": "securitycraft:reinforced_red_nether_bricks"
   },
   "pattern": [
     "BBB",

@@ -3,9 +3,7 @@
   "category": "building",
   "group": "securitycraft:slabs",
   "key": {
-    "B": {
-      "item": "securitycraft:reinforced_blackstone"
-    }
+    "B": "securitycraft:reinforced_blackstone"
   },
   "pattern": [
     "BBB"

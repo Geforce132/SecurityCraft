@@ -3,9 +3,7 @@
   "category": "blocks",
   "cookingtime": 200,
   "experience": 0.1,
-  "ingredient": {
-    "item": "securitycraft:reinforced_purple_terracotta"
-  },
+  "ingredient": "securitycraft:reinforced_purple_terracotta",
   "result": {
     "count": 1,
     "id": "securitycraft:reinforced_purple_glazed_terracotta"
