@@ -40,6 +40,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
+import net.minecraft.world.level.redstone.Orientation;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.EventHooks;
 
@@ -180,11 +182,11 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	}
 
 	public static boolean isPushable(BlockState state, Level level, BlockPos pistonPos, BlockPos pos, Direction facing, boolean destroyBlocks, Direction direction) {
-		if (pos.getY() >= level.getMinY() && pos.getY() <= level.getMaxY() - 1 && level.getWorldBorder().isWithinBounds(pos)) {
+		if (level.isInsideBuildHeight(pos.getY()) && level.getWorldBorder().isWithinBounds(pos)) {
 			if (state.isAir())
 				return true;
 			else if (!state.is(Blocks.OBSIDIAN) && !state.is(Blocks.CRYING_OBSIDIAN) && !state.is(Blocks.RESPAWN_ANCHOR) && !state.is(Blocks.REINFORCED_DEEPSLATE) && !state.is(SCContent.REINFORCED_OBSIDIAN.get()) && !state.is(SCContent.REINFORCED_CRYING_OBSIDIAN.get())) {
-				if ((facing == Direction.DOWN && pos.getY() == level.getMinY()) || (facing == Direction.UP && pos.getY() == level.getMaxY() - 1))
+				if ((facing == Direction.DOWN && pos.getY() == level.getMinY()) || (facing == Direction.UP && pos.getY() == level.getMaxY()))
 					return false;
 				else {
 					boolean isPushableSCBlock = state.getBlock() instanceof IReinforcedBlock || state.getBlock() instanceof ElectrifiedIronFenceBlock || state.getBlock() instanceof ElectrifiedIronFenceGateBlock;
@@ -314,6 +316,8 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				air.updateIndirectNeighbourShapes(level, posToUpdate, 2);
 			}
 
+			Orientation orientation = ExperimentalRedstoneUtils.initialOrientation(level, structureResolver.getPushDirection(), null);
+
 			j = 0;
 
 			for (int i1 = blocksToDestroy.size() - 1; i1 >= 0; --i1) {
@@ -321,15 +325,15 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				BlockPos posToDestroy = blocksToDestroy.get(i1);
 
 				updatedState.updateIndirectNeighbourShapes(level, posToDestroy, 2);
-				level.updateNeighborsAt(posToDestroy, updatedState.getBlock());
+				level.updateNeighborsAt(posToDestroy, updatedState.getBlock(), orientation);
 			}
 
 			for (int j1 = blocksToMove.size() - 1; j1 >= 0; --j1) {
-				level.updateNeighborsAt(blocksToMove.get(j1), updatedBlocks[j++].getBlock());
+				level.updateNeighborsAt(blocksToMove.get(j1), updatedBlocks[j++].getBlock(), orientation);
 			}
 
 			if (extending)
-				level.updateNeighborsAt(frontPos, SCContent.REINFORCED_PISTON_HEAD.get());
+				level.updateNeighborsAt(frontPos, SCContent.REINFORCED_PISTON_HEAD.get(), orientation);
 
 			return true;
 		}

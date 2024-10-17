@@ -86,7 +86,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 		BlockPos pos = ctx.getClickedPos();
 		Level level = ctx.getLevel();
 
-		return pos.getY() < level.getMaxY() - 1 && level.getBlockState(pos.above()).canBeReplaced(ctx) ? super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()) : null;
+		return pos.getY() < level.getMaxY() && level.getBlockState(pos.above()).canBeReplaced(ctx) ? super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()) : null;
 	}
 
 	@Override

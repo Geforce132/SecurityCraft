@@ -120,7 +120,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		BlockPos pos = context.getClickedPos();
 		Level level = context.getLevel();
 
-		if (pos.getY() < level.getMaxY() - 1 && level.getBlockState(pos.above()).canBeReplaced(context)) {
+		if (pos.getY() < level.getMaxY() && level.getBlockState(pos.above()).canBeReplaced(context)) {
 			boolean hasActiveSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos) || BlockUtils.hasActiveSCBlockNextTo(level, pos.above());
 
 			return defaultBlockState().setValue(FACING, context.getHorizontalDirection()).setValue(HINGE, getHingeSide(context)).setValue(OPEN, hasActiveSCBlock).setValue(HALF, DoubleBlockHalf.LOWER);

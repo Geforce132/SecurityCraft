@@ -120,7 +120,7 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 	}
 
 	private boolean isFlammable(LevelReader level, BlockPos pos, Direction face) {
-		if (pos.getY() >= level.getMinY() && pos.getY() < level.getMaxY() && !level.hasChunkAt(pos))
+		if (level.isInsideBuildHeight(pos.getY()) && !level.hasChunkAt(pos))
 			return false;
 
 		BlockState state = level.getBlockState(pos);

@@ -197,6 +197,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	private static void moveEntityByPiston(Direction direction, Entity entity, double progress, Direction moveDirection) {
 		NOCLIP.set(direction);
 		entity.move(MoverType.PISTON, new Vec3(progress * moveDirection.getStepX(), progress * moveDirection.getStepY(), progress * moveDirection.getStepZ()));
+		entity.applyEffectsFromBlocks();
 		NOCLIP.set(null);
 	}
 
@@ -221,7 +222,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	private boolean isStickyForEntities() {
-		return this.movedState.is(Blocks.HONEY_BLOCK);
+		return movedState.is(Blocks.HONEY_BLOCK);
 	}
 
 	public Direction getMovementDirection() {
