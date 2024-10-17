@@ -161,7 +161,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		renderTransparentBackground(guiGraphics);
-		guiGraphics.blit(RenderType::guiTextured, TEXTURE, leftPos, topPos, 0.0F, 0.0F, 0, 0, xSize, ySize, 512, 512);
+		guiGraphics.blit(RenderType::guiTextured, TEXTURE, leftPos, topPos, 0.0F, 0.0F, xSize, ySize, 512, 512);
 	}
 
 	@Override

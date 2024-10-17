@@ -33,7 +33,7 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0.0F, 0.0F, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
 	public static class Briefcase extends ItemInventoryScreen<BriefcaseMenu> {

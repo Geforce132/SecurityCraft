@@ -158,7 +158,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		guiGraphics.blit(RenderType::guiTextured, TEXTURE, xStart, yStart, 0.0F, 0.0F, 0, 0, 193, 150);
+		guiGraphics.blit(RenderType::guiTextured, TEXTURE, xStart, yStart, 0.0F, 0.0F, 193, 150, 256, 256);
 	}
 
 	public void updateButtons(boolean updateInfo, boolean slotChanged) {

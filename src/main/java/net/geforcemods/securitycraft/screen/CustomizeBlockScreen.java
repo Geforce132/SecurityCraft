@@ -171,7 +171,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0.0F, 0.0F, 0, 0, imageWidth, imageHeight);
+		guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
 	@Override

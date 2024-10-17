@@ -153,7 +153,7 @@ public class SCManualScreen extends Screen {
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		renderTransparentBackground(guiGraphics);
-		guiGraphics.blit(RenderType::guiTextured, currentPage == -1 ? TITLE_PAGE : (recipe != null && !recipe.isEmpty() ? PAGE : PAGE_WITH_SCROLL), startX, 5, 0.0F, 0.0F, 0, 0, 256, 250);
+		guiGraphics.blit(RenderType::guiTextured, currentPage == -1 ? TITLE_PAGE : (recipe != null && !recipe.isEmpty() ? PAGE : PAGE_WITH_SCROLL), startX, 5, 0.0F, 0.0F, 256, 250, 256, 256);
 
 		for (Renderable renderable : renderables) {
 			renderable.render(guiGraphics, mouseX, mouseY, partialTicks);

@@ -141,7 +141,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		guiGraphics.blit(RenderType::guiTextured, TEXTURE, xStart, yStart, 0.0F, 0.0F, 0, 0, 145, 109);
+		guiGraphics.blit(RenderType::guiTextured, TEXTURE, xStart, yStart, 0.0F, 0.0F, 145, 109, 256, 256);
 		ClientUtils.fillHorizontalGradient(guiGraphics, 0, colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F));
 		guiGraphics.fillGradient(colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0x00000000, 0xFF000000);
 	}
