@@ -60,7 +60,7 @@ public class BrushItemMixin {
 	 * The brush is hardcoded to only be able to successfully brush vanilla blocks. Because the suspicious mines should also
 	 * yield items when being brushed while disarmed, the brush needs to check for that as well.
 	 */
-	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;isClientSide()Z"), cancellable = true)
+	@Inject(method = "onUseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"), cancellable = true)
 	private void securitycraft$checkForSuspiciousMine(Level level, LivingEntity entity, ItemStack stack, int tick, CallbackInfo ci, @Local Player player, @Local BlockHitResult blockHitResult, @Local BlockPos pos, @Local BlockState brushedState) {
 		if (!level.isClientSide() && brushedState.is(SCTags.Blocks.SUSPICIOUS_MINES) && level.getBlockEntity(pos) instanceof BrushableMineBlockEntity be) {
 			boolean brushFinished = be.brush(level.getGameTime(), (ServerLevel) level, player, blockHitResult.getDirection(), stack);

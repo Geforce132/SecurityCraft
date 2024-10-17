@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.ViewArea;
+import net.minecraft.core.SectionPos;
 
 /**
  * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart or
@@ -22,8 +23,8 @@ public class LevelRendererMixin {
 	@Final
 	private Minecraft minecraft;
 
-	@WrapWithCondition(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewArea;repositionCamera(DD)V"))
-	public boolean securitycraft$shouldRepositionCamera(ViewArea viewArea, double x, double z) {
+	@WrapWithCondition(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewArea;repositionCamera(Lnet/minecraft/core/SectionPos;)V"))
+	public boolean securitycraft$shouldRepositionCamera(ViewArea viewArea, SectionPos sectionPos) {
 		return !PlayerUtils.isPlayerMountedOnCamera(minecraft.player);
 	}
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.phys.HitResult;
 @Mixin(DebugScreenOverlay.class)
 public class DebugScreenOverlayMixin {
 	@Shadow
-	protected HitResult block;
+	private HitResult block;
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
 	public BlockState securitycraft$spoofBlockState(BlockState originalState) {
