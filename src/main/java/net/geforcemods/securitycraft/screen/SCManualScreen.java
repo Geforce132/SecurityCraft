@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
@@ -42,9 +43,9 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.ClickEvent.Action;
@@ -54,13 +55,16 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.ShapedRecipe;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.RecipeDisplayEntry;
+import net.minecraft.world.item.crafting.display.ShapedCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay.Empty;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -99,7 +103,7 @@ public class SCManualScreen extends Screen {
 	private final Component ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
 	private List<HoverChecker> hoverCheckers = new ArrayList<>();
 	private int currentPage = lastPage;
-	private List<Ingredient> recipe;
+	private List<SlotDisplay> recipe;
 	private ItemStacksDisplay[] displays = new ItemStacksDisplay[9];
 	private int startX = -1;
 	private List<FormattedText> subpages = new ArrayList<>();
@@ -344,37 +348,45 @@ public class SCManualScreen extends Screen {
 
 		if (pageGroup == PageGroup.NONE) {
 			Level level = Minecraft.getInstance().level;
-			RegistryAccess registryAccess = level.registryAccess();
+			ContextMap contextMap = SlotDisplayContext.fromLevel(level);
+			List<RecipeCollection> foundRecipes = minecraft.getConnection().searchTrees().recipes().search(item.getName().getString().toLowerCase(Locale.ROOT));
 
-			for (RecipeHolder<?> recipeHolder : level.getServer().getRecipeManager().getRecipes()) {
-				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
-					ItemStack resultItem = shapedRecipe.assemble(null, registryAccess);
+			if (!foundRecipes.isEmpty()) {
+				List<RecipeDisplayEntry> recipes = foundRecipes.stream().flatMap(collection -> collection.getRecipes().stream()).toList();
 
-					if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && resultItem.has(DataComponents.DYED_COLOR))) {
-						List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
-						List<Ingredient> recipeItems = Arrays.asList(Util.make(new Ingredient[9], array -> Arrays.fill(array, null)));
+				for (RecipeDisplayEntry recipeEntry : recipes) {
+					RecipeDisplay display = recipeEntry.display();
 
-						for (int i = 0; i < ingredients.size(); i++) {
-							recipeItems.set(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()), ingredients.get(i).orElse(null));
+					if (display instanceof ShapedCraftingRecipeDisplay shapedRecipe) {
+						SlotDisplay result = shapedRecipe.result();
+						ItemStack resultItem = result.resolveForFirstStack(contextMap);
+
+						if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && resultItem.has(DataComponents.DYED_COLOR))) {
+							List<SlotDisplay> ingredients = shapedRecipe.ingredients();
+							List<SlotDisplay> recipeItems = Arrays.asList(Util.make(new SlotDisplay[9], array -> Arrays.fill(array, Empty.INSTANCE)));
+
+							for (int i = 0; i < ingredients.size(); i++) {
+								recipeItems.set(getCraftMatrixPosition(i, shapedRecipe.width(), shapedRecipe.height()), ingredients.get(i));
+							}
+
+							this.recipe = recipeItems;
+							break;
 						}
+					}
+					else if (display instanceof ShapelessCraftingRecipeDisplay shapelessRecipe && shapelessRecipe.result().resolveForFirstStack(contextMap).is(item)) {
+						//don't show keycard reset recipes
+						//if (recipeHolder..getPath().endsWith("_reset"))
+						//	continue; //TODO we need a different way to filter for those, we don't have the IDs anymore
 
-						this.recipe = recipeItems;
+						this.recipe = new ArrayList<>(shapelessRecipe.ingredients());
 						break;
 					}
-				}
-				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && shapelessRecipe.assemble(null, registryAccess).is(item)) {
-					//don't show keycard reset recipes
-					if (recipeHolder.id().location().getPath().endsWith("_reset"))
-						continue;
-
-					this.recipe = new ArrayList<>(shapelessRecipe.placementInfo().ingredients());
-					break;
 				}
 			}
 		}
 		else if (pageGroup.hasRecipeGrid()) {
 			Level level = Minecraft.getInstance().level;
-			RegistryAccess registryAccess = level.registryAccess();
+			ContextMap contextMap = SlotDisplayContext.fromLevel(level);
 			Map<Integer, ItemStack[]> recipeStacks = new HashMap<>();
 			List<Item> pageItems = pageGroup.getItems().stream().map(ItemStack::getItem).toList();
 			int stacksLeft = pageItems.size();
@@ -383,60 +395,64 @@ public class SCManualScreen extends Screen {
 				recipeStacks.put(i, new ItemStack[pageItems.size()]);
 			}
 
-			for (RecipeHolder<?> recipeHolder : Minecraft.getInstance().level.getServer().getRecipeManager().getRecipes()) {
+			for (RecipeCollection recipeCollection : minecraft.player.getRecipeBook().getCollections()) {
 				if (stacksLeft == 0)
 					break;
 
-				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
-					ItemStack resultItem = shapedRecipe.assemble(null, registryAccess);
+				for (RecipeDisplayEntry recipe : recipeCollection.getRecipes()) {
+					RecipeDisplay recipeDisplay = recipe.display();
 
-					if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
-						List<Optional<Ingredient>> ingredients = shapedRecipe.getIngredients();
+					if (recipeDisplay instanceof ShapedCraftingRecipeDisplay shapedRecipe) {
+						ItemStack resultItem = shapedRecipe.result().resolveForFirstStack(contextMap);
 
-						for (int i = 0; i < ingredients.size(); i++) {
-							List<ItemStack> items = ingredients.get(i).map(ingredient -> ingredient.display().resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level))).orElse(List.of());
+						if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
+							List<SlotDisplay> ingredients = shapedRecipe.ingredients();
 
-							if (items.isEmpty())
-								continue;
+							for (int i = 0; i < ingredients.size(); i++) {
+								List<ItemStack> items = ingredients.get(i).resolveForStacks(contextMap);
 
-							int indexToAddAt = pageItems.indexOf(resultItem.getItem());
+								if (items.isEmpty())
+									continue;
 
-							//first item needs to suffice since multiple recipes are being cycled through
-							recipeStacks.get(getCraftMatrixPosition(i, shapedRecipe.getWidth(), shapedRecipe.getHeight()))[indexToAddAt] = items.get(0);
+								int indexToAddAt = pageItems.indexOf(resultItem.getItem());
+
+								//first item needs to suffice since multiple recipes are being cycled through
+								recipeStacks.get(getCraftMatrixPosition(i, shapedRecipe.width(), shapedRecipe.height()))[indexToAddAt] = items.get(0);
+							}
+
+							stacksLeft--;
 						}
-
-						stacksLeft--;
 					}
-				}
-				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe) {
-					ItemStack resultItem = shapelessRecipe.assemble(null, registryAccess);
+					else if (recipeDisplay instanceof ShapelessCraftingRecipeDisplay shapelessRecipe) {
+						ItemStack resultItem = shapelessRecipe.result().resolveForFirstStack(contextMap);
 
-					if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
-						//don't show keycard reset recipes
-						if (recipeHolder.id().location().getPath().endsWith("_reset"))
-							continue;
+						if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
+							//don't show keycard reset recipes
+							//if (recipeHolder.id().location().getPath().endsWith("_reset"))
+							//	continue; //TODO different way to filter for those
 
-						List<Ingredient> ingredients = shapelessRecipe.placementInfo().ingredients();
+							List<SlotDisplay> ingredients = shapelessRecipe.ingredients();
 
-						for (int i = 0; i < ingredients.size(); i++) {
-							List<ItemStack> items = ingredients.get(i).display().resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level));
+							for (int i = 0; i < ingredients.size(); i++) {
+								ItemStack firstItem = ingredients.get(i).resolveForFirstStack(SlotDisplayContext.fromLevel(Minecraft.getInstance().level));
 
-							if (items.isEmpty())
-								continue;
+								if (firstItem.isEmpty())
+									continue;
 
-							int indexToAddAt = pageItems.indexOf(resultItem.getItem());
+								int indexToAddAt = pageItems.indexOf(resultItem.getItem());
 
-							//first item needs to suffice since multiple recipes are being cycled through
-							recipeStacks.get(i)[indexToAddAt] = items.get(0);
+								//first item needs to suffice since multiple recipes are being cycled through
+								recipeStacks.get(i)[indexToAddAt] = firstItem;
+							}
+
+							stacksLeft--;
 						}
-
-						stacksLeft--;
 					}
 				}
 			}
 
-			recipe = Arrays.asList(Util.make(new Ingredient[9], array -> Arrays.fill(array, null)));
-			recipeStacks.forEach((i, stackArray) -> recipe.set(i, null));
+			recipe = Arrays.asList(Util.make(new SlotDisplay[9], array -> Arrays.fill(array, Empty.INSTANCE)));
+			recipeStacks.forEach((i, stackArray) -> recipe.set(i, new SlotDisplay.Composite(Arrays.stream(stackArray).map(stack -> stack == null ? Empty.INSTANCE : new SlotDisplay.ItemStackSlotDisplay(stack)).toList())));
 		}
 
 		if (page.hasRecipeDescription()) {
@@ -544,7 +560,7 @@ public class SCManualScreen extends Screen {
 					if (index >= recipe.size())
 						displays[index].setStacks(null);
 					else
-						displays[index].setStacks(recipe.get(index).display().resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level)));
+						displays[index].setStacks(recipe.get(index).resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level)));
 				}
 			}
 		}
