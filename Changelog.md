@@ -2,7 +2,7 @@
 
 - New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Reinforced Dispenser, Reinforced Dropper, Reinforced Hopper, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System
 - New: Server config setting to set the amount of damage received when suffocating in a reinforced block
-- New: Item tag "securitycraft:keycards" for all keycards (this notably exclused the Limited Use Keycard, as it's merely a crafting component)
+- New: Item tag "securitycraft:keycards" for all keycards (this notably excludes the Limited Use Keycard, as it's merely a crafting component)
 - New: Item tag "securitycraft:keycard_holder_can_hold" for all items that can be put into a Keycard Holder (contains the securitycraft:keycards item tag and the Limited Use Keycard by default)
 - New: Reinforced Soul Sand and Reinforced Magma Block
 - New: Reinforced Scaffolding
