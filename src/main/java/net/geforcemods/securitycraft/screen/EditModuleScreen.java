@@ -10,12 +10,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -318,11 +313,11 @@ public class EditModuleScreen extends Screen {
 				//highlight hovered slot
 				if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
 					if (slotIndex < players.size() && !players.get(slotIndex).isBlank())
-						renderBox(tessellator, left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
+						renderBox(guiGraphics, left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFF808080);
 				}
 
 				if (selectedIndex >= 0)
-					renderBox(tessellator, left, entryRight - 6, baseY + selectedIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFF);
+					renderBox(guiGraphics, left, entryRight - 6, baseY + selectedIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFFFFFFFF);
 
 				//draw entry strings
 				for (int i = 0; i < players.size(); i++) {
@@ -331,6 +326,8 @@ public class EditModuleScreen extends Screen {
 					if (!name.isEmpty())
 						guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
 				}
+
+				guiGraphics.flush();
 			}
 		}
 
@@ -422,7 +419,7 @@ public class EditModuleScreen extends Screen {
 
 			//highlight hovered slot
 			if (slotIndex != selectedIndex && mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < listLength && mouseY >= top && mouseY <= bottom)
-				renderBox(tessellator, left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0x80);
+				renderBox(guiGraphics, left, entryRight - 6, baseY + slotIndex * SLOT_HEIGHT, SLOT_HEIGHT - 4, 0xFF808080);
 
 			//draw entry strings and indicators whether the filter is enabled
 			for (int i = 0; i < listLength; i++) {
@@ -460,21 +457,8 @@ public class EditModuleScreen extends Screen {
 		}
 	}
 
-	private void renderBox(Tesselator tesselator, int min, int max, int slotTop, int slotBuffer, int borderColor) {
-		BufferBuilder bufferBuilder;
-
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setColor(borderColor, borderColor, borderColor, 0xFF);
-		bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setColor(borderColor, borderColor, borderColor, 0xFF);
-		bufferBuilder.addVertex(max, slotTop - 2, 0).setColor(borderColor, borderColor, borderColor, 0xFF);
-		bufferBuilder.addVertex(min, slotTop - 2, 0).setColor(borderColor, borderColor, borderColor, 0xFF);
-		bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-		bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-		bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-		bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-		BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-		RenderSystem.disableBlend();
+	private void renderBox(GuiGraphics guiGraphics, int min, int max, int slotTop, int slotBuffer, int borderColor) {
+		guiGraphics.fill(min, slotTop - 2, max, slotTop + slotBuffer + 2, borderColor);
+		guiGraphics.fill(min + 1, slotTop - 1, max - 1, slotTop + slotBuffer + 1, 0xFF000000);
 	}
 }

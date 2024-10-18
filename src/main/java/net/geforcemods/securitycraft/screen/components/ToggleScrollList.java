@@ -5,12 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
@@ -93,6 +88,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		guiGraphics.flush();
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 		int baseY = top + border - (int) scrollDistance;
@@ -121,21 +117,9 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			int min = left;
 			int max = entryRight - 6; //6 is the width of the scrollbar
 			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
-			BufferBuilder bufferBuilder;
 
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
-			bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-			bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(max, slotTop - 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(min, slotTop - 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-			RenderSystem.disableBlend();
+			guiGraphics.fill(min, slotTop - 2, max, slotTop + slotBuffer + 2, 0xFF808080);
+			guiGraphics.fill(min + 1, slotTop - 1, max - 1, slotTop + slotBuffer + 1, 0xFF000000);
 		}
 
 		int i = 0;
@@ -149,6 +133,8 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			guiGraphics.blitSprite(RenderType::guiTextured, be.getFilter(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, left + 1, yStart - 3, 12, 12);
 			i++;
 		}
+
+		guiGraphics.flush();
 	}
 
 	@Override

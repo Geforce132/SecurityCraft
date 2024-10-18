@@ -5,12 +5,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
@@ -166,21 +161,9 @@ public class UsernameLoggerScreen extends Screen {
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
 					int slotTop = baseY + slotIndex * SLOT_HEIGHT;
-					BufferBuilder bufferBuilder;
 
-					RenderSystem.enableBlend();
-					RenderSystem.defaultBlendFunc();
-					bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-					bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-					bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-					bufferBuilder.addVertex(max, slotTop - 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-					bufferBuilder.addVertex(min, slotTop - 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-					bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-					bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-					bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-					bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-					BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-					RenderSystem.disableBlend();
+					guiGraphics.fill(min, slotTop - 2, max, slotTop + slotBuffer + 2, 0xFF808080);
+					guiGraphics.fill(min + 1, slotTop - 1, max - 1, slotTop + slotBuffer + 1, 0xFF000000);
 				}
 			}
 
@@ -189,6 +172,8 @@ public class UsernameLoggerScreen extends Screen {
 				if (be.getPlayers()[i] != null && !be.getPlayers()[i].equals(""))
 					guiGraphics.drawString(font, be.getPlayers()[i], left + width / 2 - font.width(be.getPlayers()[i]) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
 			}
+
+			guiGraphics.flush();
 		}
 
 		@Override

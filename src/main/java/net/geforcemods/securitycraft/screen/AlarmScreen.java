@@ -9,12 +9,7 @@ import java.util.Optional;
 
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -206,6 +201,7 @@ public class AlarmScreen extends Screen {
 
 		@Override
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			guiGraphics.flush();
 			super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 			int baseY = top + border - (int) scrollDistance;
@@ -231,11 +227,11 @@ public class AlarmScreen extends Screen {
 
 			//highlight hovered slot
 			if (hasSmartModule && slotIndex != selectedSoundIndex && mouseX >= min && mouseX <= right - 7 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < filteredSoundEvents.size() && mouseY >= top && mouseY <= bottom)
-				renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, slotIndex, min);
+				renderHighlightBox(entryRight, guiGraphics, baseY, slotBuffer, slotIndex, min);
 
 			//highlight slot of the currently selected sound
 			if (selectedSoundIndex >= 0)
-				renderHighlightBox(entryRight, tesselator, baseY, slotBuffer, selectedSoundIndex, min);
+				renderHighlightBox(entryRight, guiGraphics, baseY, slotBuffer, selectedSoundIndex, min);
 
 			//draw entry strings and sound icons
 			for (int i = 0; i < filteredSoundEvents.size(); i++) {
@@ -252,30 +248,20 @@ public class AlarmScreen extends Screen {
 				guiGraphics.drawString(font, name, left + TEXT_OFFSET, yStart, 0xC6C6C6, false);
 				guiGraphics.blitSprite(RenderType::guiTextured, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? PLAY_SOUND_HIGHLIGHTED_SPRITE : PLAY_SOUND_SPRITE, left, yStart - 1, 10, 10);
 			}
+
+			guiGraphics.flush();
 		}
 
 		private Component getSoundEventComponent(ResourceLocation soundEvent) {
 			return soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.toLanguageKey()));
 		}
 
-		private void renderHighlightBox(int entryRight, Tesselator tesselator, int baseY, int slotBuffer, int slotIndex, int min) {
+		private void renderHighlightBox(int entryRight, GuiGraphics guiGraphics, int baseY, int slotBuffer, int slotIndex, int min) {
 			int max = entryRight - 6;
 			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
-			BufferBuilder bufferBuilder;
 
-			RenderSystem.enableBlend();
-			RenderSystem.defaultBlendFunc();
-			bufferBuilder = tesselator.begin(Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-			bufferBuilder.addVertex(min, slotTop + slotBuffer + 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(max, slotTop + slotBuffer + 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(max, slotTop - 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(min, slotTop - 2, 0).setColor(0x80, 0x80, 0x80, 0xFF);
-			bufferBuilder.addVertex(min + 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			bufferBuilder.addVertex(max - 1, slotTop + slotBuffer + 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			bufferBuilder.addVertex(max - 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			bufferBuilder.addVertex(min + 1, slotTop - 1, 0).setColor(0x00, 0x00, 0x00, 0xFF);
-			BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
-			RenderSystem.disableBlend();
+			guiGraphics.fill(min, slotTop - 2, max, slotTop + slotBuffer + 2, 0xFF808080);
+			guiGraphics.fill(min + 1, slotTop - 1, max - 1, slotTop + slotBuffer + 1, 0xFF000000);
 		}
 
 		public void selectSound(int slotIndex) {
