@@ -2,6 +2,9 @@ package net.geforcemods.securitycraft.models;
 
 import java.util.List;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.geforcemods.securitycraft.renderers.SentryRenderState;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -12,10 +15,12 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class SentryModel extends EntityModel<SentryRenderState> {
+	private final ModelPart base;
 	private final List<ModelPart> headPartList;
 
 	public SentryModel(ModelPart modelPart) {
 		super(modelPart);
+		base = modelPart.getChild("base");
 		//@formatter:off
 		headPartList = List.of(
 				modelPart.getChild("head"),
@@ -43,11 +48,11 @@ public class SentryModel extends EntityModel<SentryRenderState> {
 		return LayerDefinition.create(meshDefinition, 64, 64);
 	}
 
-	@Override
-	public void setupAnim(SentryRenderState state) {
-		headPartList.forEach(part -> {
-			part.y = state.headY;
-			part.yRot = state.headRotation;
-		});
+	public void renderBase(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
+		base.render(pose, builder, packedLight, packedOverlay, packedARGB);
+	}
+
+	public void renderHead(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
+		headPartList.forEach(part -> part.render(pose, builder, packedLight, packedOverlay, packedARGB));
 	}
 }
