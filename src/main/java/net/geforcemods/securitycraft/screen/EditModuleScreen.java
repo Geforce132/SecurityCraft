@@ -281,6 +281,12 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			guiGraphics.flush();
+			super.render(guiGraphics, mouseX, mouseY, partialTick);
+		}
+
+		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (isMouseOver(mouseX, mouseY) && mouseX < left + width - 6) {
 				int clickedIndex = ((int) (mouseY - top + scrollDistance - border)) / SLOT_HEIGHT;
@@ -302,7 +308,7 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
-			ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
+			ListModuleData listModuleData = null;
 
 			if (listModuleData != null) {
 				int baseY = top + border - (int) scrollDistance;

@@ -124,6 +124,7 @@ public class UsernameLoggerScreen extends Screen {
 
 		@Override
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+			guiGraphics.flush();
 			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 			if (be.isOwnedBy(minecraft.player)) {
