@@ -375,8 +375,8 @@ public class SCManualScreen extends Screen {
 					}
 					else if (display instanceof ShapelessCraftingRecipeDisplay shapelessRecipe && shapelessRecipe.result().resolveForFirstStack(contextMap).is(item)) {
 						//don't show keycard reset recipes
-						//if (recipeHolder..getPath().endsWith("_reset"))
-						//	continue; //TODO we need a different way to filter for those, we don't have the IDs anymore
+						if (!shapelessRecipe.ingredients().isEmpty() && shapelessRecipe.ingredients().getFirst().resolveForFirstStack(contextMap).is(item))
+							continue;
 
 						this.recipe = new ArrayList<>(shapelessRecipe.ingredients());
 						break;
@@ -428,8 +428,8 @@ public class SCManualScreen extends Screen {
 
 						if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
 							//don't show keycard reset recipes
-							//if (recipeHolder.id().location().getPath().endsWith("_reset"))
-							//	continue; //TODO different way to filter for those
+							if (!shapelessRecipe.ingredients().isEmpty() && shapelessRecipe.ingredients().getFirst().resolveForFirstStack(contextMap).is(item))
+								continue;
 
 							List<SlotDisplay> ingredients = shapelessRecipe.ingredients();
 
