@@ -838,7 +838,7 @@ public class ClientHandler {
 	}
 
 	public static void displayAlarmScreen(AlarmBlockEntity be) {
-		Minecraft.getInstance().setScreen(new AlarmScreen(be, be.getSound().getLocation()));
+		Minecraft.getInstance().setScreen(new AlarmScreen(be, be.getSound().location()));
 	}
 
 	public static void refreshModelData(BlockEntity be) {

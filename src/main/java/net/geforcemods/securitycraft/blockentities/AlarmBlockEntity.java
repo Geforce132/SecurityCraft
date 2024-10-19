@@ -71,7 +71,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		super.saveAdditional(tag, lookupProvider);
 		tag.putInt("cooldown", cooldown);
 		tag.putBoolean("isPowered", isPowered);
-		tag.putString("sound", sound.getLocation().toString());
+		tag.putString("sound", sound.location().toString());
 		tag.putFloat("pitch", pitch);
 		tag.putInt("delay", soundLength);
 	}

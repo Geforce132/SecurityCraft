@@ -31,7 +31,7 @@ public record SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float
 		Player player = ctx.player();
 
 		if (player.level().getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
-			if (!soundEvent.equals(be.getSound().getLocation()))
+			if (!soundEvent.equals(be.getSound().location()))
 				be.setSound(soundEvent);
 
 			if (pitch != be.getPitch())
