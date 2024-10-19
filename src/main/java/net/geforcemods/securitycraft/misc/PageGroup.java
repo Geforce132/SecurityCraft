@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.misc;
 import java.util.List;
 import java.util.function.Supplier;
 
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.ClientHandler;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.SlotDisplayContext;
@@ -55,6 +55,6 @@ public enum PageGroup {
 	}
 
 	public void setItems(Ingredient ingredient) {
-		itemGetter = () -> ingredient.display().resolveForStacks(SlotDisplayContext.fromLevel(Minecraft.getInstance().level));
+		itemGetter = () -> ingredient.display().resolveForStacks(SlotDisplayContext.fromLevel(ClientHandler.getClientLevel()));
 	}
 }
