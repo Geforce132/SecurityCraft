@@ -19,6 +19,7 @@ import java.util.concurrent.Future;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
@@ -374,8 +375,10 @@ public class SCManualScreen extends Screen {
 						}
 					}
 					else if (display instanceof ShapelessCraftingRecipeDisplay shapelessRecipe && shapelessRecipe.result().resolveForFirstStack(contextMap).is(item)) {
+						List<SlotDisplay> ingredients = shapelessRecipe.ingredients();
+
 						//don't show keycard reset recipes
-						if (!shapelessRecipe.ingredients().isEmpty() && shapelessRecipe.ingredients().getFirst().resolveForFirstStack(contextMap).is(item))
+						if (item.builtInRegistryHolder().is(SCTags.Items.KEYCARDS) && ingredients.size() == 1 && ingredients.getFirst().resolveForFirstStack(contextMap).is(item))
 							continue;
 
 						this.recipe = new ArrayList<>(shapelessRecipe.ingredients());
@@ -424,14 +427,14 @@ public class SCManualScreen extends Screen {
 						}
 					}
 					else if (recipeDisplay instanceof ShapelessCraftingRecipeDisplay shapelessRecipe) {
-						ItemStack resultItem = shapelessRecipe.result().resolveForFirstStack(contextMap);
+						ItemStack resultStack = shapelessRecipe.result().resolveForFirstStack(contextMap);
+						Item resultItem = resultStack.getItem();
+						List<SlotDisplay> ingredients = shapelessRecipe.ingredients();
 
-						if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
+						if (!resultStack.isEmpty() && pageItems.contains(resultItem)) {
 							//don't show keycard reset recipes
-							if (!shapelessRecipe.ingredients().isEmpty() && shapelessRecipe.ingredients().getFirst().resolveForFirstStack(contextMap).is(item))
+							if (resultStack.is(SCTags.Items.KEYCARDS) && ingredients.size() == 1 && ingredients.getFirst().resolveForFirstStack(contextMap).is(resultItem))
 								continue;
-
-							List<SlotDisplay> ingredients = shapelessRecipe.ingredients();
 
 							for (int i = 0; i < ingredients.size(); i++) {
 								ItemStack firstItem = ingredients.get(i).resolveForFirstStack(SlotDisplayContext.fromLevel(Minecraft.getInstance().level));
@@ -439,7 +442,7 @@ public class SCManualScreen extends Screen {
 								if (firstItem.isEmpty())
 									continue;
 
-								int indexToAddAt = pageItems.indexOf(resultItem.getItem());
+								int indexToAddAt = pageItems.indexOf(resultStack.getItem());
 
 								//first item needs to suffice since multiple recipes are being cycled through
 								recipeStacks.get(i)[indexToAddAt] = firstItem;
