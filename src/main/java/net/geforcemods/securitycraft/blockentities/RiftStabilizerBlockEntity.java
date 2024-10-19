@@ -59,7 +59,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		super(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), pos, state);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in ToggleListScreen based on the user's current language
-		teleportationFilter.put(TeleportationType.CHORUS_FRUIT, true);
+		teleportationFilter.put(TeleportationType.ITEM_CONSUMPTION, true);
 		teleportationFilter.put(TeleportationType.ENDER_PEARL, true);
 		teleportationFilter.put(TeleportationType.ENDERMAN, false);
 		teleportationFilter.put(TeleportationType.SHULKER, false);
@@ -214,7 +214,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	private void onRemoveSmartModule(RiftStabilizerBlockEntity be) {
-		be.teleportationFilter.put(TeleportationType.CHORUS_FRUIT, true);
+		be.teleportationFilter.put(TeleportationType.ITEM_CONSUMPTION, true);
 		be.teleportationFilter.put(TeleportationType.ENDER_PEARL, true);
 		be.teleportationFilter.put(TeleportationType.ENDERMAN, false);
 		be.teleportationFilter.put(TeleportationType.SHULKER, false);
@@ -338,7 +338,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public enum TeleportationType {
-		CHORUS_FRUIT(Items.CHORUS_FRUIT.getDescriptionId()), //TODO: item consumption description id
+		ITEM_CONSUMPTION("gui.securitycraft:rift_stabilizer.item_consumption"),
 		ENDER_PEARL(Items.ENDER_PEARL.getDescriptionId()),
 		ENDERMAN(EntityType.ENDERMAN.getDescriptionId()),
 		SHULKER(EntityType.SHULKER.getDescriptionId()),
@@ -352,7 +352,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 		public static TeleportationType getTypeFromEvent(EntityTeleportEvent event) {
 			return switch (event) {
-				case ItemConsumption fruit -> CHORUS_FRUIT;
+				case ItemConsumption fruit -> ITEM_CONSUMPTION;
 				case EnderPearl pearl -> ENDER_PEARL;
 				case EnderEntity ender when ender.getEntityLiving() instanceof EnderMan -> ENDERMAN;
 				case EnderEntity ender when ender.getEntityLiving() instanceof Shulker -> SHULKER;

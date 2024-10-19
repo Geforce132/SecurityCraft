@@ -779,6 +779,7 @@
 	"gui.securitycraft:projector.width": "Width: %s",
 	"gui.securitycraft:projector.width.description": "The width of the projection.",
 	"gui.securitycraft:protectedFurnace.name": "Protected Furnace",
+	"gui.securitycraft:rift_stabilizer.item_consumption": "Item Consumption",
 	"gui.securitycraft:rift_stabilizer.modded": "Modded Teleportation",
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "You need to install a Smart Module to toggle which teleportation types can be detected by this Rift Stabilizer.",
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Detectable Teleportation Types:",

@@ -771,6 +771,7 @@
 	"gui.securitycraft:projector.width": "Breite: %s",
 	"gui.securitycraft:projector.width.description": "Die Breite der Projektion.",
 	"gui.securitycraft:protectedFurnace.name": "Passwortgesicherter Ofen",
+	"gui.securitycraft:rift_stabilizer.item_consumption": "Item-Verzehr",
 	"gui.securitycraft:rift_stabilizer.modded": "Gemoddete Teleportation",
 	"gui.securitycraft:rift_stabilizer.moduleRequired": "Du musst ein schlaues Modul installieren, um einzustellen, welche Teleportationsarten von diesem Riss-Stabilisierer erkannt werden können.",
 	"gui.securitycraft:rift_stabilizer.teleportationTypes": "Erkennbare Teleportationsarten:",

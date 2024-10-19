@@ -359,7 +359,6 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			addDefaultInteractions(powderSnowMap);
 
 			//add dyeable item interactions
-			//TODO: AT
 			vanillaWaterMap.put(SCContent.BRIEFCASE.get(), CauldronInteraction::dyedItemIteration);
 			waterMap.put(SCContent.BRIEFCASE.get(), DYED_ITEM);
 			vanillaWaterMap.put(SCContent.LENS.get(), CauldronInteraction::dyedItemIteration);
