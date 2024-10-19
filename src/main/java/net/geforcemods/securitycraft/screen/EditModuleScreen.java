@@ -308,7 +308,7 @@ public class EditModuleScreen extends Screen {
 
 		@Override
 		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
-			ListModuleData listModuleData = null;
+			ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
 
 			if (listModuleData != null) {
 				int baseY = top + border - (int) scrollDistance;
