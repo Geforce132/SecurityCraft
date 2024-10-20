@@ -36,6 +36,7 @@ import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstan
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
@@ -43,6 +44,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.network.client.SendManualPages;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -87,6 +89,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.TriState;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
@@ -105,6 +108,7 @@ import net.neoforged.neoforge.event.level.NoteBlockEvent;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SCEventHandler {
@@ -157,6 +161,16 @@ public class SCEventHandler {
 				}
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void onDatapackSync(OnDatapackSyncEvent event) {
+		ServerPlayer player = event.getPlayer();
+
+		if (player == null)
+			PacketDistributor.sendToAllPlayers(new SendManualPages(SCManualItem.PAGES));
+		else
+			PacketDistributor.sendToPlayer(player, new SendManualPages(SCManualItem.PAGES));
 	}
 
 	@SubscribeEvent

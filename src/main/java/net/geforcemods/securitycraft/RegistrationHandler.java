@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActi
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
+import net.geforcemods.securitycraft.network.client.SendManualPages;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
@@ -162,6 +163,7 @@ public class RegistrationHandler {
 		registrar.playToClient(OpenScreen.TYPE, OpenScreen.STREAM_CODEC, OpenScreen::handle);
 		registrar.playToClient(PlayAlarmSound.TYPE, PlayAlarmSound.STREAM_CODEC, PlayAlarmSound::handle);
 		registrar.playToClient(RefreshDisguisableModel.TYPE, RefreshDisguisableModel.STREAM_CODEC, RefreshDisguisableModel::handle);
+		registrar.playToClient(SendManualPages.TYPE, SendManualPages.STREAM_CODEC, SendManualPages::handle);
 		registrar.playToClient(SetCameraView.TYPE, SetCameraView.STREAM_CODEC, SetCameraView::handle);
 		registrar.playToClient(SetTrophySystemTarget.TYPE, SetTrophySystemTarget.STREAM_CODEC, SetTrophySystemTarget::handle);
 		registrar.playToClient(UpdateLaserColors.TYPE, UpdateLaserColors.STREAM_CODEC, UpdateLaserColors::handle);

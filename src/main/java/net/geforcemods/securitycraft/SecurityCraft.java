@@ -6,9 +6,11 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 
+import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
@@ -37,9 +39,9 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -58,9 +60,12 @@ import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 @Mod(SecurityCraft.MODID)
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
@@ -79,6 +84,8 @@ public class SecurityCraft {
 
 	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
+		NeoForge.EVENT_BUS.addListener(SecurityCraft::addReloadListener);
+		NeoForge.EVENT_BUS.addListener(SecurityCraft::onServerStarted);
 		NeoForge.EVENT_BUS.addListener(RegistrationHandler::registerBrewingRecipes);
 		container.registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
@@ -120,8 +127,15 @@ public class SecurityCraft {
 
 	@SubscribeEvent
 	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
-		collectSCContentData();
 		IReinforcedCauldronInteraction.bootStrap();
+	}
+
+	public static void onServerStarted(ServerStartedEvent event) {
+		collectSCContentData(event.getServer(), true);
+	}
+
+	public static void addReloadListener(AddReloadListenerEvent event) {
+		event.addListener((barrier, manager, e1, e2) -> CompletableFuture.runAsync(() -> collectSCContentData(true), e1).thenCompose(barrier::wait));
 	}
 
 	@SubscribeEvent
@@ -129,8 +143,21 @@ public class SecurityCraft {
 		event.register(CAMERA_TICKET_CONTROLLER);
 	}
 
-	public static void collectSCContentData() {
+	public static void collectSCContentData(boolean addPages) {
+		collectSCContentData(ServerLifecycleHooks.getCurrentServer(), addPages);
+	}
+
+	public static void collectSCContentData(MinecraftServer server, boolean addPages) {
+		if (addPages && server == null)
+			return;
+
 		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
+
+		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.clear();
+		IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.clear();
+
+		if (addPages)
+			SCManualItem.PAGES.clear();
 
 		for (Field field : SCContent.class.getFields()) {
 			try {
@@ -166,8 +193,8 @@ public class SecurityCraft {
 						key += item.getDescriptionId().substring(5) + ".info";
 					}
 
-					if (group == PageGroup.NONE || wasNotAdded)
-						SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription()));
+					if (addPages && group == PageGroup.NONE || wasNotAdded)
+						SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription(), Suppliers.memoize(() -> SCManualItem.findRecipes(server, item, group))));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {
@@ -175,7 +202,7 @@ public class SecurityCraft {
 			}
 		}
 
-		groupStacks.forEach((group, list) -> group.setItems(Ingredient.of(list.stream().filter(stack -> !stack.isEmpty()).map(ItemStack::getItem))));
+		groupStacks.forEach((group, list) -> group.setItems(list.stream().filter(stack -> !stack.isEmpty()).toList()));
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {

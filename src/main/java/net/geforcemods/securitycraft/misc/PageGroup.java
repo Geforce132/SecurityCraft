@@ -1,12 +1,8 @@
 package net.geforcemods.securitycraft.misc;
 
 import java.util.List;
-import java.util.function.Supplier;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.display.SlotDisplayContext;
 
 public enum PageGroup {
 	NONE(false, "", ""), //ignored anyway
@@ -26,7 +22,6 @@ public enum PageGroup {
 	private final boolean hasRecipeGrid;
 	private final String title;
 	private final String specialInfoKey;
-	private Supplier<List<ItemStack>> itemGetter;
 	private List<ItemStack> items = null;
 
 	PageGroup(boolean hasRecipeGrid, String title, String specialInfoKey) {
@@ -48,13 +43,10 @@ public enum PageGroup {
 	}
 
 	public List<ItemStack> getItems() {
-		if (items == null)
-			items = itemGetter.get();
-
 		return items;
 	}
 
-	public void setItems(Ingredient ingredient) {
-		itemGetter = () -> ingredient.display().resolveForStacks(SlotDisplayContext.fromLevel(ClientHandler.getClientLevel()));
+	public void setItems(List<ItemStack> list) {
+		items = list;
 	}
 }
