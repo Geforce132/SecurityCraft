@@ -189,8 +189,18 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		InteractionMap LAVA = CauldronInteraction.newInteractionMap("reinforced_lava");
 		InteractionMap POWDER_SNOW = CauldronInteraction.newInteractionMap("reinforced_powder_snow");
 		CauldronInteraction FILL_WATER = (state, level, pos, player, hand, stack) -> emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_WATER_CAULDRON.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), SoundEvents.BUCKET_EMPTY);
-		CauldronInteraction FILL_LAVA = (state, level, pos, player, hand, stack) -> emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_LAVA_CAULDRON.get().defaultBlockState(), SoundEvents.BUCKET_EMPTY_LAVA);
-		CauldronInteraction FILL_POWDER_SNOW = (state, level, pos, player, hand, stack) -> emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), SoundEvents.BUCKET_EMPTY_POWDER_SNOW);
+		CauldronInteraction FILL_LAVA = (state, level, pos, player, hand, stack) -> {
+			if (CauldronInteraction.isUnderWater(level, pos))
+				return InteractionResult.CONSUME;
+			else
+				return emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_LAVA_CAULDRON.get().defaultBlockState(), SoundEvents.BUCKET_EMPTY_LAVA);
+		};
+		CauldronInteraction FILL_POWDER_SNOW = (state, level, pos, player, hand, stack) -> {
+			if (CauldronInteraction.isUnderWater(level, pos))
+				return InteractionResult.CONSUME;
+			else
+				return emptyBucket(level, pos, player, hand, stack, SCContent.REINFORCED_POWDER_SNOW_CAULDRON.get().defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3), SoundEvents.BUCKET_EMPTY_POWDER_SNOW);
+		};
 		CauldronInteraction SHULKER_BOX = (state, level, pos, player, hand, stack) -> {
 			Block block = Block.byItem(stack.getItem());
 
@@ -198,7 +208,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			else {
 				if (!level.isClientSide) {
-					player.setItemInHand(hand, stack.transmuteCopy(Blocks.SHULKER_BOX, 1));
+					player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, stack.transmuteCopy(Blocks.SHULKER_BOX, 1), false));
 					player.awardStat(Stats.CLEAN_SHULKER_BOX);
 					ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
 				}
@@ -217,14 +227,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 
 					stackCopy.set(DataComponents.BANNER_PATTERNS, layers.removeLast());
 					stack.consume(1, player);
-
-					if (stack.isEmpty())
-						player.setItemInHand(hand, stackCopy);
-					else if (player.getInventory().add(stackCopy))
-						player.inventoryMenu.sendAllDataToRemote();
-					else
-						player.drop(stackCopy, false);
-
+					player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, stackCopy, false));
 					player.awardStat(Stats.CLEAN_BANNER);
 					ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
 				}
@@ -235,18 +238,16 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		CauldronInteraction DYED_ITEM = (state, level, pos, player, hand, stack) -> {
 			if (!stack.is(ItemTags.DYEABLE))
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
+			else if (!stack.has(DataComponents.DYED_COLOR))
+				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			else {
-				if (!stack.has(DataComponents.DYED_COLOR))
-					return InteractionResult.TRY_WITH_EMPTY_HAND;
-				else {
-					if (!level.isClientSide) {
-						stack.remove(DataComponents.DYED_COLOR);
-						player.awardStat(Stats.CLEAN_ARMOR);
-						ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
-					}
-
-					return InteractionResult.SUCCESS;
+				if (!level.isClientSide) {
+					stack.remove(DataComponents.DYED_COLOR);
+					player.awardStat(Stats.CLEAN_ARMOR);
+					ReinforcedLayeredCauldronBlock.lowerFillLevel(state, level, pos);
 				}
+
+				return InteractionResult.SUCCESS;
 			}
 		};
 
