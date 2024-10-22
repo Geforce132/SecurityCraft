@@ -32,6 +32,7 @@ import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
+import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -90,6 +91,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
@@ -208,6 +210,12 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onServerStop(ServerStoppedEvent event) {
 		PasscodeUtils.stopHashingThread();
+	}
+
+	@SubscribeEvent
+	public static void onEntityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
+		if (event.getEntity() instanceof AbstractSecuritySeaBoat && event.getSource().is(SCTags.DamageTypes.SECURITY_SEA_BOAT_VULNERABLE_TO))
+			event.setInvulnerable(true);
 	}
 
 	@SubscribeEvent
