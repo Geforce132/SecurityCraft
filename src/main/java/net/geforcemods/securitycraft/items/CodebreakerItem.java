@@ -97,11 +97,6 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public boolean isFoil(ItemStack stack) {
-		return true;
-	}
-
-	@Override
 	public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
 		return false;
 	}
