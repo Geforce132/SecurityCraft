@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public record SCManualPage(Item item, PageGroup group, Component title, Component helpInfo, String designedBy, boolean hasRecipeDescription, Supplier<Optional<List<RecipeDisplay>>> recipe) {
+public record SCManualPage(Item item, PageGroup group, Component title, Component helpInfo, String designedBy, boolean hasRecipeDescription, Supplier<Optional<List<RecipeDisplay>>> recipes) {
 
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SCManualPage> STREAM_CODEC = StreamCodec.composite(
@@ -33,7 +33,7 @@ public record SCManualPage(Item item, PageGroup group, Component title, Componen
 			ComponentSerialization.STREAM_CODEC, SCManualPage::helpInfo,
 			ByteBufCodecs.STRING_UTF8, SCManualPage::designedBy,
 			ByteBufCodecs.BOOL, SCManualPage::hasRecipeDescription,
-			ByteBufCodecs.optional(RecipeDisplay.STREAM_CODEC.apply(ByteBufCodecs.list())).map(o -> Suppliers.memoize(() -> o), Supplier::get), SCManualPage::recipe,
+			ByteBufCodecs.optional(RecipeDisplay.STREAM_CODEC.apply(ByteBufCodecs.list())).map(o -> Suppliers.memoize(() -> o), Supplier::get), SCManualPage::recipes,
 			SCManualPage::new);
 	//@formatter:on
 	public static final StreamCodec<RegistryFriendlyByteBuf, List<SCManualPage>> LIST_STREAM_CODEC = STREAM_CODEC.apply(ByteBufCodecs.list());

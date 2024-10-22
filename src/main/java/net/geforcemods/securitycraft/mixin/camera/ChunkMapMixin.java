@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.server.level.ServerPlayer;
@@ -49,7 +50,7 @@ public abstract class ChunkMapMixin {
 	 * viewing the camera
 	 */
 	@Inject(method = "onChunkReadyToSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getChunkTrackingView()Lnet/minecraft/server/level/ChunkTrackingView;"))
-	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo callback, @Local ServerPlayer player) {
+	private void securitycraft$sendChunksToCameras(ChunkHolder holder, LevelChunk chunk, CallbackInfo callback, @Local ServerPlayer player) {
 		if (player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(chunk.getPos()))
 			markChunkPendingToSend(player, chunk);
 	}

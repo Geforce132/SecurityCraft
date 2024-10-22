@@ -339,7 +339,7 @@ public class SCManualScreen extends Screen {
 			designedBy = null;
 
 		recipe = null;
-		page.recipe().get().ifPresent(displayList -> {
+		page.recipes().get().ifPresent(displayList -> {
 			if (pageGroup == PageGroup.NONE) {
 				RecipeDisplay display = displayList.get(0);
 

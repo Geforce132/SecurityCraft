@@ -59,15 +59,6 @@ runs {
 
 repositories {
 	maven {
-		name 'Maven for PR #1590' // https://github.com/neoforged/NeoForge/pull/1590
-		url 'https://prmaven.neoforged.net/NeoForge/pr1590'
-		content {
-			includeModule('net.neoforged', 'neoforge')
-			includeModule('net.neoforged', 'testframework')
-		}
-	}
-
-	maven {
 		url "https://cursemaven.com/"
 		content {
 			includeGroup "curse.maven"
@@ -87,7 +78,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.2.0-alpha.1.21.2-rc1.20241018.233513'
+	implementation 'net.neoforged:neoforge:21.2.0-beta'
 
 //	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
