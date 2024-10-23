@@ -7,7 +7,7 @@
 		"camera.ClientChunkProviderMixin",
 		"camera.GameRendererMixin",
 		"camera.MinecraftMixin",
-		"camera.WorldRendererMixin",
+		"camera.ViewFrustumMixin",
 		"dev.GlDebugTextUtilsMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugOverlayGuiMixin",
