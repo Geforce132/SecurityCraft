@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 
@@ -57,7 +58,7 @@ public final class WTHITDataProvider extends HudModHandler implements IWailaPlug
 		ItemStack displayStack = ((IOverlayDisplay) data.getBlock()).getDisplayStack(data.getWorld(), data.getBlockState(), data.getPosition());
 
 		if (displayStack != null)
-			tooltip.setLine(WailaConstants.OBJECT_NAME_TAG, Component.translatable(displayStack.getDescriptionId()).setStyle(ITEM_NAME_STYLE));
+			tooltip.setLine(WailaConstants.OBJECT_NAME_TAG, MutableComponent.create(displayStack.getItemName().getContents()).setStyle(ITEM_NAME_STYLE));
 	}
 
 	@Override

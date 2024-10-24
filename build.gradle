@@ -88,8 +88,8 @@ dependencies {
 	implementation "curse.maven:jade-324717:5835088"
 //	implementation "curse.maven:betterf3-401648:5439910"
 //	implementation "curse.maven:cloth-config-348521:5553805" //betterf3 dependency
-//	implementation "curse.maven:wthit-forge-455982:5568827"
-//	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
+	implementation "curse.maven:wthit-forge-455982:5838416"
+	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 //	implementation "curse.maven:embeddium-908741:5556146"
 	implementation "maven.modrinth:sodium:mc1.21.2-0.6.0-beta.3-neoforge" //incompatible with embeddium
