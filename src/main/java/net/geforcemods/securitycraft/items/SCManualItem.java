@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
@@ -49,12 +50,12 @@ public class SCManualItem extends Item {
 		else if (pageGroup == PageGroup.NONE) {
 			for (RecipeHolder<?> recipeHolder : server.getRecipeManager().getRecipes()) {
 				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
-					ItemStack resultItem = shapedRecipe.assemble(dummyInput, registryAccess);
+					ItemStack resultItem = safeAssemble(shapedRecipe, dummyInput, registryAccess);
 
 					if (resultItem.is(item) && !(resultItem.is(SCContent.LENS.get()) && resultItem.has(DataComponents.DYED_COLOR)))
 						return Optional.of(shapedRecipe.display());
 				}
-				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && shapelessRecipe.assemble(dummyInput, registryAccess).is(item)) {
+				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe && safeAssemble(shapelessRecipe, dummyInput, registryAccess).is(item)) {
 					//don't show keycard reset recipes
 					if (recipeHolder.id().location().getPath().endsWith("_reset"))
 						continue;
@@ -73,7 +74,7 @@ public class SCManualItem extends Item {
 					break;
 
 				if (recipeHolder.value() instanceof ShapedRecipe shapedRecipe) {
-					ItemStack resultItem = shapedRecipe.assemble(dummyInput, registryAccess);
+					ItemStack resultItem = safeAssemble(shapedRecipe, dummyInput, registryAccess);
 
 					if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
 						displays.addAll(shapedRecipe.display());
@@ -81,7 +82,7 @@ public class SCManualItem extends Item {
 					}
 				}
 				else if (recipeHolder.value() instanceof ShapelessRecipe shapelessRecipe) {
-					ItemStack resultItem = shapelessRecipe.assemble(dummyInput, registryAccess);
+					ItemStack resultItem = safeAssemble(shapelessRecipe, dummyInput, registryAccess);
 
 					if (!resultItem.isEmpty() && pageItems.contains(resultItem.getItem())) {
 						//don't show keycard reset recipes
@@ -99,5 +100,16 @@ public class SCManualItem extends Item {
 		}
 
 		return Optional.empty();
+	}
+
+	private static ItemStack safeAssemble(CraftingRecipe recipe, CraftingInput dummyInput, HolderLookup.Provider registryAccess) {
+		try {
+			return recipe.assemble(dummyInput, registryAccess);
+		}
+		catch (Exception e) {
+			//If an exception is thrown, it's safe to assume that recipe assembling failed for some reason that means the recipe is not relevant for one of SC's items
+		}
+
+		return ItemStack.EMPTY;
 	}
 }
