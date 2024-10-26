@@ -3,6 +3,7 @@
 - Fix: Security sea boats are not invulnerable to damage types they should be invulnerable to
 - Fix: Jade and WTHIT integration
 - Fix: In certain scenarios, it's not possible to join any world or multiplayer server
+- Fix: Some pages in the SecurityCraft Manual appear twice
 
 --------------------------Changelog for v1.9.11-beta1 of SecurityCraft--------------------------
 

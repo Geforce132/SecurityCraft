@@ -193,7 +193,7 @@ public class SecurityCraft {
 						key += item.getDescriptionId().substring(5) + ".info";
 					}
 
-					if (addPages && group == PageGroup.NONE || wasNotAdded)
+					if (addPages && (group == PageGroup.NONE || wasNotAdded))
 						SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription(), Suppliers.memoize(() -> SCManualItem.findRecipes(server, item, group))));
 				}
 			}
