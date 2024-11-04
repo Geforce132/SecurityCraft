@@ -41,6 +41,7 @@ public class ConfigHandler {
 		public BooleanValue reinforcedBlockTint;
 		public IntValue reinforcedBlockTintColor;
 		public IntValue frameFeedRenderDistance;
+		public IntValue frameFeedResolution;
 
 		Client(ModConfigSpec.Builder builder) {
 			//@formatter:off
@@ -60,6 +61,10 @@ public class ConfigHandler {
 			frameFeedRenderDistance = builder
 					.comment("Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.")
 					.defineInRange("frame_feed_render_distance", 16, 2, 32);
+
+			frameFeedResolution = builder
+					.comment("Set the resolution of the Frame camera feed. This is always a square resolution. Smaller values will be less detailed, higher values may lead to diminishing returns.")
+					.defineInRange("frame_feed_resolution", 512, 1, 16384);
 			//@formatter:on
 		}
 	}

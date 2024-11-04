@@ -1391,6 +1391,8 @@
 	"securitycraft.configuration.force_reinforced_block_tint.tooltip": "Set this to true if you want to force the setting of reinforced_block_tint for players.",
 	"securitycraft.configuration.frame_feed_render_distance": "Frame feed render distance",
 	"securitycraft.configuration.frame_feed_render_distance.tooltip": "Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.",
+	"securitycraft.configuration.frame_feed_resolution": "Frame feed resolution",
+	"securitycraft.configuration.frame_feed_resolution.tooltip": "Set the resolution of the Frame camera feed. This is always a square resolution. Smaller values will be less detailed, higher values may lead to diminishing returns.",
 	"securitycraft.configuration.frame_feed_view_distance": "Frame feed view distance",
 	"securitycraft.configuration.frame_feed_view_distance.tooltip": "Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.",
 	"securitycraft.configuration.frame_feed_viewing_enabled": "Enable frame feed viewing",

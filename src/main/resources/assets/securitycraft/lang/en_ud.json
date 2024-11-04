@@ -1391,6 +1391,8 @@
 	"securitycraft.configuration.force_reinforced_block_tint.tooltip": "˙sɹǝʎɐꞁd ɹoɟ ʇuᴉʇ‾ʞɔoꞁq‾pǝɔɹoɟuᴉǝɹ ɟo ᵷuᴉʇʇǝs ǝɥʇ ǝɔɹoɟ oʇ ʇuɐʍ noʎ ɟᴉ ǝnɹʇ oʇ sᴉɥʇ ʇǝS",
 	"securitycraft.configuration.frame_feed_render_distance": "ǝɔuɐʇsᴉp ɹǝpuǝɹ pǝǝɟ ǝɯɐɹℲ",
 	"securitycraft.configuration.frame_feed_render_distance.tooltip": "˙pɐǝʇsuᴉ pǝsn sᴉ ǝnꞁɐʌ ɹǝꞁꞁɐɯs ǝɥʇ 'ʎʇɹǝdoɹd ɹǝʌɹǝs ,,ǝɔuɐʇsᴉp-ʍǝᴉʌ,, ǝɥʇ ɹo uoᴉʇdo ,,ǝɔuɐʇsᴉᗡ ɹǝpuǝᴚ,, ɐꞁꞁᴉuɐʌ ǝɥʇ uɐɥʇ ǝnꞁɐʌ ɹǝɥᵷᴉɥ ɐ sɐɥ ᵷᴉɟuoɔ sᴉɥʇ ɟI ˙pǝɹǝpuǝɹ puɐ ɹǝʌɹǝs ǝɥʇ ɯoɹɟ pǝʇsǝnbǝɹ ǝq pꞁnoɥs pǝǝɟ ɐɹǝɯɐɔ ǝɯɐɹɟ ɐ uᴉ pǝʍǝᴉʌ sʞunɥɔ ɥɔᴉɥʍ uᴉ snᴉpɐɹ ǝɥʇ ʇǝS",
+	"securitycraft.configuration.frame_feed_resolution": "uoᴉʇnꞁosǝɹ pǝǝɟ ǝɯɐɹℲ",
+	"securitycraft.configuration.frame_feed_resolution.tooltip": "˙suɹnʇǝɹ ᵷuᴉɥsᴉuᴉɯᴉp oʇ pɐǝꞁ ʎɐɯ sǝnꞁɐʌ ɹǝɥᵷᴉɥ 'pǝꞁᴉɐʇǝp ssǝꞁ ǝq ꞁꞁᴉʍ sǝnꞁɐʌ ɹǝꞁꞁɐɯS ˙uoᴉʇnꞁosǝɹ ǝɹɐnbs ɐ sʎɐʍꞁɐ sᴉ sᴉɥ⟘ ˙pǝǝɟ ɐɹǝɯɐɔ ǝɯɐɹℲ ǝɥʇ ɟo uoᴉʇnꞁosǝɹ ǝɥʇ ʇǝS",
 	"securitycraft.configuration.frame_feed_view_distance": "ǝɔuɐʇsᴉp ʍǝᴉʌ pǝǝɟ ǝɯɐɹℲ",
 	"securitycraft.configuration.frame_feed_view_distance.tooltip": "˙pɐǝʇsuᴉ pǝsn sᴉ ǝnꞁɐʌ ɹǝꞁꞁɐɯs ǝɥʇ 'sʞunɥɔ ǝɥʇ ᵷuᴉʇsǝnbǝɹ ɹǝʎɐꞁd ǝɥʇ ɟo uoᴉʇdo ,,ǝɔuɐʇsᴉᗡ ɹǝpuǝᴚ,, ɐꞁꞁᴉuɐʌ ǝɥʇ ɹo ʎʇɹǝdoɹd ɹǝʌɹǝs ,,ǝɔuɐʇsᴉp-ʍǝᴉʌ,, ǝɥʇ uɐɥʇ ǝnꞁɐʌ ɹǝɥᵷᴉɥ ɐ sɐɥ ᵷᴉɟuoɔ sᴉɥʇ ɟI ˙sɹǝʎɐꞁd oʇ ʇuǝs puɐ pǝpɐoꞁ ǝq pꞁnoɥs ɐɹǝɯɐɔ ǝɯɐɹɟ ɐ uᴉ pǝʍǝᴉʌ sʞunɥɔ ɥɔᴉɥʍ uᴉ snᴉpɐɹ ǝɥʇ ʇǝS",
 	"securitycraft.configuration.frame_feed_viewing_enabled": "ᵷuᴉʍǝᴉʌ pǝǝɟ ǝɯɐɹɟ ǝꞁqɐuƎ",
