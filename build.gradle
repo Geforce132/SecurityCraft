@@ -86,8 +86,8 @@ dependencies {
 //	implementation "curse.maven:jei-238222:5567933"
 //	implementation "curse.maven:the-one-probe-245211:5502323"
 	implementation "curse.maven:jade-324717:5835088"
-//	implementation "curse.maven:betterf3-401648:5439910"
-//	implementation "curse.maven:cloth-config-348521:5553805" //betterf3 dependency
+	implementation "curse.maven:betterf3-401648:5873289"
+	implementation "curse.maven:cloth-config-348521:5729127" //betterf3 dependency
 	implementation "curse.maven:wthit-forge-455982:5838416"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
