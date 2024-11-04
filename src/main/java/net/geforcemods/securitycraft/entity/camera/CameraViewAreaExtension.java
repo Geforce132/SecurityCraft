@@ -7,21 +7,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.world.level.Level;
 
-// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
-public class CameraViewAreaExtension { //taken from Immersive Portals
+public class CameraViewAreaExtension {
 	private static final Long2ObjectOpenHashMap<RenderSection> SECTIONS = new Long2ObjectOpenHashMap<>();
 	private static SectionRenderDispatcher sectionRenderDispatcher;
-	public static int minHeight;
-	public static int minSectionY;
-	public static int maxSectionY;
-	public static int sectionsCountY;
+	private static int minSectionY;
+	private static int maxSectionY;
+
+	private CameraViewAreaExtension() {}
 
 	public static void allChanged(SectionRenderDispatcher newFactory, Level level) {
 		sectionRenderDispatcher = newFactory;
-		minHeight = level.getMinBuildHeight();
 		minSectionY = level.getMinSection();
 		maxSectionY = level.getMaxSection();
-		sectionsCountY = maxSectionY - minSectionY;
 	}
 
 	public static RenderSection provideSection(long sectionPos) {
@@ -66,5 +63,13 @@ public class CameraViewAreaExtension { //taken from Immersive Portals
 		}
 
 		SECTIONS.clear();
+	}
+
+	public static int minSectionY() {
+		return minSectionY;
+	}
+
+	public static int maxSectionY() {
+		return maxSectionY;
 	}
 }

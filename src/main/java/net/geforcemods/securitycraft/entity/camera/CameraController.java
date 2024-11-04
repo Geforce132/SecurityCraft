@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.entity.camera;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -250,7 +251,7 @@ public class CameraController {
 	private static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
 		BlockPos pos = cameraPos.pos();
 		SectionPos cameraSectionPos = SectionPos.of(pos);
-		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
+		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY(), CameraViewAreaExtension.maxSectionY() - 1), cameraSectionPos.z(), true);
 		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>()); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
 
 		cameraFeed.compilingSectionsQueue.add(startingSection);
@@ -277,8 +278,6 @@ public class CameraController {
 		return FRAME_CAMERA_FEEDS.containsKey(cameraPos) ? FRAME_CAMERA_FEEDS.get(cameraPos).renderTarget : null;
 	}
 
-	//adapted from Immersive Portals
-	// TODO: As per Immersive Portals' license, changes made to the class need to be stated in the source code
 	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, CameraFeed feed) {
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
 		List<RenderSection> visibleSections = feed.sectionsInRange;
