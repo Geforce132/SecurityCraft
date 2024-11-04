@@ -3,11 +3,11 @@ package net.geforcemods.securitycraft.entity.camera;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -80,7 +80,7 @@ public class CameraController {
 	});
 	private static int screenshotSoundCooldown = 0;
 	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
-	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new HashMap<>();
+	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
 	public static GlobalPos currentlyCapturedCamera;
 	public static ShaderInstance cameraMonitorShader;
 
@@ -244,18 +244,19 @@ public class CameraController {
 		Set<BlockPos> bes = FRAME_LINKS.computeIfAbsent(cameraPos, p -> new HashSet<>());
 
 		bes.add(be.getBlockPos());
-		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, pos -> setupCameraSections(cameraPos.pos()));
+		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::setUpCameraSections);
 	}
 
-	private static CameraFeed setupCameraSections(BlockPos cameraPos) {
-		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
+	private static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
+		BlockPos pos = cameraPos.pos();
+		SectionPos cameraSectionPos = SectionPos.of(pos);
 		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY, CameraViewAreaExtension.maxSectionY - 1), cameraSectionPos.z(), true);
 		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(512, 512, true, Minecraft.ON_OSX), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>()); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
 
 		cameraFeed.compilingSectionsQueue.add(startingSection);
 		cameraFeed.sectionsInRange.add(startingSection);
 		cameraFeed.sectionsInRangePositions.add(startingSection.getOrigin().asLong());
-		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(), cameraFeed);
+		CameraController.discoverVisibleSections(pos, getFrameFeedViewDistance(), cameraFeed);
 		return cameraFeed;
 	}
 
@@ -297,7 +298,7 @@ public class CameraController {
 				continue;
 			}
 
-			//Once a section in the queue is compiled, it knows which neighbours it can and cannot see. We use this information to more cleverly determine which chunks the player can actually see
+			//Once a section in the queue is compiled, it knows which neighbours it can and cannot see. This information is used to more cleverly determine which chunks the player can actually see
 			for (Direction dir : Direction.values()) {
 				int cx = SectionPos.blockToSectionCoord(origin.getX()) + dir.getStepX();
 				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
@@ -324,7 +325,7 @@ public class CameraController {
 						if (!canSeeNeighborFace)
 							continue;
 
-						visibleSections.add(neighbourSection); //We add yet uncompiled render sections to the visible sections list, so Minecraft will schedule to compile them
+						visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the visible sections list, so Minecraft will schedule to compile them
 						visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
 						sectionQueue.add(neighbourSection);
 					}

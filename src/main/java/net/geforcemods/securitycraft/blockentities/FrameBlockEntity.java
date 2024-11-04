@@ -33,7 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class FrameBlockEntity extends CustomizableBlockEntity { //TODO: Changelog entry
+public class FrameBlockEntity extends CustomizableBlockEntity {
 	private DisabledOption disabled = new DisabledOption(false);
 	private List<NamedPositions.Entry> cameraPositions = new ArrayList<>();
 	private GlobalPos currentCamera;

@@ -20,7 +20,7 @@ public record SyncFrame(BlockPos pos, int requestedRenderDistance, Optional<Glob
 	//@formatter:off
 	public static final StreamCodec<ByteBuf, SyncFrame> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncFrame::pos,
-			ByteBufCodecs.INT, SyncFrame::requestedRenderDistance,
+			ByteBufCodecs.VAR_INT, SyncFrame::requestedRenderDistance,
 			ByteBufCodecs.optional(GlobalPos.STREAM_CODEC), SyncFrame::removedCamera,
 			ByteBufCodecs.optional(GlobalPos.STREAM_CODEC), SyncFrame::currentCamera,
 			SyncFrame::new);
