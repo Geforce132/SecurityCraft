@@ -207,9 +207,6 @@ public class SCClientEventHandler {
 				BlockPos pos = cameraPos.pos();
 
 				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-					if (!be.isOwnedBy(player) && !be.isAllowed(player))
-						return;
-
 					CameraFeed feed = cameraView.getValue();
 					RenderTarget frameTarget = feed.renderTarget();
 					Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves

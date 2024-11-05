@@ -253,7 +253,7 @@ public class CameraController {
 		BlockPos pos = cameraPos.pos();
 		SectionPos cameraSectionPos = SectionPos.of(pos);
 		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY(), CameraViewAreaExtension.maxSectionY() - 1), cameraSectionPos.z(), true);
-		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(resolution, resolution, true, Minecraft.ON_OSX), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>()); //TODO Here you can tweak the resolution (in pixels) of the frame feed, if you wanna experiment
+		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(resolution, resolution, true, Minecraft.ON_OSX), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 
 		cameraFeed.compilingSectionsQueue.add(startingSection);
 		cameraFeed.sectionsInRange.add(startingSection);

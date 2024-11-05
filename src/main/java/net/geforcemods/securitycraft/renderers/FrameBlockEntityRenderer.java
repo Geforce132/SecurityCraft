@@ -98,7 +98,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			renderTexture(pose, buffer, SELECT_CAMERA, xStart, xEnd, zStart, zEnd, packedLight, normal);
 		else if (!be.isActivated())
 			renderTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal);
-		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity) || !(cameraBlockEntity.isOwnedBy(player) || cameraBlockEntity.isAllowed(player)))
+		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 			renderTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal);
 		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
 			ShaderInstance shader = CameraController.cameraMonitorShader;
