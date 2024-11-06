@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -28,7 +29,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
 	public static final EntityDataAccessor<Float> ZOOM_AMOUNT = SynchedEntityData.<Float>defineId(SecurityCamera.class, EntityDataSerializers.FLOAT);
-	private static final Map<ServerPlayer, BlockPos> DISMOUNTED_PLAYERS = new HashMap<>();
+	private static final Map<UUID, BlockPos> DISMOUNTED_PLAYERS = new HashMap<>();
 	protected boolean zooming = false;
 	private ChunkTrackingView cameraChunks = null;
 	private boolean hasSentChunks = false;
@@ -107,11 +108,11 @@ public class SecurityCamera extends Entity {
 	}
 
 	public static boolean hasRecentlyDismounted(ServerPlayer player) {
-		return DISMOUNTED_PLAYERS.containsKey(player);
+		return DISMOUNTED_PLAYERS.containsKey(player.getUUID());
 	}
 
 	public static BlockPos fetchRecentDismountLocation(ServerPlayer player) {
-		return DISMOUNTED_PLAYERS.remove(player);
+		return DISMOUNTED_PLAYERS.remove(player.getUUID());
 	}
 
 	@Override
@@ -125,7 +126,7 @@ public class SecurityCamera extends Entity {
 			discard();
 			player.camera = player;
 			PacketDistributor.sendToPlayer(player, new SetCameraView(player.getId()));
-			DISMOUNTED_PLAYERS.put(player, blockPosition());
+			DISMOUNTED_PLAYERS.put(player.getUUID(), blockPosition());
 
 			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
 				player.removeEffect(MobEffects.NIGHT_VISION);

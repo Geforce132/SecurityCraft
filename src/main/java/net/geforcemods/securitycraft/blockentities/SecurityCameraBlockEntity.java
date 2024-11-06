@@ -59,7 +59,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
 	private Map<UUID, ChunkTrackingView> cameraFeedChunks = new HashMap<>();
 	private Set<Long> linkedFrames = new HashSet<>();
-	private Set<ServerPlayer> playersRequestingChunks = new HashSet<>();
+	private Set<UUID> playersRequestingChunks = new HashSet<>();
 	private boolean down = false, initialized = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
@@ -310,7 +310,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public void requestChunkSending(ServerPlayer player, int chunkLoadingDistance) {
 		setChunkLoadingDistance(player, chunkLoadingDistance);
-		playersRequestingChunks.add(player);
+		playersRequestingChunks.add(player.getUUID());
 	}
 
 	public ChunkTrackingView getCameraFeedChunks(ServerPlayer player) {
@@ -331,7 +331,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public boolean shouldSendChunksToPlayer(ServerPlayer player) {
-		return playersRequestingChunks.remove(player);
+		return playersRequestingChunks.remove(player.getUUID());
 	}
 
 	public static void addRecentlyUnviewedCamera(SecurityCameraBlockEntity camera) {
