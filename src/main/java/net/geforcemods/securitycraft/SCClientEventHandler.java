@@ -58,6 +58,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -208,16 +209,8 @@ public class SCClientEventHandler {
 
 				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
 					Frustum beFrustum = mc.levelRenderer.getFrustum();
-					boolean isFrameInFrustum = false;
 
-					for (BlockPos framePos : CameraController.FRAME_LINKS.get(cameraPos)) {
-						if (beFrustum.isVisible(new AABB(framePos))) {
-							isFrameInFrustum = true;
-							break;
-						}
-					}
-
-					if (!isFrameInFrustum)
+					if (!isFrameInFrustum(cameraPos, beFrustum))
 						continue;
 
 					CameraFeed feed = cameraView.getValue();
@@ -280,6 +273,15 @@ public class SCClientEventHandler {
 		mc.levelRenderer.graphicsChanged();
 		mc.getMainRenderTarget().bindWrite(true);
 		CameraController.currentlyCapturedCamera = null;
+	}
+
+	private static boolean isFrameInFrustum(GlobalPos cameraPos, Frustum beFrustum) {
+		for (BlockPos framePos : CameraController.FRAME_LINKS.get(cameraPos)) {
+			if (beFrustum.isVisible(new AABB(framePos)))
+				return true;
+		}
+
+		return false;
 	}
 
 	@SubscribeEvent

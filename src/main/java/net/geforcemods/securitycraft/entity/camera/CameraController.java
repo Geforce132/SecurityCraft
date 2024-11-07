@@ -313,16 +313,7 @@ public class CameraController {
 					long neighbourPosAsLong = neighbourSection.getOrigin().asLong();
 
 					if (!visibleSectionPositions.contains(neighbourPosAsLong)) {
-						boolean canSeeNeighborFace = false;
-
-						for (int j = 0; j < Direction.values().length; j++) {
-							if (currentCompiledSection.facesCanSeeEachother(Direction.values()[j].getOpposite(), dir)) {
-								canSeeNeighborFace = true;
-								break;
-							}
-						}
-
-						if (!canSeeNeighborFace)
+						if (!canSeeNeighborFace(currentCompiledSection, dir))
 							continue;
 
 						visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the visible sections list, so Minecraft will schedule to compile them
@@ -332,6 +323,15 @@ public class CameraController {
 				}
 			}
 		}
+	}
+
+	private static boolean canSeeNeighborFace(CompiledSection currentCompiledSection, Direction dir) {
+		for (int j = 0; j < Direction.values().length; j++) {
+			if (currentCompiledSection.facesCanSeeEachother(Direction.values()[j].getOpposite(), dir))
+				return true;
+		}
+
+		return false;
 	}
 
 	public static int getFrameFeedViewDistance() {
