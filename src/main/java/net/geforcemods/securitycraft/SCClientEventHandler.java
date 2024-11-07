@@ -207,6 +207,19 @@ public class SCClientEventHandler {
 				BlockPos pos = cameraPos.pos();
 
 				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
+					Frustum beFrustum = mc.levelRenderer.getFrustum();
+					boolean isFrameInFrustum = false;
+
+					for (BlockPos framePos : CameraController.FRAME_LINKS.get(cameraPos)) {
+						if (beFrustum.isVisible(new AABB(framePos))) {
+							isFrameInFrustum = true;
+							break;
+						}
+					}
+
+					if (!isFrameInFrustum)
+						continue;
+
 					CameraFeed feed = cameraView.getValue();
 					RenderTarget frameTarget = feed.renderTarget();
 					Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
@@ -229,7 +242,7 @@ public class SCClientEventHandler {
 					frameTarget.unbindWrite();
 					SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
 
-					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum());
+					Frustum frustum = LevelRenderer.offsetFrustum(beFrustum);
 
 					if (be.shouldRotate() || feed.visibleSections().isEmpty()) {
 						feed.visibleSections().clear();
