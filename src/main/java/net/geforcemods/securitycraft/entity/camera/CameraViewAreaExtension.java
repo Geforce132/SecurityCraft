@@ -43,8 +43,10 @@ public class CameraViewAreaExtension {
 			long sectionPos = SectionPos.asLong(sectionX, sectionY, sectionZ);
 			RenderSection section = SECTIONS.get(sectionPos);
 
-			if (section != null)
-				section.reset();
+			if (section != null) {
+				section.releaseBuffers();
+				SECTIONS.remove(sectionPos);
+			}
 		}
 	}
 
