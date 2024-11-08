@@ -80,7 +80,7 @@ public abstract class ChunkMapMixin {
 			ChunkTrackingView.difference(unviewedChunkView, player.getChunkTrackingView(), chunkPos -> {}, droppingChunks::add);
 
 			for (ChunkPos pos : droppingChunks) {
-				if (BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldKeepChunkLoaded(pos.x, pos.z)).isEmpty())
+				if (BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldKeepChunkLoaded(player, pos.x, pos.z)).isEmpty())
 					dropChunk(player, pos);
 			}
 		}
@@ -94,7 +94,7 @@ public abstract class ChunkMapMixin {
 	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo callback, @Local ServerPlayer player) {
 		ChunkPos pos = chunk.getPos();
 
-		if ((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(pos)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkLoaded(pos.x, pos.z)).isEmpty())
+		if ((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(pos)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkLoaded(player, pos.x, pos.z)).isEmpty())
 			markChunkPendingToSend(player, chunk);
 	}
 
@@ -103,7 +103,7 @@ public abstract class ChunkMapMixin {
 	 */
 	@Inject(method = "isChunkTracked", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onIsChunkTracked(ServerPlayer player, int x, int z, CallbackInfoReturnable<Boolean> callback) {
-		if (((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(x, z)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkLoaded(x, z)).isEmpty()) && !player.connection.chunkSender.isPending(ChunkPos.asLong(x, z)))
+		if (((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(x, z)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkLoaded(player, x, z)).isEmpty()) && !player.connection.chunkSender.isPending(ChunkPos.asLong(x, z)))
 			callback.setReturnValue(true);
 	}
 
@@ -112,7 +112,7 @@ public abstract class ChunkMapMixin {
 	 */
 	@Inject(method = "dropChunk", at = @At("HEAD"), cancellable = true)
 	private static void securitycraft$onDropChunk(ServerPlayer player, ChunkPos pos, CallbackInfo callback) {
-		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), be -> be.shouldKeepChunkLoaded(pos.x, pos.z)).isEmpty())
+		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), be -> be.shouldKeepChunkLoaded(player, pos.x, pos.z)).isEmpty())
 			callback.cancel();
 	}
 }
