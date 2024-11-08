@@ -145,12 +145,8 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 				if (shouldBeActive) {
 					ServerPlayer serverPlayer = (ServerPlayer) player;
 
-					if (level.dimension() == newCameraPos.dimension() && level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera) {
-						if (newCamera.isOwnedBy(player) || newCamera.isAllowed(player))
+					if (level.dimension() == newCameraPos.dimension() && level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera)
 							newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(requestedRenderDistance, 2, Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), serverPlayer.server.getPlayerList().getViewDistance())));
-						else
-							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", newCamera.getOwner().getName()), ChatFormatting.RED);
-					}
 					else
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", newCameraPos.pos()), ChatFormatting.RED);
 				}
