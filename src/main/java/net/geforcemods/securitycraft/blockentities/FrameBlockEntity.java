@@ -53,8 +53,12 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 	public void setRemoved() {
 		super.setRemoved();
 
-		if (currentCamera != null && activated)
-			switchCameras(null, null, 0);
+		if (currentCamera != null && activated) {
+			if (!level.isClientSide)
+				switchCameras(null, null, 0, false);
+			else
+				PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(), Optional.empty(), Optional.ofNullable(currentCamera), true)); //TODO make sure that doesn't cause some weird RC where on frame break the server sets it to null and the client resets it back to the last one
+		}
 	}
 
 	@Override
@@ -90,8 +94,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public void setCameraPositions(ItemStack cameraMonitor) {
-		if (cameraMonitor.has(SCContent.BOUND_CAMERAS))
+		if (cameraMonitor.has(SCContent.BOUND_CAMERAS)) {
 			cameraPositions = new ArrayList<>(cameraMonitor.get(SCContent.BOUND_CAMERAS).positions());
+			setChanged();
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+		}
 	}
 
 	public List<NamedPositions.Entry> getCameraPositions() {
@@ -106,7 +113,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 			currentCamera = null;
 		}
 
-		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(), Optional.of(cameraPos), Optional.ofNullable(currentCamera)));
+		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(), Optional.of(cameraPos), Optional.ofNullable(currentCamera), false));
 	}
 
 	public void removeCamera(GlobalPos cameraPos) {
@@ -121,16 +128,19 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 
 		if (cameraPositions.stream().allMatch(Objects::isNull))
 			cameraPositions = new ArrayList<>();
+
+		setChanged();
+		level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 	}
 
 	public void setCurrentCameraAndUpdate(GlobalPos camera) {
 		int requestedRenderDistance = CameraController.getFrameFeedViewDistance();
 
-		switchCameras(camera, null, requestedRenderDistance);
-		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCamera)));
+		switchCameras(camera, null, requestedRenderDistance, false);
+		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCamera), false));
 	}
 
-	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance) {
+	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableCurrentCamera) { //TODO: If a client selects a different camera, somehow sync the change to all other clients that may access the frame
 		GlobalPos previousCameraPos = getCurrentCamera();
 		boolean shouldBeActive = newCameraPos != null;
 
@@ -139,10 +149,14 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 			activated = shouldBeActive;
 
 			if (!level.isClientSide) {
-				if (previousCameraPos != null && level.getBlockEntity(previousCameraPos.pos()) instanceof SecurityCameraBlockEntity previousCamera)
-					previousCamera.unlinkFrameForAllPlayers(worldPosition);
+				if (previousCameraPos != null && level.getBlockEntity(previousCameraPos.pos()) instanceof SecurityCameraBlockEntity previousCamera) {
+					if (!previousCameraPos.equals(newCameraPos))
+						previousCamera.unlinkFrameForAllPlayers(worldPosition);
+					else if (disableCurrentCamera)
+						previousCamera.unlinkFrameForPlayer(player.getUUID(), worldPosition);
+				}
 
-				if (shouldBeActive) {
+				if (newCameraPos != null && !newCameraPos.equals(previousCameraPos)) {
 					ServerPlayer serverPlayer = (ServerPlayer) player;
 
 					if (level.dimension() == newCameraPos.dimension() && level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera)
@@ -150,9 +164,13 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 					else
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", newCameraPos.pos()), ChatFormatting.RED);
 				}
+
+				setChanged();
+				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 			}
 			else {
-				CameraController.removeFrameLink(this, previousCameraPos);
+				if (previousCameraPos != null)
+					CameraController.removeFrameLink(this, previousCameraPos);
 
 				if (shouldBeActive)
 					CameraController.addFrameLink(this, newCameraPos);

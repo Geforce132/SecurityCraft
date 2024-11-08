@@ -167,15 +167,20 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
 		ServerPlayer player = (ServerPlayer) event.getEntity();
+		Level level = player.level();
 
 		if (player.getCamera() instanceof SecurityCamera cam) {
 			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
 				player.removeEffect(MobEffects.NIGHT_VISION);
 
-			if (player.level().getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
+			if (level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
 				camBe.stopViewing();
 
 			cam.discard();
+		}
+
+		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.getCameraFeedChunks(player) != null)) {
+			viewedCamera.unlinkFrameForPlayer(player.getUUID(), null);
 		}
 	}
 

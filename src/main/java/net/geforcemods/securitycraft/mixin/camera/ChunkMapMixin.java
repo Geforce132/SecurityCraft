@@ -66,8 +66,10 @@ public abstract class ChunkMapMixin {
 			for (SecurityCameraBlockEntity viewedCamera : SecurityCameraBlockEntity.fetchRecentlyUnviewedCameras(player)) {
 				ChunkTrackingView unviewedChunks = viewedCamera.getCameraFeedChunks(player);
 
-				if (unviewedChunks != null)
+				if (unviewedChunks != null) {
 					unviewedChunkViews.add(unviewedChunks);
+					viewedCamera.clearCameraFeedChunks(player);
+				}
 			}
 		}
 

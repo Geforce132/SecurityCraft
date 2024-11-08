@@ -286,7 +286,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		playerViewedFrames.add(framePos.asLong());
 	}
 
-	public void unlinkFrameForPlayer(UUID playerUUID, BlockPos framePos) { //TODO camera rotation is reset when resetting feed, also performance is poor when resetting feed
+	public void unlinkFrameForPlayer(UUID playerUUID, BlockPos framePos) {
 		if (linkedFrames.containsKey(playerUUID)) {
 			Set<Long> linkedFramesPerPlayer = linkedFrames.get(playerUUID);
 
@@ -302,7 +302,6 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 				addRecentlyUnviewedCamera(this);
 				BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
-				cameraFeedChunks.clear();
 
 				for (int x = cameraChunkPos.getX() - maxChunkLoadingDistance; x <= cameraChunkPos.getX() + maxChunkLoadingDistance; x++) {
 					for (int z = cameraChunkPos.getZ() - maxChunkLoadingDistance; z <= cameraChunkPos.getZ() + maxChunkLoadingDistance; z++) {
@@ -335,6 +334,10 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public ChunkTrackingView.Positioned getCameraFeedChunks(ServerPlayer player) {
 		return cameraFeedChunks.get(player.getUUID());
+	}
+
+	public void clearCameraFeedChunks(ServerPlayer player) {
+		cameraFeedChunks.remove(player.getUUID());
 	}
 
 	public void setChunkLoadingDistance(ServerPlayer player, int chunkLoadingDistance) {
