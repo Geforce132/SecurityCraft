@@ -190,6 +190,7 @@ public class SCClientEventHandler {
 		float oldEyeHeight = camera.eyeHeight;
 		float oldEyeHeightO = camera.eyeHeightOld;
 		CameraType oldCameraType = mc.options.getCameraType();
+		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setRenderHand(false);
@@ -201,54 +202,58 @@ public class SCClientEventHandler {
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
 		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
 
-		for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
-			GlobalPos cameraPos = cameraView.getKey();
+		if (!CameraController.FRAME_CAMERA_FEEDS.isEmpty()) {
+			mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
 
-			if (cameraPos.dimension().equals(level.dimension())) {
-				BlockPos pos = cameraPos.pos();
+			for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
+				GlobalPos cameraPos = cameraView.getKey();
 
-				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-					Frustum beFrustum = mc.levelRenderer.getFrustum();
+				if (cameraPos.dimension().equals(level.dimension())) {
+					BlockPos pos = cameraPos.pos();
 
-					if (!isFrameInFrustum(cameraPos, beFrustum))
-						continue;
+					if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
+						Frustum beFrustum = mc.levelRenderer.getFrustum();
 
-					CameraFeed feed = cameraView.getValue();
-					RenderTarget frameTarget = feed.renderTarget();
-					Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
-					Vec3 cameraEntityPos = new Vec3(pos.getX() + 0.5D, pos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, pos.getZ() + 0.5D);
-					float cameraXRot = be.getDefaultXRotation();
-					float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(partialTick.getGameTimeDeltaPartialTick(false), be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
+						if (!isFrameInFrustum(cameraPos, beFrustum))
+							continue;
 
-					securityCamera.setPos(cameraEntityPos);
-					mc.setCameraEntity(securityCamera);
-					securityCamera.setXRot(cameraXRot);
-					securityCamera.setYRot(cameraYRot);
-					mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
-					CameraController.currentlyCapturedCamera = cameraPos;
-					mc.levelRenderer.visibleSections.clear();
-					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
-					SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
-					CameraController.discoverVisibleSections(pos, CameraController.getFrameFeedViewDistance(), feed);
-					frameTarget.bindWrite(true);
-					mc.gameRenderer.renderLevel(DeltaTracker.ONE);
-					frameTarget.unbindWrite();
-					SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
+						CameraFeed feed = cameraView.getValue();
+						RenderTarget frameTarget = feed.renderTarget();
+						Vec3 cameraEntityPos = new Vec3(pos.getX() + 0.5D, pos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, pos.getZ() + 0.5D);
+						float cameraXRot = be.getDefaultXRotation();
+						float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(partialTick.getGameTimeDeltaPartialTick(false), be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
 
-					Frustum frustum = LevelRenderer.offsetFrustum(beFrustum);
+						securityCamera.setPos(cameraEntityPos);
+						mc.setCameraEntity(securityCamera);
+						securityCamera.setXRot(cameraXRot);
+						securityCamera.setYRot(cameraYRot);
+						CameraController.currentlyCapturedCamera = cameraPos;
+						mc.levelRenderer.visibleSections.clear();
+						mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
+						SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
+						CameraController.discoverVisibleSections(pos, CameraController.getFrameFeedViewDistance(), feed);
+						frameTarget.clear(true);
+						frameTarget.bindWrite(true);
+						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
+						frameTarget.unbindWrite();
+						SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
 
-					if (be.shouldRotate() || feed.visibleSections().isEmpty()) {
-						feed.visibleSections().clear();
+						Frustum frustum = LevelRenderer.offsetFrustum(beFrustum);
 
-						for (RenderSection section : feed.sectionsInRange()) {
-							if (frustum.isVisible(section.getBoundingBox()))
-								feed.visibleSections().add(section);
+						if (be.shouldRotate() || feed.visibleSections().isEmpty()) {
+							feed.visibleSections().clear();
+
+							for (RenderSection section : feed.sectionsInRange()) {
+								if (frustum.isVisible(section.getBoundingBox()))
+									feed.visibleSections().add(section);
+							}
 						}
 					}
 				}
 			}
 		}
 
+		securityCamera.discard();
 		mc.setCameraEntity(oldCamEntity);
 		player.setPosRaw(oldX, oldY, oldZ);
 		player.xOld = player.xo = oldXO;
