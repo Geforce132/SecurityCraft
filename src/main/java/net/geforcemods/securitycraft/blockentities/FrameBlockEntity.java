@@ -146,7 +146,6 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 
 		if (!isDisabled()) {
 			setCurrentCamera(newCameraPos);
-			activated = shouldBeActive;
 
 			if (!level.isClientSide) {
 				if (previousCameraPos != null && level.getBlockEntity(previousCameraPos.pos()) instanceof SecurityCameraBlockEntity previousCamera) {
@@ -156,7 +155,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 						previousCamera.unlinkFrameForPlayer(player.getUUID(), worldPosition);
 				}
 
-				if (newCameraPos != null && !newCameraPos.equals(previousCameraPos)) {
+				if (newCameraPos != null && (!newCameraPos.equals(previousCameraPos) || !activated)) {
 					ServerPlayer serverPlayer = (ServerPlayer) player;
 
 					if (level.dimension() == newCameraPos.dimension() && level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera)
@@ -175,6 +174,8 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 				if (shouldBeActive)
 					CameraController.addFrameLink(this, newCameraPos);
 			}
+
+			activated = shouldBeActive;
 		}
 	}
 
