@@ -6,6 +6,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -170,6 +172,18 @@ public class SCClientEventHandler {
 
 		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
+
+		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
+
+		if (fpsCap < 260.0D) {
+			double currentTime = GLFW.glfwGetTime();
+			double frameInterval = 1.0D / fpsCap;
+
+			if (currentTime < CameraController.lastActiveTime + frameInterval)
+				return;
+
+			CameraController.lastActiveTime = currentTime;
+		}
 
 		profiler.push("gameRenderer");
 		profiler.push("securitycraft:frame_level");

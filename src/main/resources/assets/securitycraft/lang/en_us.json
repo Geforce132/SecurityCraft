@@ -1390,6 +1390,8 @@
 	"securitycraft.configuration.enable_team_ownership.tooltip": "Set this to true to enable every player on a scoreboard team (or FTB Teams party) to own the blocks of every other player on the same team.\nThis enables players on the same team to break each other's reinforced blocks, change options, add/remove modules, and have access to all other owner-restricted things.",
 	"securitycraft.configuration.force_reinforced_block_tint": "Force reinforced block tint",
 	"securitycraft.configuration.force_reinforced_block_tint.tooltip": "Set this to true if you want to force the setting of reinforced_block_tint for players.",
+	"securitycraft.configuration.frame_feed_fps_limit": "Frame feed FPS limit",
+	"securitycraft.configuration.frame_feed_fps_limit.tooltip": "The maximum amount of frames per second the Frame camera feed renders at. Higher values will lead to worse performance.",
 	"securitycraft.configuration.frame_feed_render_distance": "Frame feed render distance",
 	"securitycraft.configuration.frame_feed_render_distance.tooltip": "Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.",
 	"securitycraft.configuration.frame_feed_resolution": "Frame feed resolution",

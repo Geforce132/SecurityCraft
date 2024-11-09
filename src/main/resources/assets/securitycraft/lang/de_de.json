@@ -1380,6 +1380,8 @@
 	"securitycraft.configuration.enable_team_ownership.tooltip": "Wenn aktiviert, besitzt jeder Spieler in einem Scoreboard-Team (oder FTB Teams Party) alle Blöcke jedes anderen Spielers im selben Team.\nDies erlaubt es Spielern im selben Team, die verstärkten Blöcke des jeweils Anderen zu zerbrechen, Optionen zu ändern, Module hinzuzufügen oder zu entfernen, und Zugriff auf alle anderen Besitzer-restriktierten Dinge.",
 	"securitycraft.configuration.force_reinforced_block_tint": "Verfärbung verstärkter Blöcke erzwingen",
 	"securitycraft.configuration.force_reinforced_block_tint.tooltip": "Wenn aktiviert, überschreibt der Server die Einstellung von reinforced_block_tint für jeden Spieler.",
+	"securitycraft.configuration.frame_feed_fps_limit": "Rahmenübertragungs-FPS-Grenze",
+	"securitycraft.configuration.frame_feed_fps_limit.tooltip": "Die maximale Anzahl an Frames pro Sekunde, mit der die Rahmenübertragung gerendert wird. Höhere Werte führen zu schlechterer Performance.",
 	"securitycraft.configuration.frame_feed_render_distance": "Rahmenübertragungs-Sichtweite",
 	"securitycraft.configuration.frame_feed_render_distance.tooltip": "Bestimmt den Radius, in welchem die Chunks, die innerhalb einer Rahmenübertragung liegen, vom Server angefordert und angezeigt werden. Falls diese Konfiguration einen höheren Wert als die Vanilla \"Sichtweite\"-Option oder die \"view-distance\"-Servereinstellung hat, wird stattdessen der kleinere Wert verwendet.",
 	"securitycraft.configuration.frame_feed_resolution": "Rahmenübertragungs-Auflösung",
