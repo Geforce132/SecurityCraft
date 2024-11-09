@@ -59,6 +59,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
 	private Map<UUID, ChunkTrackingView.Positioned> cameraFeedChunks = new HashMap<>();
 	private Map<UUID, Set<Long>> linkedFrames = new HashMap<>();
+	private Set<Long> forceLoadedChunks = new HashSet<>();
 	private Set<UUID> playersRequestingChunks = new HashSet<>();
 	private boolean down = false, initialized = false;
 	private int playersViewing = 0;
@@ -278,7 +279,12 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
-					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, true, false);
+					Long forceLoadingPos = ChunkPos.asLong(x, z);
+
+					if (BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.forceLoadedChunks.contains(forceLoadingPos)).isEmpty()) { //Only forceload chunks if they haven't been forceloaded by nearby cameras already
+						SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, true, false);
+						forceLoadedChunks.add(forceLoadingPos);
+					}
 				}
 			}
 		}
@@ -297,17 +303,16 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				linkedFrames.remove(playerUUID);
 
 			if (linkedFrames.isEmpty()) {
-				SectionPos cameraChunkPos = SectionPos.of(worldPosition);
-				int maxChunkLoadingDistance = cameraFeedChunks.values().stream().mapToInt(Positioned::viewDistance).max().orElse(0);
-
 				addRecentlyUnviewedCamera(this);
 				BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
 
-				for (int x = cameraChunkPos.getX() - maxChunkLoadingDistance; x <= cameraChunkPos.getX() + maxChunkLoadingDistance; x++) {
-					for (int z = cameraChunkPos.getZ() - maxChunkLoadingDistance; z <= cameraChunkPos.getZ() + maxChunkLoadingDistance; z++) {
-						SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, false, false);
-					}
+				for (Long forceLoadingPos : forceLoadedChunks) {
+					ChunkPos chunkPos = new ChunkPos(forceLoadingPos);
+
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, chunkPos.x, chunkPos.z, false, false);
 				}
+
+				forceLoadedChunks.clear();
 			}
 		}
 	}
