@@ -320,6 +320,8 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 						}
 					}
 				}
+
+				maxChunkLoadingRadius = 0;
 			}
 		}
 	}
