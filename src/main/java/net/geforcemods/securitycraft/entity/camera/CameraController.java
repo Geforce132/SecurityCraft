@@ -316,7 +316,7 @@ public class CameraController {
 						if (!canSeeNeighborFace(currentCompiledSection, dir))
 							continue;
 
-						visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the visible sections list, so Minecraft will schedule to compile them
+						visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
 						visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
 						sectionQueue.add(neighbourSection);
 					}

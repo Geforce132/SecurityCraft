@@ -96,7 +96,9 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 		if (cameraPos == null)
 			renderTexture(pose, buffer, SELECT_CAMERA, xStart, xEnd, zStart, zEnd, packedLight, normal);
-		else if (!be.isActivated())
+		else if (be.redstoneSignalDisabled())
+			renderOverlay(pose, buffer, 0xFF000000, xStart, xEnd, zStart, zEnd); //TODO: maybe render a background related to the frame needing to be activated by redstone
+		else if (!be.hasClientInteracted())
 			renderTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal);
 		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 			renderTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal);

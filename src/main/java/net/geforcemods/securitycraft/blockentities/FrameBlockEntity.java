@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.RemoveFrameLink;
 import net.geforcemods.securitycraft.network.server.SyncFrame;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -30,17 +31,34 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class FrameBlockEntity extends CustomizableBlockEntity {
+public class FrameBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private DisabledOption disabled = new DisabledOption(false);
 	private List<NamedPositions.Entry> cameraPositions = new ArrayList<>();
 	private GlobalPos currentCamera;
-	private boolean activated;
+	private boolean activatedByRedstone = false;
+	private boolean hasRedstoneAround = false;
+	private boolean clientInteracted;
 
 	public FrameBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.FRAME_BLOCK_ENTITY.get(), pos, state);
+	}
+
+	@Override
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		if (activatedByRedstone) {
+			boolean hasNeighborSignal = level.hasNeighborSignal(pos);
+
+			if (hasRedstoneAround && !hasNeighborSignal) {
+				switchCameras(currentCamera, null, 0, true);
+				clientInteracted = false;
+			}
+
+			hasRedstoneAround = hasNeighborSignal;
+		}
 	}
 
 	@Override
@@ -53,11 +71,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 	public void setRemoved() {
 		super.setRemoved();
 
-		if (currentCamera != null && activated) {
+		if (currentCamera != null && clientInteracted) {
 			if (!level.isClientSide)
 				switchCameras(null, null, 0, false);
 			else
-				PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(), Optional.empty(), Optional.ofNullable(currentCamera), true)); //TODO make sure that doesn't cause some weird RC where on frame break the server sets it to null and the client resets it back to the last one
+				PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(), Optional.empty(), Optional.ofNullable(currentCamera), true));
 		}
 	}
 
@@ -75,6 +93,8 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 
 		if (tag.contains("current_camera"))
 			currentCamera = GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("current_camera")).getOrThrow();
+
+		activatedByRedstone = isModuleEnabled(ModuleType.REDSTONE);
 	}
 
 	@Override
@@ -142,26 +162,23 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 
 	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableCurrentCamera) { //TODO: If a client selects a different camera, somehow sync the change to all other clients that may access the frame
 		GlobalPos previousCameraPos = getCurrentCamera();
-		boolean shouldBeActive = newCameraPos != null;
 
 		if (!isDisabled()) {
 			setCurrentCamera(newCameraPos);
 
 			if (!level.isClientSide) {
 				if (previousCameraPos != null && level.getBlockEntity(previousCameraPos.pos()) instanceof SecurityCameraBlockEntity previousCamera) {
-					if (!previousCameraPos.equals(newCameraPos))
+					if (!previousCameraPos.equals(newCameraPos) || (player == null && disableCurrentCamera))
 						previousCamera.unlinkFrameForAllPlayers(worldPosition);
 					else if (disableCurrentCamera)
 						previousCamera.unlinkFrameForPlayer(player.getUUID(), worldPosition);
 				}
 
-				if (newCameraPos != null && (!newCameraPos.equals(previousCameraPos) || !activated)) {
-					ServerPlayer serverPlayer = (ServerPlayer) player;
-
-					if (level.dimension() == newCameraPos.dimension() && level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera)
-						newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(requestedRenderDistance, 2, Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), serverPlayer.server.getPlayerList().getViewDistance())));
-					else
+				if (player instanceof ServerPlayer serverPlayer && newCameraPos != null) {
+					if (level.dimension() != newCameraPos.dimension() || !(level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", newCameraPos.pos()), ChatFormatting.RED);
+					else if (!newCameraPos.equals(previousCameraPos) || !newCamera.isFrameLinked(player, worldPosition))
+						newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(requestedRenderDistance, 2, Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), serverPlayer.server.getPlayerList().getViewDistance())));
 				}
 
 				setChanged();
@@ -171,16 +188,16 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 				if (previousCameraPos != null)
 					CameraController.removeFrameLink(this, previousCameraPos);
 
-				if (shouldBeActive)
+				if (newCameraPos != null && !disableCurrentCamera) {
 					CameraController.addFrameLink(this, newCameraPos);
+					clientInteracted = true;
+				}
 			}
-
-			activated = shouldBeActive;
 		}
 	}
 
-	public boolean isActivated() {
-		return activated;
+	public boolean hasClientInteracted() {
+		return clientInteracted;
 	}
 
 	public void setCurrentCamera(GlobalPos camera) {
@@ -196,6 +213,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 		return disabled.get();
 	}
 
+	public boolean redstoneSignalDisabled() {
+		return activatedByRedstone && !hasRedstoneAround;
+	}
+
 	@Override
 	public Option<?>[] customOptions() {
 		return new Option[] {
@@ -204,9 +225,30 @@ public class FrameBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
+	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleInserted(stack, module, toggled);
+
+		if (module == ModuleType.REDSTONE) {
+			activatedByRedstone = true;
+			hasRedstoneAround = true; //This allows the frame to disable properly when a redstone module is inserted while active
+			setChanged();
+		}
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.REDSTONE) {
+			activatedByRedstone = false;
+			setChanged();
+		}
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST
+				ModuleType.ALLOWLIST, ModuleType.REDSTONE
 		};
 	}
 

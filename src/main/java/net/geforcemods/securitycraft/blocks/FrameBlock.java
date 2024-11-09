@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.components.NamedPositions;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -24,6 +25,8 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -98,8 +101,10 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 			else if (!ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.disabled"), ChatFormatting.RED);
 			else if ((ownedByUser || be.isAllowed(player)) && !be.getCameraPositions().isEmpty()) {
-				if (level.isClientSide) {
-					if (!be.isActivated() && be.getCurrentCamera() != null)
+				if (be.redstoneSignalDisabled())
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.noRedstoneSignal"), ChatFormatting.RED);
+				else if (level.isClientSide) {
+					if (!be.hasClientInteracted() && be.getCurrentCamera() != null)
 						be.setCurrentCameraAndUpdate(be.getCurrentCamera());
 					else
 						ClientHandler.displayFrameScreen(be, !ownedByUser);
@@ -148,5 +153,10 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new FrameBlockEntity(pos, state);
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return createTickerHelper(type, SCContent.FRAME_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 }
