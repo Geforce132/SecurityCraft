@@ -42,6 +42,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -164,10 +165,14 @@ public class SCClientEventHandler {
 	@SubscribeEvent
 	public static void onRenderFramePost(RenderFrameEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
+		ProfilerFiller profiler = mc.getProfiler();
 		Player player = mc.player;
 
 		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
+
+		profiler.push("gameRenderer");
+		profiler.push("securitycraft:frame_level");
 
 		DeltaTracker partialTick = event.getPartialTick();
 		Level level = player.level();
@@ -230,12 +235,16 @@ public class SCClientEventHandler {
 					mc.levelRenderer.visibleSections.clear();
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 					SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
+					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(pos, CameraController.getFrameFeedViewDistance(), feed);
+					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear(true);
 					frameTarget.bindWrite(true);
+					profiler.pop();
 					mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					frameTarget.unbindWrite();
 					SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
+					profiler.push("securitycraft:apply_frame_frustum");
 
 					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
 
@@ -247,6 +256,8 @@ public class SCClientEventHandler {
 								feed.visibleSections().add(section);
 						}
 					}
+
+					profiler.pop();
 				}
 			}
 		}
@@ -276,6 +287,9 @@ public class SCClientEventHandler {
 		mc.levelRenderer.graphicsChanged();
 		mc.getMainRenderTarget().bindWrite(true);
 		CameraController.currentlyCapturedCamera = null;
+
+		profiler.pop();
+		profiler.pop();
 	}
 
 	private static boolean isFrameInFrustum(GlobalPos cameraPos, Frustum beFrustum) {
