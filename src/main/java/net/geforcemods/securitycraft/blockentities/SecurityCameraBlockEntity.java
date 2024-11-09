@@ -35,7 +35,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ChunkTrackingView;
-import net.minecraft.server.level.ChunkTrackingView.Positioned;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -54,13 +53,14 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
 	private static final Map<ServerPlayer, Set<SecurityCameraBlockEntity>> RECENTLY_UNVIEWED_CAMERAS = new HashMap<>();
+	private static final Set<Long> FORCE_LOADED_CAMERA_CHUNKS = new HashSet<>();
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
 	private Map<UUID, ChunkTrackingView.Positioned> cameraFeedChunks = new HashMap<>();
 	private Map<UUID, Set<Long>> linkedFrames = new HashMap<>();
-	private Set<Long> forceLoadedChunks = new HashSet<>();
 	private Set<UUID> playersRequestingChunks = new HashSet<>();
+	private int maxChunkLoadingRadius = 0;
 	private boolean down = false, initialized = false;
 	private int playersViewing = 0;
 	private boolean shutDown = false;
@@ -268,10 +268,9 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	public void linkFrameForPlayer(ServerPlayer player, BlockPos framePos, int chunkLoadingDistance) {
-		int maxChunkLoadingDistance = cameraFeedChunks.values().stream().mapToInt(Positioned::viewDistance).max().orElse(0);
 		Set<Long> playerViewedFrames = linkedFrames.computeIfAbsent(player.getUUID(), uuid -> new HashSet<>());
 
-		if (chunkLoadingDistance > maxChunkLoadingDistance) {
+		if (chunkLoadingDistance > maxChunkLoadingRadius) {
 			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
 
 			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.track(this);
@@ -281,12 +280,14 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
 					Long forceLoadingPos = ChunkPos.asLong(x, z);
 
-					if (BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.forceLoadedChunks.contains(forceLoadingPos)).isEmpty()) { //Only forceload chunks if they haven't been forceloaded by nearby cameras already
+					if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) { //Only forceload chunks if they haven't been forceloaded by another camera already
 						SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, true, false);
-						forceLoadedChunks.add(forceLoadingPos);
+						FORCE_LOADED_CAMERA_CHUNKS.add(forceLoadingPos);
 					}
 				}
 			}
+
+			maxChunkLoadingRadius = chunkLoadingDistance;
 		}
 
 		playerViewedFrames.add(framePos.asLong());
@@ -303,16 +304,22 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				linkedFrames.remove(playerUUID);
 
 			if (linkedFrames.isEmpty()) {
+				SectionPos cameraChunkPos = SectionPos.of(worldPosition);
+
 				addRecentlyUnviewedCamera(this);
 				BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
 
-				for (Long forceLoadingPos : forceLoadedChunks) {
-					ChunkPos chunkPos = new ChunkPos(forceLoadingPos);
+				for (int x = cameraChunkPos.getX() - maxChunkLoadingRadius; x <= cameraChunkPos.getX() + maxChunkLoadingRadius; x++) {
+					for (int z = cameraChunkPos.getZ() - maxChunkLoadingRadius; z <= cameraChunkPos.getZ() + maxChunkLoadingRadius; z++) {
+						ChunkPos chunkPos = new ChunkPos(x, z);
+						Long chunkPosLong = chunkPos.toLong();
 
-					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, chunkPos.x, chunkPos.z, false, false);
+						if (FORCE_LOADED_CAMERA_CHUNKS.contains(chunkPosLong) && BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldKeepChunkForceloaded(chunkPos)).isEmpty()) {
+							SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, false, false);
+							FORCE_LOADED_CAMERA_CHUNKS.remove(chunkPosLong);
+						}
+					}
 				}
-
-				forceLoadedChunks.clear();
 			}
 		}
 	}
@@ -349,7 +356,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		cameraFeedChunks.put(player.getUUID(), (ChunkTrackingView.Positioned) ChunkTrackingView.of(new ChunkPos(worldPosition), chunkLoadingDistance));
 	}
 
-	public boolean shouldKeepChunkLoaded(ServerPlayer player, int chunkX, int chunkZ) {
+	public boolean shouldKeepChunkTracked(ServerPlayer player, int chunkX, int chunkZ) {
 		UUID uuid = player.getUUID();
 
 		return cameraFeedChunks.containsKey(uuid) && cameraFeedChunks.get(uuid).contains(chunkX, chunkZ);
@@ -357,6 +364,12 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public boolean shouldSendChunksToPlayer(ServerPlayer player) {
 		return playersRequestingChunks.remove(player.getUUID());
+	}
+
+	public boolean shouldKeepChunkForceloaded(ChunkPos chunkPos) {
+		ChunkPos cameraPos = new ChunkPos(worldPosition);
+
+		return chunkPos.x >= cameraPos.x - maxChunkLoadingRadius && chunkPos.x <= cameraPos.x + maxChunkLoadingRadius && chunkPos.z >= cameraPos.z - maxChunkLoadingRadius && chunkPos.z <= cameraPos.z + maxChunkLoadingRadius;
 	}
 
 	public static void addRecentlyUnviewedCamera(SecurityCameraBlockEntity camera) {
