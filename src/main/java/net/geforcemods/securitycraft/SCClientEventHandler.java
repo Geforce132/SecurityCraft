@@ -191,6 +191,7 @@ public class SCClientEventHandler {
 		float oldEyeHeightO = camera.eyeHeightOld;
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
+		Frustum playerFrustum = mc.levelRenderer.getFrustum(); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setRenderHand(false);
@@ -210,9 +211,7 @@ public class SCClientEventHandler {
 				BlockPos pos = cameraPos.pos();
 
 				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-					Frustum beFrustum = mc.levelRenderer.getFrustum();
-
-					if (!isFrameInFrustum(cameraPos, beFrustum))
+					if (!isFrameInFrustum(cameraPos, playerFrustum))
 						continue;
 
 					CameraFeed feed = cameraView.getValue();
@@ -236,7 +235,7 @@ public class SCClientEventHandler {
 					frameTarget.unbindWrite();
 					SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
 
-					Frustum frustum = LevelRenderer.offsetFrustum(beFrustum);
+					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
 
 					if (be.shouldRotate() || feed.visibleSections().isEmpty()) {
 						feed.visibleSections().clear();
