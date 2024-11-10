@@ -175,18 +175,19 @@ public class SCClientEventHandler {
 		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
-		Level level = player.level();
 		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = new HashMap<>();
+		int feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1; //1 extra frame for buffer purposes
 		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
 		double currentTime = GLFW.glfwGetTime();
 		double frameInterval = 1.0D / fpsCap;
+		int activeFramesPerMcFrame = (int) ((fpsCap * feedsToRender) / mc.getFps()) + 1;
 
 		for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
 			if (fpsCap < 260.0D) {
-				double timeBetweenFrames = (frameInterval / (CameraController.FRAME_CAMERA_FEEDS.size() + 1));
+				double timeBetweenFrames = frameInterval / feedsToRender;
 				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
 
-				if (currentTime < lastActiveTime + frameInterval || currentTime < CameraController.lastFrameRendered + timeBetweenFrames)
+				if (currentTime < lastActiveTime + frameInterval || currentTime < CameraController.lastFrameRendered + timeBetweenFrames || activeFramesPerMcFrame-- <= 0)
 					continue;
 
 				cameraView.getValue().lastActiveTime().set(currentTime);
@@ -202,6 +203,7 @@ public class SCClientEventHandler {
 		profiler.push("gameRenderer");
 		profiler.push("securitycraft:frame_level");
 
+		Level level = player.level();
 		DeltaTracker partialTick = event.getPartialTick();
 		Camera camera = mc.gameRenderer.getMainCamera();
 		Entity oldCamEntity = mc.cameraEntity;
