@@ -91,8 +91,19 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			cameraPositions.add(cameraTag.isEmpty() ? null : NamedPositions.Entry.CODEC.parse(NbtOps.INSTANCE, cameraTag).getOrThrow());
 		}
 
+		GlobalPos newCameraPos;
+
 		if (tag.contains("current_camera"))
-			currentCamera = GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("current_camera")).getOrThrow();
+			newCameraPos = GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("current_camera")).getOrThrow();
+		else
+			newCameraPos = null;
+
+		if ((currentCamera == null && newCameraPos != null) || (currentCamera != null && !currentCamera.equals(newCameraPos))) {
+			if (level.isClientSide)
+				switchCameras(newCameraPos, null, 0, true);
+
+			currentCamera = newCameraPos;
+		}
 
 		activatedByRedstone = isModuleEnabled(ModuleType.REDSTONE);
 	}
@@ -192,6 +203,8 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 					CameraController.addFrameLink(this, newCameraPos);
 					clientInteracted = true;
 				}
+				else if (disableCurrentCamera)
+					clientInteracted = false;
 			}
 		}
 	}

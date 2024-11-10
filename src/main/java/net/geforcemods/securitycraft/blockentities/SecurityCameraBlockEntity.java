@@ -278,11 +278,11 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	public void linkFrameForPlayer(ServerPlayer player, BlockPos framePos, int chunkLoadingDistance) {
 		Set<Long> playerViewedFrames = linkedFrames.computeIfAbsent(player.getUUID(), uuid -> new HashSet<>());
 
+		BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.track(this);
+		requestChunkSending(player, chunkLoadingDistance);
+
 		if (chunkLoadingDistance > maxChunkLoadingRadius) {
 			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
-
-			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.track(this);
-			requestChunkSending(player, chunkLoadingDistance);
 
 			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
 				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
