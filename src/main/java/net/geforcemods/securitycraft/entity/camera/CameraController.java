@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 
@@ -84,7 +85,7 @@ public class CameraController {
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
 	public static GlobalPos currentlyCapturedCamera;
 	public static ShaderInstance cameraMonitorShader;
-	public static double lastActiveTime = 0;
+	public static double lastFrameRendered = 0;
 
 	private CameraController() {}
 
@@ -254,7 +255,7 @@ public class CameraController {
 		BlockPos pos = cameraPos.pos();
 		SectionPos cameraSectionPos = SectionPos.of(pos);
 		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY(), CameraViewAreaExtension.maxSectionY() - 1), cameraSectionPos.z(), true);
-		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(resolution, resolution, true, Minecraft.ON_OSX), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
+		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(resolution, resolution, true, Minecraft.ON_OSX), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 
 		cameraFeed.compilingSectionsQueue.add(startingSection);
 		cameraFeed.sectionsInRange.add(startingSection);
@@ -269,10 +270,15 @@ public class CameraController {
 
 			linkedFrames.remove(be.getBlockPos());
 
-			if (linkedFrames.isEmpty()) {
-				FRAME_LINKS.remove(cameraPos);
-				FRAME_CAMERA_FEEDS.remove(cameraPos);
-			}
+			if (linkedFrames.isEmpty())
+				removeAllFrameLinks(cameraPos);
+		}
+	}
+
+	public static void removeAllFrameLinks(GlobalPos cameraPos) {
+		if (FRAME_LINKS.containsKey(cameraPos)) {
+			FRAME_LINKS.remove(cameraPos);
+			FRAME_CAMERA_FEEDS.remove(cameraPos);
 		}
 	}
 
@@ -373,5 +379,5 @@ public class CameraController {
 		}
 	}
 
-	public record CameraFeed(RenderTarget renderTarget, List<RenderSection> sectionsInRange, Set<Long> sectionsInRangePositions, List<RenderSection> visibleSections, List<RenderSection> compilingSectionsQueue) {}
+	public record CameraFeed(RenderTarget renderTarget, AtomicDouble lastActiveTime, List<RenderSection> sectionsInRange, Set<Long> sectionsInRangePositions, List<RenderSection> visibleSections, List<RenderSection> compilingSectionsQueue) {}
 }

@@ -338,7 +338,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		if (level.isClientSide)
-			CameraController.FRAME_CAMERA_FEEDS.remove(GlobalPos.of(level.dimension(), worldPosition));
+			CameraController.removeAllFrameLinks(GlobalPos.of(level.dimension(), worldPosition));
 	}
 
 	public boolean isFrameLinked(Player player, BlockPos framePos) {

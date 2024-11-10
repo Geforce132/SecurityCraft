@@ -70,7 +70,7 @@ public class ConfigHandler {
 
 			frameFeedFpsLimit = builder
 					.comment("The maximum amount of frames per second the Frame camera feed renders at. Higher values will lead to worse performance.")
-					.defineInRange("frame_feed_resolution", 30, 10, 260);
+					.defineInRange("frame_feed_fps_limit", 30, 10, 260);
 			//@formatter:on
 		}
 	}

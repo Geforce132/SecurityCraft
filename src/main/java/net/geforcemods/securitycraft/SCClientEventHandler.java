@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -173,25 +175,35 @@ public class SCClientEventHandler {
 		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
+		Level level = player.level();
+		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = new HashMap<>();
 		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
+		double currentTime = GLFW.glfwGetTime();
+		double frameInterval = 1.0D / fpsCap;
 
-		if (fpsCap < 260.0D) {
-			double currentTime = GLFW.glfwGetTime();
-			double frameInterval = 1.0D / fpsCap;
+		for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
+			if (fpsCap < 260.0D) {
+				double timeBetweenFrames = (frameInterval / (CameraController.FRAME_CAMERA_FEEDS.size() + 1));
+				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
 
-			if (currentTime < CameraController.lastActiveTime + frameInterval)
-				return;
+				if (currentTime < lastActiveTime + frameInterval || currentTime < CameraController.lastFrameRendered + timeBetweenFrames)
+					continue;
 
-			CameraController.lastActiveTime = currentTime;
+				cameraView.getValue().lastActiveTime().set(currentTime);
+			}
+
+			activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
 		}
 
+		if (activeFrameCameraFeeds.isEmpty())
+			return;
+
+		CameraController.lastFrameRendered = currentTime;
 		profiler.push("gameRenderer");
 		profiler.push("securitycraft:frame_level");
 
 		DeltaTracker partialTick = event.getPartialTick();
-		Level level = player.level();
 		Camera camera = mc.gameRenderer.getMainCamera();
-
 		Entity oldCamEntity = mc.cameraEntity;
 		Window window = mc.getWindow();
 		int oldWidth = window.getWidth();
@@ -225,7 +237,7 @@ public class SCClientEventHandler {
 		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
 		mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
 
-		for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
+		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
 			GlobalPos cameraPos = cameraView.getKey();
 
 			if (cameraPos.dimension().equals(level.dimension())) {
