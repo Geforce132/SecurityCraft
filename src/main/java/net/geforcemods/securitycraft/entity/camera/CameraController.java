@@ -83,6 +83,7 @@ public class CameraController {
 	private static int screenshotSoundCooldown = 0;
 	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
+	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
 	public static GlobalPos currentlyCapturedCamera;
 	public static ShaderInstance cameraMonitorShader;
 	public static double lastFrameRendered = 0.0D;
@@ -260,7 +261,7 @@ public class CameraController {
 		cameraFeed.compilingSectionsQueue.add(startingSection);
 		cameraFeed.sectionsInRange.add(startingSection);
 		cameraFeed.sectionsInRangePositions.add(startingSection.getOrigin().asLong());
-		CameraController.discoverVisibleSections(pos, getFrameFeedViewDistance(), cameraFeed);
+		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(), cameraFeed);
 		return cameraFeed;
 	}
 
@@ -286,8 +287,8 @@ public class CameraController {
 		return FRAME_CAMERA_FEEDS.containsKey(cameraPos) ? FRAME_CAMERA_FEEDS.get(cameraPos).renderTarget : null;
 	}
 
-	public static void discoverVisibleSections(BlockPos cameraPos, int viewDistance, CameraFeed feed) {
-		SectionPos cameraSectionPos = SectionPos.of(cameraPos);
+	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
+		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
 		List<RenderSection> visibleSections = feed.sectionsInRange;
 		List<RenderSection> sectionQueue = feed.compilingSectionsQueue;
 		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
@@ -326,6 +327,7 @@ public class CameraController {
 						visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
 						visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
 						sectionQueue.add(neighbourSection);
+						FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
 					}
 				}
 			}

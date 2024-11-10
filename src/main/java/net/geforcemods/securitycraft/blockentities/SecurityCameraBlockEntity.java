@@ -95,6 +95,14 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		if (!shutDown && !disabled.get()) {
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
+
+				if (level.isClientSide && cameraRotation != oCameraRotation) {
+					GlobalPos cameraPos = GlobalPos.of(level.dimension(), pos);
+
+					if (CameraController.FRAME_LINKS.containsKey(cameraPos))
+						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
+				}
+
 				return;
 			}
 
