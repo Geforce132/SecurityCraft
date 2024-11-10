@@ -175,15 +175,17 @@ public class SCClientEventHandler {
 		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
-		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = new HashMap<>();
-		int feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1; //1 extra frame for buffer purposes
+		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
+		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size();
 		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
 		double currentTime = GLFW.glfwGetTime();
 		double frameInterval = 1.0D / fpsCap;
-		int activeFramesPerMcFrame = (int) ((fpsCap * feedsToRender) / mc.getFps()) + 1;
+		double activeFramesPerMcFrame = Mth.ceil((fpsCap * feedsToRender) / mc.getFps());
 
-		for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
-			if (fpsCap < 260.0D) {
+		if (fpsCap < 260.0D) {
+			activeFrameCameraFeeds = new HashMap<>();
+
+			for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
 				double timeBetweenFrames = frameInterval / feedsToRender;
 				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
 
@@ -191,10 +193,11 @@ public class SCClientEventHandler {
 					continue;
 
 				cameraView.getValue().lastActiveTime().set(currentTime);
+				activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
 			}
-
-			activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
 		}
+		else
+			activeFrameCameraFeeds = CameraController.FRAME_CAMERA_FEEDS;
 
 		if (activeFrameCameraFeeds.isEmpty())
 			return;
