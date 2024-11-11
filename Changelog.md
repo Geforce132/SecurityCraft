@@ -1,5 +1,9 @@
 --------------------------Changelog for v1.9.11-beta2 of SecurityCraft--------------------------
 
+- Fix: Entity translations of security sea boats do not exist
+
+--------------------------Changelog for v1.9.11-beta2 of SecurityCraft--------------------------
+
 - Fix: Security sea boats are not invulnerable to damage types they should be invulnerable to
 - Fix: Jade and WTHIT integration
 - Fix: In certain scenarios, it's not possible to join any world or multiplayer server
