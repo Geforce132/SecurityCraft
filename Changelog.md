@@ -1,4 +1,4 @@
---------------------------Changelog for v1.9.11-beta2 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.11-beta3 of SecurityCraft--------------------------
 
 - Fix: Entity translations of security sea boats do not exist
 

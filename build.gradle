@@ -53,7 +53,7 @@ runs {
 
 	data {
 		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 	}
 }
 
@@ -78,7 +78,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.3.26-beta'
+	implementation 'net.neoforged:neoforge:21.3.29-beta'
 
 //	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
