@@ -59,7 +59,6 @@ public class ConfigHandler {
 							"Format: 0xRRGGBB")
 					.defineInRange("reinforced_block_tint_color", 0x999999, 0x000000, 0xFFFFFF);
 
-			//TODO: put frame-related values in own section
 			frameFeedRenderDistance = builder
 					.comment("Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.")
 					.defineInRange("frame_feed_render_distance", 16, 2, 32);

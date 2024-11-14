@@ -1398,7 +1398,7 @@
 	"securitycraft.configuration.frame_feed_resolution.tooltip": "Set the resolution of the Frame camera feed. This is always a square resolution. Smaller values will be less detailed, higher values may lead to diminishing returns.",
 	"securitycraft.configuration.frame_feed_view_distance": "Frame feed view distance",
 	"securitycraft.configuration.frame_feed_view_distance.tooltip": "Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.",
-	"securitycraft.configuration.frame_feed_viewing_enabled": "Enable frame feed viewing",
+	"securitycraft.configuration.frame_feed_viewing_enabled": "Frame feed viewing enabled",
 	"securitycraft.configuration.frame_feed_viewing_enabled.tooltip": "Set this to false to disable the feature that camera feeds can be viewed in frames. While this feature is generally stable, it may also impact server performance due to loading chunks within all active frame cameras' views.",
 	"securitycraft.configuration.in_world_un_reinforcing": "Enable in-world un-/reinforcing",
 	"securitycraft.configuration.in_world_un_reinforcing.tooltip": "Setting this to false disables the ability of the Universal Block Reinforcer to (un-)reinforce blocks that are placed in the world.",
