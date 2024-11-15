@@ -50,7 +50,7 @@ public class UniversalBlockReinforcerItem extends Item {
 
 				@Override
 				public Component getDisplayName() {
-					return Component.translatable(getDescriptionId());
+					return heldItem.getHoverName();
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
