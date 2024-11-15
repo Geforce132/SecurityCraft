@@ -8,6 +8,7 @@
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name
 - Fix: Reinforced tuff brick slabs cannot be crafted in the crafting table
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
+- Misc.: The minimum required NeoForge version is now 21.1.49
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
