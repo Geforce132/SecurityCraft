@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:slabs",
+  "key": {
+    "B": {
+      "item": "securitycraft:reinforced_tuff_bricks"
+    }
+  },
+  "pattern": [
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "item": "securitycraft:reinforced_tuff_brick_slab"
+  }
+}

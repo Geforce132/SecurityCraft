@@ -969,6 +969,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_STONE, SCContent.REINFORCED_NORMAL_STONE_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_SLAB);
+		addSlabRecipe(recipeOutput, SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB);
 		addSlabRecipe(recipeOutput, SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB);
