@@ -1225,6 +1225,7 @@
 	"module.securitycraft.laser_block.redstone_module.description": "Ein Redstone-Modul in einem Laser führt dazu, dass er ein 15 Block langes signal abgibt, sobald ein Spieler oder Mob durch den Laser läuft.",
 	"module.securitycraft.laser_block.smart_module.description": "Ein schlaues Modul in einem Laser erlaubt es, den Laser für spezifische Seiten des Blockes abzustellen.",
 	"module.securitycraft.laser_block.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Laser erlaubt zugelassenen Spielern, ohne ein Redstonesignal oder Schaden zu nehmen durchzulaufen.",
+	"module.securitycraft.panic_button.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Panik-Knopf erlaubt zugelassenen Spielern, den Knopf zu drücken.",
 	"module.securitycraft.portable_radar.blacklist_module.description": "Ein Sperrlisten-Module in einem Tragbaren Radar führt dazu, dass der Radar nur nach den gelisteten Spielern Ausschau hält.",
 	"module.securitycraft.portable_radar.redstone_module.description": "Ein Redstone-Modul in einem Tragbaren Radar gibt ein Redstonesignal ab, sobald ein Spieler innerhalb des Radius ist.",
 	"module.securitycraft.portable_radar.whitelist_module.description": "Ein Zulassungslisten-Modul in einem Radar erlaubt zugelassenen Spielern, sich unerkannt in dem Radius des Radars zu bewegen.",
