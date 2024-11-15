@@ -5,7 +5,8 @@
 - API: New method IPasscodeProtected#setPasscodeInAdjacentBlock for updating an adjacent block (e.g. the second half of a chest) with the passcode when setting it
 - Fix: Placing a Passcode-protected Chest or Barrel leads to unnecessary data being saved
 - Fix: Bouncing betties are rendered incorrectly
-- Fix: The Universal Block Reinforcer's screen title does not display the item's actual name 
+- Fix: The Universal Block Reinforcer's screen title does not display the item's actual name
+- Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
