@@ -1392,6 +1392,8 @@
 	"securitycraft.configuration.enable_team_ownership.tooltip": "˙sᵷuᴉɥʇ pǝʇɔᴉɹʇsǝɹ-ɹǝuʍo ɹǝɥʇo ꞁꞁɐ oʇ ssǝɔɔɐ ǝʌɐɥ puɐ 'sǝꞁnpoɯ ǝʌoɯǝɹ/ppɐ 'suoᴉʇdo ǝᵷuɐɥɔ 'sʞɔoꞁq pǝɔɹoɟuᴉǝɹ s,ɹǝɥʇo ɥɔɐǝ ʞɐǝɹq oʇ ɯɐǝʇ ǝɯɐs ǝɥʇ uo sɹǝʎɐꞁd sǝꞁqɐuǝ sᴉɥ⟘\n˙ɯɐǝʇ ǝɯɐs ǝɥʇ uo ɹǝʎɐꞁd ɹǝɥʇo ʎɹǝʌǝ ɟo sʞɔoꞁq ǝɥʇ uʍo oʇ (ʎʇɹɐd sɯɐǝ⟘ ᗺ⟘Ⅎ ɹo) ɯɐǝʇ pɹɐoqǝɹoɔs ɐ uo ɹǝʎɐꞁd ʎɹǝʌǝ ǝꞁqɐuǝ oʇ ǝnɹʇ oʇ sᴉɥʇ ʇǝS",
 	"securitycraft.configuration.force_reinforced_block_tint": "ʇuᴉʇ ʞɔoꞁq pǝɔɹoɟuᴉǝɹ ǝɔɹoℲ",
 	"securitycraft.configuration.force_reinforced_block_tint.tooltip": "˙sɹǝʎɐꞁd ɹoɟ ʇuᴉʇ‾ʞɔoꞁq‾pǝɔɹoɟuᴉǝɹ ɟo ᵷuᴉʇʇǝs ǝɥʇ ǝɔɹoɟ oʇ ʇuɐʍ noʎ ɟᴉ ǝnɹʇ oʇ sᴉɥʇ ʇǝS",
+	"securitycraft.configuration.in_world_un_reinforcing": "ᵷuᴉɔɹoɟuᴉǝɹ/-un pꞁɹoʍ-uᴉ ǝꞁqɐuƎ",
+	"securitycraft.configuration.in_world_un_reinforcing.tooltip": "˙pꞁɹoʍ ǝɥʇ uᴉ pǝɔɐꞁd ǝɹɐ ʇɐɥʇ sʞɔoꞁq ǝɔɹoɟuᴉǝɹ(-un) oʇ ɹǝɔɹoɟuᴉǝᴚ ʞɔoꞁᗺ ꞁɐsɹǝʌᴉu∩ ǝɥʇ ɟo ʎʇᴉꞁᴉqɐ ǝɥʇ sǝꞁqɐsᴉp ǝsꞁɐɟ oʇ sᴉɥʇ ᵷuᴉʇʇǝS",
 	"securitycraft.configuration.incorrectPasscodeDamage": "ǝᵷɐɯɐp ǝpoɔssɐd ʇɔǝɹɹoɔuI",
 	"securitycraft.configuration.incorrectPasscodeDamage.tooltip": "˙ǝᵷɐɯɐp ɟo sʇɹɐǝɥ oʍʇ sᴉ ʇꞁnɐɟǝᗡ\n˙pǝꞁꞁɐʇsuᴉ sᴉ ǝꞁnpoɯ ᵷuᴉɯɹɐɥ ɐ ɟᴉ sʞɹoʍ ʎꞁuo sᴉɥ⟘ ˙ǝpoɔ ʇɔǝɹɹoɔuᴉ uɐ sɹǝʇuǝ ɹǝʎɐꞁd ǝɥʇ ɟᴉ 'ɹǝʎɐꞁd ǝɥʇ oʇ sꞁɐǝp ǝpoɔssɐd ɐ ᵷuᴉɹᴉnbǝɹ ʞɔoꞁq ɐ ʇɐɥʇ ǝᵷɐɯɐp ǝɥʇ sǝuᴉɟǝᗡ",
 	"securitycraft.configuration.inventoryScannerRange": "ǝᵷuɐɹ ɹǝuuɐɔS ʎɹoʇuǝʌuI",
