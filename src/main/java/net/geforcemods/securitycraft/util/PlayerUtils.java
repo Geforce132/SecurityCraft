@@ -117,8 +117,10 @@ public class PlayerUtils {
 
 		if (player.level().isClientSide)
 			return ClientHandler.isPlayerMountedOnCamera();
+		else if (player instanceof ServerPlayer serverPlayer)
+			return serverPlayer.getCamera() instanceof SecurityCamera;
 		else
-			return ((ServerPlayer) player).getCamera() instanceof SecurityCamera;
+			return false;
 	}
 
 	/**
