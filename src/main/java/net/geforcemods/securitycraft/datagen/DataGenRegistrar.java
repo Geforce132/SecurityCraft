@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +33,7 @@ public class DataGenRegistrar {
 		DataGenerator generator = event.getGenerator();
 		PackOutput output = generator.getPackOutput();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false, null, null);
+		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(output, lookupProvider, existingFileHelper);
 
 		generator.addProvider(event.includeClient(), new BlockModelAndStateGenerator(output, existingFileHelper));

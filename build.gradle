@@ -53,7 +53,7 @@ runs {
 
 	data {
 		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 	}
 }
 
