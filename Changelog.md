@@ -13,6 +13,7 @@
 - Fix: The Reinforced Dispenser and Dropper don't have a reinforced tint when placed in the world
 - Fix: The Rift Stabilizer cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces
 - Fix: Right-clicking a passcode-protected block in spectator mode whhile holding a codebreaker does not work
+- Fix: Jade/TOP/WTHIT show the owner of block mines
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11-beta3 of SecurityCraft--------------------------
