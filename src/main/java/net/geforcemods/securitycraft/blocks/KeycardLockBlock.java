@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardLockBlockEntity;
@@ -59,7 +58,7 @@ public class KeycardLockBlock extends AbstractPanelBlock {
 				else {
 					Owner keycardOwner = stack.getOrDefault(SCContent.OWNER_DATA, OwnerData.DEFAULT).toOwner();
 
-					if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
+					if (!TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:keycard_lock.different_owner"), ChatFormatting.RED);
 				}
 

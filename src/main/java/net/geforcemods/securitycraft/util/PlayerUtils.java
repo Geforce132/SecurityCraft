@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
@@ -134,12 +133,10 @@ public class PlayerUtils {
 	 * @return The component to display
 	 */
 	public static Component getOwnerComponent(Owner owner) {
-		if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
-			TeamRepresentation teamRepresentation = TeamUtils.getTeamRepresentation(owner);
+		TeamRepresentation teamRepresentation = TeamUtils.getTeamRepresentation(owner);
 
-			if (teamRepresentation != null)
-				return Utils.localize("messages.securitycraft:teamOwner", Component.literal(teamRepresentation.name()).withStyle(Style.EMPTY.withColor(teamRepresentation.color()))).withStyle(ChatFormatting.GRAY);
-		}
+		if (teamRepresentation != null)
+			return Utils.localize("messages.securitycraft:teamOwner", Component.literal(teamRepresentation.name()).withStyle(Style.EMPTY.withColor(teamRepresentation.color()))).withStyle(ChatFormatting.GRAY);
 
 		return Component.literal(owner.getName());
 	}
