@@ -7,6 +7,7 @@
 - Fix: Bouncing betties are rendered incorrectly
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name
 - Fix: The operator items creative tab shows when it's disabled
+- Fix: Changing the Keypad Trapdoor's signal length or disabled option plays the close sound even when already closed
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
