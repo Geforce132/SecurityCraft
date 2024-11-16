@@ -412,7 +412,7 @@ public class ClientHandler {
 				CodebreakerData codebreakerData = stack.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT);
 				boolean isPlayer = entity instanceof Player;
 
-				if ((!isPlayer || !((Player) entity).isCreative()) && codebreakerData.wasRecentlyUsed())
+				if ((!isPlayer || !((Player) entity).isCreative() && !((Player) entity).isSpectator()) && codebreakerData.wasRecentlyUsed())
 					return codebreakerData.wasSuccessful() ? 0.75F : 0.5F;
 
 				if (!isPlayer)

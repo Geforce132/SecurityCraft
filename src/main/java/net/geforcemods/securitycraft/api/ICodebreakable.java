@@ -53,17 +53,21 @@ public interface ICodebreakable {
 				return false;
 
 			if (codebreaker.is(SCContent.CODEBREAKER.get())) {
-				if (this instanceof IOwnable ownable && ownable.isOwnedBy(player) && !player.isCreative()) {
+				boolean canBypass = player.isCreative() || player.isSpectator();
+
+				if (this instanceof IOwnable ownable && ownable.isOwnedBy(player) && !canBypass) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CODEBREAKER.get().getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.owned"), ChatFormatting.RED);
 					return false;
 				}
 
-				if (!player.isCreative() && codebreaker.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
+				if (!canBypass && codebreaker.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
 					return false;
 
-				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
+				boolean isSuccessful = canBypass || SecurityCraft.RANDOM.nextDouble() < chance;
 
-				codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+				if (!canBypass)
+					codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+
 				codebreaker.set(SCContent.CODEBREAKER_DATA, new CodebreakerData(System.currentTimeMillis(), isSuccessful));
 
 				if (isSuccessful)
