@@ -10,6 +10,7 @@
 - Fix: The operator items creative tab shows when it's disabled
 - Fix: Changing the Keypad Trapdoor's signal length or disabled option plays the close sound even when closed
 - Fix: Pressing enter when setting up a passcode does not save the passcode
+- Fix: The Reinforced Dispenser and Dropper don't have a reinforced tint when placed in the world
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 - Misc.: The minimum required NeoForge version is now 21.1.49
 
