@@ -38,6 +38,7 @@ public class CommonDoorActivator implements IDoorActivator {
 			SCContent.REINFORCED_STONE_BUTTON.get(),
 			SCContent.REINFORCED_WARPED_BUTTON.get(),
 			SCContent.RETINAL_SCANNER.get(),
+			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get());
 	//@formatter:on
