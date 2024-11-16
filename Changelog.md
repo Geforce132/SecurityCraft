@@ -12,6 +12,7 @@
 - Fix: Pressing enter when setting up a passcode does not save the passcode
 - Fix: The Reinforced Dispenser and Dropper don't have a reinforced tint when placed in the world
 - Fix: The Rift Stabilizer cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces
+- Fix: Right-clicking a passcode-protected block in spectator mode whhile holding a codebreaker does not work
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 - Misc.: The minimum required NeoForge version is now 21.1.49
 
