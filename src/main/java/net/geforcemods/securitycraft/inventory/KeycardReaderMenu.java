@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.inventory;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
@@ -57,7 +56,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 				String keycardOwnerUUID = keycardOwner.getUUID();
 
 				//only allow keycards that have been linked to a keycard reader with the same owner as this keycard reader
-				return keycardOwnerUUID.isEmpty() || ((ConfigHandler.SERVER.enableTeamOwnership.get() && TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || keycardOwnerUUID.equals(be.getOwner().getUUID()));
+				return keycardOwnerUUID.isEmpty() || TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner) || keycardOwnerUUID.equals(be.getOwner().getUUID());
 			}
 		});
 	}
