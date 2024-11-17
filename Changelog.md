@@ -15,6 +15,7 @@
 - Fix: The Rift Stabilizer cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces
 - Fix: Right-clicking a passcode-protected block in spectator mode while holding a codebreaker does not work
 - Fix: Jade/TOP/WTHIT show the owner of block mines
+- Fix: Several instances of blocks disregarding the team ownership config setting being disabled when FTB Teams is installed
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------

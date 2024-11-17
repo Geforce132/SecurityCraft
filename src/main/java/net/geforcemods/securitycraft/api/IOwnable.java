@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.api;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.TeamUtils;
@@ -95,7 +94,7 @@ public interface IOwnable {
 	public default boolean isOwnedBy(Owner otherOwner) {
 		Owner self = getOwner();
 
-		if (ConfigHandler.SERVER.enableTeamOwnership.get() && TeamUtils.areOnSameTeam(self, otherOwner))
+		if (TeamUtils.areOnSameTeam(self, otherOwner))
 			return true;
 
 		String selfUUID = self.getUUID();
