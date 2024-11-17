@@ -1437,6 +1437,8 @@
 	"securitycraft.configuration.smallerMineExplosion.tooltip": "Sollen Minenexplosionen kleiner als standardmäßig sein?",
 	"securitycraft.configuration.taser_damage": "Taserschaden",
 	"securitycraft.configuration.taser_damage.tooltip": "Bestimmt die Menge an Schaden, die ein Taser Mobs, die er trifft, zufügt. Der Standardwert ist ein halbes Herz.",
+	"securitycraft.configuration.team_ownership_precedence": "Teameigentum-Vorrang",
+	"securitycraft.configuration.team_ownership_precedence.tooltip": "Diese Liste definiert, in welcher Reihenfolge SecurityCraft die Teams von Spielern überprüft, um festzustellen, ob sie im selben Team sind (sofern \"enable_team_ownership\" auf true gesetzt ist). Der erste Eintrag der Liste wird zuerst überprüft.\nSecurityCraft überprüft Teams in der Liste so lange, bis ein Fall gefunden wird, wo die Spieler im selben Team sind, oder die Liste zu Ende ist. Z.B. unter Annahme der Standardkonfiguration, wenn FTB Teams installiert ist, aber die Spieler kein FTB-Team gemein haben, überprüft SecurityCraft zusätzlich, ob dieselben Spieler im selben Vanilla-Team sind.\nDas Entfernen eines Eintrags bewirkt, dass diese Art von Teams nicht überprüft wird. Mögliche Einträge sind \"FTB_TEAMS\" und \"VANILLA\".",
 	"securitycraft.configuration.title": "SecurityCraft-Konfiguration",
 	"securitycraft.configuration.trick_scanners_with_player_heads": "Augenscanner mit Spielerköpfen austricksen",
 	"securitycraft.configuration.trick_scanners_with_player_heads.tooltip": "Wenn aktiviert, können Spieler den Kopf eines anderen Spielers tragen, um deren Augenscanner hinters Licht zu führen.",
