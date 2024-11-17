@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -556,7 +557,7 @@ public class ClientHandler {
 					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, level, pos, tintIndex);
 			}
 
-			if (block == SCContent.REINFORCED_OBSERVER.get())
+			if (block instanceof IReinforcedBlock)
 				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
 			else
 				return 0xFFFFFF;
