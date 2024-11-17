@@ -3,6 +3,7 @@
 - New: The Panic Button now supports the Allowlist Module
 - New: Config setting to disable the ability of the Universal Block Reinforcer to un-/reinforce blocks that are placed in the world
 - New: Option for the Portable Radar to only send notification messages to the owner instead of all members of the team
+- New: Server config setting to allow setting the precedence of team ownership checks (useful when FTB Teams is installed, and the mod should check for vanilla teams instead)
 - API: New method IPasscodeProtected#setPasscodeInAdjacentBlock for updating an adjacent block (e.g. the second half of a chest) with the passcode when setting it
 - Fix: Placing a Passcode-protected Chest or Barrel directly leads to unnecessary data being saved
 - Fix: Bouncing betties are rendered incorrectly
