@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 
 - API: New method IPasscodeProtected#setPasscodeInAdjacentBlock for updating an adjacent block (e.g. the second half of a chest) with the passcode when setting it
+- Fix: Placing a Passcode-protected Chest or Barrel leads to unnecessary data being saved
 - Fix: Security Camera entities are sent to every player instead of only the player mounting the camera
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
