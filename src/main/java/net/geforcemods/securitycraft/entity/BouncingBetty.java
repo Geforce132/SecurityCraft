@@ -58,7 +58,7 @@ public class BouncingBetty extends Entity {
 		if (onGround())
 			setDeltaMovement(getDeltaMovement().multiply(0.699999988079071D, 0.699999988079071D, -0.5D));
 
-		if (!level().isClientSide && fuse-- <= 0) {
+		if (fuse-- <= 0 && !level().isClientSide) {
 			discard();
 			explode();
 		}
