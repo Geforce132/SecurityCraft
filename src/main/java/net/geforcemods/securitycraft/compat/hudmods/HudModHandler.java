@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.IBlockMine;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -63,7 +64,8 @@ public class HudModHandler {
 			}
 		}
 
-		addOwnerModuleNameInfo(be, player, lineAdder, configGetter);
+		if (!(block instanceof IBlockMine))
+			addOwnerModuleNameInfo(be, player, lineAdder, configGetter);
 	}
 
 	public void addOwnerInfo(Object obj, Consumer<ITextComponent> lineAdder, Predicate<ResourceLocation> configGetter) {
