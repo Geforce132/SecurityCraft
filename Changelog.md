@@ -5,16 +5,16 @@
 - New: Option for the Portable Radar to only send notification messages to the owner instead of all members of the team
 - New: Server config setting to allow setting the precedence of team ownership checks (useful when FTB Teams is installed, and the mod should check for vanilla teams instead)
 - API: New method IPasscodeProtected#setPasscodeInAdjacentBlock for updating an adjacent block (e.g. the second half of a chest) with the passcode when setting it
-- Fix: Placing a Passcode-protected Chest or Barrel directly leads to unnecessary data being saved
+- Fix: Placing a Passcode-protected Chest or Barrel leads to unnecessary data being saved
 - Fix: Bouncing betties are rendered incorrectly
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name
 - Fix: Reinforced tuff brick slabs cannot be crafted in the crafting table
 - Fix: The operator items creative tab shows when it's disabled
-- Fix: Changing the Keypad Trapdoor's signal length or disabled option plays the close sound even when closed
+- Fix: Changing the Keypad Trapdoor's signal length or disabled option plays the close sound even when already closed
 - Fix: Pressing enter when setting up a passcode does not save the passcode
 - Fix: The Reinforced Dispenser and Dropper don't have a reinforced tint when placed in the world
 - Fix: The Rift Stabilizer cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces
-- Fix: Right-clicking a passcode-protected block in spectator mode whhile holding a codebreaker does not work
+- Fix: Right-clicking a passcode-protected block in spectator mode while holding a codebreaker does not work
 - Fix: Jade/TOP/WTHIT show the owner of block mines
 - Fix: Several instances of blocks disregarding the team ownership config setting being disabled when FTB Teams is installed
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size

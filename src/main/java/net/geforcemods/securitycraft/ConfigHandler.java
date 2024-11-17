@@ -153,18 +153,9 @@ public class ConfigHandler {
 
 			teamOwnershipPrecedence = builder
 					.comment("This list defines in which order SecurityCraft checks teams of players to determine if they're on the same team, if \"enable_team_ownership\" is set to true. First in the list means it's checked first.",
+							"SecurityCraft will continue checking for teams down the list until it finds a case where the players are on the same team, or the list is over. E.g. Given the default config, if FTB Teams is installed but the players do not share a team, the mod checks if the same players are on the same vanilla team.",
 							"Removing an entry makes the mod ignore that kind of team. Valid values are \"FTB_TEAMS\" and \"VANILLA\".")
-					.defineListAllowEmpty("team_ownership_precedence", List.of("FTB_TEAMS", "VANILLA"), () -> "VANILLA", o -> {
-						if (o instanceof String s) {
-							try {
-								TeamUtils.TeamType.valueOf(s);
-								return true;
-							}
-							catch(IllegalArgumentException e) {}
-						}
-
-						return false;
-					});
+					.defineListAllowEmpty("team_ownership_precedence", List.of("FTB_TEAMS", "VANILLA"), () -> "VANILLA", String.class::isInstance);
 
 			disableThanksMessage = builder
 					.comment("Set this to true to disable sending the message that SecurityCraft shows when a player joins.",
@@ -251,7 +242,14 @@ public class ConfigHandler {
 			TeamUtils.setPrecedence(SERVER.teamOwnershipPrecedence.get()
 					.stream()
 					.distinct()
-					.map(s -> Enum.valueOf(TeamUtils.TeamType.class, s))
+					.map(s -> {
+						try {
+							return TeamUtils.TeamType.valueOf(s);
+						}
+						catch (IllegalArgumentException e) {}
+
+						return TeamUtils.TeamType.NO_OP;
+					})
 					.map(TeamUtils.TeamType::getTeamHandler)
 					.filter(Objects::nonNull)
 					.toList());

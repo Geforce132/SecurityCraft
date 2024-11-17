@@ -1438,7 +1438,7 @@
 	"securitycraft.configuration.taser_damage": "Taser damage",
 	"securitycraft.configuration.taser_damage.tooltip": "Set the amount of damage the taser inflicts onto the mobs it hits. Default is half a heart.",
 	"securitycraft.configuration.team_ownership_precedence": "Team ownership precedence",
-	"securitycraft.configuration.team_ownership_precedence.tooltip": "This list defines in which order SecurityCraft checks teams of players to determine if they're on the same team, if \"enable_team_ownership\" is set to true. First in the list means it's checked first.\nRemoving an entry makes the mod ignore that kind of team. Valid values are \"FTB_TEAMS\" and \"VANILLA\".",
+	"securitycraft.configuration.team_ownership_precedence.tooltip": "This list defines in which order SecurityCraft checks teams of players to determine if they're on the same team, if \"enable_team_ownership\" is set to true. First in the list means it's checked first.\nSecurityCraft will continue checking for teams down the list until it finds a case where the players are on the same team, or the list is over. E.g. Given the default config, if FTB Teams is installed but the players do not share an FTB team, the mod checks if the same players are on the same vanilla team.\nRemoving an entry makes the mod ignore that kind of team. Valid values are \"FTB_TEAMS\" and \"VANILLA\".",
 	"securitycraft.configuration.title": "SecurityCraft Configuration",
 	"securitycraft.configuration.trick_scanners_with_player_heads": "Trick scanners with player heads",
 	"securitycraft.configuration.trick_scanners_with_player_heads.tooltip": "Set this to true if you want players wearing a different player's skull to be able to trick their retinal scanners and scanner doors into activating.",

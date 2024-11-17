@@ -92,7 +92,8 @@ public class TeamUtils {
 			else
 				return null;
 		}),
-		VANILLA(VanillaTeamHandler::new);
+		VANILLA(VanillaTeamHandler::new),
+		NO_OP(() -> null);
 
 		private final Supplier<TeamHandler> teamHandler;
 
