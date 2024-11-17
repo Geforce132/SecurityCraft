@@ -406,7 +406,7 @@ public class ClientHandler {
 				CompoundTag tag = stack.getTag();
 				boolean isPlayer = entity instanceof Player;
 
-				if ((!isPlayer || !((Player) entity).isCreative()) && CodebreakerItem.wasRecentlyUsed(stack))
+				if ((!isPlayer || !((Player) entity).isCreative() && !((Player) entity).isSpectator()) && CodebreakerItem.wasRecentlyUsed(stack))
 					return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;
 
 				if (!isPlayer)
