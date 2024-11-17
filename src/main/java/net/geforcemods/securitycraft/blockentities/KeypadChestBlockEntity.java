@@ -97,7 +97,17 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
-		previousChest = new ResourceLocation(tag.getString("previous_chest"));
+
+		if (tag.contains("previous_chest")) {
+			String savedPreviousChest = tag.getString("previous_chest");
+
+			if (!savedPreviousChest.isBlank()) {
+				ResourceLocation parsedPreviousChest = new ResourceLocation(savedPreviousChest);
+
+				if (parsedPreviousChest.getPath() != null && !parsedPreviousChest.getPath().isBlank())
+					previousChest = parsedPreviousChest;
+			}
+		}
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);
