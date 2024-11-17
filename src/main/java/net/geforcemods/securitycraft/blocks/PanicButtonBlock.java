@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blockentities.PanicButtonBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -74,16 +74,20 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		boolean newPowered = !state.getValue(POWERED);
+		if (level.getBlockEntity(pos) instanceof PanicButtonBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player))) {
+			boolean newPowered = !state.getValue(POWERED);
 
-		level.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
-		playSound(player, level, pos, newPowered);
-		notifyNeighbors(level, pos, switch (state.getValue(FACE)) {
-			case WALL -> state.getValue(FACING);
-			case CEILING -> Direction.DOWN;
-			case FLOOR -> Direction.UP;
-		});
-		return InteractionResult.SUCCESS;
+			level.setBlockAndUpdate(pos, state.setValue(POWERED, newPowered));
+			playSound(player, level, pos, newPowered);
+			notifyNeighbors(level, pos, switch (state.getValue(FACE)) {
+				case WALL -> state.getValue(FACING);
+				case CEILING -> Direction.DOWN;
+				case FLOOR -> Direction.UP;
+			});
+			return InteractionResult.SUCCESS;
+		}
+		else
+			return InteractionResult.FAIL;
 	}
 
 	private void notifyNeighbors(Level level, BlockPos pos, Direction facing) {
@@ -142,7 +146,7 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new OwnableBlockEntity(pos, state);
+		return new PanicButtonBlockEntity(pos, state);
 	}
 
 	@Override

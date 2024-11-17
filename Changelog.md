@@ -1,5 +1,6 @@
 --------------------------Changelog for v1.9.121 of SecurityCraft--------------------------
 
+- New: The Panic Button now supports the Allowlist Module
 - API: New method IPasscodeProtected#setPasscodeInAdjacentBlock for updating an adjacent block (e.g. the second half of a chest) with the passcode when setting it
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
