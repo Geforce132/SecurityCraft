@@ -140,7 +140,17 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
-		previousBarrel = new ResourceLocation(tag.getString("previous_barrel"));
+
+		if (tag.contains("previous_barrel")) {
+			String savedPreviousBarrel = tag.getString("previous_barrel");
+
+			if (!savedPreviousBarrel.isBlank()) {
+				ResourceLocation parsedPreviousBarrel = new ResourceLocation(savedPreviousBarrel);
+
+				if (parsedPreviousBarrel.getPath() != null && !parsedPreviousBarrel.getPath().isBlank())
+					previousBarrel = parsedPreviousBarrel;
+			}
+		}
 
 		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
 			sendAllowlistMessage.setValue(false);
