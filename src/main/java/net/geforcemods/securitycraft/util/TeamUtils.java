@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -80,14 +78,8 @@ public class TeamUtils {
 		if (team != null)
 			onlinePlayers = team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
 
-		if (onlinePlayers == null || onlinePlayers.isEmpty()) {
-			ServerPlayer player = PlayerUtils.getPlayerFromName(owner.getName());
-
-			if (player != null)
-				return Arrays.asList(player);
-
-			return new ArrayList<>();
-		}
+		if (onlinePlayers == null || onlinePlayers.isEmpty())
+			return PlayerUtils.getPlayerListFromOwner(owner);
 
 		return onlinePlayers;
 	}
