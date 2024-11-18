@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.compat.ftbteams.FTBTeamsCompat;
 import net.minecraft.ChatFormatting;
@@ -21,11 +22,14 @@ public class TeamUtils {
 	 *
 	 * @param owner1 The first owner object representing a player
 	 * @param owner2 The second owner object representing a player
-	 * @return true if both players are on the same team, false otherwise
+	 * @return true if both players are on the same team, false otherwise or if team ownership has been disabled through the
+	 *         config
 	 */
 	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		if (owner1.equals(owner2))
 			return true;
+		else if (!ConfigHandler.SERVER.enableTeamOwnership.get())
+			return false;
 
 		if (ModList.get().isLoaded("ftbteams"))
 			return FTBTeamsCompat.areOnSameTeam(owner1, owner2);
@@ -54,18 +58,21 @@ public class TeamUtils {
 	 * Gets a representation containing the team's name and color
 	 *
 	 * @param owner The owner whose team to get
-	 * @return The {@link TeamRepresentation} of the owner's team, {@code null} if they are not part of a team
+	 * @return The {@link TeamRepresentation} of the owner's team, {@code null} if they are not part of a team or if team
+	 *         ownership has been disabled through the config
 	 */
 	public static TeamRepresentation getTeamRepresentation(Owner owner) {
-		if (ModList.get().isLoaded("ftbteams"))
-			return FTBTeamsCompat.getTeamRepresentation(owner);
+		if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
+			if (ModList.get().isLoaded("ftbteams"))
+				return FTBTeamsCompat.getTeamRepresentation(owner);
 
-		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
+			PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
-		if (team != null && team.getPlayers().size() > 1) {
-			Integer color = team.getColor().getColor();
+			if (team != null && team.getPlayers().size() > 1) {
+				Integer color = team.getColor().getColor();
 
-			return new TeamRepresentation(team.getDisplayName().getString(), color == null ? ChatFormatting.GRAY.getColor() : color);
+				return new TeamRepresentation(team.getDisplayName().getString(), color == null ? ChatFormatting.GRAY.getColor() : color);
+			}
 		}
 
 		return null;
@@ -76,19 +83,21 @@ public class TeamUtils {
 	 *
 	 * @param server The server
 	 * @param owner The owner whose team to get the players of
-	 * @return A list containing all online players who are in the same team as the owner. If the owner is not in a team, the
-	 *         list will only contain the owning player, if they're online.
+	 * @return A list containing all online players who are in the same team as the owner. If the owner is not in a team or team
+	 *         ownership has been disabled through the config, the list will only contain the owning player, if they're online.
 	 */
 	public static Collection<ServerPlayer> getOnlinePlayersFromOwner(MinecraftServer server, Owner owner) {
 		Collection<ServerPlayer> onlinePlayers = null;
 
-		if (ModList.get().isLoaded("ftbteams"))
-			onlinePlayers = FTBTeamsCompat.getOnlinePlayersInTeam(owner);
-		else {
-			PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
+		if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
+			if (ModList.get().isLoaded("ftbteams"))
+				onlinePlayers = FTBTeamsCompat.getOnlinePlayersInTeam(owner);
+			else {
+				PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
-			if (team != null)
-				onlinePlayers = team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
+				if (team != null)
+					onlinePlayers = team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
+			}
 		}
 
 		if (onlinePlayers == null || onlinePlayers.isEmpty())

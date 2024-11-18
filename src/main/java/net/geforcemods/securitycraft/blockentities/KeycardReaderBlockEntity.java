@@ -180,7 +180,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
-		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(getOwner(), keycardOwner)) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
+		if (!TeamUtils.areOnSameTeam(getOwner(), keycardOwner) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
 			return new TranslatableComponent("messages.securitycraft:keycardReader.differentOwner");
 
 		//the keycard's signature does not match this keycard reader's
