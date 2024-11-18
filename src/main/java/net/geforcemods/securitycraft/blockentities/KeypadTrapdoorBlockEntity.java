@@ -83,7 +83,7 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public <T> void onOptionChanged(Option<T> option) {
-		if (option == disabled && ((BooleanOption) option).get() || option == signalLength) {
+		if ((option == disabled && ((BooleanOption) option).get() || option == signalLength) && getBlockState().getValue(TrapDoorBlock.OPEN)) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(TrapDoorBlock.OPEN, false));
 			SCContent.KEYPAD_TRAPDOOR.get().playSound(null, level, worldPosition, false);
 		}
