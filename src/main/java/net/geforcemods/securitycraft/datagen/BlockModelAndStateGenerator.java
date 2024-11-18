@@ -71,28 +71,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
 		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
 
-		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
-			Block block = obj.get();
-			Item item = block.asItem();
-
-			if (decorationTabItems.contains(item)) {
-				if (block instanceof ReinforcedSlabBlock)
-					reinforcedSlabBlock(block);
-				else if (block instanceof ReinforcedStainedGlassBlock)
-					simpleBlockWithRenderType(block, "translucent");
-				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPaneBlock((IronBarsBlock) block, "translucent");
-				else if (block instanceof ReinforcedStairsBlock)
-					reinforcedStairsBlock(block);
-				else if (block instanceof ReinforcedWallBlock)
-					reinforcedWallBlock(block);
-				else if (block instanceof ReinforcedCarpetBlock)
-					reinforcedCarpetBlock(block);
-			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
-				blockMine(mine.getBlockDisguisedAs(), block);
-		}
-
 		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
 		horizontalBlock(SCContent.FURNACE_MINE.get(), mcBlock("furnace_side"), mcBlock("furnace_front"), mcBlock("furnace_top"));
 		horizontalBlock(SCContent.SMOKER_MINE.get(), mcBlock("smoker_side"), mcBlock("smoker_front"), mcBlock("smoker_top"));
@@ -219,6 +197,31 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		reinforcedWallBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), "deepslate_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
+
+		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
+			Block block = obj.get();
+			Item item = block.asItem();
+
+			if (registeredBlocks.containsKey(block))
+				continue;
+
+			if (decorationTabItems.contains(item)) {
+				if (block instanceof ReinforcedSlabBlock)
+					reinforcedSlabBlock(block);
+				else if (block instanceof ReinforcedStainedGlassBlock)
+					simpleBlockWithRenderType(block, "translucent");
+				else if (block instanceof ReinforcedStainedGlassPaneBlock)
+					reinforcedPaneBlock((IronBarsBlock) block, "translucent");
+				else if (block instanceof ReinforcedStairsBlock)
+					reinforcedStairsBlock(block);
+				else if (block instanceof ReinforcedWallBlock)
+					reinforcedWallBlock(block);
+				else if (block instanceof ReinforcedCarpetBlock)
+					reinforcedCarpetBlock(block);
+			}
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
+				blockMine(mine.getBlockDisguisedAs(), block);
+		}
 	}
 
 	public void blockMine(Block vanillaBlock, Block block) {
