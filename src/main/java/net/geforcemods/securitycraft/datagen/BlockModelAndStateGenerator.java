@@ -63,28 +63,6 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
-			Block block = obj.get();
-			Item item = block.asItem();
-
-			if (item.getCreativeTabs().contains(SecurityCraft.DECORATION_TAB)) {
-				if (block instanceof ReinforcedSlabBlock)
-					reinforcedSlabBlock(block);
-				else if (block instanceof ReinforcedStainedGlassBlock)
-					simpleBlock(block);
-				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedPaneBlock((PaneBlock) block);
-				else if (block instanceof ReinforcedStairsBlock)
-					reinforcedStairsBlock(block);
-				else if (block instanceof ReinforcedWallBlock)
-					reinforcedWallBlock(block);
-				else if (block instanceof ReinforcedCarpetBlock)
-					reinforcedCarpetBlock(block);
-			}
-			else if (item.getCreativeTabs().contains(SecurityCraft.MINE_TAB) && block instanceof BaseFullMineBlock)
-				blockMine(((BaseFullMineBlock) block).getBlockDisguisedAs(), block);
-		}
-
 		blockMine(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE.get());
 		horizontalBlock(SCContent.FURNACE_MINE.get(), mcBlock("furnace_side"), mcBlock("furnace_front"), mcBlock("furnace_top"));
 		horizontalBlock(SCContent.SMOKER_MINE.get(), mcBlock("smoker_side"), mcBlock("smoker_front"), mcBlock("smoker_top"));
@@ -191,6 +169,31 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		reinforcedWallBlock(SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(), "red_nether_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_END_STONE_BRICK_WALL.get(), "end_stone_bricks");
 		reinforcedWallBlock(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
+
+		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
+			Block block = obj.get();
+			Item item = block.asItem();
+
+			if (registeredBlocks.containsKey(block))
+				continue;
+
+			if (item.getCreativeTabs().contains(SecurityCraft.DECORATION_TAB)) {
+				if (block instanceof ReinforcedSlabBlock)
+					reinforcedSlabBlock(block);
+				else if (block instanceof ReinforcedStainedGlassBlock)
+					simpleBlock(block);
+				else if (block instanceof ReinforcedStainedGlassPaneBlock)
+					reinforcedPaneBlock((PaneBlock) block);
+				else if (block instanceof ReinforcedStairsBlock)
+					reinforcedStairsBlock(block);
+				else if (block instanceof ReinforcedWallBlock)
+					reinforcedWallBlock(block);
+				else if (block instanceof ReinforcedCarpetBlock)
+					reinforcedCarpetBlock(block);
+			}
+			else if (item.getCreativeTabs().contains(SecurityCraft.MINE_TAB) && block instanceof BaseFullMineBlock)
+				blockMine(((BaseFullMineBlock) block).getBlockDisguisedAs(), block);
+		}
 	}
 
 	public void blockMine(Block vanillaBlock, Block block) {
