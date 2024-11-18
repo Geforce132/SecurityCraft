@@ -68,7 +68,7 @@ minecraft {
 		data {
 			workingDirectory project.file('run/data')
 			property 'forge.logging.console.level', 'debug'
-			args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/')
+			args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
 			mods {
 				securitycraft {

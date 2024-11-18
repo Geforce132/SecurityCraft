@@ -2,8 +2,10 @@ package net.geforcemods.securitycraft.datagen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -35,6 +37,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ItemModelGenerator extends ItemModelProvider {
+	private final Set<Block> generatedBlocks = new HashSet<>();
+
 	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
 		super(output, SecurityCraft.MODID, existingFileHelper);
 	}
@@ -54,31 +58,6 @@ public class ItemModelGenerator extends ItemModelProvider {
 		flatReinforcedItems.put(SCContent.REINFORCED_LANTERN.get(), "item/lantern");
 		flatReinforcedItems.put(SCContent.REINFORCED_LEVER.get(), "block/lever");
 		flatReinforcedItems.put(SCContent.REINFORCED_SOUL_LANTERN.get(), "item/soul_lantern");
-
-		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
-			Block block = obj.get();
-			Item item = block.asItem();
-
-			if (decorationTabItems.contains(item)) {
-				if (flatReinforcedItems.containsKey(block))
-					flatReinforcedItem(block, flatReinforcedItems.get(block));
-				else if (block instanceof ReinforcedStainedGlassPaneBlock)
-					reinforcedStainedPane(block);
-				else if (block instanceof ReinforcedWallBlock wall)
-					reinforcedWallInventory(block, wall.getVanillaBlock());
-				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBaseBlock || block instanceof ReinforcedChiseledBookshelfBlock)
-					reinforcedBlockInventory(block);
-				else if (block instanceof ReinforcedFenceBlock) {
-					ResourceLocation registryName = Utils.getRegistryName(block);
-
-					parent(registryName.toString(), modBlock(registryName.getPath() + "_inventory"));
-				}
-				else if (block instanceof IReinforcedBlock)
-					simpleReinforcedParent(block);
-			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
-				blockMine(mine.getBlockDisguisedAs(), block);
-		}
 
 		List<RegistryObject<Item>> singleTextureItems = new ArrayList<>(SCContent.ITEMS.getEntries());
 		//@formatter:off
@@ -173,6 +152,34 @@ public class ItemModelGenerator extends ItemModelProvider {
 		reinforcedWallInventory(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get(), "polished_blackstone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_BRICK_WALL.get(), "deepslate_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
+
+		for (RegistryObject<Block> obj : SCContent.BLOCKS.getEntries()) {
+			if (generatedBlocks.contains(obj.get()))
+				continue;
+
+			Block block = obj.get();
+			Item item = block.asItem();
+
+			if (decorationTabItems.contains(item)) {
+				if (flatReinforcedItems.containsKey(block))
+					flatReinforcedBlockItem(block, flatReinforcedItems.get(block));
+				else if (block instanceof ReinforcedStainedGlassPaneBlock)
+					reinforcedStainedPane(block);
+				else if (block instanceof ReinforcedWallBlock wall)
+					reinforcedWallInventory(block, wall.getVanillaBlock());
+				else if (block instanceof ReinforcedButtonBlock || block instanceof ReinforcedPistonBaseBlock || block instanceof ReinforcedChiseledBookshelfBlock)
+					reinforcedBlockInventory(block);
+				else if (block instanceof ReinforcedFenceBlock) {
+					ResourceLocation registryName = Utils.getRegistryName(block);
+
+					parent(registryName.toString(), modBlock(registryName.getPath() + "_inventory"));
+				}
+				else if (block instanceof IReinforcedBlock)
+					simpleReinforcedParent(block);
+			}
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
+				blockMine(mine.getBlockDisguisedAs(), block);
+		}
 	}
 
 	public void linkingStateItem(RegistryObject<Item> item) {
@@ -219,7 +226,8 @@ public class ItemModelGenerator extends ItemModelProvider {
 		return singleTexture(path, mcLoc(parent), "layer0", modItem(path));
 	}
 
-	public ItemModelBuilder flatReinforcedItem(Block block, String texturePath) {
+	public ItemModelBuilder flatReinforcedBlockItem(Block block, String texturePath) {
+		generatedBlocks.add(block);
 		return singleTexture(name(block), mcLoc("item/generated"), "layer0", new ResourceLocation(texturePath));
 	}
 
@@ -230,6 +238,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder reinforcedPane(Block block) {
 		String name = name(block);
 
+		generatedBlocks.add(block);
 		return getBuilder(name).parent(new UncheckedModelFile("item/generated")).texture("layer0", modBlock(name.replace("_pane", "")));
 	}
 
@@ -238,12 +247,14 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, String textureName) {
+		generatedBlocks.add(block);
 		return uncheckedSingleTexture(Utils.getRegistryName(block).toString(), modBlock("reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
 	}
 
 	public ItemModelBuilder reinforcedBlockInventory(Block block) {
 		String path = name(block);
 
+		generatedBlocks.add(block);
 		return parent(path, modBlock(path + "_inventory"));
 	}
 
@@ -258,6 +269,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder blockMine(Block block, ResourceLocation sideTexture, ResourceLocation frontTexture, ResourceLocation bottomTopTexture) {
+		generatedBlocks.add(block);
 		//@formatter:off
 		return parent(Utils.getRegistryName(block).toString(), modItem("template_block_mine"))
 				.texture("down", bottomTopTexture)
@@ -272,6 +284,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	public ItemModelBuilder simpleReinforcedParent(Block block) {
 		String name = name(block);
 
+		generatedBlocks.add(block);
 		return parent(name, modBlock(name.replace("crystal_", "")));
 	}
 
@@ -280,6 +293,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder simpleParent(Block block, String parent) {
+		generatedBlocks.add(block);
 		return parent(name(block), modBlock(parent));
 	}
 
