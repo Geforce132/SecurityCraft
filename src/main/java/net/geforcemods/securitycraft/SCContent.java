@@ -39,6 +39,7 @@ import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
+import net.geforcemods.securitycraft.blockentities.PanicButtonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
@@ -2754,6 +2755,8 @@ public class SCContent {
 				return new ReinforcedObserverBlockEntity(pos, state);
 			else if (state.is(MINE.get()))
 				return new MineBlockEntity(pos, state);
+			else if (state.is(PANIC_BUTTON.get()))
+				return new PanicButtonBlockEntity(pos, state);
 			else
 				return new OwnableBlockEntity(pos, state);
 		}, beOwnableBlocks.toArray(new Block[beOwnableBlocks.size()])).build(null);
