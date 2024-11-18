@@ -86,8 +86,14 @@ public class SaltData extends WorldSavedData {
 
 		for (int i = 0; i < listtag.size(); ++i) {
 			CompoundNBT saltTag = listtag.getCompound(i);
+			UUID uuid;
 
-			saltMap.put(UUID.fromString(saltTag.getString("key")), saltTag.getByteArray("salt"));
+			if (saltTag.contains("key", Constants.NBT.TAG_STRING))
+				uuid = UUID.fromString(saltTag.getString("key"));
+			else
+				uuid = saltTag.getUUID("key");
+
+			saltMap.put(uuid, saltTag.getByteArray("salt"));
 		}
 	}
 
@@ -95,11 +101,11 @@ public class SaltData extends WorldSavedData {
 	public CompoundNBT save(CompoundNBT tag) {
 		ListNBT saltTable = new ListNBT();
 
-		for (Map.Entry<UUID, byte[]> saltMapping : saltMap.entrySet()) {
+		for (Map.Entry<UUID, byte[]> saltEntry : saltMap.entrySet()) {
 			CompoundNBT saltTag = new CompoundNBT();
 
-			saltTag.putString("key", saltMapping.getKey().toString());
-			saltTag.putByteArray("salt", saltMapping.getValue());
+			saltTag.putUUID("key", saltEntry.getKey());
+			saltTag.putByteArray("salt", saltEntry.getValue());
 			saltTable.add(saltTag);
 		}
 
