@@ -296,8 +296,4 @@ public class ItemModelGenerator extends ItemModelProvider {
 	private String name(Block block) {
 		return block.getRegistryName().getPath();
 	}
-
-	private String name(Item item) {
-		return item.getRegistryName().getPath();
-	}
 }
