@@ -124,7 +124,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleParent(SCContent.REINFORCED_GLASS.get());
 		reinforcedPane(SCContent.REINFORCED_GLASS_PANE.get());
 		simpleParent(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "reinforced_iron_trapdoor_bottom");
-		parent(name(SCContent.REINFORCED_SCAFFOLDING_ITEM.get()), modBlock("reinforced_scaffolding_stable"));
+		simpleParent(SCContent.REINFORCED_SCAFFOLDING.get(), "reinforced_scaffolding_stable");
 		reinforcedWallInventory(SCContent.REINFORCED_BRICK_WALL.get(), "bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(), "mossy_stone_bricks");
 		reinforcedWallInventory(SCContent.REINFORCED_STONE_BRICK_WALL.get(), "stone_bricks");
