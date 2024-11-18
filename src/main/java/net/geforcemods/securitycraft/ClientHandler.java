@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
@@ -558,7 +559,10 @@ public class ClientHandler {
 					return Minecraft.getInstance().getBlockColors().getColor(blockFromItem.defaultBlockState(), level, pos, tintIndex);
 			}
 
-			return 0xFFFFFF;
+			if (block instanceof IReinforcedBlock)
+				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
+			else
+				return 0xFFFFFF;
 		}, disguisableBlocks.get());
 		event.getBlockColors().register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
