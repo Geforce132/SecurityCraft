@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.lwjgl.glfw.GLFW;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -32,6 +34,7 @@ public class SetPasscodeScreen extends Screen {
 	private TranslationTextComponent setup;
 	private IFormattableTextComponent combined;
 	private TextFieldWidget keycodeTextbox;
+	private Button saveAndContinueButton;
 
 	public SetPasscodeScreen(TileEntity be, ITextComponent title) {
 		super(title);
@@ -47,8 +50,7 @@ public class SetPasscodeScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		Button saveAndContinueButton = addButton(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked));
-
+		saveAndContinueButton = addButton(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		keycodeTextbox = addButton(new TextFieldWidget(font, width / 2 - 37, height / 2 - 47, 77, 12, StringTextComponent.EMPTY));
@@ -87,6 +89,8 @@ public class SetPasscodeScreen extends Screen {
 			onClose();
 			return true;
 		}
+		else if (keyCode == GLFW.GLFW_KEY_KP_ENTER || keyCode == GLFW.GLFW_KEY_ENTER && saveAndContinueButton.active)
+			saveAndContinueButtonClicked(saveAndContinueButton);
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
