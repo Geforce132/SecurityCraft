@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png");
 	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer_lvl1.png");
-	private final Component ubr = Utils.localize("gui.securitycraft:blockReinforcer.title");
 	private final Component output = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private CallbackCheckbox unreinforceCheckbox;
 
@@ -55,7 +54,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		NonNullList<ItemStack> inv = menu.getItems();
 
-		font.draw(pose, ubr, (imageWidth - font.width(ubr)) / 2, 5, 4210752);
+		font.draw(pose, title, (imageWidth - font.width(title)) / 2, 5, 4210752);
 		font.draw(pose, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752);
 
 		if (!inv.get(36).isEmpty()) {
