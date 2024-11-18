@@ -1205,6 +1205,7 @@
 	"module.securitycraft.laser_block.redstone_module.description": "Adding a redstone module to a laser block will cause it to emit a 15-block redstone signal when a mob or player walks through the laser.",
 	"module.securitycraft.laser_block.smart_module.description": "Adding a smart module to a laser block will allow to turn off the laser for specific sides of the block.",
 	"module.securitycraft.laser_block.whitelist_module.description": "Adding an allowlist module to a laser block will allow listed players to walk through the lasers without emitting a redstone signal.",
+	"module.securitycraft.panic_button.whitelist_module.description": "Adding an allowlist module to a panic button will allow listed players to press the button.",
 	"module.securitycraft.portable_radar.blacklist_module.description": "Adding a denylist module to a portable radar will make the radar only look out for players on the list.",
 	"module.securitycraft.portable_radar.redstone_module.description": "Adding a redstone module to a portable radar will cause the radar to emit a redstone signal whenever a player is within range.",
 	"module.securitycraft.portable_radar.whitelist_module.description": "Adding an allowlist module to a portable radar will remove listed players from the radar's search.",
