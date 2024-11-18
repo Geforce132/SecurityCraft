@@ -1,4 +1,4 @@
---------------------------Changelog for v1.9.121 of SecurityCraft--------------------------
+--------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 
 - New: The Panic Button now supports the Allowlist Module
 - New: Config setting to disable the ability of the Universal Block Reinforcer to un-/reinforce blocks that are placed in the world
@@ -6,6 +6,7 @@
 - Fix: Placing a Passcode-protected Chest or Barrel leads to unnecessary data being saved
 - Fix: Bouncing betties are rendered incorrectly
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name
+- Fix: The operator items creative tab shows when it's disabled
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
