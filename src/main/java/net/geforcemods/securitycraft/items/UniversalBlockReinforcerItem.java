@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -50,7 +49,7 @@ public class UniversalBlockReinforcerItem extends Item {
 
 				@Override
 				public Component getDisplayName() {
-					return new TranslatableComponent(getDescriptionId());
+					return heldItem.getHoverName();
 				}
 			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
 		}
