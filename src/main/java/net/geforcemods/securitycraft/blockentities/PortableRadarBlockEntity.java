@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -33,6 +36,12 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private IntOption searchRadiusOption = new IntOption(this::getBlockPos, "searchRadius", 25, 1, 50, 1);
 	private IntOption searchDelayOption = new IntOption(this::getBlockPos, "searchDelay", 4, 4, 10, 1);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
+	private BooleanOption sendToTeamMembersOption = new BooleanOption("sendToTeamMembers", true) {
+		@Override
+		public Boolean get() {
+			return ConfigHandler.SERVER.enableTeamOwnership.get() && super.get();
+		}
+	};
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
@@ -56,12 +65,17 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 				PortableRadarBlock.togglePowerOutput(level, worldPosition, !closebyPlayers.isEmpty());
 
 			if (!closebyPlayers.isEmpty()) {
-				Collection<ServerPlayerEntity> onlineTeamPlayers = TeamUtils.getOnlinePlayersFromOwner(level.getServer(), getOwner());
+				IFormattableTextComponent coords = Utils.getFormattedCoordinates(worldPosition);
+				Collection<ServerPlayerEntity> messageReceivers;
+
+				if (sendToTeamMembersOption.get())
+					messageReceivers = TeamUtils.getOnlinePlayersFromOwner(level.getServer(), getOwner());
+				else
+					messageReceivers = PlayerUtils.getPlayerListFromOwner(getOwner());
 
 				for (PlayerEntity closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {
 						IFormattableTextComponent attackedName = closebyPlayer.getName().plainCopy().withStyle(TextFormatting.ITALIC);
-						IFormattableTextComponent coords = Utils.getFormattedCoordinates(worldPosition);
 						IFormattableTextComponent text;
 
 						if (hasCustomName())
@@ -69,8 +83,8 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, coords);
 
-						if (!onlineTeamPlayers.isEmpty())
-							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE));
+						if (!messageReceivers.isEmpty())
+							messageReceivers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, TextFormatting.BLUE));
 					}
 				}
 			}
@@ -123,8 +137,13 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[] {
+		Option<?>[] options = new Option[] {
 				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled, ignoreOwner, respectInvisibility
 		};
+
+		if (ConfigHandler.SERVER.enableTeamOwnership.get())
+			options = ArrayUtils.insert(3, options, sendToTeamMembersOption);
+
+		return options;
 	}
 }

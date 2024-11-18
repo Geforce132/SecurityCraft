@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -95,18 +93,9 @@ public class TeamUtils {
 		}
 
 		if (onlinePlayers == null || onlinePlayers.isEmpty())
-			return getPlayerListFromOwner(owner);
+			return PlayerUtils.getPlayerListFromOwner(owner);
 
 		return onlinePlayers;
-	}
-
-	private static Collection<ServerPlayerEntity> getPlayerListFromOwner(Owner owner) {
-		ServerPlayerEntity player = PlayerUtils.getPlayerFromName(owner.getName());
-
-		if (player != null)
-			return Arrays.asList(player);
-
-		return new ArrayList<>();
 	}
 
 	public static class TeamRepresentation {
