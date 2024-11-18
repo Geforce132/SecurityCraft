@@ -7,13 +7,14 @@ import java.util.UUID;
 import dev.ftb.mods.ftbteams.FTBTeamsAPI;
 import dev.ftb.mods.ftbteams.data.Team;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.util.TeamHandler;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-public class FTBTeamsCompat {
-	private FTBTeamsCompat() {}
-
-	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
+public class FTBTeamsCompat implements TeamHandler {
+	@Override
+	public boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		try {
 			return FTBTeamsAPI.arePlayersInSameTeam(UUID.fromString(owner1.getUUID()), UUID.fromString(owner2.getUUID()));
 		}
@@ -22,7 +23,8 @@ public class FTBTeamsCompat {
 		}
 	}
 
-	public static TeamRepresentation getTeamRepresentation(Owner owner) {
+	@Override
+	public TeamRepresentation getTeamRepresentation(Owner owner) {
 		try {
 			Team team = FTBTeamsAPI.getPlayerTeam(UUID.fromString(owner.getUUID()));
 
@@ -34,7 +36,8 @@ public class FTBTeamsCompat {
 		return null;
 	}
 
-	public static Collection<ServerPlayer> getOnlinePlayersInTeam(Owner owner) {
+	@Override
+	public Collection<ServerPlayer> getOnlinePlayersFromOwner(MinecraftServer server, Owner owner) {
 		try {
 			Team team = FTBTeamsAPI.getPlayerTeam(UUID.fromString(owner.getUUID()));
 
