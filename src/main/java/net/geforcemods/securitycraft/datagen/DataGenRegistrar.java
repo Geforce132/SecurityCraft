@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.util.Collections;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -18,7 +16,7 @@ public class DataGenRegistrar {
 	@SubscribeEvent
 	public static void onGatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
-		ExistingFileHelper existingFileHelper = new ExistingFileHelper(Collections.emptyList(), Collections.emptySet(), false, null, null);
+		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 		BlockTagGenerator blockTagGenerator = new BlockTagGenerator(generator, existingFileHelper);
 
 		generator.addProvider(new BlockLootTableGenerator(generator));
