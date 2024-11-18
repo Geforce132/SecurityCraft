@@ -311,7 +311,9 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	@Override
 	public void setPasscodeInAdjacentBlock(String codeToSet) {
-		if (findOther() instanceof KeypadChestBlockEntity chestBe && getOwner().owns(chestBe)) {
+		KeypadChestBlockEntity chestBe = findOther();
+
+		if (chestBe != null && getOwner().owns(chestBe)) {
 			chestBe.hashAndSetPasscode(codeToSet, getSalt());
 			level.sendBlockUpdated(chestBe.worldPosition, chestBe.getBlockState(), chestBe.getBlockState(), 2);
 		}
