@@ -29,6 +29,7 @@ public class SetPasscodeScreen extends Screen {
 	private TranslatableComponent setup;
 	private MutableComponent combined;
 	private EditBox keycodeTextbox;
+	private Button saveAndContinueButton;
 
 	public SetPasscodeScreen(BlockEntity be, Component title) {
 		super(title);
@@ -44,8 +45,7 @@ public class SetPasscodeScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		Button saveAndContinueButton = addRenderableWidget(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked));
-
+		saveAndContinueButton = addRenderableWidget(new ExtendedButton(width / 2 - 48, height / 2 + 30 + 10, 100, 20, Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked));
 		saveAndContinueButton.active = false;
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		keycodeTextbox = addRenderableWidget(new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, TextComponent.EMPTY));
@@ -84,6 +84,8 @@ public class SetPasscodeScreen extends Screen {
 			onClose();
 			return true;
 		}
+		else if (keyCode == InputConstants.KEY_NUMPADENTER || keyCode == InputConstants.KEY_RETURN && saveAndContinueButton.active)
+			saveAndContinueButtonClicked(saveAndContinueButton);
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
