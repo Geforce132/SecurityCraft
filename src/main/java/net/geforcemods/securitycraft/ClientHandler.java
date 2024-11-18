@@ -479,7 +479,7 @@ public class ClientHandler {
 			CompoundNBT tag = stack.getTag();
 			boolean isPlayer = entity instanceof PlayerEntity;
 
-			if ((!isPlayer || !((PlayerEntity) entity).isCreative()) && CodebreakerItem.wasRecentlyUsed(stack))
+			if ((!isPlayer || !((PlayerEntity) entity).isCreative() && !((PlayerEntity) entity).isCreative()) && CodebreakerItem.wasRecentlyUsed(stack))
 				return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;
 
 			if (!isPlayer)
