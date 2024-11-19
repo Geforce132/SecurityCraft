@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -40,6 +39,9 @@ public abstract class EntityTrackerMixin {
 	@Inject(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;min(II)I"), locals = LocalCapture.CAPTURE_FAILSOFT)
 	private void securitycraft$onUpdatePlayer(ServerPlayerEntity player, CallbackInfo callback, Vector3d unused, int viewDistance) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+			if (entity == player.camera) //If the player is mounted to a camera entity, that entity always needs to be sent to the client regardless of distance
+				shouldBeSent = true;
+
 			Vector3d relativePosToCamera = player.getCamera().position().subtract(serverEntity.sentPos());
 
 			if (relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance)
@@ -55,6 +57,6 @@ public abstract class EntityTrackerMixin {
 		boolean originalShouldBeSent = shouldBeSent;
 
 		shouldBeSent = false;
-		return entity instanceof SecurityCamera || original || originalShouldBeSent;
+		return original || originalShouldBeSent;
 	}
 }

@@ -169,8 +169,10 @@ public class SecurityCameraBlock extends DisguisableBlock implements IWaterLogga
 				serverPlayer.getCamera().remove();
 
 			dummyEntity = new SecurityCamera(level, pos);
-			level.addFreshEntity(dummyEntity);
 			dummyEntity.setChunkLoadingDistance(viewDistance);
+			//can't use ServerPlayer#setCamera here because it also teleports the player
+			serverPlayer.camera = dummyEntity;
+			level.addFreshEntity(dummyEntity);
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
@@ -178,8 +180,6 @@ public class SecurityCameraBlock extends DisguisableBlock implements IWaterLogga
 				}
 			}
 
-			//can't use ServerPlayerEntity#setSpectatingEntity here because it also teleports the player
-			serverPlayer.camera = dummyEntity;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
 			if (te instanceof SecurityCameraBlockEntity)
