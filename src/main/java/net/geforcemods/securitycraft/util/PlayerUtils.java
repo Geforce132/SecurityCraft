@@ -112,8 +112,10 @@ public class PlayerUtils {
 
 		if (player.world.isRemote)
 			return ClientProxy.isPlayerMountedOnCamera();
-		else
+		else if (player instanceof EntityPlayerMP)
 			return ((EntityPlayerMP) player).getSpectatingEntity() instanceof SecurityCamera;
+		else
+			return false;
 	}
 
 	/**
