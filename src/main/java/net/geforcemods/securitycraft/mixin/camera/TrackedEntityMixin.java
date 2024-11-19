@@ -11,10 +11,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.server.level.ChunkMap;
-import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
@@ -24,9 +22,6 @@ import net.minecraft.world.phys.Vec3;
  */
 @Mixin(value = ChunkMap.TrackedEntity.class, priority = 1100)
 public abstract class TrackedEntityMixin {
-	@Shadow
-	@Final
-	ServerEntity serverEntity;
 	@Shadow
 	@Final
 	Entity entity;
@@ -40,6 +35,9 @@ public abstract class TrackedEntityMixin {
 	@Inject(method = "updatePlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/world/phys/Vec3;x:D", ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT)
 	private void securitycraft$onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, double viewDistance) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+			if (entity == player.camera) //If the player is mounted to a camera entity, that entity always needs to be sent to the client regardless of distance
+				shouldBeSent = true;
+
 			Vec3 relativePosToCamera = player.getCamera().position().subtract(entity.position());
 
 			if (relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance)
@@ -55,6 +53,6 @@ public abstract class TrackedEntityMixin {
 		boolean originalShouldBeSent = this.shouldBeSent;
 
 		this.shouldBeSent = false;
-		return entity instanceof SecurityCamera || original || originalShouldBeSent;
+		return original || originalShouldBeSent;
 	}
 }
