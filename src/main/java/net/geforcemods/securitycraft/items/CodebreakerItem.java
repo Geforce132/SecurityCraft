@@ -37,7 +37,7 @@ public class CodebreakerItem extends Item {
 			NBTTagCompound tag = stack.getTagCompound();
 			boolean isPlayer = entity instanceof EntityPlayer;
 
-			if ((!isPlayer || !((EntityPlayer) entity).isCreative()) && CodebreakerItem.wasRecentlyUsed(stack))
+			if ((!isPlayer || !((EntityPlayer) entity).isCreative() && !((EntityPlayer) entity).isSpectator()) && CodebreakerItem.wasRecentlyUsed(stack))
 				return tag.getBoolean(CodebreakerItem.WAS_SUCCESSFUL) ? 0.75F : 0.5F;
 
 			if (!isPlayer)

@@ -8,6 +8,7 @@
 - Fix: Changing the Keypad Trapdoor's signal length or disabled option plays the close sound even when already closed
 - Fix: Pressing enter when setting up a passcode does not save the passcode
 - Fix: The Rift Stabilizer cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces
+- Fix: Right-clicking a passcode-protected block in spectator mode while holding a codebreaker does not work
 - Fix: Security Camera entities are sent to every player instead of only the player mounting the camera
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 

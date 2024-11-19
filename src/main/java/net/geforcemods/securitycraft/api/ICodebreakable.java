@@ -53,7 +53,9 @@ public interface ICodebreakable {
 				return true;
 
 			if (codebreaker.getItem() == SCContent.codebreaker) {
-				if (this instanceof IOwnable && ((IOwnable) this).isOwnedBy(player) && !player.isCreative()) {
+				boolean canBypass = player.isCreative() || player.isSpectator();
+
+				if (this instanceof IOwnable && ((IOwnable) this).isOwnedBy(player) && !canBypass) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.codebreaker), Utils.localize("messages.securitycraft:codebreaker.owned"), TextFormatting.RED);
 					return false;
 				}
@@ -61,13 +63,15 @@ public interface ICodebreakable {
 				if (!codebreaker.hasTagCompound())
 					codebreaker.setTagCompound(new NBTTagCompound());
 
-				if (!player.isCreative() && CodebreakerItem.wasRecentlyUsed(codebreaker))
+				if (!canBypass && CodebreakerItem.wasRecentlyUsed(codebreaker))
 					return false;
 
-				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
+				boolean isSuccessful = canBypass || SecurityCraft.RANDOM.nextDouble() < chance;
 				NBTTagCompound tag = codebreaker.getTagCompound();
 
-				codebreaker.damageItem(1, player);
+				if (!canBypass)
+					codebreaker.damageItem(1, player);
+
 				tag.setLong(CodebreakerItem.LAST_USED_TIME, System.currentTimeMillis());
 				tag.setBoolean(CodebreakerItem.WAS_SUCCESSFUL, isSuccessful);
 
