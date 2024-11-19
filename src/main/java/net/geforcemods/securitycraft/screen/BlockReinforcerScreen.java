@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -55,7 +56,7 @@ public class BlockReinforcerScreen extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		BlockReinforcerMenu container = (BlockReinforcerMenu) inventorySlots;
 		NonNullList<ItemStack> inv = container.getInventory();
-		String ubr = Utils.localize("gui.securitycraft:blockReinforcer.title").getFormattedText();
+		String ubr = Minecraft.getMinecraft().player.getHeldItemMainhand().getDisplayName();
 
 		fontRenderer.drawString(ubr, (xSize - fontRenderer.getStringWidth(ubr)) / 2, 5, 4210752);
 		fontRenderer.drawString(Utils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
