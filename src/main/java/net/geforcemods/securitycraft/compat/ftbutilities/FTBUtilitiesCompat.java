@@ -9,13 +9,14 @@ import com.feed_the_beast.ftblib.lib.data.ForgePlayer;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.util.TeamHandler;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
-public class FTBUtilitiesCompat {
-	private FTBUtilitiesCompat() {}
-
-	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
+public class FTBUtilitiesCompat implements TeamHandler {
+	@Override
+	public boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		try {
 			return FTBLibAPI.arePlayersInSameTeam(UUID.fromString(owner1.getUUID()), UUID.fromString(owner2.getUUID()));
 		}
@@ -24,7 +25,8 @@ public class FTBUtilitiesCompat {
 		}
 	}
 
-	public static TeamRepresentation getTeamRepresentation(Owner owner) {
+	@Override
+	public TeamRepresentation getTeamRepresentation(Owner owner) {
 		if (Universe.loaded()) {
 			try {
 				ForgePlayer player = Universe.get().getPlayer(UUID.fromString(owner.getUUID()));
@@ -38,7 +40,8 @@ public class FTBUtilitiesCompat {
 		return null;
 	}
 
-	public static Collection<EntityPlayerMP> getOnlinePlayersInTeam(Owner owner) {
+	@Override
+	public Collection<EntityPlayerMP> getOnlinePlayersFromOwner(MinecraftServer server, Owner owner) {
 		try {
 			ForgePlayer player = Universe.get().getPlayer(UUID.fromString(owner.getUUID()));
 

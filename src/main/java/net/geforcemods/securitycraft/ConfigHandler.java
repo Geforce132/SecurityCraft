@@ -1,9 +1,13 @@
 package net.geforcemods.securitycraft;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
@@ -125,6 +129,19 @@ public class ConfigHandler {
 	@LangKey("config.securitycraft:enableTeamOwnership")
 	public static boolean enableTeamOwnership = false;
 
+	/**
+	 * @deprecated SecurityCraft handles this internally in {@link TeamUtils}
+	 */
+	@Deprecated
+	@Name("Team Ownership Precedence")
+	@Comment({"This list defines in which order SecurityCraft checks teams of players to determine if they're on the same team, if \"enable_team_ownership\" is set to true. First in the list means it's checked first.",
+		"SecurityCraft will continue checking for teams down the list until it finds a case where the players are on the same team, or the list is over. E.g. Given the default config, if FTB Teams is installed but the players do not share a team, the mod checks if the same players are on the same vanilla team.",
+		"Removing an entry makes the mod ignore that kind of team. Valid values are \"FTB_TEAMS\" and \"VANILLA\"."})
+	public static String[] teamOwnershipPrecedence = {
+			"FTB_TEAMS",
+			"VANILLA"
+	};
+
 	@Name("Trick scanners with player heads?")
 	@LangKey("config.securitycraft:trickScannersWithPlayerHeads")
 	public static boolean trickScannersWithPlayerHeads = false;
@@ -242,8 +259,10 @@ public class ConfigHandler {
 
 	@SubscribeEvent
 	public static void onConfigChanged(OnConfigChangedEvent event) {
-		if (SecurityCraft.MODID.equals(event.getModID()))
+		if (SecurityCraft.MODID.equals(event.getModID())) {
 			loadEffects();
+			updateTeamPrecedence();
+		}
 	}
 
 	public static void loadEffects() {
@@ -287,5 +306,23 @@ public class ConfigHandler {
 		}
 
 		return true;
+	}
+
+	private static void updateTeamPrecedence() {
+		//@formatter:off
+		TeamUtils.setPrecedence(Arrays.stream(teamOwnershipPrecedence)
+				.distinct()
+				.map(s -> {
+					try {
+						return Enum.valueOf(TeamUtils.TeamType.class, s);
+					}
+					catch (IllegalArgumentException e) {}
+
+					return TeamUtils.TeamType.NO_OP;
+				})
+				.map(TeamUtils.TeamType::getTeamHandler)
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList()));
+		//@formatter:on
 	}
 }
