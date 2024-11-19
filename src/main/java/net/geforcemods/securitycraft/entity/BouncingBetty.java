@@ -62,7 +62,7 @@ public class BouncingBetty extends Entity {
 			motionY *= -0.5D;
 		}
 
-		if (!world.isRemote && fuse-- <= 0) {
+		if (fuse-- <= 0 && !world.isRemote) {
 			setDead();
 			explode();
 		}
