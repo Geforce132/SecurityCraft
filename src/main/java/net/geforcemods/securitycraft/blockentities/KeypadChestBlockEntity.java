@@ -320,6 +320,18 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	}
 
 	@Override
+	public void setPasscodeInAdjacentBlock(String codeToSet) {
+		KeypadChestBlockEntity chestBe = findOther();
+
+		if (chestBe != null && getOwner().owns(chestBe)) {
+			IBlockState state = world.getBlockState(chestBe.pos);
+
+			chestBe.hashAndSetPasscode(codeToSet, getSalt());
+			world.notifyBlockUpdate(chestBe.pos, state, state, 2);
+		}
+	}
+
+	@Override
 	public Owner getOwner() {
 		return owner;
 	}
