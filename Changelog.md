@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
+
+- Fix: Security Camera entities are sent to every player instead of only the player mounting the camera
+
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 
 - New: More blocks now support the Disguise Module: Keypad Door, Keypad Trapdoor, Passcode-Protected Chest, Reinforced Dispenser, Reinforced Dropper, Reinforced Hopper, Scanner Door, Scanner Trapdoor, Security Camera, Sonic Security System

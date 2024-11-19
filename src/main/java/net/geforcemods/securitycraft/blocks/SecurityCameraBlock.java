@@ -193,9 +193,9 @@ public class SecurityCameraBlock extends DisguisableBlock {
 				}
 			}
 
-			world.spawnEntity(dummyEntity);
 			//can't use EntityPlayerMP#setSpectatingEntity here because it also teleports the player
 			serverPlayer.spectatingEntity = dummyEntity;
+			world.spawnEntity(dummyEntity);
 			SecurityCraft.network.sendTo(new SetCameraView(dummyEntity), serverPlayer);
 
 			//update which entities the player is tracking to allow for the correct ones to show up

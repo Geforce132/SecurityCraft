@@ -29,11 +29,12 @@ public class EntityTrackerEntryMixin {
 
 	@Redirect(method = "updatePlayerEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityTrackerEntry;isVisibleTo(Lnet/minecraft/entity/player/EntityPlayerMP;)Z"))
 	private boolean securitycraft$shouldUpdate(EntityTrackerEntry entry, EntityPlayerMP player) {
-		if (entry.getTrackedEntity() instanceof SecurityCamera)
-			return true;
-
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCamera cam = (SecurityCamera) player.getSpectatingEntity();
+
+			if (cam == entry.getTrackedEntity()) //If the player is mounted to a camera entity, that entity always needs to be sent to the client regardless of distance
+				return true;
+
 			double relativeX = cam.posX - encodedPosX / 4096.0D;
 			double relativeZ = cam.posZ - encodedPosZ / 4096.0D;
 			int adjustedRange = Math.min(range, maxRange);
