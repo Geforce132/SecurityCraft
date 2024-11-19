@@ -94,6 +94,8 @@ public class SetPasscodeScreen extends GuiContainer implements GuiPageButtonList
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (keyCode != Keyboard.KEY_ESCAPE && keycodeTextbox.isFocused() && isValidChar(typedChar))
 			keycodeTextbox.textboxKeyTyped(typedChar, keyCode);
+		else if (keyCode == Keyboard.KEY_NUMPADENTER || keyCode == Keyboard.KEY_RETURN && saveAndContinueButton.enabled)
+			actionPerformed(saveAndContinueButton);
 		else
 			super.keyTyped(typedChar, keyCode);
 	}

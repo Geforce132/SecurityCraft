@@ -6,6 +6,7 @@
 - Fix: Bouncing betties are rendered incorrectly
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name 
 - Fix: Changing the Keypad Trapdoor's signal length or disabled option plays the close sound even when already closed
+- Fix: Pressing enter when setting up a passcode does not save the passcode
 - Fix: Security Camera entities are sent to every player instead of only the player mounting the camera
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
