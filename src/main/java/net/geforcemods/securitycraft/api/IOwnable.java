@@ -2,8 +2,6 @@ package net.geforcemods.securitycraft.api;
 
 import java.util.UUID;
 
-import ibxm.Player;
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.TeamUtils;
@@ -107,7 +105,7 @@ public interface IOwnable {
 	public default boolean isOwnedBy(Owner otherOwner) {
 		Owner self = getOwner();
 
-		if (ConfigHandler.enableTeamOwnership && TeamUtils.areOnSameTeam(self, otherOwner))
+		if (TeamUtils.areOnSameTeam(self, otherOwner))
 			return true;
 
 		String selfUUID = self.getUUID();
@@ -138,8 +136,9 @@ public interface IOwnable {
 	}
 
 	/**
-	 * Checks if this block entity should ignore its owner. Note that this is not used in {@link #isOwnedBy(Player)}, so there
-	 * are cases where SecurityCraft does not use this method in conjunction with owner checks (e.g. breaking reinforced blocks).
+	 * Checks if this block entity should ignore its owner. Note that this is not used in {@link #isOwnedBy(EntityPlayer)}, so
+	 * there are cases where SecurityCraft does not use this method in conjunction with owner checks (e.g. breaking reinforced
+	 * blocks).
 	 *
 	 * @return true if the owner is ignored, false otherwise
 	 */

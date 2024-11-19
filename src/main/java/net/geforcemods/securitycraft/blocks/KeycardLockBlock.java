@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Owner;
@@ -77,7 +76,7 @@ public abstract class KeycardLockBlock extends OwnableBlock {
 					NBTTagCompound tag = stack.getTagCompound();
 					Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
 
-					if ((ConfigHandler.enableTeamOwnership && !TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner)) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
+					if (!TeamUtils.areOnSameTeam(be.getOwner(), keycardOwner) || !be.getOwner().getUUID().equals(keycardOwner.getUUID()))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(KeycardLockBlock.this), Utils.localize("messages.securitycraft:keycard_lock.different_owner"), TextFormatting.RED);
 				}
 

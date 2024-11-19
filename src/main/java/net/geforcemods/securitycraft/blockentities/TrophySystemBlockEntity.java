@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -114,7 +113,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 					if (uuid != null && uuid.toString().equals(getOwner().getUUID()))
 						shouldTarget = !ignoresOwner();
-					else if (isAllowed(name) || (ConfigHandler.enableTeamOwnership && TeamUtils.areOnSameTeam(new Owner(shooter), getOwner())))
+					else if (isAllowed(name) || TeamUtils.areOnSameTeam(new Owner(shooter), getOwner()))
 						shouldTarget = false;
 				}
 
