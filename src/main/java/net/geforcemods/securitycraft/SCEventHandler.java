@@ -451,20 +451,22 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLeftClickBlock(LeftClickBlock event) {
-		if (PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
-			event.setCanceled(true);
-			event.setCancellationResult(EnumActionResult.FAIL);
-			return;
-		}
+		if (ConfigHandler.inWorldUnReinforcing) {
+			if (PlayerUtils.isPlayerMountedOnCamera(event.getEntityPlayer())) {
+				event.setCanceled(true);
+				event.setCancellationResult(EnumActionResult.FAIL);
+				return;
+			}
 
-		ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
-		Item held = stack.getItem();
+			ItemStack stack = event.getEntityPlayer().getHeldItemMainhand();
+			Item held = stack.getItem();
 
-		if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3) {
-			UniversalBlockReinforcerItem.maybeRemoveMending(stack);
+			if (held == SCContent.universalBlockReinforcerLvL1 || held == SCContent.universalBlockReinforcerLvL2 || held == SCContent.universalBlockReinforcerLvL3) {
+				UniversalBlockReinforcerItem.maybeRemoveMending(stack);
 
-			if (UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getEntityPlayer()))
-				event.setCanceled(true); //When the client knows that a block will be converted on the server, it should not destroy that block (e.g. via instamining)
+				if (UniversalBlockReinforcerItem.convertBlock(stack, event.getPos(), event.getEntityPlayer()))
+					event.setCanceled(true); //When the client knows that a block will be converted on the server, it should not destroy that block (e.g. via instamining)
+			}
 		}
 	}
 
