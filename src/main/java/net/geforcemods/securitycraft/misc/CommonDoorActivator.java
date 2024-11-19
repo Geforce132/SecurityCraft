@@ -34,6 +34,7 @@ public class CommonDoorActivator implements Function<Object, IDoorActivator>, ID
 			SCContent.reinforcedStoneButton,
 			SCContent.reinforcedWoodenButton,
 			SCContent.retinalScanner,
+			SCContent.riftStabilizer,
 			SCContent.securityCamera,
 			SCContent.sonicSecuritySystem);
 	//@formatter:on
