@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
-import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.server.level.ChunkMap;
@@ -33,11 +32,14 @@ public abstract class TrackedEntityMixin {
 	public boolean securitycraft$modifyFlag(boolean original, ServerPlayer player, @Local(ordinal = 0) double viewDistance) {
 		Entity camera = player.getCamera();
 
-		if (original || entity instanceof SecurityCamera)
+		if (original)
 			return true;
 		else if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesAround(player.level(), entity.blockPosition(), (int) viewDistance).isEmpty())
 			return true;
 		else if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+			if (entity == player.camera) //If the player is mounted to a camera entity, that entity always needs to be sent to the client regardless of distance
+				return true;
+
 			Vec3 relativePosToCamera = camera.position().subtract(entity.position());
 
 			return relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance;
