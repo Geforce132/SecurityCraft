@@ -153,8 +153,10 @@ public class SecurityCameraBlock extends DisguisableBlock implements SimpleWater
 				cam.discard();
 
 			dummyEntity = new SecurityCamera(level, pos);
-			level.addFreshEntity(dummyEntity);
 			dummyEntity.setChunkLoadingDistance(viewDistance);
+			//can't use ServerPlayer#setCamera here because it also teleports the player
+			serverPlayer.camera = dummyEntity;
+			level.addFreshEntity(dummyEntity);
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
@@ -162,8 +164,6 @@ public class SecurityCameraBlock extends DisguisableBlock implements SimpleWater
 				}
 			}
 
-			//can't use ServerPlayer#setCamera here because it also teleports the player
-			serverPlayer.camera = dummyEntity;
 			SecurityCraft.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
 			if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity cam)
