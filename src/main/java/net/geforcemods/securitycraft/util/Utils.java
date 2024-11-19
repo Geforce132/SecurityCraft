@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -7,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -118,5 +121,32 @@ public class Utils {
 			return getLanguageKeyDenotation(((IBlockState) obj).getBlock());
 		else
 			return "";
+	}
+
+	public static void setUUID(NBTTagCompound tag, String key, UUID uuid) {
+		tag.setIntArray(key, uuidToIntArray(uuid));
+	}
+
+	public static UUID getUUID(NBTTagCompound tag, String key) {
+		int[] array = tag.getIntArray(key);
+
+		if (array.length != 4)
+			throw new IllegalArgumentException("Expected UUID-Array to be of length 4, but found " + array.length + ".");
+		else
+			return uuidFromIntArray(array);
+	}
+
+	private static UUID uuidFromIntArray(int[] array) {
+		return new UUID((long) array[0] << 32 | array[1] & 4294967295L, (long) array[2] << 32 | array[3] & 4294967295L);
+	}
+
+	private static int[] uuidToIntArray(UUID uuid) {
+		return leastMostToIntArray(uuid.getMostSignificantBits(), uuid.getLeastSignificantBits());
+	}
+
+	private static int[] leastMostToIntArray(long mostSignificantBits, long leastSignificantBits) {
+		return new int[] {
+				(int) (mostSignificantBits >> 32), (int) mostSignificantBits, (int) (leastSignificantBits >> 32), (int) leastSignificantBits
+		};
 	}
 }

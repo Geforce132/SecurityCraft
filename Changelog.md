@@ -6,6 +6,7 @@
 - Fix: Bouncing betties are rendered incorrectly
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name 
 - Fix: Security Camera entities are sent to every player instead of only the player mounting the camera
+- Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------
 

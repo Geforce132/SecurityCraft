@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldServer;
@@ -94,8 +95,14 @@ public class SaltData extends WorldSavedData {
 
 		for (int i = 0; i < listtag.tagCount(); ++i) {
 			NBTTagCompound saltTag = listtag.getCompoundTagAt(i);
+			UUID uuid;
 
-			saltMap.put(UUID.fromString(saltTag.getString("key")), saltTag.getByteArray("salt"));
+			if (saltTag.hasKey("key", Constants.NBT.TAG_STRING))
+				uuid = UUID.fromString(saltTag.getString("key"));
+			else
+				uuid = Utils.getUUID(saltTag, "key");
+
+			saltMap.put(uuid, saltTag.getByteArray("salt"));
 		}
 	}
 
@@ -103,11 +110,11 @@ public class SaltData extends WorldSavedData {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		NBTTagList saltTable = new NBTTagList();
 
-		for (Map.Entry<UUID, byte[]> saltMapping : saltMap.entrySet()) {
+		for (Map.Entry<UUID, byte[]> saltEntry : saltMap.entrySet()) {
 			NBTTagCompound saltTag = new NBTTagCompound();
 
-			saltTag.setString("key", saltMapping.getKey().toString());
-			saltTag.setByteArray("salt", saltMapping.getValue());
+			Utils.setUUID(saltTag, "key", saltEntry.getKey());
+			saltTag.setByteArray("salt", saltEntry.getValue());
 			saltTable.appendTag(saltTag);
 		}
 
