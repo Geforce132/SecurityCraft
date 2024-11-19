@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
@@ -33,6 +36,12 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	private IntOption searchRadiusOption = new IntOption(this::getPos, "searchRadius", 25, 1, 50, 1);
 	private IntOption searchDelayOption = new IntOption(this::getPos, "searchDelay", 4, 4, 10, 1);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
+	private BooleanOption sendToTeamMembersOption = new BooleanOption("sendToTeamMembers", true) {
+		@Override
+		public Boolean get() {
+			return ConfigHandler.enableTeamOwnership && super.get();
+		}
+	};
 	private DisabledOption disabled = new DisabledOption(false);
 	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
 	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
@@ -48,12 +57,16 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 			List<EntityPlayer> closebyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && ((!isModuleEnabled(ModuleType.DENYLIST) && !isAllowed(e)) || isDenied(e)) && !e.isSpectator() && !respectInvisibility.isConsideredInvisible(e));
 			List<Owner> closebyOwners = closebyPlayers.stream().map(Owner::new).collect(Collectors.toList());
 
-			if (isModuleEnabled(ModuleType.REDSTONE)) {
+			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(world, pos, !closebyPlayers.isEmpty());
-			}
 
 			if (!closebyPlayers.isEmpty()) {
-				Collection<EntityPlayerMP> onlineTeamPlayers = TeamUtils.getOnlinePlayersFromOwner(world.getMinecraftServer(), getOwner());
+				Collection<EntityPlayerMP> messageReceivers;
+
+				if (sendToTeamMembersOption.get())
+					messageReceivers = TeamUtils.getOnlinePlayersFromOwner(world.getMinecraftServer(), getOwner());
+				else
+					messageReceivers = PlayerUtils.getPlayerListFromOwner(getOwner());
 
 				for (EntityPlayer closebyPlayer : closebyPlayers) {
 					if (shouldSendMessage(closebyPlayer)) {
@@ -65,8 +78,8 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 						else
 							text = Utils.localize("messages.securitycraft:portableRadar.withoutName", attackedName, pos);
 
-						if (!onlineTeamPlayers.isEmpty())
-							onlineTeamPlayers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.portableRadar), text, TextFormatting.BLUE));
+						if (!messageReceivers.isEmpty())
+							messageReceivers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.portableRadar), text, TextFormatting.BLUE));
 					}
 				}
 			}
@@ -119,8 +132,13 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 	@Override
 	public Option<?>[] customOptions() {
-		return new Option[] {
+		Option<?>[] options = new Option[] {
 				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled, ignoreOwner, respectInvisibility
 		};
+
+		if (ConfigHandler.enableTeamOwnership)
+			options = ArrayUtils.add(options, 3, sendToTeamMembersOption);
+
+		return options;
 	}
 }
