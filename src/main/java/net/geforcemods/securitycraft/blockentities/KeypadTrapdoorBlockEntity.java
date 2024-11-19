@@ -81,8 +81,10 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 		if (option == disabled && ((BooleanOption) option).get() || option == signalLength) {
 			IBlockState state = world.getBlockState(pos);
 
-			world.setBlockState(pos, state.withProperty(BlockTrapDoor.OPEN, false));
-			SCContent.keypadTrapdoor.playSound(null, world, pos, false);
+			if (state.getValue(BlockTrapDoor.OPEN)) {
+				world.setBlockState(pos, state.withProperty(BlockTrapDoor.OPEN, false));
+				SCContent.keypadTrapdoor.playSound(null, world, pos, false);
+			}
 		}
 	}
 
