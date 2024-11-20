@@ -15,6 +15,7 @@
 - Fix: Several instances of blocks disregarding the team ownership config setting being disabled when FTB Teams is installed
 - Fix: Security Camera entities are sent to every player instead of only the player mounting the camera
 - Fix: Using a universal block reinforcer in the offhand disregards the reinforcer's level
+- Fix: Keypad and Scanner Doors don't place, open and close properly on servers
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11 of SecurityCraft--------------------------

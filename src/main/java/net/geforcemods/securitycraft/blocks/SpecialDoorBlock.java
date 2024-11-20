@@ -240,7 +240,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState disguisedState = getDisguisedBlockState(world, pos);
 
-		return disguisedState != null ? disguisedState : state;
+		return disguisedState != null ? disguisedState : super.getActualState(state, world, pos);
 	}
 
 	@Override

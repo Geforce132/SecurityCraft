@@ -135,7 +135,7 @@ public class DisguisableBlock extends OwnableBlock implements IOverlayDisplay, I
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState disguisedState = getDisguisedBlockState(world, pos);
 
-		return disguisedState != null ? disguisedState : state;
+		return disguisedState != null ? disguisedState : state.getActualState(world, pos);
 	}
 
 	@Override
