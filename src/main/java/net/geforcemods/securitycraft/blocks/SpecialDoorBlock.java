@@ -65,47 +65,44 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	/**
 	 * Old method, renamed because I am lazy. Called by neighborChanged
 	 *
-	 * @param world The world the change occured in
+	 * @param access The world the change occurred in
 	 * @param pos The position of this block
 	 * @param neighbor The position of the changed block
 	 */
 	public void onNeighborChanged(IBlockAccess access, BlockPos pos, BlockPos neighbor) {
 		World world = (World) access;
+		IBlockState state = world.getBlockState(pos).getActualState(access, pos);
+		Block neighborBlock = world.getBlockState(neighbor).getBlock();
 
-		if (!world.isRemote) {
-			IBlockState state = world.getBlockState(pos);
-			Block neighborBlock = world.getBlockState(neighbor).getBlock();
+		if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
+			BlockPos blockBelow = pos.down();
+			IBlockState stateBelow = world.getBlockState(blockBelow);
 
-			if (state.getValue(HALF) == BlockDoor.EnumDoorHalf.UPPER) {
-				BlockPos blockBelow = pos.down();
-				IBlockState stateBelow = world.getBlockState(blockBelow);
+			if (stateBelow.getBlock() != this)
+				world.setBlockToAir(pos);
+			else if (neighborBlock != this)
+				onNeighborChanged(world, blockBelow, neighbor);
+		}
+		else {
+			boolean drop = false;
+			BlockPos blockAbove = pos.up();
+			IBlockState stateAbove = world.getBlockState(blockAbove);
 
-				if (stateBelow.getBlock() != this)
-					world.setBlockToAir(pos);
-				else if (neighborBlock != this)
-					onNeighborChanged(world, blockBelow, neighbor);
+			if (stateAbove.getBlock() != this) {
+				world.setBlockToAir(pos);
+				drop = true;
 			}
-			else {
-				boolean drop = false;
-				BlockPos blockAbove = pos.up();
-				IBlockState stateAbove = world.getBlockState(blockAbove);
 
-				if (stateAbove.getBlock() != this) {
-					world.setBlockToAir(pos);
-					drop = true;
-				}
+			if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
+				world.setBlockToAir(pos);
+				drop = true;
 
-				if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
-					world.setBlockToAir(pos);
-					drop = true;
-
-					if (stateAbove.getBlock() == this)
-						world.setBlockToAir(blockAbove);
-				}
-
-				if (drop && !world.isRemote)
-					dropBlockAsItem(world, pos, state, 0);
+				if (stateAbove.getBlock() == this)
+					world.setBlockToAir(blockAbove);
 			}
+
+			if (drop && !world.isRemote)
+				dropBlockAsItem(world, pos, state, 0);
 		}
 	}
 
