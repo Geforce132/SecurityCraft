@@ -120,27 +120,38 @@ public class ScreenHandler implements IGuiHandler {
 			(player, te) -> new CustomizeBlockScreen(player.inventory, (IModuleInventory) te)),
 		DISGUISE_MODULE(
 			(player, te) -> {
-				ItemStack module = player.inventory.getCurrentItem().getItem() instanceof ModuleItem ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
+				ItemStack module = PlayerUtils.getItemStackFromAnyHand(player, ModuleItem.class::isInstance);
 
-				if (!(module.getItem() instanceof ModuleItem) || !((ModuleItem) module.getItem()).canBeCustomized())
+				if (module.isEmpty() || !((ModuleItem) module.getItem()).canBeCustomized())
 					return null;
 
 				return new DisguiseModuleMenu(player.inventory, new ModuleItemContainer(module));
 			},
 			(player, te) -> {
-				ItemStack module = player.inventory.getCurrentItem().getItem() instanceof ModuleItem ? player.inventory.getCurrentItem() : player.inventory.offHandInventory.get(0);
+				ItemStack module = PlayerUtils.getItemStackFromAnyHand(player, ModuleItem.class::isInstance);
 
-				if (!(module.getItem() instanceof ModuleItem) || !((ModuleItem) module.getItem()).canBeCustomized())
+				if (module.isEmpty() || !((ModuleItem) module.getItem()).canBeCustomized())
 					return null;
 
 				return new DisguiseModuleScreen(player.inventory);
 			}),
 		BLOCK_REINFORCER(
-			(player, te) -> new BlockReinforcerMenu(player, player.inventory, player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1),
 			(player, te) -> {
-				boolean isLvl1 = player.getHeldItemMainhand().getItem() == SCContent.universalBlockReinforcerLvL1;
+				ItemStack reinforcer = PlayerUtils.getItemStackFromAnyHand(player, item -> item == SCContent.universalBlockReinforcerLvL1 ||  item == SCContent.universalBlockReinforcerLvL2 ||  item == SCContent.universalBlockReinforcerLvL3);
 
-				return new BlockReinforcerScreen(new BlockReinforcerMenu(player, player.inventory, isLvl1), isLvl1);
+				if (!reinforcer.isEmpty())
+					return new BlockReinforcerMenu(player, player.inventory, reinforcer.getItem() == SCContent.universalBlockReinforcerLvL1);
+				else
+					return null;
+			},
+			(player, te) -> {
+				ItemStack reinforcer = PlayerUtils.getItemStackFromAnyHand(player, item -> item == SCContent.universalBlockReinforcerLvL1 ||  item == SCContent.universalBlockReinforcerLvL2 ||  item == SCContent.universalBlockReinforcerLvL3);
+				boolean isLvl1 = reinforcer.getItem() == SCContent.universalBlockReinforcerLvL1;
+
+				if (!reinforcer.isEmpty())
+					return new BlockReinforcerScreen(new BlockReinforcerMenu(player, player.inventory, isLvl1), isLvl1, reinforcer.getDisplayName());
+				else
+					return null;
 			}),
 		MODULES(
 			(player, te) -> new GenericMenu(te),

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.mojang.authlib.GameProfile;
 
@@ -87,17 +88,29 @@ public class PlayerUtils {
 	}
 
 	/**
-	 * Returns the ItemStack of the given item the player if they are currently holding it (both hands are checked).
+	 * Returns the ItemStack of the given item if the player is currently holding it (both hands are checked).
 	 *
 	 * @param player The player to check
 	 * @param item The item type that should be searched for
 	 * @return The ItemStack whose item matches the given item, {@link ItemStack#EMPTY} if the player is not holding the item
 	 */
 	public static ItemStack getItemStackFromAnyHand(EntityPlayer player, Item item) {
-		if (player.inventory.getCurrentItem().getItem() == item)
+		return getItemStackFromAnyHand(player, heldItem -> heldItem == item);
+	}
+
+	/**
+	 * Returns the ItemStack of the item matching the given predicate if the player is currently holding it (both hands are
+	 * checked).
+	 *
+	 * @param player The player to check
+	 * @param item The predicate to match against
+	 * @return The ItemStack whose item matches the predicate, {@link ItemStack#EMPTY} if none match
+	 */
+	public static ItemStack getItemStackFromAnyHand(EntityPlayer player, Predicate<Item> itemCheck) {
+		if (itemCheck.test(player.inventory.getCurrentItem().getItem()))
 			return player.inventory.getCurrentItem();
 
-		if (player.inventory.offHandInventory.get(0).getItem() == item)
+		if (itemCheck.test(player.inventory.offHandInventory.get(0).getItem()))
 			return player.inventory.offHandInventory.get(0);
 
 		return ItemStack.EMPTY;

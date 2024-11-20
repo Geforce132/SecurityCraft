@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -22,13 +21,15 @@ import net.minecraft.util.ResourceLocation;
 public class BlockReinforcerScreen extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png");
 	private static final ResourceLocation TEXTURE_LVL1 = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer_lvl1.png");
-	private boolean isLvl1;
+	private final boolean isLvl1;
+	private final String title;
 	private CallbackCheckbox unreinforceCheckbox;
 	private StringHoverChecker checkboxHoverChecker;
 
-	public BlockReinforcerScreen(Container container, boolean isLvl1) {
+	public BlockReinforcerScreen(Container container, boolean isLvl1, String title) {
 		super(container);
 		this.isLvl1 = isLvl1;
+		this.title = title;
 		ySize = 186;
 	}
 
@@ -56,9 +57,8 @@ public class BlockReinforcerScreen extends GuiContainer {
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		BlockReinforcerMenu container = (BlockReinforcerMenu) inventorySlots;
 		NonNullList<ItemStack> inv = container.getInventory();
-		String ubr = Minecraft.getMinecraft().player.getHeldItemMainhand().getDisplayName();
 
-		fontRenderer.drawString(ubr, (xSize - fontRenderer.getStringWidth(ubr)) / 2, 5, 4210752);
+		fontRenderer.drawString(title, (xSize - fontRenderer.getStringWidth(title)) / 2, 5, 4210752);
 		fontRenderer.drawString(Utils.localize("container.inventory").getFormattedText(), 8, ySize - 96 + 2, 4210752);
 
 		if (!inv.get(36).isEmpty()) {
