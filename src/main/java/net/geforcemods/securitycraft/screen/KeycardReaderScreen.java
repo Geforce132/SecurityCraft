@@ -149,17 +149,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		changeSignature(signature);
 		//link button
 		linkButton = addRenderableWidget(new Button(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
-			String message = usableByTextField.getValue();
-			Optional<String> usableBy;
-
-			if (message == null || message.isBlank())
-				usableBy = Optional.empty();
-			else
-				usableBy = Optional.of(message);
-
 			previousSignature = signature;
 			changeSignature(signature);
-			PacketDistributor.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true, usableBy));
+			PacketDistributor.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true, getUsableBy()));
 
 			if (menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
@@ -322,18 +314,10 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		super.removed();
 
 		if (isOwner) {
-			String message = usableByTextField.getValue();
-			Optional<String> usableBy;
-
-			if (message.isBlank())
-				usableBy = Optional.empty();
-			else
-				usableBy = Optional.of(message);
-
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
 			be.setAcceptedLevels(acceptedLevels);
 			be.setSignature(signature);
-			PacketDistributor.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false, usableBy));
+			PacketDistributor.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false, getUsableBy()));
 		}
 	}
 
@@ -363,5 +347,14 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
 
 		acceptedLevels[i] = active;
+	}
+
+	public Optional<String> getUsableBy() {
+		String message = usableByTextField.getValue();
+
+		if (message == null || message.isBlank())
+			return Optional.empty();
+		else
+			return Optional.of(message);
 	}
 }
