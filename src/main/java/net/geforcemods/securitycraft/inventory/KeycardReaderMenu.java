@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
+import java.util.Optional;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
@@ -61,11 +63,11 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 		});
 	}
 
-	public void link() {
+	public void link(Optional<String> usableBy) {
 		ItemStack keycard = keycardSlot.getItem();
 
 		if (!keycard.isEmpty()) {
-			keycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, oldData -> oldData.setSignature(be.getSignature()));
+			keycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, oldData -> oldData.setSignatureAndUsableBy(be.getSignature(), usableBy));
 			keycard.set(SCContent.OWNER_DATA, OwnerData.fromOwner(be.getOwner(), false));
 		}
 	}

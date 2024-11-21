@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.server;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCStreamCodecs;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -16,7 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link) implements CustomPacketPayload {
+public record SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link, Optional<String> usableBy) implements CustomPacketPayload {
 
 	public static final Type<SyncKeycardSettings> TYPE = new Type<>(new ResourceLocation(SecurityCraft.MODID, "sync_keycard_settings"));
 	//@formatter:off
@@ -25,6 +26,7 @@ public record SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int si
 			SCStreamCodecs.BOOLEAN_ARRAY, SyncKeycardSettings::acceptedLevels,
 			ByteBufCodecs.VAR_INT, SyncKeycardSettings::signature,
 			ByteBufCodecs.BOOL, SyncKeycardSettings::link,
+			ByteBufCodecs.optional(ByteBufCodecs.STRING_UTF8), SyncKeycardSettings::usableBy,
 			SyncKeycardSettings::new);
 	//@formatter:on
 	@Override
@@ -45,7 +47,7 @@ public record SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int si
 				}
 
 				if (link && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
-					keycardReaderContainer.link();
+					keycardReaderContainer.link(usableBy);
 			}
 		}
 	}
