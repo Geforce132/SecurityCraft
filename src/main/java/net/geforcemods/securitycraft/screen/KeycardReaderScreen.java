@@ -5,6 +5,9 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.InputConstants.Key;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
@@ -300,6 +303,18 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			changeSignature(signature + (int) Math.signum(scrollY));
 
 		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+	}
+
+	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (usableByTextField.isFocused()) {
+			Key key = InputConstants.getKey(keyCode, scanCode);
+
+			if (minecraft.options.keyInventory.isActiveAndMatches(key) || minecraft.options.keySwapOffhand.isActiveAndMatches(key) || minecraft.options.keyPickItem.isActiveAndMatches(key))
+				return false;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
