@@ -4,6 +4,9 @@ import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.InputConstants.Key;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.inventory.KeycardReaderMenu;
@@ -61,7 +64,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private int signatureTextStartX;
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
-	private EditBox usesTextField;
+	private EditBox usesTextField, usableByTextField;
 	private TextHoverChecker usesHoverChecker;
 	private Button setUsesButton;
 	private Button linkButton;
@@ -145,12 +148,17 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		linkButton = addRenderableWidget(new Button(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
-			PacketDistributor.SERVER.noArg().send(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true));
+			PacketDistributor.SERVER.noArg().send(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true, usableByTextField.getValue()));
 
 			if (menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
 		}, Button.DEFAULT_NARRATION));
 		linkButton.active = false;
+		//text field for setting the player the keycard can be used by
+		usableByTextField = addRenderableWidget(new EditBox(font, leftPos + 8, topPos + 66, 70, 15, Component.empty()));
+		usableByTextField.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:keycard_reader.usable_by.tooltip")));
+		usableByTextField.setHint(Utils.localize("gui.securitycraft:keycard_reader.usable_by.hint"));
+		usableByTextField.setMaxLength(16);
 		//button for saving the amount of limited uses onto the keycard
 		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_SPRITE, RETURN_INACTIVE_SPRITE, 2, 2, 14, 14, b -> PacketDistributor.SERVER.noArg().send(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
@@ -224,7 +232,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		boolean wasActive = usesTextField.active;
 		boolean hasTag = stack.hasTag();
 		boolean enabled = !isEmpty && hasTag && stack.getTag().getBoolean("limited");
-		int cardSignature = stack.hasTag() ? stack.getTag().getInt("signature") : -1;
+		int cardSignature = hasTag ? stack.getTag().getInt("signature") : -1;
+		String usableBy = hasTag ? stack.getTag().getString("usable_by") : "";
 
 		usesTextField.setEditable(enabled);
 		usesTextField.active = enabled;
@@ -244,7 +253,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
 			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getValue());
-			linkButton.active = !isEmpty && cardSignature != signature;
+			linkButton.active = !isEmpty && (cardSignature != signature || !usableBy.equals(usableByTextField.getValue()));
 		}
 	}
 
@@ -256,12 +265,12 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 		//if the level of the keycard currently in the slot is not enabled in the keycard reader, show a warning
 		if (!stack.isEmpty() && !acceptedLevels[((KeycardItem) stack.getItem()).getLevel()]) {
-			int left = leftPos + 34;
-			int top = topPos + 55;
+			int left = leftPos + 18;
+			int top = topPos + 82;
 
-			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, left, top, 32, 32);
+			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, left, top, 24, 24);
 
-			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
+			if (mouseX >= left && mouseX <= left + 12 && mouseY >= top && mouseY <= top + 22)
 				guiGraphics.renderComponentTooltip(font, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
 		}
 
@@ -286,6 +295,18 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (usableByTextField.isFocused()) {
+			Key key = InputConstants.getKey(keyCode, scanCode);
+
+			if (minecraft.options.keyInventory.isActiveAndMatches(key) || minecraft.options.keySwapOffhand.isActiveAndMatches(key) || minecraft.options.keyPickItem.isActiveAndMatches(key))
+				return false;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
 	public void removed() {
 		super.removed();
 
@@ -293,7 +314,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
 			be.setAcceptedLevels(acceptedLevels);
 			be.setSignature(signature);
-			PacketDistributor.SERVER.noArg().send(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false));
+			PacketDistributor.SERVER.noArg().send(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false, usableByTextField.getValue()));
 		}
 	}
 

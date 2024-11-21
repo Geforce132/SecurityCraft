@@ -16,14 +16,16 @@ public class SyncKeycardSettings implements CustomPacketPayload {
 	private int signature;
 	private boolean[] acceptedLevels;
 	private boolean link;
+	private String usableBy;
 
 	public SyncKeycardSettings() {}
 
-	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link) {
+	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link, String usableBy) {
 		this.pos = pos;
 		this.acceptedLevels = acceptedLevels;
 		this.signature = signature;
 		this.link = link;
+		this.usableBy = usableBy;
 	}
 
 	public SyncKeycardSettings(FriendlyByteBuf buf) {
@@ -35,6 +37,8 @@ public class SyncKeycardSettings implements CustomPacketPayload {
 		for (int i = 0; i < 5; i++) {
 			acceptedLevels[i] = buf.readBoolean();
 		}
+
+		usableBy = buf.readUtf();
 	}
 
 	@Override
@@ -46,6 +50,8 @@ public class SyncKeycardSettings implements CustomPacketPayload {
 		for (int i = 0; i < 5; i++) {
 			buf.writeBoolean(acceptedLevels[i]);
 		}
+
+		buf.writeUtf(usableBy);
 	}
 
 	@Override
@@ -66,7 +72,7 @@ public class SyncKeycardSettings implements CustomPacketPayload {
 				}
 
 				if (link && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
-					keycardReaderContainer.link();
+					keycardReaderContainer.link(usableBy);
 			}
 		}
 	}
