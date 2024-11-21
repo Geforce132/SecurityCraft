@@ -61,7 +61,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 		});
 	}
 
-	public void link() {
+	public void link(String usableBy) {
 		ItemStack keycard = keycardSlot.getItem();
 
 		if (!keycard.isEmpty()) {
@@ -71,6 +71,9 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 			tag.putInt("signature", be.getSignature());
 			tag.putString("ownerName", be.getOwner().getName());
 			tag.putString("ownerUUID", be.getOwner().getUUID());
+
+			if (usableBy != null && !usableBy.isBlank())
+				tag.putString("usable_by", usableBy);
 		}
 	}
 

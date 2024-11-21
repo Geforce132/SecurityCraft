@@ -178,10 +178,15 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	public MutableComponent insertCard(ItemStack stack, Player player) {
 		CompoundTag tag = stack.getTag();
 		Owner keycardOwner = new Owner(tag.getString("ownerName"), tag.getString("ownerUUID"));
+		String usableBy = tag.getString("usable_by");
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
 		if (!TeamUtils.areOnSameTeam(getOwner(), keycardOwner) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
 			return new TranslatableComponent("messages.securitycraft:keycardReader.differentOwner");
+
+		//the name of the player who can use the keycard does not match the one of the player trying to use it
+		if (!usableBy.isBlank() && !usableBy.equals(player.getGameProfile().getName()))
+			return new TranslatableComponent("messages.securitycraft:keycardReader.cantUse");
 
 		//the keycard's signature does not match this keycard reader's
 		if (getSignature() != tag.getInt("signature"))
