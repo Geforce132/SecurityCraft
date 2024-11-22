@@ -101,9 +101,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		//keycard level buttons
 		for (int i = 0; i < 5; i++) {
 			final int thisButtonId = i;
-			//@formatter:off
+
 			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, 0, 15, 15, 2, thisButton -> {
-				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if (!hasSmartModule) {
 					for (int otherButtonId = 0; otherButtonId < 5; otherButtonId++) {

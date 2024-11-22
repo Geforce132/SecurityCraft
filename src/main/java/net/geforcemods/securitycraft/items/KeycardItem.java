@@ -38,8 +38,15 @@ public class KeycardItem extends Item {
 		CompoundTag tag = stack.getOrCreateTag();
 
 		if (tag.getBoolean("linked")) {
+			String usableBy = tag.getString("usable_by");
+
 			list.add(Component.translatable("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));
 			list.add(Component.translatable("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE));
+
+			if (!usableBy.isBlank())
+				list.add(Component.translatable("tooltip.securitycraft:keycard.usable_by", Component.literal(usableBy)).setStyle(Utils.GRAY_STYLE));
+			else
+				list.add(Component.translatable("tooltip.securitycraft:keycard.everyone").setStyle(Utils.GRAY_STYLE));
 		}
 		else
 			list.add(LINK_INFO);
