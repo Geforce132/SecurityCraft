@@ -74,6 +74,8 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 
 			if (usableBy != null && !usableBy.isBlank())
 				tag.putString("usable_by", usableBy);
+			else
+				tag.remove("usable_by");
 		}
 	}
 

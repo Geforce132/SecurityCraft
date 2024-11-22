@@ -48,7 +48,7 @@ public class KeycardItem extends Item {
 			if (!usableBy.isBlank())
 				list.add(new TranslatableComponent("tooltip.securitycraft:keycard.usable_by", new TextComponent(usableBy)).setStyle(Utils.GRAY_STYLE));
 			else
-				list.add(new TranslatableComponent("tooltip.securitycraft:keycard.everyone").setStyle(Utils.GRAY_STYLE));
+				list.add(new TranslatableComponent("tooltip.securitycraft:keycard.usable_by", new TranslatableComponent("tooltip.securitycraft:keycard.everyone")).setStyle(Utils.GRAY_STYLE));
 		}
 		else
 			list.add(LINK_INFO);
