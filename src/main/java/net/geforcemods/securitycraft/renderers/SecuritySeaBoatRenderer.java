@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.models.SecuritySeaBoatModel;
+import net.geforcemods.securitycraft.models.SecuritySeaRaftModel;
 import net.minecraft.client.model.ListModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;

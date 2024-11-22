@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
@@ -117,8 +119,10 @@ public class PlayerUtils {
 
 		if (player.level().isClientSide)
 			return ClientHandler.isPlayerMountedOnCamera();
+		else if (player instanceof ServerPlayer serverPlayer)
+			return serverPlayer.getCamera() instanceof SecurityCamera;
 		else
-			return ((ServerPlayer) player).getCamera() instanceof SecurityCamera;
+			return false;
 	}
 
 	/**
@@ -129,12 +133,10 @@ public class PlayerUtils {
 	 * @return The component to display
 	 */
 	public static Component getOwnerComponent(Owner owner) {
-		if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
-			TeamRepresentation teamRepresentation = TeamUtils.getTeamRepresentation(owner);
+		TeamRepresentation teamRepresentation = TeamUtils.getTeamRepresentation(owner);
 
-			if (teamRepresentation != null)
-				return Utils.localize("messages.securitycraft:teamOwner", Component.literal(teamRepresentation.name()).withStyle(Style.EMPTY.withColor(teamRepresentation.color()))).withStyle(ChatFormatting.GRAY);
-		}
+		if (teamRepresentation != null)
+			return Utils.localize("messages.securitycraft:teamOwner", Component.literal(teamRepresentation.name()).withStyle(Style.EMPTY.withColor(teamRepresentation.color()))).withStyle(ChatFormatting.GRAY);
 
 		return Component.literal(owner.getName());
 	}
@@ -162,5 +164,20 @@ public class PlayerUtils {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Gets a list containing the player corresponding to an Owner
+	 *
+	 * @param owner The owner to get the player of
+	 * @return A list containing the player corresponding to the given owner, an empty list if no such player exists
+	 */
+	public static Collection<ServerPlayer> getPlayerListFromOwner(Owner owner) {
+		ServerPlayer player = getPlayerFromName(owner.getName());
+
+		if (player != null)
+			return Arrays.asList(player);
+
+		return new ArrayList<>();
 	}
 }

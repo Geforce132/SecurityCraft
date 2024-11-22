@@ -85,8 +85,14 @@ public class SaltData extends SavedData {
 
 		for (int i = 0; i < listtag.size(); ++i) {
 			CompoundTag saltTag = listtag.getCompound(i);
+			UUID uuid;
 
-			saltData.saltMap.put(UUID.fromString(saltTag.getString("key")), saltTag.getByteArray("salt"));
+			if (saltTag.contains("key", Tag.TAG_STRING))
+				uuid = UUID.fromString(saltTag.getString("key"));
+			else
+				uuid = saltTag.getUUID("key");
+
+			saltData.saltMap.put(uuid, saltTag.getByteArray("salt"));
 		}
 
 		return saltData;
@@ -96,11 +102,11 @@ public class SaltData extends SavedData {
 	public CompoundTag save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		ListTag saltTable = new ListTag();
 
-		for (Map.Entry<UUID, byte[]> saltMapping : saltMap.entrySet()) {
+		for (Map.Entry<UUID, byte[]> saltEntry : saltMap.entrySet()) {
 			CompoundTag saltTag = new CompoundTag();
 
-			saltTag.putString("key", saltMapping.getKey().toString());
-			saltTag.putByteArray("salt", saltMapping.getValue());
+			saltTag.putUUID("key", saltEntry.getKey());
+			saltTag.putByteArray("salt", saltEntry.getValue());
 			saltTable.add(saltTag);
 		}
 

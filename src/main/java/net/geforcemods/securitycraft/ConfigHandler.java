@@ -1,9 +1,15 @@
 package net.geforcemods.securitycraft;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.geforcemods.securitycraft.util.TeamUtils;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.EventBusSubscriber.Bus;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
@@ -11,6 +17,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
+@EventBusSubscriber(bus = Bus.MOD)
 public class ConfigHandler {
 	public static final ModConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
@@ -67,6 +74,7 @@ public class ConfigHandler {
 		public BooleanValue forceReinforcedBlockTint;
 		public BooleanValue retinalScannerFace;
 		public BooleanValue enableTeamOwnership;
+		public ConfigValue<List<? extends String>> teamOwnershipPrecedence;
 		public BooleanValue disableThanksMessage;
 		public BooleanValue trickScannersWithPlayerHeads;
 		public BooleanValue preventReinforcedFloorGlitching;
@@ -80,6 +88,7 @@ public class ConfigHandler {
 		public IntValue passcodeCheckCooldown;
 		public BooleanValue passcodeSpamLogWarningEnabled;
 		public ConfigValue<String> passcodeSpamLogWarning;
+		public BooleanValue inWorldUnReinforcing;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
@@ -142,6 +151,12 @@ public class ConfigHandler {
 							"This enables players on the same team to break each other's reinforced blocks, change options, add/remove modules, and have access to all other owner-restricted things.")
 					.define("enable_team_ownership", false);
 
+			teamOwnershipPrecedence = builder
+					.comment("This list defines in which order SecurityCraft checks teams of players to determine if they're on the same team, if \"enable_team_ownership\" is set to true. First in the list means it's checked first.",
+							"SecurityCraft will continue checking for teams down the list until it finds a case where the players are on the same team, or the list is over. E.g. Given the default config, if FTB Teams is installed but the players do not share a team, the mod checks if the same players are on the same vanilla team.",
+							"Removing an entry makes the mod ignore that kind of team. Valid values are \"FTB_TEAMS\" and \"VANILLA\".")
+					.defineListAllowEmpty("team_ownership_precedence", List.of("FTB_TEAMS", "VANILLA"), () -> "VANILLA", String.class::isInstance);
+
 			disableThanksMessage = builder
 					.comment("Set this to true to disable sending the message that SecurityCraft shows when a player joins.",
 							"Note, that this stops showing the message for every player, even those that want to see them.")
@@ -196,6 +211,10 @@ public class ConfigHandler {
 					.comment("The warning that is sent into the server log whenever a player tries to enter a passcode while on passcode cooldown. \"%1$s\" will be replaced with the player's name, \"%2$s\" with the passcode-protected object's name and \"%3$s\" with the object's position and dimension.")
 					.define("passcode_spam_log_warning", "Player \"%1$s\" tried to enter a passcode into \"%2$s\" at position [%3$s] too quickly!");
 
+			inWorldUnReinforcing = builder
+					.comment("Setting this to false disables the ability of the Universal Block Reinforcer to (un-)reinforce blocks that are placed in the world.")
+					.define("in_world_un_reinforcing", true);
+
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
 					.defineListAllowEmpty("sentry_attackable_entities_allowlist", List.of(), () -> "minecraft:pig", String.class::isInstance);
@@ -203,6 +222,37 @@ public class ConfigHandler {
 			sentryAttackableEntitiesDenylist = builder
 					.comment("Add entities to this list that the Sentry currently attacks, but that you want the Sentry to NOT attack. The denylist takes priority over the allowlist.")
 					.defineListAllowEmpty("sentry_attackable_entities_denylist", List.of(), () -> "minecraft:pig", String.class::isInstance);
+			//@formatter:on
+		}
+	}
+
+	@SubscribeEvent
+	public static void onModConfigReloading(ModConfigEvent.Loading event) {
+		updateTeamPrecedence(event);
+	}
+
+	@SubscribeEvent
+	public static void onModConfigReloading(ModConfigEvent.Reloading event) {
+		updateTeamPrecedence(event);
+	}
+
+	private static void updateTeamPrecedence(ModConfigEvent event) {
+		if (event.getConfig().getSpec() == SERVER_SPEC) {
+			//@formatter:off
+			TeamUtils.setPrecedence(SERVER.teamOwnershipPrecedence.get()
+					.stream()
+					.distinct()
+					.map(s -> {
+						try {
+							return TeamUtils.TeamType.valueOf(s);
+						}
+						catch (IllegalArgumentException e) {}
+
+						return TeamUtils.TeamType.NO_OP;
+					})
+					.map(TeamUtils.TeamType::getTeamHandler)
+					.filter(Objects::nonNull)
+					.toList());
 			//@formatter:on
 		}
 	}

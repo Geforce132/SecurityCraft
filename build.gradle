@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.+'
+	id 'net.neoforged.gradle.userdev' version '7.0.165'
 }
 
 import groovy.json.JsonOutput
@@ -53,7 +53,7 @@ runs {
 
 	data {
 		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath()
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 	}
 }
 
@@ -78,7 +78,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.1.1'
+	implementation 'net.neoforged:neoforge:21.1.78'
 
 	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
@@ -91,7 +91,7 @@ dependencies {
 	implementation "curse.maven:wthit-forge-455982:5568827"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
-	implementation "curse.maven:embeddium-908741:5556146"
+	implementation "curse.maven:embeddium-908741:5681729"
 //	implementation "maven.modrinth:sodium:mc1.21-0.6.0-beta.1-neoforge" //incompatible with embeddium
 }
 

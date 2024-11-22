@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICodebreakable;
@@ -181,10 +180,14 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		Owner keycardOwner = stack.getOrDefault(SCContent.OWNER_DATA, OwnerData.DEFAULT).toOwner();
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
-		if ((ConfigHandler.SERVER.enableTeamOwnership.get() && !TeamUtils.areOnSameTeam(getOwner(), keycardOwner)) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
+		if (!TeamUtils.areOnSameTeam(getOwner(), keycardOwner) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
 			return Component.translatable("messages.securitycraft:keycardReader.differentOwner");
 
 		KeycardData keycardData = stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
+
+		//the name of the player who can use the keycard does not match the one of the player trying to use it
+		if (!keycardData.usableBy().map(player.getGameProfile().getName()::equals).orElse(true))
+			return Component.translatable("messages.securitycraft:keycardReader.cantUse");
 
 		//the keycard's signature does not match this keycard reader's
 		if (getSignature() != keycardData.signature())

@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.renderers;
+package net.geforcemods.securitycraft.models;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

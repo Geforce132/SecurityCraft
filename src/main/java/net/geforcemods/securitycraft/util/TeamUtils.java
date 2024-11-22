@@ -1,14 +1,13 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
+import java.util.List;
+import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.compat.ftbteams.FTBTeamsCompat;
-import net.minecraft.ChatFormatting;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
@@ -16,25 +15,25 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class TeamUtils {
+	private static List<TeamHandler> teamPrecedence;
+
 	private TeamUtils() {}
 
 	/**
-	 * Checks if two given players are on the same scoreboard/FTB Teams team
-	 *
-	 * @param owner1 The first owner object representing a player
-	 * @param owner2 The second owner object representing a player
-	 * @return true if both players are on the same team, false otherwise
+	 * @see TeamHandler#areOnSameTeam
 	 */
 	public static boolean areOnSameTeam(Owner owner1, Owner owner2) {
 		if (owner1.equals(owner2))
 			return true;
+		else if (!ConfigHandler.SERVER.enableTeamOwnership.get())
+			return false;
 
-		if (ModList.get().isLoaded("ftbteams"))
-			return FTBTeamsCompat.areOnSameTeam(owner1, owner2);
+		for (TeamHandler teamHandler : teamPrecedence) {
+			if (teamHandler.areOnSameTeam(owner1, owner2))
+				return true;
+		}
 
-		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner1.getName());
-
-		return team != null && team.getPlayers().contains(owner2.getName());
+		return false;
 	}
 
 	/**
@@ -53,60 +52,67 @@ public class TeamUtils {
 	}
 
 	/**
-	 * Gets a representation containing the team's name and color
-	 *
-	 * @param owner The owner whose team to get
-	 * @return The {@link TeamRepresentation} of the owner's team, {@code null} if they are not part of a team
+	 * @see TeamHandler#getTeamRepresentation
 	 */
 	public static TeamRepresentation getTeamRepresentation(Owner owner) {
-		if (ModList.get().isLoaded("ftbteams"))
-			return FTBTeamsCompat.getTeamRepresentation(owner);
+		if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
+			for (TeamHandler teamHandler : teamPrecedence) {
+				TeamRepresentation teamRepresentation = teamHandler.getTeamRepresentation(owner);
 
-		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
-
-		if (team != null && team.getPlayers().size() > 1) {
-			Integer color = team.getColor().getColor();
-
-			return new TeamRepresentation(team.getDisplayName().getString(), color == null ? ChatFormatting.GRAY.getColor() : color);
+				if (teamRepresentation != null)
+					return teamRepresentation;
+			}
 		}
 
 		return null;
 	}
 
 	/**
-	 * Gets all players that are in the same team as the given owner, and currently online
-	 *
-	 * @param server The server
-	 * @param owner The owner whose team to get the players of
-	 * @return A list containing all online players who are in the same team as the owner. If the owner is not in a team, the
-	 *         list will only contain the owning player, if they're online.
+	 * @see TeamHandler#getOnlinePlayersFromOwner
 	 */
 	public static Collection<ServerPlayer> getOnlinePlayersFromOwner(MinecraftServer server, Owner owner) {
-		Collection<ServerPlayer> onlinePlayers = null;
+		if (ConfigHandler.SERVER.enableTeamOwnership.get()) {
+			for (TeamHandler teamHandler : teamPrecedence) {
+				Collection<ServerPlayer> onlinePlayers = teamHandler.getOnlinePlayersFromOwner(server, owner);
 
-		if (ModList.get().isLoaded("ftbteams"))
-			onlinePlayers = FTBTeamsCompat.getOnlinePlayersInTeam(owner);
-		else {
-			PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
-
-			if (team != null)
-				onlinePlayers = team.getPlayers().stream().map(server.getPlayerList()::getPlayerByName).filter(Objects::nonNull).toList();
+				if (onlinePlayers != null && !onlinePlayers.isEmpty())
+					return onlinePlayers;
+			}
 		}
 
-		if (onlinePlayers == null || onlinePlayers.isEmpty())
-			return getPlayerListFromOwner(owner);
-
-		return onlinePlayers;
-	}
-
-	private static Collection<ServerPlayer> getPlayerListFromOwner(Owner owner) {
-		ServerPlayer player = PlayerUtils.getPlayerFromName(owner.getName());
-
-		if (player != null)
-			return Arrays.asList(player);
-
-		return new ArrayList<>();
+		return PlayerUtils.getPlayerListFromOwner(owner);
 	}
 
 	public record TeamRepresentation(String name, int color) {}
+
+	public enum TeamType {
+		FTB_TEAMS(() -> {
+			if (ModList.get().isLoaded("ftbteams"))
+				return new FTBTeamsCompat();
+			else
+				return null;
+		}),
+		VANILLA(VanillaTeamHandler::new),
+		NO_OP(() -> null);
+
+		private final Supplier<TeamHandler> teamHandler;
+
+		private TeamType(Supplier<TeamHandler> teamHandler) {
+			this.teamHandler = teamHandler;
+		}
+
+		public TeamHandler getTeamHandler() {
+			return teamHandler.get();
+		}
+	}
+
+	/**
+	 * Sets the order in which SecurityCraft checks team ownership
+	 *
+	 * @param list the precedence list
+	 * @see ConfigHandler.Server#teamOwnershipPrecedence
+	 */
+	public static void setPrecedence(List<TeamHandler> list) {
+		teamPrecedence = list;
+	}
 }
