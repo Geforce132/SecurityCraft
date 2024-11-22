@@ -18,8 +18,7 @@ public class HoverChecker {
 	}
 
 	public HoverChecker(GuiButton button) {
-		this(button.x, button.x + button.height, button.y, button.y + button.width);
-
+		this(button.y, button.y + button.height, button.x, button.x + button.width);
 		this.button = button;
 	}
 
@@ -28,13 +27,9 @@ public class HoverChecker {
 	}
 
 	public boolean checkHover(int mouseX, int mouseY) {
-		if (button != null) {
-			if (!button.visible || (button instanceof Slider && ((Slider) button).isDragging()))
-				return false;
-			else
-				return mouseX >= button.x && mouseX <= button.x + button.width && mouseY >= button.y && mouseY <= button.y + button.height;
-		}
-		else
-			return mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
+		if (button != null && (!button.visible || (button instanceof Slider && ((Slider) button).isDragging())))
+			return false;
+
+		return mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
 	}
 }
