@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
+import net.geforcemods.securitycraft.screen.components.HintEditBox;
 import net.geforcemods.securitycraft.screen.components.PictureButton;
 import net.geforcemods.securitycraft.screen.components.StringHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
@@ -65,7 +66,8 @@ public class KeycardReaderScreen extends GuiContainer {
 	private GuiButton minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
 	private GuiTextField usesTextField;
-	private StringHoverChecker usesHoverChecker, randomizeHoverChecker;
+	private HintEditBox usableByTextField;
+	private StringHoverChecker usesHoverChecker, randomizeHoverChecker, usableByHoverChecker;
 	private GuiButton setUsesButton;
 	private GuiButton linkButton;
 	//fixes link and set uses buttons being on for a split second when opening the container
@@ -160,12 +162,19 @@ public class KeycardReaderScreen extends GuiContainer {
 		linkButton = addButton(new ClickButton(id++, guiLeft + 8, guiTop + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
-			SecurityCraft.network.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, true));
+			SecurityCraft.network.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, true, usableByTextField.getText()));
 
 			if (container.keycardSlot.getStack().getDisplayName().equalsIgnoreCase("Zelda"))
 				mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SCSounds.GET_ITEM.event, 1.25F));
 		}));
 		linkButton.enabled = false;
+		//text field for setting the player the keycard can be used by
+		usableByTextField = new HintEditBox(id++, fontRenderer, guiLeft + 8, guiTop + 66, 70, 15);
+		usableByTextField.setHint(Utils.localize("gui.securitycraft:keycard_reader.usable_by.hint").getFormattedText());
+		usableByTextField.setTextColor(-1);
+		usableByTextField.setDisabledTextColour(-1);
+		usableByTextField.setEnableBackgroundDrawing(true);
+		usableByTextField.setMaxStringLength(16);
 		//button for saving the amount of limited uses onto the keycard
 		setUsesButton = addButton(new PictureButton(id++, guiLeft + 62, guiTop + 106, 16, 17, RETURN_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.network.sendToServer(new SetKeycardUses(te.getPos(), Integer.parseInt(usesTextField.getText())))) {
 			@Override
@@ -185,6 +194,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		//info text when hovering over text field
 		usesHoverChecker = new StringHoverChecker(guiTop + 107, guiTop + 122, guiLeft + 28, guiLeft + 58, limitedInfo);
 		randomizeHoverChecker = new StringHoverChecker(randomizeButton, Utils.localize("gui.securitycraft:keycard_reader.randomize_signature").getFormattedText());
+		usableByHoverChecker = new StringHoverChecker(usableByTextField, Utils.localize("gui.securitycraft:keycard_reader.usable_by.tooltip").getFormattedText());
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
 		if (!hasSmartModule) {
@@ -256,6 +266,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		boolean hasTag = stack.hasTagCompound() && !stack.getTagCompound().isEmpty();
 		boolean enabled = !isEmpty && hasTag && stack.getTagCompound().getBoolean("limited");
 		int cardSignature = hasTag ? stack.getTagCompound().getInteger("signature") : -1;
+		String usableBy = hasTag ? stack.getTagCompound().getString("usable_by") : "";
 
 		usesTextField.setEnabled(enabled);
 
@@ -274,7 +285,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
 			setUsesButton.enabled = enabled && usesTextField.getText() != null && !usesTextField.getText().isEmpty() && !("" + stack.getTagCompound().getInteger("uses")).equals(usesTextField.getText());
-			linkButton.enabled = !isEmpty && cardSignature != signature;
+			linkButton.enabled = !isEmpty && (cardSignature != signature || !usableBy.equals(usableByTextField.getText()));
 		}
 	}
 
@@ -282,22 +293,25 @@ public class KeycardReaderScreen extends GuiContainer {
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
+		GlStateManager.disableLighting();
 		usesTextField.drawTextBox();
+		usableByTextField.drawTextBox();
+		GlStateManager.enableLighting();
 		GlStateManager.color(1.0F, 1.0F, 1.0F);
 
 		ItemStack stack = container.keycardSlot.getStack();
 
 		//if the level of the keycard currently in the slot is not enabled in the keycard reader, show a warning
 		if (!stack.isEmpty() && !acceptedLevels[((KeycardItem) stack.getItem()).getLevel()]) {
-			int left = guiLeft + 40;
-			int top = guiTop + 60;
+			int left = guiLeft + 18;
+			int top = guiTop + 82;
 
 			GlStateManager.disableLighting();
 			mc.getTextureManager().bindTexture(WORLD_SELECTION_ICONS);
-			drawScaledCustomSizeModalRect(left, top, 70, 37, 22, 22, 22, 22, 256, 256);
+			drawScaledCustomSizeModalRect(left + 5, top + 4, 70, 37, 22, 22, 16, 16, 256, 256);
 			GlStateManager.enableLighting();
 
-			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
+			if (mouseX >= left && mouseX <= left + 12 && mouseY >= top && mouseY <= top + 22)
 				GuiUtils.drawHoveringText(Arrays.asList(levelMismatchInfo), mouseX, mouseY, width, height, -1, fontRenderer);
 		}
 
@@ -306,6 +320,9 @@ public class KeycardReaderScreen extends GuiContainer {
 
 		if (randomizeHoverChecker.checkHover(mouseX, mouseY))
 			GuiUtils.drawHoveringText(randomizeHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
+
+		if (usableByHoverChecker.checkHover(mouseX, mouseY))
+			GuiUtils.drawHoveringText(usableByHoverChecker.getLines(), mouseX, mouseY, width, height, -1, fontRenderer);
 
 		renderHoveredToolTip(mouseX, mouseY);
 		net.geforcemods.securitycraft.util.GuiUtils.renderModuleInfo(ModuleType.SMART, smartModuleTooltip, hasSmartModule, guiLeft + 5, guiTop + 5, width, height, mouseX, mouseY);
@@ -321,8 +338,12 @@ public class KeycardReaderScreen extends GuiContainer {
 
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
-		if (keyCode != Keyboard.KEY_ESCAPE && usesTextField.isFocused())
-			usesTextField.textboxKeyTyped(typedChar, keyCode);
+		if (keyCode != Keyboard.KEY_ESCAPE) {
+			if (usesTextField.isFocused())
+				usesTextField.textboxKeyTyped(typedChar, keyCode);
+			else if (usableByTextField.isFocused())
+				usableByTextField.textboxKeyTyped(typedChar, keyCode);
+		}
 		else
 			super.keyTyped(typedChar, keyCode);
 	}
@@ -331,6 +352,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		usesTextField.mouseClicked(mouseX, mouseY, mouseButton);
+		usableByTextField.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 
 	@Override
@@ -354,7 +376,7 @@ public class KeycardReaderScreen extends GuiContainer {
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
 			te.setAcceptedLevels(acceptedLevels);
 			te.setSignature(signature);
-			SecurityCraft.network.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, false));
+			SecurityCraft.network.sendToServer(new SyncKeycardSettings(te.getPos(), acceptedLevels, signature, false, usableByTextField.getText()));
 		}
 	}
 

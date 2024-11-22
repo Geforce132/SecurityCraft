@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 
 public class StringHoverChecker extends HoverChecker {
 	private List<String> lines;
@@ -28,6 +29,12 @@ public class StringHoverChecker extends HoverChecker {
 		super(button);
 		this.lines = lines;
 		this.button = button instanceof IToggleableButton ? (IToggleableButton) button : null;
+	}
+
+	public StringHoverChecker(GuiTextField textField, String line) {
+		super(textField);
+		this.lines = Arrays.asList(line);
+		button = null;
 	}
 
 	public void singleTooltip() {

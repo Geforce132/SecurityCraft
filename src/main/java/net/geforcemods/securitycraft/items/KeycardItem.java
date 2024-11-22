@@ -12,8 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,14 +46,21 @@ public class KeycardItem extends Item {
 		NBTTagCompound tag = stack.getTagCompound();
 
 		if (tag.getBoolean("linked")) {
-			list.add(Utils.localize("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInteger("signature"), 5, "0")).setStyle(new Style().setColor(TextFormatting.GRAY)).getFormattedText());
-			list.add(Utils.localize("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(new Style().setColor(TextFormatting.GRAY)).getFormattedText());
+			String usableBy = tag.getString("usable_by");
+
+			list.add(Utils.localize("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInteger("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE).getFormattedText());
+			list.add(Utils.localize("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE).getFormattedText());
+
+			if (!usableBy.isEmpty())
+				list.add(Utils.localize("tooltip.securitycraft:keycard.usable_by", usableBy).setStyle(Utils.GRAY_STYLE).getFormattedText());
+			else
+				list.add(Utils.localize("tooltip.securitycraft:keycard.usable_by", Utils.localize("tooltip.securitycraft:keycard.everyone").getFormattedText()).setStyle(Utils.GRAY_STYLE).getFormattedText());
 		}
 		else
 			list.add(LINK_INFO.getFormattedText());
 
 		if (tag.getBoolean("limited"))
-			list.add(Utils.localize("tooltip.securitycraft:keycard.uses", tag.getInteger("uses")).setStyle(new Style().setColor(TextFormatting.GRAY)).getFormattedText());
+			list.add(Utils.localize("tooltip.securitycraft:keycard.uses", tag.getInteger("uses")).setStyle(Utils.GRAY_STYLE).getFormattedText());
 		else
 			list.add(LIMITED_INFO.getFormattedText());
 	}

@@ -20,17 +20,16 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.screen.components.ClickButton;
 import net.geforcemods.securitycraft.screen.components.ColorableScrollPanel;
+import net.geforcemods.securitycraft.screen.components.HintEditBox;
 import net.geforcemods.securitycraft.util.GuiUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -365,26 +364,6 @@ public class AlarmScreen extends GuiScreen {
 			bottom = top + listHeight;
 			scrollBarRight = left + listWidth;
 			scrollBarLeft = scrollBarRight - SCROLL_BAR_WIDTH;
-		}
-	}
-
-	public class HintEditBox extends GuiTextField {
-		private String hint;
-
-		public HintEditBox(int id, FontRenderer font, int x, int y, int width, int height) {
-			super(id, font, x, y, width, height);
-		}
-
-		@Override
-		public void drawTextBox() {
-			super.drawTextBox();
-
-			if (getVisible() && hint != null && text.isEmpty() && !isFocused())
-				fontRenderer.drawStringWithShadow(hint, x + 4, y + (height - 8) / 2, 0xE0E0E0);
-		}
-
-		public void setHint(String hint) {
-			this.hint = hint;
 		}
 	}
 }

@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -17,14 +18,16 @@ public class SyncKeycardSettings implements IMessage {
 	private int signature;
 	private boolean[] acceptedLevels;
 	private boolean link;
+	private String usableBy;
 
 	public SyncKeycardSettings() {}
 
-	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link) {
+	public SyncKeycardSettings(BlockPos pos, boolean[] acceptedLevels, int signature, boolean link, String usableBy) {
 		this.pos = pos;
 		this.acceptedLevels = acceptedLevels;
 		this.signature = signature;
 		this.link = link;
+		this.usableBy = usableBy;
 	}
 
 	@Override
@@ -36,6 +39,8 @@ public class SyncKeycardSettings implements IMessage {
 		for (int i = 0; i < 5; i++) {
 			buf.writeBoolean(acceptedLevels[i]);
 		}
+
+		ByteBufUtils.writeUTF8String(buf, usableBy);
 	}
 
 	@Override
@@ -48,6 +53,8 @@ public class SyncKeycardSettings implements IMessage {
 		for (int i = 0; i < 5; i++) {
 			acceptedLevels[i] = buf.readBoolean();
 		}
+
+		usableBy = ByteBufUtils.readUTF8String(buf);
 	}
 
 	public static class Handler implements IMessageHandler<SyncKeycardSettings, IMessage> {
@@ -71,7 +78,7 @@ public class SyncKeycardSettings implements IMessage {
 							Container container = player.openContainer;
 
 							if (container instanceof KeycardReaderMenu)
-								((KeycardReaderMenu) container).link();
+								((KeycardReaderMenu) container).link(message.usableBy);
 						}
 					}
 				}

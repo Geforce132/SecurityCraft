@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 
 public class HoverChecker {
 	private int top;
@@ -20,6 +21,10 @@ public class HoverChecker {
 		this(button.x, button.x + button.height, button.y, button.y + button.width);
 
 		this.button = button;
+	}
+
+	public HoverChecker(GuiTextField textField) {
+		this(textField.y, textField.y + textField.height, textField.x, textField.x + textField.width);
 	}
 
 	public boolean checkHover(int mouseX, int mouseY) {
