@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.renderers;
+package net.geforcemods.securitycraft.models;
 
 import java.util.List;
 
