@@ -3,8 +3,8 @@
 - New: The Panic Button now supports the Allowlist Module
 - New: Config setting to disable the ability of the Universal Block Reinforcer to un-/reinforce blocks that are placed in the world
 - New: Option for the Portable Radar to only send notification messages to the owner instead of all members of the team
-- API: New method IPasscodeProtected#setPasscodeInAdjacentBlock for updating an adjacent block (e.g. the second half of a chest) with the passcode when setting it
 - New: When linking a keycard, a player can optionally be set who will be the only player able to use the keycard
+- API: New method IPasscodeProtected#setPasscodeInAdjacentBlock for updating an adjacent block (e.g. the second half of a chest) with the passcode when setting it
 - Fix: Placing a Passcode-protected Chest or Barrel leads to unnecessary data being saved
 - Fix: Bouncing betties are rendered incorrectly
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name
