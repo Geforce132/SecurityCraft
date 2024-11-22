@@ -106,6 +106,16 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	}
 
 	@Override
+	public void setPasscodeInAdjacentBlock(String codeToSet) {
+		runForOtherHalf(otherBe -> {
+			if (getOwner().owns(otherBe)) {
+				otherBe.hashAndSetPasscode(codeToSet, getSalt());
+				level.sendBlockUpdated(otherBe.getBlockPos(), otherBe.getBlockState(), otherBe.getBlockState(), 2);
+			}
+		});
+	}
+
+	@Override
 	public void startCooldown() {
 		long start = System.currentTimeMillis();
 

@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
+import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
@@ -150,6 +151,13 @@ public interface IPasscodeProtected extends ICodebreakable {
 		setSaltKey(SaltData.putSalt(salt));
 		PasscodeUtils.hashPasscode(passcode, salt, afterHashing.andThen(afterSetting));
 	}
+
+	/**
+	 * If this block entity consists of two parts (e.g. chest), updates the passcode of the connected block with the current one.
+	 *
+	 * @param codeToSet The passcode as it is sent in the {@link SetPasscode} packet
+	 */
+	default void setPasscodeInAdjacentBlock(String codeToSet) {}
 
 	/**
 	 * Sets a new passcode. Note that this should not hash the passcode. Prefer calling {@link #hashAndSetPasscode} instead, if
