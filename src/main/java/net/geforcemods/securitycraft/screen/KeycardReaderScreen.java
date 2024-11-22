@@ -108,9 +108,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		//keycard level buttons
 		for (int i = 0; i < 5; i++) {
 			final int thisButtonId = i;
-			//@formatter:off
+
 			toggleButtons[i] = addButton(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[] {110, 88}, new int[] {219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
-				//@formatter:on
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if (!hasSmartModule) {
 					for (int otherButtonId = 0; otherButtonId < 5; otherButtonId++) {

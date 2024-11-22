@@ -11,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,8 +43,15 @@ public class KeycardItem extends Item {
 		CompoundNBT tag = stack.getOrCreateTag();
 
 		if (tag.getBoolean("linked")) {
+			String usableBy = tag.getString("usable_by");
+
 			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));
 			list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE));
+
+			if (!usableBy.isEmpty())
+				list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.usable_by", new StringTextComponent(usableBy)).setStyle(Utils.GRAY_STYLE));
+			else
+				list.add(new TranslationTextComponent("tooltip.securitycraft:keycard.everyone").setStyle(Utils.GRAY_STYLE));
 		}
 		else
 			list.add(LINK_INFO);
