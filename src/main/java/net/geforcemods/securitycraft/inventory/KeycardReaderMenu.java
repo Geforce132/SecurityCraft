@@ -74,6 +74,8 @@ public class KeycardReaderMenu extends Container {
 
 			if (usableBy != null && !usableBy.isEmpty())
 				tag.putString("usable_by", usableBy);
+			else
+				tag.remove("usable_by");
 		}
 	}
 
