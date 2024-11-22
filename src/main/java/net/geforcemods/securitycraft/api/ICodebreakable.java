@@ -61,7 +61,7 @@ public interface ICodebreakable {
 					return false;
 				}
 
-				if (!canBypass && !player.isCreative() && CodebreakerItem.wasRecentlyUsed(codebreaker))
+				if (!canBypass && CodebreakerItem.wasRecentlyUsed(codebreaker))
 					return false;
 
 				boolean isSuccessful = canBypass || SecurityCraft.RANDOM.nextDouble() < chance;

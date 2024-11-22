@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
+import net.geforcemods.securitycraft.screen.components.HintEditBox;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -24,6 +25,8 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.util.InputMappings;
+import net.minecraft.client.util.InputMappings.Input;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -68,7 +71,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
 	private TextFieldWidget usesTextField;
-	private TextHoverChecker usesHoverChecker, randomizeHoverChecker;
+	private HintEditBox usableByTextField;
+	private TextHoverChecker usesHoverChecker, randomizeHoverChecker, usableByHoverChecker;
 	private Button setUsesButton;
 	private Button linkButton;
 	//fixes link and set uses buttons being on for a split second when opening the container
@@ -150,12 +154,16 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		linkButton = addButton(new ExtendedButton(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
-			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true));
+			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true, usableByTextField.getValue()));
 
 			if (menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundManager().play(SimpleSound.forUI(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
 		}));
 		linkButton.active = false;
+		//text field for setting the player the keycard can be used by
+		usableByTextField = addButton(new HintEditBox(font, leftPos + 8, topPos + 66, 70, 15, StringTextComponent.EMPTY));
+		usableByTextField.setHint(Utils.localize("gui.securitycraft:keycard_reader.usable_by.hint"));
+		usableByTextField.setMaxLength(16);
 		//button for saving the amount of limited uses onto the keycard
 		setUsesButton = addButton(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_TEXTURE, RETURN_INACTIVE_TEXTURE, 14, 14, 2, 2, 14, 14, 14, 14, b -> SecurityCraft.channel.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
@@ -166,6 +174,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		//info text when hovering over text field
 		usesHoverChecker = new TextHoverChecker(topPos + 107, topPos + 122, leftPos + 28, leftPos + 58, limitedInfo);
 		randomizeHoverChecker = new TextHoverChecker(randomizeButton, Utils.localize("gui.securitycraft:keycard_reader.randomize_signature"));
+		usableByHoverChecker = new TextHoverChecker(usableByTextField, Utils.localize("gui.securitycraft:keycard_reader.usable_by.tooltip"));
 
 		//add =/>= button and handle it being set to the correct state, as well as changing keycard level buttons' states if a smart module was removed
 		if (!hasSmartModule) {
@@ -230,7 +239,8 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		boolean wasActive = usesTextField.active;
 		boolean hasTag = stack.hasTag();
 		boolean enabled = !isEmpty && hasTag && stack.getTag().getBoolean("limited");
-		int cardSignature = stack.hasTag() ? stack.getTag().getInt("signature") : -1;
+		int cardSignature = hasTag ? stack.getTag().getInt("signature") : -1;
+		String usableBy = hasTag ? stack.getTag().getString("usable_by") : "";
 
 		usesTextField.setEditable(enabled);
 		usesTextField.active = enabled;
@@ -250,7 +260,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
 			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + stack.getTag().getInt("uses")).equals(usesTextField.getValue());
-			linkButton.active = !isEmpty && cardSignature != signature;
+			linkButton.active = !isEmpty && (cardSignature != signature || !usableBy.equals(usableByTextField.getValue()));
 		}
 	}
 
@@ -262,13 +272,13 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 
 		//if the level of the keycard currently in the slot is not enabled in the keycard reader, show a warning
 		if (!stack.isEmpty() && !acceptedLevels[((KeycardItem) stack.getItem()).getLevel()]) {
-			int left = leftPos + 40;
-			int top = topPos + 60;
+			int left = leftPos + 18;
+			int top = topPos + 82;
 
 			minecraft.getTextureManager().bind(WORLD_SELECTION_ICONS);
-			blit(pose, left, top, 22, 22, 70, 37, 22, 22, 256, 256);
+			blit(pose, left + 5, top + 4, 16, 16, 70, 37, 22, 22, 256, 256);
 
-			if (mouseX >= left - 7 && mouseX < left + 13 && mouseY >= top && mouseY <= top + 22)
+			if (mouseX >= left && mouseX <= left + 12 && mouseY >= top && mouseY <= top + 22)
 				GuiUtils.drawHoveringText(pose, Collections.singletonList(levelMismatchInfo), mouseX, mouseY, width, height, -1, font);
 		}
 
@@ -277,6 +287,9 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 
 		if (randomizeHoverChecker.checkHover(mouseX, mouseY))
 			renderComponentTooltip(pose, randomizeHoverChecker.getLines(), mouseX, mouseY);
+
+		if (usableByHoverChecker.checkHover(mouseX, mouseY))
+			renderComponentTooltip(pose, usableByHoverChecker.getLines(), mouseX, mouseY);
 
 		renderTooltip(pose, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(pose, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, width, height, mouseX, mouseY);
@@ -299,6 +312,18 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 	}
 
 	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (usableByTextField.isFocused()) {
+			Input key = InputMappings.getKey(keyCode, scanCode);
+
+			if (minecraft.options.keyInventory.isActiveAndMatches(key) || minecraft.options.keySwapOffhand.isActiveAndMatches(key) || minecraft.options.keyPickItem.isActiveAndMatches(key))
+				return false;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
 	public void removed() {
 		super.removed();
 
@@ -306,7 +331,7 @@ public class KeycardReaderScreen extends ContainerScreen<KeycardReaderMenu> {
 			//write new data to client te and send that data to the server, which verifies and updates it on its side
 			be.setAcceptedLevels(acceptedLevels);
 			be.setSignature(signature);
-			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false));
+			SecurityCraft.channel.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, false, usableByTextField.getValue()));
 		}
 	}
 

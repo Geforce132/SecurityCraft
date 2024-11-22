@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
+import net.geforcemods.securitycraft.screen.components.HintEditBox;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -25,7 +26,6 @@ import net.minecraft.client.audio.SimpleSound;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldVertexBufferUploader;
@@ -321,26 +321,6 @@ public class AlarmScreen extends Screen {
 
 		public void updateSelectedSoundIndex() {
 			selectedSoundIndex = Iterables.indexOf(filteredSoundEvents, se -> se.equals(selectedSoundEvent));
-		}
-	}
-
-	public class HintEditBox extends TextFieldWidget {
-		private ITextComponent hint;
-
-		public HintEditBox(FontRenderer font, int x, int y, int width, int height, ITextComponent message) {
-			super(font, x, y, width, height, message);
-		}
-
-		@Override
-		public void renderButton(MatrixStack pose, int mouseX, int mouseY, float partialTick) {
-			super.renderButton(pose, mouseX, mouseY, partialTick);
-
-			if (isVisible() && hint != null && value.isEmpty() && !isFocused())
-				font.drawShadow(pose, hint, x + 4, y + (height - 8) / 2, 0xE0E0E0);
-		}
-
-		public void setHint(ITextComponent hint) {
-			this.hint = hint;
 		}
 	}
 }
