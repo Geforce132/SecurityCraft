@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -39,8 +40,15 @@ public class KeycardItem extends Item {
 		CompoundTag tag = stack.getOrCreateTag();
 
 		if (tag.getBoolean("linked")) {
+			String usableBy = tag.getString("usable_by");
+
 			list.add(new TranslatableComponent("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + tag.getInt("signature"), 5, "0")).setStyle(Utils.GRAY_STYLE));
 			list.add(new TranslatableComponent("tooltip.securitycraft:keycard.reader_owner", tag.getString("ownerName")).setStyle(Utils.GRAY_STYLE));
+
+			if (!usableBy.isBlank())
+				list.add(new TranslatableComponent("tooltip.securitycraft:keycard.usable_by", new TextComponent(usableBy)).setStyle(Utils.GRAY_STYLE));
+			else
+				list.add(new TranslatableComponent("tooltip.securitycraft:keycard.everyone").setStyle(Utils.GRAY_STYLE));
 		}
 		else
 			list.add(LINK_INFO);
