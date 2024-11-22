@@ -6,6 +6,7 @@
 - Fix: Placing a Passcode-protected Chest or Barrel directly leads to unnecessary data being saved
 - Fix: Bouncing betties are rendered incorrectly
 - Fix: The Universal Block Reinforcer's screen title does not display the item's actual name
+- Fix: Reinforced tuff brick slabs cannot be crafted in the crafting table
 - Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11-beta3 of SecurityCraft--------------------------
