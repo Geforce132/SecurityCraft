@@ -17,18 +17,13 @@ public class HoverChecker {
 	}
 
 	public HoverChecker(AbstractWidget widget) {
-		this(widget.x, widget.x + widget.getHeight(), widget.y, widget.y + widget.getWidth());
-
+		this(widget.y, widget.y + widget.getHeight(), widget.x, widget.x + widget.getWidth());
 		this.widget = widget;
 	}
 
 	public boolean checkHover(double mouseX, double mouseY) {
-		if (widget != null) {
-			if (!widget.visible)
-				return false;
-			else
-				return widget.isHoveredOrFocused();
-		}
+		if (widget != null)
+			return widget.visible && widget.isHoveredOrFocused();
 		else
 			return mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom;
 	}
