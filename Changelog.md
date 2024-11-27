@@ -19,11 +19,8 @@
 - Fix: Jade/TOP/WTHIT show the owner of block mines
 - Fix: Several instances of blocks disregarding the team ownership config setting being disabled when FTB Teams is installed
 - Fix: Security Camera entities are sent to every player instead of only the player mounting the camera
-- Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
-
---------------------------Changelog for v1.9.11-beta3 of SecurityCraft--------------------------
-
 - Fix: Entity translations of security sea boats do not exist
+- Misc.: Salt keys are now stored as integer arrays instead of strings, reducing file size
 
 --------------------------Changelog for v1.9.11-beta2 of SecurityCraft--------------------------
 
