@@ -9,7 +9,7 @@ plugins {
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.11'
+version = '1.9.12'
 group = 'net.geforcemods.securitycraft'
 archivesBaseName = 'securitycraft'
 
