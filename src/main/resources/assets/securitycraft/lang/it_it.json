@@ -1223,7 +1223,7 @@
 	"option.securitycraft.portable_radar.searchRadius": "Raggio di ricerca: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Il raggio in cui il Radar ricerca.",
 	"option.securitycraft.portable_radar.sendToTeamMembers": "Messaggi di squadra: %s",
-	"option.securitycraft.portable_radar.sendToTeamMembers.description": "Imposta se inviare messaggi di notifica a tutti i membri dela squadra o solo al proprietario.",
+	"option.securitycraft.portable_radar.sendToTeamMembers.description": "Imposta se inviare messaggi di notifica a tutti i membri della squadra o solo al proprietario.",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Pubblico: %s",
 	"option.securitycraft.reinforced_cauldron.isPublic.description": "Questo blocco deve permettere a ogni giocatore di interagirci?",
 	"option.securitycraft.reinforced_lava_cauldron.isPublic": "Pubblico: %s",
