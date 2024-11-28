@@ -6,7 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.geforcemods.securitycraft.SCTags;
-import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.gen.IWorldGenerationBaseReader;
 import net.minecraft.world.gen.feature.TreeFeature;
 
 /**
@@ -14,9 +15,9 @@ import net.minecraft.world.gen.feature.TreeFeature;
  */
 @Mixin(TreeFeature.class)
 public class TreeFeatureMixin {
-	@Inject(method = "lambda$isGrassOrDirtOrFarmland$4", at = @At("HEAD"), cancellable = true)
-	private static void securitycraft$onCheckGrassOrDirt(BlockState state, CallbackInfoReturnable<Boolean> callback) {
-		if (state.is(SCTags.Blocks.REINFORCED_DIRT))
+	@Inject(method = "isGrassOrDirtOrFarmland", at = @At("HEAD"), cancellable = true)
+	private static void securitycraft$onCheckGrassOrDirt(IWorldGenerationBaseReader level, BlockPos pos, CallbackInfoReturnable<Boolean> callback) {
+		if (level.isStateAtPosition(pos, state -> state.is(SCTags.Blocks.REINFORCED_DIRT)))
 			callback.setReturnValue(true);
 	}
 }
