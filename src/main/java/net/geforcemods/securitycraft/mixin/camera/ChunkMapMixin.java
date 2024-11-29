@@ -1,8 +1,14 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.lang3.mutable.MutableObject;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -13,6 +19,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.server.level.ChunkMap;
+import net.minecraft.server.level.PlayerMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 
@@ -22,6 +29,11 @@ import net.minecraft.world.level.ChunkPos;
  */
 @Mixin(value = ChunkMap.class, priority = 1100)
 public abstract class ChunkMapMixin {
+	@Unique
+	private static final Map<ServerPlayer, SectionPos> OLD_SECTION_POSITIONS = new HashMap<>();
+	@Shadow
+	@Final
+	private PlayerMap playerMap;
 	@Shadow
 	int viewDistance;
 
@@ -32,7 +44,26 @@ public abstract class ChunkMapMixin {
 	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
 	 * checking methods
 	 */
-	@Redirect(method = {"getPlayers", "lambda$setViewDistance$48"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
+	@Inject(method = "setViewDistance", at = @At("HEAD"))
+	private void securitycraft$setCameraSectionPos(int viewDistance, CallbackInfo ci) {
+		for (ServerPlayer player : playerMap.getPlayers(0)) { //the parameter is ignored by the game
+			if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+				OLD_SECTION_POSITIONS.put(player, player.getLastSectionPos());
+				player.setLastSectionPos(SectionPos.of(player.getCamera()));
+			}
+		}
+	}
+
+	@Inject(method = "setViewDistance", at = @At("TAIL"))
+	private void securitycraft$restorePreviousSectionPos(int viewDistance, CallbackInfo ci) {
+		for (Entry<ServerPlayer, SectionPos> entry : OLD_SECTION_POSITIONS.entrySet()) {
+			entry.getKey().setLastSectionPos(entry.getValue());
+		}
+
+		OLD_SECTION_POSITIONS.clear();
+	}
+
+	@Redirect(method = "getPlayers", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"))
 	private SectionPos securitycraft$getCameraSectionPos(ServerPlayer player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
