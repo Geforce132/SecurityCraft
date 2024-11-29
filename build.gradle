@@ -103,7 +103,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:wthit-forge-455982:4596739")
 	implementation fg.deobf("curse.maven:badpackets-615134:4438956") //wthit dependency
 	implementation fg.deobf("curse.maven:projecte-226410:4901949")
-	implementation fg.deobf("curse.maven:embeddium-908741:5077202")
+	implementation fg.deobf("curse.maven:embeddium-908741:5681725")
 }
 
 mixin {
