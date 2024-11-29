@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "P": "securitycraft:reinforced_piston",
-    "S": "#c:slimeballs"
+    "S": "#c:slime_balls"
   },
   "pattern": [
     "S",

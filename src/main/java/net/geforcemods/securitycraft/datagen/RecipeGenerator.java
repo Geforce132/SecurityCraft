@@ -441,8 +441,8 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("S")
 		.pattern("P")
 		.define('P', SCContent.REINFORCED_PISTON)
-		.define('S', Tags.Items.SLIMEBALLS)
-		.unlockedBy("has_slime_ball", has(Tags.Items.SLIMEBALLS))
+		.define('S', Tags.Items.SLIME_BALLS)
+		.unlockedBy("has_slime_ball", has(Tags.Items.SLIME_BALLS))
 		.save(output);
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_TINTED_GLASS, 2)
 		.pattern(" A ")
