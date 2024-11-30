@@ -1,190 +1,190 @@
 {
-  "homepage": "https://www.curseforge.com/minecraft/mc-mods/security-craft/",
-  "promos": {
-    "1.7.10-latest": "v1.8.13",
-    "1.7.10-recommended": "v1.8.13",
-    "1.8-latest": "v1.8.12.1",
-    "1.8-recommended": "v1.8.12.1",
-    "1.8.8-latest": "v1.8.12.1",
-    "1.8.8-recommended": "v1.8.12.1",
-    "1.8.9-latest": "v1.8.12.1",
-    "1.8.9-recommended": "v1.8.12.1",
-    "1.9.4-latest": "v1.8.12",
-    "1.9.4-recommended": "v1.8.12",
-    "1.10.2-latest": "v1.8.12",
-    "1.10.2-recommended": "v1.8.12",
-    "1.11.2-latest": "v1.8.12.1",
-    "1.11.2-recommended": "v1.8.12.1",
-    "1.12-latest": "v1.8.8.1",
-    "1.12-recommended": "v1.8.8.1",
-    "1.12.1-latest": "v1.8.8.1",
-    "1.12.1-recommended": "v1.8.8.1",
-    "1.12.2-latest": "v1.9.11",
-    "1.12.2-recommended": "v1.9.11",
-    "1.13.2-latest": "v1.8.13",
-    "1.13.2-recommended": "v1.8.13",
-    "1.14.3-latest": "v1.8.12-beta2",
-    "1.14.3-recommended": "v1.8.12-beta2",
-    "1.14.4-latest": "v1.8.22.2",
-    "1.14.4-recommended": "v1.8.22.2",
-    "1.15.1-latest": "v1.8.15-beta2",
-    "1.15.1-recommended": "v1.8.15-beta2",
-    "1.15.2-latest": "v1.9.1",
-    "1.15.2-recommended": "v1.9.1",
-    "1.16.1-latest": "v1.8.19.3",
-    "1.16.1-recommended": "v1.8.19.3",
-    "1.16.2-latest": "v1.8.19.3",
-    "1.16.2-recommended": "v1.8.19.3",
-    "1.16.3-latest": "v1.8.21.1",
-    "1.16.3-recommended": "v1.8.21.1",
-    "1.16.4-latest": "v1.8.21.1",
-    "1.16.4-recommended": "v1.8.21.1",
-    "1.16.5-latest": "v1.9.11",
-    "1.16.5-recommended": "v1.9.11",
-    "1.17.1-latest": "1.9.5",
-    "1.17.1-recommended": "1.9.5",
-    "1.18.1-latest": "1.9.0.2-beta1",
-    "1.18.1-recommended": "1.9.0.2-beta1",
-    "1.18.2-latest": "1.9.11",
-    "1.18.2-recommended": "1.9.11",
-    "1.19-latest": "1.9.3.1",
-    "1.19-recommended": "1.9.3.1",
-    "1.19.1-latest": "1.9.3.1",
-    "1.19.1-recommended": "1.9.3.1",
-    "1.19.2-latest": "1.9.6.1",
-    "1.19.2-recommended": "1.9.6.1",
-    "1.19.3-latest": "1.9.8",
-    "1.19.3-recommended": "1.9.8",
-    "1.19.4-latest": "1.9.11",
-    "1.19.4-recommended": "1.9.11",
-    "1.20-latest": "1.9.7-beta2",
-    "1.20-recommended": "1.9.7-beta2",
-    "1.20.1-latest": "1.9.11",
-    "1.20.1-recommended": "1.9.11",
-    "1.20.2-latest": "1.9.9",
-    "1.20.2-recommended": "1.9.9",
-    "1.20.4-latest": "1.9.11",
-    "1.20.4-recommended": "1.9.11",
-    "1.20.6-latest": "1.9.11",
-    "1.20.6-recommended": "1.9.11",
-    "1.21-latest": "1.9.10-beta7",
-    "1.21-recommended": "1.9.10-beta7",
-    "1.21.1-latest": "1.9.11",
-    "1.21.1-recommended": "1.9.11",
-    "1.21.2-latest": "1.9.11-beta2",
-    "1.21.2-recommended": "1.9.11-beta2",
-    "1.21.3-latest": "1.9.11-beta2",
-    "1.21.3-recommended": "1.9.11-beta2"
-  },
-  "1.7.10": {
-    "v1.8.13": "https://github.com/Geforce132/SecurityCraft/blob/1.7.10/Changelog%20v1.8.x.md"
-  },
-  "1.8": {
-    "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.8/Changelog%20v1.8.x.md"
-  },
-  "1.8.8": {
-    "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.8.9/Changelog%20v1.8.x.md"
-  },
-  "1.8.9": {
-    "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.8.9/Changelog%20v1.8.x.md"
-  },
-  "1.9.4": {
-    "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.9.4/Changelog%20v1.8.x.md"
-  },
-  "1.10.2": {
-    "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.10.2/Changelog%20v1.8.x.md"
-  },
-  "1.11.2": {
-    "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.11.2/Changelog%20v1.8.x.md"
-  },
-  "1.12": {
-    "v1.8.8.1": "https://github.com/Geforce132/SecurityCraft/blob/54061f84f188c33db291770e550c4c84a927194c/Changelog%20v1.8.x.md"
-  },
-  "1.12.1": {
-    "v1.8.8.1": "https://github.com/Geforce132/SecurityCraft/blob/54061f84f188c33db291770e550c4c84a927194c/Changelog%20v1.8.x.md"
-  },
-  "1.12.2": {
-    "v1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.12.2/Changelog.md"
-  },
-  "1.13.2": {
-    "v1.8.13": "https://github.com/Geforce132/SecurityCraft/blob/1.13.2/Changelog%20v1.8.x.md"
-  },
-  "1.14.3": {
-    "v1.8.12-beta2": "https://github.com/Geforce132/SecurityCraft/blob/b20ce0945abdccb8f2b6abaea5d26c28d0a3b916/Changelog%20v1.8.x.md"
-  },
-  "1.14.4": {
-    "v1.8.22.2": "https://github.com/Geforce132/SecurityCraft/blob/1.14.4/Changelog%20v1.8.x.md"
-  },
-  "1.15.1": {
-    "v1.8.15-beta2": "https://github.com/Geforce132/SecurityCraft/blob/04f414232af5250193ed610da93696a830584cc9/Changelog%20v1.8.x.md"
-  },
-  "1.15.2": {
-    "v1.9.1": "https://github.com/Geforce132/SecurityCraft/blob/1.15.x/Changelog.md"
-  },
-  "1.16.1": {
-	"v1.8.19.3": "https://github.com/Geforce132/SecurityCraft/blob/1.16.1/Changelog%20v1.8.x.md"
-  },
-  "1.16.2": {
-	"v1.8.19.3": "https://github.com/Geforce132/SecurityCraft/blob/1.16.1/Changelog%20v1.8.x.md"
-  },
-  "1.16.3": {
-	"v1.8.21.1": "https://github.com/Geforce132/SecurityCraft/blob/44460188b9bf30b94f122ba362092cba5e76e0d2/Changelog%20v1.8.x.md"
-  },
-  "1.16.4": {
-	"v1.8.21.1": "https://github.com/Geforce132/SecurityCraft/blob/44460188b9bf30b94f122ba362092cba5e76e0d2/Changelog%20v1.8.x.md"
-  },
-  "1.16.5": {
-	"v1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.16.2/Changelog.md"
-  },
-  "1.17.1": {
-	"1.9.5": "https://github.com/Geforce132/SecurityCraft/blob/1.17.1/Changelog.md"
-  },
-  "1.18.1": {
-	"1.9.0.2-beta1": "https://github.com/Geforce132/SecurityCraft/blob/1.18.1/Changelog.md"
-  },
-  "1.18.2": {
-	"1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.18.2/Changelog.md"
-  },
-  "1.19": {
-	"1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.19/Changelog.md"
-  },
-  "1.19.1": {
-	"1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/c60edcc5881fc8ca4394bfeae3254ab0d693ab5e/Changelog.md"
-  },
-  "1.19.2": {
-	"1.9.6.1": "https://github.com/Geforce132/SecurityCraft/blob/1.19.1/Changelog.md"
-  },
-  "1.19.3": {
-	"1.9.8": "https://github.com/Geforce132/SecurityCraft/blob/1.19.3/Changelog.md"
-  },
-  "1.19.4": {
-	"1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.19.4/Changelog.md"
-  },
-  "1.20": {
-	"1.9.7-beta2": "https://github.com/Geforce132/SecurityCraft/blob/1.20/Changelog.md"
-  },
-  "1.20.1": {
-	"1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.20/Changelog.md"
-  },
-  "1.20.2": {
-	"1.9.9": "https://github.com/Geforce132/SecurityCraft/blob/1.20.2/Changelog.md"
-  },
-  "1.20.4": {
-	"1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.20.4/Changelog.md"
-  },
-  "1.20.6": {
-	"1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.20.6/Changelog.md"
-  },
-  "1.21": {
-	"1.9.10-beta7": "https://github.com/Geforce132/SecurityCraft/blob/a74d63ec9796e54c5bd8d22c18a320146560a753/Changelog.md"
-  },
-  "1.21.1": {
-	"1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.21/Changelog.md"
-  },
-  "1.21.2": {
-	"1.9.11-beta2": "https://github.com/Geforce132/SecurityCraft/blob/1.21.3/Changelog.md"
-  },
-  "1.21.3": {
-	"1.9.11-beta2": "https://github.com/Geforce132/SecurityCraft/blob/1.21.3/Changelog.md"
-  }
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/security-craft/",
+    "promos": {
+        "1.7.10-latest": "v1.8.13",
+        "1.7.10-recommended": "v1.8.13",
+        "1.8-latest": "v1.8.12.1",
+        "1.8-recommended": "v1.8.12.1",
+        "1.8.8-latest": "v1.8.12.1",
+        "1.8.8-recommended": "v1.8.12.1",
+        "1.8.9-latest": "v1.8.12.1",
+        "1.8.9-recommended": "v1.8.12.1",
+        "1.9.4-latest": "v1.8.12",
+        "1.9.4-recommended": "v1.8.12",
+        "1.10.2-latest": "v1.8.12",
+        "1.10.2-recommended": "v1.8.12",
+        "1.11.2-latest": "v1.8.12.1",
+        "1.11.2-recommended": "v1.8.12.1",
+        "1.12-latest": "v1.8.8.1",
+        "1.12-recommended": "v1.8.8.1",
+        "1.12.1-latest": "v1.8.8.1",
+        "1.12.1-recommended": "v1.8.8.1",
+        "1.12.2-latest": "v1.9.11",
+        "1.12.2-recommended": "v1.9.11",
+        "1.13.2-latest": "v1.8.13",
+        "1.13.2-recommended": "v1.8.13",
+        "1.14.3-latest": "v1.8.12-beta2",
+        "1.14.3-recommended": "v1.8.12-beta2",
+        "1.14.4-latest": "v1.8.22.2",
+        "1.14.4-recommended": "v1.8.22.2",
+        "1.15.1-latest": "v1.8.15-beta2",
+        "1.15.1-recommended": "v1.8.15-beta2",
+        "1.15.2-latest": "v1.9.1",
+        "1.15.2-recommended": "v1.9.1",
+        "1.16.1-latest": "v1.8.19.3",
+        "1.16.1-recommended": "v1.8.19.3",
+        "1.16.2-latest": "v1.8.19.3",
+        "1.16.2-recommended": "v1.8.19.3",
+        "1.16.3-latest": "v1.8.21.1",
+        "1.16.3-recommended": "v1.8.21.1",
+        "1.16.4-latest": "v1.8.21.1",
+        "1.16.4-recommended": "v1.8.21.1",
+        "1.16.5-latest": "v1.9.11",
+        "1.16.5-recommended": "v1.9.11",
+        "1.17.1-latest": "1.9.5",
+        "1.17.1-recommended": "1.9.5",
+        "1.18.1-latest": "1.9.0.2-beta1",
+        "1.18.1-recommended": "1.9.0.2-beta1",
+        "1.18.2-latest": "1.9.11",
+        "1.18.2-recommended": "1.9.11",
+        "1.19-latest": "1.9.3.1",
+        "1.19-recommended": "1.9.3.1",
+        "1.19.1-latest": "1.9.3.1",
+        "1.19.1-recommended": "1.9.3.1",
+        "1.19.2-latest": "1.9.6.1",
+        "1.19.2-recommended": "1.9.6.1",
+        "1.19.3-latest": "1.9.8",
+        "1.19.3-recommended": "1.9.8",
+        "1.19.4-latest": "1.9.11",
+        "1.19.4-recommended": "1.9.11",
+        "1.20-latest": "1.9.7-beta2",
+        "1.20-recommended": "1.9.7-beta2",
+        "1.20.1-latest": "1.9.11",
+        "1.20.1-recommended": "1.9.11",
+        "1.20.2-latest": "1.9.9",
+        "1.20.2-recommended": "1.9.9",
+        "1.20.4-latest": "1.9.11",
+        "1.20.4-recommended": "1.9.11",
+        "1.20.6-latest": "1.9.11",
+        "1.20.6-recommended": "1.9.11",
+        "1.21-latest": "1.9.10-beta7",
+        "1.21-recommended": "1.9.10-beta7",
+        "1.21.1-latest": "1.9.11",
+        "1.21.1-recommended": "1.9.11",
+        "1.21.2-latest": "1.9.11-beta2",
+        "1.21.2-recommended": "1.9.11-beta2",
+        "1.21.3-latest": "1.9.11-beta2",
+        "1.21.3-recommended": "1.9.11-beta2"
+    },
+    "1.7.10": {
+        "v1.8.13": "https://github.com/Geforce132/SecurityCraft/blob/1.7.10/Changelog%20v1.8.x.md"
+    },
+    "1.8": {
+        "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.8/Changelog%20v1.8.x.md"
+    },
+    "1.8.8": {
+        "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.8.9/Changelog%20v1.8.x.md"
+    },
+    "1.8.9": {
+        "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.8.9/Changelog%20v1.8.x.md"
+    },
+    "1.9.4": {
+        "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.9.4/Changelog%20v1.8.x.md"
+    },
+    "1.10.2": {
+        "v1.8.12": "https://github.com/Geforce132/SecurityCraft/blob/1.10.2/Changelog%20v1.8.x.md"
+    },
+    "1.11.2": {
+        "v1.8.12.1": "https://github.com/Geforce132/SecurityCraft/blob/1.11.2/Changelog%20v1.8.x.md"
+    },
+    "1.12": {
+        "v1.8.8.1": "https://github.com/Geforce132/SecurityCraft/blob/54061f84f188c33db291770e550c4c84a927194c/Changelog%20v1.8.x.md"
+    },
+    "1.12.1": {
+        "v1.8.8.1": "https://github.com/Geforce132/SecurityCraft/blob/54061f84f188c33db291770e550c4c84a927194c/Changelog%20v1.8.x.md"
+    },
+    "1.12.2": {
+        "v1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.12.2/Changelog.md"
+    },
+    "1.13.2": {
+        "v1.8.13": "https://github.com/Geforce132/SecurityCraft/blob/1.13.2/Changelog%20v1.8.x.md"
+    },
+    "1.14.3": {
+        "v1.8.12-beta2": "https://github.com/Geforce132/SecurityCraft/blob/b20ce0945abdccb8f2b6abaea5d26c28d0a3b916/Changelog%20v1.8.x.md"
+    },
+    "1.14.4": {
+        "v1.8.22.2": "https://github.com/Geforce132/SecurityCraft/blob/1.14.4/Changelog%20v1.8.x.md"
+    },
+    "1.15.1": {
+        "v1.8.15-beta2": "https://github.com/Geforce132/SecurityCraft/blob/04f414232af5250193ed610da93696a830584cc9/Changelog%20v1.8.x.md"
+    },
+    "1.15.2": {
+        "v1.9.1": "https://github.com/Geforce132/SecurityCraft/blob/1.15.x/Changelog.md"
+    },
+    "1.16.1": {
+        "v1.8.19.3": "https://github.com/Geforce132/SecurityCraft/blob/1.16.1/Changelog%20v1.8.x.md"
+    },
+    "1.16.2": {
+        "v1.8.19.3": "https://github.com/Geforce132/SecurityCraft/blob/1.16.1/Changelog%20v1.8.x.md"
+    },
+    "1.16.3": {
+        "v1.8.21.1": "https://github.com/Geforce132/SecurityCraft/blob/44460188b9bf30b94f122ba362092cba5e76e0d2/Changelog%20v1.8.x.md"
+    },
+    "1.16.4": {
+        "v1.8.21.1": "https://github.com/Geforce132/SecurityCraft/blob/44460188b9bf30b94f122ba362092cba5e76e0d2/Changelog%20v1.8.x.md"
+    },
+    "1.16.5": {
+        "v1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.16.2/Changelog.md"
+    },
+    "1.17.1": {
+        "1.9.5": "https://github.com/Geforce132/SecurityCraft/blob/1.17.1/Changelog.md"
+    },
+    "1.18.1": {
+        "1.9.0.2-beta1": "https://github.com/Geforce132/SecurityCraft/blob/1.18.1/Changelog.md"
+    },
+    "1.18.2": {
+        "1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.18.2/Changelog.md"
+    },
+    "1.19": {
+        "1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/1.19/Changelog.md"
+    },
+    "1.19.1": {
+        "1.9.3.1": "https://github.com/Geforce132/SecurityCraft/blob/c60edcc5881fc8ca4394bfeae3254ab0d693ab5e/Changelog.md"
+    },
+    "1.19.2": {
+        "1.9.6.1": "https://github.com/Geforce132/SecurityCraft/blob/1.19.1/Changelog.md"
+    },
+    "1.19.3": {
+        "1.9.8": "https://github.com/Geforce132/SecurityCraft/blob/1.19.3/Changelog.md"
+    },
+    "1.19.4": {
+        "1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.19.4/Changelog.md"
+    },
+    "1.20": {
+        "1.9.7-beta2": "https://github.com/Geforce132/SecurityCraft/blob/1.20/Changelog.md"
+    },
+    "1.20.1": {
+        "1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.20/Changelog.md"
+    },
+    "1.20.2": {
+        "1.9.9": "https://github.com/Geforce132/SecurityCraft/blob/1.20.2/Changelog.md"
+    },
+    "1.20.4": {
+        "1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.20.4/Changelog.md"
+    },
+    "1.20.6": {
+        "1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.20.6/Changelog.md"
+    },
+    "1.21": {
+        "1.9.10-beta7": "https://github.com/Geforce132/SecurityCraft/blob/a74d63ec9796e54c5bd8d22c18a320146560a753/Changelog.md"
+    },
+    "1.21.1": {
+        "1.9.11": "https://github.com/Geforce132/SecurityCraft/blob/1.21/Changelog.md"
+    },
+    "1.21.2": {
+        "1.9.11-beta2": "https://github.com/Geforce132/SecurityCraft/blob/1.21.3/Changelog.md"
+    },
+    "1.21.3": {
+        "1.9.11-beta2": "https://github.com/Geforce132/SecurityCraft/blob/1.21.3/Changelog.md"
+    }
 }
