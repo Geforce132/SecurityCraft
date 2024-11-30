@@ -47,10 +47,10 @@ body:
       label: SecurityCraft version
       description: What version of SecurityCraft are you using?
       options:
+        - v1.9.12
+        - v1.9.11-beta2
+        - v1.9.11-beta1
         - v1.9.11
-        - v1.9.10.2
-        - v1.9.10.1
-        - v1.9.10
         - Older (update the mod and try again with the new version before continuing.)
     validations:
       required: true
