@@ -70,9 +70,11 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	@Override
 	public void setRemoved() {
-		for (LinkedBlock block : linkedBlocks) {
-			if (level.isLoaded(block.getPos()))
-				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
+		if (!level.isClientSide) {
+			for (LinkedBlock block : linkedBlocks) {
+				if (level.isLoaded(block.getPos()))
+					LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
+			}
 		}
 
 		super.setRemoved();
@@ -190,8 +192,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *
 	 * @param action The {@link ILinkedAction} that occurred
 	 * @param excludedBEs LinkableBlockEntities that aren't going to have onLinkedBlockAction() called on them, always add your
-	 *            block entity to the list if you're going to call propagate() in this method to chain-link
-	 *            multiple blocks (i.e: like Laser Blocks)
+	 *            block entity to the list if you're going to call propagate() in this method to chain-link multiple blocks (i.e:
+	 *            like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {}
 }
