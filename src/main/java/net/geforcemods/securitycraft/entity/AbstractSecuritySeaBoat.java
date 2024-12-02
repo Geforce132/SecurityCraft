@@ -444,7 +444,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public String getModuleDescriptionId(String denotation, ModuleType module) {
-		return IModuleInventory.super.getModuleDescriptionId("generic." + denotation, module);
+		return IModuleInventory.super.getModuleDescriptionId("generic.security_sea_boat", module);
 	}
 
 	@Override
