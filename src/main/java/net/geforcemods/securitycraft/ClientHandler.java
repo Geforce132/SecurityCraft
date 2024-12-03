@@ -292,7 +292,7 @@ public class ClientHandler {
 		};
 		//@formatter:on
 
-		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
+		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getBakingResult().blockStateModels();
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
@@ -301,10 +301,10 @@ public class ClientHandler {
 		}
 
 		for (String mine : mines) {
-			registerBlockMineModel(event, SecurityCraft.resLoc(mine.replace("_ore", "") + "_mine"), SecurityCraft.mcResLoc(mine));
+			registerBlockMineModel(modelRegistry, SecurityCraft.resLoc(mine.replace("_ore", "") + "_mine"), SecurityCraft.mcResLoc(mine));
 		}
 
-		registerBlockMineModel(event, SecurityCraft.resLoc("quartz_mine"), SecurityCraft.mcResLoc("nether_quartz_ore"));
+		registerBlockMineModel(modelRegistry, SecurityCraft.resLoc("quartz_mine"), SecurityCraft.mcResLoc("nether_quartz_ore"));
 	}
 
 	private static void registerDisguisedModel(Map<ModelResourceLocation, BakedModel> modelRegistry, ResourceLocation rl, String stateString) {
@@ -313,10 +313,10 @@ public class ClientHandler {
 		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
 	}
 
-	private static void registerBlockMineModel(ModelEvent.ModifyBakingResult event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
+	private static void registerBlockMineModel(Map<ModelResourceLocation, BakedModel> modelRegistry, ResourceLocation mineRl, ResourceLocation realBlockRl) {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
 
-		event.getModels().put(mineMrl, new BlockMineModel(event.getModels().get(new ModelResourceLocation(realBlockRl, "inventory")), event.getModels().get(mineMrl)));
+		modelRegistry.put(mineMrl, new BlockMineModel(modelRegistry.get(new ModelResourceLocation(realBlockRl, "inventory")), modelRegistry.get(mineMrl)));
 	}
 
 	@SubscribeEvent

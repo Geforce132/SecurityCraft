@@ -70,15 +70,6 @@ repositories {
 		}
 	}
 
-    maven {
-        name 'Maven for PR #1724' // https://github.com/neoforged/NeoForge/pull/1724
-        url 'https://prmaven.neoforged.net/NeoForge/pr1724'
-        content {
-            includeModule('net.neoforged', 'testframework')
-            includeModule('net.neoforged', 'neoforge')
-        }
-    }
-
 	exclusiveContent {
 		forRepository {
 			maven {
@@ -92,7 +83,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.4.0-alpha.1.21.4-rc3.20241203.124508'
+	implementation 'net.neoforged:neoforge:21.4.0-beta'
 
 	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
