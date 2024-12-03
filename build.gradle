@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.165'
+	id 'net.neoforged.gradle.userdev' version '7.0.+'
 }
 
 import groovy.json.JsonOutput
@@ -51,9 +51,14 @@ runs {
 		argument '-nogui'
 	}
 
-	data {
+	clientData {
 		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/client_resources').getAbsolutePath(), '--existing', file('src/main/resources/assets').getAbsolutePath()
+	}
+
+	serverData {
+		workingDirectory project.file('run/data')
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/server_resources/').getAbsolutePath(), '--existing', file('src/main/resources/data').getAbsolutePath()
 	}
 }
 
@@ -64,6 +69,15 @@ repositories {
 			includeGroup "curse.maven"
 		}
 	}
+
+    maven {
+        name 'Maven for PR #1724' // https://github.com/neoforged/NeoForge/pull/1724
+        url 'https://prmaven.neoforged.net/NeoForge/pr1724'
+        content {
+            includeModule('net.neoforged', 'testframework')
+            includeModule('net.neoforged', 'neoforge')
+        }
+    }
 
 	exclusiveContent {
 		forRepository {
@@ -78,20 +92,20 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.3.54-beta'
+	implementation 'net.neoforged:neoforge:21.4.0-alpha.1.21.4-rc3.20241203.124508'
 
-//	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
-//	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
-//	implementation "curse.maven:ftb-teams-forge-404468:5448371"
-//	implementation "curse.maven:jei-238222:5567933"
-//	implementation "curse.maven:the-one-probe-245211:5502323"
+	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
+	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
+	implementation "curse.maven:ftb-teams-forge-404468:5448371"
+	implementation "curse.maven:jei-238222:5567933"
+	implementation "curse.maven:the-one-probe-245211:5502323"
 	implementation "curse.maven:jade-324717:5835088"
 	implementation "curse.maven:betterf3-401648:5873289"
 	implementation "curse.maven:cloth-config-348521:5834708" //betterf3 dependency
 	implementation "curse.maven:wthit-forge-455982:5838416"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
-//	implementation "curse.maven:projecte-226410:3955047"
-//	implementation "curse.maven:embeddium-908741:5556146"
+	implementation "curse.maven:projecte-226410:3955047"
+	implementation "curse.maven:embeddium-908741:5556146"
 	implementation "maven.modrinth:sodium:mc1.21.2-0.6.0-beta.3-neoforge" //incompatible with embeddium
 }
 

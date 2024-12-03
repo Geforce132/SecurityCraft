@@ -49,7 +49,7 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements Entity
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
 		return new ItemStack(state.getValue(TYPE) == PistonType.STICKY ? SCContent.REINFORCED_STICKY_PISTON.get() : SCContent.REINFORCED_PISTON.get());
 	}
 

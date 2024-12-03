@@ -213,11 +213,11 @@ public class LaserBlock extends DisguisableBlock {
 			float b = Math.max(0.0F, 0.6F - 0.7F);
 			int color = ARGB.color(new Vec3(r, g, b));
 
-			level.addParticle(new DustParticleOptions(color, 1), false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(color, 1), false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(color, 1), false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(color, 1), false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(new DustParticleOptions(color, 1), false, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new DustParticleOptions(color, 1), x, y, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

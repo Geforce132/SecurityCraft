@@ -51,7 +51,7 @@ public class FallingBlockMineBlock extends BaseFullMineBlock implements Fallable
 			double particleY = pos.getY() - 0.05D;
 			double particleZ = pos.getZ() + rand.nextFloat();
 
-			level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), false, particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
+			level.addParticle(new BlockParticleOption(ParticleTypes.FALLING_DUST, state), particleX, particleY, particleZ, 0.0D, 0.0D, 0.0D);
 		}
 	}
 }

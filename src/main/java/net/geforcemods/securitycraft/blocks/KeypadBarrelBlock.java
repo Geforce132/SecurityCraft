@@ -34,7 +34,6 @@ import net.minecraft.world.level.block.BarrelBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BarrelBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -143,11 +142,6 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new KeypadBarrelBlockEntity(pos, state);
-	}
-
-	@Override
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
 	}
 
 	@Override

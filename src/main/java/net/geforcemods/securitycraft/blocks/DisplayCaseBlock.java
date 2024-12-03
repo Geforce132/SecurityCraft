@@ -29,7 +29,6 @@ import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,7 +44,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -212,11 +210,6 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.ENTITYBLOCK_ANIMATED;
-	}
-
-	@Override
 	public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
 		if (state.getValue(WATERLOGGED))
 			tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -230,7 +223,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
 		if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
 			ItemStack displayedStack = be.getDisplayedStack();
 
@@ -238,7 +231,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 				return displayedStack;
 		}
 
-		return super.getCloneItemStack(state, target, level, pos, player);
+		return super.getCloneItemStack(level, pos, state, includeData, player);
 	}
 
 	@Override

@@ -59,7 +59,7 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 	}
 
 	public static void particleTick(Level level, BlockPos pos, BlockState state, FloorTrapBlockEntity blockEntity) { //client only, and is only called when invisible
-		level.addParticle(SCContent.FLOOR_TRAP_CLOUD.get(), false, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
+		level.addAlwaysVisibleParticle(SCContent.FLOOR_TRAP_CLOUD.get(), false, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 0.0D, 0.0D, 0.0D);
 	}
 
 	public void scheduleDisappear(boolean force) {

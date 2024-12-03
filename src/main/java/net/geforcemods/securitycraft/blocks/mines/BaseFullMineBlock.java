@@ -25,7 +25,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -135,9 +134,9 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
 		if (player.isCreative() || (level.getBlockEntity(pos) instanceof OwnableBlockEntity be && be.isOwnedBy(player)))
-			return super.getCloneItemStack(state, target, level, pos, player);
+			return super.getCloneItemStack(level, pos, state, includeData, player);
 
 		return new ItemStack(blockDisguisedAs);
 	}

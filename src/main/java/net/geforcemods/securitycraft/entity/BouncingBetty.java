@@ -71,7 +71,7 @@ public class BouncingBetty extends Entity {
 			explode();
 		}
 		else if (level().isClientSide)
-			level().addParticle(ParticleTypes.SMOKE, false, getX(), getY() + 0.5D, getZ(), 0.0D, 0.0D, 0.0D);
+			level().addParticle(ParticleTypes.SMOKE, getX(), getY() + 0.5D, getZ(), 0.0D, 0.0D, 0.0D);
 	}
 
 	private void explode() {

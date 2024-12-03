@@ -13,7 +13,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -141,11 +140,6 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 		bouncingBettyEntity.setDeltaMovement(bouncingBettyEntity.getDeltaMovement().multiply(1, 0, 1).add(0, 0.5D, 0));
 		LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(bouncingBettyEntity));
 		bouncingBettyEntity.playSound(SoundEvents.TNT_PRIMED, 1.0F, 1.0F);
-	}
-
-	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
-		return new ItemStack(asItem());
 	}
 
 	@Override

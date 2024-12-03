@@ -25,27 +25,28 @@ public class DataGenRegistrar {
 	private DataGenRegistrar() {}
 
 	@SubscribeEvent
-	public static void onGatherData(GatherDataEvent event) {
-		boolean includeClient = event.includeClient();
-		boolean includeServer = event.includeServer();
+	public static void onGatherDataClient(GatherDataEvent.Client event) {
+		event.createProvider(BlockModelAndStateGenerator::new);
+		event.createProvider(ItemModelGenerator::new);
+	}
 
-		event.createProvider(includeClient, BlockModelAndStateGenerator::new);
-		event.createProvider(includeServer, DamageTypeTagGenerator::new);
-		event.createProvider(includeServer, EntityTypeTagGenerator::new);
-		event.createProvider(includeServer, FluidTagGenerator::new);
-		event.createProvider(includeClient, ItemModelGenerator::new);
-		event.createProvider(includeServer, (DataProviderFromOutputLookup<LootTableProvider>) (output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK)), lookupProvider));
+	@SubscribeEvent
+	public static void onGatherDataServer(GatherDataEvent.Client event) {
+		event.createProvider(DamageTypeTagGenerator::new);
+		event.createProvider(EntityTypeTagGenerator::new);
+		event.createProvider(FluidTagGenerator::new);
+		event.createProvider((DataProviderFromOutputLookup<LootTableProvider>) (output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK)), lookupProvider));
 		event.createBlockAndItemTags(BlockTagGenerator::new, ItemTagGenerator::new);
 
 		//		if (ModList.get().isLoaded("projecte"))
 		//			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
 
 		//@formatter:off
-		event.createProvider(true, output -> new PackMetadataGenerator(output)
+		event.createProvider(output -> new PackMetadataGenerator(output)
                 .add(PackMetadataSection.TYPE, new PackMetadataSection(Component.literal("SecurityCraft resources & data"),
                         DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
                         Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 		//@formatter:on
-		event.createProvider(includeServer, RecipeGenerator.Runner::new);
+		event.createProvider(RecipeGenerator.Runner::new);
 	}
 }

@@ -125,13 +125,13 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 			double magicNumber1 = 0.2199999988079071D;
 			double magicNumber2 = 0.27000001072883606D;
 
-			level.addParticle(ParticleTypes.SMOKE, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.SMOKE, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.SMOKE, false, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.SMOKE, false, x, y, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.FLAME, false, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
-			level.addParticle(ParticleTypes.FLAME, false, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, x, y + magicNumber1, z - magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, x, y + magicNumber1, z + magicNumber2, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.FLAME, x - magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
+			level.addParticle(ParticleTypes.FLAME, x + magicNumber2, y + magicNumber1, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
 

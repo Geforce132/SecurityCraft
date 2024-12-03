@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.data.models.blockstates.PropertyDispatch.QuadFunction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -205,10 +204,10 @@ public class ElectrifiedIronFenceBlock extends OwnableBlock {
 		hurtOrConvertEntity(this::getShape, state, level, pos, entity);
 	}
 
-	public static void hurtOrConvertEntity(QuadFunction<BlockState, BlockGetter, BlockPos, CollisionContext, VoxelShape> shapeGetter, BlockState state, Level level, BlockPos pos, Entity entity) {
+	public static void hurtOrConvertEntity(ShapeGetter shapeGetter, BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (level.getGameTime() % 20 != 0)
 			return;
-		else if (entity.isRemoved() || !shapeGetter.apply(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
+		else if (entity.isRemoved() || !shapeGetter.getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox()))
 			return;
 		else if (entity instanceof ItemEntity) //so dropped items don't get destroyed
 			return;
@@ -237,5 +236,10 @@ public class ElectrifiedIronFenceBlock extends OwnableBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ElectrifiedFenceAndGateBlockEntity(pos, state);
+	}
+
+	@FunctionalInterface
+	public interface ShapeGetter {
+		VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx);
 	}
 }

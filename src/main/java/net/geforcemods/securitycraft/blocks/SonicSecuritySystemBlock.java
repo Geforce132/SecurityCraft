@@ -24,7 +24,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -37,7 +36,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -132,11 +130,6 @@ public class SonicSecuritySystemBlock extends DisguisableBlock implements Simple
 	}
 
 	@Override
-	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
-	}
-
-	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
 
@@ -157,11 +150,11 @@ public class SonicSecuritySystemBlock extends DisguisableBlock implements Simple
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
 		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity be)
 			return be.getItem();
 
-		return super.getCloneItemStack(state, target, level, pos, player);
+		return super.getCloneItemStack(level, pos, state, includeData, player);
 	}
 
 	@Override

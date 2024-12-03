@@ -287,7 +287,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
 		return new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get());
 	}
 

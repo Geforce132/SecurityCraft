@@ -64,7 +64,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -170,7 +169,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	@Override
-	public ItemStack getPickedResult(HitResult target) {
+	public ItemStack getPickResult() {
 		return new ItemStack(SCContent.SENTRY.get());
 	}
 

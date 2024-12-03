@@ -133,11 +133,6 @@ public class CollapsibleTextList extends Button {
 	}
 
 	@Override
-	protected boolean clicked(double mouseX, double mouseY) {
-		return isMouseOver(mouseX, mouseY);
-	}
-
-	@Override
 	public boolean isMouseOver(double mouseX, double mouseY) {
 		return extraHoverCheck.test((int) mouseX, (int) mouseY) && super.isMouseOver(mouseX, mouseY);
 	}

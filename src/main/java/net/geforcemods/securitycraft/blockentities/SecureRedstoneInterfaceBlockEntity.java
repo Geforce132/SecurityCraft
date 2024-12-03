@@ -131,7 +131,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			Vec3 particlePos = receiverPos.lerp(senderPos, i / step);
 
 			for (ServerPlayer player : players) {
-				level.sendParticles(player, new InterfaceHighlightParticleOptions(color, particleDirection, 1.0F), false, particlePos.x, particlePos.y, particlePos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+				level.sendParticles(player, new InterfaceHighlightParticleOptions(color, particleDirection, 1.0F), false, true, particlePos.x, particlePos.y, particlePos.z, 1, 0.0D, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
