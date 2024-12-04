@@ -93,7 +93,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 
 		consumer = buffer.getBuffer(RenderType.entityCutout(glowing ? glowTexture : texture));
 		pose.scale(-1.0F, 1.0F, -1.0F);
-		model.renderToBuffer(pose, consumer, packedLight, packedOverlay);
+		model.renderToBuffer(pose, consumer, light, packedOverlay);
 		pose.popPose();
 	}
 }

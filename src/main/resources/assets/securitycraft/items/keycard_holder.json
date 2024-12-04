@@ -5,13 +5,6 @@
     "scale": 5,
     "entries": [
       {
-        "threshold": 0,
-        "model": {
-          "type": "minecraft:model",
-          "model": "securitycraft:item/keycard_holder"
-        }
-      },
-      {
         "threshold": 1,
         "model": {
           "type": "minecraft:model",
