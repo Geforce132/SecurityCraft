@@ -47,6 +47,7 @@ import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.models.DisplayCaseModel;
 import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
@@ -59,10 +60,9 @@ import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
-import net.geforcemods.securitycraft.renderers.DisplayCaseItemRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
+import net.geforcemods.securitycraft.renderers.DisplayCaseSpecialRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
-import net.geforcemods.securitycraft.renderers.KeypadChestItemRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.OwnableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
@@ -120,13 +120,11 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
@@ -146,7 +144,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GrassColor;
@@ -173,6 +170,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -183,7 +181,6 @@ public class ClientHandler {
 	public static final ModelLayerLocation BULLET_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("bullet"), "main");
 	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("ims_bomb"), "main");
 	public static final ModelLayerLocation DISPLAY_CASE_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("display_case"), "main");
-	public static final ModelLayerLocation GLOW_DISPLAY_CASE_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("glow_display_case"), "main");
 	public static final ModelLayerLocation SENTRY_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("sentry"), "main");
 	public static final ModelLayerLocation SECURE_REDSTONE_INTERFACE_DISH_LAYER_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("secure_redstone_interface_dish"), "main");
 	public static final ModelLayerLocation SECURITY_CAMERA_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("security_camera"), "main");
@@ -321,6 +318,11 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void onRegisterRangeSelectItemModelProperty(RegisterRangeSelectItemModelPropertyEvent event) {
 		event.register(SecurityCraft.resLoc("keycard_count"), KeycardCount.MAP_CODEC);
+	}
+
+	@SubscribeEvent
+	public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
+		event.register(SecurityCraft.resLoc("display_case"), DisplayCaseSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	@SubscribeEvent
@@ -520,8 +522,7 @@ public class ClientHandler {
 	public static void registerEntityRenderers(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(BULLET_LOCATION, BulletModel::createLayer);
 		event.registerLayerDefinition(IMS_BOMB_LOCATION, IMSBombModel::createLayer);
-		event.registerLayerDefinition(DISPLAY_CASE_LOCATION, DisplayCaseRenderer::createModelLayer);
-		event.registerLayerDefinition(GLOW_DISPLAY_CASE_LOCATION, DisplayCaseRenderer::createModelLayer);
+		event.registerLayerDefinition(DISPLAY_CASE_LOCATION, DisplayCaseModel::createModelLayer);
 		event.registerLayerDefinition(SENTRY_LOCATION, SentryModel::createLayer);
 		event.registerLayerDefinition(SECURITY_CAMERA_LOCATION, SecurityCameraModel::createLayer);
 		event.registerLayerDefinition(SONIC_SECURITY_SYSTEM_LOCATION, SonicSecuritySystemModel::createLayer);
@@ -536,28 +537,6 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
-		BlockEntityWithoutLevelRenderer displayCaseItemRenderer = new DisplayCaseItemRenderer(false);
-		BlockEntityWithoutLevelRenderer glowDisplayCaseItemRenderer = new DisplayCaseItemRenderer(true);
-		BlockEntityWithoutLevelRenderer keypadChestItemRenderer = new KeypadChestItemRenderer();
-
-		event.registerItem(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return displayCaseItemRenderer;
-			}
-		}, SCContent.DISPLAY_CASE_ITEM.get());
-		event.registerItem(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return glowDisplayCaseItemRenderer;
-			}
-		}, SCContent.GLOW_DISPLAY_CASE_ITEM.get());
-		event.registerItem(new IClientItemExtensions() {
-			@Override
-			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-				return keypadChestItemRenderer;
-			}
-		}, SCContent.KEYPAD_CHEST_ITEM.get());
 		event.registerItem(new IClientItemExtensions() {
 			private static final ArmPose TASER_ARM_POSE = ClientHandler.TASER_ARM_POSE_PARAMS.getValue();
 
