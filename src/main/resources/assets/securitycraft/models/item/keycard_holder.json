@@ -2,13 +2,5 @@
     "parent": "item/generated",
     "textures": {
         "layer0": "securitycraft:item/keycard_holder"
-    },
-    "overrides": [
-        {
-            "predicate": {
-                "securitycraft:keycard_count": 0.2
-            },
-            "model": "securitycraft:item/keycard_holder_full"
-        }
-    ]
+    }
 }

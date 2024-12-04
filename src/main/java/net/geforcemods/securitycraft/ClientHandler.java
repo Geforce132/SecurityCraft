@@ -41,10 +41,8 @@ import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
-import net.geforcemods.securitycraft.items.KeycardHolderItem;
-import net.geforcemods.securitycraft.items.LensItem;
+import net.geforcemods.securitycraft.items.properties.KeycardCount;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
@@ -174,6 +172,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -320,14 +319,17 @@ public class ClientHandler {
 	}
 
 	@SubscribeEvent
+	public static void onRegisterRangeSelectItemModelProperty(RegisterRangeSelectItemModelPropertyEvent event) {
+		event.register(SecurityCraft.resLoc("keycard_count"), KeycardCount.MAP_CODEC);
+	}
+
+	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event) {
 		RenderType translucent = RenderType.translucent();
 
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
 		event.enqueueWork(() -> {
-			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), KeycardHolderItem.COUNT_PROPERTY, (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
-			ItemProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity, id) -> stack.has(DataComponents.DYED_COLOR) ? 1.0F : 0.0F);
 			ItemProperties.register(SCContent.CAMERA_MONITOR.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
 				if (!(entity instanceof Player player))
 					return EMPTY_STATE;
@@ -720,8 +722,6 @@ public class ClientHandler {
 			else
 				return 0xFFFFFFFF;
 		}, item));
-		event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, 0xFF333333), SCContent.BRIEFCASE.get());
-		event.register((stack, tintIndex) -> tintIndex > 0 ? -1 : DyedItemColor.getOrDefault(stack, 0xFFFFFFFF), SCContent.LENS.get());
 		event.register((stack, tintIndex) -> {
 			if (tintIndex == 1) {
 				int grassTint = GrassColor.get(0.5D, 1.0D);

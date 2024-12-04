@@ -1,0 +1,25 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "minecraft:has_component",
+    "component": "minecraft:dyed_color",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "securitycraft:item/colored_lens",
+      "tints": [
+        {
+          "type": "minecraft:dye",
+          "default": [
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "securitycraft:item/lens"
+    }
+  }
+}

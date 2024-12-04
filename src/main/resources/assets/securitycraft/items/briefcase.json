@@ -1,0 +1,16 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:item/briefcase",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": [
+          0.2,
+          0.2,
+          0.2
+        ]
+      }
+    ]
+  }
+}
