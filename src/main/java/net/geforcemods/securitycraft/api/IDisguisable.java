@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface IDisguisable {
@@ -38,15 +39,19 @@ public interface IDisguisable {
 	}
 
 	public static BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
+		return getDisguisedStateOrDefault(level.getBlockEntity(pos), state, level, pos);
+	}
+
+	public static BlockState getDisguisedStateOrDefault(BlockEntity be, BlockState state, BlockGetter level, BlockPos pos) {
 		if (level instanceof LevelReader reader)
-			return getDisguisedBlockState(reader, pos).orElse(state);
+			return getDisguisedBlockState(be, reader).orElse(state);
 		else
 			return state;
 	}
 
-	public static Optional<BlockState> getDisguisedBlockState(LevelReader level, BlockPos pos) {
-		if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.isModuleEnabled(ModuleType.DISGUISE))
-			return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), be.getModule(ModuleType.DISGUISE));
+	public static Optional<BlockState> getDisguisedBlockState(BlockEntity be, LevelReader level) {
+		if (be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.DISGUISE))
+			return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), moduleInv.getModule(ModuleType.DISGUISE));
 
 		return Optional.empty();
 	}
