@@ -1,0 +1,36 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "securitycraft:sentry_linked",
+    "cases": [
+      {
+        "when": "no_positions",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_sentry_idle"
+        }
+      },
+      {
+        "when": "unknown",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_sentry"
+        }
+      },
+      {
+        "when": "not_linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_sentry_not_linked"
+        }
+      },
+      {
+        "when": "linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_sentry_linked"
+        }
+      }
+    ]
+  }
+}

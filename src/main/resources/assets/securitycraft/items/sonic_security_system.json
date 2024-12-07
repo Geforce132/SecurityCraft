@@ -1,0 +1,38 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "securitycraft:block_linked",
+    "position_component": "securitycraft:sss_linked_blocks",
+    "hit_check": "securitycraft:lockable",
+    "cases": [
+      {
+        "when": "no_positions",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/sonic_security_system_idle"
+        }
+      },
+      {
+        "when": "unknown",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/sonic_security_system"
+        }
+      },
+      {
+        "when": "not_linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/sonic_security_system_not_linked"
+        }
+      },
+      {
+        "when": "linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/sonic_security_system_linked"
+        }
+      }
+    ]
+  }
+}

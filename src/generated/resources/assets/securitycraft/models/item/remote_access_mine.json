@@ -1,31 +1,5 @@
 {
   "parent": "minecraft:item/generated",
-  "overrides": [
-    {
-      "model": "securitycraft:item/remote_access_mine_idle",
-      "predicate": {
-        "securitycraft:linking_state": 0.0
-      }
-    },
-    {
-      "model": "securitycraft:item/remote_access_mine",
-      "predicate": {
-        "securitycraft:linking_state": 0.25
-      }
-    },
-    {
-      "model": "securitycraft:item/remote_access_mine_not_linked",
-      "predicate": {
-        "securitycraft:linking_state": 0.5
-      }
-    },
-    {
-      "model": "securitycraft:item/remote_access_mine_linked",
-      "predicate": {
-        "securitycraft:linking_state": 0.75
-      }
-    }
-  ],
   "textures": {
     "layer0": "securitycraft:item/remote_access_mine"
   }

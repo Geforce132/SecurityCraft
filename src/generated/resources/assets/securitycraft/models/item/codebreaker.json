@@ -1,31 +1,5 @@
 {
   "parent": "minecraft:item/generated",
-  "overrides": [
-    {
-      "model": "securitycraft:item/codebreaker",
-      "predicate": {
-        "securitycraft:codebreaker_state": 0.0
-      }
-    },
-    {
-      "model": "securitycraft:item/codebreaker_decoding",
-      "predicate": {
-        "securitycraft:codebreaker_state": 0.25
-      }
-    },
-    {
-      "model": "securitycraft:item/codebreaker_failure",
-      "predicate": {
-        "securitycraft:codebreaker_state": 0.5
-      }
-    },
-    {
-      "model": "securitycraft:item/codebreaker_success",
-      "predicate": {
-        "securitycraft:codebreaker_state": 0.75
-      }
-    }
-  ],
   "textures": {
     "layer0": "securitycraft:item/codebreaker"
   }

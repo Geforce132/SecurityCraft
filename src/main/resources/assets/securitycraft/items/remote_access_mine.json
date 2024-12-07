@@ -1,0 +1,38 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "securitycraft:block_linked",
+    "position_component": "securitycraft:bound_mines",
+    "hit_check": "securitycraft:explosive_block",
+    "cases": [
+      {
+        "when": "no_positions",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_mine_idle"
+        }
+      },
+      {
+        "when": "unknown",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_mine"
+        }
+      },
+      {
+        "when": "not_linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_mine_not_linked"
+        }
+      },
+      {
+        "when": "linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/remote_access_mine_linked"
+        }
+      }
+    ]
+  }
+}

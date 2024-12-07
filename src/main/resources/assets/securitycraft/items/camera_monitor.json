@@ -1,0 +1,38 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "securitycraft:block_linked",
+    "position_component": "securitycraft:bound_cameras",
+    "hit_check": "securitycraft:security_camera",
+    "cases": [
+      {
+        "when": "no_positions",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/camera_monitor_idle"
+        }
+      },
+      {
+        "when": "unknown",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/camera_monitor"
+        }
+      },
+      {
+        "when": "not_linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/camera_monitor_not_linked"
+        }
+      },
+      {
+        "when": "linked",
+        "model": {
+          "type": "minecraft:model",
+          "model": "securitycraft:item/camera_monitor_linked"
+        }
+      }
+    ]
+  }
+}

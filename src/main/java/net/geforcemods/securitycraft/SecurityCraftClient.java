@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import net.geforcemods.securitycraft.compat.ium.IumCompat;
+import net.geforcemods.securitycraft.items.properties.HitCheck;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -16,5 +17,6 @@ public class SecurityCraftClient {
 		container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
 		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		INSTALLED_IUM_MOD.resolve();
+		HitCheck.bootstrap();
 	}
 }
