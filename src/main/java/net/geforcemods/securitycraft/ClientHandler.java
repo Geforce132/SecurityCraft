@@ -35,7 +35,6 @@ import net.geforcemods.securitycraft.items.properties.CodebreakerState;
 import net.geforcemods.securitycraft.items.properties.KeycardCount;
 import net.geforcemods.securitycraft.items.properties.SentryLinked;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
-import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
@@ -236,42 +235,6 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
-		//@formatter:off
-		String[] mines = {
-				"ancient_debris",
-				"blast_furnace",
-				"coal_ore",
-				"cobbled_deepslate",
-				"cobblestone",
-				"copper_ore",
-				"deepslate",
-				"deepslate_coal_ore",
-				"deepslate_copper_ore",
-				"deepslate_diamond_ore",
-				"deepslate_emerald_ore",
-				"deepslate_gold_ore",
-				"deepslate_iron_ore",
-				"deepslate_lapis_ore",
-				"deepslate_redstone_ore",
-				"diamond_ore",
-				"dirt",
-				"emerald_ore",
-				"gravel",
-				"gold_ore",
-				"gilded_blackstone",
-				"furnace",
-				"iron_ore",
-				"lapis_ore",
-				"nether_gold_ore",
-				"redstone_ore",
-				"sand",
-				"smoker",
-				"stone",
-				"suspicious_gravel",
-				"suspicious_sand"
-		};
-		//@formatter:on
-
 		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getBakingResult().blockStateModels();
 
 		for (Block block : disguisableBlocks.get()) {
@@ -279,24 +242,12 @@ public class ClientHandler {
 				registerDisguisedModel(modelRegistry, Utils.getRegistryName(block), state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(",")));
 			}
 		}
-
-		for (String mine : mines) {
-			registerBlockMineModel(modelRegistry, SecurityCraft.resLoc(mine.replace("_ore", "") + "_mine"), SecurityCraft.mcResLoc(mine));
-		}
-
-		registerBlockMineModel(modelRegistry, SecurityCraft.resLoc("quartz_mine"), SecurityCraft.mcResLoc("nether_quartz_ore"));
 	}
 
 	private static void registerDisguisedModel(Map<ModelResourceLocation, BakedModel> modelRegistry, ResourceLocation rl, String stateString) {
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
 		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
-	}
-
-	private static void registerBlockMineModel(Map<ModelResourceLocation, BakedModel> modelRegistry, ResourceLocation mineRl, ResourceLocation realBlockRl) {
-		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
-
-		modelRegistry.put(mineMrl, new BlockMineModel(modelRegistry.get(new ModelResourceLocation(realBlockRl, "inventory")), modelRegistry.get(mineMrl)));
 	}
 
 	@SubscribeEvent
