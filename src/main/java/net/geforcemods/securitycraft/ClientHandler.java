@@ -33,6 +33,7 @@ import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.properties.BlockLinked;
 import net.geforcemods.securitycraft.items.properties.CodebreakerState;
 import net.geforcemods.securitycraft.items.properties.KeycardCount;
+import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
 import net.geforcemods.securitycraft.items.properties.SentryLinked;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.models.BulletModel;
@@ -256,7 +257,7 @@ public class ClientHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRegisterRangeSelectItemModelProperty(RegisterSelectItemModelPropertyEvent event) {
+	public static void onRegisterSelectItemModelProperty(RegisterSelectItemModelPropertyEvent event) {
 		event.register(SecurityCraft.resLoc("block_linked"), BlockLinked.TYPE);
 		event.register(SecurityCraft.resLoc("codebreaker_state"), CodebreakerState.TYPE);
 		event.register(SecurityCraft.resLoc("sentry_linked"), SentryLinked.TYPE);
@@ -265,6 +266,11 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
 		event.register(SecurityCraft.resLoc("display_case"), DisplayCaseSpecialRenderer.Unbaked.MAP_CODEC);
+	}
+
+	@SubscribeEvent
+	public static void onRegisterItemTintSources(RegisterColorHandlersEvent.ItemTintSources event) {
+		event.register(SecurityCraft.resLoc("reinforced"), ReinforcedTint.MAP_CODEC);
 	}
 
 	@SubscribeEvent
@@ -362,7 +368,7 @@ public class ClientHandler {
 	}
 
 	@SubscribeEvent
-	public static void registerEntityRenderers(EntityRenderersEvent.RegisterLayerDefinitions event) {
+	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(BULLET_LOCATION, BulletModel::createLayer);
 		event.registerLayerDefinition(IMS_BOMB_LOCATION, IMSBombModel::createLayer);
 		event.registerLayerDefinition(DISPLAY_CASE_LOCATION, DisplayCaseModel::createModelLayer);
@@ -434,7 +440,7 @@ public class ClientHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRegisterColorHandlersBlock(RegisterColorHandlersEvent.Block event) {
+	public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
 		initTint();
 		blocksWithReinforcedTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 0)
@@ -528,33 +534,6 @@ public class ClientHandler {
 		}
 
 		return -1;
-	}
-
-	@SubscribeEvent
-	public static void onRegisterColorHandlersItem(RegisterColorHandlersEvent.Item event) {
-		blocksWithReinforcedTint.forEach((item, tint) -> event.register((stack, tintIndex) -> {
-			if (tintIndex == 0)
-				return mixWithReinforcedTintIfEnabled(tint);
-			else
-				return 0xFFFFFFFF;
-		}, item));
-		blocksWithCustomTint.forEach((item, tint) -> event.register((stack, tintIndex) -> {
-			if (tintIndex == 0)
-				return tint;
-			else
-				return 0xFFFFFFFF;
-		}, item));
-		event.register((stack, tintIndex) -> {
-			if (tintIndex == 1) {
-				int grassTint = GrassColor.get(0.5D, 1.0D);
-
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
-
-			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
-		}, SCContent.REINFORCED_GRASS_BLOCK.get());
-		blocksWithReinforcedTint = null;
-		blocksWithCustomTint = null;
 	}
 
 	public static int mixWithReinforcedTintIfEnabled(int tint) {

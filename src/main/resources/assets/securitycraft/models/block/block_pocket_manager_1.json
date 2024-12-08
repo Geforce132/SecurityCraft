@@ -1,5 +1,5 @@
 {
-    "parent": "block/block",
+    "parent": "block/orientable",
     "render_type": "minecraft:cutout_mipped",
 	"textures": {
 		"0": "securitycraft:block/block_pocket_manager_front",
