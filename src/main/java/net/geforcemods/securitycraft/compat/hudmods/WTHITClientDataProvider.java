@@ -4,16 +4,15 @@ import java.awt.Rectangle;
 
 import mcp.mobius.waila.api.IBlockAccessor;
 import mcp.mobius.waila.api.IBlockComponentProvider;
+import mcp.mobius.waila.api.IClientRegistrar;
 import mcp.mobius.waila.api.ICommonAccessor;
 import mcp.mobius.waila.api.IEntityAccessor;
 import mcp.mobius.waila.api.IEntityComponentProvider;
 import mcp.mobius.waila.api.IEventListener;
 import mcp.mobius.waila.api.IPluginConfig;
-import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.ITooltipComponent;
-import mcp.mobius.waila.api.IWailaPlugin;
-import mcp.mobius.waila.api.TooltipPosition;
+import mcp.mobius.waila.api.IWailaClientPlugin;
 import mcp.mobius.waila.api.WailaConstants;
 import mcp.mobius.waila.api.component.ItemComponent;
 import net.geforcemods.securitycraft.ClientHandler;
@@ -28,19 +27,16 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 
-public final class WTHITDataProvider extends HudModHandler implements IWailaPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
+public final class WTHITClientDataProvider extends HudModHandler implements IWailaClientPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
 	@Override
-	public void register(IRegistrar registrar) {
-		registrar.addEventListener(this);
-		registrar.addSyncedConfig(SHOW_OWNER, true, false);
-		registrar.addSyncedConfig(SHOW_MODULES, true, false);
-		registrar.addSyncedConfig(SHOW_CUSTOM_NAME, true, false);
-		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.HEAD, IOverlayDisplay.class);
-		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.BODY, IOwnable.class);
-		registrar.addComponent((IBlockComponentProvider) this, TooltipPosition.TAIL, IOverlayDisplay.class);
-		registrar.addIcon((IBlockComponentProvider) this, IOverlayDisplay.class);
-		registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, Sentry.class);
-		registrar.addComponent((IEntityComponentProvider) this, TooltipPosition.BODY, AbstractSecuritySeaBoat.class);
+	public void register(IClientRegistrar registrar) {
+		registrar.eventListener(this);
+		registrar.head((IBlockComponentProvider) this, IOverlayDisplay.class);
+		registrar.body((IBlockComponentProvider) this, IOwnable.class);
+		registrar.tail((IBlockComponentProvider) this, IOverlayDisplay.class);
+		registrar.icon((IBlockComponentProvider) this, IOverlayDisplay.class);
+		registrar.body((IEntityComponentProvider) this, Sentry.class);
+		registrar.body((IEntityComponentProvider) this, AbstractSecuritySeaBoat.class);
 	}
 
 	@Override
