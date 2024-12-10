@@ -128,6 +128,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		fixBurnTimeData(tag);
 		super.loadAdditional(tag, lookupProvider);
 
 		modules = readModuleInventory(tag, lookupProvider);
@@ -350,5 +351,16 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	@Override
 	public BlockPos myPos() {
 		return worldPosition;
+	}
+
+	private void fixBurnTimeData(CompoundTag tag) {
+		if (tag.contains("CookTime")) {//Pre-1.12.4 furnace burn time data
+			int burnTime = tag.getInt("BurnTime");
+
+			tag.putInt("cooking_time_spent", tag.getInt("CookTime"));
+			tag.putInt("cooking_total_time", tag.getInt("CookTimeTotal"));
+			tag.putInt("lit_time_remaining", burnTime);
+			tag.putInt("lit_total_time", burnTime);
+		}
 	}
 }
