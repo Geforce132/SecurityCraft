@@ -2,13 +2,13 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.+'
+	id 'net.neoforged.gradle.userdev' version '7.0.165'
 }
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.12'
+version = '1.9.12-beta1'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -53,16 +53,20 @@ runs {
 
 	clientData {
 		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/client_resources').getAbsolutePath(), '--existing', file('src/main/resources/assets').getAbsolutePath()
-	}
-
-	serverData {
-		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/server_resources/').getAbsolutePath(), '--existing', file('src/main/resources/data').getAbsolutePath()
+		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources').getAbsolutePath(), '--existing', file('src/main/resources').getAbsolutePath()
 	}
 }
 
 repositories {
+    maven {
+        name 'Maven for PR #1725' // https://github.com/neoforged/NeoForge/pull/1725
+        url 'https://prmaven.neoforged.net/NeoForge/pr1725'
+        content {
+            includeModule('net.neoforged', 'testframework')
+            includeModule('net.neoforged', 'neoforge')
+        }
+    }
+
 	maven {
 		url "https://cursemaven.com/"
 		content {
@@ -83,7 +87,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.4.10-beta'
+	implementation 'net.neoforged:neoforge:21.4.39-beta-pr-1725-pr-vanilla-datagen-21.4'
 
 	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
@@ -97,12 +101,12 @@ dependencies {
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 	implementation "curse.maven:projecte-226410:3955047"
 	implementation "curse.maven:embeddium-908741:5556146"
-	implementation "maven.modrinth:sodium:mc1.21.2-0.6.0-beta.3-neoforge" //incompatible with embeddium
+	implementation "maven.modrinth:sodium:mc1.21.4-0.6.3-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {
 	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
-	archiveFileName = "[1.21.3] SecurityCraft v${version}.jar"
+	archiveFileName = "[1.21.4] SecurityCraft v${version}.jar"
 	manifest {
 		attributes(["Specification-Title": "SecurityCraft",
 					"Specification-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep",

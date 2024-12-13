@@ -21,6 +21,16 @@
       "apply": {
         "model": "securitycraft:block/reinforced_tuff_brick_wall_side",
         "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "low"
+      }
+    },
+    {
+      "apply": {
+        "model": "securitycraft:block/reinforced_tuff_brick_wall_side",
+        "uvlock": true,
         "y": 180
       },
       "when": {
@@ -39,21 +49,21 @@
     },
     {
       "apply": {
-        "model": "securitycraft:block/reinforced_tuff_brick_wall_side",
-        "uvlock": true,
-        "y": 90
-      },
-      "when": {
-        "east": "low"
-      }
-    },
-    {
-      "apply": {
         "model": "securitycraft:block/reinforced_tuff_brick_wall_side_tall",
         "uvlock": true
       },
       "when": {
         "north": "tall"
+      }
+    },
+    {
+      "apply": {
+        "model": "securitycraft:block/reinforced_tuff_brick_wall_side_tall",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "tall"
       }
     },
     {
@@ -74,16 +84,6 @@
       },
       "when": {
         "west": "tall"
-      }
-    },
-    {
-      "apply": {
-        "model": "securitycraft:block/reinforced_tuff_brick_wall_side_tall",
-        "uvlock": true,
-        "y": 90
-      },
-      "when": {
-        "east": "tall"
       }
     }
   ]

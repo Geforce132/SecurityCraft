@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/template_glass_pane_side",
-  "render_type": "minecraft:translucent",
   "textures": {
     "edge": "securitycraft:block/reinforced_pink_stained_glass_pane_top",
     "pane": "securitycraft:block/reinforced_pink_stained_glass"

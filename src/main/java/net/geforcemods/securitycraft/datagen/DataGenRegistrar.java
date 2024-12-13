@@ -6,6 +6,9 @@ import java.util.Set;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.DetectedVersion;
+import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableProvider.SubProviderEntry;
 import net.minecraft.data.metadata.PackMetadataGenerator;
@@ -25,17 +28,18 @@ public class DataGenRegistrar {
 	private DataGenRegistrar() {}
 
 	@SubscribeEvent
-	public static void onGatherDataClient(GatherDataEvent.Client event) {
-		event.createProvider(BlockModelAndStateGenerator::new);
-		event.createProvider(ItemModelGenerator::new);
-	}
-
-	@SubscribeEvent
 	public static void onGatherDataServer(GatherDataEvent.Client event) {
 		event.createProvider(DamageTypeTagGenerator::new);
 		event.createProvider(EntityTypeTagGenerator::new);
 		event.createProvider(FluidTagGenerator::new);
 		event.createProvider((DataProviderFromOutputLookup<LootTableProvider>) (output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK)), lookupProvider));
+		event.createProvider(output -> new ModelProvider(output, SecurityCraft.MODID) {
+			@Override
+			protected void registerModels(BlockModelGenerators blockModels, ItemModelGenerators itemModels) {
+				BlockModelAndStateGenerator.run(blockModels);
+				ItemModelGenerator.run(itemModels);
+			}
+		});
 		event.createBlockAndItemTags(BlockTagGenerator::new, ItemTagGenerator::new);
 
 		//		if (ModList.get().isLoaded("projecte"))

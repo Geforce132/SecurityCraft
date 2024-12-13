@@ -1,6 +1,0 @@
-{
-  "parent": "securitycraft:block/reinforced_wall_inventory",
-  "textures": {
-    "wall": "minecraft:block/end_stone_bricks"
-  }
-}

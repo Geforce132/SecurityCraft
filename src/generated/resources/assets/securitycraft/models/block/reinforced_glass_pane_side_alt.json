@@ -1,6 +1,5 @@
 {
   "parent": "minecraft:block/template_glass_pane_side_alt",
-  "render_type": "minecraft:cutout_mipped",
   "textures": {
     "edge": "securitycraft:block/reinforced_glass_pane_top",
     "pane": "securitycraft:block/reinforced_glass"
