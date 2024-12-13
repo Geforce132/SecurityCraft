@@ -86,7 +86,7 @@ public class BlockModelAndStateGenerator {
 		createReinforcedFence(SCContent.REINFORCED_DARK_OAK_FENCE.get(), Blocks.DARK_OAK_PLANKS);
 		createReinforcedFence(SCContent.REINFORCED_MANGROVE_FENCE.get(), Blocks.MANGROVE_PLANKS);
 		createReinforcedFence(SCContent.REINFORCED_CHERRY_FENCE.get(), Blocks.CHERRY_PLANKS);
-		//bamboo fence is handled manually
+		createReinforcedCustomFence(SCContent.REINFORCED_BAMBOO_FENCE.get(), Blocks.BAMBOO_FENCE);
 		createReinforcedFence(SCContent.REINFORCED_CRIMSON_FENCE.get(), Blocks.CRIMSON_PLANKS);
 		createReinforcedFence(SCContent.REINFORCED_WARPED_FENCE.get(), Blocks.WARPED_PLANKS);
 		createReinforcedFence(SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), Blocks.NETHER_BRICKS);
@@ -98,7 +98,7 @@ public class BlockModelAndStateGenerator {
 		createReinforcedFenceGate(SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(), Blocks.DARK_OAK_PLANKS);
 		createReinforcedFenceGate(SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(), Blocks.MANGROVE_PLANKS);
 		createReinforcedFenceGate(SCContent.REINFORCED_CHERRY_FENCE_GATE.get(), Blocks.CHERRY_PLANKS);
-		//bamboo fence gate is handled manually
+		createReinforcedCustomFenceGate(SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(), Blocks.BAMBOO_FENCE_GATE);
 		createReinforcedFenceGate(SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(), Blocks.CRIMSON_PLANKS);
 		createReinforcedFenceGate(SCContent.REINFORCED_WARPED_FENCE_GATE.get(), Blocks.WARPED_PLANKS);
 
