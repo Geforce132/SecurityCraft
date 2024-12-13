@@ -45,7 +45,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -309,11 +308,6 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
 		return getDisguisedStack(level, pos);
-	}
-
-	@Override
-	protected RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
 	}
 
 	@Override
