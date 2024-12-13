@@ -1,21 +1,21 @@
 {
+  "hand_animation_on_swap": false,
   "model": {
     "type": "minecraft:range_dispatch",
-    "property": "securitycraft:keycard_count",
-    "scale": 5,
     "entries": [
       {
-        "threshold": 1,
         "model": {
           "type": "minecraft:model",
           "model": "securitycraft:item/keycard_holder_full"
-        }
+        },
+        "threshold": 1.0
       }
     ],
     "fallback": {
       "type": "minecraft:model",
       "model": "securitycraft:item/keycard_holder"
-    }
-  },
-  "hand_animation_on_swap": false
+    },
+    "property": "securitycraft:keycard_count",
+    "scale": 5.0
+  }
 }

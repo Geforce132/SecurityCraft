@@ -1,37 +1,37 @@
 {
   "model": {
     "type": "minecraft:select",
-    "property": "securitycraft:codebreaker_state",
-    "hit_check": "securitycraft:codebreakable",
     "cases": [
       {
-        "when": "default",
         "model": {
           "type": "minecraft:model",
           "model": "securitycraft:item/codebreaker"
-        }
+        },
+        "when": "default"
       },
       {
-        "when": "decoding",
         "model": {
           "type": "minecraft:model",
           "model": "securitycraft:item/codebreaker_decoding"
-        }
+        },
+        "when": "decoding"
       },
       {
-        "when": "success",
         "model": {
           "type": "minecraft:model",
           "model": "securitycraft:item/codebreaker_success"
-        }
+        },
+        "when": "success"
       },
       {
-        "when": "failure",
         "model": {
           "type": "minecraft:model",
           "model": "securitycraft:item/codebreaker_failure"
-        }
+        },
+        "when": "failure"
       }
-    ]
+    ],
+    "hit_check": "securitycraft:codebreakable",
+    "property": "securitycraft:codebreaker_state"
   }
 }

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:item/scanner_door_item"
+  }
+}

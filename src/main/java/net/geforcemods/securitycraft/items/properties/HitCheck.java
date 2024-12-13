@@ -20,12 +20,16 @@ import net.minecraft.world.phys.Vec3;
 public interface HitCheck {
 	public static final LateBoundIdMapper<ResourceLocation, HitCheck> ID_MAPPER = new LateBoundIdMapper<>();
 	public static final Codec<HitCheck> CODEC = ID_MAPPER.codec(ResourceLocation.CODEC);
+	public static final HitCheck SECURITY_CAMERA = (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof SecurityCameraBlockEntity;
+	public static final HitCheck EXPLOSIVE_BLOCK = (level, hitResult) -> level.getBlockState(hitResult.getBlockPos()).getBlock() instanceof IExplosive;
+	public static final HitCheck LOCKABLE = (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof ILockable;
+	public static final HitCheck CODEBREAKABLE = (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof ICodebreakable;
 
 	public static void bootstrap() {
-		ID_MAPPER.put(SecurityCraft.resLoc("security_camera"), (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof SecurityCameraBlockEntity);
-		ID_MAPPER.put(SecurityCraft.resLoc("explosive_block"), (level, hitResult) -> level.getBlockState(hitResult.getBlockPos()).getBlock() instanceof IExplosive);
-		ID_MAPPER.put(SecurityCraft.resLoc("lockable"), (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof ILockable);
-		ID_MAPPER.put(SecurityCraft.resLoc("codebreakable"), (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof ICodebreakable);
+		ID_MAPPER.put(SecurityCraft.resLoc("security_camera"), SECURITY_CAMERA);
+		ID_MAPPER.put(SecurityCraft.resLoc("explosive_block"), EXPLOSIVE_BLOCK);
+		ID_MAPPER.put(SecurityCraft.resLoc("lockable"), LOCKABLE);
+		ID_MAPPER.put(SecurityCraft.resLoc("codebreakable"), CODEBREAKABLE);
 	}
 
 	public static BlockHitResult getHitResult(Level level, Player player) {
