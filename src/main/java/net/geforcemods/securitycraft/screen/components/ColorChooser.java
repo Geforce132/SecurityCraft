@@ -160,6 +160,16 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	@Override
+	public boolean isMouseOver(double mouseX, double mouseY) {
+		if (!disabled) {
+			clickedInDragRegion = colorFieldHoverChecker.checkHover(mouseX, mouseY);
+			return clickedInDragRegion;
+		}
+
+		return false;
+	}
+
+	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (!disabled) {
 			super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -177,7 +187,6 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (!disabled) {
 			super.mouseClicked(mouseX, mouseY, button);
-			clickedInDragRegion = colorFieldHoverChecker.checkHover(mouseX, mouseY);
 
 			if (clickedInDragRegion)
 				setSelection(mouseX, mouseY);

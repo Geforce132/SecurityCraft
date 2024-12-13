@@ -275,6 +275,14 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
+	public boolean isMouseOver(double mouseX, double mouseY) {
+		boolean isWithinMainScreen = mouseX >= xStart && mouseX < xStart + 193 && mouseY >= yStart && mouseY < yStart + 150;
+
+		clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY);
+		return isWithinMainScreen || clickedInDragRegion;
+	}
+
+	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (button == 0 && clickedInDragRegion) {
 			Quaternionf inverted = new Quaternionf(dragRotation).invert();
@@ -296,7 +304,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 		previousPageButton.mouseClicked(mouseX, mouseY, button);
 		nextPageButton.mouseClicked(mouseX, mouseY, button);
-		clickedInDragRegion = dragHoverChecker.checkHover(mouseX, mouseY);
 		return false;
 	}
 
