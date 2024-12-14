@@ -17,8 +17,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
+import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
@@ -42,6 +44,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockModelAndStateGenerator {
+	private static final ItemTintSource CRYSTAL_QUARTZ_TINT = ItemModelUtils.constantTint(SCContent.CRYSTAL_QUARTZ_TINT);
 	private static BlockModelGenerators blockModelGenerators;
 	private static Consumer<BlockStateGenerator> blockStateOutput;
 	private static BiConsumer<ResourceLocation, ModelInstance> modelOutput;
@@ -141,26 +144,18 @@ public class BlockModelAndStateGenerator {
 		createReinforcedSlab(SCContent.REINFORCED_RED_SANDSTONE_SLAB.get(), "reinforced_red_sandstone", "red_sandstone", "red_sandstone_bottom", "red_sandstone_top");
 		createReinforcedSlab(SCContent.REINFORCED_CUT_RED_SANDSTONE_SLAB.get(), "reinforced_cut_red_sandstone", "cut_red_sandstone", "red_sandstone_top");
 		createReinforcedSlab(SCContent.REINFORCED_PURPUR_SLAB.get(), "reinforced_purpur_block", "purpur_block");
-		createReinforcedSlab(SCContent.REINFORCED_PRISMARINE_SLAB.get(), "reinforced_prismarine", "prismarine");
 		createReinforcedSlab(SCContent.REINFORCED_PRISMARINE_BRICK_SLAB.get(), "reinforced_prismarine_bricks", "prismarine_bricks");
-		createReinforcedSlab(SCContent.REINFORCED_DARK_PRISMARINE_SLAB.get(), "reinforced_dark_prismarine", "dark_prismarine");
-		createReinforcedSlab(SCContent.REINFORCED_POLISHED_GRANITE_SLAB.get(), "reinforced_polished_granite", "polished_granite");
 		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_SLAB.get(), "reinforced_smooth_red_sandstone", "red_sandstone_top");
 		createReinforcedSlab(SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB.get(), "reinforced_mossy_stone_bricks", "mossy_stone_bricks");
-		createReinforcedSlab(SCContent.REINFORCED_POLISHED_DIORITE_SLAB.get(), "reinforced_polished_diorite", "polished_diorite");
 		createReinforcedSlab(SCContent.REINFORCED_END_STONE_BRICK_SLAB.get(), "reinforced_end_stone_bricks", "end_stone_bricks");
 		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_SANDSTONE_SLAB.get(), "reinforced_smooth_sandstone", "sandstone_top");
 		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom");
-		createReinforcedSlab(SCContent.REINFORCED_GRANITE_SLAB.get(), "reinforced_granite", "granite");
-		createReinforcedSlab(SCContent.REINFORCED_ANDESITE_SLAB.get(), "reinforced_andesite", "andesite");
 		createReinforcedSlab(SCContent.REINFORCED_RED_NETHER_BRICK_SLAB.get(), "reinforced_red_nether_bricks", "red_nether_bricks");
-		createReinforcedSlab(SCContent.REINFORCED_POLISHED_ANDESITE_SLAB.get(), "reinforced_polished_andesite", "polished_andesite");
-		createReinforcedSlab(SCContent.REINFORCED_DIORITE_SLAB.get(), "reinforced_diorite", "diorite");
 		createReinforcedSlab(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB.get(), "reinforced_polished_blackstone_bricks", "polished_blackstone_bricks");
-		createReinforcedSlab(SCContent.CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top");
-		createReinforcedSlab(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom");
-		createReinforcedSlab(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top");
-		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom");
+		createTintedSlab(SCContent.CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createTintedSlab(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
+		createReinforcedSlab(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
 		createReinforcedSlab(SCContent.REINFORCED_DEEPSLATE_BRICK_SLAB.get(), "reinforced_deepslate_bricks", "deepslate_bricks");
 		createReinforcedSlab(SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get(), "reinforced_deepslate_tiles", "deepslate_tiles");
 		createReinforcedSlab(SCContent.REINFORCED_TUFF_BRICK_SLAB.get(), "reinforced_tuff_bricks", "tuff_bricks");
@@ -192,10 +187,10 @@ public class BlockModelAndStateGenerator {
 		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_QUARTZ_STAIRS.get(), "quartz_block_bottom");
 		createReinforcedStairs(SCContent.REINFORCED_RED_NETHER_BRICK_STAIRS.get(), "red_nether_bricks");
 		createReinforcedStairs(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS.get(), "polished_blackstone_bricks");
-		createReinforcedStairs(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
-		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom");
-		createReinforcedStairs(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
-		createReinforcedStairs(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom");
+		createReinforcedStairs(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
+		createTintedStairs(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createTintedStairs(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
 		createReinforcedStairs(SCContent.REINFORCED_DEEPSLATE_BRICK_STAIRS.get(), "deepslate_bricks");
 		createReinforcedStairs(SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get(), "deepslate_tiles");
 		createReinforcedStairs(SCContent.REINFORCED_TUFF_BRICK_STAIRS.get(), "tuff_bricks");
@@ -285,47 +280,52 @@ public class BlockModelAndStateGenerator {
 		ResourceLocation modelLocation = SCTexturedModels.REINFORCED_CARPET.get(baseBlock).create(block, modelOutput);
 
 		generate(block, BlockModelGenerators.createSimpleBlock(block, modelLocation));
+		registerReinforcedItemModel(block);
 	}
 
-	public static void createReinforcedCustomFence(Block fenceBlock, Block baseBlock) {
+	public static void createReinforcedCustomFence(Block block, Block baseBlock) {
 		TextureMapping textureMapping = TextureMapping.customParticle(baseBlock);
-		ResourceLocation postModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_POST.create(fenceBlock, textureMapping, modelOutput);
-		ResourceLocation northSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_NORTH.create(fenceBlock, textureMapping, modelOutput);
-		ResourceLocation eastSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_EAST.create(fenceBlock, textureMapping, modelOutput);
-		ResourceLocation southSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_SOUTH.create(fenceBlock, textureMapping, modelOutput);
-		ResourceLocation westSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_WEST.create(fenceBlock, textureMapping, modelOutput);
-		ResourceLocation inventoryModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_INVENTORY.create(fenceBlock, textureMapping, modelOutput);
+		ResourceLocation postModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_POST.create(block, textureMapping, modelOutput);
+		ResourceLocation northSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_NORTH.create(block, textureMapping, modelOutput);
+		ResourceLocation eastSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_EAST.create(block, textureMapping, modelOutput);
+		ResourceLocation southSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_SOUTH.create(block, textureMapping, modelOutput);
+		ResourceLocation westSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_WEST.create(block, textureMapping, modelOutput);
+		ResourceLocation inventoryModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_INVENTORY.create(block, textureMapping, modelOutput);
 
-		generate(fenceBlock, BlockModelGenerators.createCustomFence(fenceBlock, postModel, northSideModel, eastSideModel, southSideModel, westSideModel));
+		generate(block, BlockModelGenerators.createCustomFence(block, postModel, northSideModel, eastSideModel, southSideModel, westSideModel));
+		registerReinforcedItemModel(block, inventoryModel);
 	}
 
-	public static void createReinforcedFence(Block fenceBlock, Block baseBlock) {
+	public static void createReinforcedFence(Block block, Block baseBlock) {
 		TextureMapping textureMapping = TextureMapping.customParticle(baseBlock);
-		ResourceLocation postModel = SCModelTemplates.REINFORCED_FENCE_POST.create(fenceBlock, textureMapping, modelOutput);
-		ResourceLocation sideModel = SCModelTemplates.REINFORCED_FENCE_SIDE.create(fenceBlock, textureMapping, modelOutput);
-		ResourceLocation inventoryModel = SCModelTemplates.REINFORCED_FENCE_INVENTORY.create(fenceBlock, textureMapping, modelOutput);
+		ResourceLocation postModel = SCModelTemplates.REINFORCED_FENCE_POST.create(block, textureMapping, modelOutput);
+		ResourceLocation sideModel = SCModelTemplates.REINFORCED_FENCE_SIDE.create(block, textureMapping, modelOutput);
+		ResourceLocation inventoryModel = SCModelTemplates.REINFORCED_FENCE_INVENTORY.create(block, textureMapping, modelOutput);
 
-		generate(fenceBlock, BlockModelGenerators.createFence(fenceBlock, postModel, sideModel));
+		generate(block, BlockModelGenerators.createFence(block, postModel, sideModel));
+		registerReinforcedItemModel(block, inventoryModel);
 	}
 
-	public static void createReinforcedCustomFenceGate(Block customFenceGateBlock, Block baseBlock) {
+	public static void createReinforcedCustomFenceGate(Block block, Block baseBlock) {
 		TextureMapping textureMapping = TextureMapping.customParticle(baseBlock);
-		ResourceLocation openModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_OPEN.create(customFenceGateBlock, textureMapping, modelOutput);
-		ResourceLocation closedModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_CLOSED.create(customFenceGateBlock, textureMapping, modelOutput);
-		ResourceLocation wallOpenModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_WALL_OPEN.create(customFenceGateBlock, textureMapping, modelOutput);
-		ResourceLocation wallClosedModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_WALL_CLOSED.create(customFenceGateBlock, textureMapping, modelOutput);
+		ResourceLocation openModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_OPEN.create(block, textureMapping, modelOutput);
+		ResourceLocation closedModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_CLOSED.create(block, textureMapping, modelOutput);
+		ResourceLocation wallOpenModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_WALL_OPEN.create(block, textureMapping, modelOutput);
+		ResourceLocation wallClosedModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_GATE_WALL_CLOSED.create(block, textureMapping, modelOutput);
 
-		generate(customFenceGateBlock, BlockModelGenerators.createFenceGate(customFenceGateBlock, openModel, closedModel, wallOpenModel, wallClosedModel, false));
+		generate(block, BlockModelGenerators.createFenceGate(block, openModel, closedModel, wallOpenModel, wallClosedModel, false));
+		registerReinforcedItemModel(block);
 	}
 
-	public static void createReinforcedFenceGate(Block fenceGateBlock, Block baseBlock) {
+	public static void createReinforcedFenceGate(Block block, Block baseBlock) {
 		TextureMapping textureMapping = TextureMapping.customParticle(baseBlock);
-		ResourceLocation openModel = SCModelTemplates.REINFORCED_FENCE_GATE_OPEN.create(fenceGateBlock, textureMapping, modelOutput);
-		ResourceLocation closedModel = SCModelTemplates.REINFORCED_FENCE_GATE_CLOSED.create(fenceGateBlock, textureMapping, modelOutput);
-		ResourceLocation wallOpenModel = SCModelTemplates.REINFORCED_FENCE_GATE_WALL_OPEN.create(fenceGateBlock, textureMapping, modelOutput);
-		ResourceLocation wallClosedModel = SCModelTemplates.REINFORCED_FENCE_GATE_WALL_CLOSED.create(fenceGateBlock, textureMapping, modelOutput);
+		ResourceLocation openModel = SCModelTemplates.REINFORCED_FENCE_GATE_OPEN.create(block, textureMapping, modelOutput);
+		ResourceLocation closedModel = SCModelTemplates.REINFORCED_FENCE_GATE_CLOSED.create(block, textureMapping, modelOutput);
+		ResourceLocation wallOpenModel = SCModelTemplates.REINFORCED_FENCE_GATE_WALL_OPEN.create(block, textureMapping, modelOutput);
+		ResourceLocation wallClosedModel = SCModelTemplates.REINFORCED_FENCE_GATE_WALL_CLOSED.create(block, textureMapping, modelOutput);
 
-		generate(fenceGateBlock, BlockModelGenerators.createFenceGate(fenceGateBlock, openModel, closedModel, wallOpenModel, wallClosedModel, true));
+		generate(block, BlockModelGenerators.createFenceGate(block, openModel, closedModel, wallOpenModel, wallClosedModel, true));
+		registerReinforcedItemModel(block);
 	}
 
 	public static void createReinforcedSlab(Block block) {
@@ -337,20 +337,40 @@ public class BlockModelAndStateGenerator {
 	public static void createReinforcedSlab(Block block, String doubleSlabModel, String texture) {
 		ResourceLocation textureLocation = mcBlock(texture);
 
-		createReinforcedSlab(block, name(block), modBlock(doubleSlabModel), textureLocation, textureLocation, textureLocation);
+		generateReinforcedSlab(block, modBlock(doubleSlabModel), textureLocation, textureLocation, textureLocation, ReinforcedTint.DEFAULT_BASE);
 	}
 
 	public static void createReinforcedSlab(Block block, String doubleSlabModel, String side, String end) {
+		createReinforcedSlab(block, doubleSlabModel, side, end, ReinforcedTint.DEFAULT_BASE);
+	}
+
+	public static void createReinforcedSlab(Block block, String doubleSlabModel, String side, String end, ItemTintSource baseTint) {
 		ResourceLocation endTextureLocation = mcBlock(end);
 
-		createReinforcedSlab(block, name(block), modBlock(doubleSlabModel), mcBlock(side), endTextureLocation, endTextureLocation);
+		generateReinforcedSlab(block, modBlock(doubleSlabModel), mcBlock(side), endTextureLocation, endTextureLocation, baseTint);
+	}
+
+	public static void createTintedSlab(Block block, String doubleSlabModel, String side, String end, ItemTintSource tint) {
+		ResourceLocation endTextureLocation = mcBlock(end);
+
+		generateTintedSlab(block, modBlock(doubleSlabModel), mcBlock(side), endTextureLocation, endTextureLocation, tint);
 	}
 
 	public static void createReinforcedSlab(Block block, String doubleSlabModel, String side, String bottom, String top) {
-		createReinforcedSlab(block, name(block), modBlock(doubleSlabModel), mcBlock(side), mcBlock(bottom), mcBlock(top));
+		generateReinforcedSlab(block, modBlock(doubleSlabModel), mcBlock(side), mcBlock(bottom), mcBlock(top), ReinforcedTint.DEFAULT_BASE);
 	}
 
-	public static void createReinforcedSlab(Block block, String baseName, ResourceLocation doubleSlab, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
+	public static void generateReinforcedSlab(Block block, ResourceLocation doubleSlab, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ItemTintSource baseTint) {
+		createTintedSlab(block, doubleSlab, side, bottom, top);
+		registerReinforcedItemModel(block, baseTint);
+	}
+
+	public static void generateTintedSlab(Block block, ResourceLocation doubleSlab, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ItemTintSource tint) {
+		createTintedSlab(block, doubleSlab, side, bottom, top);
+		itemInfo.accept(block.asItem(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(block), tint));
+	}
+
+	public static void createTintedSlab(Block block, ResourceLocation doubleSlab, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
 		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.BOTTOM, bottom).put(TextureSlot.SIDE, side).put(TextureSlot.TOP, top);
 		ResourceLocation bottomModel = SCModelTemplates.REINFORCED_SLAB_BOTTOM.create(block, textureMapping, modelOutput);
 		ResourceLocation topModel = SCModelTemplates.REINFORCED_SLAB_TOP.create(block, textureMapping, modelOutput);
@@ -365,20 +385,40 @@ public class BlockModelAndStateGenerator {
 	public static void createReinforcedStairs(Block block, String texture) {
 		ResourceLocation textureLocation = mcBlock(texture);
 
-		createReinforcedStairs(block, Utils.getRegistryName(block).toString(), textureLocation, textureLocation, textureLocation);
+		generateReinforcedStairs(block, textureLocation, textureLocation, textureLocation, ReinforcedTint.DEFAULT_BASE);
 	}
 
 	public static void createReinforcedStairs(Block block, String side, String end) {
+		createReinforcedStairs(block, side, end, ReinforcedTint.DEFAULT_BASE);
+	}
+
+	public static void createReinforcedStairs(Block block, String side, String end, ItemTintSource baseTint) {
 		ResourceLocation textureLocationEnd = mcBlock(end);
 
-		createReinforcedStairs(block, Utils.getRegistryName(block).toString(), mcBlock(side), textureLocationEnd, textureLocationEnd);
+		generateReinforcedStairs(block, mcBlock(side), textureLocationEnd, textureLocationEnd, baseTint);
+	}
+
+	public static void createTintedStairs(Block block, String side, String end, ItemTintSource tint) {
+		ResourceLocation textureLocationEnd = mcBlock(end);
+
+		generateTintedStairs(block, mcBlock(side), textureLocationEnd, textureLocationEnd, tint);
 	}
 
 	public static void createReinforcedStairs(Block block, String side, String bottom, String top) {
-		createReinforcedStairs(block, Utils.getRegistryName(block).toString(), mcBlock(side), mcBlock(bottom), mcBlock(top));
+		generateReinforcedStairs(block, mcBlock(side), mcBlock(bottom), mcBlock(top), ReinforcedTint.DEFAULT_BASE);
 	}
 
-	public static void createReinforcedStairs(Block block, String baseName, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
+	public static void generateReinforcedStairs(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ItemTintSource baseTint) {
+		createTintedStairs(block, side, bottom, top);
+		registerReinforcedItemModel(block, baseTint);
+	}
+
+	public static void generateTintedStairs(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ItemTintSource tint) {
+		createTintedStairs(block, side, bottom, top);
+		itemInfo.accept(block.asItem(), ItemModelUtils.tintedModel(ModelLocationUtils.getModelLocation(block), tint));
+	}
+
+	public static void createTintedStairs(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
 		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.BOTTOM, bottom).put(TextureSlot.SIDE, side).put(TextureSlot.TOP, top);
 		ResourceLocation innerModel = SCModelTemplates.REINFORCED_STAIRS_INNER.create(block, textureMapping, modelOutput);
 		ResourceLocation straightModel = SCModelTemplates.REINFORCED_STAIRS_STRAIGHT.create(block, textureMapping, modelOutput);
@@ -399,6 +439,7 @@ public class BlockModelAndStateGenerator {
 		ResourceLocation inventoryModel = SCModelTemplates.REINFORCED_WALL_INVENTORY.create(block, texture, modelOutput);
 
 		generate(block, BlockModelGenerators.createWall(block, postModel, lowSideModel, tallSideModel));
+		registerReinforcedItemModel(block, inventoryModel);
 	}
 
 	public static void createSecureRedstoneInterface() {
@@ -411,6 +452,7 @@ public class BlockModelAndStateGenerator {
 				.with(BlockModelGenerators.createBooleanModelDispatch(SecureRedstoneInterfaceBlock.SENDER, senderLocation, receiverLocation))
 				.with(blockModelGenerators.createColumnWithFacing()));
 		//@formatter:on
+		blockModelGenerators.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block, "_sender"));
 	}
 
 	public static void createTrivialBlockWithRenderType(Block block, String renderType) {
@@ -427,6 +469,22 @@ public class BlockModelAndStateGenerator {
 	public static void generate(Block block, BlockStateGenerator generator) {
 		blockStateOutput.accept(generator);
 		generatedBlocks.add(block);
+	}
+
+	public static void registerReinforcedItemModel(Block block) {
+		registerReinforcedItemModel(block, ModelLocationUtils.getModelLocation(block));
+	}
+
+	public static void registerReinforcedItemModel(Block block, ResourceLocation model) {
+		registerReinforcedItemModel(block, model, ReinforcedTint.DEFAULT_BASE);
+	}
+
+	public static void registerReinforcedItemModel(Block block, ItemTintSource base) {
+		registerReinforcedItemModel(block, ModelLocationUtils.getModelLocation(block), base);
+	}
+
+	public static void registerReinforcedItemModel(Block block, ResourceLocation model, ItemTintSource base) {
+		itemInfo.accept(block.asItem(), ItemModelUtils.tintedModel(model, new ReinforcedTint(base)));
 	}
 
 	public static ResourceLocation mcBlock(String path) {

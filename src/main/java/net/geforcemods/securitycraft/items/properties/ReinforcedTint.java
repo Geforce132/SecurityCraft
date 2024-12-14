@@ -12,12 +12,17 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public record ReinforcedTint(ItemTintSource base) implements ItemTintSource {
+	public static final Constant DEFAULT_BASE = new Constant(0xFFFFFFFF);
 	//@formatter:off
 	public static final MapCodec<ReinforcedTint> MAP_CODEC = RecordCodecBuilder.mapCodec(
 			i -> i.group(
-					ItemTintSources.CODEC.optionalFieldOf("base", new Constant(0xFFFFFFFF)).forGetter(ReinforcedTint::base))
+					ItemTintSources.CODEC.optionalFieldOf("base", DEFAULT_BASE).forGetter(ReinforcedTint::base))
 			.apply(i, ReinforcedTint::new));
 	//@formatter:on
+
+	public ReinforcedTint() {
+		this(DEFAULT_BASE);
+	}
 
 	@Override
 	public int calculate(ItemStack stack, ClientLevel level, LivingEntity entity) {

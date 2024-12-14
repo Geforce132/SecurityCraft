@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:block/secure_redstone_interface_sender"
+  }
+}

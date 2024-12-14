@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:block/smooth_crystal_quartz_slab",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -15354974
+      }
+    ]
+  }
+}
