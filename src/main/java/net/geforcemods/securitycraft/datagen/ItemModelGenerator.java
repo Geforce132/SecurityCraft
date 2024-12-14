@@ -29,8 +29,8 @@ import net.minecraft.world.item.Items;
 
 public class ItemModelGenerator {
 	private static ItemModelGenerators itemModels;
-	private static ItemModelOutput itemInfo;
 	private static BiConsumer<ResourceLocation, ModelInstance> modelOutput;
+	private static ItemModelOutput itemInfo;
 
 	protected static void run(ItemModelGenerators itemModels) {
 		//@formatter:off
@@ -66,8 +66,8 @@ public class ItemModelGenerator {
 				SCContent.SPEED_MODULE.get()));
 		//@formatter:on
 		ItemModelGenerator.itemModels = itemModels;
-		itemInfo = itemModels.itemModelOutput;
 		modelOutput = itemModels.modelOutput;
+		itemInfo = itemModels.itemModelOutput;
 		singleTextureItems.removeAll(handheldItems);
 		singleTextureItems.removeAll(manualModelItems);
 

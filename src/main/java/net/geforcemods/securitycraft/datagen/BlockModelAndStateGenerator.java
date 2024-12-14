@@ -11,8 +11,6 @@ import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
-import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
@@ -22,18 +20,22 @@ import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.Variant;
 import net.minecraft.client.data.models.blockstates.VariantProperties;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -43,6 +45,7 @@ public class BlockModelAndStateGenerator {
 	private static BlockModelGenerators blockModelGenerators;
 	private static Consumer<BlockStateGenerator> blockStateOutput;
 	private static BiConsumer<ResourceLocation, ModelInstance> modelOutput;
+	private static ItemModelOutput itemInfo;
 	private static Set<Block> generatedBlocks = new HashSet<>();
 
 	protected static void run(BlockModelGenerators blockModelGenerators) {
@@ -52,10 +55,14 @@ public class BlockModelAndStateGenerator {
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
 		blockStateOutput = blockModelGenerators.blockStateOutput;
 		modelOutput = blockModelGenerators.modelOutput;
+		itemInfo = blockModelGenerators.itemModelOutput;
 		createBlockMine(SCContent.ANCIENT_DEBRIS_MINE.get(), Blocks.ANCIENT_DEBRIS);
-		createHorizontalBlock(SCContent.FURNACE_MINE.get(), Blocks.FURNACE, TexturedModel.ORIENTABLE_ONLY_TOP);
-		createHorizontalBlock(SCContent.SMOKER_MINE.get(), Blocks.SMOKER, TexturedModel.ORIENTABLE_ONLY_TOP);
-		createHorizontalBlock(SCContent.BLAST_FURNACE_MINE.get(), Blocks.BLAST_FURNACE, TexturedModel.ORIENTABLE_ONLY_TOP);
+		generateBlockMineInfo(SCContent.DEEPSLATE_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.DEEPSLATE));
+		generateBlockMineInfo(SCContent.SUSPICIOUS_GRAVEL_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.SUSPICIOUS_GRAVEL, "_0"));
+		generateBlockMineInfo(SCContent.SUSPICIOUS_SAND_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.SUSPICIOUS_SAND, "_0"));
+		createHorizontalBlockMine(SCContent.FURNACE_MINE.get(), Blocks.FURNACE, TexturedModel.ORIENTABLE_ONLY_TOP);
+		createHorizontalBlockMine(SCContent.SMOKER_MINE.get(), Blocks.SMOKER, TexturedModel.ORIENTABLE_ONLY_TOP);
+		createHorizontalBlockMine(SCContent.BLAST_FURNACE_MINE.get(), Blocks.BLAST_FURNACE, TexturedModel.ORIENTABLE_ONLY_TOP);
 		createSecureRedstoneInterface();
 
 		createTrivialBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
@@ -222,16 +229,36 @@ public class BlockModelAndStateGenerator {
 					}
 				}
 			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
+			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine)
 				createBlockMine(block, mine.getBlockDisguisedAs());
 		}
 	}
 
 	public static void createBlockMine(Block block, Block vanillaBlock) {
-		generate(block, BlockModelGenerators.createSimpleBlock(block, mcBlock(Utils.getRegistryName(vanillaBlock).getPath())));
+		ResourceLocation vanillaModel = ModelLocationUtils.getModelLocation(vanillaBlock);
+
+		generate(block, BlockModelGenerators.createSimpleBlock(block, vanillaModel));
+		generateBlockMineInfo(block, vanillaModel);
 	}
 
-	public static void createHorizontalBlock(Block furnaceBlock, Block mockBlock, TexturedModel.Provider modelProvider) {
+	public static void generateBlockMineInfo(Block block, ResourceLocation vanillaModel) {
+		generatedBlocks.add(block);
+		//@formatter:off
+		itemInfo.accept(block.asItem(),
+				ItemModelUtils.select(new DisplayContext(),
+						ItemModelUtils.plainModel(vanillaModel),
+						ItemModelUtils.when(
+								List.of(
+									ItemDisplayContext.FIRST_PERSON_LEFT_HAND,
+									ItemDisplayContext.FIRST_PERSON_RIGHT_HAND,
+									ItemDisplayContext.GUI),
+								ItemModelUtils.composite(
+										ItemModelUtils.plainModel(vanillaModel),
+										ItemModelUtils.plainModel(ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("block_mine_overlay").toString()))))));
+		//@formatter:on
+	}
+
+	public static void createHorizontalBlockMine(Block furnaceBlock, Block mockBlock, TexturedModel.Provider modelProvider) {
 		//@formatter:off
 		ResourceLocation modelLocation = modelProvider.get(furnaceBlock)
 				.updateTextures(mapping -> {
@@ -244,6 +271,7 @@ public class BlockModelAndStateGenerator {
 		generate(furnaceBlock, MultiVariantGenerator.multiVariant(furnaceBlock, Variant.variant().with(VariantProperties.MODEL, modelLocation))
 				.with(BlockModelGenerators.createHorizontalFacingDispatch()));
 		//@formatter:on
+		generateBlockMineInfo(furnaceBlock, ModelLocationUtils.getModelLocation(mockBlock));
 	}
 
 	public static void createReinforcedCarpetBlock(Block block) {
@@ -402,11 +430,11 @@ public class BlockModelAndStateGenerator {
 	}
 
 	public static ResourceLocation mcBlock(String path) {
-		return SecurityCraft.mcResLoc("block/" + path);
+		return ModelLocationUtils.decorateBlockModelLocation(SecurityCraft.mcResLoc(path).toString());
 	}
 
 	public static ResourceLocation modBlock(String path) {
-		return SecurityCraft.resLoc("block/" + path);
+		return ModelLocationUtils.decorateBlockModelLocation(SecurityCraft.resLoc(path).toString());
 	}
 
 	private static String name(Block block) {

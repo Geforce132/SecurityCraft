@@ -1,0 +1,32 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "cases": [
+      {
+        "model": {
+          "type": "minecraft:composite",
+          "models": [
+            {
+              "type": "minecraft:model",
+              "model": "minecraft:block/deepslate_gold_ore"
+            },
+            {
+              "type": "minecraft:model",
+              "model": "securitycraft:item/block_mine_overlay"
+            }
+          ]
+        },
+        "when": [
+          "firstperson_lefthand",
+          "firstperson_righthand",
+          "gui"
+        ]
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "minecraft:block/deepslate_gold_ore"
+    },
+    "property": "minecraft:display_context"
+  }
+}
