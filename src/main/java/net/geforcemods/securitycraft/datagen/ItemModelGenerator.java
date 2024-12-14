@@ -25,6 +25,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public class ItemModelGenerator {
 	private static ItemModelGenerators itemModels;
@@ -39,6 +40,13 @@ public class ItemModelGenerator {
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get(),
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get(),
 				SCContent.UNIVERSAL_KEY_CHANGER.get());
+		List<Item> manualModelItems = List.of(
+				SCContent.TASER.get(),
+				SCContent.TASER_POWERED.get(),
+				SCContent.UNIVERSAL_BLOCK_MODIFIER.get(),
+				SCContent.UNIVERSAL_BLOCK_REMOVER.get(),
+				SCContent.UNIVERSAL_OWNER_CHANGER.get(),
+				SCContent.WIRE_CUTTERS.get());
 
 		singleTextureItems.removeAll(List.of(
 				SCContent.ANCIENT_DEBRIS_MINE_ITEM.get(),
@@ -55,18 +63,13 @@ public class ItemModelGenerator {
 				SCContent.REINFORCED_SCAFFOLDING_ITEM.get(),
 				SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(),
 				SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(),
-				SCContent.SPEED_MODULE.get(),
-				SCContent.TASER.get(),
-				SCContent.TASER_POWERED.get(),
-				SCContent.UNIVERSAL_BLOCK_MODIFIER.get(),
-				SCContent.UNIVERSAL_BLOCK_REMOVER.get(),
-				SCContent.UNIVERSAL_OWNER_CHANGER.get(),
-				SCContent.WIRE_CUTTERS.get()));
+				SCContent.SPEED_MODULE.get()));
 		//@formatter:on
 		ItemModelGenerator.itemModels = itemModels;
 		itemInfo = itemModels.itemModelOutput;
 		modelOutput = itemModels.modelOutput;
 		singleTextureItems.removeAll(handheldItems);
+		singleTextureItems.removeAll(manualModelItems);
 
 		for (Item item : singleTextureItems) {
 			itemModels.generateFlatItem(item, ModelTemplates.FLAT_ITEM);
@@ -74,6 +77,10 @@ public class ItemModelGenerator {
 
 		for (Item item : handheldItems) {
 			itemModels.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM);
+		}
+
+		for (Item item : manualModelItems) {
+			itemInfo.accept(item, ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(item)));
 		}
 
 		generateLinkingStateItem(SCContent.CAMERA_MONITOR.get(), new BlockLinked(SCContent.BOUND_CAMERAS.get(), HitCheck.SECURITY_CAMERA));
@@ -84,22 +91,8 @@ public class ItemModelGenerator {
 		generateLinkingStateItem(SCContent.MINE_REMOTE_ACCESS_TOOL.get(), new BlockLinked(SCContent.BOUND_MINES.get(), HitCheck.EXPLOSIVE_BLOCK));
 		generateLinkingStateItem(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(), new SentryLinked());
 		generateLinkingStateItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(), new BlockLinked(SCContent.SSS_LINKED_BLOCKS.get(), HitCheck.LOCKABLE));
-	}
-
-	public static void generateLinkingStateItem(Item item, SelectItemModelProperty<String> property) {
-		ResourceLocation noPositionsModel = itemModels.createFlatItemModel(item, "_idle", ModelTemplates.FLAT_ITEM);
-		ResourceLocation notLinkedModel = itemModels.createFlatItemModel(item, "_not_linked", ModelTemplates.FLAT_ITEM);
-		ResourceLocation linkedModel = itemModels.createFlatItemModel(item, "_linked", ModelTemplates.FLAT_ITEM);
-		ResourceLocation unknownModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
-
-		//@formatter:off
-		itemInfo.accept(item,
-				ItemModelUtils.select(property,
-						ItemModelUtils.when("no_positions", ItemModelUtils.plainModel(noPositionsModel)),
-						ItemModelUtils.when("unknown", ItemModelUtils.plainModel(unknownModel)),
-						ItemModelUtils.when("not_linked", ItemModelUtils.plainModel(notLinkedModel)),
-						ItemModelUtils.when("linked", ItemModelUtils.plainModel(linkedModel))));
-		//@formatter:on
+		generateTwoLayerModule(SCContent.REDSTONE_MODULE.get(), Items.REDSTONE);
+		generateTwoLayerModule(SCContent.SPEED_MODULE.get(), Items.SUGAR);
 	}
 
 	public static void generateBriefcase(Item item) {
@@ -154,6 +147,33 @@ public class ItemModelGenerator {
 								coloredModel,
 								new Dye(0xFFFFFFFF)),
 						ItemModelUtils.plainModel(normalModel)));
+		//@formatter:on
+	}
+
+	public static void generateLinkingStateItem(Item item, SelectItemModelProperty<String> property) {
+		ResourceLocation noPositionsModel = itemModels.createFlatItemModel(item, "_idle", ModelTemplates.FLAT_ITEM);
+		ResourceLocation notLinkedModel = itemModels.createFlatItemModel(item, "_not_linked", ModelTemplates.FLAT_ITEM);
+		ResourceLocation linkedModel = itemModels.createFlatItemModel(item, "_linked", ModelTemplates.FLAT_ITEM);
+		ResourceLocation unknownModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
+
+		//@formatter:off
+		itemInfo.accept(item,
+				ItemModelUtils.select(property,
+						ItemModelUtils.when("no_positions", ItemModelUtils.plainModel(noPositionsModel)),
+						ItemModelUtils.when("unknown", ItemModelUtils.plainModel(unknownModel)),
+						ItemModelUtils.when("not_linked", ItemModelUtils.plainModel(notLinkedModel)),
+						ItemModelUtils.when("linked", ItemModelUtils.plainModel(linkedModel))));
+		//@formatter:on
+	}
+
+	public static void generateTwoLayerModule(Item module, Item overlay) {
+		//@formatter:off
+		itemInfo.accept(module,
+				ItemModelUtils.plainModel(
+						itemModels.generateLayeredItem(
+								module,
+								ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("module_background").toString()),
+								TextureMapping.getItemTexture(overlay))));
 		//@formatter:on
 	}
 }
