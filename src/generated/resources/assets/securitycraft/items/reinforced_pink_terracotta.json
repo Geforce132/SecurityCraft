@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:block/reinforced_pink_terracotta",
+    "tints": [
+      {
+        "type": "securitycraft:reinforced"
+      }
+    ]
+  }
+}

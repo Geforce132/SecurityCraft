@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
@@ -70,23 +71,23 @@ public class BlockModelAndStateGenerator {
 
 		createTrivialBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
 		createReinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_GLASS.get(), SCContent.REINFORCED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_LIME_STAINED_GLASS.get(), SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_PINK_STAINED_GLASS.get(), SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_GRAY_STAINED_GLASS.get(), SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(), SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_CYAN_STAINED_GLASS.get(), SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(), SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_BROWN_STAINED_GLASS.get(), SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_RED_STAINED_GLASS.get(), SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
-		blockModelGenerators.createGlassBlocks(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_GLASS.get(), SCContent.REINFORCED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_LIME_STAINED_GLASS.get(), SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_PINK_STAINED_GLASS.get(), SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_GRAY_STAINED_GLASS.get(), SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(), SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_CYAN_STAINED_GLASS.get(), SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(), SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_BROWN_STAINED_GLASS.get(), SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_RED_STAINED_GLASS.get(), SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
 
 		createReinforcedFence(SCContent.REINFORCED_OAK_FENCE.get(), Blocks.OAK_PLANKS);
 		createReinforcedFence(SCContent.REINFORCED_SPRUCE_FENCE.get(), Blocks.SPRUCE_PLANKS);
@@ -220,6 +221,7 @@ public class BlockModelAndStateGenerator {
 					case ReinforcedStairsBlock stairs -> createReinforcedStairs(block);
 					case ReinforcedWallBlock wall -> createReinforcedWall(block);
 					case ReinforcedCarpetBlock carpet -> createReinforcedCarpetBlock(block);
+					case IReinforcedBlock reinforcedBlock -> registerReinforcedItemModel(block);
 					default -> {
 					}
 				}
@@ -453,6 +455,12 @@ public class BlockModelAndStateGenerator {
 				.with(blockModelGenerators.createColumnWithFacing()));
 		//@formatter:on
 		blockModelGenerators.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block, "_sender"));
+	}
+
+	public static void createGlassBlocks(Block glass, Block pane) {
+		blockModelGenerators.createGlassBlocks(glass, pane);
+		generatedBlocks.add(glass);
+		generatedBlocks.add(pane);
 	}
 
 	public static void createTrivialBlockWithRenderType(Block block, String renderType) {

@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:block/reinforced_basalt",
+    "tints": [
+      {
+        "type": "securitycraft:reinforced"
+      }
+    ]
+  }
+}
