@@ -3,8 +3,6 @@ package net.geforcemods.securitycraft.renderers;
 import java.util.Optional;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -23,18 +21,8 @@ public record DisplayCaseSpecialRenderer(DisplayCaseModel model, ResourceLocatio
 
 	@Override
 	public void render(ItemDisplayContext ctx, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay, boolean glint) {
-		VertexConsumer consumer = buffer.getBuffer(RenderType.entityCutout(texture));
-		float rotation = (2 & 3) * 90;
-
 		model.setUpAnim(openness);
-		pose.pushPose();
-		pose.translate(0.5D, 0.5D, 0.5D);
-		pose.mulPose(Axis.YP.rotationDegrees(-rotation));
-		pose.translate(0.0D, 1.0D, 0.0D);
-		pose.mulPose(Axis.XP.rotationDegrees(180.0F));
-		pose.scale(-1.0F, 1.0F, -1.0F);
-		model.renderToBuffer(pose, consumer, light.orElse(packedLight), packedOverlay);
-		pose.popPose();
+		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entityCutout(texture)), light.orElse(packedLight), packedOverlay);
 	}
 	public static record Unbaked(ResourceLocation texture, float openness, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {
 
