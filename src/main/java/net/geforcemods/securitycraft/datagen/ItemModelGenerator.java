@@ -32,6 +32,8 @@ public class ItemModelGenerator {
 	private static BiConsumer<ResourceLocation, ModelInstance> modelOutput;
 	private static ItemModelOutput itemInfo;
 
+	private ItemModelGenerator() {}
+
 	protected static void run(ItemModelGenerators itemModels) {
 		//@formatter:off
 		List<Item> singleTextureItems = new ArrayList<>(SCContent.ITEMS.getEntries().stream().map(Holder::value).toList());

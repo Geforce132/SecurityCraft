@@ -16,7 +16,7 @@ public class DataGenConstants {
 	}
 
 	public class SCModelTemplates {
-		public static final ModelTemplate REINfORCED_CUBE_COLUMN = ModelTemplates.create("securitycraft:reinforced_cube_column", TextureSlot.END, TextureSlot.SIDE);
+		public static final ModelTemplate REINFORCED_CUBE_COLUMN = ModelTemplates.create("securitycraft:reinforced_cube_column", TextureSlot.END, TextureSlot.SIDE);
 		public static final ModelTemplate REINFORCED_CARPET = ModelTemplates.create("securitycraft:reinforced_carpet", SCTextureSlots.BLOCK);
 		public static final ModelTemplate CUSTOM_REINFORCED_FENCE_POST = ModelTemplates.create("securitycraft:custom_reinforced_fence_post", "_post", TextureSlot.TEXTURE, TextureSlot.PARTICLE);
 		public static final ModelTemplate CUSTOM_REINFORCED_FENCE_SIDE_NORTH = ModelTemplates.create("securitycraft:custom_reinforced_fence_side_north", "_side_north", TextureSlot.TEXTURE);
