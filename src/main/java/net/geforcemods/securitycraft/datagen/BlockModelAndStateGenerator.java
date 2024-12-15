@@ -468,6 +468,7 @@ public class BlockModelAndStateGenerator {
 
 	public static void createGlassBlocks(Block glass, Block pane) {
 		blockModelGenerators.createGlassBlocks(glass, pane);
+		itemInfo.accept(glass.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(glass)));
 		generatedBlocks.add(glass);
 		generatedBlocks.add(pane);
 	}
