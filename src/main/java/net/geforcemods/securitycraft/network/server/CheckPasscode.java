@@ -57,7 +57,7 @@ public class CheckPasscode {
 				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
 
 				if (ConfigHandler.SERVER.passcodeSpamLogWarningEnabled.get())
-					SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), player.level.getBlockState(pos).getBlock().getName().getString(), GlobalPos.of(player.level.dimension(), pos)));
+					SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), Utils.localize(player.level.getBlockState(pos).getBlock().getDescriptionId()).getString(), GlobalPos.of(player.level.dimension(), pos)));
 
 				return;
 			}

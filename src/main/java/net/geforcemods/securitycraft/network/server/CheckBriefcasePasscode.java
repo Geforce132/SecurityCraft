@@ -44,7 +44,7 @@ public class CheckBriefcasePasscode {
 				PlayerUtils.sendMessageToPlayer(player, new StringTextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:passcodeProtected.onCooldown"), TextFormatting.RED);
 
 				if (ConfigHandler.SERVER.passcodeSpamLogWarningEnabled.get())
-					SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), SCContent.BRIEFCASE.get().getDescription().getString(), GlobalPos.of(player.level.dimension(), player.blockPosition())));
+					SecurityCraft.LOGGER.warn(String.format(ConfigHandler.SERVER.passcodeSpamLogWarning.get(), player.getGameProfile().getName(), Utils.localize(SCContent.BRIEFCASE.get().getDescriptionId()).getString(), GlobalPos.of(player.level.dimension(), player.blockPosition())));
 
 				return;
 			}

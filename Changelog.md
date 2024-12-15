@@ -1,3 +1,7 @@
+--------------------------Changelog for the upcoming version of SecurityCraft--------------------------
+
+- Fix: Crash when triggering the passcode spam log warning on a server
+
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 
 - New: Config setting to disable the ability of the Universal Block Reinforcer to un-/reinforce blocks that are placed in the world
