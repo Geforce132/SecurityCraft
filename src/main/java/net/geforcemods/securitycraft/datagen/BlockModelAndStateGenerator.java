@@ -12,7 +12,10 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
@@ -36,6 +39,8 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BlockFamilies;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -67,10 +72,9 @@ public class BlockModelAndStateGenerator {
 		createHorizontalBlockMine(SCContent.FURNACE_MINE.get(), Blocks.FURNACE, TexturedModel.ORIENTABLE_ONLY_TOP);
 		createHorizontalBlockMine(SCContent.SMOKER_MINE.get(), Blocks.SMOKER, TexturedModel.ORIENTABLE_ONLY_TOP);
 		createHorizontalBlockMine(SCContent.BLAST_FURNACE_MINE.get(), Blocks.BLAST_FURNACE, TexturedModel.ORIENTABLE_ONLY_TOP);
-		createSecureRedstoneInterface();
 
 		createTrivialBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
-		createReinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
+		createReinforcedCarpet(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
 		createGlassBlocks(SCContent.REINFORCED_GLASS.get(), SCContent.REINFORCED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get());
@@ -89,29 +93,11 @@ public class BlockModelAndStateGenerator {
 		createGlassBlocks(SCContent.REINFORCED_RED_STAINED_GLASS.get(), SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
 
-		createReinforcedFence(SCContent.REINFORCED_OAK_FENCE.get(), Blocks.OAK_PLANKS);
-		createReinforcedFence(SCContent.REINFORCED_SPRUCE_FENCE.get(), Blocks.SPRUCE_PLANKS);
-		createReinforcedFence(SCContent.REINFORCED_BIRCH_FENCE.get(), Blocks.BIRCH_PLANKS);
-		createReinforcedFence(SCContent.REINFORCED_JUNGLE_FENCE.get(), Blocks.JUNGLE_PLANKS);
-		createReinforcedFence(SCContent.REINFORCED_ACACIA_FENCE.get(), Blocks.ACACIA_PLANKS);
-		createReinforcedFence(SCContent.REINFORCED_DARK_OAK_FENCE.get(), Blocks.DARK_OAK_PLANKS);
-		createReinforcedFence(SCContent.REINFORCED_MANGROVE_FENCE.get(), Blocks.MANGROVE_PLANKS);
-		createReinforcedFence(SCContent.REINFORCED_CHERRY_FENCE.get(), Blocks.CHERRY_PLANKS);
 		createReinforcedCustomFence(SCContent.REINFORCED_BAMBOO_FENCE.get(), Blocks.BAMBOO_FENCE);
 		createReinforcedFence(SCContent.REINFORCED_CRIMSON_FENCE.get(), Blocks.CRIMSON_PLANKS);
 		createReinforcedFence(SCContent.REINFORCED_WARPED_FENCE.get(), Blocks.WARPED_PLANKS);
 		createReinforcedFence(SCContent.REINFORCED_NETHER_BRICK_FENCE.get(), Blocks.NETHER_BRICKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_OAK_FENCE_GATE.get(), Blocks.OAK_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_SPRUCE_FENCE_GATE.get(), Blocks.SPRUCE_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_BIRCH_FENCE_GATE.get(), Blocks.BIRCH_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_JUNGLE_FENCE_GATE.get(), Blocks.JUNGLE_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_ACACIA_FENCE_GATE.get(), Blocks.ACACIA_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(), Blocks.DARK_OAK_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(), Blocks.MANGROVE_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_CHERRY_FENCE_GATE.get(), Blocks.CHERRY_PLANKS);
 		createReinforcedCustomFenceGate(SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(), Blocks.BAMBOO_FENCE_GATE);
-		createReinforcedFenceGate(SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(), Blocks.CRIMSON_PLANKS);
-		createReinforcedFenceGate(SCContent.REINFORCED_WARPED_FENCE_GATE.get(), Blocks.WARPED_PLANKS);
 
 		//@formatter:off
 		SCModelTemplates.REINfORCED_CUBE_COLUMN.create(
@@ -208,6 +194,8 @@ public class BlockModelAndStateGenerator {
 		createReinforcedWall(SCContent.REINFORCED_DEEPSLATE_TILE_WALL.get(), "deepslate_tiles");
 		createReinforcedWall(SCContent.REINFORCED_TUFF_BRICK_WALL.get(), "tuff_bricks");
 
+		createSecureRedstoneInterface();
+
 		for (DeferredHolder<Block, ? extends Block> obj : SCContent.BLOCKS.getEntries()) {
 			Block block = obj.get();
 			Item item = block.asItem();
@@ -217,10 +205,13 @@ public class BlockModelAndStateGenerator {
 
 			if (decorationTabItems.contains(item)) {
 				switch (block) {
+					case ReinforcedButtonBlock button -> createReinforcedButton(button);
+					case ReinforcedCarpetBlock carpet -> createReinforcedCarpet(block);
+					case ReinforcedFenceBlock fence -> createReinforcedFence(fence);
+					case ReinforcedFenceGateBlock fenceGate -> createReinforcedFenceGate(fenceGate);
 					case ReinforcedSlabBlock slab -> createReinforcedSlab(block);
 					case ReinforcedStairsBlock stairs -> createReinforcedStairs(block);
 					case ReinforcedWallBlock wall -> createReinforcedWall(block);
-					case ReinforcedCarpetBlock carpet -> createReinforcedCarpetBlock(block);
 					case IReinforcedBlock reinforcedBlock -> registerReinforcedItemModel(block);
 					default -> {
 					}
@@ -271,11 +262,21 @@ public class BlockModelAndStateGenerator {
 		generateBlockMineInfo(furnaceBlock, ModelLocationUtils.getModelLocation(mockBlock));
 	}
 
-	public static void createReinforcedCarpetBlock(Block block) {
-		createReinforcedCarpetBlock(block, "wool");
+	public static void createReinforcedButton(ReinforcedButtonBlock block) {
+		TextureMapping texture = TextureMapping.defaultTexture(getBaseBlock(block, BlockFamily.Variant.BUTTON));
+		ResourceLocation defaultModel = SCModelTemplates.REINFORCED_BUTTON.create(block, texture, modelOutput);
+		ResourceLocation pressedModel = SCModelTemplates.REINFORCED_BUTTON_PRESSED.create(block, texture, modelOutput);
+		ResourceLocation inventoryModel = SCModelTemplates.REINFORCED_BUTTON_INVENTORY.create(block, texture, modelOutput);
+
+		blockStateOutput.accept(BlockModelGenerators.createButton(block, defaultModel, pressedModel));
+		registerReinforcedItemModel(block, inventoryModel);
 	}
 
-	public static void createReinforcedCarpetBlock(Block block, String carpetReplacement) {
+	public static void createReinforcedCarpet(Block block) {
+		createReinforcedCarpet(block, "wool");
+	}
+
+	public static void createReinforcedCarpet(Block block, String carpetReplacement) {
 		String name = name(block);
 		ResourceLocation baseBlockName = SecurityCraft.mcResLoc(name.replace("reinforced_", "").replace("carpet", carpetReplacement));
 		Block baseBlock = BuiltInRegistries.BLOCK.get(baseBlockName).orElseThrow(() -> new IllegalStateException(baseBlockName + " does not exist!")).value();
@@ -298,6 +299,10 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedItemModel(block, inventoryModel);
 	}
 
+	public static void createReinforcedFence(ReinforcedFenceBlock block) {
+		createReinforcedFence(block, getBaseBlock(block, BlockFamily.Variant.FENCE));
+	}
+
 	public static void createReinforcedFence(Block block, Block baseBlock) {
 		TextureMapping textureMapping = TextureMapping.customParticle(baseBlock);
 		ResourceLocation postModel = SCModelTemplates.REINFORCED_FENCE_POST.create(block, textureMapping, modelOutput);
@@ -317,6 +322,10 @@ public class BlockModelAndStateGenerator {
 
 		generate(block, BlockModelGenerators.createFenceGate(block, openModel, closedModel, wallOpenModel, wallClosedModel, false));
 		registerReinforcedItemModel(block);
+	}
+
+	public static void createReinforcedFenceGate(ReinforcedFenceGateBlock block) {
+		createReinforcedFenceGate(block, getBaseBlock(block, BlockFamily.Variant.FENCE_GATE));
 	}
 
 	public static void createReinforcedFenceGate(Block block, Block baseBlock) {
@@ -505,5 +514,14 @@ public class BlockModelAndStateGenerator {
 
 	private static String name(Block block) {
 		return Utils.getRegistryName(block).getPath();
+	}
+
+	private static Block getBaseBlock(IReinforcedBlock block, BlockFamily.Variant variant) {
+		BlockFamily family = BlockFamilies.getAllFamilies().filter(f -> f.getVariants().get(variant) == block.getVanillaBlock()).findFirst().orElse(null);
+
+		if (family != null)
+			return family.getBaseBlock();
+		else
+			throw new IllegalStateException("Couldn't find block family for " + Utils.getRegistryName((Block) block).toString());
 	}
 }

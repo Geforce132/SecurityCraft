@@ -1,6 +1,0 @@
-{
-  "parent": "securitycraft:block/reinforced_button_inventory",
-  "textures": {
-    "texture": "block/mangrove_planks"
-  }
-}
