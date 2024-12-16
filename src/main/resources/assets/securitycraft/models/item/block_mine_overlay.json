@@ -21,6 +21,7 @@
     }
   ],
   "textures": {
-    "overlay": "securitycraft:item/block_mine_overlay"
+    "overlay": "securitycraft:item/block_mine_overlay",
+	"particle": "securitycraft:item/block_mine_overlay"
   }
 }

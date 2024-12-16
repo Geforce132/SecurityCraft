@@ -4,7 +4,8 @@
 	"texture_size": [32, 32],
 	"textures": {
 		"1": "securitycraft:item/briefcase",
-		"2": "securitycraft:item/briefcase_tint"
+		"2": "securitycraft:item/briefcase_tint",
+		"particle": "securitycraft:item/briefcase"
 	},
 	"elements": [
 		{

@@ -1,3 +1,5 @@
 {
-	"textures": {}
+	"textures": {
+		"particle": "block/stone"
+	}
 }

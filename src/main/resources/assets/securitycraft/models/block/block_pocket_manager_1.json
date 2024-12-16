@@ -1,5 +1,5 @@
 {
-    "parent": "block/orientable",
+    "parent": "block/block",
     "render_type": "minecraft:cutout_mipped",
 	"textures": {
 		"0": "securitycraft:block/block_pocket_manager_front",
@@ -27,5 +27,12 @@
 				"north": {"uv": [0, 0, 16, 16], "texture": "#0", "tintindex": 0}
 			}
 		}
-	]
+	],
+	"display": {
+	    "firstperson_righthand": {
+	        "rotation": [ 0, 135, 0 ],
+	        "translation": [ 0, 0, 0 ],
+	        "scale": [ 0.40, 0.40, 0.40 ]
+	    }
+	}
 }

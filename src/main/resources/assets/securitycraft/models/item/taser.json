@@ -1,7 +1,8 @@
 {
     "ambientocclusion": false,
     "textures": {
-        "taser": "securitycraft:item/taser"
+        "taser": "securitycraft:item/taser",
+		"particle": "securitycraft:item/taser"
     },
     "display": {
     	"gui": {

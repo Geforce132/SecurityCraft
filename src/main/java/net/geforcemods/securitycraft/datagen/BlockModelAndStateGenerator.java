@@ -261,6 +261,7 @@ public class BlockModelAndStateGenerator {
 		ResourceLocation baseModel = ModelLocationUtils.getModelLocation(normal.asItem());
 
 		blockModelGenerators.createParticleOnlyBlock(normal, Blocks.IRON_BLOCK);
+		blockModelGenerators.createParticleOnlyBlock(glow, Blocks.IRON_BLOCK);
 		//@formatter:off
 		itemInfo.accept(normal.asItem(),
 				ItemModelUtils.specialModel(baseModel,
