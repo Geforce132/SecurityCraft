@@ -315,6 +315,7 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
 	}
 
 	@SubscribeEvent

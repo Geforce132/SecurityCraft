@@ -110,6 +110,7 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModel(SCContent.PORTABLE_RADAR.get());
 		registerSimpleItemModel(SCContent.PROJECTOR.get());
 		registerSimpleItemModel(SCContent.PROTECTO.get(), "_deactivated");
+		createRailMine();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_CAULDRON.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_CHAIN.get());
 		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_BOOKSHELF.get(), "_inventory");
@@ -303,6 +304,13 @@ public class BlockModelAndStateGenerator {
 
 		blockModelGenerators.createParticleOnlyBlock(block, particleBlock);
 		itemInfo.accept(item, ItemModelUtils.isXmas(christmasUnbaked, defaultUnbaked));
+		generatedBlocks.add(block);
+	}
+
+	public static void createRailMine() {
+		Block block = SCContent.TRACK_MINE.get();
+
+		blockModelGenerators.createPassiveRail(block);
 		generatedBlocks.add(block);
 	}
 

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_rail_raised_ne",
+  "textures": {
+    "rail": "securitycraft:block/track_mine"
+  }
+}
