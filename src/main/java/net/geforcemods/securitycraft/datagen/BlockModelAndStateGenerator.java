@@ -90,6 +90,7 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModel(SCContent.CAGE_TRAP.get());
 		registerSimpleItemModel(SCContent.CLAYMORE.get());
 		createDisplayCases();
+		createElectrifiedFenceAndGate();
 		createTrivialBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
 		registerSimpleItemModel(SCContent.FRAME.get());
 		registerSimpleItemModelFromItem(SCContent.IMS.get());
@@ -276,6 +277,17 @@ public class BlockModelAndStateGenerator {
 		//@formatter:on
 		generatedBlocks.add(normal);
 		generatedBlocks.add(glow);
+	}
+
+	public static void createElectrifiedFenceAndGate() {
+		Block fence = SCContent.ELECTRIFIED_IRON_FENCE.get();
+		Block gate = SCContent.ELECTRIFIED_IRON_FENCE_GATE.get();
+
+		blockModelGenerators.createCustomFence(fence);
+		blockModelGenerators.createCustomFenceGate(gate);
+		itemInfo.accept(gate.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(gate)));
+		generatedBlocks.add(fence);
+		generatedBlocks.add(gate);
 	}
 
 	public static void createHorizontalBlockMine(Block furnaceBlock, Block mockBlock, TexturedModel.Provider modelProvider) {
