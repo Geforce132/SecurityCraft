@@ -161,9 +161,9 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public boolean isMouseOver(double mouseX, double mouseY) {
-		if (!disabled) {
+		if (!disabled && mouseX >= xStart && mouseX < xStart + 145 && mouseY >= yStart && mouseY < yStart + 109) {
 			clickedInDragRegion = colorFieldHoverChecker.checkHover(mouseX, mouseY);
-			return clickedInDragRegion;
+			return true;
 		}
 
 		return false;
