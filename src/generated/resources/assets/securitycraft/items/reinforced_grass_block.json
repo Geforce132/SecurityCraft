@@ -5,6 +5,14 @@
     "tints": [
       {
         "type": "securitycraft:reinforced"
+      },
+      {
+        "type": "securitycraft:reinforced",
+        "base": {
+          "type": "minecraft:grass",
+          "downfall": 1.0,
+          "temperature": 0.5
+        }
       }
     ]
   }

@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "securitycraft:block/reinforced_sticky_piston",
+    "model": "securitycraft:block/reinforced_sticky_piston_inventory",
     "tints": [
       {
         "type": "securitycraft:reinforced"

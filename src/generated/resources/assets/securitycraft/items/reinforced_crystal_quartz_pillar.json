@@ -1,0 +1,15 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:block/reinforced_quartz_pillar",
+    "tints": [
+      {
+        "type": "securitycraft:reinforced",
+        "base": {
+          "type": "minecraft:constant",
+          "value": -15354974
+        }
+      }
+    ]
+  }
+}

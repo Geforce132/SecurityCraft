@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:block/block_change_detector"
+  }
+}

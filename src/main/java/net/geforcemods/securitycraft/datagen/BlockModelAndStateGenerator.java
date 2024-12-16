@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.datagen;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -22,8 +23,10 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
 import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
+import net.geforcemods.securitycraft.renderers.DisplayCaseSpecialRenderer;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelOutput;
@@ -34,10 +37,14 @@ import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
+import net.minecraft.client.renderer.special.ChestSpecialRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
@@ -75,8 +82,56 @@ public class BlockModelAndStateGenerator {
 		createHorizontalBlockMine(SCContent.SMOKER_MINE.get(), Blocks.SMOKER, TexturedModel.ORIENTABLE_ONLY_TOP);
 		createHorizontalBlockMine(SCContent.BLAST_FURNACE_MINE.get(), Blocks.BLAST_FURNACE, TexturedModel.ORIENTABLE_ONLY_TOP);
 
+		registerSimpleItemModelFromItem(SCContent.ALARM.get());
+		registerSimpleItemModel(SCContent.BLOCK_CHANGE_DETECTOR.get());
+		registerReinforcedItemModel(SCContent.BLOCK_POCKET_MANAGER.get(), "_1", CRYSTAL_QUARTZ_TINT);
+		registerReinforcedItemModel(SCContent.BLOCK_POCKET_WALL.get(), "_see_through", CRYSTAL_QUARTZ_TINT);
+		registerSimpleItemModelFromItem(SCContent.BOUNCING_BETTY.get());
+		registerSimpleItemModel(SCContent.CAGE_TRAP.get());
+		registerSimpleItemModel(SCContent.CLAYMORE.get());
+		createDisplayCases();
 		createTrivialBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
+		registerSimpleItemModel(SCContent.FRAME.get());
+		registerSimpleItemModelFromItem(SCContent.IMS.get());
+		registerSimpleItemModel(SCContent.INVENTORY_SCANNER.get());
+		registerSimpleItemModel(SCContent.KEYCARD_LOCK.get(), "_off");
+		registerSimpleItemModel(SCContent.KEYCARD_READER.get(), "_off");
+		registerSimpleItemModel(SCContent.KEYPAD.get());
+		registerSimpleItemModel(SCContent.KEYPAD_BARREL.get());
+		createKeypadChest();
+		registerSimpleItemModel(SCContent.KEYPAD_BLAST_FURNACE.get(), "_open");
+		registerSimpleItemModel(SCContent.KEYPAD_FURNACE.get(), "_open");
+		registerSimpleItemModel(SCContent.KEYPAD_SMOKER.get(), "_open");
+		registerSimpleItemModel(SCContent.KEYPAD_TRAPDOOR.get(), "_bottom");
+		registerSimpleItemModel(SCContent.LASER_BLOCK.get());
+		registerSimpleItemModelFromItem(SCContent.MINE.get());
+		registerSimpleItemModel(SCContent.MOTION_ACTIVATED_LIGHT.get());
+		registerSimpleItemModelFromItem(SCContent.PANIC_BUTTON.get());
+		registerSimpleItemModel(SCContent.PORTABLE_RADAR.get());
+		registerSimpleItemModel(SCContent.PROJECTOR.get());
+		registerSimpleItemModel(SCContent.PROTECTO.get(), "_deactivated");
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_CAULDRON.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_CHAIN.get());
+		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_BOOKSHELF.get(), "_inventory");
+		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COBWEB.get());
+		createReinforcedGrassBlock();
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_HOPPER.get());
+		registerFlatItemModel(SCContent.REINFORCED_IRON_BARS.get());
+		registerSimpleItemModel(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "_bottom");
+		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LADDER.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_LANTERN.get());
+		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LEVER.get());
 		createReinforcedCarpet(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
+		createReinforcedPistons();
+		registerReinforcedItemModel(SCContent.REINFORCED_SCAFFOLDING.get(), "_stable");
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_SOUL_LANTERN.get());
+		registerSimpleItemModelFromItem(SCContent.RETINAL_SCANNER.get());
+		registerSimpleItemModel(SCContent.SCANNER_TRAPDOOR.get(), "_bottom");
+		createSecureRedstoneInterface();
+		registerSimpleItemModelFromItem(SCContent.SECURITY_CAMERA.get());
+		registerSimpleItemModel(SCContent.TROPHY_SYSTEM.get());
+		registerSimpleItemModel(SCContent.USERNAME_LOGGER.get());
+
 		createGlassBlocks(SCContent.REINFORCED_GLASS.get(), SCContent.REINFORCED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get());
@@ -132,14 +187,9 @@ public class BlockModelAndStateGenerator {
 		createTintedStairs(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
 		createTintedStairs(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
 
-		createSecureRedstoneInterface();
-
-		for (DeferredHolder<Block, ? extends Block> obj : SCContent.BLOCKS.getEntries()) {
-			Block block = obj.get();
+		createFullCrystalQuartzBlocks();
+		SCContent.BLOCKS.getEntries().stream().map(DeferredHolder::get).filter(b -> !generatedBlocks.contains(b)).forEach(block -> {
 			Item item = block.asItem();
-
-			if (generatedBlocks.contains(block))
-				continue;
 
 			if (decorationTabItems.contains(item)) {
 				switch (block) {
@@ -157,7 +207,7 @@ public class BlockModelAndStateGenerator {
 			}
 			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine)
 				createBlockMine(block, mine.getBlockDisguisedAs());
-		}
+		});
 	}
 
 	public static void createBlockMine(Block block, Block vanillaBlock) {
@@ -168,7 +218,6 @@ public class BlockModelAndStateGenerator {
 	}
 
 	public static void generateBlockMineInfo(Block block, ResourceLocation vanillaModel) {
-		generatedBlocks.add(block);
 		//@formatter:off
 		itemInfo.accept(block.asItem(),
 				ItemModelUtils.select(new DisplayContext(),
@@ -182,6 +231,50 @@ public class BlockModelAndStateGenerator {
 										ItemModelUtils.plainModel(vanillaModel),
 										ItemModelUtils.plainModel(ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("block_mine_overlay").toString()))))));
 		//@formatter:on
+		generatedBlocks.add(block);
+	}
+
+	public static void createFullCrystalQuartzBlocks() {
+		ResourceLocation chiseledModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_CHISELED_QUARTZ.get());
+		ResourceLocation blockModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_QUARTZ_BLOCK.get());
+		ResourceLocation bricksModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_QUARTZ_BRICKS.get());
+		ResourceLocation pillarModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_QUARTZ_PILLAR.get());
+		ResourceLocation smoothModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_SMOOTH_QUARTZ.get());
+
+		registerTintedItemModel(SCContent.CHISELED_CRYSTAL_QUARTZ.get(), chiseledModel, CRYSTAL_QUARTZ_TINT);
+		registerTintedItemModel(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), blockModel, CRYSTAL_QUARTZ_TINT);
+		registerTintedItemModel(SCContent.CRYSTAL_QUARTZ_BRICKS.get(), bricksModel, CRYSTAL_QUARTZ_TINT);
+		registerTintedItemModel(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), pillarModel, CRYSTAL_QUARTZ_TINT);
+		registerTintedItemModel(SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), smoothModel, CRYSTAL_QUARTZ_TINT);
+		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), chiseledModel, CRYSTAL_QUARTZ_TINT);
+		registerReinforcedItemModel(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get(), blockModel, CRYSTAL_QUARTZ_TINT);
+		registerReinforcedItemModel(SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS.get(), bricksModel, CRYSTAL_QUARTZ_TINT);
+		registerReinforcedItemModel(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(), pillarModel, CRYSTAL_QUARTZ_TINT);
+		registerReinforcedItemModel(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.get(), smoothModel, CRYSTAL_QUARTZ_TINT);
+	}
+
+	public static void createDisplayCases() {
+		Block normal = SCContent.DISPLAY_CASE.get();
+		Block glow = SCContent.GLOW_DISPLAY_CASE.get();
+		ResourceLocation baseModel = ModelLocationUtils.getModelLocation(normal.asItem());
+
+		blockModelGenerators.createParticleOnlyBlock(normal, Blocks.IRON_BLOCK);
+		//@formatter:off
+		itemInfo.accept(normal.asItem(),
+				ItemModelUtils.specialModel(baseModel,
+						new DisplayCaseSpecialRenderer.Unbaked(
+								SecurityCraft.resLoc("normal"),
+								0.0F,
+								Optional.empty())));
+		itemInfo.accept(glow.asItem(),
+				ItemModelUtils.specialModel(baseModel,
+						new DisplayCaseSpecialRenderer.Unbaked(
+								SecurityCraft.resLoc("glow"),
+								0.0F,
+								Optional.of(LightTexture.FULL_BRIGHT))));
+		//@formatter:on
+		generatedBlocks.add(normal);
+		generatedBlocks.add(glow);
 	}
 
 	public static void createHorizontalBlockMine(Block furnaceBlock, Block mockBlock, TexturedModel.Provider modelProvider) {
@@ -198,6 +291,19 @@ public class BlockModelAndStateGenerator {
 				.with(BlockModelGenerators.createHorizontalFacingDispatch()));
 		//@formatter:on
 		generateBlockMineInfo(furnaceBlock, ModelLocationUtils.getModelLocation(mockBlock));
+	}
+
+	public static void createKeypadChest() {
+		Block block = SCContent.KEYPAD_CHEST.get();
+		Block particleBlock = Blocks.IRON_BLOCK;
+		Item item = block.asItem();
+		ResourceLocation inventoryModel = ModelTemplates.CHEST_INVENTORY.create(item, TextureMapping.particle(particleBlock), modelOutput);
+		ItemModel.Unbaked defaultUnbaked = ItemModelUtils.specialModel(inventoryModel, new ChestSpecialRenderer.Unbaked(SecurityCraft.resLoc("inactive")));
+		ItemModel.Unbaked christmasUnbaked = ItemModelUtils.specialModel(inventoryModel, new ChestSpecialRenderer.Unbaked(SecurityCraft.resLoc("christmas")));
+
+		blockModelGenerators.createParticleOnlyBlock(block, particleBlock);
+		itemInfo.accept(item, ItemModelUtils.isXmas(christmasUnbaked, defaultUnbaked));
+		generatedBlocks.add(block);
 	}
 
 	public static void createReinforcedButton(ReinforcedButtonBlock block) {
@@ -267,6 +373,29 @@ public class BlockModelAndStateGenerator {
 
 		generate(block, BlockModelGenerators.createFenceGate(block, openModel, closedModel, wallOpenModel, wallClosedModel, true));
 		registerReinforcedItemModel(block);
+	}
+
+	public static void createReinforcedGrassBlock() {
+		Block block = SCContent.REINFORCED_GRASS_BLOCK.get();
+		ResourceLocation model = ModelLocationUtils.getModelLocation(block);
+		Variant variant = Variant.variant().with(VariantProperties.MODEL, model.withSuffix("_snow"));
+
+		blockModelGenerators.createGrassLikeBlock(block, model, variant);
+		//@formatter:off
+		itemInfo.accept(block.asItem(),
+				ItemModelUtils.tintedModel(model,
+						new ReinforcedTint(),
+						new ReinforcedTint(new GrassColorSource())));
+		//@formatter:on
+		generatedBlocks.add(block);
+	}
+
+	public static void createReinforcedPistons() {
+		Block normal = SCContent.REINFORCED_PISTON.get();
+		Block sticky = SCContent.REINFORCED_STICKY_PISTON.get();
+
+		registerReinforcedItemModel(normal, ModelLocationUtils.getModelLocation(normal, "_inventory"));
+		registerReinforcedItemModel(sticky, ModelLocationUtils.getModelLocation(sticky, "_inventory"));
 	}
 
 	public static void createReinforcedSlab(ReinforcedSlabBlock block) {
@@ -411,6 +540,7 @@ public class BlockModelAndStateGenerator {
 						.renderType(renderType)
 						.build()));
 		//@formatter:on
+		itemInfo.accept(block.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(block)));
 		generatedBlocks.add(block);
 	}
 
@@ -419,8 +549,28 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(block);
 	}
 
+	public static <T extends Block & IReinforcedBlock> void registerReinforcedFlatItemModelFromBlock(T block) {
+		registerReinforcedItemModel(block, blockModelGenerators.createFlatItemModelWithBlockTexture(block.asItem(), block.getVanillaBlock()));
+	}
+
+	public static <T extends Block & IReinforcedBlock> void registerReinforcedFlatItemModel(T block) {
+		Item item = block.asItem();
+		ResourceLocation modelLocation = ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(block.getVanillaBlock().asItem()), modelOutput);
+
+		registerReinforcedItemModel(block, modelLocation);
+	}
+
+	public static void registerFlatItemModel(Block block) {
+		blockModelGenerators.registerSimpleFlatItemModel(block);
+		generatedBlocks.add(block);
+	}
+
 	public static void registerReinforcedItemModel(Block block) {
 		registerReinforcedItemModel(block, ModelLocationUtils.getModelLocation(block));
+	}
+
+	public static void registerReinforcedItemModel(Block block, String suffix) {
+		registerReinforcedItemModel(block, ModelLocationUtils.getModelLocation(block, suffix));
 	}
 
 	public static void registerReinforcedItemModel(Block block, ResourceLocation model) {
@@ -431,8 +581,39 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedItemModel(block, ModelLocationUtils.getModelLocation(block), base);
 	}
 
+	public static void registerReinforcedItemModel(Block block, String suffix, ItemTintSource base) {
+		registerReinforcedItemModel(block, ModelLocationUtils.getModelLocation(block, suffix), base);
+	}
+
 	public static void registerReinforcedItemModel(Block block, ResourceLocation model, ItemTintSource base) {
 		itemInfo.accept(block.asItem(), ItemModelUtils.tintedModel(model, new ReinforcedTint(base)));
+		generatedBlocks.add(block);
+	}
+
+	public static void registerSimpleItemModel(Block block) {
+		registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block));
+	}
+
+	public static void registerSimpleItemModelFromItem(Block block) {
+		registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block.asItem()));
+	}
+
+	public static void registerSimpleItemModel(Block block, String suffix) {
+		registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block, suffix));
+	}
+
+	public static void registerSimpleItemModel(Block block, ResourceLocation model) {
+		itemInfo.accept(block.asItem(), ItemModelUtils.plainModel(model));
+		generatedBlocks.add(block);
+	}
+
+	public static void registerTintedItemModel(Block block, ItemTintSource tint) {
+		registerTintedItemModel(block, ModelLocationUtils.getModelLocation(block), tint);
+	}
+
+	public static void registerTintedItemModel(Block block, ResourceLocation model, ItemTintSource tint) {
+		itemInfo.accept(block.asItem(), ItemModelUtils.tintedModel(model, tint));
+		generatedBlocks.add(block);
 	}
 
 	public static ResourceLocation mcBlock(String path) {

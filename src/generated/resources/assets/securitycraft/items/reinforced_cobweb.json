@@ -1,7 +1,7 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "securitycraft:block/reinforced_cobweb",
+    "model": "securitycraft:item/reinforced_cobweb",
     "tints": [
       {
         "type": "securitycraft:reinforced"

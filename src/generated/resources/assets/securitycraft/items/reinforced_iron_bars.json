@@ -1,11 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "securitycraft:block/reinforced_iron_bars",
-    "tints": [
-      {
-        "type": "securitycraft:reinforced"
-      }
-    ]
+    "model": "securitycraft:item/reinforced_iron_bars"
   }
 }

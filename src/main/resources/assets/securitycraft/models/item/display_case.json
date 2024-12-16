@@ -1,4 +1,5 @@
 {
+	"parent": "securitycraft:block/display_case",
     "display": {
         "gui": {
             "rotation": [ 30, 30, 180 ],
@@ -40,8 +41,5 @@
             "translation": [ 0, 3.5, -4.25 ],
             "scale": [ 0.4, 0.4, 0.4 ]
         }
-    },
-    "textures": {
-        "particle": "minecraft:block/iron_block"
     }
 }
