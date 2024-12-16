@@ -1,6 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_pressure_plate_up",
-    "textures": {
-        "texture": "block/stone"
-    }
-}

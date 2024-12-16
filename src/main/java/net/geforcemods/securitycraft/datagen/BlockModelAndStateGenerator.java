@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
@@ -199,6 +200,7 @@ public class BlockModelAndStateGenerator {
 					case ReinforcedCarpetBlock carpet -> createReinforcedCarpet(block);
 					case ReinforcedFenceBlock fence -> createReinforcedFence(fence);
 					case ReinforcedFenceGateBlock fenceGate -> createReinforcedFenceGate(fenceGate);
+					case ReinforcedPressurePlateBlock pressurePlate -> createReinforcedPressurePlate(pressurePlate);
 					case ReinforcedSlabBlock slab -> createReinforcedSlab(slab);
 					case ReinforcedStairsBlock stairs -> createReinforcedStairs(stairs);
 					case ReinforcedWallBlock wall -> createReinforcedWall(wall);
@@ -417,6 +419,15 @@ public class BlockModelAndStateGenerator {
 
 		registerReinforcedItemModel(normal, ModelLocationUtils.getModelLocation(normal, "_inventory"));
 		registerReinforcedItemModel(sticky, ModelLocationUtils.getModelLocation(sticky, "_inventory"));
+	}
+
+	public static void createReinforcedPressurePlate(ReinforcedPressurePlateBlock block) {
+		TextureMapping texture = TextureMapping.defaultTexture(getBaseBlock(block, BlockFamily.Variant.PRESSURE_PLATE));
+		ResourceLocation upModel = SCModelTemplates.REINFORCED_PRESSURE_PLATE_UP.create(block, texture, modelOutput);
+		ResourceLocation downMadel = SCModelTemplates.REINFORCED_PRESSURE_PLATE_DOWN.create(block, texture, modelOutput);
+
+		generate(block, BlockModelGenerators.createPressurePlate(block, upModel, downMadel));
+		registerReinforcedItemModel(block);
 	}
 
 	public static void createReinforcedSlab(ReinforcedSlabBlock block) {

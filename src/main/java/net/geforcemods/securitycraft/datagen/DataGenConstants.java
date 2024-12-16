@@ -47,6 +47,8 @@ public class DataGenConstants {
 		public static final ModelTemplate REINFORCED_BUTTON = ModelTemplates.create("securitycraft:reinforced_button", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_BUTTON_PRESSED = ModelTemplates.create("securitycraft:reinforced_button_pressed", "_pressed", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_BUTTON_INVENTORY = ModelTemplates.create("securitycraft:reinforced_button_inventory", "_inventory", TextureSlot.TEXTURE);
+		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_UP = ModelTemplates.create("securitycraft:reinforced_pressure_plate_up", TextureSlot.TEXTURE);
+		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_DOWN = ModelTemplates.create("securitycraft:reinforced_pressure_plate_down", "_down", TextureSlot.TEXTURE);
 
 		private SCModelTemplates() {}
 	}
