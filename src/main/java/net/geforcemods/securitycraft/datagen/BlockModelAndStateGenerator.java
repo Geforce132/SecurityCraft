@@ -17,14 +17,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceGateBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
 import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
@@ -230,14 +223,7 @@ public class BlockModelAndStateGenerator {
 
 			if (decorationTabItems.contains(item)) {
 				switch (block) {
-					case ReinforcedButtonBlock button -> createReinforcedButton(button);
 					case ReinforcedCarpetBlock carpet -> createReinforcedCarpet(block);
-					case ReinforcedFenceBlock fence -> createReinforcedFence(fence);
-					case ReinforcedFenceGateBlock fenceGate -> createReinforcedFenceGate(fenceGate);
-					case ReinforcedPressurePlateBlock pressurePlate -> createReinforcedPressurePlate(pressurePlate);
-					case ReinforcedSlabBlock slab -> createReinforcedSlab(slab);
-					case ReinforcedStairsBlock stairs -> createReinforcedStairs(stairs);
-					case ReinforcedWallBlock wall -> createReinforcedWall(wall);
 					case IReinforcedBlock reinforcedBlock -> registerReinforcedItemModel(block);
 					default -> {
 					}
@@ -371,10 +357,6 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(block);
 	}
 
-	public static void createReinforcedButton(ReinforcedButtonBlock block) {
-		createReinforcedButton(block, TextureMapping.defaultTexture(getBaseBlock(block, BlockFamily.Variant.BUTTON)));
-	}
-
 	public static void createReinforcedButton(Block block, TextureMapping textureMapping) {
 		ResourceLocation defaultModel = SCModelTemplates.REINFORCED_BUTTON.create(block, textureMapping, modelOutput);
 		ResourceLocation pressedModel = SCModelTemplates.REINFORCED_BUTTON_PRESSED.create(block, textureMapping, modelOutput);
@@ -398,10 +380,6 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedItemModel(block);
 	}
 
-	public static void createReinforcedCustomFence(Block block, Block baseBlock) {
-		createReinforcedCustomFence(block, TextureMapping.customParticle(baseBlock));
-	}
-
 	public static void createReinforcedCustomFence(Block block, TextureMapping textureMapping) {
 		ResourceLocation postModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_POST.create(block, textureMapping, modelOutput);
 		ResourceLocation northSideModel = SCModelTemplates.CUSTOM_REINFORCED_FENCE_SIDE_NORTH.create(block, textureMapping, modelOutput);
@@ -414,10 +392,6 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedItemModel(block, inventoryModel);
 	}
 
-	public static void createReinforcedFence(ReinforcedFenceBlock block) {
-		createReinforcedFence(block, TextureMapping.customParticle(getBaseBlock(block, BlockFamily.Variant.FENCE)));
-	}
-
 	public static void createReinforcedFence(Block block, TextureMapping textureMapping) {
 		ResourceLocation postModel = SCModelTemplates.REINFORCED_FENCE_POST.create(block, textureMapping, modelOutput);
 		ResourceLocation sideModel = SCModelTemplates.REINFORCED_FENCE_SIDE.create(block, textureMapping, modelOutput);
@@ -425,10 +399,6 @@ public class BlockModelAndStateGenerator {
 
 		generate(block, BlockModelGenerators.createFence(block, postModel, sideModel));
 		registerReinforcedItemModel(block, inventoryModel);
-	}
-
-	public static void createReinforcedCustomFenceGate(Block block, Block baseBlock) {
-		createReinforcedCustomFenceGate(block, TextureMapping.customParticle(baseBlock));
 	}
 
 	public static void createReinforcedCustomFenceGate(Block block, TextureMapping textureMapping) {
@@ -439,10 +409,6 @@ public class BlockModelAndStateGenerator {
 
 		generate(block, BlockModelGenerators.createFenceGate(block, openModel, closedModel, wallOpenModel, wallClosedModel, false));
 		registerReinforcedItemModel(block);
-	}
-
-	public static void createReinforcedFenceGate(ReinforcedFenceGateBlock block) {
-		createReinforcedFenceGate(block, TextureMapping.customParticle(getBaseBlock(block, BlockFamily.Variant.FENCE_GATE)));
 	}
 
 	public static void createReinforcedFenceGate(Block block, TextureMapping textureMapping) {
@@ -478,26 +444,12 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedItemModel(sticky, ModelLocationUtils.getModelLocation(sticky, "_inventory"));
 	}
 
-	public static void createReinforcedPressurePlate(ReinforcedPressurePlateBlock block) {
-		createReinforcedPressurePlate(block, TextureMapping.defaultTexture(getBaseBlock(block, BlockFamily.Variant.PRESSURE_PLATE)));
-	}
-
 	public static void createReinforcedPressurePlate(Block block, TextureMapping textureMapping) {
 		ResourceLocation upModel = SCModelTemplates.REINFORCED_PRESSURE_PLATE_UP.create(block, textureMapping, modelOutput);
 		ResourceLocation downModel = SCModelTemplates.REINFORCED_PRESSURE_PLATE_DOWN.create(block, textureMapping, modelOutput);
 
-		BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createPressurePlate(block, upModel, downModel));
-		BlockModelAndStateGenerator.registerReinforcedItemModel(block);
-	}
-
-	public static void createReinforcedSlab(ReinforcedSlabBlock block) {
-		Block baseBlock = getBaseBlock(block, BlockFamily.Variant.SLAB);
-		Block reinforcedBaseBlock = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(baseBlock);
-
-		if (reinforcedBaseBlock != null)
-			createReinforcedSlab(block, name(reinforcedBaseBlock), name(baseBlock));
-		else
-			throw new IllegalStateException("Couldn't find reinforced block for " + Utils.getRegistryName(baseBlock));
+		generate(block, BlockModelGenerators.createPressurePlate(block, upModel, downModel));
+		registerReinforcedItemModel(block);
 	}
 
 	public static void createReinforcedSlab(Block block, String doubleSlabModel, String texture) {
@@ -544,10 +496,6 @@ public class BlockModelAndStateGenerator {
 		generate(block, BlockModelGenerators.createSlab(block, bottomModel, topModel, doubleSlab));
 	}
 
-	public static void createReinforcedStairs(ReinforcedStairsBlock block) {
-		createReinforcedStairs(block, name(getBaseBlock(block, BlockFamily.Variant.STAIRS)));
-	}
-
 	public static void createReinforcedStairs(Block block, String texture) {
 		ResourceLocation textureLocation = mcBlock(texture);
 
@@ -591,10 +539,6 @@ public class BlockModelAndStateGenerator {
 		ResourceLocation outerModel = SCModelTemplates.REINFORCED_STAIRS_OUTER.create(block, textureMapping, modelOutput);
 
 		generate(block, BlockModelGenerators.createStairs(block, innerModel, straightModel, outerModel));
-	}
-
-	public static void createReinforcedWall(ReinforcedWallBlock block) {
-		createReinforcedWall(block, new TextureMapping().put(TextureSlot.WALL, mcBlock(name(getBaseBlock(block, BlockFamily.Variant.WALL)))));
 	}
 
 	public static void createReinforcedWall(Block block, TextureMapping textureMapping) {
@@ -751,14 +695,5 @@ public class BlockModelAndStateGenerator {
 
 	private static String name(Block block) {
 		return Utils.getRegistryName(block).getPath();
-	}
-
-	private static Block getBaseBlock(IReinforcedBlock block, BlockFamily.Variant variant) {
-		BlockFamily family = BlockFamilies.getAllFamilies().filter(f -> f.getVariants().get(variant) == block.getVanillaBlock()).findFirst().orElse(null);
-
-		if (family != null)
-			return family.getBaseBlock();
-		else
-			throw new IllegalStateException("Couldn't find block family for " + Utils.getRegistryName((Block) block));
 	}
 }
