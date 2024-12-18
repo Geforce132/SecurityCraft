@@ -215,6 +215,14 @@ public class BlockModelAndStateGenerator {
 			.filter(Predicates.not(excludedFamilies::contains))
 			.forEach(BlockModelAndStateGenerator::reinforcedFamily);
 		//@formatter:on
+		reinforcedFamily(BlockFamilies.COPPER_BLOCK);
+		reinforcedFamily(BlockFamilies.CUT_COPPER);
+		reinforcedFamily(BlockFamilies.EXPOSED_COPPER);
+		reinforcedFamily(BlockFamilies.EXPOSED_CUT_COPPER);
+		reinforcedFamily(BlockFamilies.WEATHERED_COPPER);
+		reinforcedFamily(BlockFamilies.WEATHERED_CUT_COPPER);
+		reinforcedFamily(BlockFamilies.OXIDIZED_COPPER);
+		reinforcedFamily(BlockFamilies.OXIDIZED_CUT_COPPER);
 		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(), "reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 		createCrystalQuartzBlocks();
 		SCContent.BLOCKS.getEntries().stream().map(DeferredHolder::get).filter(b -> !generatedBlocks.contains(b)).forEach(block -> {
