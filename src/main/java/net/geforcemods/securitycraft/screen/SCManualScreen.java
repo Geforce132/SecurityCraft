@@ -163,7 +163,7 @@ public class SCManualScreen extends Screen {
 				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, 0);
 
 			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0, false);
-			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0);
+			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0, false);
 			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
 			guiGraphics.blitSprite(RenderType::guiTextured, ownable ? OWNABLE_HIGHLIGHTED_SPRITE : OWNABLE_SPRITE, startX + 29, 118, 16, 16);
 			guiGraphics.blitSprite(RenderType::guiTextured, passcodeProtected ? PASSCODE_PROTECTED_HIGHLIGHTED_SPRITE : PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);

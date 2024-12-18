@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.12-beta2 of SecurityCraft--------------------------
+
+- Fix: Text in the SC Manual is not rendered correctly
+
 --------------------------Changelog for v1.9.12-beta1 of SecurityCraft--------------------------
 
 - Change: The block mine overly now shows in the first person hand models as well
