@@ -1,0 +1,20 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "securitycraft:block/reinforced_stone"
+      },
+      {
+        "model": "securitycraft:block/reinforced_stone_mirrored"
+      },
+      {
+        "model": "securitycraft:block/reinforced_stone",
+        "y": 180
+      },
+      {
+        "model": "securitycraft:block/reinforced_stone_mirrored",
+        "y": 180
+      }
+    ]
+  }
+}

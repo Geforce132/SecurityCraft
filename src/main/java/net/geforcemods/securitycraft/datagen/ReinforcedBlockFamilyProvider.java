@@ -2,11 +2,14 @@ package net.geforcemods.securitycraft.datagen;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.Maps;
 
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -19,29 +22,34 @@ import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	private final TextureMapping mapping;
 	private final Map<ModelTemplate, ResourceLocation> models = Maps.newHashMap();
-	private ReinforcedBlockFamily reinforcedFamily;
+	private final BlockFamily family;
 	private ResourceLocation fullBlock;
 	private final Set<Block> skipGeneratingModelsFor = new HashSet<>();
 	private final BlockModelGenerators blockModelGenerators;
 	private final BiConsumer<ResourceLocation, ModelInstance> modelOutput;
 
-	public ReinforcedBlockFamilyProvider(TextureMapping mapping) {
-		BlockModelAndStateGenerator.blockModelGenerators.super(mapping);
-		this.mapping = mapping;
+	public ReinforcedBlockFamilyProvider(BlockFamily family, Block reinforcedBaseBlock, TexturedModel texturedModel) {
+		BlockModelAndStateGenerator.blockModelGenerators.super(texturedModel.getMapping());
+		this.mapping = texturedModel.getMapping();
+		this.family = family;
 		blockModelGenerators = BlockModelAndStateGenerator.blockModelGenerators;
 		modelOutput = BlockModelAndStateGenerator.modelOutput;
+		fullBlock(reinforcedBaseBlock, texturedModel.getTemplate());
 	}
 
 	@Override
 	public ReinforcedBlockFamilyProvider fullBlock(Block block, ModelTemplate modelTemplate) {
+		Block fullVanillaBlock = family.getBaseBlock();
+
 		fullBlock = modelTemplate.create(block, mapping, modelOutput);
 
-		if (blockModelGenerators.fullBlockModelCustomGenerators.containsKey(block))
-			BlockModelAndStateGenerator.generate(block, blockModelGenerators.fullBlockModelCustomGenerators.get(block).create(block, fullBlock, mapping, modelOutput));
+		if (blockModelGenerators.fullBlockModelCustomGenerators.containsKey(fullVanillaBlock))
+			BlockModelAndStateGenerator.generate(block, BlockModelAndStateGenerator.FULL_BLOCK_MODEL_CUSTOM_GENERATORS.get(fullVanillaBlock).create(block, fullBlock, mapping, modelOutput));
 		else
 			BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, fullBlock));
 
@@ -73,7 +81,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 
 	@Override
 	public ReinforcedBlockFamilyProvider customFence(Block fenceBlock) {
-		BlockModelAndStateGenerator.createReinforcedCustomFence(fenceBlock, TextureMapping.customParticle(fenceBlock));
+		BlockModelAndStateGenerator.createReinforcedCustomFence(fenceBlock, TextureMapping.customParticle(family.get(BlockFamily.Variant.CUSTOM_FENCE)));
 		return this;
 	}
 
@@ -85,7 +93,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 
 	@Override
 	public ReinforcedBlockFamilyProvider customFenceGate(Block customFenceGateBlock) {
-		BlockModelAndStateGenerator.createReinforcedCustomFenceGate(customFenceGateBlock, TextureMapping.customParticle(reinforcedFamily.family().get(BlockFamily.Variant.CUSTOM_FENCE_GATE)));
+		BlockModelAndStateGenerator.createReinforcedCustomFenceGate(customFenceGateBlock, TextureMapping.customParticle(family.get(BlockFamily.Variant.CUSTOM_FENCE_GATE)));
 		return this;
 	}
 
@@ -133,7 +141,8 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 
 	@Override
 	public ReinforcedBlockFamilyProvider fullBlockVariant(Block block) {
-		TexturedModel texturedModel = blockModelGenerators.texturedModels.getOrDefault(block, SCTexturedModels.REINFORCED_CUBE.get(block));
+		Block vanillaBlock = ((IReinforcedBlock) block).getVanillaBlock();
+		TexturedModel texturedModel = BlockModelAndStateGenerator.TEXTURED_MODELS.getOrDefault(vanillaBlock, SCTexturedModels.REINFORCED_CUBE.get(vanillaBlock));
 		ResourceLocation modelLocation = texturedModel.create(block, modelOutput);
 
 		BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, modelLocation));
@@ -158,8 +167,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 
 	@Override
 	public ReinforcedBlockFamilyProvider generateFor(BlockFamily family) {
-		reinforcedFamily = new ReinforcedBlockFamily(family);
-		reinforcedFamily.getVariants().forEach((variant, block) -> {
+		getVariants().forEach((variant, block) -> {
 			if (!skipGeneratingModelsFor.contains(block)) {
 				BiConsumer<BlockFamilyProvider, Block> shapeConsumer = BlockModelGenerators.SHAPE_CONSUMERS.get(variant);
 
@@ -168,5 +176,13 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 			}
 		});
 		return this;
+	}
+
+	public Map<BlockFamily.Variant, Block> getVariants() {
+		return family.getVariants().entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> get(e.getKey())));
+	}
+
+	public Block get(BlockFamily.Variant variant) {
+		return IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.getOrDefault(family.get(variant), Blocks.AIR);
 	}
 }

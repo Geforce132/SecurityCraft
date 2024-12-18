@@ -5,6 +5,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.resources.ResourceLocation;
 
 public class DataGenConstants {
 	private DataGenConstants() {}
@@ -50,6 +51,10 @@ public class DataGenConstants {
 		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_UP = ModelTemplates.create("securitycraft:reinforced_pressure_plate_up", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_DOWN = ModelTemplates.create("securitycraft:reinforced_pressure_plate_down", "_down", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_CUBE_ALL = ModelTemplates.create("securitycraft:reinforced_cube_all", TextureSlot.ALL);
+		public static final ModelTemplate REINFORCED_CUBE_BOTTOM_TOP = ModelTemplates.create("securitycraft:reinforced_cube_bottom_top", TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
+		public static final ModelTemplate REINFORCED_CUBE_MIRRORED_ALL = ModelTemplates.create("securitycraft:reinforced_cube_mirrored_all", "_mirrored", TextureSlot.ALL);
+		public static final ModelTemplate REINFORCED_CUBE_NORTH_WEST_MIRRORED_ALL = ModelTemplates.create("securitycraft:reinforced_cube_north_west_mirrored_all", "_north_west_mirrored", TextureSlot.ALL);
+		public static final ModelTemplate REINFORCED_CUBE_COLUMN_MIRRORED = ModelTemplates.create("securitycraft:reinforced_cube_column_mirrored", "_mirrored", TextureSlot.END, TextureSlot.SIDE);
 
 		private SCModelTemplates() {}
 	}
@@ -57,6 +62,13 @@ public class DataGenConstants {
 	public class SCTexturedModels {
 		public static final TexturedModel.Provider REINFORCED_CUBE = TexturedModel.createDefault(TextureMapping::cube, SCModelTemplates.REINFORCED_CUBE_ALL);
 		public static final TexturedModel.Provider REINFORCED_CARPET = TexturedModel.createDefault(block -> TextureMapping.singleSlot(SCTextureSlots.BLOCK, TextureMapping.getBlockTexture(block)), SCModelTemplates.REINFORCED_CARPET);
+		public static final TexturedModel.Provider REINFORCED_TOP_BOTTOM_WITH_WALL = TexturedModel.createDefault(TextureMapping::cubeBottomTopWithWall, SCModelTemplates.REINFORCED_CUBE_BOTTOM_TOP);
+		public static final TexturedModel.Provider REINFORCED_COLUMN_WITH_WALL = TexturedModel.createDefault(TextureMapping::columnWithWall, SCModelTemplates.REINFORCED_CUBE_COLUMN);
+		public static final TexturedModel.Provider REINFORCED_COLUMN = TexturedModel.createDefault(TextureMapping::column, SCModelTemplates.REINFORCED_CUBE_COLUMN);
+
+		public static TexturedModel createAllSame(ResourceLocation location) {
+			return new TexturedModel(TextureMapping.cube(location), SCModelTemplates.REINFORCED_CUBE_ALL);
+		}
 
 		private SCTexturedModels() {}
 	}

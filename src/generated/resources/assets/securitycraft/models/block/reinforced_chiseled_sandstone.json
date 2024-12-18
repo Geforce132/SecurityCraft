@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/reinforced_cube_column",
+  "textures": {
+    "end": "minecraft:block/sandstone_top",
+    "side": "minecraft:block/chiseled_sandstone"
+  }
+}

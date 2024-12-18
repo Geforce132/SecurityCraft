@@ -2,10 +2,14 @@ package net.geforcemods.securitycraft.datagen;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import com.google.common.base.Predicates;
+import com.google.common.collect.ImmutableMap;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
@@ -59,6 +63,51 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockModelAndStateGenerator {
 	private static final ItemTintSource CRYSTAL_QUARTZ_TINT = ItemModelUtils.constantTint(SCContent.CRYSTAL_QUARTZ_TINT);
+	//@formatter:off
+    static final Map<Block, BlockModelGenerators.BlockStateGeneratorSupplier> FULL_BLOCK_MODEL_CUSTOM_GENERATORS = ImmutableMap.<Block, BlockModelGenerators.BlockStateGeneratorSupplier>builder()
+            .put(Blocks.STONE, BlockModelAndStateGenerator::createMirroredCubeGenerator)
+            .put(Blocks.DEEPSLATE, BlockModelAndStateGenerator::createMirroredColumnGenerator)
+            .put(Blocks.MUD_BRICKS, BlockModelAndStateGenerator::createNorthWestMirroredCubeGenerator)
+            .build();
+	static final Map<Block, TexturedModel> TEXTURED_MODELS = ImmutableMap.<Block, TexturedModel>builder()
+			.put(Blocks.SANDSTONE, SCTexturedModels.REINFORCED_TOP_BOTTOM_WITH_WALL.get(Blocks.SANDSTONE))
+			.put(Blocks.RED_SANDSTONE, SCTexturedModels.REINFORCED_TOP_BOTTOM_WITH_WALL.get(Blocks.RED_SANDSTONE))
+			.put(Blocks.SMOOTH_SANDSTONE, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.SANDSTONE, "_top")))
+			.put(Blocks.SMOOTH_RED_SANDSTONE, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.RED_SANDSTONE, "_top")))
+			.put(
+				Blocks.CUT_SANDSTONE,
+				SCTexturedModels.REINFORCED_COLUMN
+					.get(Blocks.SANDSTONE)
+					.updateTextures(textureMapping -> textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.CUT_SANDSTONE)))
+			)
+			.put(
+				Blocks.CUT_RED_SANDSTONE,
+				SCTexturedModels.REINFORCED_COLUMN
+					.get(Blocks.RED_SANDSTONE)
+					.updateTextures(textureMapping -> textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.CUT_RED_SANDSTONE)))
+			)
+			.put(Blocks.QUARTZ_BLOCK, SCTexturedModels.REINFORCED_COLUMN.get(Blocks.QUARTZ_BLOCK))
+			.put(Blocks.SMOOTH_QUARTZ, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.QUARTZ_BLOCK, "_bottom")))
+			.put(Blocks.BLACKSTONE, SCTexturedModels.REINFORCED_COLUMN_WITH_WALL.get(Blocks.BLACKSTONE))
+			.put(Blocks.DEEPSLATE, SCTexturedModels.REINFORCED_COLUMN_WITH_WALL.get(Blocks.DEEPSLATE))
+			.put(
+				Blocks.CHISELED_QUARTZ_BLOCK,
+				SCTexturedModels.REINFORCED_COLUMN
+					.get(Blocks.CHISELED_QUARTZ_BLOCK)
+					.updateTextures(textureMapping -> textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.CHISELED_QUARTZ_BLOCK)))
+			)
+			.put(Blocks.CHISELED_SANDSTONE, SCTexturedModels.REINFORCED_COLUMN.get(Blocks.CHISELED_SANDSTONE).updateTextures(textureMapping -> {
+				textureMapping.put(TextureSlot.END, TextureMapping.getBlockTexture(Blocks.SANDSTONE, "_top"));
+				textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.CHISELED_SANDSTONE));
+			}))
+			.put(Blocks.CHISELED_RED_SANDSTONE, SCTexturedModels.REINFORCED_COLUMN.get(Blocks.CHISELED_RED_SANDSTONE).updateTextures(textureMapping -> {
+				textureMapping.put(TextureSlot.END, TextureMapping.getBlockTexture(Blocks.RED_SANDSTONE, "_top"));
+				textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.CHISELED_RED_SANDSTONE));
+			}))
+			.put(Blocks.CHISELED_TUFF_BRICKS, SCTexturedModels.REINFORCED_COLUMN_WITH_WALL.get(Blocks.CHISELED_TUFF_BRICKS))
+			.put(Blocks.CHISELED_TUFF, SCTexturedModels.REINFORCED_COLUMN_WITH_WALL.get(Blocks.CHISELED_TUFF))
+			.build();
+	//@formatter:on
 	static BlockModelGenerators blockModelGenerators;
 	static Consumer<BlockStateGenerator> blockStateOutput;
 	static BiConsumer<ResourceLocation, ModelInstance> modelOutput;
@@ -70,6 +119,7 @@ public class BlockModelAndStateGenerator {
 	protected static void run(BlockModelGenerators blockModelGenerators) {
 		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
 		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
+		List<BlockFamily> excludedFamilies = List.of(BlockFamilies.RESIN_BRICKS, BlockFamilies.PALE_OAK_PLANKS);
 
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
 		blockStateOutput = blockModelGenerators.blockStateOutput;
@@ -153,9 +203,6 @@ public class BlockModelAndStateGenerator {
 		createGlassBlocks(SCContent.REINFORCED_RED_STAINED_GLASS.get(), SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
 
-		createReinforcedCustomFence(SCContent.REINFORCED_BAMBOO_FENCE.get(), Blocks.BAMBOO_FENCE);
-		createReinforcedCustomFenceGate(SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(), Blocks.BAMBOO_FENCE_GATE);
-
 		//@formatter:off
 		SCModelTemplates.REINFORCED_CUBE_COLUMN.create(
 				ModelLocationUtils.decorateBlockModelLocation(SecurityCraft.resLoc("reinforced_smooth_stone_slab_double").toString()),
@@ -163,35 +210,13 @@ public class BlockModelAndStateGenerator {
 						TextureMapping.getBlockTexture(Blocks.SMOOTH_STONE_SLAB, "_side"),
 						TextureMapping.cube(Blocks.SMOOTH_STONE).get(TextureSlot.TOP)),
 				modelOutput);
+		BlockFamilies.getAllFamilies()
+			.filter(BlockFamily::shouldGenerateModel)
+			.filter(Predicates.not(excludedFamilies::contains))
+			.forEach(BlockModelAndStateGenerator::reinforcedFamily);
 		//@formatter:on
-
 		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(), "reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
-		createReinforcedSlab(SCContent.REINFORCED_SANDSTONE_SLAB.get(), "reinforced_sandstone", "sandstone", "sandstone_bottom", "sandstone_top");
-		createReinforcedSlab(SCContent.REINFORCED_CUT_SANDSTONE_SLAB.get(), "reinforced_cut_sandstone", "cut_sandstone", "sandstone_top");
-		createReinforcedSlab(SCContent.REINFORCED_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top");
-		createReinforcedSlab(SCContent.REINFORCED_RED_SANDSTONE_SLAB.get(), "reinforced_red_sandstone", "red_sandstone", "red_sandstone_bottom", "red_sandstone_top");
-		createReinforcedSlab(SCContent.REINFORCED_CUT_RED_SANDSTONE_SLAB.get(), "reinforced_cut_red_sandstone", "cut_red_sandstone", "red_sandstone_top");
-		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_SLAB.get(), "reinforced_smooth_red_sandstone", "red_sandstone_top");
-		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_SANDSTONE_SLAB.get(), "reinforced_smooth_sandstone", "sandstone_top");
-		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom");
-		createTintedSlab(SCContent.CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
-		createTintedSlab(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
-		createReinforcedSlab(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
-		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
-
-		createReinforcedStairs(SCContent.REINFORCED_SANDSTONE_STAIRS.get(), "sandstone", "sandstone_bottom", "sandstone_top");
-		createReinforcedStairs(SCContent.REINFORCED_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top");
-		createReinforcedStairs(SCContent.REINFORCED_RED_SANDSTONE_STAIRS.get(), "red_sandstone", "red_sandstone_bottom", "red_sandstone_top");
-		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS.get(), "red_sandstone_top");
-		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_SANDSTONE_STAIRS.get(), "sandstone_top");
-		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_QUARTZ_STAIRS.get(), "quartz_block_bottom");
-		createReinforcedStairs(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
-		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
-		createTintedStairs(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
-		createTintedStairs(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
-
-		reinforcedFamily(BlockFamilies.OAK_PLANKS);
-		createFullCrystalQuartzBlocks();
+		createCrystalQuartzBlocks();
 		SCContent.BLOCKS.getEntries().stream().map(DeferredHolder::get).filter(b -> !generatedBlocks.contains(b)).forEach(block -> {
 			Item item = block.asItem();
 
@@ -239,7 +264,7 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(block);
 	}
 
-	public static void createFullCrystalQuartzBlocks() {
+	public static void createCrystalQuartzBlocks() {
 		ResourceLocation chiseledModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_CHISELED_QUARTZ.get());
 		ResourceLocation blockModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_QUARTZ_BLOCK.get());
 		ResourceLocation bricksModel = ModelLocationUtils.getModelLocation(SCContent.REINFORCED_QUARTZ_BRICKS.get());
@@ -251,11 +276,19 @@ public class BlockModelAndStateGenerator {
 		registerTintedItemModel(SCContent.CRYSTAL_QUARTZ_BRICKS.get(), bricksModel, CRYSTAL_QUARTZ_TINT);
 		registerTintedItemModel(SCContent.CRYSTAL_QUARTZ_PILLAR.get(), pillarModel, CRYSTAL_QUARTZ_TINT);
 		registerTintedItemModel(SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), smoothModel, CRYSTAL_QUARTZ_TINT);
+		createTintedSlab(SCContent.CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createTintedSlab(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
+		createTintedStairs(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createTintedStairs(SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
 		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get(), chiseledModel, CRYSTAL_QUARTZ_TINT);
 		registerReinforcedItemModel(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get(), blockModel, CRYSTAL_QUARTZ_TINT);
 		registerReinforcedItemModel(SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS.get(), bricksModel, CRYSTAL_QUARTZ_TINT);
 		registerReinforcedItemModel(SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(), pillarModel, CRYSTAL_QUARTZ_TINT);
 		registerReinforcedItemModel(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.get(), smoothModel, CRYSTAL_QUARTZ_TINT);
+		createReinforcedSlab(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_quartz_block", "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB.get(), "reinforced_smooth_quartz", "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
+		createReinforcedStairs(SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_side", "quartz_block_top", CRYSTAL_QUARTZ_TINT);
+		createReinforcedStairs(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get(), "quartz_block_bottom", "quartz_block_bottom", CRYSTAL_QUARTZ_TINT);
 	}
 
 	public static void createDisplayCases() {
@@ -598,16 +631,34 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(block);
 	}
 
-	public static ReinforcedBlockFamilyProvider reinforcedFamily(BlockFamily family) {
+	public static BlockStateGenerator createMirroredCubeGenerator(Block cubeBlock, ResourceLocation location, TextureMapping textureMapping, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
+		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_MIRRORED_ALL.create(cubeBlock, textureMapping, modelOutput);
+
+		return BlockModelGenerators.createRotatedVariant(cubeBlock, location, modelLocation);
+	}
+
+	public static BlockStateGenerator createNorthWestMirroredCubeGenerator(Block cubeBlock, ResourceLocation location, TextureMapping textureMapping, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
+		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_NORTH_WEST_MIRRORED_ALL.create(cubeBlock, textureMapping, modelOutput);
+
+		return BlockModelGenerators.createSimpleBlock(cubeBlock, modelLocation);
+	}
+
+	public static BlockStateGenerator createMirroredColumnGenerator(Block columnBlock, ResourceLocation location, TextureMapping textureMapping, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
+		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN_MIRRORED.create(columnBlock, textureMapping, modelOutput);
+
+		return BlockModelGenerators.createRotatedVariant(columnBlock, location, modelLocation).with(BlockModelGenerators.createRotatedPillar());
+	}
+
+	public static void reinforcedFamily(BlockFamily family) {
 		Block vanillaBlock = family.getBaseBlock();
 		Block reinforcedBlock = IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(vanillaBlock);
 
 		if (reinforcedBlock == null)
 			throw new IllegalStateException("Couldn't find reinforced block for " + Utils.getRegistryName(vanillaBlock));
 
-		TexturedModel texturedModel = blockModelGenerators.texturedModels.getOrDefault(reinforcedBlock, SCTexturedModels.REINFORCED_CUBE.get(vanillaBlock));
+		TexturedModel texturedModel = TEXTURED_MODELS.getOrDefault(vanillaBlock, SCTexturedModels.REINFORCED_CUBE.get(vanillaBlock));
 
-		return new ReinforcedBlockFamilyProvider(texturedModel.getMapping()).fullBlock(reinforcedBlock, texturedModel.getTemplate()).generateFor(family);
+		new ReinforcedBlockFamilyProvider(family, reinforcedBlock, texturedModel).generateFor(null);
 	}
 
 	public static void generate(Block block, BlockStateGenerator generator) {
