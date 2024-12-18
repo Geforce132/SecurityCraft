@@ -49,11 +49,13 @@ public class DataGenConstants {
 		public static final ModelTemplate REINFORCED_BUTTON_INVENTORY = ModelTemplates.create("securitycraft:reinforced_button_inventory", "_inventory", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_UP = ModelTemplates.create("securitycraft:reinforced_pressure_plate_up", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_DOWN = ModelTemplates.create("securitycraft:reinforced_pressure_plate_down", "_down", TextureSlot.TEXTURE);
+		public static final ModelTemplate REINFORCED_CUBE_ALL = ModelTemplates.create("securitycraft:reinforced_cube_all", TextureSlot.ALL);
 
 		private SCModelTemplates() {}
 	}
 
 	public class SCTexturedModels {
+		public static final TexturedModel.Provider REINFORCED_CUBE = TexturedModel.createDefault(TextureMapping::cube, SCModelTemplates.REINFORCED_CUBE_ALL);
 		public static final TexturedModel.Provider REINFORCED_CARPET = TexturedModel.createDefault(block -> TextureMapping.singleSlot(SCTextureSlots.BLOCK, TextureMapping.getBlockTexture(block)), SCModelTemplates.REINFORCED_CARPET);
 
 		private SCTexturedModels() {}
