@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[1,)"
 logoFile="sc_banner.png"
-license="MIT https://github.com/Geforce132/SecurityCraft/blob/1.21.3/LICENSE"
+license="MIT https://github.com/Geforce132/SecurityCraft/blob/1.21.4/LICENSE"
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
 [[mods]]
@@ -21,14 +21,14 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 [[dependencies.securitycraft]]
     modId="neoforge"
     type="required"
-    versionRange="[21.2,)"
+    versionRange="[21.4.30-beta,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.securitycraft]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.2,1.22)"
+    versionRange="[1.21.4,1.22)"
     ordering="NONE"
     side="BOTH"
 

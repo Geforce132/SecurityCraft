@@ -2,6 +2,8 @@
 
 - Fix: Text in the SC Manual is not rendered correctly
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
+- Fix: Compatibility with NeoForge 21.4.30-beta
+- Misc.: The minimum required NeoForge version is now 21.4.30-beta
 
 --------------------------Changelog for v1.9.12-beta1 of SecurityCraft--------------------------
 
