@@ -27,6 +27,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.BlockModelGenerators.BlockFamilyProvider;
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
@@ -313,9 +314,10 @@ public class BlockModelAndStateGenerator {
 	public static void createElectrifiedFenceAndGate() {
 		Block fence = SCContent.ELECTRIFIED_IRON_FENCE.get();
 		Block gate = SCContent.ELECTRIFIED_IRON_FENCE_GATE.get();
+		BlockFamilyProvider blockFamilyProvider = blockModelGenerators.new BlockFamilyProvider(TextureMapping.fence(fence)); //The texture mapping is unused for custom fence/-gate generation
 
-		blockModelGenerators.createCustomFence(fence);
-		blockModelGenerators.createCustomFenceGate(gate);
+		blockFamilyProvider.customFence(fence);
+		blockFamilyProvider.customFenceGate(gate);
 		itemInfo.accept(gate.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(gate)));
 		generatedBlocks.add(fence);
 		generatedBlocks.add(gate);

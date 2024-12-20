@@ -20,6 +20,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockTagGenerator extends BlockTagsProvider {
+	@SuppressWarnings("removal")
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
 		super(output, lookupProvider, SecurityCraft.MODID, existingFileHelper);
 	}

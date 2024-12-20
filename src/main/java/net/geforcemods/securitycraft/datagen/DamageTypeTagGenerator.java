@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class DamageTypeTagGenerator extends DamageTypeTagsProvider {
+	@SuppressWarnings("removal")
 	protected DamageTypeTagGenerator(PackOutput output, CompletableFuture<Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
 		super(output, lookupProvider, SecurityCraft.MODID, existingFileHelper);
 	}

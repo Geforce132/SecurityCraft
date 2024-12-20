@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.12-beta2 of SecurityCraft--------------------------
 
 - Fix: Text in the SC Manual is not rendered correctly
+- Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 
 --------------------------Changelog for v1.9.12-beta1 of SecurityCraft--------------------------
 
