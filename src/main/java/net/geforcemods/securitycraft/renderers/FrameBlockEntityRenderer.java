@@ -63,8 +63,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		GlobalPos cameraPos = be.getCurrentCamera();
 		Direction direction = state.getValue(FrameBlock.FACING);
 		Vec3i normal = direction.getNormal();
-		float bottom = 0.125F;
-		float top = 1.0F - bottom;
+		float pixelSize = 0.0625F;
+		float top = 1.0F - pixelSize;
 		float xStart = 0.0F;
 		float xEnd = 1.0F;
 		float zStart = 0.0F;
@@ -72,22 +72,22 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 		switch (direction) {
 			case Direction.NORTH:
-				xStart = bottom;
+				xStart = pixelSize;
 				xEnd = top;
 				zStart = zEnd = 0.05F;
 				break;
 			case Direction.SOUTH:
 				xStart = top;
-				xEnd = bottom;
+				xEnd = pixelSize;
 				zStart = zEnd = 0.95F;
 				break;
 			case Direction.WEST:
 				zStart = top;
-				zEnd = bottom;
+				zEnd = pixelSize;
 				xStart = xEnd = 0.05F;
 				break;
 			case Direction.EAST:
-				zStart = bottom;
+				zStart = pixelSize;
 				zEnd = top;
 				xStart = xEnd = 0.95F;
 				break;
@@ -125,10 +125,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			shader.apply();
 			lastPose = pose.last().pose();
 			bufferBuilder = buffer.getBuffer(CAMERA_IN_FRAME_RENDER_TYPE);
-			bufferBuilder.addVertex(lastPose, xStart, bottom, zStart).setUv(1, 0).setColor(0xFFFFFF);
+			bufferBuilder.addVertex(lastPose, xStart, pixelSize, zStart).setUv(1, 0).setColor(0xFFFFFF);
 			bufferBuilder.addVertex(lastPose, xStart, top, zStart).setUv(1, 1).setColor(0xFFFFFF);
 			bufferBuilder.addVertex(lastPose, xEnd, top, zEnd).setUv(0, 1).setColor(0xFFFFFF);
-			bufferBuilder.addVertex(lastPose, xEnd, bottom, zEnd).setUv(0, 0).setColor(0xFFFFFF);
+			bufferBuilder.addVertex(lastPose, xEnd, pixelSize, zEnd).setUv(0, 0).setColor(0xFFFFFF);
 			shader.clear();
 
 			if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
