@@ -42,6 +42,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	private boolean activatedByRedstone = false;
 	private boolean hasRedstoneAround = false;
 	private boolean clientInteracted;
+	private boolean switchCamera;
 
 	public FrameBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.FRAME_BLOCK_ENTITY.get(), pos, state);
@@ -58,6 +59,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			}
 
 			hasRedstoneAround = hasNeighborSignal;
+		}
+
+		if (level.isClientSide && switchCamera) {
+			switchCamera = false;
+			switchCameras(currentCamera, null, 0, true);
 		}
 	}
 
@@ -99,9 +105,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			newCameraPos = null;
 
 		if ((currentCamera == null && newCameraPos != null) || (currentCamera != null && !currentCamera.equals(newCameraPos))) {
-			if (level.isClientSide)
-				switchCameras(newCameraPos, null, 0, true);
-
+			switchCamera = true;
 			currentCamera = newCameraPos;
 		}
 
