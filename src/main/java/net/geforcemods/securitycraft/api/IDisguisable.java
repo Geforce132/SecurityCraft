@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface IDisguisable {
@@ -32,13 +33,9 @@ public interface IDisguisable {
 		return new ItemStack((Block) this);
 	}
 
-	public static BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
-		return getDisguisedBlockState(level, pos).orElse(state);
-	}
-
-	public static Optional<BlockState> getDisguisedBlockState(BlockGetter level, BlockPos pos) {
-		if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.isModuleEnabled(ModuleType.DISGUISE))
-			return IDisguisable.getDisguisedBlockStateFromStack(be.getModule(ModuleType.DISGUISE));
+	public static Optional<BlockState> getDisguisedBlockState(BlockEntity be) {
+		if (be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.DISGUISE))
+			return getDisguisedBlockStateFromStack(moduleInv.getModule(ModuleType.DISGUISE));
 
 		return Optional.empty();
 	}
