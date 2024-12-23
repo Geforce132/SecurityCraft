@@ -34,7 +34,7 @@ public class BlockMineModel implements BakedModel {
 
 	@Override
 	public BakedModel handlePerspective(TransformType cameraTransformType, PoseStack pose) {
-		if (cameraTransformType == TransformType.GUI)
+		if (cameraTransformType == TransformType.GUI || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
 			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType, pose);
 		else
 			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType, pose);
