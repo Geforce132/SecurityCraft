@@ -1,3 +1,7 @@
+--------------------------Changelog for the upcoming version of SecurityCraft--------------------------
+
+- Change: The block mine overlay now shows in the first person hand models as well
+
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 
 - New: Config setting to disable the ability of the Universal Block Reinforcer to un-/reinforce blocks that are placed in the world

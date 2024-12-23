@@ -28,7 +28,7 @@ public class BlockMineModel implements IBakedModel {
 
 	@Override
 	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-		if (cameraTransformType == TransformType.GUI)
+		if (cameraTransformType == TransformType.GUI || cameraTransformType == TransformType.FIRST_PERSON_LEFT_HAND || cameraTransformType == TransformType.FIRST_PERSON_RIGHT_HAND)
 			return ForgeHooksClient.handlePerspective(guiModel, cameraTransformType);
 		else
 			return ForgeHooksClient.handlePerspective(defaultModel, cameraTransformType);
