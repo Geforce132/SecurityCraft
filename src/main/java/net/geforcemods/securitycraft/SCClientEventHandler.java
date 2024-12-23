@@ -169,12 +169,12 @@ public class SCClientEventHandler {
 	@SubscribeEvent
 	public static void onRenderFramePost(RenderFrameEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
-		ProfilerFiller profiler = mc.getProfiler();
 		Player player = mc.player;
 
 		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
+		ProfilerFiller profiler = mc.getProfiler();
 		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
 		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size();
 		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();

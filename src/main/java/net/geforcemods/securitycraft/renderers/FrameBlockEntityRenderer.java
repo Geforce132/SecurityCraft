@@ -103,16 +103,17 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 			renderTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal);
 		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
-			ShaderInstance shader = CameraController.cameraMonitorShader;
 			RenderTarget target = CameraController.getViewForFrame(cameraPos);
-			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			VertexConsumer bufferBuilder;
-			Matrix4f lastPose;
 
 			if (target == null) {
 				renderTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal);
 				return;
 			}
+
+			ShaderInstance shader = CameraController.cameraMonitorShader;
+			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+			VertexConsumer bufferBuilder;
+			Matrix4f lastPose;
 
 			shader.setSampler("DiffuseSampler", target.getColorTextureId());
 
@@ -158,11 +159,12 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 	private void renderOverlay(PoseStack pose, MultiBufferSource buffer, int color, float xStart, float xEnd, float zStart, float zEnd) {
 		VertexConsumer bufferBuilder = buffer.getBuffer(RenderType.gui());
+		Matrix4f lastPose = pose.last().pose();
 
-		bufferBuilder.addVertex(pose.last().pose(), xStart, 0.125F, zStart).setColor(color);
-		bufferBuilder.addVertex(pose.last().pose(), xStart, 0.875F, zStart).setColor(color);
-		bufferBuilder.addVertex(pose.last().pose(), xEnd, 0.875F, zEnd).setColor(color);
-		bufferBuilder.addVertex(pose.last().pose(), xEnd, 0.125F, zEnd).setColor(color);
+		bufferBuilder.addVertex(lastPose, xStart, 0.125F, zStart).setColor(color);
+		bufferBuilder.addVertex(lastPose, xStart, 0.875F, zStart).setColor(color);
+		bufferBuilder.addVertex(lastPose, xEnd, 0.875F, zEnd).setColor(color);
+		bufferBuilder.addVertex(lastPose, xEnd, 0.125F, zEnd).setColor(color);
 
 		if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 			bufferSource.endBatch();
