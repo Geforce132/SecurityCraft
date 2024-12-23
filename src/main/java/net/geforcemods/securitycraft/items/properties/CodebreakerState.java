@@ -46,7 +46,7 @@ public record CodebreakerState(HitCheck hitCheck) implements SelectItemModelProp
 
 				//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 				if (!(be instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-					if (IDisguisable.getDisguisedBlockState(be, level).isPresent())
+					if (IDisguisable.getDisguisedBlockState(be).isPresent())
 						return DEFAULT;
 				}
 
