@@ -24,6 +24,7 @@ public class CommonDoorActivator implements IDoorActivator {
 			SCContent.KEY_PANEL_BLOCK.get(),
 			SCContent.LASER_BLOCK.get(),
 			SCContent.PANIC_BUTTON.get(),
+			SCContent.PAY_BLOCK.get(),
 			SCContent.PORTABLE_RADAR.get(),
 			SCContent.REINFORCED_LEVER.get(),
 			SCContent.REINFORCED_OBSERVER.get(),
