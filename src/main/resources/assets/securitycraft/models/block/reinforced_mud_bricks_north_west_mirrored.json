@@ -1,0 +1,6 @@
+{
+  "parent": "securitycraft:block/reinforced_cube_north_west_mirrored_all",
+  "textures": {
+    "all": "minecraft:block/mud_bricks"
+  }
+}
