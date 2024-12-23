@@ -1,6 +1,7 @@
 --------------------------Changelog for the upcoming version of SecurityCraft--------------------------
 
 - Fix: Crash when triggering the passcode spam log warning on a server
+- Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 
