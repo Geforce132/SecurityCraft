@@ -44,7 +44,7 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisg
 
 	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
@@ -54,7 +54,7 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisg
 
 	@Override
 	protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this) {
 			if (state.getValue(OPEN))
@@ -116,7 +116,7 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisg
 
 	@Override
 	public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getSoundType(level, pos, entity);
@@ -126,7 +126,7 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisg
 
 	@Override
 	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShadeBrightness(level, pos);
@@ -136,7 +136,7 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisg
 
 	@Override
 	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
-		return IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		return IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 	}
 
 	@Override
