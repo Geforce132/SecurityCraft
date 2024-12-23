@@ -45,7 +45,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 			if (be instanceof ILockable) {
 				if (be instanceof IOwnable ownable && !ownable.isOwnedBy(player)) {
 					//only send message when the block is not disguised
-					if (!(be.getBlockState().getBlock() instanceof IDisguisable) || !IDisguisable.getDisguisedBlockState(level, pos).isPresent()) {
+					if (!(be.getBlockState().getBlock() instanceof IDisguisable) || !IDisguisable.getDisguisedBlockState(be).isPresent()) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", ownable.getOwner().getName()), ChatFormatting.GREEN);
 						return InteractionResult.SUCCESS;
 					}

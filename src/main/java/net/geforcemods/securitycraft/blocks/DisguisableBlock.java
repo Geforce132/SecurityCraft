@@ -34,7 +34,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isNormalCube(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.isRedstoneConductor(level, pos);
@@ -43,7 +43,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	}
 
 	public static boolean isSuffocating(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.isSuffocating(level, pos);
@@ -69,7 +69,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getSoundType(level, pos, entity);
@@ -79,7 +79,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
@@ -89,7 +89,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getCollisionShape(level, pos, ctx);
@@ -99,7 +99,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getOcclusionShape(level, pos);
@@ -117,7 +117,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShadeBrightness(level, pos);
@@ -127,7 +127,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightBlock(level, pos);
@@ -142,7 +142,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
-		return IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		return IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 	}
 
 	@Override

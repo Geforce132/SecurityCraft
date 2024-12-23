@@ -47,7 +47,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockState state = be.getBlockState();
 		Level level = be.getLevel();
 		BlockPos worldPosition = be.getBlockPos();
-		int newLight = IDisguisable.getDisguisedBlockStateFromStack(level, stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
+		int newLight = IDisguisable.getDisguisedBlockStateFromStack(stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
 
 		if (!level.isClientSide) {
 			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
@@ -92,7 +92,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		else
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 
-		IDisguisable.getDisguisedBlockStateFromStack(level, stack).ifPresent(disguisedState -> {
+		IDisguisable.getDisguisedBlockStateFromStack(stack).ifPresent(disguisedState -> {
 			if (disguisedState.getLightEmission(level, worldPosition) > 0)
 				level.getAuxLightManager(worldPosition).removeLightAt(worldPosition);
 		});
@@ -146,7 +146,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public static ModelData getModelData(BlockEntity be) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(Blocks.AIR.defaultBlockState(), be.getLevel(), be.getBlockPos());
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(be).orElse(Blocks.AIR.defaultBlockState());
 
 		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
 	}
