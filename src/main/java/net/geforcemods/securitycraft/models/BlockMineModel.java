@@ -28,7 +28,7 @@ public class BlockMineModel implements BakedModel {
 
 	@Override
 	public BakedModel applyTransform(ItemDisplayContext displayContext, PoseStack pose, boolean applyLeftHandTransform) {
-		if (displayContext == ItemDisplayContext.GUI) {
+		if (displayContext == ItemDisplayContext.GUI || displayContext == ItemDisplayContext.FIRST_PERSON_LEFT_HAND || displayContext == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND) {
 			guiModel.getTransforms().getTransform(displayContext).apply(applyLeftHandTransform, pose);
 			return guiModel;
 		}
