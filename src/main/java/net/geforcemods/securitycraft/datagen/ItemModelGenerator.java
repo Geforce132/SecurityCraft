@@ -22,6 +22,8 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
+import net.geforcemods.securitycraft.items.properties.BlockLinked;
+import net.geforcemods.securitycraft.items.properties.CodebreakerState;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.Direction;
@@ -195,10 +197,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleItem(notLinkedPath, "item/generated");
 		simpleItem(linkedPath, "item/generated");
 		simpleItem(hasLinkedPath, "item/generated")
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.EMPTY_STATE).model(new UncheckedModelFile(modItem(defaultPath))).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.UNKNOWN_STATE).model(new UncheckedModelFile(modItem(hasLinkedPath))).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.NOT_LINKED_STATE).model(new UncheckedModelFile(modItem(notLinkedPath))).end()
-			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, ClientHandler.LINKED_STATE).model(new UncheckedModelFile(modItem(linkedPath))).end();
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, BlockLinked.NO_POSITIONS).model(new UncheckedModelFile(modItem(defaultPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, BlockLinked.UNKNOWN).model(new UncheckedModelFile(modItem(hasLinkedPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, BlockLinked.NOT_LINKED).model(new UncheckedModelFile(modItem(notLinkedPath))).end()
+			.override().predicate(ClientHandler.LINKING_STATE_PROPERTY, BlockLinked.LINKED).model(new UncheckedModelFile(modItem(linkedPath))).end();
 		//@formatter:on
 	}
 
@@ -213,10 +215,10 @@ public class ItemModelGenerator extends ItemModelProvider {
 		simpleItem(failurePath, "item/generated");
 		simpleItem(successPath, "item/generated");
 		simpleItem(defaultPath, "item/generated")
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.0F).model(new UncheckedModelFile(modItem(defaultPath))).end()
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.25F).model(new UncheckedModelFile(modItem(decodingPath))).end()
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.5F).model(new UncheckedModelFile(modItem(failurePath))).end()
-			.override().predicate(CodebreakerItem.STATE_PROPERTY, 0.75F).model(new UncheckedModelFile(modItem(successPath))).end();
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, CodebreakerState.DEFAULT).model(new UncheckedModelFile(modItem(defaultPath))).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, CodebreakerState.DECODING).model(new UncheckedModelFile(modItem(decodingPath))).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, CodebreakerState.FAILURE).model(new UncheckedModelFile(modItem(failurePath))).end()
+			.override().predicate(CodebreakerItem.STATE_PROPERTY, CodebreakerState.SUCCESS).model(new UncheckedModelFile(modItem(successPath))).end();
 		//@formatter:on
 	}
 

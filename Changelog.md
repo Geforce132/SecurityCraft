@@ -3,6 +3,8 @@
 - Change: The block mine overlay now shows in the first person hand models as well
 - API: IDisguisable has been simplified
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
+- Fix: Holding a camera monitor makes it possible to identify disguised cameras
+- Fix: Items that can have linked positions (e.g. Camera Monitor) show the idle animation even when they have positions and are either dropped, or held by a non-player entity
 
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 
