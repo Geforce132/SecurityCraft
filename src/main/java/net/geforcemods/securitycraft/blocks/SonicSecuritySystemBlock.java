@@ -141,7 +141,7 @@ public class SonicSecuritySystemBlock extends DisguisableBlock implements IWater
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext context) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, context);

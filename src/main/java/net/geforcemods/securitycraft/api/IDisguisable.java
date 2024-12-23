@@ -34,18 +34,12 @@ public interface IDisguisable {
 		return new ItemStack((Block) this);
 	}
 
-	public static BlockState getDisguisedStateOrDefault(BlockState state, IBlockReader level, BlockPos pos) {
-		return getDisguisedBlockState(level, pos).orElse(state);
-	}
-
-	public static Optional<BlockState> getDisguisedBlockState(IBlockReader level, BlockPos pos) {
-		TileEntity te = level.getBlockEntity(pos);
-
+	public static Optional<BlockState> getDisguisedBlockState(TileEntity te) {
 		if (te instanceof IModuleInventory) {
-			IModuleInventory be = (IModuleInventory) te;
+			IModuleInventory moduleInv = (IModuleInventory) te;
 
-			if (be.isModuleEnabled(ModuleType.DISGUISE))
-				return IDisguisable.getDisguisedBlockStateFromStack(be.getModule(ModuleType.DISGUISE));
+			if (moduleInv.isModuleEnabled(ModuleType.DISGUISE))
+				return getDisguisedBlockStateFromStack(moduleInv.getModule(ModuleType.DISGUISE));
 		}
 
 		return Optional.empty();

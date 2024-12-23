@@ -459,7 +459,7 @@ public class ClientHandler {
 
 				//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 				if (!(te instanceof IOwnable) || !((IOwnable) te).isOwnedBy(player)) {
-					if (IDisguisable.getDisguisedBlockState(_level, pos).isPresent())
+					if (IDisguisable.getDisguisedBlockState(te).isPresent())
 						return false;
 				}
 

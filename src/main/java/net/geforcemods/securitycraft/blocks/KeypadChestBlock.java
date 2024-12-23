@@ -80,7 +80,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 					//makes sure Jade's overlay is not too wide when the chest is disguised
 					//one side effect is the title in the chest's screen is also changed
 					if (((KeypadChestBlockEntity) chest1).isModuleEnabled(ModuleType.DISGUISE))
-						return Utils.localize(IDisguisable.getDisguisedStateOrDefault(chest1.getBlockState(), chest1.getLevel(), chest1.getBlockPos()).getBlock().getDescriptionId());
+						return Utils.localize(IDisguisable.getDisguisedBlockState(chest1).orElse(chest1.getBlockState()).getBlock().getDescriptionId());
 
 					if (chest1.hasCustomName())
 						return chest1.getDisplayName();
@@ -258,7 +258,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
@@ -268,7 +268,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightValue(level, pos);
@@ -278,7 +278,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public SoundType getSoundType(BlockState state, IWorldReader level, BlockPos pos, Entity entity) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getSoundType(level, pos, entity);
@@ -288,7 +288,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShadeBrightness(level, pos);
@@ -298,7 +298,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public int getLightBlock(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightBlock(level, pos);

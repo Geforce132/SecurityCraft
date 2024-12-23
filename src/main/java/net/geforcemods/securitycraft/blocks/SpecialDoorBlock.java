@@ -41,7 +41,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
@@ -51,7 +51,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this) {
 			if (state.getValue(OPEN))
@@ -182,7 +182,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightValue(level, pos);
@@ -192,7 +192,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 	@Override
 	public SoundType getSoundType(BlockState state, IWorldReader level, BlockPos pos, Entity entity) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getSoundType(level, pos, entity);
@@ -202,7 +202,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 	@Override
 	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShadeBrightness(level, pos);
@@ -212,7 +212,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 	@Override
 	public int getLightBlock(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightBlock(level, pos);

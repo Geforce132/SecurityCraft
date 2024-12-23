@@ -121,7 +121,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader level, BlockPos pos, ISelectionContext ctx) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShape(level, pos, ctx);
@@ -131,7 +131,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	public int getLightValue(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightValue(level, pos);
@@ -141,7 +141,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	public SoundType getSoundType(BlockState state, IWorldReader level, BlockPos pos, Entity entity) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getSoundType(level, pos, entity);
@@ -151,7 +151,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	public float getShadeBrightness(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getShadeBrightness(level, pos);
@@ -161,7 +161,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	public int getLightBlock(BlockState state, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(state, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
 		if (disguisedState.getBlock() != this)
 			return disguisedState.getLightBlock(level, pos);

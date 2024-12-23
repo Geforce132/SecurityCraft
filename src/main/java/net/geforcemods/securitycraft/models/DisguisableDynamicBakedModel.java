@@ -76,7 +76,7 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			Block block = te.getBlockState().getBlock();
 
 			if (block instanceof IDisguisable) {
-				Optional<BlockState> disguisedState = IDisguisable.getDisguisedBlockState(level, pos);
+				Optional<BlockState> disguisedState = IDisguisable.getDisguisedBlockState(te);
 
 				if (disguisedState.isPresent()) {
 					modelData.setData(DISGUISED_STATE, disguisedState.get());

@@ -23,7 +23,7 @@ public class KeypadFurnaceBlock extends AbstractKeypadFurnaceBlock {
 
 	@Override
 	public void animateTick(BlockState state, World level, BlockPos pos, Random rand) {
-		if (state.getValue(LIT) && IDisguisable.getDisguisedStateOrDefault(state, level, pos).getBlock() == this) {
+		if (state.getValue(LIT) && IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state).getBlock() == this) {
 			double x = pos.getX() + 0.5D;
 			double y = pos.getY();
 			double z = pos.getZ() + 0.5D;
