@@ -1,5 +1,6 @@
 --------------------------Changelog for the upcoming version of SecurityCraft--------------------------
 
+- Change: The block mine overlay now shows in the first person hand models as well
 - Fix: Module descriptions of security sea boats do not show up correctly
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 
