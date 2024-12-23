@@ -1,5 +1,7 @@
 {
-    "variants": {
-        "":  { "model": "securitycraft:block/reinforced_mud_bricks" }
+  "variants": {
+    "": {
+      "model": "securitycraft:block/reinforced_mud_bricks_north_west_mirrored"
     }
+  }
 }
