@@ -119,7 +119,7 @@ public class LinkingStateItemPropertyHandler {
 
 			//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 			if (!(tile instanceof IOwnable) || !((IOwnable) tile).isOwnedBy(player)) {
-				if (IDisguisable.getDisguisedBlockStateUnknown(_world, pos) != null)
+				if (IDisguisable.getDisguisedBlockStateUnknown(tile) != null)
 					return false;
 			}
 

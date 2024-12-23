@@ -52,7 +52,7 @@ public class SonicSecuritySystemBlock extends DisguisableBlock {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(world, pos);
+		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getBoundingBox(world, pos);
@@ -62,7 +62,7 @@ public class SonicSecuritySystemBlock extends DisguisableBlock {
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(world, pos);
+		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getBoundingBox(world, pos);

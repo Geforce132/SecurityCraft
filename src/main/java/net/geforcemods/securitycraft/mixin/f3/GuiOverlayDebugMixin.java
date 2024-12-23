@@ -21,7 +21,7 @@ public class GuiOverlayDebugMixin {
 		Block originalBlock = originalState.getBlock();
 
 		if (originalBlock instanceof IDisguisable) {
-			IBlockState disguisedState = ((IDisguisable) originalBlock).getDisguisedBlockState(Minecraft.getMinecraft().world, Minecraft.getMinecraft().objectMouseOver.getBlockPos());
+			IBlockState disguisedState = ((IDisguisable) originalBlock).getDisguisedBlockState(Minecraft.getMinecraft().world.getTileEntity(Minecraft.getMinecraft().objectMouseOver.getBlockPos()));
 
 			return disguisedState != null ? disguisedState : originalState;
 		}

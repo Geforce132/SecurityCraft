@@ -39,7 +39,7 @@ public class HudModHandler {
 			return;
 
 		if (block instanceof IDisguisable) {
-			IBlockState disguisedState = ((IDisguisable) block).getDisguisedBlockState(level, pos);
+			IBlockState disguisedState = ((IDisguisable) block).getDisguisedBlockState(be);
 
 			if (disguisedState != null) {
 				block = disguisedState.getBlock();

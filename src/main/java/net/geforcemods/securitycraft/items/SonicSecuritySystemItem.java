@@ -54,7 +54,7 @@ public class SonicSecuritySystemItem extends ItemBlock {
 				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
 					Block block = te.getBlockType();
 
-					if (!(block instanceof IDisguisable) || ((IDisguisable) block).getDisguisedBlockState(world, pos) == null) {
+					if (!(block instanceof IDisguisable) || ((IDisguisable) block).getDisguisedBlockState(te) == null) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.sonicSecuritySystem), Utils.localize("messages.securitycraft:notOwned", ((IOwnable) te).getOwner().getName(), pos), TextFormatting.GREEN);
 						return EnumActionResult.SUCCESS;
 					}

@@ -41,7 +41,7 @@ public class UniversalKeyChangerItem extends Item {
 				player.openGui(SecurityCraft.instance, Screens.KEY_CHANGER.ordinal(), level, pos.getX(), pos.getY(), pos.getZ());
 				return EnumActionResult.SUCCESS;
 			}
-			else if (!(te.getBlockType() instanceof IDisguisable) || (((IDisguisable) te.getBlockType()).getDisguisedBlockState(level, pos).getBlock() instanceof IDisguisable)) {
+			else if (!(te.getBlockType() instanceof IDisguisable) || (((IDisguisable) te.getBlockType()).getDisguisedBlockState(te).getBlock() instanceof IDisguisable)) {
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalKeyChanger.name"), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
 				return EnumActionResult.SUCCESS;
 			}

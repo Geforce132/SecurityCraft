@@ -182,7 +182,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(world, pos);
+		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getLightValue(world, pos);
@@ -192,7 +192,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 	@Override
 	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
-		IBlockState actualState = getDisguisedBlockState(world, pos);
+		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getBlock().getSoundType(actualState, world, pos, entity);
@@ -202,7 +202,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(world, pos);
+		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getBoundingBox(world, pos);
@@ -212,7 +212,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 	@Override
 	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entity, boolean isActualState) {
-		IBlockState actualState = getDisguisedBlockState(world, pos);
+		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (actualState != null && actualState.getBlock() != this) {
 			if (!state.getValue(OPEN))
@@ -224,7 +224,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 	@Override
 	public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
-		return IDisguisable.getDisguisedBlockFaceShape(world, state, pos, face);
+		return IDisguisable.getDisguisedBlockFaceShape(world, pos, face);
 	}
 
 	@Override
@@ -235,7 +235,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState disguisedState = getDisguisedBlockState(world, pos);
+		IBlockState disguisedState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		return disguisedState != null ? disguisedState : super.getActualState(state, world, pos);
 	}

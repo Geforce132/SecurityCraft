@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public interface IDisguisable {
 	public default ItemStack getDisguisedStack(IBlockAccess world, BlockPos pos) {
-		IBlockState disguisedState = getDisguisedBlockState(world, pos);
+		IBlockState disguisedState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (disguisedState != null) {
 			ItemStack stack = new ItemStack(disguisedState.getBlock());
@@ -37,22 +37,20 @@ public interface IDisguisable {
 		return new ItemStack((Block) this);
 	}
 
-	public static IBlockState getDisguisedBlockStateUnknown(IBlockAccess world, BlockPos pos) {
-		IBlockState state = world.getBlockState(pos);
+	public static IBlockState getDisguisedBlockStateUnknown(TileEntity tile) {
+		IBlockState state = tile.getWorld().getBlockState(tile.getPos());
 
 		if (state.getBlock() instanceof IDisguisable)
-			return ((IDisguisable) state.getBlock()).getDisguisedBlockState(world, pos);
+			return ((IDisguisable) state.getBlock()).getDisguisedBlockState(tile);
 		else
 			return null;
 	}
 
-	public default IBlockState getDisguisedBlockState(IBlockAccess world, BlockPos pos) {
-		TileEntity tile = world.getTileEntity(pos);
-
+	public default IBlockState getDisguisedBlockState(TileEntity tile) {
 		if (tile instanceof IModuleInventory) {
 			IModuleInventory te = (IModuleInventory) tile;
 
-			return getDisguisedBlockStateFromStack(world, pos, te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
+			return getDisguisedBlockStateFromStack(tile.getWorld(), tile.getPos(), te.isModuleEnabled(ModuleType.DISGUISE) ? te.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY);
 		}
 
 		return null;
@@ -82,7 +80,7 @@ public interface IDisguisable {
 		return null;
 	}
 
-	public static BlockFaceShape getDisguisedBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+	public static BlockFaceShape getDisguisedBlockFaceShape(IBlockAccess world, BlockPos pos, EnumFacing face) {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof IModuleInventory && ((IModuleInventory) te).isModuleEnabled(ModuleType.DISGUISE)) {

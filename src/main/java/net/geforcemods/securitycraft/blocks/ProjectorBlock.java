@@ -70,7 +70,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(world, pos);
+		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getCollisionBoundingBox(world, pos);
