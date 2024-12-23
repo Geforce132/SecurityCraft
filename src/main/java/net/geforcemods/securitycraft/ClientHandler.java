@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.OptionalDouble;
-import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -15,11 +14,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
-import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IDisguisable;
-import net.geforcemods.securitycraft.api.IExplosive;
-import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -29,22 +24,20 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
-import net.geforcemods.securitycraft.components.CodebreakerData;
-import net.geforcemods.securitycraft.components.GlobalPositionComponent;
-import net.geforcemods.securitycraft.components.GlobalPositions;
-import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.LensItem;
+import net.geforcemods.securitycraft.items.properties.BlockLinked;
+import net.geforcemods.securitycraft.items.properties.CodebreakerState;
+import net.geforcemods.securitycraft.items.properties.HitCheck;
+import net.geforcemods.securitycraft.items.properties.SentryLinked;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
@@ -134,8 +127,6 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.GlobalPos;
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -150,7 +141,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -158,9 +148,6 @@ import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateHolder;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult.Type;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -180,7 +167,6 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientHandler {
-	public static final float EMPTY_STATE = 0.0F, UNKNOWN_STATE = 0.25F, NOT_LINKED_STATE = 0.5F, LINKED_STATE = 0.75F;
 	public static final ModelLayerLocation BULLET_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("bullet"), "main");
 	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("ims_bomb"), "main");
 	public static final ModelLayerLocation DISPLAY_CASE_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("display_case"), "main");
@@ -326,105 +312,18 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
 		event.enqueueWork(() -> {
+			BlockLinked cameraProperty = new BlockLinked(SCContent.BOUND_CAMERAS.get(), HitCheck.SECURITY_CAMERA);
+			BlockLinked mineProperty = new BlockLinked(SCContent.BOUND_MINES.get(), HitCheck.EXPLOSIVE_BLOCK);
+			BlockLinked sssProperty = new BlockLinked(SCContent.SSS_LINKED_BLOCKS.get(), HitCheck.LOCKABLE);
+			CodebreakerState codebreakerProperty = new CodebreakerState(HitCheck.CODEBREAKABLE);
+
 			ItemProperties.register(SCContent.KEYCARD_HOLDER.get(), KeycardHolderItem.COUNT_PROPERTY, (stack, level, entity, id) -> KeycardHolderItem.getCardCount(stack) / (float) KeycardHolderMenu.CONTAINER_SIZE);
 			ItemProperties.register(SCContent.LENS.get(), LensItem.COLOR_PROPERTY, (stack, level, entity, id) -> stack.has(DataComponents.DYED_COLOR) ? 1.0F : 0.0F);
-			ItemProperties.register(SCContent.CAMERA_MONITOR.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
-				if (!(entity instanceof Player player))
-					return EMPTY_STATE;
-
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof SecurityCameraBlockEntity, SCContent.BOUND_CAMERAS.get());
-				NamedPositions positions = stack.get(SCContent.BOUND_CAMERAS);
-
-				if (positions != null && positions.isEmpty()) {
-					if (linkingState == NOT_LINKED_STATE)
-						return NOT_LINKED_STATE;
-					else
-						return EMPTY_STATE;
-				}
-				else
-					return linkingState;
-			});
-			ItemProperties.register(SCContent.MINE_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
-				if (!(entity instanceof Player player))
-					return EMPTY_STATE;
-
-				float linkingState = getLinkingState(level, player, stack, bhr -> level.getBlockState(bhr.getBlockPos()).getBlock() instanceof IExplosive, SCContent.BOUND_MINES.get());
-				GlobalPositions positions = stack.get(SCContent.BOUND_MINES);
-
-				if (positions != null && positions.isEmpty()) {
-					if (linkingState == NOT_LINKED_STATE)
-						return NOT_LINKED_STATE;
-					else
-						return EMPTY_STATE;
-				}
-				else
-					return linkingState;
-			});
-			ItemProperties.register(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
-				if (!(entity instanceof Player))
-					return EMPTY_STATE;
-
-				NamedPositions positions = stack.get(SCContent.BOUND_SENTRIES);
-
-				if (positions != null && Minecraft.getInstance().crosshairPickEntity instanceof Sentry sentry) {
-					float linkingState = positions.isPositionAdded(new GlobalPos(level.dimension(), sentry.blockPosition())) ? LINKED_STATE : NOT_LINKED_STATE;
-
-					if (positions.isEmpty()) {
-						if (linkingState == NOT_LINKED_STATE)
-							return NOT_LINKED_STATE;
-						else
-							return EMPTY_STATE;
-					}
-					else
-						return linkingState;
-				}
-				else
-					return (positions != null && !positions.isEmpty() ? UNKNOWN_STATE : EMPTY_STATE);
-			});
-			ItemProperties.register(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(), LINKING_STATE_PROPERTY, (stack, level, entity, id) -> {
-				if (!(entity instanceof Player player))
-					return EMPTY_STATE;
-
-				float linkingState = getLinkingState(level, player, stack, bhr -> {
-					if (!(level.getBlockEntity(bhr.getBlockPos()) instanceof ILockable lockable))
-						return false;
-
-					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
-					if (!(lockable instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-						if (IDisguisable.getDisguisedBlockState(level.getBlockEntity(bhr.getBlockPos())).isPresent())
-							return false;
-					}
-
-					return true;
-				}, SCContent.SSS_LINKED_BLOCKS.get(), GlobalPositionComponent::isPositionAdded);
-				GlobalPositions positions = stack.get(SCContent.SSS_LINKED_BLOCKS);
-
-				if (positions != null && positions.isEmpty()) {
-					if (linkingState == NOT_LINKED_STATE)
-						return NOT_LINKED_STATE;
-					else
-						return EMPTY_STATE;
-				}
-				else
-					return linkingState;
-			});
-			ItemProperties.register(SCContent.CODEBREAKER.get(), CodebreakerItem.STATE_PROPERTY, (stack, level, entity, id) -> {
-				CodebreakerData codebreakerData = stack.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT);
-				boolean isPlayer = entity instanceof Player;
-
-				if ((!isPlayer || !((Player) entity).isCreative() && !((Player) entity).isSpectator()) && codebreakerData.wasRecentlyUsed())
-					return codebreakerData.wasSuccessful() ? 0.75F : 0.5F;
-
-				if (!isPlayer)
-					return 0.0F;
-
-				float state = getLinkingState(level, (Player) entity, stack, bhr -> level.getBlockEntity(bhr.getBlockPos()) instanceof ICodebreakable);
-
-				if (state == LINKED_STATE || state == NOT_LINKED_STATE)
-					return 0.25F;
-				else
-					return 0.0F;
-			});
+			ItemProperties.register(SCContent.CAMERA_MONITOR.get(), LINKING_STATE_PROPERTY, cameraProperty::get);
+			ItemProperties.register(SCContent.MINE_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, mineProperty::get);
+			ItemProperties.register(SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(), LINKING_STATE_PROPERTY, SentryLinked::get);
+			ItemProperties.register(SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(), LINKING_STATE_PROPERTY, sssProperty::get);
+			ItemProperties.register(SCContent.CODEBREAKER.get(), CodebreakerItem.STATE_PROPERTY, codebreakerProperty::get);
 		});
 	}
 
@@ -859,32 +758,5 @@ public class ClientHandler {
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
-	}
-
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult) {
-		return getLinkingState(level, player, stackInHand, isValidHitResult, null, (u1, u2) -> true);
-	}
-
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, DataComponentType<? extends GlobalPositionComponent<?, ?, ?>> positionComponent) {
-		return getLinkingState(level, player, stackInHand, isValidHitResult, positionComponent, GlobalPositionComponent::isPositionAdded);
-	}
-
-	private static float getLinkingState(Level level, Player player, ItemStack stackInHand, Predicate<BlockHitResult> isValidHitResult, DataComponentType<? extends GlobalPositionComponent<?, ?, ?>> positionComponent, BiPredicate<GlobalPositionComponent<?, ?, ?>, GlobalPos> isLinked) {
-		double reachDistance = player.blockInteractionRange();
-		double eyeHeight = player.getEyeHeight();
-		Vec3 lookVec = new Vec3(player.getX() + player.getLookAngle().x * reachDistance, eyeHeight + player.getY() + player.getLookAngle().y * reachDistance, player.getZ() + player.getLookAngle().z * reachDistance);
-
-		if (level != null) {
-			BlockHitResult hitResult = level.clip(new ClipContext(new Vec3(player.getX(), player.getY() + player.getEyeHeight(), player.getZ()), lookVec, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
-
-			if (hitResult != null && hitResult.getType() == Type.BLOCK && isValidHitResult.test(hitResult)) {
-				GlobalPositionComponent<?, ?, ?> positions = positionComponent == null ? null : stackInHand.get(positionComponent);
-				GlobalPos globalPos = new GlobalPos(level.dimension(), hitResult.getBlockPos());
-
-				return isLinked.test(positions, globalPos) ? LINKED_STATE : NOT_LINKED_STATE;
-			}
-		}
-
-		return UNKNOWN_STATE;
 	}
 }
