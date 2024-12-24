@@ -58,15 +58,6 @@ runs {
 }
 
 repositories {
-    maven {
-        name 'Maven for PR #1725' // https://github.com/neoforged/NeoForge/pull/1725
-        url 'https://prmaven.neoforged.net/NeoForge/pr1725'
-        content {
-            includeModule('net.neoforged', 'testframework')
-            includeModule('net.neoforged', 'neoforge')
-        }
-    }
-
 	maven {
 		url "https://cursemaven.com/"
 		content {
@@ -87,7 +78,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.4.91-beta-pr-1725-pr-vanilla-datagen-21.4'
+	implementation 'net.neoforged:neoforge:21.4.41-beta'
 
 //	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
