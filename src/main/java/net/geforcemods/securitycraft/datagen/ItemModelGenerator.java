@@ -26,6 +26,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SignItem;
 
 public class ItemModelGenerator {
 	private static ItemModelGenerators itemModels;
@@ -67,6 +68,7 @@ public class ItemModelGenerator {
 				SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(),
 				SCContent.SPEED_MODULE.get()));
 		//@formatter:on
+		singleTextureItems.removeIf(SignItem.class::isInstance);
 		ItemModelGenerator.itemModels = itemModels;
 		modelOutput = itemModels.modelOutput;
 		itemInfo = itemModels.itemModelOutput;
@@ -107,18 +109,18 @@ public class ItemModelGenerator {
 	}
 
 	public static void generateCodebreaker(Item item) {
-		ResourceLocation decodingModel = itemModels.createFlatItemModel(item, "_decoding", ModelTemplates.FLAT_ITEM);
-		ResourceLocation failureModel = itemModels.createFlatItemModel(item, "_failure", ModelTemplates.FLAT_ITEM);
-		ResourceLocation successModel = itemModels.createFlatItemModel(item, "_success", ModelTemplates.FLAT_ITEM);
+		ResourceLocation decodingModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.DECODING, ModelTemplates.FLAT_ITEM);
+		ResourceLocation failureModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.FAILURE, ModelTemplates.FLAT_ITEM);
+		ResourceLocation successModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.SUCCESS, ModelTemplates.FLAT_ITEM);
 		ResourceLocation defaultModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
 
 		//@formatter:off
 		itemInfo.accept(item,
 				ItemModelUtils.select(new CodebreakerState(HitCheck.CODEBREAKABLE),
-						ItemModelUtils.when("default", ItemModelUtils.plainModel(defaultModel)),
-						ItemModelUtils.when("decoding", ItemModelUtils.plainModel(decodingModel)),
-						ItemModelUtils.when("success", ItemModelUtils.plainModel(successModel)),
-						ItemModelUtils.when("failure", ItemModelUtils.plainModel(failureModel))));
+						ItemModelUtils.when(CodebreakerState.DEFAULT, ItemModelUtils.plainModel(defaultModel)),
+						ItemModelUtils.when(CodebreakerState.DECODING, ItemModelUtils.plainModel(decodingModel)),
+						ItemModelUtils.when(CodebreakerState.SUCCESS, ItemModelUtils.plainModel(successModel)),
+						ItemModelUtils.when(CodebreakerState.FAILURE, ItemModelUtils.plainModel(failureModel))));
 		//@formatter:on
 	}
 
@@ -154,17 +156,17 @@ public class ItemModelGenerator {
 
 	public static void generateLinkingStateItem(Item item, SelectItemModelProperty<String> property) {
 		ResourceLocation noPositionsModel = itemModels.createFlatItemModel(item, "_idle", ModelTemplates.FLAT_ITEM);
-		ResourceLocation notLinkedModel = itemModels.createFlatItemModel(item, "_not_linked", ModelTemplates.FLAT_ITEM);
-		ResourceLocation linkedModel = itemModels.createFlatItemModel(item, "_linked", ModelTemplates.FLAT_ITEM);
+		ResourceLocation notLinkedModel = itemModels.createFlatItemModel(item, "_" + BlockLinked.NOT_LINKED, ModelTemplates.FLAT_ITEM);
+		ResourceLocation linkedModel = itemModels.createFlatItemModel(item, "_" + BlockLinked.LINKED, ModelTemplates.FLAT_ITEM);
 		ResourceLocation unknownModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
 
 		//@formatter:off
 		itemInfo.accept(item,
 				ItemModelUtils.select(property,
-						ItemModelUtils.when("no_positions", ItemModelUtils.plainModel(noPositionsModel)),
-						ItemModelUtils.when("unknown", ItemModelUtils.plainModel(unknownModel)),
-						ItemModelUtils.when("not_linked", ItemModelUtils.plainModel(notLinkedModel)),
-						ItemModelUtils.when("linked", ItemModelUtils.plainModel(linkedModel))));
+						ItemModelUtils.when(BlockLinked.NO_POSITIONS, ItemModelUtils.plainModel(noPositionsModel)),
+						ItemModelUtils.when(BlockLinked.UNKNOWN, ItemModelUtils.plainModel(unknownModel)),
+						ItemModelUtils.when( BlockLinked.NOT_LINKED, ItemModelUtils.plainModel(notLinkedModel)),
+						ItemModelUtils.when(BlockLinked.LINKED, ItemModelUtils.plainModel(linkedModel))));
 		//@formatter:on
 	}
 

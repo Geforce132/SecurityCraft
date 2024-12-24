@@ -51,6 +51,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -196,6 +197,29 @@ public class BlockModelAndStateGenerator {
 		createGlassBlocks(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_RED_STAINED_GLASS.get(), SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
+
+		createSecretSign(SCContent.SECRET_ACACIA_SIGN_ITEM.get(), Blocks.ACACIA_SIGN);
+		createSecretSign(SCContent.SECRET_BAMBOO_SIGN_ITEM.get(), Blocks.BAMBOO_SIGN);
+		createSecretSign(SCContent.SECRET_BIRCH_SIGN_ITEM.get(), Blocks.BIRCH_SIGN);
+		createSecretSign(SCContent.SECRET_CHERRY_SIGN_ITEM.get(), Blocks.CHERRY_SIGN);
+		createSecretSign(SCContent.SECRET_CRIMSON_SIGN_ITEM.get(), Blocks.CRIMSON_SIGN);
+		createSecretSign(SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(), Blocks.DARK_OAK_SIGN);
+		createSecretSign(SCContent.SECRET_JUNGLE_SIGN_ITEM.get(), Blocks.JUNGLE_SIGN);
+		createSecretSign(SCContent.SECRET_MANGROVE_SIGN_ITEM.get(), Blocks.MANGROVE_SIGN);
+		createSecretSign(SCContent.SECRET_OAK_SIGN_ITEM.get(), Blocks.OAK_SIGN);
+		createSecretSign(SCContent.SECRET_SPRUCE_SIGN_ITEM.get(), Blocks.SPRUCE_SIGN);
+		createSecretSign(SCContent.SECRET_WARPED_SIGN_ITEM.get(), Blocks.WARPED_SIGN);
+		createSecretSign(SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get(), Blocks.ACACIA_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get(), Blocks.BAMBOO_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_BIRCH_HANGING_SIGN_ITEM.get(), Blocks.BIRCH_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get(), Blocks.CHERRY_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.get(), Blocks.CRIMSON_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.get(), Blocks.DARK_OAK_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get(), Blocks.JUNGLE_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get(), Blocks.MANGROVE_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get(), Blocks.OAK_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get(), Blocks.SPRUCE_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get(), Blocks.WARPED_HANGING_SIGN);
 
 		//@formatter:off
 		SCModelTemplates.REINFORCED_CUBE_COLUMN.create(
@@ -571,6 +595,16 @@ public class BlockModelAndStateGenerator {
 		itemInfo.accept(glass.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(glass)));
 		generatedBlocks.add(glass);
 		generatedBlocks.add(pane);
+	}
+
+	public static void createSecretSign(SignItem item, Block vanillaSign) {
+		Block sign = item.getBlock();
+		Block wallSign = item.wallBlock;
+		ResourceLocation blockModel = ModelLocationUtils.getModelLocation(vanillaSign);
+
+		generate(sign, BlockModelGenerators.createSimpleBlock(sign, blockModel));
+		generate(wallSign, BlockModelGenerators.createSimpleBlock(wallSign, blockModel));
+		blockModelGenerators.registerSimpleFlatItemModel(item);
 	}
 
 	public static void createTrivialBlockWithRenderType(Block block, String renderType) {
