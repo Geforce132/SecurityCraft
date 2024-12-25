@@ -148,10 +148,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		int ny = normal.getY();
 		int nz = normal.getZ();
 
-		bufferBuilder.addVertex(lastPose, xStart, 0.125F, zStart).setUv(1, 1).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-		bufferBuilder.addVertex(lastPose, xStart, 0.875F, zStart).setUv(1, 0).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-		bufferBuilder.addVertex(lastPose, xEnd, 0.875F, zEnd).setUv(0, 0).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-		bufferBuilder.addVertex(lastPose, xEnd, 0.125F, zEnd).setUv(0, 1).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+		bufferBuilder.addVertex(lastPose, xStart, 0.0625F, zStart).setUv(1, 1).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+		bufferBuilder.addVertex(lastPose, xStart, 0.9375F, zStart).setUv(1, 0).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+		bufferBuilder.addVertex(lastPose, xEnd, 0.9375F, zEnd).setUv(0, 0).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+		bufferBuilder.addVertex(lastPose, xEnd, 0.0625F, zEnd).setUv(0, 1).setColor(0xFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
 
 		if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 			bufferSource.endBatch();
@@ -161,10 +161,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		VertexConsumer bufferBuilder = buffer.getBuffer(RenderType.gui());
 		Matrix4f lastPose = pose.last().pose();
 
-		bufferBuilder.addVertex(lastPose, xStart, 0.125F, zStart).setColor(color);
-		bufferBuilder.addVertex(lastPose, xStart, 0.875F, zStart).setColor(color);
-		bufferBuilder.addVertex(lastPose, xEnd, 0.875F, zEnd).setColor(color);
-		bufferBuilder.addVertex(lastPose, xEnd, 0.125F, zEnd).setColor(color);
+		bufferBuilder.addVertex(lastPose, xStart, 0.0625F, zStart).setColor(color);
+		bufferBuilder.addVertex(lastPose, xStart, 0.9375F, zStart).setColor(color);
+		bufferBuilder.addVertex(lastPose, xEnd, 0.9375F, zEnd).setColor(color);
+		bufferBuilder.addVertex(lastPose, xEnd, 0.0625F, zEnd).setColor(color);
 
 		if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 			bufferSource.endBatch();
