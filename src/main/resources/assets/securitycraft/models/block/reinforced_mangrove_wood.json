@@ -1,7 +1,0 @@
-{
-    "parent": "securitycraft:block/reinforced_cube_column",
-    "textures": {
-        "end": "block/mangrove_log",
-        "side": "block/mangrove_log"
-    }
-}

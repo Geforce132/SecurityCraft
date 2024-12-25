@@ -30,15 +30,13 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	private final BlockFamily family;
 	private ResourceLocation fullBlock;
 	private final Set<Block> skipGeneratingModelsFor = new HashSet<>();
-	private final BlockModelGenerators blockModelGenerators;
-	private final BiConsumer<ResourceLocation, ModelInstance> modelOutput;
+	private final BlockModelGenerators blockModelGenerators = BlockModelAndStateGenerator.blockModelGenerators;
+	private final BiConsumer<ResourceLocation, ModelInstance> modelOutput = BlockModelAndStateGenerator.modelOutput;
 
 	public ReinforcedBlockFamilyProvider(BlockFamily family, Block reinforcedBaseBlock, TexturedModel texturedModel) {
 		BlockModelAndStateGenerator.blockModelGenerators.super(texturedModel.getMapping());
 		this.mapping = texturedModel.getMapping();
 		this.family = family;
-		blockModelGenerators = BlockModelAndStateGenerator.blockModelGenerators;
-		modelOutput = BlockModelAndStateGenerator.modelOutput;
 		fullBlock(reinforcedBaseBlock, texturedModel.getTemplate());
 	}
 

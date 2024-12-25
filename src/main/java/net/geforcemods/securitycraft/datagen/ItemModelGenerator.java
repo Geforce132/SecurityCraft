@@ -26,7 +26,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.SignItem;
 
 public class ItemModelGenerator {
 	private static ItemModelGenerators itemModels;
@@ -68,7 +67,6 @@ public class ItemModelGenerator {
 				SCContent.SONIC_SECURITY_SYSTEM_ITEM.get(),
 				SCContent.SPEED_MODULE.get()));
 		//@formatter:on
-		singleTextureItems.removeIf(SignItem.class::isInstance);
 		ItemModelGenerator.itemModels = itemModels;
 		modelOutput = itemModels.modelOutput;
 		itemInfo = itemModels.itemModelOutput;

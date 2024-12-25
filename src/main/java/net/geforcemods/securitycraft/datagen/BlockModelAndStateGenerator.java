@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
+import net.geforcemods.securitycraft.datagen.ReinforcedWoodProvider.LogGenerator;
 import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
 import net.geforcemods.securitycraft.renderers.DisplayCaseSpecialRenderer;
 import net.geforcemods.securitycraft.util.SCItemGroup;
@@ -31,6 +32,7 @@ import net.minecraft.client.data.models.BlockModelGenerators.BlockFamilyProvider
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.blockstates.BlockStateGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.blockstates.Variant;
 import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.ItemModelUtils;
@@ -44,6 +46,7 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.special.ChestSpecialRenderer;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
@@ -54,16 +57,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockModelAndStateGenerator {
 	private static final ItemTintSource CRYSTAL_QUARTZ_TINT = ItemModelUtils.constantTint(SCContent.CRYSTAL_QUARTZ_TINT);
 	//@formatter:off
-    static final Map<Block, BlockModelGenerators.BlockStateGeneratorSupplier> FULL_BLOCK_MODEL_CUSTOM_GENERATORS = ImmutableMap.<Block, BlockModelGenerators.BlockStateGeneratorSupplier>builder()
-            .put(Blocks.STONE, BlockModelAndStateGenerator::createMirroredCubeGenerator)
-            .put(Blocks.DEEPSLATE, BlockModelAndStateGenerator::createMirroredColumnGenerator)
-            .put(Blocks.MUD_BRICKS, BlockModelAndStateGenerator::createNorthWestMirroredCubeGenerator)
-            .build();
+	static final Map<Block, BlockModelGenerators.BlockStateGeneratorSupplier> FULL_BLOCK_MODEL_CUSTOM_GENERATORS = ImmutableMap.<Block, BlockModelGenerators.BlockStateGeneratorSupplier>builder()
+			.put(Blocks.STONE, BlockModelAndStateGenerator::createMirroredCubeGenerator)
+			.put(Blocks.DEEPSLATE, BlockModelAndStateGenerator::createMirroredColumnGenerator)
+			.put(Blocks.MUD_BRICKS, BlockModelAndStateGenerator::createNorthWestMirroredCubeGenerator)
+			.build();
 	static final Map<Block, TexturedModel> TEXTURED_MODELS = ImmutableMap.<Block, TexturedModel>builder()
 			.put(Blocks.SANDSTONE, SCTexturedModels.REINFORCED_TOP_BOTTOM_WITH_WALL.get(Blocks.SANDSTONE))
 			.put(Blocks.RED_SANDSTONE, SCTexturedModels.REINFORCED_TOP_BOTTOM_WITH_WALL.get(Blocks.RED_SANDSTONE))
@@ -197,6 +201,29 @@ public class BlockModelAndStateGenerator {
 		createGlassBlocks(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_RED_STAINED_GLASS.get(), SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
+
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_ACACIA_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_ACACIA_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_ACACIA_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_ACACIA_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_BAMBOO_BLOCK.get(), LogGenerator.UV_LOCKED);
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_BAMBOO_BLOCK.get(), LogGenerator.UV_LOCKED);
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_BIRCH_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_BIRCH_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_BIRCH_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_BIRCH_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_CHERRY_LOG.get(), LogGenerator.UV_LOCKED).wood(SCContent.REINFORCED_CHERRY_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_CHERRY_LOG.get(), LogGenerator.UV_LOCKED).wood(SCContent.REINFORCED_STRIPPED_CHERRY_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_CRIMSON_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_CRIMSON_HYPHAE.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_CRIMSON_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_STRIPPED_CRIMSON_HYPHAE.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_DARK_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_DARK_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_DARK_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_JUNGLE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_JUNGLE_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_MANGROVE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_MANGROVE_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_MANGROVE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_MANGROVE_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_SPRUCE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_SPRUCE_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_WARPED_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_WARPED_HYPHAE.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_WARPED_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_STRIPPED_WARPED_HYPHAE.get());
 
 		createSecretSign(SCContent.SECRET_ACACIA_SIGN_ITEM.get(), Blocks.ACACIA_SIGN);
 		createSecretSign(SCContent.SECRET_BAMBOO_SIGN_ITEM.get(), Blocks.BAMBOO_SIGN);
@@ -604,7 +631,6 @@ public class BlockModelAndStateGenerator {
 
 		generate(sign, BlockModelGenerators.createSimpleBlock(sign, blockModel));
 		generate(wallSign, BlockModelGenerators.createSimpleBlock(wallSign, blockModel));
-		blockModelGenerators.registerSimpleFlatItemModel(item);
 	}
 
 	public static void createTrivialBlockWithRenderType(Block block, String renderType) {
@@ -635,6 +661,23 @@ public class BlockModelAndStateGenerator {
 		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN_MIRRORED.create(columnBlock, textureMapping, modelOutput);
 
 		return BlockModelGenerators.createRotatedVariant(columnBlock, location, modelLocation).with(BlockModelGenerators.createRotatedPillar());
+	}
+
+	public static BlockStateGenerator createReinforcedPillarBlockUVLocked(Block block, TextureMapping textureMapping, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
+		ResourceLocation xModel = SCModelTemplates.REINFORCED_CUBE_COLUMN_UV_LOCKED_X.create(block, textureMapping, modelOutput);
+		ResourceLocation yModel = SCModelTemplates.REINFORCED_CUBE_COLUMN_UV_LOCKED_Y.create(block, textureMapping, modelOutput);
+		ResourceLocation zModel = SCModelTemplates.REINFORCED_CUBE_COLUMN_UV_LOCKED_Z.create(block, textureMapping, modelOutput);
+		ResourceLocation columnModel = SCModelTemplates.REINFORCED_CUBE_COLUMN.create(block, textureMapping, modelOutput);
+
+		//@formatter:off
+		return MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, columnModel))
+			.with(
+				PropertyDispatch.property(BlockStateProperties.AXIS)
+					.select(Direction.Axis.X, Variant.variant().with(VariantProperties.MODEL, xModel))
+					.select(Direction.Axis.Y, Variant.variant().with(VariantProperties.MODEL, yModel))
+					.select(Direction.Axis.Z, Variant.variant().with(VariantProperties.MODEL, zModel))
+			);
+		//@formatter:on
 	}
 
 	public static void reinforcedFamily(BlockFamily family) {
