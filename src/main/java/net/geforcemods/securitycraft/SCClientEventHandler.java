@@ -176,7 +176,8 @@ public class SCClientEventHandler {
 
 		ProfilerFiller profiler = mc.getProfiler();
 		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
-		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size();
+		//+1 helps to reduce stuttering when many frames are active at once
+		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1;
 		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
 		double currentTime = GLFW.glfwGetTime();
 		double frameInterval = 1.0D / fpsCap;
