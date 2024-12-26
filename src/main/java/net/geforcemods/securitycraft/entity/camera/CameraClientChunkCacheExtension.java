@@ -269,7 +269,6 @@ public class CameraClientChunkCacheExtension {
 			chunk.replaceWithPacketData(packetData, chunkTag, tagOutput);
 			modifyChunkMaps(map -> map.put(longChunkPos, newChunk));
 		}
-		//TODO If the chunk was already present before it's received on the client, nothing happens in here for performance reasons, which deviates from vanilla behaviour. See if everything still works regarding updates in frame-viewed chunks!
 
 		level.onChunkLoaded(chunkPos);
 		SecurityCraftClient.INSTALLED_IUM_MOD.onChunkStatusAdded(level, x, z);

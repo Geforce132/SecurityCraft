@@ -181,7 +181,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCamera), false));
 	}
 
-	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableCurrentCamera) { //TODO: If a client selects a different camera, somehow sync the change to all other clients that may access the frame
+	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableCurrentCamera) {
 		GlobalPos previousCameraPos = getCurrentCamera();
 
 		setCurrentCamera(newCameraPos);
