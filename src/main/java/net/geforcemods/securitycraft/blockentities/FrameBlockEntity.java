@@ -89,12 +89,16 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		ListTag cameras = tag.getList("cameras", Tag.TAG_COMPOUND);
+		if (tag.contains("cameras")) {
+			ListTag cameras = tag.getList("cameras", Tag.TAG_COMPOUND);
 
-		for (int i = 0; i < cameras.size(); i++) {
-			CompoundTag cameraTag = cameras.getCompound(i);
+			cameraPositions.clear();
 
-			cameraPositions.add(cameraTag.isEmpty() ? null : NamedPositions.Entry.CODEC.parse(NbtOps.INSTANCE, cameraTag).getOrThrow());
+			for (int i = 0; i < cameras.size(); i++) {
+				CompoundTag cameraTag = cameras.getCompound(i);
+
+				cameraPositions.add(cameraTag.isEmpty() ? null : NamedPositions.Entry.CODEC.parse(NbtOps.INSTANCE, cameraTag).getOrThrow());
+			}
 		}
 
 		GlobalPos newCameraPos;
