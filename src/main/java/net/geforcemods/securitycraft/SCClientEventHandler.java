@@ -216,6 +216,7 @@ public class SCClientEventHandler {
 		int oldHeight = window.getHeight();
 		List<SectionRenderDispatcher.RenderSection> oldVisibleSections = mc.levelRenderer.visibleSections.clone();
 		int oldServerRenderDistance = mc.options.serverRenderDistance;
+		int newFrameFeedViewDistance = CameraController.getFrameFeedViewDistance(null);
 		double oldX = player.getX();
 		double oldXO = player.xOld;
 		double oldY = player.getY();
@@ -236,7 +237,7 @@ public class SCClientEventHandler {
 		mc.gameRenderer.setRenderHand(false);
 		mc.gameRenderer.setPanoramicMode(true);
 		mc.levelRenderer.graphicsChanged();
-		mc.options.setServerRenderDistance(CameraController.getFrameFeedViewDistance());
+		mc.options.setServerRenderDistance(newFrameFeedViewDistance);
 		window.setWidth(100);
 		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
@@ -268,7 +269,7 @@ public class SCClientEventHandler {
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 					SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
 					profiler.push("securitycraft:discover_frame_sections");
-					CameraController.discoverVisibleSections(cameraPos, CameraController.getFrameFeedViewDistance(), feed);
+					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
 					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear(true);
 					frameTarget.bindWrite(true);

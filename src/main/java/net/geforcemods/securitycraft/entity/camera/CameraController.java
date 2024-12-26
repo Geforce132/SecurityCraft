@@ -261,7 +261,7 @@ public class CameraController {
 		cameraFeed.compilingSectionsQueue.add(startingSection);
 		cameraFeed.sectionsInRange.add(startingSection);
 		cameraFeed.sectionsInRangePositions.add(startingSection.getOrigin().asLong());
-		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(), cameraFeed);
+		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(null), cameraFeed);
 		return cameraFeed;
 	}
 
@@ -343,8 +343,10 @@ public class CameraController {
 		return false;
 	}
 
-	public static int getFrameFeedViewDistance() {
-		return Math.min(ConfigHandler.CLIENT.frameFeedRenderDistance.get(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), Minecraft.getInstance().options.getEffectiveRenderDistance()));
+	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
+		int frameSpecificRenderDistance = be == null ? 32 : be.getChunkLoadingDistanceOption();
+
+		return Math.min(frameSpecificRenderDistance, Math.min(ConfigHandler.CLIENT.frameFeedRenderDistance.get(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), Minecraft.getInstance().options.getEffectiveRenderDistance())));
 	}
 
 	public static float getMovementSpeed(SecurityCamera cam) {
