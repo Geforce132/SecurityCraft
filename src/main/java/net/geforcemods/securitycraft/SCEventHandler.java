@@ -120,6 +120,8 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerTickPre(ServerTickEvent.Pre event) {
+		SecurityCameraBlockEntity.resetForceLoadingCounter();
+
 		if (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward()) {
 			PLAYING_TUNES.forEach((player, pair) -> {
 				int ticksRemaining = pair.getLeft();

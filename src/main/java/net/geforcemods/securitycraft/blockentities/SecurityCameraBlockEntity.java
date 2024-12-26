@@ -54,9 +54,11 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE, MenuProvider, ContainerListener, SingleLensContainer {
 	private static final Map<ServerPlayer, Set<SecurityCameraBlockEntity>> RECENTLY_UNVIEWED_CAMERAS = new HashMap<>();
 	private static final Set<Long> FORCE_LOADED_CAMERA_CHUNKS = new HashSet<>();
+	private static int forceLoadingCounter = 0;
 	private double cameraRotation = 0.0D;
 	private double oCameraRotation = 0.0D;
 	private boolean addToRotation = SecurityCraft.RANDOM.nextBoolean();
+	private final Set<Long> chunkForceLoadQueue = new HashSet<>();
 	private Map<UUID, ChunkTrackingView.Positioned> cameraFeedChunks = new HashMap<>();
 	private Map<UUID, Set<Long>> linkedFrames = new HashMap<>();
 	private Set<UUID> playersRequestingChunks = new HashSet<>();
@@ -126,6 +128,25 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				cameraRotation = getCameraRotation() - rotationSpeedOption.get();
 			else
 				addToRotation = true;
+		}
+
+		if (!level.isClientSide && !chunkForceLoadQueue.isEmpty()) {
+			Set<Long> queueCopy = new HashSet<>(chunkForceLoadQueue);
+
+			for (Long chunkPosLong : queueCopy) {
+				if (forceLoadingCounter > 16) //Through forceloading 16 chunks per tick, a default camera view area of 32x32 chunks is fully loaded within 40 server ticks (which might take more than 2 seconds, depending on forceloading speed)
+					break;
+
+				ChunkPos chunkPos = new ChunkPos(chunkPosLong);
+
+				if (!FORCE_LOADED_CAMERA_CHUNKS.contains(chunkPosLong)) {
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, chunkPos.x, chunkPos.z, true, false);
+					FORCE_LOADED_CAMERA_CHUNKS.add(chunkPosLong);
+					forceLoadingCounter++;
+				}
+
+				chunkForceLoadQueue.remove(chunkPosLong);
+			}
 		}
 	}
 
@@ -282,16 +303,21 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		requestChunkSending(player, chunkLoadingDistance);
 
 		if (chunkLoadingDistance > maxChunkLoadingRadius) {
-			SectionPos cameraChunkPos = SectionPos.of(worldPosition);
+			ChunkPos cameraChunkPos = new ChunkPos(worldPosition);
+			Long cameraChunkPosLong = cameraChunkPos.toLong();
 
-			for (int x = cameraChunkPos.getX() - chunkLoadingDistance; x <= cameraChunkPos.getX() + chunkLoadingDistance; x++) {
-				for (int z = cameraChunkPos.getZ() - chunkLoadingDistance; z <= cameraChunkPos.getZ() + chunkLoadingDistance; z++) {
+			if (!FORCE_LOADED_CAMERA_CHUNKS.contains(cameraChunkPosLong)) { //The chunk the camera is in should be forceloaded immediately
+				SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, cameraChunkPos.x, cameraChunkPos.z, true, false);
+				chunkForceLoadQueue.add(cameraChunkPosLong);
+			}
+
+			for (int x = cameraChunkPos.x - chunkLoadingDistance; x <= cameraChunkPos.x + chunkLoadingDistance; x++) {
+				for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
 					Long forceLoadingPos = ChunkPos.asLong(x, z);
 
-					if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) { //Only forceload chunks if they haven't been forceloaded by another camera already
-						SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, x, z, true, false);
-						FORCE_LOADED_CAMERA_CHUNKS.add(forceLoadingPos);
-					}
+					//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
+					if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
+						chunkForceLoadQueue.add(forceLoadingPos);
 				}
 			}
 
@@ -400,6 +426,10 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public static Set<SecurityCameraBlockEntity> fetchRecentlyUnviewedCameras(ServerPlayer player) {
 		return RECENTLY_UNVIEWED_CAMERAS.remove(player);
+	}
+
+	public static void resetForceLoadingCounter() {
+		forceLoadingCounter = 0;
 	}
 
 	public int getOpacity() {
