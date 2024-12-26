@@ -132,12 +132,19 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			tag.put("current_camera", GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, currentCamera).getOrThrow());
 	}
 
-	public void setCameraPositions(ItemStack cameraMonitor) {
+	public boolean setCameraPositions(ItemStack cameraMonitor) {
 		if (cameraMonitor.has(SCContent.BOUND_CAMERAS)) {
-			cameraPositions = new ArrayList<>(cameraMonitor.get(SCContent.BOUND_CAMERAS).positions());
-			setChanged();
-			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+			List<NamedPositions.Entry> newCameraPositions = cameraMonitor.get(SCContent.BOUND_CAMERAS).positions();
+
+			if (!cameraPositions.equals(newCameraPositions)) {
+				cameraPositions = new ArrayList<>(newCameraPositions);
+				setChanged();
+				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	public List<NamedPositions.Entry> getCameraPositions() {
