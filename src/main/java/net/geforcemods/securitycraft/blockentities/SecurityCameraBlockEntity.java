@@ -108,7 +108,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				return;
 			}
 
-			if (down) {
+			if (down) { //If the camera is facing down, the rotation is still important for viewing the camera in a frame
 				cameraRotation = getCameraRotation() + rotationSpeedOption.get();
 
 				if (oCameraRotation >= Mth.TWO_PI) {
@@ -167,6 +167,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
+		tag.putDouble("camera_rotation", cameraRotation);
 		tag.putBoolean("shutDown", shutDown);
 		tag.put("lens", lens.createTag(lookupProvider));
 		tag.putFloat("initial_x_rotation", initialXRotation);
@@ -177,6 +178,14 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
+
+		if (tag.contains("camera_rotation")) {
+			double newCamRotation = tag.getDouble("camera_rotation");
+
+			cameraRotation = newCamRotation;
+			oCameraRotation = newCamRotation;
+		}
+
 		shutDown = tag.getBoolean("shutDown");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
 		initialXRotation = tag.getFloat("initial_x_rotation");
