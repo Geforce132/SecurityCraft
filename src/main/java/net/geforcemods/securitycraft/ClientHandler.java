@@ -753,7 +753,7 @@ public class ClientHandler {
 			shader = new ShaderInstance(event.getResourceProvider(), SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX);
 		}
 		catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new IllegalStateException("Camera feed shader does not exist", e);
 		}
 
 		event.registerShader(shader, loadedShader -> CameraController.cameraMonitorShader = loadedShader);
