@@ -62,7 +62,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			hasRedstoneAround = hasNeighborSignal;
 		}
 
-		if (level.isClientSide && switchCamera) {
+		if (switchCamera) {
 			switchCamera = false;
 			switchCameras(newCamera, null, 0, true);
 		}
