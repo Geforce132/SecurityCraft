@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -112,6 +113,16 @@ public class OpenScreen implements CustomPacketPayload {
 					ClientHandler.displayCheckPasscodeScreen((Entity) entity);
 
 				break;
+			case FRAME:
+				if (level.getBlockEntity(pos) instanceof FrameBlockEntity frame)
+					ClientHandler.displayFrameScreen(frame, true);
+
+				break;
+			case FRAME_OWNER:
+				if (level.getBlockEntity(pos) instanceof FrameBlockEntity frame)
+					ClientHandler.displayFrameScreen(frame, false);
+
+				break;
 			case RIFT_STABILIZER:
 				if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity riftStabilizer)
 					ClientHandler.displayRiftStabilizerScreen(riftStabilizer);
@@ -168,6 +179,8 @@ public class OpenScreen implements CustomPacketPayload {
 		CHECK_PASSCODE(true),
 		CHECK_PASSCODE_FOR_BRIEFCASE(false),
 		CHECK_PASSCODE_FOR_ENTITY(false),
+		FRAME(true),
+		FRAME_OWNER(true),
 		RIFT_STABILIZER(true),
 		SENTRY_REMOTE_ACCESS_TOOL(false),
 		SECURE_REDSTONE_INTERFACE(true),

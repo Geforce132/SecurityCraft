@@ -1064,7 +1064,6 @@
 	"messages.securitycraft:frame.camerasSet": "Kamerapositionen wurden vom Monitor zum Rahmen übertragen",
 	"messages.securitycraft:frame.disabled": "Die Funktion, Kamera-Übertragungen in Rahmen anzusehen, wurde in der Server-Konfigurationsdatei deaktiviert.",
 	"messages.securitycraft:frame.emptyMonitor": "Du musst Kameras mit dem Monitor verbinden, um sie dem Rahmen hinzuzufügen!",
-	"messages.securitycraft:frame.noRedstoneSignal": "Du musst diesen Rahmen mit einem Redstonesignal aktivieren, um ihn verwenden zu können.",
 	"messages.securitycraft:invScan.notConnected": "Dieser Block ist nicht mit einem anderen Inventarscanner verbunden!",
 	"messages.securitycraft:keycardReader.differentOwner": "Der Schlüsselkartenleser, mit dem diese Schlüsselkarte verbunden wurde, gehört zu einem anderen Spieler als der Leser, den du gerade verwenden willst",
 	"messages.securitycraft:keycardReader.noUses": "Diese Schlüsselkarte hat keine Verwendungen mehr übrig!",

@@ -1,16 +1,17 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.components.NamedPositions;
+import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -40,6 +41,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -102,16 +104,8 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (!ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.disabled"), ChatFormatting.RED);
-			else if ((ownedByUser || be.isAllowed(player)) && !be.getCameraPositions().isEmpty()) {
-				if (be.redstoneSignalDisabled())
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.noRedstoneSignal"), ChatFormatting.RED);
-				else if (level.isClientSide) {
-					if (!be.hasClientInteracted() && be.getCurrentCamera() != null)
-						be.setCurrentCameraAndUpdate(be.getCurrentCamera());
-					else
-						ClientHandler.displayFrameScreen(be, !ownedByUser);
-				}
-			}
+			else if (!level.isClientSide && (ownedByUser || be.isAllowed(player)) && !be.getCameraPositions().isEmpty())
+				PacketDistributor.sendToPlayer((ServerPlayer) player, new InteractWithFrame(pos, ownedByUser));
 
 			return InteractionResult.SUCCESS;
 		}
