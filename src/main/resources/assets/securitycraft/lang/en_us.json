@@ -1222,6 +1222,7 @@
 	"module.securitycraft.keypad_door.harming_module.description": "Adding a harming module to a block that requires a passcode will result in the player getting damaged, if they enter an incorrect code.",
 	"module.securitycraft.keypad_door.smart_module.description": "Adding a smart module to a block that requires a passcode will result in a cooldown being applied after an incorrect code has been entered. During that time, no new code can be entered.",
 	"module.securitycraft.keypad_door.whitelist_module.description": "Adding an allowlist module to a keypad door will allow listed players to use the block without knowing the code.",
+	"module.securitycraft.keypad_frame.redstone_module.description": "Adding a redstone module to a frame will allow players to control whether the frame's camera feed should be displayed using a redstone signal.",
 	"module.securitycraft.keypad_frame.whitelist_module.description": "Adding an allowlist module to a frame will allow listed players to see the frames's current camera feed, as well as to select the camera that should be displayed in the frame.",
 	"module.securitycraft.keypad_furnace.blacklist_module.description": "Adding a denylist module to a Passcode-protected Furnace will ban listed players from interacting with the block.",
 	"module.securitycraft.keypad_furnace.harming_module.description": "Adding a harming module to a block that requires a passcode will result in the player getting damaged, if they enter an incorrect code.",
