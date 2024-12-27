@@ -34,11 +34,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity> {
-	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
-	private static final ResourceLocation INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final ResourceLocation CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
+	private static final ResourceLocation INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
+	private static final ResourceLocation NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
+	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	//@formatter:off
-	public static final RenderType CAMERA_IN_FRAME_RENDER_TYPE = RenderType.create(
+	private static final RenderType CAMERA_IN_FRAME_RENDER_TYPE = RenderType.create(
 			"frame_shader",
 			DefaultVertexFormat.POSITION_TEX,
 			VertexFormat.Mode.QUADS,
@@ -94,18 +95,18 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 
 		if (cameraPos == null)
-			renderTexture(pose, buffer, SELECT_CAMERA, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderSolidTexture(pose, buffer, SELECT_CAMERA, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		else if (be.redstoneSignalDisabled())
-			renderOverlay(pose, buffer, 0xFF000000, xStart, xEnd, zStart, zEnd, margin); //TODO: maybe render a background related to the frame needing to be activated by redstone
+			renderCutoutTexture(pose, buffer, NO_REDSTONE_SIGNAL, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		else if (!be.hasClientInteracted())
-			renderTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
-			renderTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
 			RenderTarget target = CameraController.getViewForFrame(cameraPos);
 
 			if (target == null) {
-				renderTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 				return;
 			}
 
@@ -139,8 +140,15 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 	}
 
-	private void renderTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
-		VertexConsumer bufferBuilder = buffer.getBuffer(RenderType.entitySolid(texture));
+	private void renderSolidTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
+		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entitySolid(texture)), xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+	}
+
+	private void renderCutoutTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
+		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entityCutout(texture)), xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+	}
+
+	private void renderTexture(PoseStack pose, MultiBufferSource buffer, VertexConsumer bufferBuilder, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
 		Pose last = pose.last();
 		Matrix4f lastPose = last.pose();
 		int nx = normal.getX();
