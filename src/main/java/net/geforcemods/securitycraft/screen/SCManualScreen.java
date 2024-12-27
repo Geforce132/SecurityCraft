@@ -212,6 +212,16 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
+	public void tick() {
+		super.tick();
+		pageIcon.tick();
+
+		for (IngredientDisplay display : displays) {
+			display.tick();
+		}
+	}
+
+	@Override
 	public void removed() {
 		super.removed();
 		lastPage = currentPage;
