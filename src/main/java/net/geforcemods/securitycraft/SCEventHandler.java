@@ -181,8 +181,9 @@ public class SCEventHandler {
 			cam.discard();
 		}
 
-		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.getCameraFeedChunks(player) != null)) {
+		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.getCameraFeedChunks(player) != null || be.hasPlayerFrameLink(player))) {
 			viewedCamera.unlinkFrameForPlayer(player.getUUID(), null);
+			viewedCamera.clearCameraFeedChunks(player);
 		}
 	}
 

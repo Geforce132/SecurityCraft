@@ -197,7 +197,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			if (player instanceof ServerPlayer serverPlayer && newCameraPos != null) {
 				if (level.dimension() != newCameraPos.dimension() || !(level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", newCameraPos.pos()), ChatFormatting.RED);
-				else if (!newCameraPos.equals(previousCameraPos) || !newCamera.isFrameLinked(player, worldPosition))
+				else if (!newCameraPos.equals(previousCameraPos) || (!newCamera.isFrameLinked(player, worldPosition) && !disableCurrentCamera))
 					newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(requestedRenderDistance, 2, Math.min(getChunkLoadingDistanceOption(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), serverPlayer.server.getPlayerList().getViewDistance()))));
 			}
 
