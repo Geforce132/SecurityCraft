@@ -37,7 +37,7 @@ public record SyncFrame(BlockPos pos, int requestedRenderDistance, Optional<Glob
 		GlobalPos currentCamera = this.currentCamera.orElse(null);
 
 		if (level.getBlockEntity(pos) instanceof FrameBlockEntity be) {
-			if (be.isDisabled())
+			if (be.isDisabled() || be.redstoneSignalDisabled())
 				return;
 
 			boolean isOwner = be.isOwnedBy(player);
