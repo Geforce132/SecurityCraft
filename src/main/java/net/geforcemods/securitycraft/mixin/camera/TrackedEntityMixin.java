@@ -17,7 +17,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Lets entities get sent to the client even though they're not in range of the player
+ * Enables entities that are in range of a player-viewed camera, as well as the mounted security camera entity, to be sent to
+ * the client.
  */
 @Mixin(value = ChunkMap.TrackedEntity.class, priority = 1100)
 public abstract class TrackedEntityMixin {
@@ -25,17 +26,14 @@ public abstract class TrackedEntityMixin {
 	@Final
 	Entity entity;
 
-	/**
-	 * Enables entities that are in range of a player-viewed camera, as well as any and all security camera entities, to be sent
-	 * to the client.
-	 */
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE, ordinal = 2))
 	public boolean securitycraft$modifyFlag(boolean original, ServerPlayer player, @Local(ordinal = 0) double viewDistance) {
-		Entity camera = player.getCamera();
-
 		if (original)
 			return true;
-		else if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesAround(player.level(), entity.blockPosition(), (int) viewDistance).isEmpty())
+
+		Entity camera = player.getCamera();
+
+		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesAround(player.level(), entity.blockPosition(), (int) viewDistance).isEmpty())
 			return true;
 		else if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			if (entity == player.camera) //If the player is mounted to a camera entity, that entity always needs to be sent to the client regardless of distance

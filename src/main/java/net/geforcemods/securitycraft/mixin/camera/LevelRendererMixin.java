@@ -36,8 +36,8 @@ public class LevelRendererMixin {
 	private ClientLevel level;
 
 	/**
-	 * Fixes camera chunks disappearing when the player entity moves while mounted to a camera (e.g. while being in a minecart
-	 * or falling)
+	 * Fixes camera chunks disappearing when the player entity moves while mounted to a camera (e.g. while being in a minecart or
+	 * falling)
 	 */
 	@WrapWithCondition(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewArea;repositionCamera(DD)V"))
 	public boolean securitycraft$shouldRepositionCamera(ViewArea viewArea, double x, double z) {
@@ -48,7 +48,7 @@ public class LevelRendererMixin {
 	 * When rendering the world in a frame, the necessary visible sections are captured manually within SecurityCraft. Vanilla
 	 * usually does the same process in setupRender, so that method is exited early when a frame feed is rendered. However, when
 	 * Embeddium or Sodium is installed, these mods may perform their visible section capture themselves since it's much more
-	 * performant, and since that happens in setupRender too, we don't exit the method early in this case.
+	 * performant, and since that happens in setupRender too, the method is not exited early in this case.
 	 */
 	@Inject(method = "setupRender", at = @At(value = "HEAD"), cancellable = true)
 	public void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {

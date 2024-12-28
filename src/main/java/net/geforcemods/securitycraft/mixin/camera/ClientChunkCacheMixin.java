@@ -39,8 +39,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	ClientLevel level;
 
 	/**
-	 * Removes dropped chunks from the camera client chunk cache, unless the chunk is in range of a currently mounted camera or
-	 * a frame camera
+	 * Removes dropped chunks from the camera client chunk cache, unless the chunk is in range of a currently mounted camera or a
+	 * frame camera
 	 */
 	@Inject(method = "drop", at = @At(value = "HEAD"))
 	public void securitycraft$onDrop(ChunkPos pos, CallbackInfo ci) {

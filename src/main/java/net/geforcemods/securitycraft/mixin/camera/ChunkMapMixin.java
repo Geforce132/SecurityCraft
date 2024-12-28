@@ -49,11 +49,9 @@ public abstract class ChunkMapMixin {
 		Level level = player.level();
 		int viewDistance = getPlayerViewDistance(player);
 
-		if (player.getCamera() instanceof SecurityCamera camera) {
-			if (!camera.hasSentChunks()) {
-				ChunkTrackingView.difference(player.getChunkTrackingView(), camera.getCameraChunks(), chunkPos -> markChunkPendingToSend(player, chunkPos), chunkPos -> {});
-				camera.setHasSentChunks(true);
-			}
+		if (player.getCamera() instanceof SecurityCamera camera && !camera.hasSentChunks()) {
+			ChunkTrackingView.difference(player.getChunkTrackingView(), camera.getCameraChunks(), chunkPos -> markChunkPendingToSend(player, chunkPos), chunkPos -> {});
+			camera.setHasSentChunks(true);
 		}
 
 		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldSendChunksToPlayer(player))) {

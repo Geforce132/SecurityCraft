@@ -312,22 +312,18 @@ public class CameraController {
 				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
 				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getStepZ();
 
-				if (!ChunkTrackingView.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz))
-					continue;
+				if (ChunkTrackingView.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz)) {
+					RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
 
-				RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
+					if (neighbourSection != null) {
+						long neighbourPosAsLong = neighbourSection.getOrigin().asLong();
 
-				if (neighbourSection != null) {
-					long neighbourPosAsLong = neighbourSection.getOrigin().asLong();
-
-					if (!visibleSectionPositions.contains(neighbourPosAsLong)) {
-						if (!canSeeNeighborFace(currentCompiledSection, dir))
-							continue;
-
-						visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
-						visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
-						sectionQueue.add(neighbourSection);
-						FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
+						if (!visibleSectionPositions.contains(neighbourPosAsLong) && canSeeNeighborFace(currentCompiledSection, dir)) {
+							visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
+							visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
+							sectionQueue.add(neighbourSection);
+							FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
+						}
 					}
 				}
 			}
