@@ -167,6 +167,12 @@ public class KeypadBlock extends DisguisableBlock {
 		@Override
 		public boolean protect(Player player, Level level, BlockPos pos) {
 			FrameBlockEntity be = (FrameBlockEntity) level.getBlockEntity(pos);
+
+			if (be.getCurrentCamera() != null) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.cannotConvert"), ChatFormatting.RED);
+				return false;
+			}
+
 			Owner owner = be.getOwner();
 
 			be.dropAllModules();

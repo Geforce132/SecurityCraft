@@ -1071,6 +1071,7 @@
 	"messages.securitycraft:command.sc.usage": "Usage: /sc connect OR /sc disconnect OR /sc contact OR /sc resume",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
 	"messages.securitycraft:frame.camerasSet": "Added camera positions from the monitor to the frame",
+	"messages.securitycraft:frame.cannotConvert": "You cannot convert a frame with an active camera feed to a Keypad! Stop viewing the current camera feed to proceed with conversion.",
 	"messages.securitycraft:frame.disabled": "The feature of viewing camera feeds in frames has been disabled through the server's configuration file.",
 	"messages.securitycraft:frame.emptyMonitor": "You need to link cameras to the monitor to add them to the frame!",
 	"messages.securitycraft:invScan.notConnected": "This is not connected to another inventory scanner block!",
