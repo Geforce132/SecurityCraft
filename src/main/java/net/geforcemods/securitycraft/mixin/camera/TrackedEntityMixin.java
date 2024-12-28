@@ -26,7 +26,8 @@ public abstract class TrackedEntityMixin {
 	Entity entity;
 
 	/**
-	 * Enables entities that are in range of a camera as well as security camera entities to be sent to the client
+	 * Enables entities that are in range of a player-viewed camera, as well as any and all security camera entities, to be sent
+	 * to the client.
 	 */
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE, ordinal = 2))
 	public boolean securitycraft$modifyFlag(boolean original, ServerPlayer player, @Local(ordinal = 0) double viewDistance) {

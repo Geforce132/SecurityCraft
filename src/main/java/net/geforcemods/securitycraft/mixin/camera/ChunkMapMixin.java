@@ -41,8 +41,8 @@ public abstract class ChunkMapMixin {
 	abstract int getPlayerViewDistance(ServerPlayer player);
 
 	/**
-	 * Sends chunks loaded by cameras to the client, and re-sends chunks around the player when they stop viewing a camera to
-	 * preemptively prevent missing chunks when exiting the camera
+	 * Sends chunks loaded by mounted cameras or frame cameras to the client. Also drops chunks that were near a dismounted
+	 * camera or a stopped frame camera feed.
 	 */
 	@Inject(method = "updateChunkTracking", at = @At(value = "HEAD"))
 	private void securitycraft$onUpdateChunkTracking(ServerPlayer player, CallbackInfo callback) {
@@ -89,8 +89,8 @@ public abstract class ChunkMapMixin {
 	}
 
 	/**
-	 * Allows chunks that are loaded near a currently active camera (for example by ForcedChunkManager) to be sent to the player
-	 * viewing the camera
+	 * Allows chunks that are forceloaded near a currently active camera to be sent to the player mounting the camera or viewing
+	 * the camera feed in a frame.
 	 */
 	@Inject(method = "onChunkReadyToSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getChunkTrackingView()Lnet/minecraft/server/level/ChunkTrackingView;"))
 	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo callback, @Local ServerPlayer player) {
@@ -101,7 +101,7 @@ public abstract class ChunkMapMixin {
 	}
 
 	/**
-	 * Fixes block updates not getting sent to chunks around cameras by marking all nearby chunks as tracked
+	 * Fixes block updates not getting sent to chunks around mounted or frame cameras by marking all nearby chunks as tracked
 	 */
 	@Inject(method = "isChunkTracked", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onIsChunkTracked(ServerPlayer player, int x, int z, CallbackInfoReturnable<Boolean> callback) {

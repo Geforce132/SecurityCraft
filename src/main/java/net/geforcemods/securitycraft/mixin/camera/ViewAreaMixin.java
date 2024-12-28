@@ -9,8 +9,8 @@ import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.minecraft.client.renderer.ViewArea;
 
 /**
- * Marks chunks within the camera view area as dirty when e.g. a block has been changed in them, so the frame feed updates
- * appropriately
+ * Marks chunks within the frame camera view area as dirty when e.g. a block has been changed in them, so the frame feed
+ * updates appropriately
  */
 @Mixin(ViewArea.class)
 public class ViewAreaMixin {

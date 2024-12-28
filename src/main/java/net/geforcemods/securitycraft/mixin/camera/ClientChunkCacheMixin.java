@@ -39,8 +39,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	ClientLevel level;
 
 	/**
-	 * Removes dropped chunks from the camera client chunk cache, unless the chunk is in range of a currently viewed camera or a
-	 * frame camera
+	 * Removes dropped chunks from the camera client chunk cache, unless the chunk is in range of a currently mounted camera or
+	 * a frame camera
 	 */
 	@Inject(method = "drop", at = @At(value = "HEAD"))
 	public void securitycraft$onDrop(ChunkPos pos, CallbackInfo ci) {
@@ -59,8 +59,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	}
 
 	/**
-	 * Places chunks that get sent to the client which are in range of a viewed camera or a frame camera into the camera client
-	 * chunk cache
+	 * Places clientside received chunks which are in range of a mounted camera or a frame camera into the camera client chunk
+	 * cache
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
 	private void securitycraft$onReplaceChunk(int x, int z, FriendlyByteBuf buffer, CompoundTag chunkTag, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> callbackInfo) {

@@ -36,8 +36,8 @@ public class LevelRendererMixin {
 	private ClientLevel level;
 
 	/**
-	 * Fixes camera chunks disappearing when the player entity moves while viewing a camera (e.g. while being in a minecart or
-	 * falling)
+	 * Fixes camera chunks disappearing when the player entity moves while mounted to a camera (e.g. while being in a minecart
+	 * or falling)
 	 */
 	@WrapWithCondition(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewArea;repositionCamera(DD)V"))
 	public boolean securitycraft$shouldRepositionCamera(ViewArea viewArea, double x, double z) {
@@ -45,9 +45,10 @@ public class LevelRendererMixin {
 	}
 
 	/**
-	 * When rendering the world in a frame, the necessary visible sections are captured manually. Vanilla usually does this in
-	 * setupRender, so that method is exited early when a frame feed is rendered. However when Embeddium is installed, it already
-	 * captures the visible sections in using its own hooks into setupRender, so the early exit is not required.
+	 * When rendering the world in a frame, the necessary visible sections are captured manually within SecurityCraft. Vanilla
+	 * usually does the same process in setupRender, so that method is exited early when a frame feed is rendered. However, when
+	 * Embeddium or Sodium is installed, these mods may perform their visible section capture themselves since it's much more
+	 * performant, and since that happens in setupRender too, we don't exit the method early in this case.
 	 */
 	@Inject(method = "setupRender", at = @At(value = "HEAD"), cancellable = true)
 	public void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
@@ -64,7 +65,8 @@ public class LevelRendererMixin {
 	}
 
 	/**
-	 * Marks a render section as compiled when contained within the camera view area, to allow rendering entities in these chunks
+	 * If rendering a frame camera, makes sure that all compiled sections within the camera view area extension are properly
+	 * treated as compiled (e.g. for the purpose of entity rendering)
 	 */
 	@Inject(method = "isSectionCompiled", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> callbackInfo) {
