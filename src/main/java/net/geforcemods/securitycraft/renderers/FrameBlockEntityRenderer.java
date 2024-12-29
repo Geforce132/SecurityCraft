@@ -23,12 +23,14 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,6 +39,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final ResourceLocation CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
 	private static final ResourceLocation INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final ResourceLocation NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
+	private static final Material NOISE_BACKGROUND = new Material(InventoryMenu.BLOCK_ATLAS, SecurityCraft.resLoc("entity/frame/noise_background"));
 	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	//@formatter:off
 	private static final RenderType CAMERA_IN_FRAME_RENDER_TYPE = RenderType.create(
@@ -96,10 +99,14 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 		if (cameraPos == null)
 			renderSolidTexture(pose, buffer, SELECT_CAMERA, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-		else if (be.redstoneSignalDisabled())
+		else if (be.redstoneSignalDisabled()) {
+			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 			renderCutoutTexture(pose, buffer, NO_REDSTONE_SIGNAL, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-		else if (!be.hasClientInteracted())
+		}
+		else if (!be.hasClientInteracted()) {
+			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+		}
 		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 			renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
@@ -138,6 +145,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (lens.has(DataComponents.DYED_COLOR))
 				renderOverlay(pose, buffer, lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
 		}
+	}
+
+	private void renderNoise(PoseStack pose, MultiBufferSource buffer, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
+		renderTexture(pose, buffer, NOISE_BACKGROUND.buffer(buffer, RenderType::entitySolid), xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 	}
 
 	private void renderSolidTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
