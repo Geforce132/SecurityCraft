@@ -8,6 +8,7 @@
 		"camera.GameRendererMixin",
 		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
+		"camera.ViewAreaMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
 		"taser.ItemInHandRendererMixin"

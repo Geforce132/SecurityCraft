@@ -25,14 +25,12 @@ public class IngredientDisplay implements Renderable {
 			return;
 
 		guiGraphics.renderItem(stacks[currentRenderingStack], x, y);
+	}
 
-		if (!Screen.hasShiftDown()) {
-			ticksToChange -= partialTick;
-
-			if (ticksToChange <= 0) {
-				changeRenderingStack(1);
-				ticksToChange = DISPLAY_LENGTH;
-			}
+	public void tick() {
+		if (!Screen.hasShiftDown() && --ticksToChange <= 0) {
+			changeRenderingStack(1);
+			ticksToChange = DISPLAY_LENGTH;
 		}
 	}
 

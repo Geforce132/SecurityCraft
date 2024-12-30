@@ -31,7 +31,7 @@ public class GameRendererMixin {
 	Minecraft minecraft;
 
 	/**
-	 * Makes sure the camera zooming works, because the fov is only updated when the camera entity is the player itself
+	 * Makes sure camera zooming works, because the fov is only updated when the camera entity is the player itself
 	 */
 	@ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.0F))
 	private float securitycraft$modifyInitialFValue(float f) {
