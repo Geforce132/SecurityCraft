@@ -45,6 +45,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_NORTH = Shapes.joinUnoptimized(Shapes.block(), Block.box(1, 1, 0, 15, 15, 1), BooleanOp.ONLY_FIRST);
 	private static final VoxelShape SHAPE_EAST = Shapes.joinUnoptimized(Shapes.block(), Block.box(15, 1, 1, 16, 15, 15), BooleanOp.ONLY_FIRST);
@@ -53,7 +54,7 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	public FrameBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -133,7 +134,7 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, WATERLOGGED);
+		builder.add(FACING, POWERED, WATERLOGGED);
 	}
 
 	@Override

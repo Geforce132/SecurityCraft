@@ -1065,6 +1065,7 @@
 	"messages.securitycraft:frame.cannotConvert": "Du kannst keinen Rahmen mit einer aktiven Kameraübertragung zu einem Nummernschloss konvertieren! Beende zuerst die aktuelle Kameraübertragung, um mit der Konvertierung fortzufahren.",
 	"messages.securitycraft:frame.disabled": "Die Funktion, Kameraübertragungen in Rahmen anzusehen, wurde in der Server-Konfigurationsdatei deaktiviert.",
 	"messages.securitycraft:frame.emptyMonitor": "Du musst Kameras mit dem Monitor verbinden, um sie dem Rahmen hinzuzufügen!",
+	"messages.securitycraft:frame.noRedstoneSignal": "Du musst diesen Rahmen mit einem Redstonesignal aktivieren, um diese Rahmenübertragung ansehen zu können.",
 	"messages.securitycraft:invScan.notConnected": "Dieser Block ist nicht mit einem anderen Inventarscanner verbunden!",
 	"messages.securitycraft:keycardReader.differentOwner": "Der Schlüsselkartenleser, mit dem diese Schlüsselkarte verbunden wurde, gehört zu einem anderen Spieler als der Leser, den du gerade verwenden willst",
 	"messages.securitycraft:keycardReader.noUses": "Diese Schlüsselkarte hat keine Verwendungen mehr übrig!",

@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -41,7 +42,6 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	private GlobalPos currentCameraPosition;
 	private GlobalPos newCameraPosition;
 	private boolean activatedByRedstone = false;
-	private boolean hasRedstoneAround = false;
 	private boolean clientInteracted;
 	private boolean switchCamera;
 
@@ -52,14 +52,19 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (activatedByRedstone) {
-			boolean hasNeighborSignal = level.hasNeighborSignal(pos);
+			boolean wasPowered = state.getValue(FrameBlock.POWERED);
 
-			if (hasRedstoneAround && !hasNeighborSignal) {
+			if (level.isClientSide && !wasPowered && clientInteracted)
 				switchCameras(currentCameraPosition, null, 0, true);
-				clientInteracted = false;
-			}
+			else if (!level.isClientSide) {
+				boolean hasNeighborSignal = level.hasNeighborSignal(pos);
 
-			hasRedstoneAround = hasNeighborSignal;
+				if (wasPowered && !hasNeighborSignal)
+					switchCameras(currentCameraPosition, null, 0, true);
+
+				if (wasPowered != hasNeighborSignal)
+					level.setBlockAndUpdate(pos, state.setValue(FrameBlock.POWERED, hasNeighborSignal));
+			}
 		}
 
 		if (switchCamera) {
@@ -181,24 +186,28 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
 	}
 
-	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableCurrentCamera) {
+	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableNewCamera) {
 		GlobalPos previousCameraPos = getCurrentCamera();
 
 		setCurrentCamera(newCameraPos);
 
 		if (!level.isClientSide) {
 			if (previousCameraPos != null && level.getBlockEntity(previousCameraPos.pos()) instanceof SecurityCameraBlockEntity previousCamera) {
-				if (!previousCameraPos.equals(newCameraPos) || (player == null && disableCurrentCamera))
+				if (!previousCameraPos.equals(newCameraPos) || (player == null && disableNewCamera))
 					previousCamera.unlinkFrameForAllPlayers(worldPosition);
-				else if (disableCurrentCamera)
+				else if (disableNewCamera)
 					previousCamera.unlinkFrameForPlayer(player.getUUID(), worldPosition);
 			}
 
 			if (player instanceof ServerPlayer serverPlayer && newCameraPos != null) {
 				if (level.dimension() != newCameraPos.dimension() || !(level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", newCameraPos.pos()), ChatFormatting.RED);
-				else if (!newCameraPos.equals(previousCameraPos) || (!newCamera.isFrameLinked(player, worldPosition) && !disableCurrentCamera))
-					newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(requestedRenderDistance, 2, Math.min(getChunkLoadingDistanceOption(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), serverPlayer.server.getPlayerList().getViewDistance()))));
+				else if (!disableNewCamera && (!newCameraPos.equals(previousCameraPos) || !newCamera.isFrameLinked(player, worldPosition))) {
+					if (redstoneSignalDisabled())
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.noRedstoneSignal", newCameraPos.pos()), ChatFormatting.RED);
+					else
+						newCamera.linkFrameForPlayer(serverPlayer, worldPosition, Mth.clamp(requestedRenderDistance, 2, Math.min(getChunkLoadingDistanceOption(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), serverPlayer.server.getPlayerList().getViewDistance()))));
+				}
 			}
 
 			setChanged();
@@ -208,11 +217,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			if (previousCameraPos != null)
 				CameraController.removeFrameLink(this, previousCameraPos);
 
-			if (newCameraPos != null && !disableCurrentCamera) {
+			if (newCameraPos != null && !disableNewCamera) {
 				CameraController.addFrameLink(this, newCameraPos);
 				clientInteracted = true;
 			}
-			else if (disableCurrentCamera)
+			else if (disableNewCamera)
 				clientInteracted = false;
 		}
 	}
@@ -239,7 +248,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	public boolean redstoneSignalDisabled() {
-		return activatedByRedstone && !hasRedstoneAround;
+		return activatedByRedstone && !blockState.getValue(FrameBlock.POWERED);
 	}
 
 	@Override
@@ -261,7 +270,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = true;
-			hasRedstoneAround = true; //This allows the frame to disable properly when a redstone module is inserted while active
+			level.setBlockAndUpdate(worldPosition, blockState.setValue(FrameBlock.POWERED, true)); //This allows the frame to disable properly when a redstone module is inserted while active
 			setChanged();
 		}
 	}
@@ -272,6 +281,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = false;
+			level.setBlockAndUpdate(worldPosition, blockState.setValue(FrameBlock.POWERED, false));
 			setChanged();
 		}
 	}
