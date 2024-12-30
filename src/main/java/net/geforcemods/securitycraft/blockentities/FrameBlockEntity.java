@@ -248,7 +248,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	public boolean redstoneSignalDisabled() {
-		return activatedByRedstone && !blockState.getValue(FrameBlock.POWERED);
+		return activatedByRedstone && !getBlockState().getValue(FrameBlock.POWERED);
 	}
 
 	@Override
@@ -270,7 +270,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = true;
-			level.setBlockAndUpdate(worldPosition, blockState.setValue(FrameBlock.POWERED, true)); //This allows the frame to disable properly when a redstone module is inserted while active
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FrameBlock.POWERED, true)); //This allows the frame to disable properly when a redstone module is inserted while active
 			setChanged();
 		}
 	}
@@ -281,7 +281,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = false;
-			level.setBlockAndUpdate(worldPosition, blockState.setValue(FrameBlock.POWERED, false));
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FrameBlock.POWERED, false));
 			setChanged();
 		}
 	}
