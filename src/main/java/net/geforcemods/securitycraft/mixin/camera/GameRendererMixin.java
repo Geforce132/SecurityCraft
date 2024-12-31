@@ -10,10 +10,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.Window;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -60,5 +63,16 @@ public class GameRendererMixin {
 			if (lens.has(DataComponents.DYED_COLOR))
 				guiGraphics.fill(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), lens.get(DataComponents.DYED_COLOR).rgb() + (be.getOpacity() << 24));
 		}
+	}
+
+	/**
+	 * Makes sure distortion effects are not rendered in camera feeds
+	 */
+	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
+	private float securitycraft$disableFeedDistortion(float delta, float start, float end, Operation<Float> original) {
+		if (CameraController.currentlyCapturedCamera != null)
+			return 0.0F;
+		else
+			return original.call(delta, start, end);
 	}
 }
