@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -41,6 +42,8 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	@Override
 	public void render(SecurityCameraBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
 		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
+			return;
+		else if (CameraController.currentlyCapturedCamera != null && be.getBlockPos().equals(CameraController.currentlyCapturedCamera.pos()))
 			return;
 
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay);
