@@ -1,11 +1,17 @@
 --------------------------Changelog for the upcoming version of SecurityCraft--------------------------
 
+- New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
+- New: Several server and client config settings to control chunk loading in camera feeds
 - Change: The block mine overlay now shows in the first person hand models as well
+- Change: Camera model animations are now synchronized between players
 - API: IDisguisable has been simplified
 - Fix: Module descriptions of security sea boats do not show up correctly
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: Holding a camera monitor makes it possible to identify disguised cameras
 - Fix: Items that can have linked positions (e.g. Camera Monitor) show the idle animation even when they have positions and are either dropped, or held by a non-player entity
+- Fix: The display of items in the SC Manual can change too fast in certain situations
+
+[1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
 
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 
