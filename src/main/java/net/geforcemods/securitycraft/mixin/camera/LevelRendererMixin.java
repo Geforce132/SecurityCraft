@@ -48,7 +48,8 @@ public abstract class LevelRendererMixin {
 	@Unique
 	private boolean securitycraft$entityOutlineRendered;
 
-	@Shadow protected abstract boolean collectVisibleEntities(Camera camera, Frustum frustum, List<Entity> output);
+	@Shadow
+	protected abstract boolean collectVisibleEntities(Camera camera, Frustum frustum, List<Entity> output);
 
 	/**
 	 * Allows entities to render in the first frame of a render section being rendered when Sodium is installed, as entities in
@@ -73,8 +74,8 @@ public abstract class LevelRendererMixin {
 	}
 
 	/**
-	 * If the collection of renderable entities within the mixin above returned that one or more entities should be rendered
-	 * with an outline, correctly modify the respective flag in LevelRenderer#renderLevel so the shader post chain respects the
+	 * If the collection of renderable entities within the mixin above returned that one or more entities should be rendered with
+	 * an outline, correctly modify the respective flag in LevelRenderer#renderLevel so the shader post chain respects the
 	 * outline.
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"), ordinal = 3)
@@ -94,7 +95,7 @@ public abstract class LevelRendererMixin {
 	 * performant, and since that happens in setupRender too, the method is not exited early in this case.
 	 */
 	@Inject(method = "setupRender", at = @At(value = "HEAD"), cancellable = true)
-	public void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
+	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
 		if (CameraController.currentlyCapturedCamera != null && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
 			callbackInfo.cancel();
 	}
