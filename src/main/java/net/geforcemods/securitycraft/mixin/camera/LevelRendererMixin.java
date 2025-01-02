@@ -39,7 +39,7 @@ public class LevelRendererMixin {
 	 * falling)
 	 */
 	@WrapWithCondition(method = "setupRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewArea;repositionCamera(DD)V"))
-	public boolean securitycraft$shouldRepositionCamera(ViewArea viewArea, double x, double z) {
+	private boolean securitycraft$shouldRepositionCamera(ViewArea viewArea, double x, double z) {
 		return !PlayerUtils.isPlayerMountedOnCamera(minecraft.player);
 	}
 
@@ -50,7 +50,7 @@ public class LevelRendererMixin {
 	 * performant, and since that happens in setupRender too, the method is not exited early in this case.
 	 */
 	@Inject(method = "setupRender", at = @At(value = "HEAD"), cancellable = true)
-	public void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
+	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
 		if (CameraController.currentlyCapturedCamera != null && !SecurityCraft.IS_A_SODIUM_MOD_INSTALLED)
 			callbackInfo.cancel();
 	}

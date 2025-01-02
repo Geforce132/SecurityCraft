@@ -22,12 +22,12 @@ public class DebugScreenOverlayMixin {
 	protected HitResult block;
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-	public BlockState securitycraft$spoofBlockState(BlockState originalState) {
+	private BlockState securitycraft$spoofBlockState(BlockState originalState) {
 		return F3Spoofer.spoofBlockState(originalState, ((BlockHitResult) block).getBlockPos());
 	}
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;"))
-	public FluidState securitycraft$spoofFluidState(FluidState originalState) {
+	private FluidState securitycraft$spoofFluidState(FluidState originalState) {
 		return F3Spoofer.spoofFluidState(originalState);
 	}
 }
