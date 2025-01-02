@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
+import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -51,6 +52,7 @@ import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
+import net.geforcemods.securitycraft.network.server.SyncFrame;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
@@ -159,6 +161,7 @@ public class RegistrationHandler {
 		IPayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
 
 		clientPacket(registrar, BlockPocketManagerFailedActivation.ID, BlockPocketManagerFailedActivation::new, BlockPocketManagerFailedActivation::handle);
+		clientPacket(registrar, InteractWithFrame.ID, InteractWithFrame::new, InteractWithFrame::handle);
 		clientPacket(registrar, OpenScreen.ID, OpenScreen::new, OpenScreen::handle);
 		clientPacket(registrar, PlayAlarmSound.ID, PlayAlarmSound::new, PlayAlarmSound::handle);
 		clientPacket(registrar, RefreshDisguisableModel.ID, RefreshDisguisableModel::new, RefreshDisguisableModel::handle);
@@ -167,42 +170,43 @@ public class RegistrationHandler {
 		clientPacket(registrar, UpdateLaserColors.ID, UpdateLaserColors::new, UpdateLaserColors::handle);
 		clientPacket(registrar, UpdateLogger.ID, UpdateLogger::new, UpdateLogger::handle);
 		serverPacket(registrar, AssembleBlockPocket.ID, AssembleBlockPocket::new, AssembleBlockPocket::handle);
+		serverPacket(registrar, CheckBriefcasePasscode.ID, CheckBriefcasePasscode::new, CheckBriefcasePasscode::handle);
 		serverPacket(registrar, CheckPasscode.ID, CheckPasscode::new, CheckPasscode::handle);
 		serverPacket(registrar, ClearChangeDetectorServer.ID, ClearChangeDetectorServer::new, ClearChangeDetectorServer::handle);
 		serverPacket(registrar, ClearLoggerServer.ID, ClearLoggerServer::new, ClearLoggerServer::handle);
 		serverPacket(registrar, DismountCamera.ID, DismountCamera::new, DismountCamera::handle);
 		serverPacket(registrar, MountCamera.ID, MountCamera::new, MountCamera::handle);
-		serverPacket(registrar, CheckBriefcasePasscode.ID, CheckBriefcasePasscode::new, CheckBriefcasePasscode::handle);
 		serverPacket(registrar, RemoteControlMine.ID, RemoteControlMine::new, RemoteControlMine::handle);
 		serverPacket(registrar, RemoveCameraTag.ID, RemoveCameraTag::new, RemoveCameraTag::handle);
 		serverPacket(registrar, RemoveMineFromMRAT.ID, RemoveMineFromMRAT::new, RemoveMineFromMRAT::handle);
 		serverPacket(registrar, RemovePositionFromSSS.ID, RemovePositionFromSSS::new, RemovePositionFromSSS::handle);
 		serverPacket(registrar, RemoveSentryFromSRAT.ID, RemoveSentryFromSRAT::new, RemoveSentryFromSRAT::handle);
-		serverPacket(registrar, SyncAlarmSettings.ID, SyncAlarmSettings::new, SyncAlarmSettings::handle);
 		serverPacket(registrar, SetBriefcasePasscodeAndOwner.ID, SetBriefcasePasscodeAndOwner::new, SetBriefcasePasscodeAndOwner::handle);
 		serverPacket(registrar, SetCameraPowered.ID, SetCameraPowered::new, SetCameraPowered::handle);
+		serverPacket(registrar, SetDefaultCameraViewingDirection.ID, SetDefaultCameraViewingDirection::new, SetDefaultCameraViewingDirection::handle);
 		serverPacket(registrar, SetGhostSlot.ID, SetGhostSlot::new, SetGhostSlot::handle);
 		serverPacket(registrar, SetKeycardUses.ID, SetKeycardUses::new, SetKeycardUses::handle);
 		serverPacket(registrar, SetListModuleData.ID, SetListModuleData::new, SetListModuleData::handle);
 		serverPacket(registrar, SetPasscode.ID, SetPasscode::new, SetPasscode::handle);
 		serverPacket(registrar, SetSentryMode.ID, SetSentryMode::new, SetSentryMode::handle);
 		serverPacket(registrar, SetStateOnDisguiseModule.ID, SetStateOnDisguiseModule::new, SetStateOnDisguiseModule::handle);
+		serverPacket(registrar, SyncAlarmSettings.ID, SyncAlarmSettings::new, SyncAlarmSettings::handle);
 		serverPacket(registrar, SyncBlockChangeDetector.ID, SyncBlockChangeDetector::new, SyncBlockChangeDetector::handle);
-		serverPacket(registrar, SyncBlockReinforcer.ID, SyncBlockReinforcer::new, SyncBlockReinforcer::handle);
 		serverPacket(registrar, SyncBlockPocketManager.ID, SyncBlockPocketManager::new, SyncBlockPocketManager::handle);
+		serverPacket(registrar, SyncBlockReinforcer.ID, SyncBlockReinforcer::new, SyncBlockReinforcer::handle);
+		serverPacket(registrar, SyncFrame.ID, SyncFrame::new, SyncFrame::handle);
 		serverPacket(registrar, SyncKeycardSettings.ID, SyncKeycardSettings::new, SyncKeycardSettings::handle);
 		serverPacket(registrar, SyncLaserSideConfig.ID, SyncLaserSideConfig::new, SyncLaserSideConfig::handle);
 		serverPacket(registrar, SyncProjector.ID, SyncProjector::new, SyncProjector::handle);
 		serverPacket(registrar, SyncRiftStabilizer.ID, SyncRiftStabilizer::new, SyncRiftStabilizer::handle);
-		serverPacket(registrar, SyncSecureRedstoneInterface.ID, SyncSecureRedstoneInterface::new, SyncSecureRedstoneInterface::handle);
 		serverPacket(registrar, SyncSSSSettingsOnServer.ID, SyncSSSSettingsOnServer::new, SyncSSSSettingsOnServer::handle);
+		serverPacket(registrar, SyncSecureRedstoneInterface.ID, SyncSecureRedstoneInterface::new, SyncSecureRedstoneInterface::handle);
 		serverPacket(registrar, SyncTrophySystem.ID, SyncTrophySystem::new, SyncTrophySystem::handle);
 		serverPacket(registrar, ToggleBlockPocketManager.ID, ToggleBlockPocketManager::new, ToggleBlockPocketManager::handle);
 		serverPacket(registrar, ToggleModule.ID, ToggleModule::new, ToggleModule::handle);
 		serverPacket(registrar, ToggleNightVision.ID, ToggleNightVision::new, ToggleNightVision::handle);
 		serverPacket(registrar, ToggleOption.ID, ToggleOption::new, ToggleOption::handle);
-		serverPacket(registrar, SetDefaultCameraViewingDirection.ID, SetDefaultCameraViewingDirection::new, SetDefaultCameraViewingDirection::handle);
-		serverPacket(registrar, UpdateSliderValue.ID, UpdateSliderValue::new, UpdateSliderValue::handle);
+		serverPacket(registrar, UpdateSliderValue.ID, UpdateSliderValue::new, UpdateSliderValue::handle); //TODO register our packet
 	}
 
 	private static final <T extends CustomPacketPayload> void clientPacket(IPayloadRegistrar registrar, ResourceLocation id, FriendlyByteBuf.Reader<T> reader, BiConsumer<T, PlayPayloadContext> handler) {

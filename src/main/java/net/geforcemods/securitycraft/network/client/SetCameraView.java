@@ -52,7 +52,6 @@ public class SetCameraView implements CustomPacketPayload {
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(CameraType.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
-				CameraController.setRenderPosition(entity);
 				OverlayToggleHandler.disable(VanillaGuiOverlay.EXPERIENCE_BAR);
 				OverlayToggleHandler.disable(VanillaGuiOverlay.JUMP_BAR);
 				OverlayToggleHandler.disable(VanillaGuiOverlay.POTION_ICONS);

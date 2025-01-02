@@ -13,6 +13,7 @@ import com.mojang.logging.LogUtils;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
@@ -28,6 +29,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.hudmods.TOPDataProvider;
 import net.geforcemods.securitycraft.items.SCManualItem;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.ConfigAttackTargetCheck;
 import net.geforcemods.securitycraft.misc.PageGroup;
@@ -77,6 +79,10 @@ public class SecurityCraft {
 			if (level.getEntity(uuid) == null)
 				ticketHelper.removeAllTickets(uuid);
 		}));
+		ticketHelper.getBlockTickets().forEach((pos, chunk) -> {
+			if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getTrackedBlockEntities(level).contains(pos))
+				ticketHelper.removeAllTickets(pos);
+		});
 	});
 	public static final boolean IS_A_SODIUM_MOD_INSTALLED = Util.make(() -> {
 		ModList modList = ModList.get();

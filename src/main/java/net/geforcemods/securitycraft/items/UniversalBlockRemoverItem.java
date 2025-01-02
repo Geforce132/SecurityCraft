@@ -52,9 +52,13 @@ public class UniversalBlockRemoverItem extends Item {
 			if (be instanceof DisplayCaseBlockEntity displayCase && (displayCase.isOpen() && displayCase.getDisplayedStack().isEmpty()))
 				return InteractionResult.PASS;
 
-			if (!((IOwnable) be).isOwnedBy(player)) {
+			IOwnable ownable = (IOwnable) be;
+			Owner owner = ownable.getOwner();
+			boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
+
+			if (!(isDefault && state.is(SCContent.FRAME.get())) && !ownable.isOwnedBy(player)) {
 				if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof IDisguisable db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable)))
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) be).getOwner())), ChatFormatting.RED);
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(owner)), ChatFormatting.RED);
 
 				return InteractionResult.FAIL;
 			}
@@ -81,12 +85,10 @@ public class UniversalBlockRemoverItem extends Item {
 				BlockPos middlePos = originalPos.above(4);
 
 				if (!level.isClientSide) {
-					Owner owner = ((IOwnable) be).getOwner();
-
 					CageTrapBlock.loopIronBarPositions(originalPos.mutable(), barPos -> {
 						BlockEntity barBe = level.getBlockEntity(barPos);
 
-						if (barBe instanceof IOwnable ownable && owner.owns(ownable)) {
+						if (barBe instanceof IOwnable ownableBar && owner.owns(ownableBar)) {
 							Block barBlock = level.getBlockState(barPos).getBlock();
 
 							if (barBlock == SCContent.REINFORCED_IRON_BARS.get() || (barPos.equals(middlePos) && barBlock == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))

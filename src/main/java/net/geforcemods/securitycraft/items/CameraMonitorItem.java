@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CameraMonitorItem extends Item {
 	public CameraMonitorItem(Item.Properties properties) {
@@ -90,7 +92,7 @@ public class CameraMonitorItem extends Item {
 			updateTagWithNames(stack, level);
 
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			ClientHandler.displayCameraMonitorScreen(player.getInventory(), (CameraMonitorItem) stack.getItem(), stack.getTag());
+			ClientHandler.displayCameraMonitorScreen(stack.getTag());
 
 		return InteractionResultHolder.consume(stack);
 	}
@@ -139,6 +141,11 @@ public class CameraMonitorItem extends Item {
 		}
 
 		return false;
+	}
+
+	public static void removeCameraOnClient(int camID, CompoundTag stackTag) {
+		stackTag.remove(CameraMonitorItem.getTagNameFromPosition(stackTag, CameraMonitorItem.getCameraPositions(stackTag).get(camID - 1).getLeft()));
+		PacketDistributor.SERVER.noArg().send(new RemoveCameraTag(camID));
 	}
 
 	public static List<Pair<GlobalPos, String>> getCameraPositions(CompoundTag tag) {

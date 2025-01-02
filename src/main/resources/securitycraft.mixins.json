@@ -8,6 +8,7 @@
 		"camera.GameRendererMixin",
 		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
+		"camera.ViewAreaMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
 		"taser.ItemInHandRendererMixin"
@@ -15,8 +16,10 @@
 	"mixins": [
 		"boat.BoatMixin",
 		"camera.ChunkMapMixin",
+		"camera.ISodiumWorldRendererAccessor",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
+		"camera.SodiumRenderSectionManagerMixin",
 		"camera.TrackedEntityMixin",
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
