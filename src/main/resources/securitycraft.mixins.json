@@ -21,6 +21,7 @@
 		"camera.ServerPlayerMixin",
 		"camera.SodiumRenderSectionManagerMixin",
 		"camera.TrackedEntityMixin",
+		"dispenser.IAbstractProjectileDispenseBehaviorAccessor",
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.BubbleColumnBlockMixin",
