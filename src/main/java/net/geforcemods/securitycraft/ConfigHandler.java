@@ -42,12 +42,12 @@ public class ConfigHandler {
 	private ConfigHandler() {}
 
 	public static class Client {
-		public BooleanValue sayThanksMessage;
-		public BooleanValue reinforcedBlockTint;
-		public IntValue reinforcedBlockTintColor;
-		public IntValue frameFeedRenderDistance;
-		public IntValue frameFeedResolution;
-		public IntValue frameFeedFpsLimit;
+		public final BooleanValue sayThanksMessage;
+		public final BooleanValue reinforcedBlockTint;
+		public final IntValue reinforcedBlockTintColor;
+		public final IntValue frameFeedRenderDistance;
+		public final IntValue frameFeedResolution;
+		public final IntValue frameFeedFpsLimit;
 
 		Client(ForgeConfigSpec.Builder builder) {
 			//@formatter:off
@@ -80,42 +80,42 @@ public class ConfigHandler {
 	}
 
 	public static class Server {
-		public DoubleValue codebreakerChance;
-		public BooleanValue allowAdminTool;
-		public BooleanValue shouldSpawnFire;
-		public BooleanValue ableToBreakMines;
-		public BooleanValue smallerMineExplosion;
-		public BooleanValue mineExplodesWhenInCreative;
-		public BooleanValue mineExplosionsBreakBlocks;
-		public IntValue laserBlockRange;
-		public IntValue inventoryScannerRange;
-		public IntValue maxAlarmRange;
-		public BooleanValue allowBlockClaim;
-		public BooleanValue reinforcedBlockTint;
-		public BooleanValue forceReinforcedBlockTint;
-		public BooleanValue retinalScannerFace;
-		public BooleanValue enableTeamOwnership;
-		public ConfigValue<List<? extends String>> teamOwnershipPrecedence;
-		public BooleanValue disableThanksMessage;
-		public BooleanValue trickScannersWithPlayerHeads;
-		public BooleanValue preventReinforcedFloorGlitching;
-		public DoubleValue taserDamage;
-		public DoubleValue poweredTaserDamage;
-		public DoubleValue laserDamage;
-		public IntValue incorrectPasscodeDamage;
-		public IntValue sentryBulletDamage;
-		public IntValue reinforcedSuffocationDamage;
-		public BooleanValue allowCameraNightVision;
-		public IntValue passcodeCheckCooldown;
-		public BooleanValue passcodeSpamLogWarningEnabled;
-		public ConfigValue<String> passcodeSpamLogWarning;
-		public BooleanValue inWorldUnReinforcing;
-		public BooleanValue frameFeedViewingEnabled;
-		public IntValue frameFeedViewDistance;
-		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
-		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
-		private ConfigValue<List<? extends String>> taserEffectsValue;
-		private ConfigValue<List<? extends String>> poweredTaserEffectsValue;
+		public final DoubleValue codebreakerChance;
+		public final BooleanValue allowAdminTool;
+		public final BooleanValue shouldSpawnFire;
+		public final BooleanValue ableToBreakMines;
+		public final BooleanValue smallerMineExplosion;
+		public final BooleanValue mineExplodesWhenInCreative;
+		public final BooleanValue mineExplosionsBreakBlocks;
+		public final IntValue laserBlockRange;
+		public final IntValue inventoryScannerRange;
+		public final IntValue maxAlarmRange;
+		public final BooleanValue allowBlockClaim;
+		public final BooleanValue reinforcedBlockTint;
+		public final BooleanValue forceReinforcedBlockTint;
+		public final BooleanValue retinalScannerFace;
+		public final BooleanValue enableTeamOwnership;
+		public final ConfigValue<List<? extends String>> teamOwnershipPrecedence;
+		public final BooleanValue disableThanksMessage;
+		public final BooleanValue trickScannersWithPlayerHeads;
+		public final BooleanValue preventReinforcedFloorGlitching;
+		public final DoubleValue taserDamage;
+		public final DoubleValue poweredTaserDamage;
+		public final DoubleValue laserDamage;
+		public final IntValue incorrectPasscodeDamage;
+		public final IntValue sentryBulletDamage;
+		public final IntValue reinforcedSuffocationDamage;
+		public final BooleanValue allowCameraNightVision;
+		public final IntValue passcodeCheckCooldown;
+		public final BooleanValue passcodeSpamLogWarningEnabled;
+		public final ConfigValue<String> passcodeSpamLogWarning;
+		public final BooleanValue inWorldUnReinforcing;
+		public final BooleanValue frameFeedViewingEnabled;
+		public final IntValue frameFeedViewDistance;
+		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
+		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
+		private final ConfigValue<List<? extends String>> taserEffectsValue;
+		private final ConfigValue<List<? extends String>> poweredTaserEffectsValue;
 		public final List<Supplier<MobEffectInstance>> taserEffects = new ArrayList<>();
 		public final List<Supplier<MobEffectInstance>> poweredTaserEffects = new ArrayList<>();
 
