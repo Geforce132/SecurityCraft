@@ -6,6 +6,7 @@
 	"client": [
 		"camera.ClientChunkCacheMixin",
 		"camera.GameRendererMixin",
+		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
 		"camera.ViewAreaMixin",
 		"f3.BetterF3TargetModuleMixin",
@@ -13,12 +14,14 @@
 		"taser.ItemInHandRendererMixin"
 	],
 	"mixins": [
-		"boat.BoatMixin",
 		"boat.BoatItemMixin",
+		"boat.BoatMixin",
 		"boat.VanillaInventoryCodeHooksMixin",
 		"camera.ChunkMapMixin",
+		"camera.ISodiumWorldRendererAccessor",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
+		"camera.SodiumRenderSectionManagerMixin",
 		"camera.TrackedEntityMixin",
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",

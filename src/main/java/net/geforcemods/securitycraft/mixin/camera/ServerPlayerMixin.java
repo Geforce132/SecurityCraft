@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.server.level.ServerPlayer;
 
 /**
- * Makes sure the server does not move the player viewing a camera to the camera's position
+ * Makes sure the server does not move the player mounting a camera to the camera's position
  */
 @Mixin(value = ServerPlayer.class, priority = 1100)
 public class ServerPlayerMixin {
