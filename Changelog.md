@@ -1,3 +1,9 @@
+--------------------------Changelog for v1.9.12-beta3 of SecurityCraft--------------------------
+
+- API: Added IModuleInventoryWithContainer to discern between module inventory and normal inventory of a block, without relying on vanilla's Container
+- Fix: Compatibility with NeoForge 21.4.49-beta
+- Misc.: The minimum required NeoForge version is now 21.4.49-beta
+
 --------------------------Changelog for v1.9.12-beta2 of SecurityCraft--------------------------
 
 - Fix: Text in the SC Manual is not rendered correctly

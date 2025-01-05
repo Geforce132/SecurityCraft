@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IModuleInventoryWithContainer;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
@@ -29,7 +30,6 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -41,7 +41,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
+public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
 	private IntOption range = new IntOption("range", 5, 1, 15, 1);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -221,67 +221,45 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public void clearContent() {
-		filter = ItemStack.EMPTY;
-		setChanged();
-	}
-
-	@Override
 	public int getContainerSize() {
 		return 1;
 	}
 
 	@Override
-	public int getMaxStackSize() {
+	public int getContainerStackSize() {
 		return 1;
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public boolean isContainerEmpty() {
 		return filter.isEmpty();
 	}
 
 	@Override
-	public ItemStack getItem(int index) {
-		return getStackInSlot(index);
-	}
-
-	@Override
-	public ItemStack removeItem(int index, int count) {
+	public ItemStack removeContainerItem(int index, int count, boolean simulate) {
 		ItemStack stack = filter;
 
 		if (count >= 1) {
-			filter = ItemStack.EMPTY;
-			setChanged();
-			return stack;
+			if (simulate) {
+				filter = ItemStack.EMPTY;
+				setChanged();
+			}
+
+			return stack.copy();
 		}
 
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ItemStack removeItemNoUpdate(int index) {
-		ItemStack stack = filter;
-
-		filter = ItemStack.EMPTY;
-		setChanged();
-		return stack;
-	}
-
-	@Override
-	public void setItem(int index, ItemStack stack) {
+	public void setContainerItem(int index, ItemStack stack) {
 		if (stack.getItem() instanceof BlockItem) {
-			if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
-				stack = new ItemStack(stack.getItem(), getMaxStackSize());
+			if (!stack.isEmpty() && stack.getCount() > getContainerStackSize())
+				stack = new ItemStack(stack.getItem(), getContainerStackSize());
 
 			filter = stack;
 			setChanged();
 		}
-	}
-
-	@Override
-	public boolean stillValid(Player player) {
-		return true;
 	}
 
 	@Override
@@ -291,7 +269,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if (slot >= 100)
+		if (!isContainer(slot))
 			return getModuleInSlot(slot);
 		else
 			return slot == 36 ? filter : ItemStack.EMPTY;
@@ -359,5 +337,15 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 					NbtUtils.readBlockState(holderGetter, tag.getCompound("state")));
 			//@formatter:on
 		}
+	}
+
+	@Override
+	public boolean isItemValidForContainer(int slot, ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public ItemStack getStackInContainer(int slot) {
+		return filter;
 	}
 }

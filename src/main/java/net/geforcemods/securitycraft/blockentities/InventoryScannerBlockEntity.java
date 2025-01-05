@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
+import net.geforcemods.securitycraft.api.IModuleInventoryWithContainer;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -49,7 +50,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
 
-public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
+public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -118,24 +119,29 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public ItemStack removeItem(int index, int count) {
+	public ItemStack removeContainerItem(int index, int count, boolean simulate) {
 		if (!inventoryContents.get(index).isEmpty()) {
 			ItemStack stack;
 
 			if (inventoryContents.get(index).getCount() <= count) {
 				stack = inventoryContents.get(index);
-				inventoryContents.set(index, ItemStack.EMPTY);
-				setChanged();
-				return stack;
+
+				if (!simulate) {
+					inventoryContents.set(index, ItemStack.EMPTY);
+					setChanged();
+				}
+
+				return stack.copy();
 			}
 			else {
 				stack = inventoryContents.get(index).split(count);
 
-				if (inventoryContents.get(index).getCount() == 0)
+				if (!simulate && inventoryContents.get(index).getCount() == 0) {
 					inventoryContents.set(index, ItemStack.EMPTY);
+					setChanged();
+				}
 
-				setChanged();
-				return stack;
+				return stack.copy();
 			}
 		}
 		else
@@ -149,15 +155,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return slot >= 100 ? getModuleInSlot(slot) : inventoryContents.get(slot);
+		return !isContainer(slot) ? getModuleInSlot(slot) : getStackInContainer(slot);
 	}
 
 	@Override
-	public ItemStack getItem(int slot) {
-		return getStackInSlot(slot);
-	}
-
-	public ItemStack getStackInSlotCopy(int index) {
+	public ItemStack getStackInContainer(int index) {
 		return inventoryContents.get(index);
 	}
 
@@ -173,11 +175,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void setItem(int index, ItemStack stack) {
+	public void setContainerItem(int index, ItemStack stack) {
 		inventoryContents.set(index, stack);
 
-		if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
-			stack.setCount(getMaxStackSize());
+		if (!stack.isEmpty() && stack.getCount() > getContainerStackSize())
+			stack.setCount(getContainerStackSize());
 
 		setChanged();
 	}
@@ -203,7 +205,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
 
 		if (slotStack.isEmpty()) {
-			setItem(slot, stackToInsert);
+			setContainerItem(slot, stackToInsert);
 			setChanged();
 			return ItemStack.EMPTY;
 		}
@@ -258,18 +260,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public boolean stillValid(Player player) {
-		return true;
-	}
-
-	@Override
-	public void startOpen(Player player) {}
-
-	@Override
-	public void stopOpen(Player player) {}
-
-	@Override
-	public boolean canPlaceItem(int index, ItemStack stack) {
+	public boolean isItemValidForContainer(int index, ItemStack stack) {
 		return false;
 	}
 
@@ -520,17 +511,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void clearContent() {
-		inventoryContents.clear();
-	}
-
-	@Override
-	public boolean isEmpty() {
+	public boolean isContainerEmpty() {
 		return inventoryContents.isEmpty();
-	}
-
-	@Override
-	public ItemStack removeItemNoUpdate(int index) {
-		return inventoryContents.remove(index);
 	}
 }

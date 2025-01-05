@@ -32,7 +32,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	public void render(ProjectorBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
 
-		if (be.isActive() && !be.isEmpty()) {
+		if (be.isActive() && !be.isContainerEmpty()) {
 			BlockState state = be.getProjectedState();
 			boolean hanging = be.getBlockState().getValue(ProjectorBlock.HANGING);
 			BlockPos pos;

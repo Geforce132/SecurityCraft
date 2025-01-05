@@ -7,7 +7,6 @@ import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.VanillaInventoryCodeHooks;
+import net.neoforged.neoforge.items.ContainerOrHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 	private static final DispenseItemBehavior DISPENSE_BEHAVIOUR = new DefaultDispenseItemBehavior();
@@ -47,15 +47,18 @@ public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 			else {
 				ItemStack dispenseStack = be.getItem(randomSlot);
 
-				if (!dispenseStack.isEmpty() && VanillaInventoryCodeHooks.dropperInsertHook(level, pos, be, randomSlot, dispenseStack)) {
+				if (!dispenseStack.isEmpty()) {
 					Direction direction = level.getBlockState(pos).getValue(FACING);
-					Container container = HopperBlockEntity.getContainerAt(level, pos.relative(direction));
+					ContainerOrHandler containerOrHandler = HopperBlockEntity.getContainerOrHandlerAt(level, pos.relative(direction), direction.getOpposite());
 					ItemStack afterDispenseStack;
 
-					if (container == null)
+					if (containerOrHandler == null)
 						afterDispenseStack = DISPENSE_BEHAVIOUR.dispense(source, dispenseStack);
 					else {
-						afterDispenseStack = HopperBlockEntity.addItem(be, container, dispenseStack.copy().split(1), direction.getOpposite());
+						if (containerOrHandler.container() != null)
+							afterDispenseStack = HopperBlockEntity.addItem(be, containerOrHandler.container(), dispenseStack.copyWithCount(1), direction.getOpposite());
+						else
+							afterDispenseStack = ItemHandlerHelper.insertItem(containerOrHandler.itemHandler(), dispenseStack.copyWithCount(1), false);
 
 						if (afterDispenseStack.isEmpty()) {
 							afterDispenseStack = dispenseStack.copy();
