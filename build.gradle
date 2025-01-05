@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.gradle.userdev' version '7.0.165'
+	id 'net.neoforged.moddev' version '2.0.71'
 }
 
 import groovy.json.JsonOutput
@@ -34,32 +34,44 @@ sourceSets.main.resources {
 	srcDir 'src/generated/resources' //include generated files
 }
 
-minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+neoForge {
+	version = "21.4.41-beta"
+	validateAccessTransformers = true
 
-runs {
-	configureEach {
-		systemProperty 'forge.logging.console.level', 'debug'
-		modSource project.sourceSets.main
+	runs {
+		configureEach {
+			systemProperty 'forge.logging.console.level', 'debug'
+			ideName = "SC ${project.mc_version} " + ideName.get()
+		}
+	
+		client {
+			client()
+			gameDirectory = project.file('run/client')
+		}
+	
+		server {
+			server()
+			gameDirectory = project.file('run/server')
+			programArgument('-nogui')
+		}
+	
+		data {
+			clientData()
+			gameDirectory = project.file('run/data')
+			programArguments.addAll('--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
+		}
 	}
 
-	client {
-		workingDirectory project.file('run/client')
-	}
-
-	server {
-		workingDirectory project.file('run/server')
-		argument '-nogui'
-	}
-
-	clientData {
-		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources').getAbsolutePath(), '--existing', file('src/main/resources').getAbsolutePath()
+	mods {
+		securitycraft {
+			sourceSet(sourceSets.main)
+		}
 	}
 }
 
 repositories {
 	maven {
-		url "https://cursemaven.com/"
+		url = "https://cursemaven.com/"
 		content {
 			includeGroup "curse.maven"
 		}
@@ -68,7 +80,7 @@ repositories {
 	exclusiveContent {
 		forRepository {
 			maven {
-				url "https://api.modrinth.com/maven"
+				url = "https://api.modrinth.com/maven"
 			}
 		}
 		filter {
@@ -78,25 +90,23 @@ repositories {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.4.41-beta'
-
 //	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
 //	implementation "curse.maven:ftb-teams-forge-404468:5448371"
 //	implementation "curse.maven:jei-238222:5567933"
 //	implementation "curse.maven:the-one-probe-245211:5502323"
-	implementation "curse.maven:jade-324717:5976531"
-	implementation "curse.maven:betterf3-401648:5970184"
-	implementation "curse.maven:cloth-config-348521:5968548" //betterf3 dependency
-	implementation "curse.maven:wthit-forge-455982:5974543"
+	implementation "curse.maven:jade-324717:6011327"
+	implementation "curse.maven:betterf3-401648:5873289"
+	implementation "curse.maven:cloth-config-348521:5834708" //betterf3 dependency
+	implementation "curse.maven:wthit-forge-455982:5977924"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 //	implementation "curse.maven:embeddium-908741:5556146"
-	implementation "maven.modrinth:sodium:mc1.21.4-0.6.3-neoforge" //incompatible with embeddium
+	implementation "maven.modrinth:sodium:mc1.21.4-0.6.6-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {
-	archiveFileName = "[1.21.4] SecurityCraft v${version}.jar"
+	archiveFileName = "[${project.mc_version}] SecurityCraft v${version}.jar"
 	manifest {
 		attributes(["Specification-Title": "SecurityCraft",
 					"Specification-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep",
@@ -111,4 +121,11 @@ tasks.withType(JavaCompile).configureEach {
 	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
 	options.encoding = 'UTF-8'
 	options.release = 21
+}
+
+idea {
+	module {
+		downloadSources = true
+		downloadJavadoc = true
+	}
 }
