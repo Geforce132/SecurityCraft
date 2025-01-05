@@ -8,12 +8,10 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class FluidTagGenerator extends FluidTagsProvider {
-	@SuppressWarnings("removal")
-	protected FluidTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, SecurityCraft.MODID, existingFileHelper);
+	protected FluidTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(output, lookupProvider, SecurityCraft.MODID);
 	}
 
 	@Override

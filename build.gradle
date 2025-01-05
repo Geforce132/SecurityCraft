@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.4.41-beta"
+	version = "21.4.47-beta"
 	validateAccessTransformers = true
 
 	runs {
@@ -58,7 +58,7 @@ neoForge {
 		data {
 			clientData()
 			gameDirectory = project.file('run/data')
-			programArguments.addAll('--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
+			programArguments.addAll('--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath())
 		}
 	}
 

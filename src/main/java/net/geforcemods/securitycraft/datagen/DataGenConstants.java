@@ -36,11 +36,11 @@ public class DataGenConstants {
 		public static final ModelTemplate REINFORCED_CUBE_COLUMN = ModelTemplates.create("securitycraft:reinforced_cube_column", TextureSlot.END, TextureSlot.SIDE);
 		public static final ModelTemplate REINFORCED_CUBE_COLUMN_HORIZONTAL = ModelTemplates.create("securitycraft:reinforced_cube_column_horizontal", "_horizontal", TextureSlot.END, TextureSlot.SIDE);
 		public static final ModelTemplate REINFORCED_CUBE_COLUMN_MIRRORED = ModelTemplates.create("securitycraft:reinforced_cube_column_mirrored", "_mirrored", TextureSlot.END, TextureSlot.SIDE);
+		public static final ModelTemplate REINFORCED_CUBE_COLUMN_UV_LOCKED_X = ModelTemplates.create("securitycraft:reinforced_cube_column_uv_locked_x", "_x", TextureSlot.END, TextureSlot.SIDE);
+		public static final ModelTemplate REINFORCED_CUBE_COLUMN_UV_LOCKED_Y = ModelTemplates.create("securitycraft:reinforced_cube_column_uv_locked_y", "_y", TextureSlot.END, TextureSlot.SIDE);
+		public static final ModelTemplate REINFORCED_CUBE_COLUMN_UV_LOCKED_Z = ModelTemplates.create("securitycraft:reinforced_cube_column_uv_locked_z", "_z", TextureSlot.END, TextureSlot.SIDE);
 		public static final ModelTemplate REINFORCED_CUBE_MIRRORED_ALL = ModelTemplates.create("securitycraft:reinforced_cube_mirrored_all", "_mirrored", TextureSlot.ALL);
 		public static final ModelTemplate REINFORCED_CUBE_NORTH_WEST_MIRRORED_ALL = ModelTemplates.create("securitycraft:reinforced_cube_north_west_mirrored_all", "_north_west_mirrored", TextureSlot.ALL);
-	    public static final ModelTemplate REINFORCED_CUBE_COLUMN_UV_LOCKED_X = ModelTemplates.create("securitycraft:reinforced_cube_column_uv_locked_x", "_x", TextureSlot.END, TextureSlot.SIDE);
-	    public static final ModelTemplate REINFORCED_CUBE_COLUMN_UV_LOCKED_Y = ModelTemplates.create("securitycraft:reinforced_cube_column_uv_locked_y", "_y", TextureSlot.END, TextureSlot.SIDE);
-	    public static final ModelTemplate REINFORCED_CUBE_COLUMN_UV_LOCKED_Z = ModelTemplates.create("securitycraft:reinforced_cube_column_uv_locked_z", "_z", TextureSlot.END, TextureSlot.SIDE);
 		public static final ModelTemplate REINFORCED_FENCE_GATE_CLOSED = ModelTemplates.create("securitycraft:template_reinforced_fence_gate", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_FENCE_GATE_OPEN = ModelTemplates.create("securitycraft:template_reinforced_fence_gate_open", "_open", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_FENCE_GATE_WALL_CLOSED = ModelTemplates.create("securitycraft:template_reinforced_fence_gate_wall", "_wall", TextureSlot.TEXTURE);

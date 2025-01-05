@@ -11,12 +11,10 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ItemTagGenerator extends ItemTagsProvider {
-	@SuppressWarnings("removal")
-	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagsProvider, ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, blockTagsProvider, SecurityCraft.MODID, existingFileHelper);
+	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagsProvider) {
+		super(output, lookupProvider, blockTagsProvider, SecurityCraft.MODID);
 	}
 
 	@Override
