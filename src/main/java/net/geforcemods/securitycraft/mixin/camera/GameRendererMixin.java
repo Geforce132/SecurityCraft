@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -16,6 +17,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -32,7 +34,7 @@ public class GameRendererMixin {
 	Minecraft minecraft;
 
 	/**
-	 * Makes sure the camera zooming works, because the fov is only updated when the camera entity is the player itself
+	 * Makes sure camera zooming works, because the fov is only updated when the camera entity is the player itself
 	 */
 	@ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.0F))
 	private float securitycraft$modifyInitialFValue(float f) {
@@ -60,5 +62,13 @@ public class GameRendererMixin {
 			if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens))
 				Gui.fill(posestack1, 0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), item.getColor(lens) + (be.getOpacity() << 24));
 		}
+	}
+
+	/**
+	 * Makes sure distortion effects are not rendered in camera feeds
+	 */
+	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"), ordinal = 1)
+	private float securitycraft$disableFeedDistortion(float original) {
+		return CameraController.currentlyCapturedCamera != null ? 0.0F : original;
 	}
 }

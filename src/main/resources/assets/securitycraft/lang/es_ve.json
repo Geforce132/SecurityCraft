@@ -1043,7 +1043,6 @@
 	"messages.securitycraft:codebreakerDisabled": "El descifrador de contraseñas se ha desactivado en el archivo de configuración.",
 	"messages.securitycraft:command.sc.usage": "Uso: /sc connect O /sc disconnect O /sc contact O /sc resume.",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
-	"messages.securitycraft:frame.rightclick": "Ver un monitor de cámara en un marco no es posible en este momento, ya que LookingGlass no se ha actualizado para versiones superiores a la 1.7.10. Puede que en futuras actualizaciones esta funcionalidad regrese sin depender de ningún mod como LookingGlass, pero no se sabe exactamente cuándo.",
 	"messages.securitycraft:invScan.notConnected": "¡No está conectado con otro bloque de escáner de inventario!",
 	"messages.securitycraft:keycardReader.cantUse": "No puedes utilizar esta tarjeta de acceso.",
 	"messages.securitycraft:keycardReader.differentOwner": "¡El lector de tarjetas al que se vinculó esta tarjeta pertenece a un jugador diferente del que estás intentando usar!",
