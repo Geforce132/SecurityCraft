@@ -21,6 +21,8 @@
 		"datafix.V1460Mixin",
 		"datafix.V4067Mixin",
 		"datagen.BlockStateGeneratorCollectorMixin",
+		"hopper.HopperBlockEntityMixin",
+		"hopper.VanillaInventoryCodeHooksMixin",
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
 		"suspiciousmines.BrushItemMixin"
