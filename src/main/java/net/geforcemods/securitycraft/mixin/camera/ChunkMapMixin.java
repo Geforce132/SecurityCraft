@@ -24,10 +24,10 @@ import com.google.common.collect.ImmutableList;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity.ChunkTrackingView;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.server.level.ChunkMap;
@@ -99,7 +99,7 @@ public abstract class ChunkMapMixin {
 
 			for (int i = pos.x() - viewDistance; i <= pos.x() + viewDistance; ++i) {
 				for (int j = pos.z() - viewDistance; j <= pos.z() + viewDistance; ++j) {
-					if (!CameraController.isInViewDistance(playerPos.x, playerPos.z, viewDistance, i, j))
+					if (!Utils.isInViewDistance(playerPos.x, playerPos.z, viewDistance, i, j))
 						updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), false, true);
 				}
 			}
@@ -113,7 +113,7 @@ public abstract class ChunkMapMixin {
 
 			for (int i = pos.x() - cameraViewDistance; i <= pos.x() + cameraViewDistance; ++i) {
 				for (int j = pos.z() - cameraViewDistance; j <= pos.z() + cameraViewDistance; ++j) {
-					if (!CameraController.isInViewDistance(playerPos.x, playerPos.z, viewDistance, i, j))
+					if (!Utils.isInViewDistance(playerPos.x, playerPos.z, viewDistance, i, j))
 						updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), false, true);
 				}
 			}
@@ -141,7 +141,7 @@ public abstract class ChunkMapMixin {
 
 			for (int i = centerPos.x - unViewDistance; i <= centerPos.x + unViewDistance; ++i) {
 				for (int j = centerPos.z - unViewDistance; j <= centerPos.z + unViewDistance; ++j) {
-					if (!CameraController.isInViewDistance(playerPos.x, playerPos.z, viewDistance, i, j) && BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldKeepChunkTracked(player, centerPos.x, centerPos.z)).isEmpty())
+					if (!Utils.isInViewDistance(playerPos.x, playerPos.z, viewDistance, i, j) && BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.shouldKeepChunkTracked(player, centerPos.x, centerPos.z)).isEmpty())
 						updateChunkTracking(player, new ChunkPos(i, j), new MutableObject<>(), true, false);
 				}
 			}
@@ -160,7 +160,7 @@ public abstract class ChunkMapMixin {
 			if (player.getCamera() instanceof SecurityCamera camera) {
 				SectionPos cameraPos = SectionPos.of(camera.blockPosition());
 
-				if (CameraController.isInViewDistance(cameraPos.x(), cameraPos.z(), camera.getChunkLoadingDistance(), pos.x, pos.z))
+				if (Utils.isInViewDistance(cameraPos.x(), cameraPos.z(), camera.getChunkLoadingDistance(), pos.x, pos.z))
 					playerList.add(player);
 			}
 			else if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())

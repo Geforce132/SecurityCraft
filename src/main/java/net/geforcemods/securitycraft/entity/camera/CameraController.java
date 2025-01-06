@@ -31,6 +31,7 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
@@ -308,7 +309,7 @@ public class CameraController {
 				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
 				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getStepZ();
 
-				if (isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz)) {
+				if (Utils.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz)) {
 					RenderChunk neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
 
 					if (neighbourSection != null) {
@@ -335,15 +336,6 @@ public class CameraController {
 		}
 
 		return false;
-	}
-
-	public static boolean isInViewDistance(int centerX, int centerZ, int viewDistance, int x, int z) {
-		int xDistance = Math.max(0, Math.abs(x - centerX) - 1);
-		int zDistance = Math.max(0, Math.abs(z - centerZ) - 1);
-		int squareDistance = xDistance * xDistance + zDistance * zDistance;
-		int squareViewDistance = viewDistance * viewDistance;
-
-		return squareDistance < squareViewDistance;
 	}
 
 	public static int getFrameFeedViewDistance(FrameBlockEntity be) {

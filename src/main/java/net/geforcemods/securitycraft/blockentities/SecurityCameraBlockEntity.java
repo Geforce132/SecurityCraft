@@ -26,6 +26,7 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -535,7 +536,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public record ChunkTrackingView(ChunkPos center, int viewDistance) {
 		public boolean contains(int x, int z) {
-			return CameraController.isInViewDistance(center.x, center.z, viewDistance, x, z);
+			return Utils.isInViewDistance(center.x, center.z, viewDistance, x, z);
 		}
 	}
 }
