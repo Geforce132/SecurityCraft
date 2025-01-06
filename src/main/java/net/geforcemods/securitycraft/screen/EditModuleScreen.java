@@ -130,7 +130,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawWordWrap(font, editModule, leftPos + xSize / 2 - font.width(editModule) / 2, topPos + 6, width, 4210752);
+		guiGraphics.drawWordWrap(font, editModule, leftPos + xSize / 2 - font.width(editModule) / 2, topPos + 6, width, 4210752, false);
 	}
 
 	@Override

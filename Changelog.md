@@ -2,6 +2,7 @@
 
 - API: Added IModuleInventoryWithContainer to discern between module inventory and normal inventory of a block, without relying on vanilla's Container
 - Fix: Compatibility with NeoForge 21.4.49-beta
+- Fix: Text in the Inventory Scanner and edit module screen is not rendered correctly
 - Misc.: The minimum required NeoForge version is now 21.4.49-beta
 
 --------------------------Changelog for v1.9.12-beta2 of SecurityCraft--------------------------

@@ -57,8 +57,8 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
-		guiGraphics.drawWordWrap(font, infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752);
-		guiGraphics.drawWordWrap(font, infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752);
+		guiGraphics.drawWordWrap(font, infoStringRedstone, leftPos + 28, topPos + 45, 150, 4210752, false);
+		guiGraphics.drawWordWrap(font, infoStringStorage, leftPos + 28, topPos + 75, 150, 4210752, false);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.REDSTONE, redstoneModuleTooltip, hasRedstoneModule, leftPos + 8, topPos + 45, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.STORAGE, storageModuleTooltip, hasStorageModule, leftPos + 8, topPos + 75, mouseX, mouseY);
 		renderTooltip(guiGraphics, mouseX, mouseY);
