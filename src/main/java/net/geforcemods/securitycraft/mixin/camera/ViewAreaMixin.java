@@ -26,7 +26,7 @@ public class ViewAreaMixin {
 	 * falling).
 	 */
 	@Inject(method = "repositionCamera", at = @At("HEAD"), cancellable = true)
-	public void securitycraft$preventCameraRepositioning(double x, double z, CallbackInfo ci) {
+	private void securitycraft$preventCameraRepositioning(double x, double z, CallbackInfo ci) {
 		if (Minecraft.getInstance().cameraEntity instanceof SecurityCamera camera && (x != camera.getX() || z != camera.getZ()))
 			ci.cancel();
 	}

@@ -43,7 +43,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * frame camera
 	 */
 	@Inject(method = "drop", at = @At(value = "HEAD"))
-	public void securitycraft$onDrop(int x, int z, CallbackInfo ci) {
+	private void securitycraft$onDrop(int x, int z, CallbackInfo ci) {
 		ChunkPos pos = new ChunkPos(x, z);
 		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
