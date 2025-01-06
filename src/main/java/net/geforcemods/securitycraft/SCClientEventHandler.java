@@ -160,10 +160,13 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onRenderFramePost(RenderTickEvent event) {
+		if (event.phase == Phase.START)
+			return;
+
 		Minecraft mc = Minecraft.getInstance();
 		Player player = mc.player;
 
-		if (event.phase == Phase.START && player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
 		ProfilerFiller profiler = mc.getProfiler();
