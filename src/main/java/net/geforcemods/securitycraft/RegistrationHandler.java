@@ -206,7 +206,7 @@ public class RegistrationHandler {
 		serverPacket(registrar, ToggleModule.ID, ToggleModule::new, ToggleModule::handle);
 		serverPacket(registrar, ToggleNightVision.ID, ToggleNightVision::new, ToggleNightVision::handle);
 		serverPacket(registrar, ToggleOption.ID, ToggleOption::new, ToggleOption::handle);
-		serverPacket(registrar, UpdateSliderValue.ID, UpdateSliderValue::new, UpdateSliderValue::handle); //TODO register our packet
+		serverPacket(registrar, UpdateSliderValue.ID, UpdateSliderValue::new, UpdateSliderValue::handle);
 	}
 
 	private static final <T extends CustomPacketPayload> void clientPacket(IPayloadRegistrar registrar, ResourceLocation id, FriendlyByteBuf.Reader<T> reader, BiConsumer<T, PlayPayloadContext> handler) {
