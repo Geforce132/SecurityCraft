@@ -29,8 +29,7 @@ public interface IModuleInventoryWithContainer extends IModuleInventory {
 
 	@Override
 	default int getSlots() {
-		//TODO: side effects?
-		return IModuleInventory.super.getSlots() + getContainerSize();
+		return getContainerSize();
 	}
 
 	@Override
