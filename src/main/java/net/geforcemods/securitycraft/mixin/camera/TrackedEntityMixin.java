@@ -57,7 +57,7 @@ public class TrackedEntityMixin {
 	 * Enables entities that should be sent as well as security camera entities to be sent to the client
 	 */
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE, ordinal = 1))
-	public boolean securitycraft$modifyFlag(boolean original) {
+	private boolean securitycraft$modifyFlag(boolean original) {
 		if (securitycraft$shouldBeSent) {
 			this.securitycraft$shouldBeSent = false;
 			return true;

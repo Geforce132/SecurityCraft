@@ -19,12 +19,12 @@ import net.minecraft.world.level.material.FluidState;
 @Mixin(TargetModule.class)
 public class BetterF3TargetModuleMixin {
 	@Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-	public BlockState securitycraft$spoofBlockState(ClientLevel level, BlockPos pos) {
+	private BlockState securitycraft$spoofBlockState(ClientLevel level, BlockPos pos) {
 		return F3Spoofer.spoofBlockState(level.getBlockState(pos), pos);
 	}
 
 	@ModifyVariable(method = "update", name = "fluidState", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getFluidState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/material/FluidState;"))
-	public FluidState securitycraft$spoofFluidState(FluidState originalState) {
+	private FluidState securitycraft$spoofFluidState(FluidState originalState) {
 		return F3Spoofer.spoofFluidState(originalState);
 	}
 }
