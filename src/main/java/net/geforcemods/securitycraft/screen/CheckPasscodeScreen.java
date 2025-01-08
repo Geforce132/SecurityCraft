@@ -123,7 +123,7 @@ public class CheckPasscodeScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && keycodeTextbox.getValue().length() > 0)
+		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && !keycodeTextbox.getValue().isEmpty())
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 
 		if (!super.keyPressed(keyCode, scanCode, modifiers) && !keycodeTextbox.keyPressed(keyCode, scanCode, modifiers)) {
@@ -174,7 +174,7 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	private void removeLastCharacter() {
-		if (keycodeTextbox.getValue().length() > 0)
+		if (!keycodeTextbox.getValue().isEmpty())
 			keycodeTextbox.deleteChars(-1);
 	}
 

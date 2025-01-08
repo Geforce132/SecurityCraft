@@ -38,6 +38,7 @@ import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.Util;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -77,6 +78,11 @@ public class SecurityCraft {
 	public static final CreativeModeTab TECHNICAL_TAB = new SCTechnicalTab();
 	public static final CreativeModeTab MINE_TAB = new SCExplosivesTab();
 	public static final CreativeModeTab DECORATION_TAB = new SCDecorationTab();
+	public static final boolean IS_A_SODIUM_MOD_INSTALLED = Util.make(() -> {
+		ModList modList = ModList.get();
+
+		return modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
+	});
 
 	public SecurityCraft() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

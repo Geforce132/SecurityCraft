@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Suppliers;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IDisguisable;
@@ -20,6 +22,7 @@ import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -30,6 +33,7 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -49,6 +53,7 @@ import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
+import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticle;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
@@ -57,6 +62,7 @@ import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
+import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.OwnableBlockEntityRenderer;
@@ -74,7 +80,7 @@ import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
-import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
+import net.geforcemods.securitycraft.screen.CameraSelectScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
@@ -109,6 +115,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -125,8 +132,8 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -146,6 +153,7 @@ import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
@@ -275,7 +283,11 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onTextureStitchPre(TextureStitchEvent.Pre event) {
-		if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
+		ResourceLocation sheet = event.getAtlas().location();
+
+		if (sheet.equals(InventoryMenu.BLOCK_ATLAS))
+			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/frame/noise_background"));
+		else if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
 			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/active"));
 			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/inactive"));
 			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_active"));
@@ -497,6 +509,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, false));
 		event.registerBlockEntityRenderer(SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, true));
+		event.registerBlockEntityRenderer(SCContent.FRAME_BLOCK_ENTITY.get(), FrameBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.OWNABLE_BLOCK_ENTITY.get(), OwnableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
@@ -740,6 +753,20 @@ public class ClientHandler {
 		return tintReinforcedBlocks ? FastColor.ARGB32.multiply(tint, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
 	}
 
+	@SubscribeEvent
+	public static void onRegisterShaders(RegisterShadersEvent event) {
+		ShaderInstance shader;
+
+		try {
+			shader = new ShaderInstance(event.getResourceManager(), new ResourceLocation(SecurityCraft.MODID, "frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX);
+		}
+		catch (IOException e) {
+			throw new IllegalStateException("Camera feed shader does not exist", e);
+		}
+
+		event.registerShader(shader, loadedShader -> CameraController.cameraMonitorShader = loadedShader);
+	}
+
 	public static Player getClientPlayer() {
 		return Minecraft.getInstance().player;
 	}
@@ -760,8 +787,12 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
-	public static void displayCameraMonitorScreen(Inventory inv, CameraMonitorItem item, CompoundTag stackTag) {
-		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, item, stackTag));
+	public static void displayCameraMonitorScreen(CompoundTag stackTag) {
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(CameraMonitorItem.getCameraPositions(stackTag), camID -> CameraMonitorItem.removeCameraOnClient(camID, stackTag), pos -> SecurityCraft.CHANNEL.sendToServer(new MountCamera(pos.pos())), false, false));
+	}
+
+	public static void displayFrameScreen(FrameBlockEntity be, boolean readOnly) {
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null));
 	}
 
 	public static void displaySCManualScreen() {

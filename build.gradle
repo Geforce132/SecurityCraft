@@ -97,6 +97,7 @@ dependencies {
     implementation fg.deobf("curse.maven:betterf3-401648:4030561")
     implementation fg.deobf("curse.maven:cloth-config-forge-348521:3972426") //betterf3 dependency
     implementation fg.deobf("curse.maven:projecte-226410:3722831")
+    implementation fg.deobf("curse.maven:embeddium-908741:5322305")
 }
 
 mixin {

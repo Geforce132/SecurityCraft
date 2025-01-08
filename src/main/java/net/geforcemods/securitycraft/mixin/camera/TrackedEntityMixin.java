@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerEntity;
@@ -19,10 +20,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * Lets entities get sent to the client even though they're not in range of the player
+ * Enables entities that are in range of a player-viewed camera, as well as the mounted security camera entity, to be sent to
+ * the client.
  */
 @Mixin(value = ChunkMap.TrackedEntity.class, priority = 1100)
-public abstract class TrackedEntityMixin {
+public class TrackedEntityMixin {
 	@Shadow
 	@Final
 	ServerEntity serverEntity;
@@ -30,7 +32,7 @@ public abstract class TrackedEntityMixin {
 	@Final
 	Entity entity;
 	@Unique
-	private boolean shouldBeSent = false;
+	private boolean securitycraft$shouldBeSent = false;
 
 	/**
 	 * Checks if this entity is in range of a camera that is currently being viewed, and stores the result in the field
@@ -38,14 +40,16 @@ public abstract class TrackedEntityMixin {
 	 */
 	@Inject(method = "updatePlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/world/phys/Vec3;x:D", ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT)
 	private void securitycraft$onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, double viewDistance) {
-		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesAround(player.level, entity.blockPosition(), (int) viewDistance).isEmpty())
+			securitycraft$shouldBeSent = true;
+		else if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			if (entity == player.camera) //If the player is mounted to a camera entity, that entity always needs to be sent to the client regardless of distance
-				shouldBeSent = true;
+				securitycraft$shouldBeSent = true;
 
 			Vec3 relativePosToCamera = player.getCamera().position().subtract(serverEntity.sentPos());
 
 			if (relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance)
-				shouldBeSent = true;
+				securitycraft$shouldBeSent = true;
 		}
 	}
 
@@ -54,9 +58,11 @@ public abstract class TrackedEntityMixin {
 	 */
 	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE, ordinal = 1))
 	public boolean securitycraft$modifyFlag(boolean original) {
-		boolean originalShouldBeSent = this.shouldBeSent;
+		if (securitycraft$shouldBeSent) {
+			this.securitycraft$shouldBeSent = false;
+			return true;
+		}
 
-		this.shouldBeSent = false;
-		return original || originalShouldBeSent;
+		return original;
 	}
 }

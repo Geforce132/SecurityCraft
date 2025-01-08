@@ -971,7 +971,6 @@
 	"messages.securitycraft:codebreakerDisabled": "Взломщик кодов был отключён через файл конфигурации.",
 	"messages.securitycraft:command.sc.usage": "Использование: /sc connect ИЛИ /sc disconnect ИЛИ /sc contact ИЛИ /sc resume",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
-	"messages.securitycraft:frame.rightclick": "Просмотр камеры монитора в рамке в настоящее время невозможен, потому что LookingGlass не был портирован на любую версию, новее чем 1.7.10. В будущем обновлении эта функция может вернуться без зависимости от любого мода-библиотеки, такого как LookingGlass, однако неизвестно, когда именно.",
 	"messages.securitycraft:invScan.notConnected": "Это не подключено к другому блоку сканера инвентаря!",
 	"messages.securitycraft:keycardReader.cantUse": "Вы не можете использовать эту ключ-карту.",
 	"messages.securitycraft:keycardReader.differentOwner": "Считыватель ключ-карт, к которому была привязана эта карта, принадлежит другому игроку, а не тому, которого вы пытаетесь использовать!",

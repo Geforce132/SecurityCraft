@@ -22,6 +22,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.gui.widget.ExtendedButton;
+import net.minecraft.util.Mth;
 
 public class AlarmOptionsScreen extends Screen {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm_options.png");
@@ -98,7 +99,7 @@ public class AlarmOptionsScreen extends Screen {
 	public void setSoundLength(int newSoundLength, boolean updateTimeEditBox) {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
-		int soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
+		int soundLength = Mth.clamp(newSoundLength, 1, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH);
 
 		if (updateTimeEditBox)
 			soundLengthEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));

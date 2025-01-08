@@ -971,7 +971,6 @@
 	"messages.securitycraft:codebreakerDisabled": "Il Decrittatore è stato disabilitato dal file di configurazione.",
 	"messages.securitycraft:command.sc.usage": "Utilizzo: /sc connect OPPURE /sc disconnect OPPURE /sc contact OPPURE /sc resume",
 	"messages.securitycraft:formattedCoordinates": "X: %1$s Y: %2$s Z: %3$s",
-	"messages.securitycraft:frame.rightclick": "Clicca col tasto destro tenendo un Monitor collegato per vederlo.",
 	"messages.securitycraft:invScan.notConnected": "Questo Scanner non è connesso a un altro!",
 	"messages.securitycraft:keycardReader.cantUse": "Non puoi usare questa Tessera.",
 	"messages.securitycraft:keycardReader.differentOwner": "Il Lettore a cui questa tessera era collegata appartiene a un giocatore diverso rispetto a quello che stai cercando di usare!",

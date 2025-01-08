@@ -44,7 +44,6 @@ public class SetCameraView {
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(CameraType.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
-				CameraController.setRenderPosition(entity);
 				CameraController.saveOverlayStates();
 				OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
 				OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
