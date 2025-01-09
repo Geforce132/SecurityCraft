@@ -171,7 +171,7 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onRenderFramePost(RenderTickEvent event) {
-		if (event.phase == Phase.START)
+		if (event.phase == Phase.END)
 			return;
 
 		Minecraft mc = Minecraft.getInstance();
