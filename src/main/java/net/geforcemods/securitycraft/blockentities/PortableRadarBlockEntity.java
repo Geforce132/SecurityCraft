@@ -142,7 +142,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 		};
 
 		if (ConfigHandler.SERVER.enableTeamOwnership.get())
-			options = ArrayUtils.insert(3, options, sendToTeamMembersOption);
+			options = ArrayUtils.add(options, 3, sendToTeamMembersOption); //Using ArrayUtils#insert crashes in production
 
 		return options;
 	}
