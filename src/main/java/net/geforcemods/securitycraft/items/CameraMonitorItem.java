@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
+import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -99,7 +100,7 @@ public class CameraMonitorItem extends Item {
 			updateTagWithNames(stack, level);
 
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			ClientHandler.displayCameraMonitorScreen(player.inventory, (CameraMonitorItem) stack.getItem(), stack.getTag());
+			ClientHandler.displayCameraMonitorScreen(stack.getTag());
 
 		return ActionResult.consume(stack);
 	}
@@ -149,6 +150,11 @@ public class CameraMonitorItem extends Item {
 		}
 
 		return false;
+	}
+
+	public static void removeCameraOnClient(int camID, CompoundNBT stackTag) {
+		stackTag.remove(CameraMonitorItem.getTagNameFromPosition(stackTag, CameraMonitorItem.getCameraPositions(stackTag).get(camID - 1).getLeft()));
+		SecurityCraft.channel.sendToServer(new RemoveCameraTag(camID));
 	}
 
 	public static List<Pair<GlobalPos, String>> getCameraPositions(CompoundNBT tag) {

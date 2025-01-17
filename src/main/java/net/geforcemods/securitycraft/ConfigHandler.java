@@ -48,6 +48,9 @@ public class ConfigHandler {
 		public final BooleanValue sayThanksMessage;
 		public final BooleanValue reinforcedBlockTint;
 		public final IntValue reinforcedBlockTintColor;
+		public final IntValue frameFeedRenderDistance;
+		public final IntValue frameFeedResolution;
+		public final IntValue frameFeedFpsLimit;
 
 		Client(ForgeConfigSpec.Builder builder) {
 			//@formatter:off
@@ -63,6 +66,18 @@ public class ConfigHandler {
 					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
 							"Format: 0xRRGGBB")
 					.defineInRange("reinforced_block_tint_color", 0x999999, 0x000000, 0xFFFFFF);
+
+			frameFeedRenderDistance = builder
+					.comment("Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.")
+					.defineInRange("frame_feed_render_distance", 16, 2, 32);
+
+			frameFeedResolution = builder
+					.comment("Set the resolution of the Frame camera feed. This is always a square resolution. Smaller values will be less detailed, higher values may lead to diminishing returns.")
+					.defineInRange("frame_feed_resolution", 512, 1, 16384);
+
+			frameFeedFpsLimit = builder
+					.comment("The maximum amount of frames per second the Frame camera feed renders at. Higher values will lead to worse performance.")
+					.defineInRange("frame_feed_fps_limit", 30, 10, 260);
 			//@formatter:on
 		}
 	}
@@ -98,6 +113,8 @@ public class ConfigHandler {
 		public final BooleanValue passcodeSpamLogWarningEnabled;
 		public final ConfigValue<String> passcodeSpamLogWarning;
 		public final BooleanValue inWorldUnReinforcing;
+		public final BooleanValue frameFeedViewingEnabled;
+		public final IntValue frameFeedViewDistance;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 		private final ConfigValue<List<? extends String>> taserEffectsValue;
@@ -244,6 +261,14 @@ public class ConfigHandler {
 			inWorldUnReinforcing = builder
 					.comment("Setting this to false disables the ability of the Universal Block Reinforcer to (un-)reinforce blocks that are placed in the world.")
 					.define("in_world_un_reinforcing", true);
+
+			frameFeedViewingEnabled = builder
+					.comment("Set this to false to disable the feature that camera feeds can be viewed in frames. While this feature is generally stable, it may also impact server performance due to loading chunks within all active frame cameras' views.")
+					.define("frame_feed_viewing_enabled", true);
+
+			frameFeedViewDistance = builder
+					.comment("Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.")
+					.defineInRange("frame_feed_view_distance", 16, 2, 32);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")

@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.PointOfView;
 
 /**
- * Disallows players from pressing F5 (by default) to change to third person while viewing a camera
+ * Disallows players from pressing F5 (by default) to change to third person while being mounted to a camera
  */
 @Mixin(value = Minecraft.class, priority = 1100)
 public class MinecraftMixin {
