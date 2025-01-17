@@ -74,13 +74,14 @@ public class ItemContainer implements IInventory {
 	public ItemStack removeItem(int index, int size) {
 		ItemStack stack = getItem(index);
 
-		if (!stack.isEmpty())
+		if (!stack.isEmpty()) {
 			if (stack.getCount() > size) {
 				stack = stack.split(size);
 				setChanged();
 			}
 			else
 				setItem(index, ItemStack.EMPTY);
+		}
 
 		return stack;
 	}

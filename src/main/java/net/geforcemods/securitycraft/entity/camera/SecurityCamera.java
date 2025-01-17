@@ -1,7 +1,8 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -9,7 +10,6 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -28,7 +28,7 @@ import net.minecraftforge.fml.network.PacketDistributor;
 
 public class SecurityCamera extends Entity {
 	public static final DataParameter<Float> ZOOM_AMOUNT = EntityDataManager.<Float>defineId(SecurityCamera.class, DataSerializers.FLOAT);
-	private static final List<PlayerEntity> DISMOUNTED_PLAYERS = new ArrayList<>();
+	private static final Map<UUID, BlockPos> DISMOUNTED_PLAYERS = new HashMap<>();
 	protected boolean zooming = false;
 	private int initialChunkLoadingDistance = 0;
 	private boolean hasSentChunks = false;
@@ -100,6 +100,10 @@ public class SecurityCamera extends Entity {
 		initialChunkLoadingDistance = chunkLoadingDistance;
 	}
 
+	public int getChunkLoadingDistance() {
+		return initialChunkLoadingDistance;
+	}
+
 	public boolean hasSentChunks() {
 		return hasSentChunks;
 	}
@@ -108,8 +112,12 @@ public class SecurityCamera extends Entity {
 		this.hasSentChunks = hasSentChunks;
 	}
 
-	public static boolean hasRecentlyDismounted(PlayerEntity player) {
-		return DISMOUNTED_PLAYERS.remove(player);
+	public static boolean hasRecentlyDismounted(ServerPlayerEntity player) {
+		return DISMOUNTED_PLAYERS.containsKey(player.getUUID());
+	}
+
+	public static BlockPos fetchRecentDismountLocation(ServerPlayerEntity player) {
+		return DISMOUNTED_PLAYERS.remove(player.getUUID());
 	}
 
 	@Override
@@ -123,7 +131,7 @@ public class SecurityCamera extends Entity {
 			remove();
 			player.camera = player;
 			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> player), new SetCameraView(player));
-			DISMOUNTED_PLAYERS.add(player);
+			DISMOUNTED_PLAYERS.put(player.getUUID(), blockPosition());
 
 			if (player.getEffect(Effects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
 				player.removeEffect(Effects.NIGHT_VISION);

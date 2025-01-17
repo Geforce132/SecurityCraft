@@ -23,14 +23,12 @@ public class IngredientDisplay {
 			return;
 
 		mc.getItemRenderer().renderAndDecorateItem(stacks[currentRenderingStack], x, y);
+	}
 
-		if (!Screen.hasShiftDown()) {
-			ticksToChange -= partialTicks;
-
-			if (ticksToChange <= 0) {
-				changeRenderingStack(1);
-				ticksToChange = DISPLAY_LENGTH;
-			}
+	public void tick() {
+		if (!Screen.hasShiftDown() && --ticksToChange <= 0) {
+			changeRenderingStack(1);
+			ticksToChange = DISPLAY_LENGTH;
 		}
 	}
 

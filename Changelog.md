@@ -1,8 +1,14 @@
 --------------------------Changelog for the upcoming version of SecurityCraft--------------------------
 
+- New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
+- New: Several server and client config settings to control chunk loading in camera feeds
 - Change: The block mine overlay now shows in the first person hand models as well
+- Change: Camera model animations are now synchronized between players
 - API: IDisguisable has been simplified
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
+- Fix: The display of items in the SC Manual can change too fast in certain situations
+
+[1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
 
 --------------------------Changelog for v1.9.12.1 of SecurityCraft--------------------------
 

@@ -16,7 +16,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.world.World;
 
 /**
- * When a player is viewing a camera, enables sounds near the camera to be played, while sounds near the player entity are
+ * When a player is mounted to a camera, enables sounds near the camera to be played, while sounds near the player entity are
  * suppressed
  */
 @Mixin(value = PlayerList.class, priority = 1100)

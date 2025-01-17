@@ -33,7 +33,10 @@ import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
+import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
+import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -114,7 +117,9 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		if (event.phase == Phase.END) {
+		if (event.phase == Phase.START)
+			SecurityCameraBlockEntity.resetForceLoadingCounter();
+		else {
 			PLAYING_TUNES.forEach((player, pair) -> {
 				int ticksRemaining = pair.getLeft();
 
@@ -162,10 +167,11 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
 		ServerPlayerEntity player = (ServerPlayerEntity) event.getPlayer();
+		World level = player.level;
 
 		if (player.getCamera() instanceof SecurityCamera) {
 			SecurityCamera cam = (SecurityCamera) player.getCamera();
-			TileEntity be = player.level.getBlockEntity(cam.blockPosition());
+			TileEntity be = level.getBlockEntity(cam.blockPosition());
 
 			if (player.getEffect(Effects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
 				player.removeEffect(Effects.NIGHT_VISION);
@@ -174,6 +180,11 @@ public class SCEventHandler {
 				((SecurityCameraBlockEntity) be).stopViewing();
 
 			cam.remove();
+		}
+
+		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.getCameraFeedChunks(player) != null || be.hasPlayerFrameLink(player))) {
+			viewedCamera.unlinkFrameForPlayer(player.getUUID(), null);
+			viewedCamera.clearCameraFeedChunks(player);
 		}
 	}
 
@@ -186,8 +197,16 @@ public class SCEventHandler {
 	public static void onLevelLoad(WorldEvent.Load event) {
 		IWorld level = event.getWorld();
 
-		if (level instanceof ServerWorld && ((ServerWorld) level).dimension() == World.OVERWORLD)
+		if (level instanceof ServerWorld && ((ServerWorld) level).dimension() == World.OVERWORLD) {
 			SaltData.refreshLevel(((ServerWorld) level));
+			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
+		}
+		else if (level.isClientSide()) {
+			CameraController.FRAME_LINKS.clear();
+			CameraController.FRAME_CAMERA_FEEDS.clear();
+			CameraClientChunkCacheExtension.clear();
+			CameraViewAreaExtension.clear();
+		}
 	}
 
 	@SubscribeEvent

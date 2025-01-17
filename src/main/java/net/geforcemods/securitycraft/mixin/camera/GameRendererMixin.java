@@ -8,22 +8,25 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.IngameGui;
+import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 @Mixin(value = GameRenderer.class, priority = 1100)
@@ -33,7 +36,7 @@ public class GameRendererMixin {
 	Minecraft minecraft;
 
 	/**
-	 * Makes sure the camera zooming works, because the fov is only updated when the camera entity is the player itself
+	 * Makes sure camera zooming works, because the fov is only updated when the camera entity is the player itself
 	 */
 	@ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.0F))
 	private float securitycraft$modifyInitialFValue(float f) {
@@ -62,7 +65,15 @@ public class GameRendererMixin {
 			Item item = lens.getItem();
 
 			if (item instanceof IDyeableArmorItem && ((IDyeableArmorItem) item).hasCustomColor(lens))
-				IngameGui.fill(matrixstack, 0, 0, mainwindow.getGuiScaledWidth(), mainwindow.getGuiScaledHeight(), ((IDyeableArmorItem) item).getColor(lens) + (be.getOpacity() << 24));
+				AbstractGui.fill(matrixstack, 0, 0, mainwindow.getGuiScaledWidth(), mainwindow.getGuiScaledHeight(), ((IDyeableArmorItem) item).getColor(lens) + (be.getOpacity() << 24));
 		}
+	}
+
+	/**
+	 * Makes sure distortion effects are not rendered in camera feeds
+	 */
+	@Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
+	private float securitycraft$disableFeedDistortion(float delta, float start, float end) {
+		return CameraController.currentlyCapturedCamera != null ? 0.0F : MathHelper.lerp(delta, start, end);
 	}
 }

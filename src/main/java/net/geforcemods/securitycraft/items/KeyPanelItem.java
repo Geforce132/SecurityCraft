@@ -33,12 +33,16 @@ public class KeyPanelItem extends BlockItem {
 
 		if (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player)) {
 			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-				if (pc.isUnprotectedBlock(state) && pc.protect(player, level, pos)) {
-					if (!player.isCreative())
-						stack.shrink(1);
+				if (pc.isUnprotectedBlock(state)) {
+					if (pc.protect(player, level, pos)) {
+						if (!player.isCreative())
+							stack.shrink(1);
 
-					level.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
-					return ActionResultType.SUCCESS;
+						level.playSound(null, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						return ActionResultType.SUCCESS;
+					}
+
+					return ActionResultType.FAIL;
 				}
 			}
 		}

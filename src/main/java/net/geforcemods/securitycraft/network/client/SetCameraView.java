@@ -41,7 +41,6 @@ public class SetCameraView {
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(PointOfView.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
-				CameraController.setRenderPosition(entity);
 			}
 			else if (CameraController.previousCameraType != null)
 				mc.options.setCameraType(CameraController.previousCameraType);
