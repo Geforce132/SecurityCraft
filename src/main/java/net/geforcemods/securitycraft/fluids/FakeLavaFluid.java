@@ -130,7 +130,7 @@ public abstract class FakeLavaFluid extends ForgeFlowingFluid {
 
 	@Override
 	protected boolean canConvertToSource(Level level) {
-		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_LAVA_SOURCE_CONVERSION);
+		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_LAVA_SOURCE_CONVERSION.get());
 	}
 
 	@Override
