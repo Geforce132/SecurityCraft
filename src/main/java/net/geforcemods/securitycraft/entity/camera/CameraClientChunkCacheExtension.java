@@ -215,8 +215,11 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.SectionPos;
 import net.minecraft.world.biome.BiomeContainer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkSection;
+import net.minecraft.world.lighting.WorldLightManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.ChunkEvent;
 
@@ -271,6 +274,15 @@ public class CameraClientChunkCacheExtension {
 			chunk = newChunk;
 			chunk.replaceWithPacketData(biomeContainer, packetData, chunkTag, size);
 			modifyChunkMaps(map -> map.put(longChunkPos, newChunk));
+		}
+
+		ChunkSection[] chunkSections = chunk.getSections();
+		WorldLightManager lightEngine = level.getLightEngine();
+
+		lightEngine.enableLightSources(chunkPos, true);
+
+		for (int y = 0; y < chunkSections.length; ++y) {
+			lightEngine.updateSectionStatus(SectionPos.of(x, y, z), ChunkSection.isEmpty(chunkSections[y]));
 		}
 
 		level.onChunkLoaded(chunkPos.x, chunkPos.z);
