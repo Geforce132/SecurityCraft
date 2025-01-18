@@ -6,9 +6,11 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
+import com.google.common.base.Suppliers;
 import com.mojang.logging.LogUtils;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
@@ -71,8 +73,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 public class SecurityCraft {
 	public static final Logger LOGGER = LogUtils.getLogger();
 	public static final String MODID = "securitycraft";
-	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_WATER_SOURCE_CONVERSION = GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true));
-	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
+	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_WATER_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)));
+	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_LAVA_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false)));
 	public static final Random RANDOM = new Random();
 	public static final TicketController CAMERA_TICKET_CONTROLLER = new TicketController(new ResourceLocation(SecurityCraft.MODID, "camera_chunks"), (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
 		ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
@@ -109,12 +111,16 @@ public class SecurityCraft {
 	}
 
 	@SubscribeEvent
-	public static void onFMLCommonSetup(FMLCommonSetupEvent event) { //stage 1
+	public static void onFMLCommonSetup(FMLCommonSetupEvent event) {
 		RegistrationHandler.registerFakeLiquidRecipes();
+		event.enqueueWork(() -> {
+			RULE_FAKE_WATER_SOURCE_CONVERSION.get();
+			RULE_FAKE_LAVA_SOURCE_CONVERSION.get();
+		});
 	}
 
 	@SubscribeEvent
-	public static void onInterModEnqueue(InterModEnqueueEvent event) { //stage 3
+	public static void onInterModEnqueue(InterModEnqueueEvent event) {
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, IMSBlock.ExtractionBlock::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSCODE_CONVERTIBLE_MSG, KeypadBlock.Convertible::new);
@@ -136,7 +142,7 @@ public class SecurityCraft {
 	}
 
 	@SubscribeEvent
-	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
+	public static void onInterModProcess(InterModProcessEvent event) {
 		collectSCContentData();
 		IReinforcedCauldronInteraction.bootStrap();
 	}
