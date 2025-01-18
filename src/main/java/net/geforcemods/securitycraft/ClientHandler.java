@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -29,7 +30,9 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.components.SavedBlockState;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.properties.BlockLinked;
 import net.geforcemods.securitycraft.items.properties.CodebreakerState;
 import net.geforcemods.securitycraft.items.properties.KeycardCount;
@@ -44,6 +47,7 @@ import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
+import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticle;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
@@ -53,6 +57,7 @@ import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseSpecialRenderer;
+import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.OwnableBlockEntityRenderer;
@@ -73,7 +78,7 @@ import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
-import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
+import net.geforcemods.securitycraft.screen.CameraSelectScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
@@ -114,6 +119,8 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderDefines;
+import net.minecraft.client.renderer.ShaderProgram;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.BakedModel;
@@ -130,7 +137,6 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -156,9 +162,11 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -368,6 +376,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, false));
 		event.registerBlockEntityRenderer(SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, true));
+		event.registerBlockEntityRenderer(SCContent.FRAME_BLOCK_ENTITY.get(), FrameBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.OWNABLE_BLOCK_ENTITY.get(), OwnableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
@@ -584,6 +593,14 @@ public class ClientHandler {
 		return tintReinforcedBlocks ? ARGB.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
 	}
 
+	@SubscribeEvent
+	public static void onRegisterShaders(RegisterShadersEvent event) {
+		ShaderProgram shader = new ShaderProgram(SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX, ShaderDefines.EMPTY);
+
+		CameraController.cameraMonitorShader = shader;
+		event.registerShader(shader);
+	}
+
 	public static Player getClientPlayer() {
 		return Minecraft.getInstance().player;
 	}
@@ -604,8 +621,12 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
-	public static void displayCameraMonitorScreen(Inventory inv, ItemStack stack) {
-		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, stack));
+	public static void displayCameraMonitorScreen(ItemStack stack) {
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(stack.getOrDefault(SCContent.BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS).positions(), pos -> CameraMonitorItem.removeCameraOnClient(pos, stack), pos -> PacketDistributor.sendToServer(new MountCamera(pos.pos())), false, false));
+	}
+
+	public static void displayFrameScreen(FrameBlockEntity be, boolean readOnly) {
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null));
 	}
 
 	public static void displaySCManualScreen() {
