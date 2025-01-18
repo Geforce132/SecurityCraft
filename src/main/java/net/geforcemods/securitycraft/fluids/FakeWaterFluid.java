@@ -65,7 +65,7 @@ public abstract class FakeWaterFluid extends BaseFlowingFluid {
 
 	@Override
 	protected boolean canConvertToSource(ServerLevel level) {
-		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_WATER_SOURCE_CONVERSION);
+		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_WATER_SOURCE_CONVERSION.get());
 	}
 
 	@Override
