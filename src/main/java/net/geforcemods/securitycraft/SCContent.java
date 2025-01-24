@@ -2690,6 +2690,30 @@ public class SCContent {
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedPressurePlateBlock> REINFORCED_PALE_OAK_PRESSURE_PLATE = woodenPressurePlate("reinforced_pale_oak_pressure_plate", Blocks.PALE_OAK_PRESSURE_PLATE, BlockSetType.PALE_OAK);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RESIN_BLOCK = BLOCKS.registerBlock("reinforced_resin_block", p -> new BaseReinforcedBlock(p, Blocks.RESIN_BLOCK), reinforcedCopy(Blocks.RESIN_BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RESIN_BRICKS = BLOCKS.registerBlock("reinforced_resin_bricks", p -> new BaseReinforcedBlock(p, Blocks.RESIN_BRICKS), reinforcedCopy(Blocks.RESIN_BRICKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_RESIN_BRICKS = BLOCKS.registerBlock("reinforced_chiseled_resin_bricks", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_RESIN_BRICKS), reinforcedCopy(Blocks.CHISELED_RESIN_BRICKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_RESIN_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_resin_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.RESIN_BRICK_STAIRS), reinforcedCopy(Blocks.RESIN_BRICK_STAIRS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_RESIN_BRICK_SLAB = BLOCKS.registerBlock("reinforced_resin_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.RESIN_BRICK_SLAB), reinforcedCopy(Blocks.RESIN_BRICK_SLAB));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_RESIN_BRICK_WALL = BLOCKS.registerBlock("reinforced_resin_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.RESIN_BRICK_WALL), reinforcedCopy(Blocks.RESIN_BRICK_WALL));
 
 	//misc
 	@RegisterItemBlock

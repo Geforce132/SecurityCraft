@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:walls",
+  "key": {
+    "B": "securitycraft:reinforced_resin_bricks"
+  },
+  "pattern": [
+    "BBB",
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "id": "securitycraft:reinforced_resin_brick_wall"
+  }
+}
