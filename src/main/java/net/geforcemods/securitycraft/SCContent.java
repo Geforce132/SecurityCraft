@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.blockentities.BouncingBettyBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BrushableMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
+import net.geforcemods.securitycraft.blockentities.CreakingHeartMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ElectrifiedFenceAndGateBlockEntity;
@@ -123,6 +124,7 @@ import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BouncingBettyBlock;
 import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
+import net.geforcemods.securitycraft.blocks.mines.CreakingHeartMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FallingBlockMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
@@ -636,13 +638,14 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<FurnaceMineBlock> BLAST_FURNACE_MINE = BLOCKS.registerBlock("blast_furnace_mine", p -> new FurnaceMineBlock(p, Blocks.BLAST_FURNACE), prop(MapColor.STONE, 3.5F).requiresCorrectToolForDrops());
 	@HasManualPage(PageGroup.BLOCK_MINES)
-	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<BrushableMineBlock> SUSPICIOUS_SAND_MINE = BLOCKS.registerBlock("suspicious_sand_mine", p -> new BrushableMineBlock(p, Blocks.SUSPICIOUS_SAND), mineProp(Blocks.SUSPICIOUS_SAND).pushReaction(PushReaction.DESTROY));
 	@HasManualPage(PageGroup.BLOCK_MINES)
-	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<BrushableMineBlock> SUSPICIOUS_GRAVEL_MINE = BLOCKS.registerBlock("suspicious_gravel_mine", p -> new BrushableMineBlock(p, Blocks.SUSPICIOUS_GRAVEL), mineProp(Blocks.SUSPICIOUS_GRAVEL));
+	@HasManualPage(PageGroup.BLOCK_MINES)
+	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
+	public static final DeferredBlock<CreakingHeartMineBlock> CREAKING_HEART_MINE = BLOCKS.registerBlock("creaking_heart_mine", p -> new CreakingHeartMineBlock(p, Blocks.CREAKING_HEART), mineProp(Blocks.CREAKING_HEART));
 
 	//reinforced blocks (ordered by vanilla <1.19.3 building blocks creative tab order)
 	@HasManualPage(PageGroup.REINFORCED)
@@ -3200,6 +3203,7 @@ public class SCContent {
 			SCContent.REINFORCED_MOVING_PISTON.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> new BlockEntityType<>(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FrameBlockEntity>> FRAME_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("frame", () -> new BlockEntityType<>(FrameBlockEntity::new, SCContent.FRAME.get()));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CreakingHeartMineBlockEntity>> CREAKING_HEART_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("creaking_heart_mine", () -> new BlockEntityType<>(CreakingHeartMineBlockEntity::new, SCContent.CREAKING_HEART_MINE.get()));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",

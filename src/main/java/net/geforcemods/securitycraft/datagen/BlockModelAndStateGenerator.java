@@ -14,9 +14,9 @@ import com.google.common.collect.ImmutableMap;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
@@ -125,6 +125,7 @@ public class BlockModelAndStateGenerator {
 		modelOutput = blockModelGenerators.modelOutput;
 		itemInfo = blockModelGenerators.itemModelOutput;
 		createBlockMine(SCContent.ANCIENT_DEBRIS_MINE.get(), Blocks.ANCIENT_DEBRIS);
+		createCreakingHeartMine();
 		generateBlockMineInfo(SCContent.DEEPSLATE_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.DEEPSLATE));
 		generateBlockMineInfo(SCContent.SUSPICIOUS_GRAVEL_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.SUSPICIOUS_GRAVEL, "_0"));
 		generateBlockMineInfo(SCContent.SUSPICIOUS_SAND_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.SUSPICIOUS_SAND, "_0"));
@@ -285,7 +286,7 @@ public class BlockModelAndStateGenerator {
 					}
 				}
 			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine)
+			else if (mineTabItems.contains(item) && block instanceof IBlockMine mine)
 				createBlockMine(block, mine.getBlockDisguisedAs());
 		});
 	}
@@ -296,6 +297,14 @@ public class BlockModelAndStateGenerator {
 
 		generate(block, BlockModelGenerators.createSimpleBlock(block, vanillaModel));
 		generateBlockMineInfo(block, vanillaModelPath);
+	}
+
+	public static void createCreakingHeartMine() {
+		Block creakingHeartMine = SCContent.CREAKING_HEART_MINE.get();
+		ResourceLocation vanillaModel = ModelLocationUtils.getModelLocation(Blocks.CREAKING_HEART);
+
+		generateBlockMineInfo(creakingHeartMine, vanillaModel);
+		generatedBlocks.add(creakingHeartMine);
 	}
 
 	public static void generateBlockMineInfo(Block block, ResourceLocation vanillaModel) {

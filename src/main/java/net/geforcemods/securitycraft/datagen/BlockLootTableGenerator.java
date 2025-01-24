@@ -56,7 +56,6 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 			}
 		}
 
-		dropSelf(SCContent.ANCIENT_DEBRIS_MINE);
 		add(SCContent.CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 		add(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 

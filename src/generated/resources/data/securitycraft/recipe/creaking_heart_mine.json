@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:block_mines",
+  "ingredients": [
+    "minecraft:creaking_heart",
+    "securitycraft:mine"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:creaking_heart_mine"
+  }
+}

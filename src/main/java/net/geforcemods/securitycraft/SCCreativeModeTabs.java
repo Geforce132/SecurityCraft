@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
+import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -159,7 +159,7 @@ public class SCCreativeModeTabs {
 				List<ItemStack> mineGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES));
 
 				mineGroupItems.sort(stackComparator(item -> {
-					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof BaseFullMineBlock blockMine)
+					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IBlockMine blockMine)
 						return blockMine;
 					else
 						return null;

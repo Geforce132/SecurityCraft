@@ -730,6 +730,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addBarkRecipe(SCContent.REINFORCED_STRIPPED_PALE_OAK_LOG, SCContent.REINFORCED_STRIPPED_PALE_OAK_WOOD);
 		addBarkRecipe(SCContent.REINFORCED_STRIPPED_WARPED_STEM, SCContent.REINFORCED_STRIPPED_WARPED_HYPHAE);
 		addBlockMineRecipe(Blocks.ANCIENT_DEBRIS, SCContent.ANCIENT_DEBRIS_MINE);
+		addBlockMineRecipe(Blocks.CREAKING_HEART, SCContent.CREAKING_HEART_MINE);
 		addBlockMineRecipe(Blocks.COAL_ORE, SCContent.COAL_ORE_MINE);
 		addBlockMineRecipe(Blocks.DEEPSLATE_COAL_ORE, SCContent.DEEPSLATE_COAL_ORE_MINE);
 		addBlockMineRecipe(Blocks.COBBLESTONE, SCContent.COBBLESTONE_MINE);
