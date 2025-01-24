@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
+import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.blockentities.BrushableMineBlockEntity;
-import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
