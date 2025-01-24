@@ -164,6 +164,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldron
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLecternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMagmaBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMossyCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMud;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
@@ -2714,6 +2715,14 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_RESIN_BRICK_WALL = BLOCKS.registerBlock("reinforced_resin_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.RESIN_BRICK_WALL), reinforcedCopy(Blocks.RESIN_BRICK_WALL));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedMossyCarpetBlock> REINFORCED_PALE_MOSS_CARPET = BLOCKS.registerBlock("reinforced_pale_moss_carpet", p -> new ReinforcedMossyCarpetBlock(p, Blocks.PALE_MOSS_CARPET), reinforcedCopy(Blocks.PALE_MOSS_CARPET));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_MOSS_BLOCK = BLOCKS.registerBlock("reinforced_pale_moss_block", p -> new BaseReinforcedBlock(p, Blocks.PALE_MOSS_BLOCK), reinforcedCopy(Blocks.PALE_MOSS_BLOCK));
 
 	//misc
 	@RegisterItemBlock

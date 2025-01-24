@@ -47,6 +47,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SPEED_MODULE.get(),
 				SCContent.STORAGE_MODULE.get());
 		tag(SCTags.Items.REINFORCED_MOSS).add(SCContent.REINFORCED_MOSS_BLOCK.get().asItem());
+		tag(SCTags.Items.REINFORCED_PALE_MOSS).add(SCContent.REINFORCED_PALE_MOSS_BLOCK.get().asItem());
 		tag(SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS).add(
 				SCContent.REINFORCED_COBBLESTONE.get().asItem(),
 				SCContent.REINFORCED_BLACKSTONE.get().asItem(),

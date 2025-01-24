@@ -91,6 +91,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 						.when(ExplosionCondition.survivesExplosion())));
 		//@formatter:on
 		add(SCContent.REINFORCED_LAVA_CAULDRON, createNameableBlockEntityTable(SCContent.REINFORCED_CAULDRON.get()));
+		add(SCContent.REINFORCED_PALE_MOSS_CARPET, createMossyCarpetBlockDrops(SCContent.REINFORCED_PALE_MOSS_CARPET.get()));
 		add(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, createNameableBlockEntityTable(SCContent.REINFORCED_CAULDRON.get()));
 		add(SCContent.REINFORCED_WATER_CAULDRON, createNameableBlockEntityTable(SCContent.REINFORCED_CAULDRON.get()));
 		add(SCContent.RIFT_STABILIZER, this::createTwoHighBlockLootTable);
