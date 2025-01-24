@@ -35,6 +35,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_SLAB.get(),
 				SCContent.REINFORCED_MANGROVE_SLAB.get(),
 				SCContent.REINFORCED_CHERRY_SLAB.get(),
+				SCContent.REINFORCED_PALE_OAK_SLAB.get(),
 				SCContent.REINFORCED_BAMBOO_SLAB.get(),
 				SCContent.REINFORCED_BAMBOO_MOSAIC_SLAB.get(),
 				SCContent.REINFORCED_CRIMSON_SLAB.get(),
@@ -48,6 +49,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_STAIRS.get(),
 				SCContent.REINFORCED_MANGROVE_STAIRS.get(),
 				SCContent.REINFORCED_CHERRY_STAIRS.get(),
+				SCContent.REINFORCED_PALE_OAK_STAIRS.get(),
 				SCContent.REINFORCED_BAMBOO_STAIRS.get(),
 				SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS.get(),
 				SCContent.REINFORCED_CRIMSON_STAIRS.get(),
@@ -172,6 +174,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_MANGROVE_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_OAK_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_PALE_OAK_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_SPRUCE_LOGS)
 				.addTag(SCTags.Blocks.REINFORCED_WARPED_STEMS);
 		tag(SCTags.Blocks.REINFORCED_MANGROVE_LOGS).add(
@@ -187,6 +190,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_OAK_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_OAK_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
+		tag(SCTags.Blocks.REINFORCED_PALE_OAK_LOGS).add(
+				SCContent.REINFORCED_PALE_OAK_LOG.get(),
+				SCContent.REINFORCED_PALE_OAK_WOOD.get(),
+				SCContent.REINFORCED_STRIPPED_PALE_OAK_LOG.get(),
+				SCContent.REINFORCED_STRIPPED_PALE_OAK_WOOD.get());
 		tag(SCTags.Blocks.REINFORCED_PLANKS).add(
 				SCContent.REINFORCED_ACACIA_PLANKS.get(),
 				SCContent.REINFORCED_BAMBOO_PLANKS.get(),
@@ -197,6 +205,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_JUNGLE_PLANKS.get(),
 				SCContent.REINFORCED_MANGROVE_PLANKS.get(),
 				SCContent.REINFORCED_OAK_PLANKS.get(),
+				SCContent.REINFORCED_PALE_OAK_PLANKS.get(),
 				SCContent.REINFORCED_SPRUCE_PLANKS.get(),
 				SCContent.REINFORCED_WARPED_PLANKS.get());
 		tag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_WOODEN_PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_STONE_PRESSURE_PLATES);
@@ -258,6 +267,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_BUTTON.get(),
 				SCContent.REINFORCED_MANGROVE_BUTTON.get(),
 				SCContent.REINFORCED_CHERRY_BUTTON.get(),
+				SCContent.REINFORCED_PALE_OAK_BUTTON.get(),
 				SCContent.REINFORCED_BAMBOO_BUTTON.get(),
 				SCContent.REINFORCED_CRIMSON_BUTTON.get(),
 				SCContent.REINFORCED_WARPED_BUTTON.get());
@@ -270,6 +280,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_FENCE.get(),
 				SCContent.REINFORCED_MANGROVE_FENCE.get(),
 				SCContent.REINFORCED_CHERRY_FENCE.get(),
+				SCContent.REINFORCED_PALE_OAK_FENCE.get(),
 				SCContent.REINFORCED_BAMBOO_FENCE.get(),
 				SCContent.REINFORCED_CRIMSON_FENCE.get(),
 				SCContent.REINFORCED_WARPED_FENCE.get());
@@ -282,6 +293,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(),
 				SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(),
 				SCContent.REINFORCED_CHERRY_FENCE_GATE.get(),
+				SCContent.REINFORCED_PALE_OAK_FENCE_GATE.get(),
 				SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(),
 				SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
 				SCContent.REINFORCED_WARPED_FENCE_GATE.get());
@@ -294,6 +306,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CHERRY_PRESSURE_PLATE.get(),
+				SCContent.REINFORCED_PALE_OAK_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
@@ -344,6 +357,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(),
 				SCContent.SECRET_JUNGLE_HANGING_SIGN.get(),
 				SCContent.SECRET_MANGROVE_HANGING_SIGN.get(),
+				SCContent.SECRET_OAK_HANGING_SIGN.get(),
+				SCContent.SECRET_PALE_OAK_HANGING_SIGN.get(),
 				SCContent.SECRET_SPRUCE_HANGING_SIGN.get(),
 				SCContent.SECRET_WARPED_HANGING_SIGN.get());
 		tag(SCTags.Blocks.SECRET_STANDING_SIGNS).add(
@@ -356,6 +371,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_JUNGLE_SIGN.get(),
 				SCContent.SECRET_MANGROVE_SIGN.get(),
 				SCContent.SECRET_OAK_SIGN.get(),
+				SCContent.SECRET_PALE_OAK_SIGN.get(),
 				SCContent.SECRET_SPRUCE_SIGN.get(),
 				SCContent.SECRET_WARPED_SIGN.get());
 		tag(SCTags.Blocks.SECRET_WALL_HANGING_SIGNS).add(
@@ -368,6 +384,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_OAK_WALL_HANGING_SIGN.get(),
+				SCContent.SECRET_PALE_OAK_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get(),
 				SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get());
 		tag(SCTags.Blocks.SECRET_WALL_SIGNS).add(
@@ -380,6 +397,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.SECRET_JUNGLE_WALL_SIGN.get(),
 				SCContent.SECRET_MANGROVE_WALL_SIGN.get(),
 				SCContent.SECRET_OAK_WALL_SIGN.get(),
+				SCContent.SECRET_PALE_OAK_WALL_SIGN.get(),
 				SCContent.SECRET_SPRUCE_WALL_SIGN.get(),
 				SCContent.SECRET_WARPED_WALL_SIGN.get());
 		tag(SCTags.Blocks.SUSPICIOUS_MINES).add(SCContent.SUSPICIOUS_GRAVEL_MINE.get(), SCContent.SUSPICIOUS_SAND_MINE.get());
@@ -527,6 +545,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_DARK_OAK_LOG.get(),
 				SCContent.REINFORCED_MANGROVE_LOG.get(),
 				SCContent.REINFORCED_CHERRY_LOG.get(),
+				SCContent.REINFORCED_PALE_OAK_LOG.get(),
 				SCContent.REINFORCED_STONE.get(),
 				SCContent.REINFORCED_PACKED_ICE.get(),
 				SCContent.IRON_ORE_MINE.get(),

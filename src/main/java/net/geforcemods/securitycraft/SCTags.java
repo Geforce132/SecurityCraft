@@ -36,6 +36,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_MANGROVE_LOGS = tag("reinforced/mangrove_logs");
 		public static final TagKey<Block> REINFORCED_NYLIUM = tag("reinforced/nylium");
 		public static final TagKey<Block> REINFORCED_OAK_LOGS = tag("reinforced/oak_logs");
+		public static final TagKey<Block> REINFORCED_PALE_OAK_LOGS = tag("reinforced/pale_oak_logs");
 		public static final TagKey<Block> REINFORCED_PLANKS = tag("reinforced/planks");
 		public static final TagKey<Block> REINFORCED_PRESSURE_PLATES = tag("reinforced/pressure_plates");
 		public static final TagKey<Block> REINFORCED_SAND = tag("reinforced/sand");
@@ -107,6 +108,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_MOSS = tag("reinforced/moss");
 		public static final TagKey<Item> REINFORCED_NYLIUM = tag("reinforced/nylium");
 		public static final TagKey<Item> REINFORCED_OAK_LOGS = tag("reinforced/oak_logs");
+		public static final TagKey<Item> REINFORCED_PALE_OAK_LOGS = tag("reinforced/pale_oak_logs");
 		public static final TagKey<Item> REINFORCED_PLANKS = tag("reinforced/planks");
 		public static final TagKey<Item> REINFORCED_PRESSURE_PLATES = tag("reinforced/pressure_plates");
 		public static final TagKey<Item> REINFORCED_SAND = tag("reinforced/sand");

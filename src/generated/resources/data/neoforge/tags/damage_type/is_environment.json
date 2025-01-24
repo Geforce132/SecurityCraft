@@ -1,8 +1,20 @@
 {
   "values": [
-    "securitycraft:electricity",
-    "securitycraft:in_reinforced_wall",
-    "securitycraft:laser",
-    "securitycraft:taser"
+    {
+      "id": "securitycraft:electricity",
+      "required": false
+    },
+    {
+      "id": "securitycraft:in_reinforced_wall",
+      "required": false
+    },
+    {
+      "id": "securitycraft:laser",
+      "required": false
+    },
+    {
+      "id": "securitycraft:taser",
+      "required": false
+    }
   ]
 }

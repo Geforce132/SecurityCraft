@@ -118,7 +118,7 @@ public class BlockModelAndStateGenerator {
 	protected static void run(BlockModelGenerators blockModelGenerators) {
 		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
 		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
-		List<BlockFamily> excludedFamilies = List.of(BlockFamilies.RESIN_BRICKS, BlockFamilies.PALE_OAK_PLANKS);
+		List<BlockFamily> excludedFamilies = List.of(BlockFamilies.RESIN_BRICKS);
 
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
 		blockStateOutput = blockModelGenerators.blockStateOutput;
@@ -220,6 +220,8 @@ public class BlockModelAndStateGenerator {
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_MANGROVE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_MANGROVE_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_OAK_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_PALE_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_PALE_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_PALE_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_PALE_OAK_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_SPRUCE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_SPRUCE_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_WARPED_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_WARPED_HYPHAE.get());
@@ -234,6 +236,7 @@ public class BlockModelAndStateGenerator {
 		createSecretSign(SCContent.SECRET_JUNGLE_SIGN_ITEM.get(), Blocks.JUNGLE_SIGN);
 		createSecretSign(SCContent.SECRET_MANGROVE_SIGN_ITEM.get(), Blocks.MANGROVE_SIGN);
 		createSecretSign(SCContent.SECRET_OAK_SIGN_ITEM.get(), Blocks.OAK_SIGN);
+		createSecretSign(SCContent.SECRET_PALE_OAK_SIGN_ITEM.get(), Blocks.PALE_OAK_SIGN);
 		createSecretSign(SCContent.SECRET_SPRUCE_SIGN_ITEM.get(), Blocks.SPRUCE_SIGN);
 		createSecretSign(SCContent.SECRET_WARPED_SIGN_ITEM.get(), Blocks.WARPED_SIGN);
 		createSecretSign(SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get(), Blocks.ACACIA_HANGING_SIGN);
@@ -245,6 +248,7 @@ public class BlockModelAndStateGenerator {
 		createSecretSign(SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get(), Blocks.JUNGLE_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get(), Blocks.MANGROVE_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get(), Blocks.OAK_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.get(), Blocks.PALE_OAK_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get(), Blocks.SPRUCE_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get(), Blocks.WARPED_HANGING_SIGN);
 

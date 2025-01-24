@@ -111,6 +111,8 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		dropSelf(SCContent.SECRET_MANGROVE_WALL_SIGN);
 		dropSelf(SCContent.SECRET_OAK_SIGN);
 		dropSelf(SCContent.SECRET_OAK_WALL_SIGN);
+		dropSelf(SCContent.SECRET_PALE_OAK_SIGN);
+		dropSelf(SCContent.SECRET_PALE_OAK_WALL_SIGN);
 		dropSelf(SCContent.SECRET_SPRUCE_SIGN);
 		dropSelf(SCContent.SECRET_SPRUCE_WALL_SIGN);
 		dropSelf(SCContent.SECRET_WARPED_SIGN);
