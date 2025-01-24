@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "securitycraft:reinforced_pressure_plates",
+  "key": {
+    "S": "securitycraft:reinforced_pale_oak_planks"
+  },
+  "pattern": [
+    "SS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_pale_oak_pressure_plate"
+  }
+}

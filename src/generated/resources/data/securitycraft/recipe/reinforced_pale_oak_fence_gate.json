@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "securitycraft:reinforced_fence_gates",
+  "key": {
+    "M": "securitycraft:reinforced_pale_oak_planks",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "SMS",
+    "SMS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_pale_oak_fence_gate"
+  }
+}

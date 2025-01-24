@@ -2422,6 +2422,8 @@ public class SCContent {
 	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_CHERRY_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_cherry_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.CHERRY), prop(MapColor.TERRACOTTA_PINK).noCollission().forceSolidOn());
 	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_BAMBOO_HANGING_SIGN = BLOCKS.registerBlock("secret_bamboo_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.BAMBOO), prop(MapColor.COLOR_YELLOW).noCollission().forceSolidOn());
 	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_BAMBOO_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_bamboo_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.BAMBOO), prop(MapColor.COLOR_YELLOW).noCollission().forceSolidOn());
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_PALE_OAK_HANGING_SIGN = BLOCKS.registerBlock("secret_pale_oak_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ).noCollission().forceSolidOn());
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_PALE_OAK_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_pale_oak_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ).noCollission().forceSolidOn());
 	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_CRIMSON_HANGING_SIGN = BLOCKS.registerBlock("secret_crimson_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.CRIMSON), prop(MapColor.CRIMSON_STEM).noCollission().forceSolidOn());
 	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_CRIMSON_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_crimson_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.CRIMSON), prop(MapColor.CRIMSON_STEM).noCollission().forceSolidOn());
 	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_WARPED_HANGING_SIGN = BLOCKS.registerBlock("secret_warped_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.WARPED), prop(MapColor.WARPED_STEM).noCollission().forceSolidOn());
@@ -2499,6 +2501,10 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_PALE_OAK_FENCE = BLOCKS.registerBlock("reinforced_pale_oak_fence", p -> new ReinforcedFenceBlock(p, Blocks.PALE_OAK_FENCE), prop(Blocks.PALE_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BAMBOO_FENCE = BLOCKS.registerBlock("reinforced_bamboo_fence", p -> new ReinforcedFenceBlock(p, Blocks.BAMBOO_FENCE), prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.BAMBOO_WOOD));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
@@ -2536,6 +2542,9 @@ public class SCContent {
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_CHERRY_FENCE_GATE = BLOCKS.registerBlock("reinforced_cherry_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.CHERRY, Blocks.CHERRY_FENCE_GATE), prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	@HasManualPage(PageGroup.FENCE_GATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_PALE_OAK_FENCE_GATE = BLOCKS.registerBlock("reinforced_pale_oak_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.PALE_OAK, Blocks.PALE_OAK_FENCE_GATE), prop(Blocks.PALE_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_BAMBOO_FENCE_GATE = BLOCKS.registerBlock("reinforced_bamboo_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.BAMBOO, Blocks.BAMBOO_FENCE_GATE), prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
@@ -2645,6 +2654,42 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF_BRICKS = BLOCKS.registerBlock("reinforced_chiseled_tuff_bricks", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_TUFF_BRICKS), reinforcedCopy(Blocks.CHISELED_TUFF_BRICKS));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PALE_OAK_LOG = BLOCKS.registerBlock("reinforced_pale_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.PALE_OAK_LOG), logProp(MapColor.QUARTZ, MapColor.STONE).sound(SoundType.WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_PALE_OAK_LOG = BLOCKS.registerBlock("reinforced_stripped_pale_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_PALE_OAK_LOG), prop(MapColor.QUARTZ).sound(SoundType.WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_PALE_OAK_WOOD = BLOCKS.registerBlock("reinforced_stripped_pale_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_PALE_OAK_WOOD), prop(MapColor.QUARTZ).sound(SoundType.WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PALE_OAK_WOOD = BLOCKS.registerBlock("reinforced_pale_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.PALE_OAK_WOOD), prop(MapColor.STONE).sound(SoundType.WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_OAK_PLANKS = BLOCKS.registerBlock("reinforced_pale_oak_planks", p -> new BaseReinforcedBlock(p, Blocks.PALE_OAK_PLANKS), prop(MapColor.QUARTZ).sound(SoundType.WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PALE_OAK_STAIRS = BLOCKS.registerBlock("reinforced_pale_oak_stairs", p -> new ReinforcedStairsBlock(p, Blocks.PALE_OAK_STAIRS), prop(MapColor.QUARTZ).sound(SoundType.WOOD));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PALE_OAK_SLAB = BLOCKS.registerBlock("reinforced_pale_oak_slab", p -> new ReinforcedSlabBlock(p, Blocks.PALE_OAK_SLAB), prop(MapColor.QUARTZ).sound(SoundType.WOOD));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_PALE_OAK_SIGN = BLOCKS.registerBlock("secret_pale_oak_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_pale_oak_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_PALE_OAK_WALL_SIGN = BLOCKS.registerBlock("secret_pale_oak_sign_wall", p -> new SecretWallSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_pale_oak_sign"));
+	@HasManualPage(PageGroup.BUTTONS)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_PALE_OAK_BUTTON = woodenButton("reinforced_pale_oak_button", Blocks.PALE_OAK_BUTTON, BlockSetType.PALE_OAK);
+	@HasManualPage(PageGroup.PRESSURE_PLATES)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedPressurePlateBlock> REINFORCED_PALE_OAK_PRESSURE_PLATE = woodenPressurePlate("reinforced_pale_oak_pressure_plate", Blocks.PALE_OAK_PRESSURE_PLATE, BlockSetType.PALE_OAK);
 
 	//misc
 	@RegisterItemBlock
@@ -2788,6 +2833,8 @@ public class SCContent {
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final DeferredItem<SignItem> SECRET_CHERRY_SIGN_ITEM = ITEMS.registerItem("secret_cherry_sign_item", p -> new SignItem(SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_cherry_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
+	public static final DeferredItem<SignItem> SECRET_PALE_OAK_SIGN_ITEM = ITEMS.registerItem("secret_pale_oak_sign_item", p -> new SignItem(SCContent.SECRET_PALE_OAK_SIGN.get(), SCContent.SECRET_PALE_OAK_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_pale_oak_sign"));
+	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final DeferredItem<SignItem> SECRET_BAMBOO_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_sign_item", p -> new SignItem(SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_bamboo_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final DeferredItem<SignItem> SECRET_CRIMSON_SIGN_ITEM = ITEMS.registerItem("secret_crimson_sign_item", p -> new SignItem(SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_crimson_sign"));
@@ -2810,6 +2857,8 @@ public class SCContent {
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_CHERRY_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_cherry_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_CHERRY_HANGING_SIGN.get(), SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
+	public static final DeferredItem<HangingSignItem> SECRET_PALE_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_pale_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_PALE_OAK_HANGING_SIGN.get(), SCContent.SECRET_PALE_OAK_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
 	public static final DeferredItem<HangingSignItem> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_crimson_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
@@ -2831,6 +2880,8 @@ public class SCContent {
 	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.registerItem("mangrove_security_sea_boat", p -> new SecuritySeaBoatItem(getMangroveSecuritySeaBoat(), p), itemProp(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
 	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.registerItem("cherry_security_sea_boat", p -> new SecuritySeaBoatItem(getCherrySecuritySeaBoat(), p), itemProp(1).fireResistant());
+	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
+	public static final DeferredItem<SecuritySeaBoatItem> PALE_OAK_SECURITY_SEA_BOAT = ITEMS.registerItem("pale_oak_security_sea_boat", p -> new SecuritySeaBoatItem(getPaleOakSecuritySeaBoat(), p), itemProp(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
 	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.registerItem("bamboo_security_sea_raft", p -> new SecuritySeaBoatItem(getBambooSecuritySeaRaft(), p), itemProp(1).fireResistant());
 	@HasManualPage(designedBy = "Henzoid")
@@ -2983,6 +3034,8 @@ public class SCContent {
 			SCContent.SECRET_MANGROVE_WALL_SIGN.get(),
 			SCContent.SECRET_CHERRY_SIGN.get(),
 			SCContent.SECRET_CHERRY_WALL_SIGN.get(),
+			SCContent.SECRET_PALE_OAK_SIGN.get(),
+			SCContent.SECRET_PALE_OAK_WALL_SIGN.get(),
 			SCContent.SECRET_BAMBOO_SIGN.get(),
 			SCContent.SECRET_BAMBOO_WALL_SIGN.get(),
 			SCContent.SECRET_CRIMSON_SIGN.get(),
@@ -3006,6 +3059,8 @@ public class SCContent {
 			SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_CHERRY_HANGING_SIGN.get(),
 			SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(),
+			SCContent.SECRET_PALE_OAK_HANGING_SIGN.get(),
+			SCContent.SECRET_PALE_OAK_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_BAMBOO_HANGING_SIGN.get(),
 			SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(),
 			SCContent.SECRET_CRIMSON_HANGING_SIGN.get(),
@@ -3033,6 +3088,7 @@ public class SCContent {
 			SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_OAK_PRESSURE_PLATE.get(),
+			SCContent.REINFORCED_PALE_OAK_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get(),
 			SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get(),
@@ -3046,6 +3102,7 @@ public class SCContent {
 			SCContent.REINFORCED_JUNGLE_BUTTON.get(),
 			SCContent.REINFORCED_MANGROVE_BUTTON.get(),
 			SCContent.REINFORCED_OAK_BUTTON.get(),
+			SCContent.REINFORCED_PALE_OAK_BUTTON.get(),
 			SCContent.REINFORCED_SPRUCE_BUTTON.get(),
 			SCContent.REINFORCED_WARPED_BUTTON.get(),
 			SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
@@ -3100,6 +3157,7 @@ public class SCContent {
 			SCContent.REINFORCED_DARK_OAK_FENCE_GATE.get(),
 			SCContent.REINFORCED_MANGROVE_FENCE_GATE.get(),
 			SCContent.REINFORCED_CHERRY_FENCE_GATE.get(),
+			SCContent.REINFORCED_PALE_OAK_FENCE_GATE.get(),
 			SCContent.REINFORCED_BAMBOO_FENCE_GATE.get(),
 			SCContent.REINFORCED_CRIMSON_FENCE_GATE.get(),
 			SCContent.REINFORCED_WARPED_FENCE_GATE.get(),
@@ -3156,6 +3214,7 @@ public class SCContent {
 	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> DARK_OAK_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("dark_oak_security_sea_boat", DARK_OAK_SECURITY_SEA_BOAT::asItem);
 	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> MANGROVE_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("mangrove_security_sea_boat", MANGROVE_SECURITY_SEA_BOAT::asItem);
 	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> CHERRY_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("cherry_security_sea_boat", CHERRY_SECURITY_SEA_BOAT::asItem);
+	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaBoat>> PALE_OAK_SECURITY_SEA_BOAT_ENTITY = securitySeaBoat("pale_oak_security_sea_boat", PALE_OAK_SECURITY_SEA_BOAT::asItem);
 	public static final DeferredHolder<EntityType<?>, EntityType<SecuritySeaRaft>> BAMBOO_SECURITY_SEA_RAFT_ENTITY = securitySeaRaft("bamboo_security_sea_raft", BAMBOO_SECURITY_SEA_RAFT::asItem);
 
 	//container types
@@ -3376,6 +3435,10 @@ public class SCContent {
 
 	public static EntityType<SecuritySeaRaft> getBambooSecuritySeaRaft() {
 		return BAMBOO_SECURITY_SEA_RAFT_ENTITY.get();
+	}
+
+	public static EntityType<SecuritySeaBoat> getPaleOakSecuritySeaBoat() {
+		return PALE_OAK_SECURITY_SEA_BOAT_ENTITY.get();
 	}
 
 	private SCContent() {}

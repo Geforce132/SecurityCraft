@@ -1,5 +1,8 @@
 --------------------------Changelog for the upcoming version of SecurityCraft--------------------------
 
+- New: Reinforced Blocks: Pale Oak Log, Stripped Pale Oak Log, Pale Oak Wood, Stripped Pale Oak Wood, Pale Oak Planks, Pale Oak Stairs, Pale Oak Slabs, Pale Oak Button, Pale Oake Pressure Plate, Pale Oak Fence, Pale Oak Fence Gate
+- New: Secret Pale Oak (Hanging) Sign
+- New: Pale Oak Security Sea Boat
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
 - New: Several server and client config settings to control chunk loading in camera feeds
 - Change: Camera model animations are now synchronized between players
