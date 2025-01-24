@@ -118,7 +118,7 @@ public class BlockModelAndStateGenerator {
 	protected static void run(BlockModelGenerators blockModelGenerators) {
 		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
 		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
-		List<BlockFamily> excludedFamilies = List.of(BlockFamilies.RESIN_BRICKS);
+		List<BlockFamily> excludedFamilies = List.of();
 
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
 		blockStateOutput = blockModelGenerators.blockStateOutput;

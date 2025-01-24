@@ -24,6 +24,7 @@
     "securitycraft:reinforced_deepslate_tile_wall",
     "securitycraft:reinforced_tuff_wall",
     "securitycraft:reinforced_polished_tuff_wall",
-    "securitycraft:reinforced_tuff_brick_wall"
+    "securitycraft:reinforced_tuff_brick_wall",
+    "securitycraft:reinforced_resin_brick_wall"
   ]
 }
