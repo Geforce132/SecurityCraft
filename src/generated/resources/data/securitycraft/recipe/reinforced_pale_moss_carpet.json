@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:reinforced_carpets",
+  "key": {
+    "M": "securitycraft:reinforced_pale_moss_block"
+  },
+  "pattern": [
+    "MM"
+  ],
+  "result": {
+    "count": 3,
+    "id": "securitycraft:reinforced_pale_moss_carpet"
+  }
+}
