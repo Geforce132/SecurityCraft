@@ -258,6 +258,7 @@ public class ClientHandler {
 				"cobbled_deepslate",
 				"cobblestone",
 				"copper_ore",
+				"creaking_heart",
 				"deepslate",
 				"deepslate_coal_ore",
 				"deepslate_copper_ore",

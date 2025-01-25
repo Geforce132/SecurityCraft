@@ -7,10 +7,11 @@ import java.util.Map;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BrushableMineBlock;
+import net.geforcemods.securitycraft.blocks.mines.CreakingHeartMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.DeepslateMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedFenceBlock;
@@ -224,7 +225,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 					}
 				}
 			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock))
+			else if (mineTabItems.contains(item) && block instanceof IBlockMine mine && !(mine instanceof DeepslateMineBlock || mine instanceof BrushableMineBlock || mine instanceof CreakingHeartMineBlock))
 				blockMine(mine.getBlockDisguisedAs(), block);
 		}
 	}

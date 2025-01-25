@@ -463,6 +463,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_RED_STAINED_GLASS.get(),
 				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
 		tag(BlockTags.INFINIBURN_OVERWORLD).add(SCContent.REINFORCED_NETHERRACK.get(), SCContent.REINFORCED_MAGMA_BLOCK.get());
+		tag(BlockTags.MINEABLE_WITH_AXE).add(SCContent.CREAKING_HEART_MINE.get());
 		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(
 				SCContent.CRYSTAL_QUARTZ_SLAB.get(),
 				SCContent.SMOOTH_CRYSTAL_QUARTZ.get(),

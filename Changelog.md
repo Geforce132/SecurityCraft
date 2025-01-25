@@ -3,11 +3,14 @@
 - New: Reinforced Blocks: Pale Oak Log, Stripped Pale Oak Log, Pale Oak Wood, Stripped Pale Oak Wood, Pale Oak Planks, Pale Oak Stairs, Pale Oak Slabs, Pale Oak Button, Pale Oake Pressure Plate, Pale Oak Fence, Pale Oak Fence Gate, Pale Moss Block, Pale Moss Carpet
 - New: Secret Pale Oak (Hanging) Sign
 - New: Pale Oak Security Sea Boat
+- New: Creaking Heart Mine
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
 - New: Several server and client config settings to control chunk loading in camera feeds
 - Change: The block mine overlay now shows in the first person hand models as well
 - Change: Camera model animations are now synchronized between players
 - API: IDisguisable has been simplified
+- API: New IBlockMine interface for blocks that are block mines
+- API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
 - Fix: Module descriptions of security sea boats do not show up correctly
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: Holding a camera monitor makes it possible to identify disguised cameras
