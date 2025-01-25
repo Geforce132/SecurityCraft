@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/reinforced_mossy_carpet_side",
+  "render_type": "cutout",
+  "textures": {
+    "side": "minecraft:block/pale_moss_carpet_side_small"
+  }
+}

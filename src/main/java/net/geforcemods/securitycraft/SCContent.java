@@ -164,6 +164,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldron
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLecternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMagmaBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMossyCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMud;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
@@ -2691,6 +2692,14 @@ public class SCContent {
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedPressurePlateBlock> REINFORCED_PALE_OAK_PRESSURE_PLATE = woodenPressurePlate("reinforced_pale_oak_pressure_plate", Blocks.PALE_OAK_PRESSURE_PLATE, BlockSetType.PALE_OAK, FeatureFlags.WINTER_DROP);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedMossyCarpetBlock> REINFORCED_PALE_MOSS_CARPET = BLOCKS.registerBlock("reinforced_pale_moss_carpet", p -> new ReinforcedMossyCarpetBlock(p, Blocks.PALE_MOSS_CARPET), reinforcedCopy(Blocks.PALE_MOSS_CARPET).pushReaction(PushReaction.NORMAL).forceSolidOn());
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_MOSS_BLOCK = BLOCKS.registerBlock("reinforced_pale_moss_block", p -> new BaseReinforcedBlock(p, Blocks.PALE_MOSS_BLOCK), reinforcedCopy(Blocks.PALE_MOSS_BLOCK).pushReaction(PushReaction.NORMAL));
 
 	//misc
 	@RegisterItemBlock
