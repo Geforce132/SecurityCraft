@@ -22,13 +22,24 @@ public class DamageTypeTagGenerator extends DamageTypeTagsProvider {
 	protected void addTags(Provider provider) {
 		tag(SCTags.DamageTypes.SECURITY_SEA_BOAT_VULNERABLE_TO).add(DamageTypes.PLAYER_ATTACK);
 
+		//@formatter:off
 		//minecraft tags
-		tag(DamageTypeTags.BYPASSES_ARMOR).add(CustomDamageSources.FAKE_WATER, CustomDamageSources.ELECTRICITY, CustomDamageSources.IN_REINFORCED_WALL);
-		tag(DamageTypeTags.BYPASSES_EFFECTS).add(CustomDamageSources.IN_REINFORCED_WALL);
+		tag(DamageTypeTags.BYPASSES_ARMOR)
+			.addOptional(CustomDamageSources.FAKE_WATER.location())
+			.addOptional(CustomDamageSources.ELECTRICITY.location())
+			.addOptional(CustomDamageSources.IN_REINFORCED_WALL.location());
+		tag(DamageTypeTags.BYPASSES_EFFECTS)
+			.addOptional(CustomDamageSources.IN_REINFORCED_WALL.location());
 
 		//NeoForge tags
-		tag(Tags.DamageTypes.IS_ENVIRONMENT).add(CustomDamageSources.ELECTRICITY, CustomDamageSources.IN_REINFORCED_WALL, CustomDamageSources.LASER, CustomDamageSources.TASER);
-		tag(Tags.DamageTypes.IS_PHYSICAL).add(CustomDamageSources.IN_REINFORCED_WALL);
-		tag(Tags.DamageTypes.IS_POISON).add(CustomDamageSources.FAKE_WATER);
+		tag(Tags.DamageTypes.IS_ENVIRONMENT)
+			.addOptional(CustomDamageSources.ELECTRICITY.location())
+			.addOptional(CustomDamageSources.IN_REINFORCED_WALL.location())
+			.addOptional(CustomDamageSources.LASER.location())
+			.addOptional(CustomDamageSources.TASER.location());
+		tag(Tags.DamageTypes.IS_PHYSICAL)
+			.addOptional(CustomDamageSources.IN_REINFORCED_WALL.location());
+		tag(Tags.DamageTypes.IS_POISON)
+			.addOptional(CustomDamageSources.FAKE_WATER.location());
 	}
 }
