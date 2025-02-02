@@ -3286,7 +3286,7 @@ public class SCContent {
 	}
 
 	private static final BlockBehaviour.Properties prop(MapColor color, float hardness) {
-		return BlockBehaviour.Properties.of().mapColor(color).strength(hardness, Float.MAX_VALUE);
+		return BlockBehaviour.Properties.of().mapColor(color).strength(hardness, Float.MAX_VALUE).requiresCorrectToolForDrops();
 	}
 
 	private static final BlockBehaviour.Properties propDisguisable(float hardness) {
@@ -3309,7 +3309,7 @@ public class SCContent {
 		if (forceSolidOn)
 			properties.forceSolidOn();
 
-		return properties.noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating).requiresCorrectToolForDrops();
+		return properties.noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
 	private static final Item.Properties itemProp() {
