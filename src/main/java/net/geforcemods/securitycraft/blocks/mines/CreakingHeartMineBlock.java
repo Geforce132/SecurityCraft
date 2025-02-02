@@ -108,11 +108,6 @@ public class CreakingHeartMineBlock extends CreakingHeartBlock implements IBlock
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, level, pos);
-	}
-
-	@Override
 	public boolean activateMine(Level level, BlockPos pos) {
 		return false;
 	}

@@ -102,6 +102,7 @@ import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
@@ -500,6 +501,12 @@ public class SCEventHandler {
 
 			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.PLACE, pos, state));
 		}
+	}
+
+	@SubscribeEvent
+	public static void onPlayerHarvestCheck(PlayerEvent.HarvestCheck event) {
+		if (ConfigHandler.SERVER.alwaysDrop.get() && event.getLevel().getBlockEntity(event.getPos()) instanceof IOwnable)
+			event.setCanHarvest(true);
 	}
 
 	@SubscribeEvent
