@@ -138,7 +138,7 @@ public class BlockUtils {
 			if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player))
 				return destroyProgress.get(state, player, level, pos);
 			else if (ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get())
-				return destroyProgress.get(state, player, level, pos) * (float) ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble();
+				return destroyProgress.get(state, player, level, pos) / (float) ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble();
 		}
 
 		return 0.0F;

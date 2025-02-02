@@ -253,7 +253,7 @@ public class ConfigHandler {
 
 			nonOwnedBreakingSlowdown = builder
 					.comment("How much slower it should be to break a block that is not owned by the player breaking it. This only applies when \"allow_breaking_non_owned_blocks\" is set to true.",
-							"This is calculated as [normal block breaking speed] * non_owned_breaking_slowdown. Example: A value of 0.5 means it takes twice as long to break the block.")
+							"This is calculated as [normal block breaking speed] / non_owned_breaking_slowdown. Example: A value of 2.0 means it takes twice as long to break the block.")
 					.defineInRange("non_owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
 
 			sentryAttackableEntitiesAllowlist = builder
