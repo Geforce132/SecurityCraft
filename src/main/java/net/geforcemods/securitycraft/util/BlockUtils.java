@@ -134,7 +134,7 @@ public class BlockUtils {
 		if (state.getBlock() instanceof IBlockMine)
 			return destroyProgress.get(state, player, level, pos);
 
-		if (ConfigHandler.SERVER.normalBlockBreaking.get()) {
+		if (ConfigHandler.SERVER.vanillaToolBlockBreaking.get()) {
 			if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player))
 				return destroyProgress.get(state, player, level, pos);
 			else if (ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get())

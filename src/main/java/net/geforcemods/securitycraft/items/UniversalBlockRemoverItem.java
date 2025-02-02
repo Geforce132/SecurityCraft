@@ -43,7 +43,7 @@ public class UniversalBlockRemoverItem extends Item {
 
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext ctx) {
-		if (!ConfigHandler.SERVER.normalBlockBreaking.get()) {
+		if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get()) {
 			Level level = ctx.getLevel();
 			BlockPos pos = ctx.getClickedPos();
 			BlockState state = level.getBlockState(pos);
