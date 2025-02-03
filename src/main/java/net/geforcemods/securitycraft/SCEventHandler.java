@@ -237,10 +237,8 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onEntityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
-		if (event.getEntity() instanceof AbstractSecuritySeaBoat) {
-			if (event.getSource().is(SCTags.DamageTypes.SECURITY_SEA_BOAT_VULNERABLE_TO))
-				event.setInvulnerable(false);
-		}
+		if (event.getEntity() instanceof AbstractSecuritySeaBoat && event.getSource().is(SCTags.DamageTypes.SECURITY_SEA_BOAT_VULNERABLE_TO))
+			event.setInvulnerable(false);
 	}
 
 	@SubscribeEvent

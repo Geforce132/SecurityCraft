@@ -5,7 +5,7 @@
 - New: All blocks can now be broken only by the owner with normal tools (axe, shovel, hoe, ...) and the Universal Block Remover has been disabled by default
 - New: Config to re-enable the Universal Block Remover and disable normal block breaking
 - New: Config to define tool requirement behavior (e.g. does Reinforced Stone always drop, or just when breaking it using a pickaxe?)
-- New: Config to allow other players to break anyone's blocks
+- New: Config to allow other players to break anyone's blocks (disallowed by default)
 - New: Config for defining how much longer it should take to break another player's block compared to breaking one's own
 - New: Reinforced Blocks: Pale Oak Log, Stripped Pale Oak Log, Pale Oak Wood, Stripped Pale Oak Wood, Pale Oak Planks, Pale Oak Stairs, Pale Oak Slabs, Pale Oak Button, Pale Oake Pressure Plate, Pale Oak Fence, Pale Oak Fence Gate, Pale Moss Block, Pale Moss Carpet
 - New: Reinforced Blocks: Resin Block, Resin Bricks, Chiseled Resin Bricks, Resin Brick Slab, Resin Brick Stairs, Resin Brick Wall
