@@ -393,7 +393,7 @@ public class SCContent {
 	//blocks
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<AlarmBlock> ALARM = BLOCKS.registerBlock("alarm", AlarmBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0));
+	public static final DeferredBlock<AlarmBlock> ALARM = BLOCKS.registerBlock("alarm", AlarmBlock::new, prop(MapColor.COLOR_RED, 3.5F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = BLOCKS.registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable(3.5F));
@@ -405,13 +405,13 @@ public class SCContent {
 	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(MapColor.COLOR_CYAN, 0.8F).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.registerBlock("bouncing_betty", BouncingBettyBlock::new, prop(MapColor.METAL, 3.5F).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.registerBlock("bouncing_betty", BouncingBettyBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<CageTrapBlock> CAGE_TRAP = BLOCKS.registerBlock("cage_trap", CageTrapBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL).noCollission());
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<ClaymoreBlock> CLAYMORE = BLOCKS.registerBlock("claymore", ClaymoreBlock::new, prop(MapColor.METAL, 3.5F).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<ClaymoreBlock> CLAYMORE = BLOCKS.registerBlock("claymore", ClaymoreBlock::new, prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
 	public static final DeferredBlock<DisplayCaseBlock> DISPLAY_CASE = BLOCKS.registerBlock(DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, false), prop(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
@@ -425,7 +425,7 @@ public class SCContent {
 	public static final DeferredBlock<DisplayCaseBlock> GLOW_DISPLAY_CASE = BLOCKS.registerBlock(GLOW_DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, true), prop(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<IMSBlock> IMS = BLOCKS.registerBlock("ims", IMSBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL));
+	public static final DeferredBlock<IMSBlock> IMS = BLOCKS.registerBlock("ims", IMSBlock::new, prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<InventoryScannerBlock> INVENTORY_SCANNER = BLOCKS.registerBlock("inventory_scanner", InventoryScannerBlock::new, propDisguisable(3.5F));
@@ -474,7 +474,7 @@ public class SCContent {
 	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.registerBlock("panic_button", p -> new PanicButtonBlock(p, BlockSetType.STONE, -1), prop(3.5F).lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.METAL, 5.0F));
+	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.COLOR_BLACK, 5.0F));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
