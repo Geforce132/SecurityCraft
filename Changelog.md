@@ -21,6 +21,7 @@
 - Fix: Several reinforced blocks can be broken by pistons
 - Fix: Wall hanging signs have an incorrect translation key
 - Fix: Security sea boats cannot be broken by players like normal boats
+- Fix: The claymore does not ignore the owner if the "Ignore Owner" option is true, and vice versa
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.

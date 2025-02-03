@@ -97,7 +97,7 @@ public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBl
 	@Override
 	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
 		if (!player.isCreative() && !level.isClientSide && !level.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
-			if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity claymore && claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || claymore.ignoresOwner()))
+			if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity claymore && claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || !claymore.ignoresOwner()))
 				explode(level, pos);
 		}
 
