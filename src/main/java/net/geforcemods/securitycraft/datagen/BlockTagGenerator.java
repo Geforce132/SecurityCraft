@@ -542,6 +542,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.WALLS).addTag(SCTags.Blocks.REINFORCED_WALLS);
 		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.WOODEN_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES);
+		tag(BlockTags.WOOL).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
 		//@formatter:on
 		miningRelatedTags();
