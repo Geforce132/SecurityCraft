@@ -44,11 +44,6 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
-	}
-
-	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return SHAPE;
 	}

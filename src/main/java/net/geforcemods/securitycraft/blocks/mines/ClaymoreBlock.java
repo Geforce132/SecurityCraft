@@ -59,11 +59,6 @@ public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBl
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
-	}
-
-	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide)
