@@ -40,7 +40,7 @@ neoForge {
 
 	runs {
 		configureEach {
-			systemProperty 'forge.logging.console.level', 'debug'
+			logLevel = org.slf4j.event.Level.DEBUG
 			ideName = "SC ${project.mc_version} " + ideName.get()
 		}
 	
