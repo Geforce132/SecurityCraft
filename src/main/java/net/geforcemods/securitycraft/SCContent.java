@@ -3,8 +3,10 @@ package net.geforcemods.securitycraft;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import com.google.common.base.Predicates;
 import com.mojang.serialization.Codec;
@@ -168,7 +170,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMagmaBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMossyCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMud;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMudBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObsidianBlock;
@@ -274,7 +276,6 @@ import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.commands.synchronization.SingletonArgumentInfo;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentType;
@@ -288,12 +289,10 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -308,16 +307,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
@@ -396,1894 +394,1894 @@ public class SCContent {
 	//blocks
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<AlarmBlock> ALARM = BLOCKS.registerBlock("alarm", AlarmBlock::new, prop(MapColor.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0));
+	public static final DeferredBlock<AlarmBlock> ALARM = BLOCKS.registerBlock("alarm", AlarmBlock::new, prop(MapColor.COLOR_RED, 3.5F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = BLOCKS.registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable());
+	public static final DeferredBlock<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = BLOCKS.registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable(3.5F));
 	@HasManualPage(designedBy = "Henzoid")
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(MapColor.COLOR_CYAN, 5.0F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(MapColor.COLOR_CYAN).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
+	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(MapColor.COLOR_CYAN, 0.8F).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.registerBlock("bouncing_betty", BouncingBettyBlock::new, prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.registerBlock("bouncing_betty", BouncingBettyBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<CageTrapBlock> CAGE_TRAP = BLOCKS.registerBlock("cage_trap", CageTrapBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL).noCollission());
+	public static final DeferredBlock<CageTrapBlock> CAGE_TRAP = BLOCKS.registerBlock("cage_trap", CageTrapBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL).noCollission());
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<ClaymoreBlock> CLAYMORE = BLOCKS.registerBlock("claymore", ClaymoreBlock::new, prop(MapColor.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<ClaymoreBlock> CLAYMORE = BLOCKS.registerBlock("claymore", ClaymoreBlock::new, prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
-	public static final DeferredBlock<DisplayCaseBlock> DISPLAY_CASE = BLOCKS.registerBlock(DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, false), prop(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<DisplayCaseBlock> DISPLAY_CASE = BLOCKS.registerBlock(DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, false), prop(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<FloorTrapBlock> FLOOR_TRAP = BLOCKS.registerBlock("floor_trap", FloorTrapBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<FloorTrapBlock> FLOOR_TRAP = BLOCKS.registerBlock("floor_trap", FloorTrapBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<FrameBlock> FRAME = BLOCKS.registerBlock("keypad_frame", FrameBlock::new, prop().sound(SoundType.METAL));
+	public static final DeferredBlock<FrameBlock> FRAME = BLOCKS.registerBlock("keypad_frame", FrameBlock::new, prop(5.0F).sound(SoundType.METAL));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
-	public static final DeferredBlock<DisplayCaseBlock> GLOW_DISPLAY_CASE = BLOCKS.registerBlock(GLOW_DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, true), prop(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<DisplayCaseBlock> GLOW_DISPLAY_CASE = BLOCKS.registerBlock(GLOW_DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, true), prop(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<IMSBlock> IMS = BLOCKS.registerBlock("ims", IMSBlock::new, prop(MapColor.METAL, 0.7F).sound(SoundType.METAL));
+	public static final DeferredBlock<IMSBlock> IMS = BLOCKS.registerBlock("ims", IMSBlock::new, prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<InventoryScannerBlock> INVENTORY_SCANNER = BLOCKS.registerBlock("inventory_scanner", InventoryScannerBlock::new, propDisguisable());
-	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.registerBlock("inventory_scanner_field", InventoryScannerFieldBlock::new, prop(MapColor.NONE).noLootTable());
+	public static final DeferredBlock<InventoryScannerBlock> INVENTORY_SCANNER = BLOCKS.registerBlock("inventory_scanner", InventoryScannerBlock::new, propDisguisable(3.5F));
+	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.registerBlock("inventory_scanner_field", InventoryScannerFieldBlock::new, prop(MapColor.NONE, -1.0F).noLootTable());
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = BLOCKS.registerBlock("electrified_iron_fence", ElectrifiedIronFenceBlock::new, prop(MapColor.METAL).sound(SoundType.METAL));
-	public static final DeferredBlock<KeyPanelBlock> KEY_PANEL_BLOCK = BLOCKS.registerBlock("key_panel", KeyPanelBlock::new, prop(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = BLOCKS.registerBlock("electrified_iron_fence", ElectrifiedIronFenceBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.METAL));
+	public static final DeferredBlock<KeyPanelBlock> KEY_PANEL_BLOCK = BLOCKS.registerBlock("key_panel", KeyPanelBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<KeycardLockBlock> KEYCARD_LOCK = BLOCKS.registerBlock("keycard_lock", KeycardLockBlock::new, prop());
+	public static final DeferredBlock<KeycardLockBlock> KEYCARD_LOCK = BLOCKS.registerBlock("keycard_lock", KeycardLockBlock::new, prop(2.0F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<KeycardReaderBlock> KEYCARD_READER = BLOCKS.registerBlock("keycard_reader", KeycardReaderBlock::new, propDisguisable());
+	public static final DeferredBlock<KeycardReaderBlock> KEYCARD_READER = BLOCKS.registerBlock("keycard_reader", KeycardReaderBlock::new, propDisguisable(3.5F));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadBlock> KEYPAD = BLOCKS.registerBlock("keypad", KeypadBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<KeypadBlock> KEYPAD = BLOCKS.registerBlock("keypad", KeypadBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadBarrelBlock> KEYPAD_BARREL = BLOCKS.registerBlock("keypad_barrel", KeypadBarrelBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<KeypadBarrelBlock> KEYPAD_BARREL = BLOCKS.registerBlock("keypad_barrel", KeypadBarrelBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final DeferredBlock<KeypadChestBlock> KEYPAD_CHEST = BLOCKS.registerBlock(KEYPAD_CHEST_PATH, KeypadChestBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL));
-	public static final DeferredBlock<KeypadDoorBlock> KEYPAD_DOOR = BLOCKS.registerBlock("keypad_door", p -> new KeypadDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK));
-	@HasManualPage(hasRecipeDescription = true)
-	@RegisterItemBlock
-	public static final DeferredBlock<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.registerBlock("keypad_trapdoor", p -> new KeypadTrapDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL).sound(SoundType.METAL).isValidSpawn(SCContent::never));
+	public static final DeferredBlock<KeypadChestBlock> KEYPAD_CHEST = BLOCKS.registerBlock(KEYPAD_CHEST_PATH, KeypadChestBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
+	public static final DeferredBlock<KeypadDoorBlock> KEYPAD_DOOR = BLOCKS.registerBlock("keypad_door", p -> new KeypadDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.registerBlock("keypad_furnace", KeypadFurnaceBlock::new, prop(MapColor.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	public static final DeferredBlock<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.registerBlock("keypad_trapdoor", p -> new KeypadTrapDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL).isValidSpawn(SCContent::never));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadSmokerBlock> KEYPAD_SMOKER = BLOCKS.registerBlock("keypad_smoker", KeypadSmokerBlock::new, prop(MapColor.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	public static final DeferredBlock<KeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.registerBlock("keypad_furnace", KeypadFurnaceBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadBlastFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.registerBlock("keypad_blast_furnace", KeypadBlastFurnaceBlock::new, prop(MapColor.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	public static final DeferredBlock<KeypadSmokerBlock> KEYPAD_SMOKER = BLOCKS.registerBlock("keypad_smoker", KeypadSmokerBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	@HasManualPage(hasRecipeDescription = true)
+	@RegisterItemBlock
+	public static final DeferredBlock<KeypadBlastFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.registerBlock("keypad_blast_furnace", KeypadBlastFurnaceBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<LaserBlock> LASER_BLOCK = BLOCKS.registerBlock("laser_block", LaserBlock::new, propDisguisable());
-	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.registerBlock("laser", LaserFieldBlock::new, prop(MapColor.NONE).noLootTable());
+	public static final DeferredBlock<LaserBlock> LASER_BLOCK = BLOCKS.registerBlock("laser_block", LaserBlock::new, propDisguisable(3.5F));
+	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.registerBlock("laser", LaserFieldBlock::new, prop(MapColor.NONE, -1.0F).noLootTable());
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<MotionActivatedLightBlock> MOTION_ACTIVATED_LIGHT = BLOCKS.registerBlock("motion_activated_light", MotionActivatedLightBlock::new, prop(MapColor.NONE).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0));
+	public static final DeferredBlock<MotionActivatedLightBlock> MOTION_ACTIVATED_LIGHT = BLOCKS.registerBlock("motion_activated_light", MotionActivatedLightBlock::new, prop(MapColor.NONE, 5.0F).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.registerBlock("panic_button", p -> new PanicButtonBlock(p, BlockSetType.STONE, -1), prop().lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
+	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.registerBlock("panic_button", p -> new PanicButtonBlock(p, BlockSetType.STONE, -1), prop(3.5F).lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.METAL));
+	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.COLOR_BLACK, 5.0F));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<ProjectorBlock> PROJECTOR = BLOCKS.registerBlock("projector", ProjectorBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<ProjectorBlock> PROJECTOR = BLOCKS.registerBlock("projector", ProjectorBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ProtectoBlock> PROTECTO = BLOCKS.registerBlock("protecto", ProtectoBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL).lightLevel(state -> 7));
+	public static final DeferredBlock<ProtectoBlock> PROTECTO = BLOCKS.registerBlock("protecto", ProtectoBlock::new, propDisguisable(MapColor.METAL, 10.0F).sound(SoundType.METAL).lightLevel(state -> 7));
 	@OwnableBE
-	public static final DeferredBlock<ReinforcedDoorBlock> REINFORCED_DOOR = BLOCKS.registerBlock("iron_door_reinforced", ReinforcedDoorBlock::new, prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<ReinforcedDoorBlock> REINFORCED_DOOR = BLOCKS.registerBlock("iron_door_reinforced", ReinforcedDoorBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.METAL).noOcclusion().pushReaction(PushReaction.BLOCK));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ElectrifiedIronFenceGateBlock> ELECTRIFIED_IRON_FENCE_GATE = BLOCKS.registerBlock("reinforced_fence_gate", ElectrifiedIronFenceGateBlock::new, prop(MapColor.METAL).sound(SoundType.METAL).forceSolidOn());
+	public static final DeferredBlock<ElectrifiedIronFenceGateBlock> ELECTRIFIED_IRON_FENCE_GATE = BLOCKS.registerBlock("reinforced_fence_gate", ElectrifiedIronFenceGateBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.METAL).forceSolidOn());
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.registerBlock("retinal_scanner", RetinalScannerBlock::new, propDisguisable());
-	public static final DeferredBlock<RiftStabilizerBlock> RIFT_STABILIZER = BLOCKS.registerBlock("rift_stabilizer", RiftStabilizerBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL));
-	public static final DeferredBlock<ScannerDoorBlock> SCANNER_DOOR = BLOCKS.registerBlock("scanner_door", p -> new ScannerDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.registerBlock("retinal_scanner", RetinalScannerBlock::new, propDisguisable(3.5F));
+	public static final DeferredBlock<RiftStabilizerBlock> RIFT_STABILIZER = BLOCKS.registerBlock("rift_stabilizer", RiftStabilizerBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
+	public static final DeferredBlock<ScannerDoorBlock> SCANNER_DOOR = BLOCKS.registerBlock("scanner_door", p -> new ScannerDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL).pushReaction(PushReaction.BLOCK));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.registerBlock("scanner_trapdoor", p -> new ScannerTrapDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL).sound(SoundType.METAL).isValidSpawn(SCContent::never));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_OAK_SIGN = BLOCKS.registerBlock("secret_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.OAK), prop(MapColor.WOOD).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_OAK_WALL_SIGN = BLOCKS.registerBlock("secret_sign_wall", p -> new SecretWallSignBlock(p, WoodType.OAK), prop(MapColor.WOOD).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_SPRUCE_SIGN = BLOCKS.registerBlock("secret_spruce_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.SPRUCE), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_spruce_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_SPRUCE_WALL_SIGN = BLOCKS.registerBlock("secret_spruce_sign_wall", p -> new SecretWallSignBlock(p, WoodType.SPRUCE), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_spruce_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_BIRCH_SIGN = BLOCKS.registerBlock("secret_birch_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.BIRCH), prop(MapColor.SAND).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_birch_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_BIRCH_WALL_SIGN = BLOCKS.registerBlock("secret_birch_sign_wall", p -> new SecretWallSignBlock(p, WoodType.BIRCH), prop(MapColor.SAND).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_birch_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_JUNGLE_SIGN = BLOCKS.registerBlock("secret_jungle_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.JUNGLE), prop(MapColor.PODZOL).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_jungle_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_JUNGLE_WALL_SIGN = BLOCKS.registerBlock("secret_jungle_sign_wall", p -> new SecretWallSignBlock(p, WoodType.JUNGLE), prop(MapColor.PODZOL).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_jungle_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_ACACIA_SIGN = BLOCKS.registerBlock("secret_acacia_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.ACACIA), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_acacia_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_ACACIA_WALL_SIGN = BLOCKS.registerBlock("secret_acacia_sign_wall", p -> new SecretWallSignBlock(p, WoodType.ACACIA), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_acacia_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_DARK_OAK_SIGN = BLOCKS.registerBlock("secret_dark_oak_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.DARK_OAK), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_dark_oak_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_DARK_OAK_WALL_SIGN = BLOCKS.registerBlock("secret_dark_oak_sign_wall", p -> new SecretWallSignBlock(p, WoodType.DARK_OAK), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_dark_oak_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_MANGROVE_SIGN = BLOCKS.registerBlock("secret_mangrove_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.MANGROVE), prop(MapColor.PODZOL).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_mangrove_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_MANGROVE_WALL_SIGN = BLOCKS.registerBlock("secret_mangrove_sign_wall", p -> new SecretWallSignBlock(p, WoodType.MANGROVE), prop(MapColor.PODZOL).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_mangrove_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_CRIMSON_SIGN = BLOCKS.registerBlock("secret_crimson_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.CRIMSON), prop(MapColor.CRIMSON_STEM).sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_crimson_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_CRIMSON_WALL_SIGN = BLOCKS.registerBlock("secret_crimson_sign_wall", p -> new SecretWallSignBlock(p, WoodType.CRIMSON), prop(MapColor.CRIMSON_STEM).sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_crimson_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_WARPED_SIGN = BLOCKS.registerBlock("secret_warped_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.WARPED), prop(MapColor.WARPED_STEM).sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_warped_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_WARPED_WALL_SIGN = BLOCKS.registerBlock("secret_warped_sign_wall", p -> new SecretWallSignBlock(p, WoodType.WARPED), prop(MapColor.WARPED_STEM).sound(SoundType.NETHER_WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_warped_sign"));
+	public static final DeferredBlock<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.registerBlock("scanner_trapdoor", p -> new ScannerTrapDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL).isValidSpawn(SCContent::never));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_OAK_SIGN = secretStandingSign("secret_sign_standing", Blocks.OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_OAK_WALL_SIGN = secretWallSign("secret_sign_wall", Blocks.OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_SPRUCE_SIGN = secretStandingSign("secret_spruce_sign_standing", Blocks.SPRUCE_SIGN, p -> p.overrideDescription("block.securitycraft.secret_spruce_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_SPRUCE_WALL_SIGN = secretWallSign("secret_spruce_sign_wall", Blocks.SPRUCE_SIGN, p -> p.overrideDescription("block.securitycraft.secret_spruce_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_BIRCH_SIGN = secretStandingSign("secret_birch_sign_standing", Blocks.BIRCH_SIGN, p -> p.overrideDescription("block.securitycraft.secret_birch_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_BIRCH_WALL_SIGN = secretWallSign("secret_birch_sign_wall", Blocks.BIRCH_SIGN, p -> p.overrideDescription("block.securitycraft.secret_birch_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_JUNGLE_SIGN = secretStandingSign("secret_jungle_sign_standing", Blocks.JUNGLE_SIGN, p -> p.overrideDescription("block.securitycraft.secret_jungle_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_JUNGLE_WALL_SIGN = secretWallSign("secret_jungle_sign_wall", Blocks.JUNGLE_SIGN, p -> p.overrideDescription("block.securitycraft.secret_jungle_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_ACACIA_SIGN = secretStandingSign("secret_acacia_sign_standing", Blocks.ACACIA_SIGN, p -> p.overrideDescription("block.securitycraft.secret_acacia_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_ACACIA_WALL_SIGN = secretWallSign("secret_acacia_sign_wall", Blocks.ACACIA_SIGN, p -> p.overrideDescription("block.securitycraft.secret_acacia_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_DARK_OAK_SIGN = secretStandingSign("secret_dark_oak_sign_standing", Blocks.DARK_OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_dark_oak_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_DARK_OAK_WALL_SIGN = secretWallSign("secret_dark_oak_sign_wall", Blocks.DARK_OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_dark_oak_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_MANGROVE_SIGN = secretStandingSign("secret_mangrove_sign_standing", Blocks.MANGROVE_SIGN, p -> p.overrideDescription("block.securitycraft.secret_mangrove_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_MANGROVE_WALL_SIGN = secretWallSign("secret_mangrove_sign_wall", Blocks.MANGROVE_SIGN, p -> p.overrideDescription("block.securitycraft.secret_mangrove_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_CRIMSON_SIGN = secretStandingSign("secret_crimson_sign_standing", Blocks.CRIMSON_SIGN, p -> p.overrideDescription("block.securitycraft.secret_crimson_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_CRIMSON_WALL_SIGN = secretWallSign("secret_crimson_sign_wall", Blocks.CRIMSON_SIGN, p -> p.overrideDescription("block.securitycraft.secret_crimson_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_WARPED_SIGN = secretStandingSign("secret_warped_sign_standing", Blocks.WARPED_SIGN, p -> p.overrideDescription("block.securitycraft.secret_warped_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_WARPED_WALL_SIGN = secretWallSign("secret_warped_sign_wall", Blocks.WARPED_SIGN, p -> p.overrideDescription("block.securitycraft.secret_warped_sign"));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable());
+	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(MapColor.METAL, false).noCollission());
+	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollission());
 	@HasManualPage
-	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(MapColor.METAL, false).sound(SoundType.METAL).noCollission());
+	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL).noCollission());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<TrackMineBlock> TRACK_MINE = BLOCKS.registerBlock("track_mine", TrackMineBlock::new, prop(MapColor.METAL, 0.7F).noCollission().sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<TrophySystemBlock> TROPHY_SYSTEM = BLOCKS.registerBlock("trophy_system", TrophySystemBlock::new, propDisguisable(MapColor.METAL, false).sound(SoundType.METAL));
+	public static final DeferredBlock<TrophySystemBlock> TROPHY_SYSTEM = BLOCKS.registerBlock("trophy_system", TrophySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<UsernameLoggerBlock> USERNAME_LOGGER = BLOCKS.registerBlock("username_logger", UsernameLoggerBlock::new, propDisguisable());
+	public static final DeferredBlock<UsernameLoggerBlock> USERNAME_LOGGER = BLOCKS.registerBlock("username_logger", UsernameLoggerBlock::new, propDisguisable(3.5F));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<MineBlock> MINE = BLOCKS.registerBlock("mine", MineBlock::new, prop(MapColor.METAL, 1.0F).forceSolidOn().pushReaction(PushReaction.NORMAL));
-	public static final DeferredBlock<FakeWaterBlock> FAKE_WATER_BLOCK = BLOCKS.registerBlock("fake_water_block", p -> new FakeWaterBlock(p, FAKE_WATER.get()), prop(MapColor.WATER).replaceable().noLootTable().liquid().sound(SoundType.EMPTY).pushReaction(PushReaction.DESTROY).noCollission());
-	public static final DeferredBlock<FakeLavaBlock> FAKE_LAVA_BLOCK = BLOCKS.registerBlock("fake_lava_block", p -> new FakeLavaBlock(p, FAKE_LAVA.get()), prop(MapColor.FIRE).replaceable().noLootTable().liquid().sound(SoundType.EMPTY).pushReaction(PushReaction.DESTROY).noCollission().randomTicks().lightLevel(state -> 15));
+	public static final DeferredBlock<MineBlock> MINE = BLOCKS.registerBlock("mine", MineBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<FakeWaterBlock> FAKE_WATER_BLOCK = BLOCKS.registerBlock("fake_water_block", p -> new FakeWaterBlock(p, FAKE_WATER.get()), reinforcedCopy(Blocks.WATER));
+	public static final DeferredBlock<FakeLavaBlock> FAKE_LAVA_BLOCK = BLOCKS.registerBlock("fake_lava_block", p -> new FakeLavaBlock(p, FAKE_LAVA.get()), reinforcedCopy(Blocks.LAVA));
 
 	//block mines
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> STONE_MINE = BLOCKS.registerBlock("stone_mine", p -> new BaseFullMineBlock(p, Blocks.STONE), mineProp(Blocks.STONE));
+	public static final DeferredBlock<BaseFullMineBlock> STONE_MINE = blockMine("stone_mine", Blocks.STONE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<DeepslateMineBlock> DEEPSLATE_MINE = BLOCKS.registerBlock("deepslate_mine", p -> new DeepslateMineBlock(p, Blocks.DEEPSLATE), mineProp(Blocks.DEEPSLATE));
+	public static final DeferredBlock<DeepslateMineBlock> DEEPSLATE_MINE = reinforcedBlock("deepslate_mine", Blocks.DEEPSLATE, DeepslateMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> COBBLED_DEEPSLATE_MINE = BLOCKS.registerBlock("cobbled_deepslate_mine", p -> new BaseFullMineBlock(p, Blocks.COBBLED_DEEPSLATE), mineProp(Blocks.COBBLED_DEEPSLATE));
+	public static final DeferredBlock<BaseFullMineBlock> COBBLED_DEEPSLATE_MINE = blockMine("cobbled_deepslate_mine", Blocks.COBBLED_DEEPSLATE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DIRT_MINE = BLOCKS.registerBlock("dirt_mine", p -> new BaseFullMineBlock(p, Blocks.DIRT), mineProp(Blocks.DIRT));
+	public static final DeferredBlock<BaseFullMineBlock> DIRT_MINE = blockMine("dirt_mine", Blocks.DIRT);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> COBBLESTONE_MINE = BLOCKS.registerBlock("cobblestone_mine", p -> new BaseFullMineBlock(p, Blocks.COBBLESTONE), mineProp(Blocks.COBBLESTONE));
+	public static final DeferredBlock<BaseFullMineBlock> COBBLESTONE_MINE = blockMine("cobblestone_mine", Blocks.COBBLESTONE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<FallingBlockMineBlock> SAND_MINE = BLOCKS.registerBlock("sand_mine", p -> new FallingBlockMineBlock(p, Blocks.SAND), mineProp(Blocks.SAND));
+	public static final DeferredBlock<FallingBlockMineBlock> SAND_MINE = reinforcedBlock("sand_mine", Blocks.SAND, FallingBlockMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<FallingBlockMineBlock> GRAVEL_MINE = BLOCKS.registerBlock("gravel_mine", p -> new FallingBlockMineBlock(p, Blocks.GRAVEL), mineProp(Blocks.GRAVEL));
+	public static final DeferredBlock<FallingBlockMineBlock> GRAVEL_MINE = reinforcedBlock("gravel_mine", Blocks.GRAVEL, FallingBlockMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> NETHERRACK_MINE = BLOCKS.registerBlock("netherrack_mine", p -> new BaseFullMineBlock(p, Blocks.NETHERRACK), mineProp(Blocks.NETHERRACK));
+	public static final DeferredBlock<BaseFullMineBlock> NETHERRACK_MINE = blockMine("netherrack_mine", Blocks.NETHERRACK);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> END_STONE_MINE = BLOCKS.registerBlock("end_stone_mine", p -> new BaseFullMineBlock(p, Blocks.END_STONE), mineProp(Blocks.END_STONE));
+	public static final DeferredBlock<BaseFullMineBlock> END_STONE_MINE = blockMine("end_stone_mine", Blocks.END_STONE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> COAL_ORE_MINE = BLOCKS.registerBlock("coal_mine", p -> new BaseFullMineBlock(p, Blocks.COAL_ORE), mineProp(Blocks.COAL_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> COAL_ORE_MINE = blockMine("coal_mine", Blocks.COAL_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_COAL_ORE_MINE = BLOCKS.registerBlock("deepslate_coal_mine", p -> new BaseFullMineBlock(p, Blocks.DEEPSLATE_COAL_ORE), mineProp(Blocks.DEEPSLATE_COAL_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_COAL_ORE_MINE = blockMine("deepslate_coal_mine", Blocks.DEEPSLATE_COAL_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> IRON_ORE_MINE = BLOCKS.registerBlock("iron_mine", p -> new BaseFullMineBlock(p, Blocks.IRON_ORE), mineProp(Blocks.IRON_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> IRON_ORE_MINE = blockMine("iron_mine", Blocks.IRON_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_IRON_ORE_MINE = BLOCKS.registerBlock("deepslate_iron_mine", p -> new BaseFullMineBlock(p, Blocks.DEEPSLATE_IRON_ORE), mineProp(Blocks.DEEPSLATE_IRON_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_IRON_ORE_MINE = blockMine("deepslate_iron_mine", Blocks.DEEPSLATE_IRON_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> GOLD_ORE_MINE = BLOCKS.registerBlock("gold_mine", p -> new BaseFullMineBlock(p, Blocks.GOLD_ORE), mineProp(Blocks.GOLD_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> GOLD_ORE_MINE = blockMine("gold_mine", Blocks.GOLD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_GOLD_ORE_MINE = BLOCKS.registerBlock("deepslate_gold_mine", p -> new BaseFullMineBlock(p, Blocks.DEEPSLATE_GOLD_ORE), mineProp(Blocks.DEEPSLATE_GOLD_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_GOLD_ORE_MINE = blockMine("deepslate_gold_mine", Blocks.DEEPSLATE_GOLD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> COPPER_ORE_MINE = BLOCKS.registerBlock("copper_mine", p -> new BaseFullMineBlock(p, Blocks.COPPER_ORE), mineProp(Blocks.COPPER_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> COPPER_ORE_MINE = blockMine("copper_mine", Blocks.COPPER_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_COPPER_ORE_MINE = BLOCKS.registerBlock("deepslate_copper_mine", p -> new BaseFullMineBlock(p, Blocks.DEEPSLATE_COPPER_ORE), mineProp(Blocks.DEEPSLATE_COPPER_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_COPPER_ORE_MINE = blockMine("deepslate_copper_mine", Blocks.DEEPSLATE_COPPER_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<RedstoneOreMineBlock> REDSTONE_ORE_MINE = BLOCKS.registerBlock("redstone_mine", p -> new RedstoneOreMineBlock(p, Blocks.REDSTONE_ORE), mineProp(Blocks.REDSTONE_ORE));
+	public static final DeferredBlock<RedstoneOreMineBlock> REDSTONE_ORE_MINE = reinforcedBlock("redstone_mine", Blocks.REDSTONE_ORE, RedstoneOreMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<RedstoneOreMineBlock> DEEPSLATE_REDSTONE_ORE_MINE = BLOCKS.registerBlock("deepslate_redstone_mine", p -> new RedstoneOreMineBlock(p, Blocks.DEEPSLATE_REDSTONE_ORE), mineProp(Blocks.DEEPSLATE_REDSTONE_ORE));
+	public static final DeferredBlock<RedstoneOreMineBlock> DEEPSLATE_REDSTONE_ORE_MINE = reinforcedBlock("deepslate_redstone_mine", Blocks.DEEPSLATE_REDSTONE_ORE, RedstoneOreMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> EMERALD_ORE_MINE = BLOCKS.registerBlock("emerald_mine", p -> new BaseFullMineBlock(p, Blocks.EMERALD_ORE), mineProp(Blocks.EMERALD_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> EMERALD_ORE_MINE = blockMine("emerald_mine", Blocks.EMERALD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_EMERALD_ORE_MINE = BLOCKS.registerBlock("deepslate_emerald_mine", p -> new BaseFullMineBlock(p, Blocks.DEEPSLATE_EMERALD_ORE), mineProp(Blocks.DEEPSLATE_EMERALD_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_EMERALD_ORE_MINE = blockMine("deepslate_emerald_mine", Blocks.DEEPSLATE_EMERALD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> LAPIS_ORE_MINE = BLOCKS.registerBlock("lapis_mine", p -> new BaseFullMineBlock(p, Blocks.LAPIS_ORE), mineProp(Blocks.LAPIS_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> LAPIS_ORE_MINE = blockMine("lapis_mine", Blocks.LAPIS_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_LAPIS_ORE_MINE = BLOCKS.registerBlock("deepslate_lapis_mine", p -> new BaseFullMineBlock(p, Blocks.DEEPSLATE_LAPIS_ORE), mineProp(Blocks.DEEPSLATE_LAPIS_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_LAPIS_ORE_MINE = blockMine("deepslate_lapis_mine", Blocks.DEEPSLATE_LAPIS_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DIAMOND_ORE_MINE = BLOCKS.registerBlock("diamond_mine", p -> new BaseFullMineBlock(p, Blocks.DIAMOND_ORE), mineProp(Blocks.DIAMOND_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DIAMOND_ORE_MINE = blockMine("diamond_mine", Blocks.DIAMOND_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_DIAMOND_ORE_MINE = BLOCKS.registerBlock("deepslate_diamond_mine", p -> new BaseFullMineBlock(p, Blocks.DEEPSLATE_DIAMOND_ORE), mineProp(Blocks.DEEPSLATE_DIAMOND_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> DEEPSLATE_DIAMOND_ORE_MINE = blockMine("deepslate_diamond_mine", Blocks.DEEPSLATE_DIAMOND_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> NETHER_GOLD_ORE_MINE = BLOCKS.registerBlock("nether_gold_mine", p -> new BaseFullMineBlock(p, Blocks.NETHER_GOLD_ORE), mineProp(Blocks.NETHER_GOLD_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> NETHER_GOLD_ORE_MINE = blockMine("nether_gold_mine", Blocks.NETHER_GOLD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> QUARTZ_ORE_MINE = BLOCKS.registerBlock("quartz_mine", p -> new BaseFullMineBlock(p, Blocks.NETHER_QUARTZ_ORE), mineProp(Blocks.NETHER_QUARTZ_ORE));
+	public static final DeferredBlock<BaseFullMineBlock> QUARTZ_ORE_MINE = blockMine("quartz_mine", Blocks.NETHER_QUARTZ_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
-	public static final DeferredBlock<BaseFullMineBlock> ANCIENT_DEBRIS_MINE = BLOCKS.registerBlock("ancient_debris_mine", p -> new BaseFullMineBlock(p, Blocks.ANCIENT_DEBRIS), mineProp(Blocks.ANCIENT_DEBRIS));
+	public static final DeferredBlock<BaseFullMineBlock> ANCIENT_DEBRIS_MINE = blockMine("ancient_debris_mine", Blocks.ANCIENT_DEBRIS);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BaseFullMineBlock> GILDED_BLACKSTONE_MINE = BLOCKS.registerBlock("gilded_blackstone_mine", p -> new BaseFullMineBlock(p, Blocks.GILDED_BLACKSTONE), mineProp(Blocks.GILDED_BLACKSTONE));
+	public static final DeferredBlock<BaseFullMineBlock> GILDED_BLACKSTONE_MINE = blockMine("gilded_blackstone_mine", Blocks.GILDED_BLACKSTONE);
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<FurnaceMineBlock> FURNACE_MINE = BLOCKS.registerBlock("furnace_mine", p -> new FurnaceMineBlock(p, Blocks.FURNACE), prop(MapColor.STONE, 3.5F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<FurnaceMineBlock> FURNACE_MINE = reinforcedBlock("furnace_mine", Blocks.FURNACE, FurnaceMineBlock::new, p -> p.lightLevel(state -> 0));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<FurnaceMineBlock> SMOKER_MINE = BLOCKS.registerBlock("smoker_mine", p -> new FurnaceMineBlock(p, Blocks.SMOKER), prop(MapColor.STONE, 3.5F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<FurnaceMineBlock> SMOKER_MINE = reinforcedBlock("smoker_mine", Blocks.SMOKER, FurnaceMineBlock::new, p -> p.lightLevel(state -> 0));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<FurnaceMineBlock> BLAST_FURNACE_MINE = BLOCKS.registerBlock("blast_furnace_mine", p -> new FurnaceMineBlock(p, Blocks.BLAST_FURNACE), prop(MapColor.STONE, 3.5F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<FurnaceMineBlock> BLAST_FURNACE_MINE = reinforcedBlock("blast_furnace_mine", Blocks.BLAST_FURNACE, FurnaceMineBlock::new, p -> p.lightLevel(state -> 0));
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BrushableMineBlock> SUSPICIOUS_SAND_MINE = BLOCKS.registerBlock("suspicious_sand_mine", p -> new BrushableMineBlock(p, Blocks.SUSPICIOUS_SAND), mineProp(Blocks.SUSPICIOUS_SAND).pushReaction(PushReaction.DESTROY));
+	public static final DeferredBlock<BrushableMineBlock> SUSPICIOUS_SAND_MINE = reinforcedBlock("suspicious_sand_mine", Blocks.SUSPICIOUS_SAND, BrushableMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BrushableMineBlock> SUSPICIOUS_GRAVEL_MINE = BLOCKS.registerBlock("suspicious_gravel_mine", p -> new BrushableMineBlock(p, Blocks.SUSPICIOUS_GRAVEL), mineProp(Blocks.SUSPICIOUS_GRAVEL));
+	public static final DeferredBlock<BrushableMineBlock> SUSPICIOUS_GRAVEL_MINE = reinforcedBlock("suspicious_gravel_mine", Blocks.SUSPICIOUS_GRAVEL, BrushableMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<CreakingHeartMineBlock> CREAKING_HEART_MINE = BLOCKS.registerBlock("creaking_heart_mine", p -> new CreakingHeartMineBlock(p, Blocks.CREAKING_HEART), mineProp(Blocks.CREAKING_HEART));
+	public static final DeferredBlock<CreakingHeartMineBlock> CREAKING_HEART_MINE = reinforcedBlock("creaking_heart_mine", Blocks.CREAKING_HEART, CreakingHeartMineBlock::new);
 
 	//reinforced blocks (ordered by vanilla <1.19.3 building blocks creative tab order)
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_STONE = BLOCKS.registerBlock("reinforced_stone", p -> new BaseReinforcedBlock(p, Blocks.STONE), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_STONE = reinforcedBlock("reinforced_stone", Blocks.STONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRANITE = BLOCKS.registerBlock("reinforced_granite", p -> new BaseReinforcedBlock(p, Blocks.GRANITE), prop(MapColor.DIRT));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRANITE = reinforcedBlock("reinforced_granite", Blocks.GRANITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_GRANITE = BLOCKS.registerBlock("reinforced_polished_granite", p -> new BaseReinforcedBlock(p, Blocks.POLISHED_GRANITE), prop(MapColor.DIRT));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_GRANITE = reinforcedBlock("reinforced_polished_granite", Blocks.POLISHED_GRANITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DIORITE = BLOCKS.registerBlock("reinforced_diorite", p -> new BaseReinforcedBlock(p, Blocks.DIORITE), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DIORITE = reinforcedBlock("reinforced_diorite", Blocks.DIORITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_DIORITE = BLOCKS.registerBlock("reinforced_polished_diorite", p -> new BaseReinforcedBlock(p, Blocks.POLISHED_DIORITE), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_DIORITE = reinforcedBlock("reinforced_polished_diorite", Blocks.POLISHED_DIORITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ANDESITE = BLOCKS.registerBlock("reinforced_andesite", p -> new BaseReinforcedBlock(p, Blocks.ANDESITE), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ANDESITE = reinforcedBlock("reinforced_andesite", Blocks.ANDESITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_ANDESITE = BLOCKS.registerBlock("reinforced_polished_andesite", p -> new BaseReinforcedBlock(p, Blocks.POLISHED_ANDESITE), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_ANDESITE = reinforcedBlock("reinforced_polished_andesite", Blocks.POLISHED_ANDESITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_DEEPSLATE = BLOCKS.registerBlock("reinforced_deepslate", p -> new ReinforcedRotatedPillarBlock(p, Blocks.DEEPSLATE), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_DEEPSLATE = reinforcedBlock("reinforced_deepslate", Blocks.DEEPSLATE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COBBLED_DEEPSLATE = BLOCKS.registerBlock("reinforced_cobbled_deepslate", p -> new BaseReinforcedBlock(p, Blocks.COBBLED_DEEPSLATE), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COBBLED_DEEPSLATE = reinforcedBlock("reinforced_cobbled_deepslate", Blocks.COBBLED_DEEPSLATE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_DEEPSLATE = BLOCKS.registerBlock("reinforced_polished_deepslate", p -> new BaseReinforcedBlock(p, Blocks.POLISHED_DEEPSLATE), prop(MapColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_DEEPSLATE = reinforcedBlock("reinforced_polished_deepslate", Blocks.POLISHED_DEEPSLATE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CALCITE = BLOCKS.registerBlock("reinforced_calcite", p -> new BaseReinforcedBlock(p, Blocks.CALCITE), prop(MapColor.TERRACOTTA_WHITE).sound(SoundType.CALCITE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CALCITE = reinforcedBlock("reinforced_calcite", Blocks.CALCITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TUFF = BLOCKS.registerBlock("reinforced_tuff", p -> new BaseReinforcedBlock(p, Blocks.TUFF), prop(MapColor.TERRACOTTA_GRAY).sound(SoundType.TUFF));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TUFF = reinforcedBlock("reinforced_tuff", Blocks.TUFF);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DRIPSTONE_BLOCK = BLOCKS.registerBlock("reinforced_dripstone_block", p -> new BaseReinforcedBlock(p, Blocks.DRIPSTONE_BLOCK), prop(MapColor.TERRACOTTA_BROWN).sound(SoundType.DRIPSTONE_BLOCK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DRIPSTONE_BLOCK = reinforcedBlock("reinforced_dripstone_block", Blocks.DRIPSTONE_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGrassBlock> REINFORCED_GRASS_BLOCK = BLOCKS.registerBlock("reinforced_grass_block", ReinforcedGrassBlock::new, prop(MapColor.GRASS).sound(SoundType.GRASS));
+	public static final DeferredBlock<ReinforcedGrassBlock> REINFORCED_GRASS_BLOCK = reinforcedBlock("reinforced_grass_block", Blocks.GRASS_BLOCK, (p, b) -> new ReinforcedGrassBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DIRT = BLOCKS.registerBlock("reinforced_dirt", p -> new BaseReinforcedBlock(p, Blocks.DIRT), prop(MapColor.DIRT).sound(SoundType.GRAVEL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DIRT = reinforcedBlock("reinforced_dirt", Blocks.DIRT);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COARSE_DIRT = BLOCKS.registerBlock("reinforced_coarse_dirt", p -> new BaseReinforcedBlock(p, Blocks.COARSE_DIRT), prop(MapColor.DIRT).sound(SoundType.GRAVEL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COARSE_DIRT = reinforcedBlock("reinforced_coarse_dirt", Blocks.COARSE_DIRT);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_PODZOL = BLOCKS.registerBlock("reinforced_podzol", p -> new ReinforcedSnowyDirtBlock(p, Blocks.PODZOL), prop(MapColor.PODZOL).sound(SoundType.GRAVEL));
+	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_PODZOL = reinforcedBlock("reinforced_podzol", Blocks.PODZOL, ReinforcedSnowyDirtBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedMud> REINFORCED_MUD = BLOCKS.registerBlock("reinforced_mud", p -> new ReinforcedMud(p, Blocks.MUD), prop(MapColor.TERRACOTTA_CYAN).isValidSpawn(SCContent::always).isRedstoneConductor(SCContent::always).isViewBlocking(SCContent::always).isSuffocating(SCContent::always).sound(SoundType.MUD));
+	public static final DeferredBlock<ReinforcedMudBlock> REINFORCED_MUD = reinforcedBlock("reinforced_mud", Blocks.MUD, ReinforcedMudBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedNyliumBlock> REINFORCED_CRIMSON_NYLIUM = BLOCKS.registerBlock("reinforced_crimson_nylium", p -> new ReinforcedNyliumBlock(p, Blocks.CRIMSON_NYLIUM), prop(MapColor.CRIMSON_NYLIUM).sound(SoundType.NYLIUM));
+	public static final DeferredBlock<ReinforcedNyliumBlock> REINFORCED_CRIMSON_NYLIUM = reinforcedBlock("reinforced_crimson_nylium", Blocks.CRIMSON_NYLIUM, ReinforcedNyliumBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedNyliumBlock> REINFORCED_WARPED_NYLIUM = BLOCKS.registerBlock("reinforced_warped_nylium", p -> new ReinforcedNyliumBlock(p, Blocks.WARPED_NYLIUM), prop(MapColor.WARPED_NYLIUM).sound(SoundType.NYLIUM));
+	public static final DeferredBlock<ReinforcedNyliumBlock> REINFORCED_WARPED_NYLIUM = reinforcedBlock("reinforced_warped_nylium", Blocks.WARPED_NYLIUM, ReinforcedNyliumBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRootedDirtBlock> REINFORCED_ROOTED_DIRT = BLOCKS.registerBlock("reinforced_rooted_dirt", p -> new ReinforcedRootedDirtBlock(p, Blocks.ROOTED_DIRT), prop(MapColor.DIRT).sound(SoundType.ROOTED_DIRT));
+	public static final DeferredBlock<ReinforcedRootedDirtBlock> REINFORCED_ROOTED_DIRT = reinforcedBlock("reinforced_rooted_dirt", Blocks.ROOTED_DIRT, ReinforcedRootedDirtBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COBBLESTONE = BLOCKS.registerBlock("reinforced_cobblestone", p -> new BaseReinforcedBlock(p, Blocks.COBBLESTONE), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COBBLESTONE = reinforcedBlock("reinforced_cobblestone", Blocks.COBBLESTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OAK_PLANKS = BLOCKS.registerBlock("reinforced_oak_planks", p -> new BaseReinforcedBlock(p, Blocks.OAK_PLANKS), prop(MapColor.WOOD).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OAK_PLANKS = reinforcedBlock("reinforced_oak_planks", Blocks.OAK_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SPRUCE_PLANKS = BLOCKS.registerBlock("reinforced_spruce_planks", p -> new BaseReinforcedBlock(p, Blocks.SPRUCE_PLANKS), prop(MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SPRUCE_PLANKS = reinforcedBlock("reinforced_spruce_planks", Blocks.SPRUCE_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BIRCH_PLANKS = BLOCKS.registerBlock("reinforced_birch_planks", p -> new BaseReinforcedBlock(p, Blocks.BIRCH_PLANKS), prop(MapColor.SAND).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BIRCH_PLANKS = reinforcedBlock("reinforced_birch_planks", Blocks.BIRCH_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_JUNGLE_PLANKS = BLOCKS.registerBlock("reinforced_jungle_planks", p -> new BaseReinforcedBlock(p, Blocks.JUNGLE_PLANKS), prop(MapColor.DIRT).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_JUNGLE_PLANKS = reinforcedBlock("reinforced_jungle_planks", Blocks.JUNGLE_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ACACIA_PLANKS = BLOCKS.registerBlock("reinforced_acacia_planks", p -> new BaseReinforcedBlock(p, Blocks.ACACIA_PLANKS), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ACACIA_PLANKS = reinforcedBlock("reinforced_acacia_planks", Blocks.ACACIA_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DARK_OAK_PLANKS = BLOCKS.registerBlock("reinforced_dark_oak_planks", p -> new BaseReinforcedBlock(p, Blocks.DARK_OAK_PLANKS), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DARK_OAK_PLANKS = reinforcedBlock("reinforced_dark_oak_planks", Blocks.DARK_OAK_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MANGROVE_PLANKS = BLOCKS.registerBlock("reinforced_mangrove_planks", p -> new BaseReinforcedBlock(p, Blocks.MANGROVE_PLANKS), prop(MapColor.COLOR_RED).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MANGROVE_PLANKS = reinforcedBlock("reinforced_mangrove_planks", Blocks.MANGROVE_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRIMSON_PLANKS = BLOCKS.registerBlock("reinforced_crimson_planks", p -> new BaseReinforcedBlock(p, Blocks.CRIMSON_PLANKS), prop(MapColor.CRIMSON_STEM).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRIMSON_PLANKS = reinforcedBlock("reinforced_crimson_planks", Blocks.CRIMSON_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WARPED_PLANKS = BLOCKS.registerBlock("reinforced_warped_planks", p -> new BaseReinforcedBlock(p, Blocks.WARPED_PLANKS), prop(MapColor.WARPED_STEM).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WARPED_PLANKS = reinforcedBlock("reinforced_warped_planks", Blocks.WARPED_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFallingBlock> REINFORCED_SAND = BLOCKS.registerBlock("reinforced_sand", p -> new ReinforcedFallingBlock(p, Blocks.SAND), prop(MapColor.SAND).sound(SoundType.SAND));
+	public static final DeferredBlock<ReinforcedFallingBlock> REINFORCED_SAND = reinforcedBlock("reinforced_sand", Blocks.SAND, ReinforcedFallingBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFallingBlock> REINFORCED_RED_SAND = BLOCKS.registerBlock("reinforced_red_sand", p -> new ReinforcedFallingBlock(p, Blocks.RED_SAND), prop(MapColor.COLOR_ORANGE).sound(SoundType.SAND));
+	public static final DeferredBlock<ReinforcedFallingBlock> REINFORCED_RED_SAND = reinforcedBlock("reinforced_red_sand", Blocks.RED_SAND, ReinforcedFallingBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFallingBlock> REINFORCED_GRAVEL = BLOCKS.registerBlock("reinforced_gravel", p -> new ReinforcedFallingBlock(p, Blocks.GRAVEL), prop().sound(SoundType.GRAVEL));
+	public static final DeferredBlock<ReinforcedFallingBlock> REINFORCED_GRAVEL = reinforcedBlock("reinforced_gravel", Blocks.GRAVEL, ReinforcedFallingBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COAL_BLOCK = BLOCKS.registerBlock("reinforced_coal_block", p -> new BaseReinforcedBlock(p, Blocks.COAL_BLOCK), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COAL_BLOCK = reinforcedBlock("reinforced_coal_block", Blocks.COAL_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RAW_IRON_BLOCK = BLOCKS.registerBlock("reinforced_raw_iron_block", p -> new BaseReinforcedBlock(p, Blocks.RAW_IRON_BLOCK), prop(MapColor.RAW_IRON));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RAW_IRON_BLOCK = reinforcedBlock("reinforced_raw_iron_block", Blocks.RAW_IRON_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RAW_COPPER_BLOCK = BLOCKS.registerBlock("reinforced_raw_copper_block", p -> new BaseReinforcedBlock(p, Blocks.RAW_COPPER_BLOCK), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RAW_COPPER_BLOCK = reinforcedBlock("reinforced_raw_copper_block", Blocks.RAW_COPPER_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RAW_GOLD_BLOCK = BLOCKS.registerBlock("reinforced_raw_gold_block", p -> new BaseReinforcedBlock(p, Blocks.RAW_GOLD_BLOCK), prop(MapColor.GOLD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RAW_GOLD_BLOCK = reinforcedBlock("reinforced_raw_gold_block", Blocks.RAW_GOLD_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedAmethystBlock> REINFORCED_AMETHYST_BLOCK = BLOCKS.registerBlock("reinforced_amethyst_block", p -> new ReinforcedAmethystBlock(p, Blocks.AMETHYST_BLOCK), prop(MapColor.COLOR_PURPLE).sound(SoundType.AMETHYST));
+	public static final DeferredBlock<ReinforcedAmethystBlock> REINFORCED_AMETHYST_BLOCK = reinforcedBlock("reinforced_amethyst_block", Blocks.AMETHYST_BLOCK, ReinforcedAmethystBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_IRON_BLOCK = BLOCKS.registerBlock("reinforced_iron_block", p -> new BaseReinforcedBlock(p, Blocks.IRON_BLOCK), prop(MapColor.METAL).sound(SoundType.METAL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_IRON_BLOCK = reinforcedBlock("reinforced_iron_block", Blocks.IRON_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COPPER_BLOCK = BLOCKS.registerBlock("reinforced_copper_block", p -> new BaseReinforcedBlock(p, Blocks.COPPER_BLOCK), prop(MapColor.COLOR_ORANGE).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COPPER_BLOCK = reinforcedBlock("reinforced_copper_block", Blocks.COPPER_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GOLD_BLOCK = BLOCKS.registerBlock("reinforced_gold_block", p -> new BaseReinforcedBlock(p, Blocks.GOLD_BLOCK), prop(MapColor.GOLD).sound(SoundType.METAL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GOLD_BLOCK = reinforcedBlock("reinforced_gold_block", Blocks.GOLD_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DIAMOND_BLOCK = BLOCKS.registerBlock("reinforced_diamond_block", p -> new BaseReinforcedBlock(p, Blocks.DIAMOND_BLOCK), prop(MapColor.DIAMOND).sound(SoundType.METAL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DIAMOND_BLOCK = reinforcedBlock("reinforced_diamond_block", Blocks.DIAMOND_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHERITE_BLOCK = BLOCKS.registerBlock("reinforced_netherite_block", p -> new BaseReinforcedBlock(p, Blocks.NETHERITE_BLOCK), prop(MapColor.COLOR_BLACK).sound(SoundType.NETHERITE_BLOCK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHERITE_BLOCK = reinforcedBlock("reinforced_netherite_block", Blocks.NETHERITE_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_COPPER = BLOCKS.registerBlock("reinforced_exposed_copper", p -> new BaseReinforcedBlock(p, Blocks.EXPOSED_COPPER), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_COPPER = reinforcedBlock("reinforced_exposed_copper", Blocks.EXPOSED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_COPPER = BLOCKS.registerBlock("reinforced_weathered_copper", p -> new BaseReinforcedBlock(p, Blocks.WEATHERED_COPPER), prop(MapColor.WARPED_STEM).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_COPPER = reinforcedBlock("reinforced_weathered_copper", Blocks.WEATHERED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_COPPER = BLOCKS.registerBlock("reinforced_oxidized_copper", p -> new BaseReinforcedBlock(p, Blocks.OXIDIZED_COPPER), prop(MapColor.WARPED_NYLIUM).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_COPPER = reinforcedBlock("reinforced_oxidized_copper", Blocks.OXIDIZED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_COPPER = BLOCKS.registerBlock("reinforced_cut_copper", p -> new BaseReinforcedBlock(p, Blocks.CUT_COPPER), prop(MapColor.COLOR_ORANGE).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_COPPER = reinforcedBlock("reinforced_cut_copper", Blocks.CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CUT_COPPER = BLOCKS.registerBlock("reinforced_exposed_cut_copper", p -> new BaseReinforcedBlock(p, Blocks.EXPOSED_CUT_COPPER), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CUT_COPPER = reinforcedBlock("reinforced_exposed_cut_copper", Blocks.EXPOSED_CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CUT_COPPER = BLOCKS.registerBlock("reinforced_weathered_cut_copper", p -> new BaseReinforcedBlock(p, Blocks.WEATHERED_CUT_COPPER), prop(MapColor.WARPED_STEM).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CUT_COPPER = reinforcedBlock("reinforced_weathered_cut_copper", Blocks.WEATHERED_CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CUT_COPPER = BLOCKS.registerBlock("reinforced_oxidized_cut_copper", p -> new BaseReinforcedBlock(p, Blocks.OXIDIZED_CUT_COPPER), prop(MapColor.WARPED_NYLIUM).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CUT_COPPER = reinforcedBlock("reinforced_oxidized_cut_copper", Blocks.OXIDIZED_CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CUT_COPPER_STAIRS = BLOCKS.registerBlock("reinforced_cut_copper_stairs", p -> new ReinforcedStairsBlock(p, Blocks.CUT_COPPER_STAIRS), prop(MapColor.COLOR_ORANGE).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_EXPOSED_CUT_COPPER_STAIRS = BLOCKS.registerBlock("reinforced_exposed_cut_copper_stairs", p -> new ReinforcedStairsBlock(p, Blocks.EXPOSED_CUT_COPPER_STAIRS), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_EXPOSED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_exposed_cut_copper_stairs", Blocks.EXPOSED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_WEATHERED_CUT_COPPER_STAIRS = BLOCKS.registerBlock("reinforced_weathered_cut_copper_stairs", p -> new ReinforcedStairsBlock(p, Blocks.WEATHERED_CUT_COPPER_STAIRS), prop(MapColor.WARPED_STEM).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_WEATHERED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_weathered_cut_copper_stairs", Blocks.WEATHERED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_OXIDIZED_CUT_COPPER_STAIRS = BLOCKS.registerBlock("reinforced_oxidized_cut_copper_stairs", p -> new ReinforcedStairsBlock(p, Blocks.OXIDIZED_CUT_COPPER_STAIRS), prop(MapColor.WARPED_NYLIUM).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_OXIDIZED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_oxidized_cut_copper_stairs", Blocks.OXIDIZED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_COPPER_SLAB = BLOCKS.registerBlock("reinforced_cut_copper_slab", p -> new ReinforcedSlabBlock(p, Blocks.CUT_COPPER_SLAB), prop(MapColor.COLOR_ORANGE).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_cut_copper_slab", Blocks.CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_EXPOSED_CUT_COPPER_SLAB = BLOCKS.registerBlock("reinforced_exposed_cut_copper_slab", p -> new ReinforcedSlabBlock(p, Blocks.EXPOSED_CUT_COPPER_SLAB), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_EXPOSED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_exposed_cut_copper_slab", Blocks.EXPOSED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_WEATHERED_CUT_COPPER_SLAB = BLOCKS.registerBlock("reinforced_weathered_cut_copper_slab", p -> new ReinforcedSlabBlock(p, Blocks.WEATHERED_CUT_COPPER_SLAB), prop(MapColor.WARPED_STEM).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_WEATHERED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_weathered_cut_copper_slab", Blocks.WEATHERED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_OXIDIZED_CUT_COPPER_SLAB = BLOCKS.registerBlock("reinforced_oxidized_cut_copper_slab", p -> new ReinforcedSlabBlock(p, Blocks.OXIDIZED_CUT_COPPER_SLAB), prop(MapColor.WARPED_NYLIUM).sound(SoundType.COPPER));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_OXIDIZED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_oxidized_cut_copper_slab", Blocks.OXIDIZED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_OAK_LOG = BLOCKS.registerBlock("reinforced_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.OAK_LOG), logProp(MapColor.WOOD, MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_OAK_LOG = reinforcedBlock("reinforced_oak_log", Blocks.OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_SPRUCE_LOG = BLOCKS.registerBlock("reinforced_spruce_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.SPRUCE_LOG), logProp(MapColor.PODZOL, MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_SPRUCE_LOG = reinforcedBlock("reinforced_spruce_log", Blocks.SPRUCE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BIRCH_LOG = BLOCKS.registerBlock("reinforced_birch_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.BIRCH_LOG), logProp(MapColor.SAND, MapColor.QUARTZ).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BIRCH_LOG = reinforcedBlock("reinforced_birch_log", Blocks.BIRCH_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_JUNGLE_LOG = BLOCKS.registerBlock("reinforced_jungle_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.JUNGLE_LOG), logProp(MapColor.DIRT, MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_JUNGLE_LOG = reinforcedBlock("reinforced_jungle_log", Blocks.JUNGLE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_ACACIA_LOG = BLOCKS.registerBlock("reinforced_acacia_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.ACACIA_LOG), logProp(MapColor.COLOR_ORANGE, MapColor.STONE).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_ACACIA_LOG = reinforcedBlock("reinforced_acacia_log", Blocks.ACACIA_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_DARK_OAK_LOG = BLOCKS.registerBlock("reinforced_dark_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.DARK_OAK_LOG), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_DARK_OAK_LOG = reinforcedBlock("reinforced_dark_oak_log", Blocks.DARK_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_MANGROVE_LOG = BLOCKS.registerBlock("reinforced_mangrove_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.MANGROVE_LOG), logProp(MapColor.COLOR_RED, MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_MANGROVE_LOG = reinforcedBlock("reinforced_mangrove_log", Blocks.MANGROVE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CRIMSON_STEM = BLOCKS.registerBlock("reinforced_crimson_stem", p -> new ReinforcedRotatedPillarBlock(p, Blocks.CRIMSON_STEM), prop(MapColor.CRIMSON_STEM).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CRIMSON_STEM = reinforcedBlock("reinforced_crimson_stem", Blocks.CRIMSON_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_WARPED_STEM = BLOCKS.registerBlock("reinforced_warped_stem", p -> new ReinforcedRotatedPillarBlock(p, Blocks.WARPED_STEM), prop(MapColor.WARPED_STEM).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_WARPED_STEM = reinforcedBlock("reinforced_warped_stem", Blocks.WARPED_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_OAK_LOG = BLOCKS.registerBlock("reinforced_stripped_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_OAK_LOG), prop(MapColor.WOOD).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_OAK_LOG = reinforcedBlock("reinforced_stripped_oak_log", Blocks.STRIPPED_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_SPRUCE_LOG = BLOCKS.registerBlock("reinforced_stripped_spruce_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_SPRUCE_LOG), prop(MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_SPRUCE_LOG = reinforcedBlock("reinforced_stripped_spruce_log", Blocks.STRIPPED_SPRUCE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BIRCH_LOG = BLOCKS.registerBlock("reinforced_stripped_birch_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_BIRCH_LOG), prop(MapColor.SAND).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BIRCH_LOG = reinforcedBlock("reinforced_stripped_birch_log", Blocks.STRIPPED_BIRCH_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_JUNGLE_LOG = BLOCKS.registerBlock("reinforced_stripped_jungle_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_JUNGLE_LOG), prop(MapColor.DIRT).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_JUNGLE_LOG = reinforcedBlock("reinforced_stripped_jungle_log", Blocks.STRIPPED_JUNGLE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_ACACIA_LOG = BLOCKS.registerBlock("reinforced_stripped_acacia_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_ACACIA_LOG), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_ACACIA_LOG = reinforcedBlock("reinforced_stripped_acacia_log", Blocks.STRIPPED_ACACIA_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_DARK_OAK_LOG = BLOCKS.registerBlock("reinforced_stripped_dark_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_DARK_OAK_LOG), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_DARK_OAK_LOG = reinforcedBlock("reinforced_stripped_dark_oak_log", Blocks.STRIPPED_DARK_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_MANGROVE_LOG = BLOCKS.registerBlock("reinforced_stripped_mangrove_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_MANGROVE_LOG), prop(MapColor.COLOR_RED).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_MANGROVE_LOG = reinforcedBlock("reinforced_stripped_mangrove_log", Blocks.STRIPPED_MANGROVE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CRIMSON_STEM = BLOCKS.registerBlock("reinforced_stripped_crimson_stem", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_CRIMSON_STEM), prop(MapColor.CRIMSON_STEM).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CRIMSON_STEM = reinforcedBlock("reinforced_stripped_crimson_stem", Blocks.STRIPPED_CRIMSON_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_WARPED_STEM = BLOCKS.registerBlock("reinforced_stripped_warped_stem", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_WARPED_STEM), prop(MapColor.WARPED_STEM).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_WARPED_STEM = reinforcedBlock("reinforced_stripped_warped_stem", Blocks.STRIPPED_WARPED_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_OAK_WOOD = BLOCKS.registerBlock("reinforced_stripped_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_OAK_WOOD), prop(MapColor.WOOD).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_OAK_WOOD = reinforcedBlock("reinforced_stripped_oak_wood", Blocks.STRIPPED_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_SPRUCE_WOOD = BLOCKS.registerBlock("reinforced_stripped_spruce_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_SPRUCE_WOOD), prop(MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_SPRUCE_WOOD = reinforcedBlock("reinforced_stripped_spruce_wood", Blocks.STRIPPED_SPRUCE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BIRCH_WOOD = BLOCKS.registerBlock("reinforced_stripped_birch_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_BIRCH_WOOD), prop(MapColor.SAND).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BIRCH_WOOD = reinforcedBlock("reinforced_stripped_birch_wood", Blocks.STRIPPED_BIRCH_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_JUNGLE_WOOD = BLOCKS.registerBlock("reinforced_stripped_jungle_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_JUNGLE_WOOD), prop(MapColor.DIRT).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_JUNGLE_WOOD = reinforcedBlock("reinforced_stripped_jungle_wood", Blocks.STRIPPED_JUNGLE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_ACACIA_WOOD = BLOCKS.registerBlock("reinforced_stripped_acacia_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_ACACIA_WOOD), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_ACACIA_WOOD = reinforcedBlock("reinforced_stripped_acacia_wood", Blocks.STRIPPED_ACACIA_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_DARK_OAK_WOOD = BLOCKS.registerBlock("reinforced_stripped_dark_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_DARK_OAK_WOOD), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_DARK_OAK_WOOD = reinforcedBlock("reinforced_stripped_dark_oak_wood", Blocks.STRIPPED_DARK_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_MANGROVE_WOOD = BLOCKS.registerBlock("reinforced_stripped_mangrove_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_MANGROVE_WOOD), prop(MapColor.COLOR_RED).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_MANGROVE_WOOD = reinforcedBlock("reinforced_stripped_mangrove_wood", Blocks.STRIPPED_MANGROVE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CRIMSON_HYPHAE = BLOCKS.registerBlock("reinforced_stripped_crimson_hyphae", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_CRIMSON_HYPHAE), prop(MapColor.CRIMSON_HYPHAE).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CRIMSON_HYPHAE = reinforcedBlock("reinforced_stripped_crimson_hyphae", Blocks.STRIPPED_CRIMSON_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_WARPED_HYPHAE = BLOCKS.registerBlock("reinforced_stripped_warped_hyphae", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_WARPED_HYPHAE), prop(MapColor.WARPED_HYPHAE).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_WARPED_HYPHAE = reinforcedBlock("reinforced_stripped_warped_hyphae", Blocks.STRIPPED_WARPED_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_OAK_WOOD = BLOCKS.registerBlock("reinforced_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.OAK_WOOD), prop(MapColor.WOOD).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_OAK_WOOD = reinforcedBlock("reinforced_oak_wood", Blocks.OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_SPRUCE_WOOD = BLOCKS.registerBlock("reinforced_spruce_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.SPRUCE_WOOD), prop(MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_SPRUCE_WOOD = reinforcedBlock("reinforced_spruce_wood", Blocks.SPRUCE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BIRCH_WOOD = BLOCKS.registerBlock("reinforced_birch_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.BIRCH_WOOD), prop(MapColor.SAND).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BIRCH_WOOD = reinforcedBlock("reinforced_birch_wood", Blocks.BIRCH_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_JUNGLE_WOOD = BLOCKS.registerBlock("reinforced_jungle_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.JUNGLE_WOOD), prop(MapColor.DIRT).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_JUNGLE_WOOD = reinforcedBlock("reinforced_jungle_wood", Blocks.JUNGLE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_ACACIA_WOOD = BLOCKS.registerBlock("reinforced_acacia_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.ACACIA_WOOD), prop(MapColor.COLOR_GRAY).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_ACACIA_WOOD = reinforcedBlock("reinforced_acacia_wood", Blocks.ACACIA_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_DARK_OAK_WOOD = BLOCKS.registerBlock("reinforced_dark_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.DARK_OAK_WOOD), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_DARK_OAK_WOOD = reinforcedBlock("reinforced_dark_oak_wood", Blocks.DARK_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_MANGROVE_WOOD = BLOCKS.registerBlock("reinforced_mangrove_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.MANGROVE_WOOD), prop(MapColor.COLOR_RED).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_MANGROVE_WOOD = reinforcedBlock("reinforced_mangrove_wood", Blocks.MANGROVE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CRIMSON_HYPHAE = BLOCKS.registerBlock("reinforced_crimson_hyphae", p -> new ReinforcedRotatedPillarBlock(p, Blocks.CRIMSON_HYPHAE), prop(MapColor.CRIMSON_HYPHAE).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CRIMSON_HYPHAE = reinforcedBlock("reinforced_crimson_hyphae", Blocks.CRIMSON_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_WARPED_HYPHAE = BLOCKS.registerBlock("reinforced_warped_hyphae", p -> new ReinforcedRotatedPillarBlock(p, Blocks.WARPED_HYPHAE), prop(MapColor.WARPED_HYPHAE).sound(SoundType.STEM));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_WARPED_HYPHAE = reinforcedBlock("reinforced_warped_hyphae", Blocks.WARPED_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedGlassBlock> REINFORCED_GLASS = BLOCKS.registerBlock("reinforced_glass", p -> new ReinforcedGlassBlock(p, Blocks.GLASS), glassProp(MapColor.NONE));
+	public static final DeferredBlock<ReinforcedGlassBlock> REINFORCED_GLASS = reinforcedBlock("reinforced_glass", Blocks.GLASS, ReinforcedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedTintedGlassBlock> REINFORCED_TINTED_GLASS = BLOCKS.registerBlock("reinforced_tinted_glass", p -> new ReinforcedTintedGlassBlock(p, Blocks.TINTED_GLASS), glassProp(MapColor.COLOR_GRAY));
+	public static final DeferredBlock<ReinforcedTintedGlassBlock> REINFORCED_TINTED_GLASS = reinforcedBlock("reinforced_tinted_glass", Blocks.TINTED_GLASS, ReinforcedTintedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LAPIS_BLOCK = BLOCKS.registerBlock("reinforced_lapis_block", p -> new BaseReinforcedBlock(p, Blocks.LAPIS_BLOCK), prop(MapColor.LAPIS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LAPIS_BLOCK = reinforcedBlock("reinforced_lapis_block", Blocks.LAPIS_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SANDSTONE = BLOCKS.registerBlock("reinforced_sandstone", p -> new BaseReinforcedBlock(p, Blocks.SANDSTONE), prop(MapColor.SAND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SANDSTONE = reinforcedBlock("reinforced_sandstone", Blocks.SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_SANDSTONE = BLOCKS.registerBlock("reinforced_chiseled_sandstone", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_SANDSTONE), prop(MapColor.SAND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_SANDSTONE = reinforcedBlock("reinforced_chiseled_sandstone", Blocks.CHISELED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_SANDSTONE = BLOCKS.registerBlock("reinforced_cut_sandstone", p -> new BaseReinforcedBlock(p, Blocks.CUT_SANDSTONE), prop(MapColor.SAND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_SANDSTONE = reinforcedBlock("reinforced_cut_sandstone", Blocks.CUT_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_WOOL = BLOCKS.registerBlock("reinforced_white_wool", p -> new BaseReinforcedBlock(p, Blocks.WHITE_WOOL), prop(MapColor.SNOW).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_WOOL = reinforcedBlock("reinforced_white_wool", Blocks.WHITE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_WOOL = BLOCKS.registerBlock("reinforced_orange_wool", p -> new BaseReinforcedBlock(p, Blocks.ORANGE_WOOL), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_WOOL = reinforcedBlock("reinforced_orange_wool", Blocks.ORANGE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_WOOL = BLOCKS.registerBlock("reinforced_magenta_wool", p -> new BaseReinforcedBlock(p, Blocks.MAGENTA_WOOL), prop(MapColor.COLOR_MAGENTA).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_WOOL = reinforcedBlock("reinforced_magenta_wool", Blocks.MAGENTA_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_WOOL = BLOCKS.registerBlock("reinforced_light_blue_wool", p -> new BaseReinforcedBlock(p, Blocks.LIGHT_BLUE_WOOL), prop(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_WOOL = reinforcedBlock("reinforced_light_blue_wool", Blocks.LIGHT_BLUE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_WOOL = BLOCKS.registerBlock("reinforced_yellow_wool", p -> new BaseReinforcedBlock(p, Blocks.YELLOW_WOOL), prop(MapColor.COLOR_YELLOW).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_WOOL = reinforcedBlock("reinforced_yellow_wool", Blocks.YELLOW_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_WOOL = BLOCKS.registerBlock("reinforced_lime_wool", p -> new BaseReinforcedBlock(p, Blocks.LIME_WOOL), prop(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_WOOL = reinforcedBlock("reinforced_lime_wool", Blocks.LIME_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_WOOL = BLOCKS.registerBlock("reinforced_pink_wool", p -> new BaseReinforcedBlock(p, Blocks.PINK_WOOL), prop(MapColor.COLOR_PINK).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_WOOL = reinforcedBlock("reinforced_pink_wool", Blocks.PINK_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_WOOL = BLOCKS.registerBlock("reinforced_gray_wool", p -> new BaseReinforcedBlock(p, Blocks.GRAY_WOOL), prop(MapColor.COLOR_GRAY).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_WOOL = reinforcedBlock("reinforced_gray_wool", Blocks.GRAY_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_WOOL = BLOCKS.registerBlock("reinforced_light_gray_wool", p -> new BaseReinforcedBlock(p, Blocks.LIGHT_GRAY_WOOL), prop(MapColor.COLOR_LIGHT_GRAY).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_WOOL = reinforcedBlock("reinforced_light_gray_wool", Blocks.LIGHT_GRAY_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_WOOL = BLOCKS.registerBlock("reinforced_cyan_wool", p -> new BaseReinforcedBlock(p, Blocks.CYAN_WOOL), prop(MapColor.COLOR_CYAN).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_WOOL = reinforcedBlock("reinforced_cyan_wool", Blocks.CYAN_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_WOOL = BLOCKS.registerBlock("reinforced_purple_wool", p -> new BaseReinforcedBlock(p, Blocks.PURPLE_WOOL), prop(MapColor.COLOR_PURPLE).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_WOOL = reinforcedBlock("reinforced_purple_wool", Blocks.PURPLE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_WOOL = BLOCKS.registerBlock("reinforced_blue_wool", p -> new BaseReinforcedBlock(p, Blocks.BLUE_WOOL), prop(MapColor.COLOR_BLUE).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_WOOL = reinforcedBlock("reinforced_blue_wool", Blocks.BLUE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_WOOL = BLOCKS.registerBlock("reinforced_brown_wool", p -> new BaseReinforcedBlock(p, Blocks.BROWN_WOOL), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_WOOL = reinforcedBlock("reinforced_brown_wool", Blocks.BROWN_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_WOOL = BLOCKS.registerBlock("reinforced_green_wool", p -> new BaseReinforcedBlock(p, Blocks.GREEN_WOOL), prop(MapColor.COLOR_GREEN).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_WOOL = reinforcedBlock("reinforced_green_wool", Blocks.GREEN_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_WOOL = BLOCKS.registerBlock("reinforced_red_wool", p -> new BaseReinforcedBlock(p, Blocks.RED_WOOL), prop(MapColor.COLOR_RED).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_WOOL = reinforcedBlock("reinforced_red_wool", Blocks.RED_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_WOOL = BLOCKS.registerBlock("reinforced_black_wool", p -> new BaseReinforcedBlock(p, Blocks.BLACK_WOOL), prop(MapColor.COLOR_BLACK).sound(SoundType.WOOL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_WOOL = reinforcedBlock("reinforced_black_wool", Blocks.BLACK_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_OAK_SLAB = BLOCKS.registerBlock("reinforced_oak_slab", p -> new ReinforcedSlabBlock(p, Blocks.OAK_SLAB), prop(MapColor.WOOD).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_OAK_SLAB = reinforcedBlock("reinforced_oak_slab", Blocks.OAK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SPRUCE_SLAB = BLOCKS.registerBlock("reinforced_spruce_slab", p -> new ReinforcedSlabBlock(p, Blocks.SPRUCE_SLAB), prop(MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SPRUCE_SLAB = reinforcedBlock("reinforced_spruce_slab", Blocks.SPRUCE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BIRCH_SLAB = BLOCKS.registerBlock("reinforced_birch_slab", p -> new ReinforcedSlabBlock(p, Blocks.BIRCH_SLAB), prop(MapColor.SAND).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BIRCH_SLAB = reinforcedBlock("reinforced_birch_slab", Blocks.BIRCH_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_JUNGLE_SLAB = BLOCKS.registerBlock("reinforced_jungle_slab", p -> new ReinforcedSlabBlock(p, Blocks.JUNGLE_SLAB), prop(MapColor.DIRT).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_JUNGLE_SLAB = reinforcedBlock("reinforced_jungle_slab", Blocks.JUNGLE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_ACACIA_SLAB = BLOCKS.registerBlock("reinforced_acacia_slab", p -> new ReinforcedSlabBlock(p, Blocks.ACACIA_SLAB), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_ACACIA_SLAB = reinforcedBlock("reinforced_acacia_slab", Blocks.ACACIA_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DARK_OAK_SLAB = BLOCKS.registerBlock("reinforced_dark_oak_slab", p -> new ReinforcedSlabBlock(p, Blocks.DARK_OAK_SLAB), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DARK_OAK_SLAB = reinforcedBlock("reinforced_dark_oak_slab", Blocks.DARK_OAK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MANGROVE_SLAB = BLOCKS.registerBlock("reinforced_mangrove_slab", p -> new ReinforcedSlabBlock(p, Blocks.MANGROVE_SLAB), prop(MapColor.COLOR_RED).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MANGROVE_SLAB = reinforcedBlock("reinforced_mangrove_slab", Blocks.MANGROVE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRIMSON_SLAB = BLOCKS.registerBlock("reinforced_crimson_slab", p -> new ReinforcedSlabBlock(p, Blocks.CRIMSON_SLAB), prop(MapColor.CRIMSON_STEM).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRIMSON_SLAB = reinforcedBlock("reinforced_crimson_slab", Blocks.CRIMSON_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_WARPED_SLAB = BLOCKS.registerBlock("reinforced_warped_slab", p -> new ReinforcedSlabBlock(p, Blocks.WARPED_SLAB), prop(MapColor.WARPED_STEM).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_WARPED_SLAB = reinforcedBlock("reinforced_warped_slab", Blocks.WARPED_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_NORMAL_STONE_SLAB = BLOCKS.registerBlock("reinforced_normal_stone_slab", p -> new ReinforcedSlabBlock(p, Blocks.STONE_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_NORMAL_STONE_SLAB = reinforcedBlock("reinforced_normal_stone_slab", Blocks.STONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_STONE_SLAB = BLOCKS.registerBlock("reinforced_stone_slab", p -> new ReinforcedSlabBlock(p, Blocks.SMOOTH_STONE_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_STONE_SLAB = reinforcedBlock("reinforced_stone_slab", Blocks.SMOOTH_STONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SANDSTONE_SLAB = BLOCKS.registerBlock("reinforced_sandstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.SANDSTONE_SLAB), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SANDSTONE_SLAB = reinforcedBlock("reinforced_sandstone_slab", Blocks.SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_SANDSTONE_SLAB = BLOCKS.registerBlock("reinforced_cut_sandstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.CUT_SANDSTONE_SLAB), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_SANDSTONE_SLAB = reinforcedBlock("reinforced_cut_sandstone_slab", Blocks.CUT_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_COBBLESTONE_SLAB = BLOCKS.registerBlock("reinforced_cobblestone_slab", p -> new ReinforcedSlabBlock(p, Blocks.COBBLESTONE_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_COBBLESTONE_SLAB = reinforcedBlock("reinforced_cobblestone_slab", Blocks.COBBLESTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BRICK_SLAB = BLOCKS.registerBlock("reinforced_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.BRICK_SLAB), prop(MapColor.COLOR_RED));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BRICK_SLAB = reinforcedBlock("reinforced_brick_slab", Blocks.BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_STONE_BRICK_SLAB = BLOCKS.registerBlock("reinforced_stone_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.STONE_BRICK_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_STONE_BRICK_SLAB = reinforcedBlock("reinforced_stone_brick_slab", Blocks.STONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MUD_BRICK_SLAB = BLOCKS.registerBlock("reinforced_mud_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.MUD_BRICK_SLAB), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.MUD_BRICKS));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MUD_BRICK_SLAB = reinforcedBlock("reinforced_mud_brick_slab", Blocks.MUD_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_NETHER_BRICK_SLAB = BLOCKS.registerBlock("reinforced_nether_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.NETHER_BRICK_SLAB), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_NETHER_BRICK_SLAB = reinforcedBlock("reinforced_nether_brick_slab", Blocks.NETHER_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_quartz_slab", p -> new ReinforcedSlabBlock(p, Blocks.QUARTZ_SLAB), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_QUARTZ_SLAB = reinforcedBlock("reinforced_quartz_slab", Blocks.QUARTZ_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_RED_SANDSTONE_SLAB = BLOCKS.registerBlock("reinforced_red_sandstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.RED_SANDSTONE_SLAB), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_RED_SANDSTONE_SLAB = reinforcedBlock("reinforced_red_sandstone_slab", Blocks.RED_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_RED_SANDSTONE_SLAB = BLOCKS.registerBlock("reinforced_cut_red_sandstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.CUT_RED_SANDSTONE_SLAB), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_RED_SANDSTONE_SLAB = reinforcedBlock("reinforced_cut_red_sandstone_slab", Blocks.CUT_RED_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PURPUR_SLAB = BLOCKS.registerBlock("reinforced_purpur_slab", p -> new ReinforcedSlabBlock(p, Blocks.PURPUR_SLAB), prop(MapColor.COLOR_MAGENTA));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PURPUR_SLAB = reinforcedBlock("reinforced_purpur_slab", Blocks.PURPUR_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PRISMARINE_SLAB = BLOCKS.registerBlock("reinforced_prismarine_slab", p -> new ReinforcedSlabBlock(p, Blocks.PRISMARINE_SLAB), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PRISMARINE_SLAB = reinforcedBlock("reinforced_prismarine_slab", Blocks.PRISMARINE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PRISMARINE_BRICK_SLAB = BLOCKS.registerBlock("reinforced_prismarine_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.PRISMARINE_BRICK_SLAB), prop(MapColor.DIAMOND));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PRISMARINE_BRICK_SLAB = reinforcedBlock("reinforced_prismarine_brick_slab", Blocks.PRISMARINE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DARK_PRISMARINE_SLAB = BLOCKS.registerBlock("reinforced_dark_prismarine_slab", p -> new ReinforcedSlabBlock(p, Blocks.DARK_PRISMARINE_SLAB), prop(MapColor.DIAMOND));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DARK_PRISMARINE_SLAB = reinforcedBlock("reinforced_dark_prismarine_slab", Blocks.DARK_PRISMARINE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_QUARTZ = BLOCKS.registerBlock("reinforced_smooth_quartz", p -> new BaseReinforcedBlock(p, Blocks.SMOOTH_QUARTZ), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_QUARTZ = reinforcedBlock("reinforced_smooth_quartz", Blocks.SMOOTH_QUARTZ);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_RED_SANDSTONE = BLOCKS.registerBlock("reinforced_smooth_red_sandstone", p -> new BaseReinforcedBlock(p, Blocks.SMOOTH_RED_SANDSTONE), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_RED_SANDSTONE = reinforcedBlock("reinforced_smooth_red_sandstone", Blocks.SMOOTH_RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_SANDSTONE = BLOCKS.registerBlock("reinforced_smooth_sandstone", p -> new BaseReinforcedBlock(p, Blocks.SMOOTH_SANDSTONE), prop(MapColor.SAND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_SANDSTONE = reinforcedBlock("reinforced_smooth_sandstone", Blocks.SMOOTH_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_STONE = BLOCKS.registerBlock("reinforced_smooth_stone", p -> new BaseReinforcedBlock(p, Blocks.SMOOTH_STONE), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_STONE = reinforcedBlock("reinforced_smooth_stone", Blocks.SMOOTH_STONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BRICKS = BLOCKS.registerBlock("reinforced_bricks", p -> new BaseReinforcedBlock(p, Blocks.BRICKS), prop(MapColor.COLOR_RED));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BRICKS = reinforcedBlock("reinforced_bricks", Blocks.BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BOOKSHELF = BLOCKS.registerBlock("reinforced_bookshelf", p -> new BaseReinforcedBlock(p, Blocks.BOOKSHELF), prop(MapColor.WOOD).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BOOKSHELF = reinforcedBlock("reinforced_bookshelf", Blocks.BOOKSHELF);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MOSSY_COBBLESTONE = BLOCKS.registerBlock("reinforced_mossy_cobblestone", p -> new BaseReinforcedBlock(p, Blocks.MOSSY_COBBLESTONE), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MOSSY_COBBLESTONE = reinforcedBlock("reinforced_mossy_cobblestone", Blocks.MOSSY_COBBLESTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedObsidianBlock> REINFORCED_OBSIDIAN = BLOCKS.registerBlock("reinforced_obsidian", p -> new ReinforcedObsidianBlock(p, Blocks.OBSIDIAN), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedObsidianBlock> REINFORCED_OBSIDIAN = reinforcedBlock("reinforced_obsidian", Blocks.OBSIDIAN, ReinforcedObsidianBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPUR_BLOCK = BLOCKS.registerBlock("reinforced_purpur_block", p -> new BaseReinforcedBlock(p, Blocks.PURPUR_BLOCK), prop(MapColor.COLOR_MAGENTA));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPUR_BLOCK = reinforcedBlock("reinforced_purpur_block", Blocks.PURPUR_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PURPUR_PILLAR = BLOCKS.registerBlock("reinforced_purpur_pillar", p -> new ReinforcedRotatedPillarBlock(p, Blocks.PURPUR_PILLAR), prop(MapColor.COLOR_MAGENTA));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PURPUR_PILLAR = reinforcedBlock("reinforced_purpur_pillar", Blocks.PURPUR_PILLAR, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PURPUR_STAIRS = BLOCKS.registerBlock("reinforced_purpur_stairs", p -> new ReinforcedStairsBlock(p, Blocks.PURPUR_STAIRS), prop(MapColor.COLOR_MAGENTA));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PURPUR_STAIRS = reinforcedBlock("reinforced_purpur_stairs", Blocks.PURPUR_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_OAK_STAIRS = BLOCKS.registerBlock("reinforced_oak_stairs", p -> new ReinforcedStairsBlock(p, Blocks.OAK_STAIRS), prop(MapColor.WOOD).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_OAK_STAIRS = reinforcedBlock("reinforced_oak_stairs", Blocks.OAK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_COBBLESTONE_STAIRS = BLOCKS.registerBlock("reinforced_cobblestone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.COBBLESTONE_STAIRS), prop());
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_COBBLESTONE_STAIRS = reinforcedBlock("reinforced_cobblestone_stairs", Blocks.COBBLESTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ICE = BLOCKS.registerBlock("reinforced_ice", p -> new BaseReinforcedBlock(p, Blocks.ICE), prop(MapColor.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion().isRedstoneConductor(SCContent::never).isValidSpawn((state, level, pos, type) -> type == EntityType.POLAR_BEAR));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ICE = reinforcedBlock("reinforced_ice", Blocks.ICE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SNOW_BLOCK = BLOCKS.registerBlock("reinforced_snow_block", p -> new BaseReinforcedBlock(p, Blocks.SNOW_BLOCK), prop(MapColor.SNOW).sound(SoundType.SNOW));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SNOW_BLOCK = reinforcedBlock("reinforced_snow_block", Blocks.SNOW_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CLAY = BLOCKS.registerBlock("reinforced_clay", p -> new BaseReinforcedBlock(p, Blocks.CLAY), prop(MapColor.CLAY).sound(SoundType.GRAVEL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CLAY = reinforcedBlock("reinforced_clay", Blocks.CLAY);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHERRACK = BLOCKS.registerBlock("reinforced_netherrack", p -> new BaseReinforcedBlock(p, Blocks.NETHERRACK), prop(MapColor.NETHER).sound(SoundType.NETHERRACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHERRACK = reinforcedBlock("reinforced_netherrack", Blocks.NETHERRACK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSoulSandBlock> REINFORCED_SOUL_SAND = BLOCKS.registerBlock("reinforced_soul_sand", p -> new ReinforcedSoulSandBlock(p, Blocks.SOUL_SAND), reinforcedCopy(Blocks.SOUL_SAND));
+	public static final DeferredBlock<ReinforcedSoulSandBlock> REINFORCED_SOUL_SAND = reinforcedBlock("reinforced_soul_sand", Blocks.SOUL_SAND, ReinforcedSoulSandBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SOUL_SOIL = BLOCKS.registerBlock("reinforced_soul_soil", p -> new BaseReinforcedBlock(p, Blocks.SOUL_SOIL), prop(MapColor.COLOR_BROWN).sound(SoundType.SOUL_SOIL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SOUL_SOIL = reinforcedBlock("reinforced_soul_soil", Blocks.SOUL_SOIL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BASALT = BLOCKS.registerBlock("reinforced_basalt", p -> new ReinforcedRotatedPillarBlock(p, Blocks.BASALT), prop(MapColor.COLOR_BLACK).sound(SoundType.BASALT));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BASALT = reinforcedBlock("reinforced_basalt", Blocks.BASALT, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_POLISHED_BASALT = BLOCKS.registerBlock("reinforced_polished_basalt", p -> new ReinforcedRotatedPillarBlock(p, Blocks.POLISHED_BASALT), prop(MapColor.COLOR_BLACK).sound(SoundType.BASALT));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_POLISHED_BASALT = reinforcedBlock("reinforced_polished_basalt", Blocks.POLISHED_BASALT, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_BASALT = BLOCKS.registerBlock("reinforced_smooth_basalt", p -> new BaseReinforcedBlock(p, Blocks.SMOOTH_BASALT), prop(MapColor.COLOR_BLACK).sound(SoundType.BASALT));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_BASALT = reinforcedBlock("reinforced_smooth_basalt", Blocks.SMOOTH_BASALT);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GLOWSTONE = BLOCKS.registerBlock("reinforced_glowstone", p -> new BaseReinforcedBlock(p, Blocks.GLOWSTONE), prop(MapColor.SAND).sound(SoundType.GLASS).lightLevel(state -> 15).isRedstoneConductor(SCContent::never));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GLOWSTONE = reinforcedBlock("reinforced_glowstone", Blocks.GLOWSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_STONE_BRICKS = BLOCKS.registerBlock("reinforced_stone_bricks", p -> new BaseReinforcedBlock(p, Blocks.STONE_BRICKS), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_STONE_BRICKS = reinforcedBlock("reinforced_stone_bricks", Blocks.STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MOSSY_STONE_BRICKS = BLOCKS.registerBlock("reinforced_mossy_stone_bricks", p -> new BaseReinforcedBlock(p, Blocks.MOSSY_STONE_BRICKS), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MOSSY_STONE_BRICKS = reinforcedBlock("reinforced_mossy_stone_bricks", Blocks.MOSSY_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_STONE_BRICKS = BLOCKS.registerBlock("reinforced_cracked_stone_bricks", p -> new BaseReinforcedBlock(p, Blocks.CRACKED_STONE_BRICKS), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_STONE_BRICKS = reinforcedBlock("reinforced_cracked_stone_bricks", Blocks.CRACKED_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_STONE_BRICKS = BLOCKS.registerBlock("reinforced_chiseled_stone_bricks", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_STONE_BRICKS), prop());
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_STONE_BRICKS = reinforcedBlock("reinforced_chiseled_stone_bricks", Blocks.CHISELED_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PACKED_MUD = BLOCKS.registerBlock("reinforced_packed_mud", p -> new BaseReinforcedBlock(p, Blocks.PACKED_MUD), prop(MapColor.DIRT).sound(SoundType.PACKED_MUD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PACKED_MUD = reinforcedBlock("reinforced_packed_mud", Blocks.PACKED_MUD);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MUD_BRICKS = BLOCKS.registerBlock("reinforced_mud_bricks", p -> new BaseReinforcedBlock(p, Blocks.MUD_BRICKS), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.MUD_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MUD_BRICKS = reinforcedBlock("reinforced_mud_bricks", Blocks.MUD_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DEEPSLATE_BRICKS = BLOCKS.registerBlock("reinforced_deepslate_bricks", p -> new BaseReinforcedBlock(p, Blocks.DEEPSLATE_BRICKS), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DEEPSLATE_BRICKS = reinforcedBlock("reinforced_deepslate_bricks", Blocks.DEEPSLATE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_DEEPSLATE_BRICKS = BLOCKS.registerBlock("reinforced_cracked_deepslate_bricks", p -> new BaseReinforcedBlock(p, Blocks.CRACKED_DEEPSLATE_BRICKS), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_DEEPSLATE_BRICKS = reinforcedBlock("reinforced_cracked_deepslate_bricks", Blocks.CRACKED_DEEPSLATE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DEEPSLATE_TILES = BLOCKS.registerBlock("reinforced_deepslate_tiles", p -> new BaseReinforcedBlock(p, Blocks.DEEPSLATE_TILES), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DEEPSLATE_TILES = reinforcedBlock("reinforced_deepslate_tiles", Blocks.DEEPSLATE_TILES);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_DEEPSLATE_TILES = BLOCKS.registerBlock("reinforced_cracked_deepslate_tiles", p -> new BaseReinforcedBlock(p, Blocks.CRACKED_DEEPSLATE_TILES), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_DEEPSLATE_TILES = reinforcedBlock("reinforced_cracked_deepslate_tiles", Blocks.CRACKED_DEEPSLATE_TILES);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_DEEPSLATE = BLOCKS.registerBlock("reinforced_chiseled_deepslate", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_DEEPSLATE), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_DEEPSLATE = reinforcedBlock("reinforced_chiseled_deepslate", Blocks.CHISELED_DEEPSLATE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.BRICK_STAIRS), prop(MapColor.COLOR_RED));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BRICK_STAIRS = reinforcedBlock("reinforced_brick_stairs", Blocks.BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_STONE_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_stone_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.STONE_BRICK_STAIRS), prop());
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_STONE_BRICK_STAIRS = reinforcedBlock("reinforced_stone_brick_stairs", Blocks.STONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MUD_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_mud_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.MUD_BRICK_STAIRS), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.MUD_BRICKS));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MUD_BRICK_STAIRS = reinforcedBlock("reinforced_mud_brick_stairs", Blocks.MUD_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_MYCELIUM = BLOCKS.registerBlock("reinforced_mycelium", p -> new ReinforcedSnowyDirtBlock(p, Blocks.MYCELIUM), prop(MapColor.COLOR_PURPLE).sound(SoundType.GRASS));
+	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_MYCELIUM = reinforcedBlock("reinforced_mycelium", Blocks.MYCELIUM, ReinforcedSnowyDirtBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHER_BRICKS = BLOCKS.registerBlock("reinforced_nether_bricks", p -> new BaseReinforcedBlock(p, Blocks.NETHER_BRICKS), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHER_BRICKS = reinforcedBlock("reinforced_nether_bricks", Blocks.NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_NETHER_BRICKS = BLOCKS.registerBlock("reinforced_cracked_nether_bricks", p -> new BaseReinforcedBlock(p, Blocks.CRACKED_NETHER_BRICKS), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_NETHER_BRICKS = reinforcedBlock("reinforced_cracked_nether_bricks", Blocks.CRACKED_NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_NETHER_BRICKS = BLOCKS.registerBlock("reinforced_chiseled_nether_bricks", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_NETHER_BRICKS), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_NETHER_BRICKS = reinforcedBlock("reinforced_chiseled_nether_bricks", Blocks.CHISELED_NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_NETHER_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_nether_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.NETHER_BRICK_STAIRS), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_NETHER_BRICK_STAIRS = reinforcedBlock("reinforced_nether_brick_stairs", Blocks.NETHER_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_END_STONE = BLOCKS.registerBlock("reinforced_end_stone", p -> new BaseReinforcedBlock(p, Blocks.END_STONE), prop(MapColor.SAND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_END_STONE = reinforcedBlock("reinforced_end_stone", Blocks.END_STONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_END_STONE_BRICKS = BLOCKS.registerBlock("reinforced_end_stone_bricks", p -> new BaseReinforcedBlock(p, Blocks.END_STONE_BRICKS), prop(MapColor.SAND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_END_STONE_BRICKS = reinforcedBlock("reinforced_end_stone_bricks", Blocks.END_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SANDSTONE_STAIRS = BLOCKS.registerBlock("reinforced_sandstone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.SANDSTONE_STAIRS), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SANDSTONE_STAIRS = reinforcedBlock("reinforced_sandstone_stairs", Blocks.SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EMERALD_BLOCK = BLOCKS.registerBlock("reinforced_emerald_block", p -> new BaseReinforcedBlock(p, Blocks.EMERALD_BLOCK), prop(MapColor.EMERALD).sound(SoundType.METAL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EMERALD_BLOCK = reinforcedBlock("reinforced_emerald_block", Blocks.EMERALD_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SPRUCE_STAIRS = BLOCKS.registerBlock("reinforced_spruce_stairs", p -> new ReinforcedStairsBlock(p, Blocks.SPRUCE_STAIRS), prop(MapColor.PODZOL).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SPRUCE_STAIRS = reinforcedBlock("reinforced_spruce_stairs", Blocks.SPRUCE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BIRCH_STAIRS = BLOCKS.registerBlock("reinforced_birch_stairs", p -> new ReinforcedStairsBlock(p, Blocks.BIRCH_STAIRS), prop(MapColor.SAND).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BIRCH_STAIRS = reinforcedBlock("reinforced_birch_stairs", Blocks.BIRCH_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_JUNGLE_STAIRS = BLOCKS.registerBlock("reinforced_jungle_stairs", p -> new ReinforcedStairsBlock(p, Blocks.JUNGLE_STAIRS), prop(MapColor.DIRT).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_JUNGLE_STAIRS = reinforcedBlock("reinforced_jungle_stairs", Blocks.JUNGLE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRIMSON_STAIRS = BLOCKS.registerBlock("reinforced_crimson_stairs", p -> new ReinforcedStairsBlock(p, Blocks.CRIMSON_STAIRS), prop(MapColor.CRIMSON_STEM).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRIMSON_STAIRS = reinforcedBlock("reinforced_crimson_stairs", Blocks.CRIMSON_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_WARPED_STAIRS = BLOCKS.registerBlock("reinforced_warped_stairs", p -> new ReinforcedStairsBlock(p, Blocks.WARPED_STAIRS), prop(MapColor.WARPED_STEM).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_WARPED_STAIRS = reinforcedBlock("reinforced_warped_stairs", Blocks.WARPED_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_QUARTZ = BLOCKS.registerBlock("reinforced_chiseled_quartz_block", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_QUARTZ_BLOCK), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_QUARTZ = reinforcedBlock("reinforced_chiseled_quartz_block", Blocks.CHISELED_QUARTZ_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_QUARTZ_BLOCK = BLOCKS.registerBlock("reinforced_quartz_block", p -> new BaseReinforcedBlock(p, Blocks.QUARTZ_BLOCK), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_QUARTZ_BLOCK = reinforcedBlock("reinforced_quartz_block", Blocks.QUARTZ_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_QUARTZ_BRICKS = BLOCKS.registerBlock("reinforced_quartz_bricks", p -> new BaseReinforcedBlock(p, Blocks.QUARTZ_BRICKS), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_QUARTZ_BRICKS = reinforcedBlock("reinforced_quartz_bricks", Blocks.QUARTZ_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_QUARTZ_PILLAR = BLOCKS.registerBlock("reinforced_quartz_pillar", p -> new ReinforcedRotatedPillarBlock(p, Blocks.QUARTZ_PILLAR), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_QUARTZ_PILLAR = reinforcedBlock("reinforced_quartz_pillar", Blocks.QUARTZ_PILLAR, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_quartz_stairs", p -> new ReinforcedStairsBlock(p, Blocks.QUARTZ_STAIRS), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_QUARTZ_STAIRS = reinforcedBlock("reinforced_quartz_stairs", Blocks.QUARTZ_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_TERRACOTTA = BLOCKS.registerBlock("reinforced_white_terracotta", p -> new BaseReinforcedBlock(p, Blocks.WHITE_TERRACOTTA), prop(MapColor.TERRACOTTA_WHITE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_TERRACOTTA = reinforcedBlock("reinforced_white_terracotta", Blocks.WHITE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_TERRACOTTA = BLOCKS.registerBlock("reinforced_orange_terracotta", p -> new BaseReinforcedBlock(p, Blocks.ORANGE_TERRACOTTA), prop(MapColor.TERRACOTTA_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_TERRACOTTA = reinforcedBlock("reinforced_orange_terracotta", Blocks.ORANGE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_TERRACOTTA = BLOCKS.registerBlock("reinforced_magenta_terracotta", p -> new BaseReinforcedBlock(p, Blocks.MAGENTA_TERRACOTTA), prop(MapColor.TERRACOTTA_MAGENTA));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_TERRACOTTA = reinforcedBlock("reinforced_magenta_terracotta", Blocks.MAGENTA_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_TERRACOTTA = BLOCKS.registerBlock("reinforced_light_blue_terracotta", p -> new BaseReinforcedBlock(p, Blocks.LIGHT_BLUE_TERRACOTTA), prop(MapColor.TERRACOTTA_LIGHT_BLUE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_TERRACOTTA = reinforcedBlock("reinforced_light_blue_terracotta", Blocks.LIGHT_BLUE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_TERRACOTTA = BLOCKS.registerBlock("reinforced_yellow_terracotta", p -> new BaseReinforcedBlock(p, Blocks.YELLOW_TERRACOTTA), prop(MapColor.TERRACOTTA_YELLOW));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_TERRACOTTA = reinforcedBlock("reinforced_yellow_terracotta", Blocks.YELLOW_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_TERRACOTTA = BLOCKS.registerBlock("reinforced_lime_terracotta", p -> new BaseReinforcedBlock(p, Blocks.LIME_TERRACOTTA), prop(MapColor.TERRACOTTA_LIGHT_GREEN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_TERRACOTTA = reinforcedBlock("reinforced_lime_terracotta", Blocks.LIME_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_TERRACOTTA = BLOCKS.registerBlock("reinforced_pink_terracotta", p -> new BaseReinforcedBlock(p, Blocks.PINK_TERRACOTTA), prop(MapColor.TERRACOTTA_PINK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_TERRACOTTA = reinforcedBlock("reinforced_pink_terracotta", Blocks.PINK_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_TERRACOTTA = BLOCKS.registerBlock("reinforced_gray_terracotta", p -> new BaseReinforcedBlock(p, Blocks.GRAY_TERRACOTTA), prop(MapColor.TERRACOTTA_GRAY));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_TERRACOTTA = reinforcedBlock("reinforced_gray_terracotta", Blocks.GRAY_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_TERRACOTTA = BLOCKS.registerBlock("reinforced_light_gray_terracotta", p -> new BaseReinforcedBlock(p, Blocks.LIGHT_GRAY_TERRACOTTA), prop(MapColor.TERRACOTTA_LIGHT_GRAY));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_TERRACOTTA = reinforcedBlock("reinforced_light_gray_terracotta", Blocks.LIGHT_GRAY_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_TERRACOTTA = BLOCKS.registerBlock("reinforced_cyan_terracotta", p -> new BaseReinforcedBlock(p, Blocks.CYAN_TERRACOTTA), prop(MapColor.TERRACOTTA_CYAN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_TERRACOTTA = reinforcedBlock("reinforced_cyan_terracotta", Blocks.CYAN_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_TERRACOTTA = BLOCKS.registerBlock("reinforced_purple_terracotta", p -> new BaseReinforcedBlock(p, Blocks.PURPLE_TERRACOTTA), prop(MapColor.TERRACOTTA_PURPLE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_TERRACOTTA = reinforcedBlock("reinforced_purple_terracotta", Blocks.PURPLE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_TERRACOTTA = BLOCKS.registerBlock("reinforced_blue_terracotta", p -> new BaseReinforcedBlock(p, Blocks.BLUE_TERRACOTTA), prop(MapColor.TERRACOTTA_BLUE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_TERRACOTTA = reinforcedBlock("reinforced_blue_terracotta", Blocks.BLUE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_TERRACOTTA = BLOCKS.registerBlock("reinforced_brown_terracotta", p -> new BaseReinforcedBlock(p, Blocks.BROWN_TERRACOTTA), prop(MapColor.TERRACOTTA_BROWN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_TERRACOTTA = reinforcedBlock("reinforced_brown_terracotta", Blocks.BROWN_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_TERRACOTTA = BLOCKS.registerBlock("reinforced_green_terracotta", p -> new BaseReinforcedBlock(p, Blocks.GREEN_TERRACOTTA), prop(MapColor.TERRACOTTA_GREEN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_TERRACOTTA = reinforcedBlock("reinforced_green_terracotta", Blocks.GREEN_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_TERRACOTTA = BLOCKS.registerBlock("reinforced_red_terracotta", p -> new BaseReinforcedBlock(p, Blocks.RED_TERRACOTTA), prop(MapColor.TERRACOTTA_RED));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_TERRACOTTA = reinforcedBlock("reinforced_red_terracotta", Blocks.RED_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_TERRACOTTA = BLOCKS.registerBlock("reinforced_black_terracotta", p -> new BaseReinforcedBlock(p, Blocks.BLACK_TERRACOTTA), prop(MapColor.TERRACOTTA_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_TERRACOTTA = reinforcedBlock("reinforced_black_terracotta", Blocks.BLACK_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TERRACOTTA = BLOCKS.registerBlock("reinforced_hardened_clay", p -> new BaseReinforcedBlock(p, Blocks.TERRACOTTA), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TERRACOTTA = reinforcedBlock("reinforced_hardened_clay", Blocks.TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PACKED_ICE = BLOCKS.registerBlock("reinforced_packed_ice", p -> new BaseReinforcedBlock(p, Blocks.PACKED_ICE), prop(MapColor.ICE).sound(SoundType.GLASS).friction(0.98F));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PACKED_ICE = reinforcedBlock("reinforced_packed_ice", Blocks.PACKED_ICE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_ACACIA_STAIRS = BLOCKS.registerBlock("reinforced_acacia_stairs", p -> new ReinforcedStairsBlock(p, Blocks.ACACIA_STAIRS), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_ACACIA_STAIRS = reinforcedBlock("reinforced_acacia_stairs", Blocks.ACACIA_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DARK_OAK_STAIRS = BLOCKS.registerBlock("reinforced_dark_oak_stairs", p -> new ReinforcedStairsBlock(p, Blocks.DARK_OAK_STAIRS), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DARK_OAK_STAIRS = reinforcedBlock("reinforced_dark_oak_stairs", Blocks.DARK_OAK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MANGROVE_STAIRS = BLOCKS.registerBlock("reinforced_mangrove_stairs", p -> new ReinforcedStairsBlock(p, Blocks.MANGROVE_STAIRS), prop(MapColor.COLOR_RED).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MANGROVE_STAIRS = reinforcedBlock("reinforced_mangrove_stairs", Blocks.MANGROVE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_WHITE_STAINED_GLASS = BLOCKS.registerBlock("reinforced_white_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS), glassProp(MapColor.SNOW));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_WHITE_STAINED_GLASS = reinforcedBlock("reinforced_white_stained_glass", Blocks.WHITE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_ORANGE_STAINED_GLASS = BLOCKS.registerBlock("reinforced_orange_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS), glassProp(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_ORANGE_STAINED_GLASS = reinforcedBlock("reinforced_orange_stained_glass", Blocks.ORANGE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_MAGENTA_STAINED_GLASS = BLOCKS.registerBlock("reinforced_magenta_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS), glassProp(MapColor.COLOR_MAGENTA));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_MAGENTA_STAINED_GLASS = reinforcedBlock("reinforced_magenta_stained_glass", Blocks.MAGENTA_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS = BLOCKS.registerBlock("reinforced_light_blue_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS), glassProp(MapColor.COLOR_LIGHT_BLUE));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_light_blue_stained_glass", Blocks.LIGHT_BLUE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_YELLOW_STAINED_GLASS = BLOCKS.registerBlock("reinforced_yellow_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS), glassProp(MapColor.COLOR_YELLOW));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_YELLOW_STAINED_GLASS = reinforcedBlock("reinforced_yellow_stained_glass", Blocks.YELLOW_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIME_STAINED_GLASS = BLOCKS.registerBlock("reinforced_lime_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.LIME, Blocks.LIME_STAINED_GLASS), glassProp(MapColor.COLOR_LIGHT_GREEN));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIME_STAINED_GLASS = reinforcedBlock("reinforced_lime_stained_glass", Blocks.LIME_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PINK_STAINED_GLASS = BLOCKS.registerBlock("reinforced_pink_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.PINK, Blocks.PINK_STAINED_GLASS), glassProp(MapColor.COLOR_PINK));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PINK_STAINED_GLASS = reinforcedBlock("reinforced_pink_stained_glass", Blocks.PINK_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GRAY_STAINED_GLASS = BLOCKS.registerBlock("reinforced_gray_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS), glassProp(MapColor.COLOR_GRAY));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_gray_stained_glass", Blocks.GRAY_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS = BLOCKS.registerBlock("reinforced_light_gray_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS), glassProp(MapColor.COLOR_LIGHT_GRAY));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_light_gray_stained_glass", Blocks.LIGHT_GRAY_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_CYAN_STAINED_GLASS = BLOCKS.registerBlock("reinforced_cyan_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS), glassProp(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_CYAN_STAINED_GLASS = reinforcedBlock("reinforced_cyan_stained_glass", Blocks.CYAN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PURPLE_STAINED_GLASS = BLOCKS.registerBlock("reinforced_purple_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS), glassProp(MapColor.COLOR_PURPLE));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PURPLE_STAINED_GLASS = reinforcedBlock("reinforced_purple_stained_glass", Blocks.PURPLE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLUE_STAINED_GLASS = BLOCKS.registerBlock("reinforced_blue_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS), glassProp(MapColor.COLOR_BLUE));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_blue_stained_glass", Blocks.BLUE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BROWN_STAINED_GLASS = BLOCKS.registerBlock("reinforced_brown_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS), glassProp(MapColor.COLOR_BROWN));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BROWN_STAINED_GLASS = reinforcedBlock("reinforced_brown_stained_glass", Blocks.BROWN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GREEN_STAINED_GLASS = BLOCKS.registerBlock("reinforced_green_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS), glassProp(MapColor.COLOR_GREEN));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GREEN_STAINED_GLASS = reinforcedBlock("reinforced_green_stained_glass", Blocks.GREEN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_RED_STAINED_GLASS = BLOCKS.registerBlock("reinforced_red_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.RED, Blocks.RED_STAINED_GLASS), glassProp(MapColor.COLOR_RED));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_RED_STAINED_GLASS = reinforcedBlock("reinforced_red_stained_glass", Blocks.RED_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLACK_STAINED_GLASS = BLOCKS.registerBlock("reinforced_black_stained_glass", p -> new ReinforcedStainedGlassBlock(p, DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS), glassProp(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLACK_STAINED_GLASS = reinforcedBlock("reinforced_black_stained_glass", Blocks.BLACK_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PRISMARINE = BLOCKS.registerBlock("reinforced_prismarine", p -> new BaseReinforcedBlock(p, Blocks.PRISMARINE), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PRISMARINE = reinforcedBlock("reinforced_prismarine", Blocks.PRISMARINE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PRISMARINE_BRICKS = BLOCKS.registerBlock("reinforced_prismarine_bricks", p -> new BaseReinforcedBlock(p, Blocks.PRISMARINE_BRICKS), prop(MapColor.DIAMOND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PRISMARINE_BRICKS = reinforcedBlock("reinforced_prismarine_bricks", Blocks.PRISMARINE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DARK_PRISMARINE = BLOCKS.registerBlock("reinforced_dark_prismarine", p -> new BaseReinforcedBlock(p, Blocks.DARK_PRISMARINE), prop(MapColor.DIAMOND));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_DARK_PRISMARINE = reinforcedBlock("reinforced_dark_prismarine", Blocks.DARK_PRISMARINE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PRISMARINE_STAIRS = BLOCKS.registerBlock("reinforced_prismarine_stairs", p -> new ReinforcedStairsBlock(p, Blocks.PRISMARINE_STAIRS), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PRISMARINE_STAIRS = reinforcedBlock("reinforced_prismarine_stairs", Blocks.PRISMARINE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PRISMARINE_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_prismarine_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.PRISMARINE_BRICK_STAIRS), prop(MapColor.DIAMOND));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PRISMARINE_BRICK_STAIRS = reinforcedBlock("reinforced_prismarine_brick_stairs", Blocks.PRISMARINE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DARK_PRISMARINE_STAIRS = BLOCKS.registerBlock("reinforced_dark_prismarine_stairs", p -> new ReinforcedStairsBlock(p, Blocks.DARK_PRISMARINE_STAIRS), prop(MapColor.DIAMOND));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DARK_PRISMARINE_STAIRS = reinforcedBlock("reinforced_dark_prismarine_stairs", Blocks.DARK_PRISMARINE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SEA_LANTERN = BLOCKS.registerBlock("reinforced_sea_lantern", p -> new BaseReinforcedBlock(p, Blocks.SEA_LANTERN), prop(MapColor.QUARTZ).sound(SoundType.GLASS).lightLevel(state -> 15).isRedstoneConductor(SCContent::never));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SEA_LANTERN = reinforcedBlock("reinforced_sea_lantern", Blocks.SEA_LANTERN);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_SANDSTONE = BLOCKS.registerBlock("reinforced_red_sandstone", p -> new BaseReinforcedBlock(p, Blocks.RED_SANDSTONE), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_SANDSTONE = reinforcedBlock("reinforced_red_sandstone", Blocks.RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_RED_SANDSTONE = BLOCKS.registerBlock("reinforced_chiseled_red_sandstone", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_RED_SANDSTONE), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_RED_SANDSTONE = reinforcedBlock("reinforced_chiseled_red_sandstone", Blocks.CHISELED_RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_RED_SANDSTONE = BLOCKS.registerBlock("reinforced_cut_red_sandstone", p -> new BaseReinforcedBlock(p, Blocks.CUT_RED_SANDSTONE), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_RED_SANDSTONE = reinforcedBlock("reinforced_cut_red_sandstone", Blocks.CUT_RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_RED_SANDSTONE_STAIRS = BLOCKS.registerBlock("reinforced_red_sandstone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.RED_SANDSTONE_STAIRS), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_RED_SANDSTONE_STAIRS = reinforcedBlock("reinforced_red_sandstone_stairs", Blocks.RED_SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedMagmaBlock> REINFORCED_MAGMA_BLOCK = BLOCKS.registerBlock("reinforced_magma_block", p -> new ReinforcedMagmaBlock(p, Blocks.MAGMA_BLOCK), reinforcedCopy(Blocks.MAGMA_BLOCK));
+	public static final DeferredBlock<ReinforcedMagmaBlock> REINFORCED_MAGMA_BLOCK = reinforcedBlock("reinforced_magma_block", Blocks.MAGMA_BLOCK, ReinforcedMagmaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHER_WART_BLOCK = BLOCKS.registerBlock("reinforced_nether_wart_block", p -> new BaseReinforcedBlock(p, Blocks.NETHER_WART_BLOCK), prop(MapColor.COLOR_RED).sound(SoundType.WART_BLOCK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_NETHER_WART_BLOCK = reinforcedBlock("reinforced_nether_wart_block", Blocks.NETHER_WART_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WARPED_WART_BLOCK = BLOCKS.registerBlock("reinforced_warped_wart_block", p -> new BaseReinforcedBlock(p, Blocks.WARPED_WART_BLOCK), prop(MapColor.WARPED_WART_BLOCK).sound(SoundType.WART_BLOCK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WARPED_WART_BLOCK = reinforcedBlock("reinforced_warped_wart_block", Blocks.WARPED_WART_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_NETHER_BRICKS = BLOCKS.registerBlock("reinforced_red_nether_bricks", p -> new BaseReinforcedBlock(p, Blocks.RED_NETHER_BRICKS), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_NETHER_BRICKS = reinforcedBlock("reinforced_red_nether_bricks", Blocks.RED_NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BONE_BLOCK = BLOCKS.registerBlock("reinforced_bone_block", p -> new ReinforcedRotatedPillarBlock(p, Blocks.BONE_BLOCK), prop(MapColor.SAND).sound(SoundType.BONE_BLOCK));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BONE_BLOCK = reinforcedBlock("reinforced_bone_block", Blocks.BONE_BLOCK, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_CONCRETE = BLOCKS.registerBlock("reinforced_white_concrete", p -> new BaseReinforcedBlock(p, Blocks.WHITE_CONCRETE), prop(MapColor.SNOW));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_CONCRETE = reinforcedBlock("reinforced_white_concrete", Blocks.WHITE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_CONCRETE = BLOCKS.registerBlock("reinforced_orange_concrete", p -> new BaseReinforcedBlock(p, Blocks.ORANGE_CONCRETE), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_CONCRETE = reinforcedBlock("reinforced_orange_concrete", Blocks.ORANGE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_CONCRETE = BLOCKS.registerBlock("reinforced_magenta_concrete", p -> new BaseReinforcedBlock(p, Blocks.MAGENTA_CONCRETE), prop(MapColor.COLOR_MAGENTA));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_CONCRETE = reinforcedBlock("reinforced_magenta_concrete", Blocks.MAGENTA_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_CONCRETE = BLOCKS.registerBlock("reinforced_light_blue_concrete", p -> new BaseReinforcedBlock(p, Blocks.LIGHT_BLUE_CONCRETE), prop(MapColor.COLOR_LIGHT_BLUE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_CONCRETE = reinforcedBlock("reinforced_light_blue_concrete", Blocks.LIGHT_BLUE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_CONCRETE = BLOCKS.registerBlock("reinforced_yellow_concrete", p -> new BaseReinforcedBlock(p, Blocks.YELLOW_CONCRETE), prop(MapColor.COLOR_YELLOW));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_CONCRETE = reinforcedBlock("reinforced_yellow_concrete", Blocks.YELLOW_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_CONCRETE = BLOCKS.registerBlock("reinforced_lime_concrete", p -> new BaseReinforcedBlock(p, Blocks.LIME_CONCRETE), prop(MapColor.COLOR_LIGHT_GREEN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_CONCRETE = reinforcedBlock("reinforced_lime_concrete", Blocks.LIME_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_CONCRETE = BLOCKS.registerBlock("reinforced_pink_concrete", p -> new BaseReinforcedBlock(p, Blocks.PINK_CONCRETE), prop(MapColor.COLOR_PINK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_CONCRETE = reinforcedBlock("reinforced_pink_concrete", Blocks.PINK_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_CONCRETE = BLOCKS.registerBlock("reinforced_gray_concrete", p -> new BaseReinforcedBlock(p, Blocks.GRAY_CONCRETE), prop(MapColor.COLOR_GRAY));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_CONCRETE = reinforcedBlock("reinforced_gray_concrete", Blocks.GRAY_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_CONCRETE = BLOCKS.registerBlock("reinforced_light_gray_concrete", p -> new BaseReinforcedBlock(p, Blocks.LIGHT_GRAY_CONCRETE), prop(MapColor.COLOR_LIGHT_GRAY));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_CONCRETE = reinforcedBlock("reinforced_light_gray_concrete", Blocks.LIGHT_GRAY_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_CONCRETE = BLOCKS.registerBlock("reinforced_cyan_concrete", p -> new BaseReinforcedBlock(p, Blocks.CYAN_CONCRETE), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_CONCRETE = reinforcedBlock("reinforced_cyan_concrete", Blocks.CYAN_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_CONCRETE = BLOCKS.registerBlock("reinforced_purple_concrete", p -> new BaseReinforcedBlock(p, Blocks.PURPLE_CONCRETE), prop(MapColor.COLOR_PURPLE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_CONCRETE = reinforcedBlock("reinforced_purple_concrete", Blocks.PURPLE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_CONCRETE = BLOCKS.registerBlock("reinforced_blue_concrete", p -> new BaseReinforcedBlock(p, Blocks.BLUE_CONCRETE), prop(MapColor.COLOR_BLUE));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_CONCRETE = reinforcedBlock("reinforced_blue_concrete", Blocks.BLUE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_CONCRETE = BLOCKS.registerBlock("reinforced_brown_concrete", p -> new BaseReinforcedBlock(p, Blocks.BROWN_CONCRETE), prop(MapColor.COLOR_BROWN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_CONCRETE = reinforcedBlock("reinforced_brown_concrete", Blocks.BROWN_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_CONCRETE = BLOCKS.registerBlock("reinforced_green_concrete", p -> new BaseReinforcedBlock(p, Blocks.GREEN_CONCRETE), prop(MapColor.COLOR_GREEN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_CONCRETE = reinforcedBlock("reinforced_green_concrete", Blocks.GREEN_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_CONCRETE = BLOCKS.registerBlock("reinforced_red_concrete", p -> new BaseReinforcedBlock(p, Blocks.RED_CONCRETE), prop(MapColor.COLOR_RED));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_CONCRETE = reinforcedBlock("reinforced_red_concrete", Blocks.RED_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_CONCRETE = BLOCKS.registerBlock("reinforced_black_concrete", p -> new BaseReinforcedBlock(p, Blocks.BLACK_CONCRETE), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_CONCRETE = reinforcedBlock("reinforced_black_concrete", Blocks.BLACK_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_ICE = BLOCKS.registerBlock("reinforced_blue_ice", p -> new BaseReinforcedBlock(p, Blocks.BLUE_ICE), prop(MapColor.ICE).sound(SoundType.GLASS).friction(0.989F));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_ICE = reinforcedBlock("reinforced_blue_ice", Blocks.BLUE_ICE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_GRANITE_STAIRS = BLOCKS.registerBlock("reinforced_polished_granite_stairs", p -> new ReinforcedStairsBlock(p, Blocks.POLISHED_GRANITE_STAIRS), prop(MapColor.DIRT));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_GRANITE_STAIRS = reinforcedBlock("reinforced_polished_granite_stairs", Blocks.POLISHED_GRANITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS = BLOCKS.registerBlock("reinforced_smooth_red_sandstone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.SMOOTH_RED_SANDSTONE_STAIRS), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS = reinforcedBlock("reinforced_smooth_red_sandstone_stairs", Blocks.SMOOTH_RED_SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MOSSY_STONE_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_mossy_stone_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.MOSSY_STONE_BRICK_STAIRS), prop());
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MOSSY_STONE_BRICK_STAIRS = reinforcedBlock("reinforced_mossy_stone_brick_stairs", Blocks.MOSSY_STONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_DIORITE_STAIRS = BLOCKS.registerBlock("reinforced_polished_diorite_stairs", p -> new ReinforcedStairsBlock(p, Blocks.POLISHED_DIORITE_STAIRS), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_DIORITE_STAIRS = reinforcedBlock("reinforced_polished_diorite_stairs", Blocks.POLISHED_DIORITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MOSSY_COBBLESTONE_STAIRS = BLOCKS.registerBlock("reinforced_mossy_cobblestone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.MOSSY_COBBLESTONE_STAIRS), prop());
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_MOSSY_COBBLESTONE_STAIRS = reinforcedBlock("reinforced_mossy_cobblestone_stairs", Blocks.MOSSY_COBBLESTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_END_STONE_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_end_stone_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.END_STONE_BRICK_STAIRS), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_END_STONE_BRICK_STAIRS = reinforcedBlock("reinforced_end_stone_brick_stairs", Blocks.END_STONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_STONE_STAIRS = BLOCKS.registerBlock("reinforced_stone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.STONE_STAIRS), prop());
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_STONE_STAIRS = reinforcedBlock("reinforced_stone_stairs", Blocks.STONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_SANDSTONE_STAIRS = BLOCKS.registerBlock("reinforced_smooth_sandstone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.SMOOTH_SANDSTONE_STAIRS), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_SANDSTONE_STAIRS = reinforcedBlock("reinforced_smooth_sandstone_stairs", Blocks.SMOOTH_SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_smooth_quartz_stairs", p -> new ReinforcedStairsBlock(p, Blocks.SMOOTH_QUARTZ_STAIRS), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_QUARTZ_STAIRS = reinforcedBlock("reinforced_smooth_quartz_stairs", Blocks.SMOOTH_QUARTZ_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_GRANITE_STAIRS = BLOCKS.registerBlock("reinforced_granite_stairs", p -> new ReinforcedStairsBlock(p, Blocks.GRANITE_STAIRS), prop(MapColor.DIRT));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_GRANITE_STAIRS = reinforcedBlock("reinforced_granite_stairs", Blocks.GRANITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_ANDESITE_STAIRS = BLOCKS.registerBlock("reinforced_andesite_stairs", p -> new ReinforcedStairsBlock(p, Blocks.ANDESITE_STAIRS), prop());
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_ANDESITE_STAIRS = reinforcedBlock("reinforced_andesite_stairs", Blocks.ANDESITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_RED_NETHER_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_red_nether_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.RED_NETHER_BRICK_STAIRS), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_RED_NETHER_BRICK_STAIRS = reinforcedBlock("reinforced_red_nether_brick_stairs", Blocks.RED_NETHER_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_ANDESITE_STAIRS = BLOCKS.registerBlock("reinforced_polished_andesite_stairs", p -> new ReinforcedStairsBlock(p, Blocks.POLISHED_ANDESITE_STAIRS), prop());
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_ANDESITE_STAIRS = reinforcedBlock("reinforced_polished_andesite_stairs", Blocks.POLISHED_ANDESITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DIORITE_STAIRS = BLOCKS.registerBlock("reinforced_diorite_stairs", p -> new ReinforcedStairsBlock(p, Blocks.DIORITE_STAIRS), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DIORITE_STAIRS = reinforcedBlock("reinforced_diorite_stairs", Blocks.DIORITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_COBBLED_DEEPSLATE_STAIRS = BLOCKS.registerBlock("reinforced_cobbled_deepslate_stairs", p -> new ReinforcedStairsBlock(p, Blocks.COBBLED_DEEPSLATE_STAIRS), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_COBBLED_DEEPSLATE_STAIRS = reinforcedBlock("reinforced_cobbled_deepslate_stairs", Blocks.COBBLED_DEEPSLATE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_DEEPSLATE_STAIRS = BLOCKS.registerBlock("reinforced_polished_deepslate_stairs", p -> new ReinforcedStairsBlock(p, Blocks.POLISHED_DEEPSLATE_STAIRS), prop(MapColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_DEEPSLATE_STAIRS = reinforcedBlock("reinforced_polished_deepslate_stairs", Blocks.POLISHED_DEEPSLATE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DEEPSLATE_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_deepslate_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.DEEPSLATE_BRICK_STAIRS), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DEEPSLATE_BRICK_STAIRS = reinforcedBlock("reinforced_deepslate_brick_stairs", Blocks.DEEPSLATE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DEEPSLATE_TILE_STAIRS = BLOCKS.registerBlock("reinforced_deepslate_tile_stairs", p -> new ReinforcedStairsBlock(p, Blocks.DEEPSLATE_TILE_STAIRS), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_DEEPSLATE_TILE_STAIRS = reinforcedBlock("reinforced_deepslate_tile_stairs", Blocks.DEEPSLATE_TILE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_GRANITE_SLAB = BLOCKS.registerBlock("reinforced_polished_granite_slab", p -> new ReinforcedSlabBlock(p, Blocks.POLISHED_GRANITE_SLAB), prop(MapColor.DIRT));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_GRANITE_SLAB = reinforcedBlock("reinforced_polished_granite_slab", Blocks.POLISHED_GRANITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_RED_SANDSTONE_SLAB = BLOCKS.registerBlock("reinforced_smooth_red_sandstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.SMOOTH_RED_SANDSTONE_SLAB), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_RED_SANDSTONE_SLAB = reinforcedBlock("reinforced_smooth_red_sandstone_slab", Blocks.SMOOTH_RED_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MOSSY_STONE_BRICK_SLAB = BLOCKS.registerBlock("reinforced_mossy_stone_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.MOSSY_STONE_BRICK_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MOSSY_STONE_BRICK_SLAB = reinforcedBlock("reinforced_mossy_stone_brick_slab", Blocks.MOSSY_STONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_DIORITE_SLAB = BLOCKS.registerBlock("reinforced_polished_diorite_slab", p -> new ReinforcedSlabBlock(p, Blocks.POLISHED_DIORITE_SLAB), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_DIORITE_SLAB = reinforcedBlock("reinforced_polished_diorite_slab", Blocks.POLISHED_DIORITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MOSSY_COBBLESTONE_SLAB = BLOCKS.registerBlock("reinforced_mossy_cobblestone_slab", p -> new ReinforcedSlabBlock(p, Blocks.MOSSY_COBBLESTONE_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_MOSSY_COBBLESTONE_SLAB = reinforcedBlock("reinforced_mossy_cobblestone_slab", Blocks.MOSSY_COBBLESTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_END_STONE_BRICK_SLAB = BLOCKS.registerBlock("reinforced_end_stone_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.END_STONE_BRICK_SLAB), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_END_STONE_BRICK_SLAB = reinforcedBlock("reinforced_end_stone_brick_slab", Blocks.END_STONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_SANDSTONE_SLAB = BLOCKS.registerBlock("reinforced_smooth_sandstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.SMOOTH_SANDSTONE_SLAB), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_SANDSTONE_SLAB = reinforcedBlock("reinforced_smooth_sandstone_slab", Blocks.SMOOTH_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_smooth_quartz_slab", p -> new ReinforcedSlabBlock(p, Blocks.SMOOTH_QUARTZ_SLAB), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_QUARTZ_SLAB = reinforcedBlock("reinforced_smooth_quartz_slab", Blocks.SMOOTH_QUARTZ_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_GRANITE_SLAB = BLOCKS.registerBlock("reinforced_granite_slab", p -> new ReinforcedSlabBlock(p, Blocks.GRANITE_SLAB), prop(MapColor.DIRT));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_GRANITE_SLAB = reinforcedBlock("reinforced_granite_slab", Blocks.GRANITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_ANDESITE_SLAB = BLOCKS.registerBlock("reinforced_andesite_slab", p -> new ReinforcedSlabBlock(p, Blocks.ANDESITE_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_ANDESITE_SLAB = reinforcedBlock("reinforced_andesite_slab", Blocks.ANDESITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_RED_NETHER_BRICK_SLAB = BLOCKS.registerBlock("reinforced_red_nether_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.RED_NETHER_BRICK_SLAB), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_RED_NETHER_BRICK_SLAB = reinforcedBlock("reinforced_red_nether_brick_slab", Blocks.RED_NETHER_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_ANDESITE_SLAB = BLOCKS.registerBlock("reinforced_polished_andesite_slab", p -> new ReinforcedSlabBlock(p, Blocks.POLISHED_ANDESITE_SLAB), prop());
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_ANDESITE_SLAB = reinforcedBlock("reinforced_polished_andesite_slab", Blocks.POLISHED_ANDESITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DIORITE_SLAB = BLOCKS.registerBlock("reinforced_diorite_slab", p -> new ReinforcedSlabBlock(p, Blocks.DIORITE_SLAB), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DIORITE_SLAB = reinforcedBlock("reinforced_diorite_slab", Blocks.DIORITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_COBBLED_DEEPSLATE_SLAB = BLOCKS.registerBlock("reinforced_cobbled_deepslate_slab", p -> new ReinforcedSlabBlock(p, Blocks.COBBLED_DEEPSLATE_SLAB), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_COBBLED_DEEPSLATE_SLAB = reinforcedBlock("reinforced_cobbled_deepslate_slab", Blocks.COBBLED_DEEPSLATE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_DEEPSLATE_SLAB = BLOCKS.registerBlock("reinforced_polished_deepslate_slab", p -> new ReinforcedSlabBlock(p, Blocks.POLISHED_DEEPSLATE_SLAB), prop(MapColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_DEEPSLATE_SLAB = reinforcedBlock("reinforced_polished_deepslate_slab", Blocks.POLISHED_DEEPSLATE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DEEPSLATE_BRICK_SLAB = BLOCKS.registerBlock("reinforced_deepslate_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.DEEPSLATE_BRICK_SLAB), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DEEPSLATE_BRICK_SLAB = reinforcedBlock("reinforced_deepslate_brick_slab", Blocks.DEEPSLATE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DEEPSLATE_TILE_SLAB = BLOCKS.registerBlock("reinforced_deepslate_tile_slab", p -> new ReinforcedSlabBlock(p, Blocks.DEEPSLATE_TILE_SLAB), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_DEEPSLATE_TILE_SLAB = reinforcedBlock("reinforced_deepslate_tile_slab", Blocks.DEEPSLATE_TILE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCryingObsidianBlock> REINFORCED_CRYING_OBSIDIAN = BLOCKS.registerBlock("reinforced_crying_obsidian", p -> new ReinforcedCryingObsidianBlock(p, Blocks.CRYING_OBSIDIAN), prop(MapColor.COLOR_BLACK).lightLevel(state -> 10));
+	public static final DeferredBlock<ReinforcedCryingObsidianBlock> REINFORCED_CRYING_OBSIDIAN = reinforcedBlock("reinforced_crying_obsidian", Blocks.CRYING_OBSIDIAN, ReinforcedCryingObsidianBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACKSTONE = BLOCKS.registerBlock("reinforced_blackstone", p -> new BaseReinforcedBlock(p, Blocks.BLACKSTONE), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACKSTONE = reinforcedBlock("reinforced_blackstone", Blocks.BLACKSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BLACKSTONE_SLAB = BLOCKS.registerBlock("reinforced_blackstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.BLACKSTONE_SLAB), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BLACKSTONE_SLAB = reinforcedBlock("reinforced_blackstone_slab", Blocks.BLACKSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BLACKSTONE_STAIRS = BLOCKS.registerBlock("reinforced_blackstone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.BLACKSTONE_STAIRS), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BLACKSTONE_STAIRS = reinforcedBlock("reinforced_blackstone_stairs", Blocks.BLACKSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_BLACKSTONE = BLOCKS.registerBlock("reinforced_polished_blackstone", p -> new BaseReinforcedBlock(p, Blocks.POLISHED_BLACKSTONE), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_BLACKSTONE = reinforcedBlock("reinforced_polished_blackstone", Blocks.POLISHED_BLACKSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_BLACKSTONE_SLAB = BLOCKS.registerBlock("reinforced_polished_blackstone_slab", p -> new ReinforcedSlabBlock(p, Blocks.POLISHED_BLACKSTONE_SLAB), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_BLACKSTONE_SLAB = reinforcedBlock("reinforced_polished_blackstone_slab", Blocks.POLISHED_BLACKSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_BLACKSTONE_STAIRS = BLOCKS.registerBlock("reinforced_polished_blackstone_stairs", p -> new ReinforcedStairsBlock(p, Blocks.POLISHED_BLACKSTONE_STAIRS), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_BLACKSTONE_STAIRS = reinforcedBlock("reinforced_polished_blackstone_stairs", Blocks.POLISHED_BLACKSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_POLISHED_BLACKSTONE = BLOCKS.registerBlock("reinforced_chiseled_polished_blackstone", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_POLISHED_BLACKSTONE), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_POLISHED_BLACKSTONE = reinforcedBlock("reinforced_chiseled_polished_blackstone", Blocks.CHISELED_POLISHED_BLACKSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_BLACKSTONE_BRICKS = BLOCKS.registerBlock("reinforced_polished_blackstone_bricks", p -> new BaseReinforcedBlock(p, Blocks.POLISHED_BLACKSTONE_BRICKS), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_BLACKSTONE_BRICKS = reinforcedBlock("reinforced_polished_blackstone_bricks", Blocks.POLISHED_BLACKSTONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB = BLOCKS.registerBlock("reinforced_polished_blackstone_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.POLISHED_BLACKSTONE_BRICK_SLAB), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB = reinforcedBlock("reinforced_polished_blackstone_brick_slab", Blocks.POLISHED_BLACKSTONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_polished_blackstone_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS = reinforcedBlock("reinforced_polished_blackstone_brick_stairs", Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS = BLOCKS.registerBlock("reinforced_cracked_polished_blackstone_bricks", p -> new BaseReinforcedBlock(p, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS = reinforcedBlock("reinforced_cracked_polished_blackstone_bricks", Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS);
 
 	//ordered by vanilla <1.19.3 decoration blocks creative tab order
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCobwebBlock> REINFORCED_COBWEB = BLOCKS.registerBlock("reinforced_cobweb", p -> new ReinforcedCobwebBlock(p, Blocks.COBWEB), prop(MapColor.WOOL).sound(SoundType.COBWEB).forceSolidOn().noCollission());
+	public static final DeferredBlock<ReinforcedCobwebBlock> REINFORCED_COBWEB = reinforcedBlock("reinforced_cobweb", Blocks.COBWEB, ReinforcedCobwebBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MOSS_CARPET = BLOCKS.registerBlock("reinforced_moss_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.MOSS_CARPET), prop(MapColor.COLOR_GREEN).sound(SoundType.MOSS_CARPET).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MOSS_CARPET = reinforcedBlock("reinforced_moss_carpet", Blocks.MOSS_CARPET, ReinforcedCarpetBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MOSS_BLOCK = BLOCKS.registerBlock("reinforced_moss_block", p -> new BaseReinforcedBlock(p, Blocks.MOSS_BLOCK), prop(MapColor.COLOR_GREEN).sound(SoundType.MOSS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MOSS_BLOCK = reinforcedBlock("reinforced_moss_block", Blocks.MOSS_BLOCK, p -> p.pushReaction(PushReaction.NORMAL));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedEndRodBlock> REINFORCED_END_ROD = BLOCKS.registerBlock("reinforced_end_rod", ReinforcedEndRodBlock::new, prop(MapColor.NONE).lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion());
+	public static final DeferredBlock<ReinforcedEndRodBlock> REINFORCED_END_ROD = reinforcedBlock("reinforced_end_rod", Blocks.END_ROD, (p, b) -> new ReinforcedEndRodBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedIronBarsBlock> REINFORCED_IRON_BARS = BLOCKS.registerBlock("reinforced_iron_bars", p -> new ReinforcedIronBarsBlock(p, Blocks.IRON_BARS), prop(MapColor.NONE).sound(SoundType.METAL));
+	public static final DeferredBlock<ReinforcedIronBarsBlock> REINFORCED_IRON_BARS = reinforcedBlock("reinforced_iron_bars", Blocks.IRON_BARS, ReinforcedIronBarsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLadderBlock> REINFORCED_LADDER = BLOCKS.registerBlock("reinforced_ladder", ReinforcedLadderBlock::new, prop().forceSolidOff().sound(SoundType.LADDER).noOcclusion().pushReaction(PushReaction.DESTROY));
+	public static final DeferredBlock<ReinforcedLadderBlock> REINFORCED_LADDER = reinforcedBlock("reinforced_ladder", Blocks.LADDER, (p, b) -> new ReinforcedLadderBlock(p.pushReaction(PushReaction.BLOCK)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_CHAIN = BLOCKS.registerBlock("reinforced_chain", p -> new ReinforcedChainBlock(p, Blocks.CHAIN), prop(MapColor.NONE).sound(SoundType.CHAIN));
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_CHAIN = reinforcedBlock("reinforced_chain", Blocks.CHAIN, ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_GLASS_PANE = BLOCKS.registerBlock("reinforced_glass_pane", p -> new ReinforcedPaneBlock(p, Blocks.GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_GLASS_PANE = reinforcedBlock("reinforced_glass_pane", Blocks.GLASS_PANE, ReinforcedPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_COBBLESTONE_WALL = BLOCKS.registerBlock("reinforced_cobblestone_wall", p -> new ReinforcedWallBlock(p, Blocks.COBBLESTONE_WALL), prop());
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_COBBLESTONE_WALL = reinforcedBlock("reinforced_cobblestone_wall", Blocks.COBBLESTONE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_MOSSY_COBBLESTONE_WALL = BLOCKS.registerBlock("reinforced_mossy_cobblestone_wall", p -> new ReinforcedWallBlock(p, Blocks.MOSSY_COBBLESTONE_WALL), prop());
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_MOSSY_COBBLESTONE_WALL = reinforcedBlock("reinforced_mossy_cobblestone_wall", Blocks.MOSSY_COBBLESTONE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_BRICK_WALL = BLOCKS.registerBlock("reinforced_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.BRICK_WALL), prop(MapColor.COLOR_RED));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_BRICK_WALL = reinforcedBlock("reinforced_brick_wall", Blocks.BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_PRISMARINE_WALL = BLOCKS.registerBlock("reinforced_prismarine_wall", p -> new ReinforcedWallBlock(p, Blocks.PRISMARINE_WALL), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_PRISMARINE_WALL = reinforcedBlock("reinforced_prismarine_wall", Blocks.PRISMARINE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_RED_SANDSTONE_WALL = BLOCKS.registerBlock("reinforced_red_sandstone_wall", p -> new ReinforcedWallBlock(p, Blocks.RED_SANDSTONE_WALL), prop(MapColor.COLOR_ORANGE));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_RED_SANDSTONE_WALL = reinforcedBlock("reinforced_red_sandstone_wall", Blocks.RED_SANDSTONE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_MOSSY_STONE_BRICK_WALL = BLOCKS.registerBlock("reinforced_mossy_stone_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.MOSSY_STONE_BRICK_WALL), prop());
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_MOSSY_STONE_BRICK_WALL = reinforcedBlock("reinforced_mossy_stone_brick_wall", Blocks.MOSSY_STONE_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_GRANITE_WALL = BLOCKS.registerBlock("reinforced_granite_wall", p -> new ReinforcedWallBlock(p, Blocks.GRANITE_WALL), prop(MapColor.DIRT));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_GRANITE_WALL = reinforcedBlock("reinforced_granite_wall", Blocks.GRANITE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_STONE_BRICK_WALL = BLOCKS.registerBlock("reinforced_stone_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.STONE_BRICK_WALL), prop());
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_STONE_BRICK_WALL = reinforcedBlock("reinforced_stone_brick_wall", Blocks.STONE_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_MUD_BRICK_WALL = BLOCKS.registerBlock("reinforced_mud_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.MUD_BRICK_WALL), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.MUD_BRICKS));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_MUD_BRICK_WALL = reinforcedBlock("reinforced_mud_brick_wall", Blocks.MUD_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_NETHER_BRICK_WALL = BLOCKS.registerBlock("reinforced_nether_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.NETHER_BRICK_WALL), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_NETHER_BRICK_WALL = reinforcedBlock("reinforced_nether_brick_wall", Blocks.NETHER_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_ANDESITE_WALL = BLOCKS.registerBlock("reinforced_andesite_wall", p -> new ReinforcedWallBlock(p, Blocks.ANDESITE_WALL), prop());
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_ANDESITE_WALL = reinforcedBlock("reinforced_andesite_wall", Blocks.ANDESITE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_RED_NETHER_BRICK_WALL = BLOCKS.registerBlock("reinforced_red_nether_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.RED_NETHER_BRICK_WALL), prop(MapColor.NETHER).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_RED_NETHER_BRICK_WALL = reinforcedBlock("reinforced_red_nether_brick_wall", Blocks.RED_NETHER_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_SANDSTONE_WALL = BLOCKS.registerBlock("reinforced_sandstone_wall", p -> new ReinforcedWallBlock(p, Blocks.SANDSTONE_WALL), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_SANDSTONE_WALL = reinforcedBlock("reinforced_sandstone_wall", Blocks.SANDSTONE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_END_STONE_BRICK_WALL = BLOCKS.registerBlock("reinforced_end_stone_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.END_STONE_BRICK_WALL), prop(MapColor.SAND));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_END_STONE_BRICK_WALL = reinforcedBlock("reinforced_end_stone_brick_wall", Blocks.END_STONE_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_DIORITE_WALL = BLOCKS.registerBlock("reinforced_diorite_wall", p -> new ReinforcedWallBlock(p, Blocks.DIORITE_WALL), prop(MapColor.QUARTZ));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_DIORITE_WALL = reinforcedBlock("reinforced_diorite_wall", Blocks.DIORITE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_BLACKSTONE_WALL = BLOCKS.registerBlock("reinforced_blackstone_wall", p -> new ReinforcedWallBlock(p, Blocks.BLACKSTONE_WALL), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_BLACKSTONE_WALL = reinforcedBlock("reinforced_blackstone_wall", Blocks.BLACKSTONE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_BLACKSTONE_WALL = BLOCKS.registerBlock("reinforced_polished_blackstone_wall", p -> new ReinforcedWallBlock(p, Blocks.POLISHED_BLACKSTONE_WALL), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_BLACKSTONE_WALL = reinforcedBlock("reinforced_polished_blackstone_wall", Blocks.POLISHED_BLACKSTONE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL = BLOCKS.registerBlock("reinforced_polished_blackstone_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.POLISHED_BLACKSTONE_BRICK_WALL), prop(MapColor.COLOR_BLACK));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL = reinforcedBlock("reinforced_polished_blackstone_brick_wall", Blocks.POLISHED_BLACKSTONE_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_COBBLED_DEEPSLATE_WALL = BLOCKS.registerBlock("reinforced_cobbled_deepslate_wall", p -> new ReinforcedWallBlock(p, Blocks.COBBLED_DEEPSLATE_WALL), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_COBBLED_DEEPSLATE_WALL = reinforcedBlock("reinforced_cobbled_deepslate_wall", Blocks.COBBLED_DEEPSLATE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_DEEPSLATE_WALL = BLOCKS.registerBlock("reinforced_polished_deepslate_wall", p -> new ReinforcedWallBlock(p, Blocks.POLISHED_DEEPSLATE_WALL), prop(MapColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_DEEPSLATE_WALL = reinforcedBlock("reinforced_polished_deepslate_wall", Blocks.POLISHED_DEEPSLATE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_DEEPSLATE_BRICK_WALL = BLOCKS.registerBlock("reinforced_deepslate_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.DEEPSLATE_BRICK_WALL), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_DEEPSLATE_BRICK_WALL = reinforcedBlock("reinforced_deepslate_brick_wall", Blocks.DEEPSLATE_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_DEEPSLATE_TILE_WALL = BLOCKS.registerBlock("reinforced_deepslate_tile_wall", p -> new ReinforcedWallBlock(p, Blocks.DEEPSLATE_TILE_WALL), prop(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_DEEPSLATE_TILE_WALL = reinforcedBlock("reinforced_deepslate_tile_wall", Blocks.DEEPSLATE_TILE_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = BLOCKS.registerBlock("reinforced_white_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.WHITE_CARPET), prop(MapColor.SNOW).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = reinforcedBlock("reinforced_white_carpet", Blocks.WHITE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = BLOCKS.registerBlock("reinforced_orange_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.ORANGE_CARPET), prop(MapColor.COLOR_ORANGE).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = reinforcedBlock("reinforced_orange_carpet", Blocks.ORANGE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = BLOCKS.registerBlock("reinforced_magenta_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.MAGENTA_CARPET), prop(MapColor.COLOR_MAGENTA).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = reinforcedBlock("reinforced_magenta_carpet", Blocks.MAGENTA_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = BLOCKS.registerBlock("reinforced_light_blue_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.LIGHT_BLUE_CARPET), prop(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = reinforcedBlock("reinforced_light_blue_carpet", Blocks.LIGHT_BLUE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = BLOCKS.registerBlock("reinforced_yellow_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.YELLOW_CARPET), prop(MapColor.COLOR_YELLOW).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = reinforcedBlock("reinforced_yellow_carpet", Blocks.YELLOW_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = BLOCKS.registerBlock("reinforced_lime_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.LIME_CARPET), prop(MapColor.COLOR_LIGHT_GREEN).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = reinforcedBlock("reinforced_lime_carpet", Blocks.LIME_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = BLOCKS.registerBlock("reinforced_pink_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.PINK_CARPET), prop(MapColor.COLOR_PINK).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = reinforcedBlock("reinforced_pink_carpet", Blocks.PINK_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = BLOCKS.registerBlock("reinforced_gray_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.GRAY_CARPET), prop(MapColor.COLOR_GRAY).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = reinforcedBlock("reinforced_gray_carpet", Blocks.GRAY_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = BLOCKS.registerBlock("reinforced_light_gray_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.LIGHT_GRAY_CARPET), prop(MapColor.COLOR_LIGHT_GRAY).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = reinforcedBlock("reinforced_light_gray_carpet", Blocks.LIGHT_GRAY_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = BLOCKS.registerBlock("reinforced_cyan_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.CYAN_CARPET), prop(MapColor.COLOR_CYAN).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = reinforcedBlock("reinforced_cyan_carpet", Blocks.CYAN_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = BLOCKS.registerBlock("reinforced_purple_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.PURPLE_CARPET), prop(MapColor.COLOR_PURPLE).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = reinforcedBlock("reinforced_purple_carpet", Blocks.PURPLE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = BLOCKS.registerBlock("reinforced_blue_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.BLUE_CARPET), prop(MapColor.COLOR_BLUE).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = reinforcedBlock("reinforced_blue_carpet", Blocks.BLUE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = BLOCKS.registerBlock("reinforced_brown_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.BROWN_CARPET), prop(MapColor.COLOR_BROWN).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = reinforcedBlock("reinforced_brown_carpet", Blocks.BROWN_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = BLOCKS.registerBlock("reinforced_green_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.GREEN_CARPET), prop(MapColor.COLOR_GREEN).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = reinforcedBlock("reinforced_green_carpet", Blocks.GREEN_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = BLOCKS.registerBlock("reinforced_red_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.RED_CARPET), prop(MapColor.COLOR_RED).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = reinforcedBlock("reinforced_red_carpet", Blocks.RED_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = BLOCKS.registerBlock("reinforced_black_carpet", p -> new ReinforcedCarpetBlock(p, Blocks.BLACK_CARPET), prop(MapColor.COLOR_BLACK).sound(SoundType.WOOL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = reinforcedBlock("reinforced_black_carpet", Blocks.BLACK_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_WHITE_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_white_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_WHITE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_white_stained_glass_pane", Blocks.WHITE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_ORANGE_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_orange_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_ORANGE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_orange_stained_glass_pane", Blocks.ORANGE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_MAGENTA_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_magenta_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_MAGENTA_STAINED_GLASS_PANE = reinforcedBlock("reinforced_magenta_stained_glass_pane", Blocks.MAGENTA_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_light_blue_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_blue_stained_glass_pane", Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_YELLOW_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_yellow_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_YELLOW_STAINED_GLASS_PANE = reinforcedBlock("reinforced_yellow_stained_glass_pane", Blocks.YELLOW_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIME_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_lime_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.LIME, Blocks.LIME_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIME_STAINED_GLASS_PANE = reinforcedBlock("reinforced_lime_stained_glass_pane", Blocks.LIME_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PINK_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_pink_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.PINK, Blocks.PINK_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PINK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_pink_stained_glass_pane", Blocks.PINK_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GRAY_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_gray_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_gray_stained_glass_pane", Blocks.GRAY_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_light_gray_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_gray_stained_glass_pane", Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_CYAN_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_cyan_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_CYAN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_cyan_stained_glass_pane", Blocks.CYAN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PURPLE_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_purple_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PURPLE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_purple_stained_glass_pane", Blocks.PURPLE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLUE_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_blue_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_blue_stained_glass_pane", Blocks.BLUE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BROWN_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_brown_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BROWN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_brown_stained_glass_pane", Blocks.BROWN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GREEN_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_green_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GREEN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_green_stained_glass_pane", Blocks.GREEN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_RED_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_red_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_RED_STAINED_GLASS_PANE = reinforcedBlock("reinforced_red_stained_glass_pane", Blocks.RED_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLACK_STAINED_GLASS_PANE = BLOCKS.registerBlock("reinforced_black_stained_glass_pane", p -> new ReinforcedStainedGlassPaneBlock(p, DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE), prop(MapColor.NONE).sound(SoundType.GLASS));
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLACK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_black_stained_glass_pane", Blocks.BLACK_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_WHITE_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_white_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.WHITE_GLAZED_TERRACOTTA), prop(DyeColor.WHITE.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_WHITE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_white_glazed_terracotta", Blocks.WHITE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_ORANGE_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_orange_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.ORANGE_GLAZED_TERRACOTTA), prop(DyeColor.ORANGE.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_ORANGE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_orange_glazed_terracotta", Blocks.ORANGE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_MAGENTA_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_magenta_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.MAGENTA_GLAZED_TERRACOTTA), prop(DyeColor.MAGENTA.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_MAGENTA_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_magenta_glazed_terracotta", Blocks.MAGENTA_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_light_blue_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA), prop(DyeColor.LIGHT_BLUE.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_blue_glazed_terracotta", Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_YELLOW_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_yellow_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.YELLOW_GLAZED_TERRACOTTA), prop(DyeColor.YELLOW.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_YELLOW_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_yellow_glazed_terracotta", Blocks.YELLOW_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIME_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_lime_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.LIME_GLAZED_TERRACOTTA), prop(DyeColor.LIME.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIME_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_lime_glazed_terracotta", Blocks.LIME_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PINK_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_pink_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.PINK_GLAZED_TERRACOTTA), prop(DyeColor.PINK.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PINK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_pink_glazed_terracotta", Blocks.PINK_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GRAY_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_gray_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.GRAY_GLAZED_TERRACOTTA), prop(DyeColor.GRAY.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_gray_glazed_terracotta", Blocks.GRAY_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_light_gray_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA), prop(DyeColor.LIGHT_GRAY.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_gray_glazed_terracotta", Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_CYAN_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_cyan_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.CYAN_GLAZED_TERRACOTTA), prop(DyeColor.CYAN.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_CYAN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_cyan_glazed_terracotta", Blocks.CYAN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PURPLE_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_purple_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.PURPLE_GLAZED_TERRACOTTA), prop(DyeColor.PURPLE.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PURPLE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_purple_glazed_terracotta", Blocks.PURPLE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLUE_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_blue_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.BLUE_GLAZED_TERRACOTTA), prop(DyeColor.BLUE.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_blue_glazed_terracotta", Blocks.BLUE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BROWN_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_brown_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.BROWN_GLAZED_TERRACOTTA), prop(DyeColor.BROWN.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BROWN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_brown_glazed_terracotta", Blocks.BROWN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GREEN_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_green_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.GREEN_GLAZED_TERRACOTTA), prop(DyeColor.GREEN.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GREEN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_green_glazed_terracotta", Blocks.GREEN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_RED_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_red_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.RED_GLAZED_TERRACOTTA), prop(DyeColor.RED.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_RED_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_red_glazed_terracotta", Blocks.RED_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLACK_GLAZED_TERRACOTTA = BLOCKS.registerBlock("reinforced_black_glazed_terracotta", p -> new ReinforcedGlazedTerracottaBlock(p, Blocks.BLACK_GLAZED_TERRACOTTA), prop(DyeColor.BLACK.getMapColor()));
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLACK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_black_glazed_terracotta", Blocks.BLACK_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedScaffoldingBlock> REINFORCED_SCAFFOLDING = BLOCKS.registerBlock("reinforced_scaffolding", ReinforcedScaffoldingBlock::new, reinforcedCopy(Blocks.SCAFFOLDING));
+	public static final DeferredBlock<ReinforcedScaffoldingBlock> REINFORCED_SCAFFOLDING = reinforcedBlock("reinforced_scaffolding", Blocks.SCAFFOLDING, (p, b) -> new ReinforcedScaffoldingBlock(p.pushReaction(PushReaction.NORMAL)));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_LANTERN = BLOCKS.registerBlock("reinforced_lantern", p -> new ReinforcedLanternBlock(p, Blocks.LANTERN), prop(MapColor.METAL).sound(SoundType.LANTERN).lightLevel(state -> 15).pushReaction(PushReaction.BLOCK).forceSolidOn());
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_LANTERN = reinforcedBlock("reinforced_lantern", Blocks.LANTERN, ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_SOUL_LANTERN = BLOCKS.registerBlock("reinforced_soul_lantern", p -> new ReinforcedLanternBlock(p, Blocks.SOUL_LANTERN), prop(MapColor.METAL).sound(SoundType.LANTERN).lightLevel(state -> 10).pushReaction(PushReaction.BLOCK).forceSolidOn());
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_SOUL_LANTERN = reinforcedBlock("reinforced_soul_lantern", Blocks.SOUL_LANTERN, ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SHROOMLIGHT = BLOCKS.registerBlock("reinforced_shroomlight", p -> new BaseReinforcedBlock(p, Blocks.SHROOMLIGHT), prop(MapColor.COLOR_RED).sound(SoundType.SHROOMLIGHT).lightLevel(state -> 15));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SHROOMLIGHT = reinforcedBlock("reinforced_shroomlight", Blocks.SHROOMLIGHT);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_OCHRE_FROGLIGHT = BLOCKS.registerBlock("reinforced_ochre_froglight", p -> new ReinforcedRotatedPillarBlock(p, Blocks.OCHRE_FROGLIGHT), prop(MapColor.SAND).sound(SoundType.FROGLIGHT).lightLevel(state -> 15));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_OCHRE_FROGLIGHT = reinforcedBlock("reinforced_ochre_froglight", Blocks.OCHRE_FROGLIGHT, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_VERDANT_FROGLIGHT = BLOCKS.registerBlock("reinforced_verdant_froglight", p -> new ReinforcedRotatedPillarBlock(p, Blocks.VERDANT_FROGLIGHT), prop(MapColor.GLOW_LICHEN).sound(SoundType.FROGLIGHT).lightLevel(state -> 15));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_VERDANT_FROGLIGHT = reinforcedBlock("reinforced_verdant_froglight", Blocks.VERDANT_FROGLIGHT, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PEARLESCENT_FROGLIGHT = BLOCKS.registerBlock("reinforced_pearlescent_froglight", p -> new ReinforcedRotatedPillarBlock(p, Blocks.PEARLESCENT_FROGLIGHT), prop(MapColor.COLOR_PINK).sound(SoundType.FROGLIGHT).lightLevel(state -> 15));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PEARLESCENT_FROGLIGHT = reinforcedBlock("reinforced_pearlescent_froglight", Blocks.PEARLESCENT_FROGLIGHT, ReinforcedRotatedPillarBlock::new);
 
 	//ordered by vanilla <1.19.3 redstone tab order
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRedstoneBlock> REINFORCED_REDSTONE_BLOCK = BLOCKS.registerBlock("reinforced_redstone_block", p -> new ReinforcedRedstoneBlock(p, Blocks.REDSTONE_BLOCK), prop(MapColor.FIRE).sound(SoundType.METAL).isRedstoneConductor(SCContent::never));
+	public static final DeferredBlock<ReinforcedRedstoneBlock> REINFORCED_REDSTONE_BLOCK = reinforcedBlock("reinforced_redstone_block", Blocks.REDSTONE_BLOCK, ReinforcedRedstoneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_PISTON = BLOCKS.registerBlock("reinforced_piston", p -> new ReinforcedPistonBaseBlock(false, p), prop().isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)));
+	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_PISTON = reinforcedBlock("reinforced_piston", Blocks.PISTON, (p, b) -> new ReinforcedPistonBaseBlock(false, p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_STICKY_PISTON = BLOCKS.registerBlock("reinforced_sticky_piston", p -> new ReinforcedPistonBaseBlock(true, p), prop().isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = BLOCKS.registerBlock("reinforced_observer", ReinforcedObserverBlock::new, propDisguisable().isRedstoneConductor(SCContent::never));
-	@HasManualPage
-	@Reinforced
-	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = BLOCKS.registerBlock("reinforced_hopper", ReinforcedHopperBlock::new, propDisguisable().sound(SoundType.METAL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = BLOCKS.registerBlock("reinforced_dispenser", ReinforcedDispenserBlock::new, propDisguisable());
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = BLOCKS.registerBlock("reinforced_dropper", ReinforcedDropperBlock::new, propDisguisable());
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final DeferredBlock<ReinforcedLecternBlock> REINFORCED_LECTERN = BLOCKS.registerBlock("reinforced_lectern", ReinforcedLecternBlock::new, prop(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
-	@HasManualPage
-	@Reinforced
-	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = BLOCKS.registerBlock("reinforced_lever", ReinforcedLeverBlock::new, prop(MapColor.NONE).noCollission().sound(SoundType.STONE).pushReaction(PushReaction.BLOCK).forceSolidOn());
+	public static final DeferredBlock<ReinforcedPistonBaseBlock> REINFORCED_STICKY_PISTON = reinforcedBlock("reinforced_sticky_piston", Blocks.STICKY_PISTON, (p, b) -> new ReinforcedPistonBaseBlock(true, p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRedstoneLampBlock> REINFORCED_REDSTONE_LAMP = BLOCKS.registerBlock("reinforced_redstone_lamp", p -> new ReinforcedRedstoneLampBlock(p, Blocks.REDSTONE_LAMP), prop(MapColor.NONE).sound(SoundType.GLASS).lightLevel(state -> state.getValue(ReinforcedRedstoneLampBlock.LIT) ? 15 : 0));
+	public static final DeferredBlock<ReinforcedObserverBlock> REINFORCED_OBSERVER = reinforcedBlock("reinforced_observer", Blocks.OBSERVER, (p, b) -> new ReinforcedObserverBlock(propDisguisable(p)));
+	@HasManualPage
+	@Reinforced
+	public static final DeferredBlock<ReinforcedHopperBlock> REINFORCED_HOPPER = reinforcedBlock("reinforced_hopper", Blocks.HOPPER, (p, b) -> new ReinforcedHopperBlock(propDisguisable(p)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedDispenserBlock> REINFORCED_DISPENSER = reinforcedBlock("reinforced_dispenser", Blocks.DISPENSER, (p, b) -> new ReinforcedDispenserBlock(propDisguisable(p)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedDropperBlock> REINFORCED_DROPPER = reinforcedBlock("reinforced_dropper", Blocks.DROPPER, (p, b) -> new ReinforcedDropperBlock(propDisguisable(p)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLecternBlock> REINFORCED_LECTERN = reinforcedBlock("reinforced_lectern", Blocks.LECTERN, (p, b) -> new ReinforcedLecternBlock(p));
+	@HasManualPage
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = reinforcedBlock("reinforced_lever", Blocks.LEVER, (p, b) -> new ReinforcedLeverBlock(p.pushReaction(PushReaction.BLOCK).forceSolidOn()));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedRedstoneLampBlock> REINFORCED_REDSTONE_LAMP = reinforcedBlock("reinforced_redstone_lamp", Blocks.REDSTONE_LAMP, ReinforcedRedstoneLampBlock::new);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_STONE_BUTTON = stoneButton("reinforced_stone_button", Blocks.STONE_BUTTON, BlockSetType.STONE);
@@ -2353,118 +2351,118 @@ public class SCContent {
 	@HasManualPage(hasRecipeDescription = true)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedIronTrapDoorBlock> REINFORCED_IRON_TRAPDOOR = BLOCKS.registerBlock("reinforced_iron_trapdoor", p -> new ReinforcedIronTrapDoorBlock(p, BlockSetType.IRON), prop(MapColor.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never));
+	public static final DeferredBlock<ReinforcedIronTrapDoorBlock> REINFORCED_IRON_TRAPDOOR = reinforcedBlock("reinforced_iron_trapdoor", Blocks.IRON_TRAPDOOR, (p, b) -> new ReinforcedIronTrapDoorBlock(p, BlockSetType.IRON));
 
 	//ordered by vanilla <1.19.3 brewing tab order
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCauldronBlock> REINFORCED_CAULDRON = BLOCKS.registerBlock("reinforced_cauldron", p -> new ReinforcedCauldronBlock(p, IReinforcedCauldronInteraction.EMPTY), prop(MapColor.STONE).noOcclusion());
+	public static final DeferredBlock<ReinforcedCauldronBlock> REINFORCED_CAULDRON = reinforcedBlock("reinforced_cauldron", Blocks.CAULDRON, (p, b) -> new ReinforcedCauldronBlock(p, IReinforcedCauldronInteraction.EMPTY));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_WATER_CAULDRON = BLOCKS.registerBlock("reinforced_water_cauldron", p -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.RAIN, IReinforcedCauldronInteraction.WATER, p, Blocks.WATER_CAULDRON), prop(MapColor.STONE).noOcclusion());
+	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_WATER_CAULDRON = reinforcedBlock("reinforced_water_cauldron", Blocks.WATER_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.RAIN, IReinforcedCauldronInteraction.WATER, p, b));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedLavaCauldronBlock> REINFORCED_LAVA_CAULDRON = BLOCKS.registerBlock("reinforced_lava_cauldron", ReinforcedLavaCauldronBlock::new, prop(MapColor.STONE).noOcclusion().lightLevel(state -> 15));
+	public static final DeferredBlock<ReinforcedLavaCauldronBlock> REINFORCED_LAVA_CAULDRON = reinforcedBlock("reinforced_lava_cauldron", Blocks.LAVA_CAULDRON, (p, b) -> new ReinforcedLavaCauldronBlock(p));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_POWDER_SNOW_CAULDRON = BLOCKS.registerBlock("reinforced_powder_snow_cauldron", p -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, p, Blocks.POWDER_SNOW_CAULDRON), prop(MapColor.STONE).noOcclusion());
+	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_POWDER_SNOW_CAULDRON = reinforcedBlock("reinforced_powder_snow_cauldron", Blocks.POWDER_SNOW_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, p, b));
 
 	//1.19.3+ content
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BAMBOO_BLOCK = BLOCKS.registerBlock("reinforced_bamboo_block", p -> new ReinforcedRotatedPillarBlock(p, Blocks.BAMBOO_BLOCK), logProp(MapColor.COLOR_YELLOW, MapColor.PLANT).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_BAMBOO_BLOCK = reinforcedBlock("reinforced_bamboo_block", Blocks.BAMBOO_BLOCK, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BAMBOO_BLOCK = BLOCKS.registerBlock("reinforced_stripped_bamboo_block", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_BAMBOO_BLOCK), prop(MapColor.COLOR_YELLOW).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BAMBOO_BLOCK = reinforcedBlock("reinforced_stripped_bamboo_block", Blocks.STRIPPED_BAMBOO_BLOCK, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BAMBOO_PLANKS = BLOCKS.registerBlock("reinforced_bamboo_planks", p -> new BaseReinforcedBlock(p, Blocks.BAMBOO_PLANKS), prop(MapColor.COLOR_YELLOW).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BAMBOO_PLANKS = reinforcedBlock("reinforced_bamboo_planks", Blocks.BAMBOO_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BAMBOO_MOSAIC = BLOCKS.registerBlock("reinforced_bamboo_mosaic", p -> new BaseReinforcedBlock(p, Blocks.BAMBOO_MOSAIC), prop(MapColor.COLOR_YELLOW).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BAMBOO_MOSAIC = reinforcedBlock("reinforced_bamboo_mosaic", Blocks.BAMBOO_MOSAIC);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BAMBOO_STAIRS = BLOCKS.registerBlock("reinforced_bamboo_stairs", p -> new ReinforcedStairsBlock(p, Blocks.BAMBOO_STAIRS), prop(MapColor.COLOR_YELLOW).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BAMBOO_STAIRS = reinforcedBlock("reinforced_bamboo_stairs", Blocks.BAMBOO_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BAMBOO_MOSAIC_STAIRS = BLOCKS.registerBlock("reinforced_bamboo_mosaic_stairs", p -> new ReinforcedStairsBlock(p, Blocks.BAMBOO_MOSAIC_STAIRS), prop(MapColor.COLOR_YELLOW).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_BAMBOO_MOSAIC_STAIRS = reinforcedBlock("reinforced_bamboo_mosaic_stairs", Blocks.BAMBOO_MOSAIC_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BAMBOO_SLAB = BLOCKS.registerBlock("reinforced_bamboo_slab", p -> new ReinforcedSlabBlock(p, Blocks.BAMBOO_SLAB), prop(MapColor.COLOR_YELLOW).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BAMBOO_SLAB = reinforcedBlock("reinforced_bamboo_slab", Blocks.BAMBOO_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BAMBOO_MOSAIC_SLAB = BLOCKS.registerBlock("reinforced_bamboo_mosaic_slab", p -> new ReinforcedSlabBlock(p, Blocks.BAMBOO_MOSAIC_SLAB), prop(MapColor.COLOR_YELLOW).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_BAMBOO_MOSAIC_SLAB = reinforcedBlock("reinforced_bamboo_mosaic_slab", Blocks.BAMBOO_MOSAIC_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedPressurePlateBlock> REINFORCED_BAMBOO_PRESSURE_PLATE = woodenPressurePlate("reinforced_bamboo_pressure_plate", Blocks.BAMBOO_PRESSURE_PLATE, BlockSetType.BAMBOO);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_BAMBOO_BUTTON = woodenButton("reinforced_bamboo_button", Blocks.BAMBOO_BUTTON, BlockSetType.BAMBOO);
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_CHERRY_SIGN = BLOCKS.registerBlock("secret_cherry_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.CHERRY), prop(MapColor.TERRACOTTA_WHITE).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_cherry_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_CHERRY_WALL_SIGN = BLOCKS.registerBlock("secret_cherry_sign_wall", p -> new SecretWallSignBlock(p, WoodType.CHERRY), prop(MapColor.TERRACOTTA_WHITE).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_cherry_sign"));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_BAMBOO_SIGN = BLOCKS.registerBlock("secret_bamboo_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.BAMBOO), prop(MapColor.COLOR_YELLOW).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_bamboo_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_BAMBOO_WALL_SIGN = BLOCKS.registerBlock("secret_bamboo_sign_wall", p -> new SecretWallSignBlock(p, WoodType.BAMBOO), prop(MapColor.COLOR_YELLOW).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_bamboo_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_CHERRY_SIGN = secretStandingSign("secret_cherry_sign_standing", Blocks.CHERRY_SIGN, p -> p.overrideDescription("block.securitycraft.secret_cherry_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_CHERRY_WALL_SIGN = secretWallSign("secret_cherry_sign_wall", Blocks.CHERRY_SIGN, p -> p.overrideDescription("block.securitycraft.secret_cherry_sign"));
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_BAMBOO_SIGN = secretStandingSign("secret_bamboo_sign_standing", Blocks.BAMBOO_SIGN, p -> p.overrideDescription("block.securitycraft.secret_bamboo_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_BAMBOO_WALL_SIGN = secretWallSign("secret_bamboo_sign_wall", Blocks.BAMBOO_SIGN, p -> p.overrideDescription("block.securitycraft.secret_bamboo_sign"));
 	//hanging signs
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_OAK_HANGING_SIGN = BLOCKS.registerBlock("secret_oak_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.OAK), prop(MapColor.WOOD).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_OAK_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_oak_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.OAK), prop(MapColor.WOOD).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_SPRUCE_HANGING_SIGN = BLOCKS.registerBlock("secret_spruce_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.SPRUCE), prop(MapColor.PODZOL).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_SPRUCE_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_spruce_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.SPRUCE), prop(MapColor.PODZOL).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_BIRCH_HANGING_SIGN = BLOCKS.registerBlock("secret_birch_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.BIRCH), prop(MapColor.SAND).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_BIRCH_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_birch_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.BIRCH), prop(MapColor.SAND).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_JUNGLE_HANGING_SIGN = BLOCKS.registerBlock("secret_jungle_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.JUNGLE), prop(MapColor.DIRT).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_JUNGLE_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_jungle_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.JUNGLE), prop(MapColor.DIRT).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_ACACIA_HANGING_SIGN = BLOCKS.registerBlock("secret_acacia_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.ACACIA), prop(MapColor.COLOR_ORANGE).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_ACACIA_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_acacia_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.ACACIA), prop(MapColor.COLOR_ORANGE).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_DARK_OAK_HANGING_SIGN = BLOCKS.registerBlock("secret_dark_oak_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.DARK_OAK), prop(MapColor.COLOR_BROWN).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_DARK_OAK_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_dark_oak_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.DARK_OAK), prop(MapColor.COLOR_BROWN).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_MANGROVE_HANGING_SIGN = BLOCKS.registerBlock("secret_mangrove_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.MANGROVE), prop(MapColor.COLOR_RED).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_MANGROVE_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_mangrove_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.MANGROVE), prop(MapColor.COLOR_RED).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_CHERRY_HANGING_SIGN = BLOCKS.registerBlock("secret_cherry_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.CHERRY), prop(MapColor.TERRACOTTA_PINK).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_CHERRY_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_cherry_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.CHERRY), prop(MapColor.TERRACOTTA_PINK).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_BAMBOO_HANGING_SIGN = BLOCKS.registerBlock("secret_bamboo_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.BAMBOO), prop(MapColor.COLOR_YELLOW).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_BAMBOO_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_bamboo_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.BAMBOO), prop(MapColor.COLOR_YELLOW).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_PALE_OAK_HANGING_SIGN = BLOCKS.registerBlock("secret_pale_oak_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_PALE_OAK_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_pale_oak_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_CRIMSON_HANGING_SIGN = BLOCKS.registerBlock("secret_crimson_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.CRIMSON), prop(MapColor.CRIMSON_STEM).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_CRIMSON_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_crimson_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.CRIMSON), prop(MapColor.CRIMSON_STEM).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_WARPED_HANGING_SIGN = BLOCKS.registerBlock("secret_warped_hanging_sign", p -> new SecretCeilingHangingSignBlock(p, WoodType.WARPED), prop(MapColor.WARPED_STEM).noCollission().forceSolidOn());
-	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_WARPED_WALL_HANGING_SIGN = BLOCKS.registerBlock("secret_warped_wall_hanging_sign", p -> new SecretWallHangingSignBlock(p, WoodType.WARPED), prop(MapColor.WARPED_STEM).noCollission().forceSolidOn());
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_OAK_HANGING_SIGN = secretCeilingHangingSign("secret_oak_hanging_sign", Blocks.OAK_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_OAK_WALL_HANGING_SIGN = secretWallHangingSign("secret_oak_wall_hanging_sign", Blocks.OAK_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_oak_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_SPRUCE_HANGING_SIGN = secretCeilingHangingSign("secret_spruce_hanging_sign", Blocks.SPRUCE_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_SPRUCE_WALL_HANGING_SIGN = secretWallHangingSign("secret_spruce_wall_hanging_sign", Blocks.SPRUCE_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_spruce_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_BIRCH_HANGING_SIGN = secretCeilingHangingSign("secret_birch_hanging_sign", Blocks.BIRCH_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_BIRCH_WALL_HANGING_SIGN = secretWallHangingSign("secret_birch_wall_hanging_sign", Blocks.BIRCH_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_birch_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_JUNGLE_HANGING_SIGN = secretCeilingHangingSign("secret_jungle_hanging_sign", Blocks.JUNGLE_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_JUNGLE_WALL_HANGING_SIGN = secretWallHangingSign("secret_jungle_wall_hanging_sign", Blocks.JUNGLE_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_jungle_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_ACACIA_HANGING_SIGN = secretCeilingHangingSign("secret_acacia_hanging_sign", Blocks.ACACIA_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_ACACIA_WALL_HANGING_SIGN = secretWallHangingSign("secret_acacia_wall_hanging_sign", Blocks.ACACIA_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_acacia_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_DARK_OAK_HANGING_SIGN = secretCeilingHangingSign("secret_dark_oak_hanging_sign", Blocks.DARK_OAK_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_DARK_OAK_WALL_HANGING_SIGN = secretWallHangingSign("secret_dark_oak_wall_hanging_sign", Blocks.DARK_OAK_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_dark_oak_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_MANGROVE_HANGING_SIGN = secretCeilingHangingSign("secret_mangrove_hanging_sign", Blocks.MANGROVE_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_MANGROVE_WALL_HANGING_SIGN = secretWallHangingSign("secret_mangrove_wall_hanging_sign", Blocks.MANGROVE_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_mangrove_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_CHERRY_HANGING_SIGN = secretCeilingHangingSign("secret_cherry_hanging_sign", Blocks.CHERRY_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_CHERRY_WALL_HANGING_SIGN = secretWallHangingSign("secret_cherry_wall_hanging_sign", Blocks.CHERRY_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_cherry_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_PALE_OAK_HANGING_SIGN = secretCeilingHangingSign("secret_pale_oak_hanging_sign", Blocks.PALE_OAK_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_PALE_OAK_WALL_HANGING_SIGN = secretWallHangingSign("secret_pale_oak_wall_hanging_sign", Blocks.PALE_OAK_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_pale_oak_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_BAMBOO_HANGING_SIGN = secretCeilingHangingSign("secret_bamboo_hanging_sign", Blocks.BAMBOO_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_BAMBOO_WALL_HANGING_SIGN = secretWallHangingSign("secret_bamboo_wall_hanging_sign", Blocks.BAMBOO_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_bamboo_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_CRIMSON_HANGING_SIGN = secretCeilingHangingSign("secret_crimson_hanging_sign", Blocks.CRIMSON_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_CRIMSON_WALL_HANGING_SIGN = secretWallHangingSign("secret_crimson_wall_hanging_sign", Blocks.CRIMSON_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_crimson_hanging_sign"));
+	public static final DeferredBlock<SecretCeilingHangingSignBlock> SECRET_WARPED_HANGING_SIGN = secretCeilingHangingSign("secret_warped_hanging_sign", Blocks.WARPED_HANGING_SIGN);
+	public static final DeferredBlock<SecretWallHangingSignBlock> SECRET_WARPED_WALL_HANGING_SIGN = secretWallHangingSign("secret_warped_wall_hanging_sign", Blocks.WARPED_HANGING_SIGN, p -> p.overrideDescription("block.securitycraft.secret_warped_hanging_sign"));
 	//end hanging signs
 	@HasManualPage
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChiseledBookshelfBlock> REINFORCED_CHISELED_BOOKSHELF = BLOCKS.registerBlock("reinforced_chiseled_bookshelf", ReinforcedChiseledBookshelfBlock::new, prop(MapColor.WOOD).sound(SoundType.CHISELED_BOOKSHELF));
+	public static final DeferredBlock<ReinforcedChiseledBookshelfBlock> REINFORCED_CHISELED_BOOKSHELF = reinforcedBlock("reinforced_chiseled_bookshelf", Blocks.CHISELED_BOOKSHELF, (p, b) -> new ReinforcedChiseledBookshelfBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CHERRY_LOG = BLOCKS.registerBlock("reinforced_cherry_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.CHERRY_LOG), logProp(MapColor.TERRACOTTA_WHITE, MapColor.TERRACOTTA_GRAY).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CHERRY_LOG = reinforcedBlock("reinforced_cherry_log", Blocks.CHERRY_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CHERRY_WOOD = BLOCKS.registerBlock("reinforced_cherry_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.CHERRY_WOOD), prop(MapColor.TERRACOTTA_GRAY).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_CHERRY_WOOD = reinforcedBlock("reinforced_cherry_wood", Blocks.CHERRY_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CHERRY_LOG = BLOCKS.registerBlock("reinforced_stripped_cherry_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_CHERRY_LOG), logProp(MapColor.TERRACOTTA_WHITE, MapColor.TERRACOTTA_PINK).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CHERRY_LOG = reinforcedBlock("reinforced_stripped_cherry_log", Blocks.STRIPPED_CHERRY_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CHERRY_WOOD = BLOCKS.registerBlock("reinforced_stripped_cherry_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_CHERRY_WOOD), prop(MapColor.TERRACOTTA_PINK).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CHERRY_WOOD = reinforcedBlock("reinforced_stripped_cherry_wood", Blocks.STRIPPED_CHERRY_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHERRY_PLANKS = BLOCKS.registerBlock("reinforced_cherry_planks", p -> new BaseReinforcedBlock(p, Blocks.CHERRY_PLANKS), prop(MapColor.TERRACOTTA_WHITE).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHERRY_PLANKS = reinforcedBlock("reinforced_cherry_planks", Blocks.CHERRY_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CHERRY_STAIRS = BLOCKS.registerBlock("reinforced_cherry_stairs", p -> new ReinforcedStairsBlock(p, Blocks.CHERRY_STAIRS), prop(MapColor.TERRACOTTA_WHITE).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CHERRY_STAIRS = reinforcedBlock("reinforced_cherry_stairs", Blocks.CHERRY_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CHERRY_SLAB = BLOCKS.registerBlock("reinforced_cherry_slab", p -> new ReinforcedSlabBlock(p, Blocks.CHERRY_SLAB), prop(MapColor.TERRACOTTA_WHITE).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CHERRY_SLAB = reinforcedBlock("reinforced_cherry_slab", Blocks.CHERRY_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedPressurePlateBlock> REINFORCED_CHERRY_PRESSURE_PLATE = woodenPressurePlate("reinforced_cherry_pressure_plate", Blocks.CHERRY_PRESSURE_PLATE, BlockSetType.CHERRY);
@@ -2474,303 +2472,303 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_OAK_FENCE = BLOCKS.registerBlock("reinforced_oak_fence", p -> new ReinforcedFenceBlock(p, Blocks.OAK_FENCE), prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_OAK_FENCE = reinforcedBlock("reinforced_oak_fence", Blocks.OAK_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_SPRUCE_FENCE = BLOCKS.registerBlock("reinforced_spruce_fence", p -> new ReinforcedFenceBlock(p, Blocks.SPRUCE_FENCE), prop(Blocks.SPRUCE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_SPRUCE_FENCE = reinforcedBlock("reinforced_spruce_fence", Blocks.SPRUCE_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BIRCH_FENCE = BLOCKS.registerBlock("reinforced_birch_fence", p -> new ReinforcedFenceBlock(p, Blocks.BIRCH_FENCE), prop(Blocks.BIRCH_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BIRCH_FENCE = reinforcedBlock("reinforced_birch_fence", Blocks.BIRCH_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_JUNGLE_FENCE = BLOCKS.registerBlock("reinforced_jungle_fence", p -> new ReinforcedFenceBlock(p, Blocks.JUNGLE_FENCE), prop(Blocks.JUNGLE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_JUNGLE_FENCE = reinforcedBlock("reinforced_jungle_fence", Blocks.JUNGLE_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_ACACIA_FENCE = BLOCKS.registerBlock("reinforced_acacia_fence", p -> new ReinforcedFenceBlock(p, Blocks.ACACIA_FENCE), prop(Blocks.ACACIA_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_ACACIA_FENCE = reinforcedBlock("reinforced_acacia_fence", Blocks.ACACIA_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_DARK_OAK_FENCE = BLOCKS.registerBlock("reinforced_dark_oak_fence", p -> new ReinforcedFenceBlock(p, Blocks.DARK_OAK_FENCE), prop(Blocks.DARK_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_DARK_OAK_FENCE = reinforcedBlock("reinforced_dark_oak_fence", Blocks.DARK_OAK_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_MANGROVE_FENCE = BLOCKS.registerBlock("reinforced_mangrove_fence", p -> new ReinforcedFenceBlock(p, Blocks.MANGROVE_FENCE), prop(Blocks.MANGROVE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_MANGROVE_FENCE = reinforcedBlock("reinforced_mangrove_fence", Blocks.MANGROVE_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CHERRY_FENCE = BLOCKS.registerBlock("reinforced_cherry_fence", p -> new ReinforcedFenceBlock(p, Blocks.CHERRY_FENCE), prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.CHERRY_WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CHERRY_FENCE = reinforcedBlock("reinforced_cherry_fence", Blocks.CHERRY_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_PALE_OAK_FENCE = BLOCKS.registerBlock("reinforced_pale_oak_fence", p -> new ReinforcedFenceBlock(p, Blocks.PALE_OAK_FENCE), prop(Blocks.PALE_OAK_PLANKS.defaultMapColor(), FeatureFlags.WINTER_DROP).instrument(NoteBlockInstrument.BASS).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_PALE_OAK_FENCE = reinforcedBlock("reinforced_pale_oak_fence", Blocks.PALE_OAK_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BAMBOO_FENCE = BLOCKS.registerBlock("reinforced_bamboo_fence", p -> new ReinforcedFenceBlock(p, Blocks.BAMBOO_FENCE), prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.BAMBOO_WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_BAMBOO_FENCE = reinforcedBlock("reinforced_bamboo_fence", Blocks.BAMBOO_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CRIMSON_FENCE = BLOCKS.registerBlock("reinforced_crimson_fence", p -> new ReinforcedFenceBlock(p, Blocks.CRIMSON_FENCE), prop(Blocks.CRIMSON_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_CRIMSON_FENCE = reinforcedBlock("reinforced_crimson_fence", Blocks.CRIMSON_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_WARPED_FENCE = BLOCKS.registerBlock("reinforced_warped_fence", p -> new ReinforcedFenceBlock(p, Blocks.WARPED_FENCE), prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).sound(SoundType.NETHER_WOOD));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_WARPED_FENCE = reinforcedBlock("reinforced_warped_fence", Blocks.WARPED_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_NETHER_BRICK_FENCE = BLOCKS.registerBlock("reinforced_nether_brick_fence", p -> new ReinforcedFenceBlock(p, Blocks.NETHER_BRICK_FENCE), prop(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).sound(SoundType.NETHER_BRICKS));
+	public static final DeferredBlock<ReinforcedFenceBlock> REINFORCED_NETHER_BRICK_FENCE = reinforcedBlock("reinforced_nether_brick_fence", Blocks.NETHER_BRICK_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_OAK_FENCE_GATE = BLOCKS.registerBlock("reinforced_oak_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.OAK, Blocks.OAK_FENCE_GATE), prop(Blocks.OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_OAK_FENCE_GATE = reinforcedFenceGateBlock("reinforced_oak_fence_gate", Blocks.OAK_FENCE_GATE, WoodType.OAK);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_SPRUCE_FENCE_GATE = BLOCKS.registerBlock("reinforced_spruce_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.SPRUCE, Blocks.SPRUCE_FENCE_GATE), prop(Blocks.SPRUCE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_SPRUCE_FENCE_GATE = reinforcedFenceGateBlock("reinforced_spruce_fence_gate", Blocks.SPRUCE_FENCE_GATE, WoodType.SPRUCE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_BIRCH_FENCE_GATE = BLOCKS.registerBlock("reinforced_birch_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.BIRCH, Blocks.BIRCH_FENCE_GATE), prop(Blocks.BIRCH_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_BIRCH_FENCE_GATE = reinforcedFenceGateBlock("reinforced_birch_fence_gate", Blocks.BIRCH_FENCE_GATE, WoodType.BIRCH);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_JUNGLE_FENCE_GATE = BLOCKS.registerBlock("reinforced_jungle_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.JUNGLE, Blocks.JUNGLE_FENCE_GATE), prop(Blocks.JUNGLE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_JUNGLE_FENCE_GATE = reinforcedFenceGateBlock("reinforced_jungle_fence_gate", Blocks.JUNGLE_FENCE_GATE, WoodType.JUNGLE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_ACACIA_FENCE_GATE = BLOCKS.registerBlock("reinforced_acacia_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.ACACIA, Blocks.ACACIA_FENCE_GATE), prop(Blocks.ACACIA_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_ACACIA_FENCE_GATE = reinforcedFenceGateBlock("reinforced_acacia_fence_gate", Blocks.ACACIA_FENCE_GATE, WoodType.ACACIA);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_DARK_OAK_FENCE_GATE = BLOCKS.registerBlock("reinforced_dark_oak_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.DARK_OAK, Blocks.DARK_OAK_FENCE_GATE), prop(Blocks.DARK_OAK_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_DARK_OAK_FENCE_GATE = reinforcedFenceGateBlock("reinforced_dark_oak_fence_gate", Blocks.DARK_OAK_FENCE_GATE, WoodType.DARK_OAK);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_MANGROVE_FENCE_GATE = BLOCKS.registerBlock("reinforced_mangrove_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.MANGROVE, Blocks.MANGROVE_FENCE_GATE), prop(Blocks.MANGROVE_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_MANGROVE_FENCE_GATE = reinforcedFenceGateBlock("reinforced_mangrove_fence_gate", Blocks.MANGROVE_FENCE_GATE, WoodType.MANGROVE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_CHERRY_FENCE_GATE = BLOCKS.registerBlock("reinforced_cherry_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.CHERRY, Blocks.CHERRY_FENCE_GATE), prop(Blocks.CHERRY_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_CHERRY_FENCE_GATE = reinforcedFenceGateBlock("reinforced_cherry_fence_gate", Blocks.CHERRY_FENCE_GATE, WoodType.CHERRY);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_PALE_OAK_FENCE_GATE = BLOCKS.registerBlock("reinforced_pale_oak_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.PALE_OAK, Blocks.PALE_OAK_FENCE_GATE), prop(Blocks.PALE_OAK_PLANKS.defaultMapColor(), FeatureFlags.WINTER_DROP).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_PALE_OAK_FENCE_GATE = reinforcedFenceGateBlock("reinforced_pale_oak_fence_gate", Blocks.PALE_OAK_FENCE_GATE, WoodType.PALE_OAK);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_BAMBOO_FENCE_GATE = BLOCKS.registerBlock("reinforced_bamboo_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.BAMBOO, Blocks.BAMBOO_FENCE_GATE), prop(Blocks.BAMBOO_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_BAMBOO_FENCE_GATE = reinforcedFenceGateBlock("reinforced_bamboo_fence_gate", Blocks.BAMBOO_FENCE_GATE, WoodType.BAMBOO);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_CRIMSON_FENCE_GATE = BLOCKS.registerBlock("reinforced_crimson_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.CRIMSON, Blocks.CRIMSON_FENCE_GATE), prop(Blocks.CRIMSON_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_CRIMSON_FENCE_GATE = reinforcedFenceGateBlock("reinforced_crimson_fence_gate", Blocks.CRIMSON_FENCE_GATE, WoodType.CRIMSON);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_WARPED_FENCE_GATE = BLOCKS.registerBlock("reinforced_warped_fence_gate", p -> new ReinforcedFenceGateBlock(p, WoodType.WARPED, Blocks.WARPED_FENCE_GATE), prop(Blocks.WARPED_PLANKS.defaultMapColor()).instrument(NoteBlockInstrument.BASS).forceSolidOn());
+	public static final DeferredBlock<ReinforcedFenceGateBlock> REINFORCED_WARPED_FENCE_GATE = reinforcedFenceGateBlock("reinforced_warped_fence_gate", Blocks.WARPED_FENCE_GATE, WoodType.WARPED);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_COPPER = BLOCKS.registerBlock("reinforced_chiseled_copper", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_COPPER), prop(MapColor.COLOR_ORANGE).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_COPPER = reinforcedBlock("reinforced_chiseled_copper", Blocks.CHISELED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CHISELED_COPPER = BLOCKS.registerBlock("reinforced_exposed_chiseled_copper", p -> new BaseReinforcedBlock(p, Blocks.EXPOSED_CHISELED_COPPER), prop(MapColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CHISELED_COPPER = reinforcedBlock("reinforced_exposed_chiseled_copper", Blocks.EXPOSED_CHISELED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CHISELED_COPPER = BLOCKS.registerBlock("reinforced_weathered_chiseled_copper", p -> new BaseReinforcedBlock(p, Blocks.WEATHERED_CHISELED_COPPER), prop(MapColor.WARPED_STEM).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CHISELED_COPPER = reinforcedBlock("reinforced_weathered_chiseled_copper", Blocks.WEATHERED_CHISELED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CHISELED_COPPER = BLOCKS.registerBlock("reinforced_oxidized_chiseled_copper", p -> new BaseReinforcedBlock(p, Blocks.OXIDIZED_CHISELED_COPPER), prop(MapColor.WARPED_NYLIUM).sound(SoundType.COPPER));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CHISELED_COPPER = reinforcedBlock("reinforced_oxidized_chiseled_copper", Blocks.OXIDIZED_CHISELED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_COPPER_GRATE = BLOCKS.registerBlock("reinforced_copper_grate", p -> new ReinforcedCopperGrateBlock(p, Blocks.COPPER_GRATE), reinforcedCopy(Blocks.COPPER_GRATE));
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_COPPER_GRATE = reinforcedBlock("reinforced_copper_grate", Blocks.COPPER_GRATE, ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_EXPOSED_COPPER_GRATE = BLOCKS.registerBlock("reinforced_exposed_copper_grate", p -> new ReinforcedCopperGrateBlock(p, Blocks.EXPOSED_COPPER_GRATE), reinforcedCopy(Blocks.EXPOSED_COPPER_GRATE));
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_EXPOSED_COPPER_GRATE = reinforcedBlock("reinforced_exposed_copper_grate", Blocks.EXPOSED_COPPER_GRATE, ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_WEATHERED_COPPER_GRATE = BLOCKS.registerBlock("reinforced_weathered_copper_grate", p -> new ReinforcedCopperGrateBlock(p, Blocks.WEATHERED_COPPER_GRATE), reinforcedCopy(Blocks.WEATHERED_COPPER_GRATE));
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_WEATHERED_COPPER_GRATE = reinforcedBlock("reinforced_weathered_copper_grate", Blocks.WEATHERED_COPPER_GRATE, ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_OXIDIZED_COPPER_GRATE = BLOCKS.registerBlock("reinforced_oxidized_copper_grate", p -> new ReinforcedCopperGrateBlock(p, Blocks.OXIDIZED_COPPER_GRATE), reinforcedCopy(Blocks.OXIDIZED_COPPER_GRATE));
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_OXIDIZED_COPPER_GRATE = reinforcedBlock("reinforced_oxidized_copper_grate", Blocks.OXIDIZED_COPPER_GRATE, ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_COPPER_BULB = BLOCKS.registerBlock("reinforced_copper_bulb", p -> new ReinforcedCopperBulbBlock(p, Blocks.COPPER_BULB), reinforcedCopy(Blocks.COPPER_BULB));
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_COPPER_BULB = reinforcedBlock("reinforced_copper_bulb", Blocks.COPPER_BULB, ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_EXPOSED_COPPER_BULB = BLOCKS.registerBlock("reinforced_exposed_copper_bulb", p -> new ReinforcedCopperBulbBlock(p, Blocks.EXPOSED_COPPER_BULB), reinforcedCopy(Blocks.EXPOSED_COPPER_BULB));
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_EXPOSED_COPPER_BULB = reinforcedBlock("reinforced_exposed_copper_bulb", Blocks.EXPOSED_COPPER_BULB, ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_WEATHERED_COPPER_BULB = BLOCKS.registerBlock("reinforced_weathered_copper_bulb", p -> new ReinforcedCopperBulbBlock(p, Blocks.WEATHERED_COPPER_BULB), reinforcedCopy(Blocks.WEATHERED_COPPER_BULB));
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_WEATHERED_COPPER_BULB = reinforcedBlock("reinforced_weathered_copper_bulb", Blocks.WEATHERED_COPPER_BULB, ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_OXIDIZED_COPPER_BULB = BLOCKS.registerBlock("reinforced_oxidized_copper_bulb", p -> new ReinforcedCopperBulbBlock(p, Blocks.OXIDIZED_COPPER_BULB), reinforcedCopy(Blocks.OXIDIZED_COPPER_BULB));
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_OXIDIZED_COPPER_BULB = reinforcedBlock("reinforced_oxidized_copper_bulb", Blocks.OXIDIZED_COPPER_BULB, ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF = BLOCKS.registerBlock("reinforced_chiseled_tuff", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_TUFF), reinforcedCopy(Blocks.CHISELED_TUFF));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF = reinforcedBlock("reinforced_chiseled_tuff", Blocks.CHISELED_TUFF);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_STAIRS = BLOCKS.registerBlock("reinforced_tuff_stairs", p -> new ReinforcedStairsBlock(p, Blocks.TUFF_STAIRS), reinforcedCopy(Blocks.TUFF_STAIRS));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_STAIRS = reinforcedBlock("reinforced_tuff_stairs", Blocks.TUFF_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_SLAB = BLOCKS.registerBlock("reinforced_tuff_slab", p -> new ReinforcedSlabBlock(p, Blocks.TUFF_SLAB), reinforcedCopy(Blocks.TUFF_SLAB));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_SLAB = reinforcedBlock("reinforced_tuff_slab", Blocks.TUFF_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_WALL = BLOCKS.registerBlock("reinforced_tuff_wall", p -> new ReinforcedWallBlock(p, Blocks.TUFF_WALL), reinforcedCopy(Blocks.TUFF_WALL));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_WALL = reinforcedBlock("reinforced_tuff_wall", Blocks.TUFF_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_TUFF = BLOCKS.registerBlock("reinforced_polished_tuff", p -> new BaseReinforcedBlock(p, Blocks.POLISHED_TUFF), reinforcedCopy(Blocks.POLISHED_TUFF));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_TUFF = reinforcedBlock("reinforced_polished_tuff", Blocks.POLISHED_TUFF);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_TUFF_STAIRS = BLOCKS.registerBlock("reinforced_polished_tuff_stairs", p -> new ReinforcedStairsBlock(p, Blocks.POLISHED_TUFF_STAIRS), reinforcedCopy(Blocks.POLISHED_TUFF_STAIRS));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_TUFF_STAIRS = reinforcedBlock("reinforced_polished_tuff_stairs", Blocks.POLISHED_TUFF_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_TUFF_SLAB = BLOCKS.registerBlock("reinforced_polished_tuff_slab", p -> new ReinforcedSlabBlock(p, Blocks.POLISHED_TUFF_SLAB), reinforcedCopy(Blocks.POLISHED_TUFF_SLAB));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_TUFF_SLAB = reinforcedBlock("reinforced_polished_tuff_slab", Blocks.POLISHED_TUFF_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_TUFF_WALL = BLOCKS.registerBlock("reinforced_polished_tuff_wall", p -> new ReinforcedWallBlock(p, Blocks.POLISHED_TUFF_WALL), reinforcedCopy(Blocks.POLISHED_TUFF_WALL));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_TUFF_WALL = reinforcedBlock("reinforced_polished_tuff_wall", Blocks.POLISHED_TUFF_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TUFF_BRICKS = BLOCKS.registerBlock("reinforced_tuff_bricks", p -> new BaseReinforcedBlock(p, Blocks.TUFF_BRICKS), reinforcedCopy(Blocks.TUFF_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_TUFF_BRICKS = reinforcedBlock("reinforced_tuff_bricks", Blocks.TUFF_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_BRICK_STAIRS = BLOCKS.registerBlock("reinforced_tuff_brick_stairs", p -> new ReinforcedStairsBlock(p, Blocks.TUFF_BRICK_STAIRS), reinforcedCopy(Blocks.TUFF_BRICK_STAIRS));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_TUFF_BRICK_STAIRS = reinforcedBlock("reinforced_tuff_brick_stairs", Blocks.TUFF_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_BRICK_SLAB = BLOCKS.registerBlock("reinforced_tuff_brick_slab", p -> new ReinforcedSlabBlock(p, Blocks.TUFF_BRICK_SLAB), reinforcedCopy(Blocks.TUFF_BRICK_SLAB));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_TUFF_BRICK_SLAB = reinforcedBlock("reinforced_tuff_brick_slab", Blocks.TUFF_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_BRICK_WALL = BLOCKS.registerBlock("reinforced_tuff_brick_wall", p -> new ReinforcedWallBlock(p, Blocks.TUFF_BRICK_WALL), reinforcedCopy(Blocks.TUFF_BRICK_WALL));
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_TUFF_BRICK_WALL = reinforcedBlock("reinforced_tuff_brick_wall", Blocks.TUFF_BRICK_WALL, ReinforcedWallBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF_BRICKS = BLOCKS.registerBlock("reinforced_chiseled_tuff_bricks", p -> new BaseReinforcedBlock(p, Blocks.CHISELED_TUFF_BRICKS), reinforcedCopy(Blocks.CHISELED_TUFF_BRICKS));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_TUFF_BRICKS = reinforcedBlock("reinforced_chiseled_tuff_bricks", Blocks.CHISELED_TUFF_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PALE_OAK_LOG = BLOCKS.registerBlock("reinforced_pale_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.PALE_OAK_LOG), logProp(MapColor.QUARTZ, MapColor.STONE, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PALE_OAK_LOG = reinforcedBlock("reinforced_pale_oak_log", Blocks.PALE_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_PALE_OAK_LOG = BLOCKS.registerBlock("reinforced_stripped_pale_oak_log", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_PALE_OAK_LOG), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_PALE_OAK_LOG = reinforcedBlock("reinforced_stripped_pale_oak_log", Blocks.STRIPPED_PALE_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_PALE_OAK_WOOD = BLOCKS.registerBlock("reinforced_stripped_pale_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.STRIPPED_PALE_OAK_WOOD), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_PALE_OAK_WOOD = reinforcedBlock("reinforced_stripped_pale_oak_wood", Blocks.STRIPPED_PALE_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PALE_OAK_WOOD = BLOCKS.registerBlock("reinforced_pale_oak_wood", p -> new ReinforcedRotatedPillarBlock(p, Blocks.PALE_OAK_WOOD), prop(MapColor.STONE, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedRotatedPillarBlock> REINFORCED_PALE_OAK_WOOD = reinforcedBlock("reinforced_pale_oak_wood", Blocks.PALE_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_OAK_PLANKS = BLOCKS.registerBlock("reinforced_pale_oak_planks", p -> new BaseReinforcedBlock(p, Blocks.PALE_OAK_PLANKS), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_OAK_PLANKS = reinforcedBlock("reinforced_pale_oak_planks", Blocks.PALE_OAK_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PALE_OAK_STAIRS = BLOCKS.registerBlock("reinforced_pale_oak_stairs", p -> new ReinforcedStairsBlock(p, Blocks.PALE_OAK_STAIRS), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_PALE_OAK_STAIRS = reinforcedBlock("reinforced_pale_oak_stairs", Blocks.PALE_OAK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PALE_OAK_SLAB = BLOCKS.registerBlock("reinforced_pale_oak_slab", p -> new ReinforcedSlabBlock(p, Blocks.PALE_OAK_SLAB), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD));
-	public static final DeferredBlock<SecretStandingSignBlock> SECRET_PALE_OAK_SIGN = BLOCKS.registerBlock("secret_pale_oak_sign_standing", p -> new SecretStandingSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_pale_oak_sign"));
-	public static final DeferredBlock<SecretWallSignBlock> SECRET_PALE_OAK_WALL_SIGN = BLOCKS.registerBlock("secret_pale_oak_sign_wall", p -> new SecretWallSignBlock(p, WoodType.PALE_OAK), prop(MapColor.QUARTZ, FeatureFlags.WINTER_DROP).sound(SoundType.WOOD).noCollission().forceSolidOn().overrideDescription("block.securitycraft.secret_pale_oak_sign"));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_PALE_OAK_SLAB = reinforcedBlock("reinforced_pale_oak_slab", Blocks.PALE_OAK_SLAB, ReinforcedSlabBlock::new);
+	public static final DeferredBlock<SecretStandingSignBlock> SECRET_PALE_OAK_SIGN = secretStandingSign("secret_pale_oak_sign_standing", Blocks.PALE_OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_pale_oak_sign"));
+	public static final DeferredBlock<SecretWallSignBlock> SECRET_PALE_OAK_WALL_SIGN = secretWallSign("secret_pale_oak_sign_wall", Blocks.PALE_OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_pale_oak_sign"));
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_PALE_OAK_BUTTON = woodenButton("reinforced_pale_oak_button", Blocks.PALE_OAK_BUTTON, BlockSetType.PALE_OAK, FeatureFlags.WINTER_DROP);
+	public static final DeferredBlock<ReinforcedButtonBlock> REINFORCED_PALE_OAK_BUTTON = woodenButton("reinforced_pale_oak_button", Blocks.PALE_OAK_BUTTON, BlockSetType.PALE_OAK);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPressurePlateBlock> REINFORCED_PALE_OAK_PRESSURE_PLATE = woodenPressurePlate("reinforced_pale_oak_pressure_plate", Blocks.PALE_OAK_PRESSURE_PLATE, BlockSetType.PALE_OAK, FeatureFlags.WINTER_DROP);
+	public static final DeferredBlock<ReinforcedPressurePlateBlock> REINFORCED_PALE_OAK_PRESSURE_PLATE = woodenPressurePlate("reinforced_pale_oak_pressure_plate", Blocks.PALE_OAK_PRESSURE_PLATE, BlockSetType.PALE_OAK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedMossyCarpetBlock> REINFORCED_PALE_MOSS_CARPET = BLOCKS.registerBlock("reinforced_pale_moss_carpet", p -> new ReinforcedMossyCarpetBlock(p, Blocks.PALE_MOSS_CARPET), reinforcedCopy(Blocks.PALE_MOSS_CARPET).pushReaction(PushReaction.NORMAL).forceSolidOn());
+	public static final DeferredBlock<ReinforcedMossyCarpetBlock> REINFORCED_PALE_MOSS_CARPET = reinforcedBlock("reinforced_pale_moss_carpet", Blocks.PALE_MOSS_CARPET, ReinforcedMossyCarpetBlock::new, p -> p.pushReaction(PushReaction.NORMAL));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_MOSS_BLOCK = BLOCKS.registerBlock("reinforced_pale_moss_block", p -> new BaseReinforcedBlock(p, Blocks.PALE_MOSS_BLOCK), reinforcedCopy(Blocks.PALE_MOSS_BLOCK).pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_MOSS_BLOCK = reinforcedBlock("reinforced_pale_moss_block", Blocks.PALE_MOSS_BLOCK, p -> p.pushReaction(PushReaction.NORMAL));
 
 	//misc
 	@RegisterItemBlock
-	public static final DeferredBlock<SlabBlock> CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("crystal_quartz_slab", SlabBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<SlabBlock> CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("crystal_quartz_slab", SlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("smooth_crystal_quartz", BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("smooth_crystal_quartz", BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("chiseled_crystal_quartz", BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("chiseled_crystal_quartz", BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerSimpleBlock("crystal_quartz", BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerSimpleBlock("crystal_quartz", BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerSimpleBlock("crystal_quartz_bricks", BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerSimpleBlock("crystal_quartz_bricks", BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<RotatedPillarBlock> CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("crystal_quartz_pillar", RotatedPillarBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<RotatedPillarBlock> CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("crystal_quartz_pillar", RotatedPillarBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_PILLAR).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("crystal_quartz_stairs", p -> new StairBlock(CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), p), BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("crystal_quartz_stairs", p -> new StairBlock(CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("smooth_crystal_quartz_stairs", p -> new StairBlock(SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), p), BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("smooth_crystal_quartz_stairs", p -> new StairBlock(SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("smooth_crystal_quartz_slab", SlabBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops());
+	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("smooth_crystal_quartz_slab", SlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.CRYSTAL_QUARTZ_SLAB), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.CRYSTAL_QUARTZ_SLAB), reinforcedCopy(Blocks.QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz", p -> new BaseReinforcedBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz", p -> new BaseReinforcedBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ), reinforcedCopy(Blocks.SMOOTH_QUARTZ).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_chiseled_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CHISELED_CRYSTAL_QUARTZ), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_chiseled_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CHISELED_CRYSTAL_QUARTZ), reinforcedCopy(Blocks.CHISELED_QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerBlock("reinforced_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CRYSTAL_QUARTZ_BLOCK), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerBlock("reinforced_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CRYSTAL_QUARTZ_BLOCK), reinforcedCopy(Blocks.QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerBlock("reinforced_crystal_quartz_bricks", p -> new BaseReinforcedBlock(p, SCContent.CRYSTAL_QUARTZ_BRICKS), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerBlock("reinforced_crystal_quartz_bricks", p -> new BaseReinforcedBlock(p, SCContent.CRYSTAL_QUARTZ_BRICKS), reinforcedCopy(Blocks.QUARTZ_BRICKS).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedRotatedCrystalQuartzPillar> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("reinforced_crystal_quartz_pillar", p -> new ReinforcedRotatedCrystalQuartzPillar(p, SCContent.CRYSTAL_QUARTZ_PILLAR), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedRotatedCrystalQuartzPillar> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("reinforced_crystal_quartz_pillar", p -> new ReinforcedRotatedCrystalQuartzPillar(p, SCContent.CRYSTAL_QUARTZ_PILLAR), reinforcedCopy(Blocks.QUARTZ_PILLAR).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.CRYSTAL_QUARTZ_STAIRS), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.CRYSTAL_QUARTZ_STAIRS), reinforcedCopy(Blocks.QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS), reinforcedCopy(Blocks.SMOOTH_QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB), prop(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB), reinforcedCopy(Blocks.SMOOTH_QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
-	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.registerBlock("horizontal_reinforced_iron_bars", p -> new HorizontalReinforcedIronBars(p, Blocks.IRON_BLOCK), prop(MapColor.METAL).sound(SoundType.METAL).noLootTable());
+	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.registerBlock("horizontal_reinforced_iron_bars", HorizontalReinforcedIronBars::new, reinforcedCopy(Blocks.IRON_BARS).noLootTable());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = BLOCKS.registerBlock("reinforced_grass_path", p -> new ReinforcedDirtPathBlock(p, Blocks.DIRT_PATH), prop(MapColor.DIRT).sound(SoundType.GRASS));
+	public static final DeferredBlock<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = reinforcedBlock("reinforced_grass_path", Blocks.DIRT_PATH, ReinforcedDirtPathBlock::new);
 	@OwnableBE
-	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = BLOCKS.registerBlock("reinforced_moving_piston", ReinforcedMovingPistonBlock::new, prop().dynamicShape().noLootTable().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never));
+	public static final DeferredBlock<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = reinforcedBlock("reinforced_moving_piston", Blocks.MOVING_PISTON, (p, b) -> new ReinforcedMovingPistonBlock(p));
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = BLOCKS.registerBlock("reinforced_piston_head", ReinforcedPistonHeadBlock::new, prop().noLootTable().pushReaction(PushReaction.BLOCK));
-	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.registerBlock("sentry_disguise", SometimesVisibleBlock::new, propDisguisable().noLootTable().pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = reinforcedBlock("reinforced_piston_head", Blocks.PISTON_HEAD, (p, b) -> new ReinforcedPistonHeadBlock(p));
+	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.registerBlock("sentry_disguise", SometimesVisibleBlock::new, propDisguisable(-1.0F).noLootTable().pushReaction(PushReaction.BLOCK));
 
 	//items
 	@HasManualPage(hasRecipeDescription = true)
@@ -3249,63 +3247,43 @@ public class SCContent {
 	public static final DeferredHolder<MenuType<?>, MenuType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IMenuTypeExtension.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level(), data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<ReinforcedLecternMenu>> REINFORCED_LECTERN_MENU = MENU_TYPES.register("reinforced_lectern", () -> IMenuTypeExtension.create((windowId, inv, data) -> new ReinforcedLecternMenu(windowId, inv.player.level(), data.readBlockPos())));
 
-	private static final BlockBehaviour.Properties prop() {
-		return prop(MapColor.STONE);
+	public static final BlockBehaviour.Properties reinforcedCopy(Block block) {
+		return reinforcedCopy(block, UnaryOperator.identity());
 	}
 
-	@SuppressWarnings("unused")
-	private static final BlockBehaviour.Properties prop(FeatureFlag... requiredFeatures) {
-		return prop().requiredFeatures(requiredFeatures);
+	public static final BlockBehaviour.Properties reinforcedCopy(Block block, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return propertyEditor.apply(BlockBehaviour.Properties.ofFullCopy(block).explosionResistance(Float.MAX_VALUE));
+	}
+
+	private static final BlockBehaviour.Properties prop(float hardness) {
+		return prop(MapColor.STONE, hardness);
 	}
 
 	private static final BlockBehaviour.Properties prop(MapColor color, float hardness) {
-		return BlockBehaviour.Properties.of().mapColor(color).strength(hardness, Float.MAX_VALUE);
+		return BlockBehaviour.Properties.of().mapColor(color).strength(hardness, Float.MAX_VALUE).requiresCorrectToolForDrops();
 	}
 
-	private static final BlockBehaviour.Properties prop(MapColor color) {
-		return BlockBehaviour.Properties.of().mapColor(color).strength(-1.0F, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties propDisguisable(float hardness) {
+		return propDisguisable(MapColor.STONE, hardness, true);
 	}
 
-	public static final BlockBehaviour.Properties reinforcedCopy(Block block) {
-		return BlockBehaviour.Properties.ofFullCopy(block).strength(-1.0F, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties propDisguisable(MapColor color, float hardness) {
+		return propDisguisable(color, hardness, true);
 	}
 
-	@SuppressWarnings("unused")
-	private static final BlockBehaviour.Properties prop(MapColor color, FeatureFlag... requiredFeatures) {
-		return prop(color).requiredFeatures(requiredFeatures);
+	private static final BlockBehaviour.Properties propDisguisable(MapColor color, float hardness, boolean forceSolidOn) {
+		return propDisguisable(prop(color, hardness), forceSolidOn);
 	}
 
-	private static final BlockBehaviour.Properties logProp(MapColor topColor, MapColor sideColor) {
-		return BlockBehaviour.Properties.of().mapColor(state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).strength(-1.0F, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties propDisguisable(BlockBehaviour.Properties properties) {
+		return propDisguisable(properties, true);
 	}
 
-	private static final BlockBehaviour.Properties logProp(MapColor topColor, MapColor sideColor, FeatureFlag... requiredFeatures) {
-		return logProp(topColor, sideColor).requiredFeatures(requiredFeatures);
-	}
-
-	private static final BlockBehaviour.Properties propDisguisable() {
-		return propDisguisable(MapColor.STONE, true);
-	}
-
-	private static final BlockBehaviour.Properties propDisguisable(MapColor color) {
-		return propDisguisable(color, true);
-	}
-
-	private static final BlockBehaviour.Properties propDisguisable(MapColor color, boolean forceSolidOn) {
-		BlockBehaviour.Properties props = prop(color).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
-
+	private static final BlockBehaviour.Properties propDisguisable(BlockBehaviour.Properties properties, boolean forceSolidOn) {
 		if (forceSolidOn)
-			props = props.forceSolidOn();
+			properties.forceSolidOn();
 
-		return props;
-	}
-
-	private static final BlockBehaviour.Properties glassProp(MapColor color) {
-		return prop().mapColor(color).sound(SoundType.GLASS).noOcclusion().isValidSpawn(SCContent::never).isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never);
-	}
-
-	private static BlockBehaviour.Properties mineProp(Block block) {
-		return BlockBehaviour.Properties.ofLegacyCopy(block).explosionResistance(Float.MAX_VALUE).pushReaction(PushReaction.NORMAL);
+		return properties.noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
 	private static final Item.Properties itemProp() {
@@ -3314,14 +3292,6 @@ public class SCContent {
 
 	private static final Item.Properties itemProp(int stackSize) {
 		return itemProp().stacksTo(stackSize);
-	}
-
-	private static boolean always(BlockState state, BlockGetter level, BlockPos pos) {
-		return true;
-	}
-
-	private static boolean always(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
-		return true;
 	}
 
 	private static boolean never(BlockState state, BlockGetter level, BlockPos pos) {
@@ -3340,30 +3310,64 @@ public class SCContent {
 		return new BaseFlowingFluid.Properties(() -> NeoForgeMod.LAVA_TYPE.value(), FAKE_LAVA, FLOWING_FAKE_LAVA).block(FAKE_LAVA_BLOCK).bucket(FAKE_LAVA_BUCKET);
 	}
 
-	private static DeferredBlock<ReinforcedButtonBlock> woodenButton(String id, Block vanillaBlock, BlockSetType blockSetType) {
-		return BLOCKS.registerBlock(id, p -> new ReinforcedButtonBlock(p, vanillaBlock, blockSetType, 30), setId(id, prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn()));
+	private static DeferredBlock<BaseReinforcedBlock> reinforcedBlock(String name, Block vanillaBlock) {
+		return reinforcedBlock(name, vanillaBlock, UnaryOperator.identity());
 	}
 
-	@SuppressWarnings("unused")
-	private static DeferredBlock<ReinforcedButtonBlock> woodenButton(String id, Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return BLOCKS.registerBlock(id, p -> new ReinforcedButtonBlock(p, vanillaBlock, blockSetType, 30), setId(id, prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn().requiredFeatures(requiredFeatures)));
+	private static DeferredBlock<BaseReinforcedBlock> reinforcedBlock(String name, Block vanillaBlock, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return BLOCKS.registerBlock(name, p -> new BaseReinforcedBlock(p, vanillaBlock), reinforcedCopy(vanillaBlock, propertyEditor));
+	}
+
+	private static <B extends Block> DeferredBlock<B> reinforcedBlock(String name, Block vanillaBlock, BiFunction<BlockBehaviour.Properties, Block, B> constructor) {
+		return reinforcedBlock(name, vanillaBlock, constructor, UnaryOperator.identity());
+	}
+
+	private static <B extends Block> DeferredBlock<B> reinforcedBlock(String name, Block vanillaBlock, BiFunction<BlockBehaviour.Properties, Block, B> constructor, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return BLOCKS.registerBlock(name, p -> constructor.apply(p, vanillaBlock), reinforcedCopy(vanillaBlock, propertyEditor));
+	}
+
+	private static DeferredBlock<BaseFullMineBlock> blockMine(String name, Block vanillaBlock) {
+		return reinforcedBlock(name, vanillaBlock, BaseFullMineBlock::new);
+	}
+
+	private static DeferredBlock<ReinforcedButtonBlock> woodenButton(String id, Block vanillaBlock, BlockSetType blockSetType) {
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedButtonBlock(p, vanillaBlock, blockSetType, 30), p -> p.pushReaction(PushReaction.BLOCK).forceSolidOn());
 	}
 
 	private static DeferredBlock<ReinforcedButtonBlock> stoneButton(String id, Block vanillaBlock, BlockSetType blockSetType) {
-		return BLOCKS.registerBlock(id, p -> new ReinforcedButtonBlock(p, vanillaBlock, blockSetType, 20), setId(id, prop().mapColor(MapColor.NONE).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn()));
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedButtonBlock(p, vanillaBlock, blockSetType, 20), p -> p.pushReaction(PushReaction.BLOCK).forceSolidOn());
 	}
 
 	private static DeferredBlock<ReinforcedPressurePlateBlock> woodenPressurePlate(String id, Block vanillaBlock, BlockSetType blockSetType) {
-		return BLOCKS.registerBlock(id, p -> new ReinforcedPressurePlateBlock(p, vanillaBlock, blockSetType), setId(id, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn()));
-	}
-
-	@SuppressWarnings("unused")
-	private static DeferredBlock<ReinforcedPressurePlateBlock> woodenPressurePlate(String id, Block vanillaBlock, BlockSetType blockSetType, FeatureFlag... requiredFeatures) {
-		return BLOCKS.registerBlock(id, p -> new ReinforcedPressurePlateBlock(p, vanillaBlock, blockSetType), setId(id, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().requiredFeatures(requiredFeatures).pushReaction(PushReaction.BLOCK).forceSolidOn()));
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedPressurePlateBlock(p, vanillaBlock, blockSetType), p -> p.pushReaction(PushReaction.BLOCK).forceSolidOn());
 	}
 
 	private static DeferredBlock<ReinforcedPressurePlateBlock> stonePressurePlate(String id, Block vanillaBlock, BlockSetType blockSetType) {
-		return BLOCKS.registerBlock(id, p -> new ReinforcedPressurePlateBlock(p, vanillaBlock, blockSetType), setId(id, prop().mapColor(vanillaBlock.defaultMapColor()).noCollission().pushReaction(PushReaction.BLOCK).forceSolidOn()));
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedPressurePlateBlock(p, vanillaBlock, blockSetType), p -> p.pushReaction(PushReaction.BLOCK).forceSolidOn());
+	}
+
+	private static DeferredBlock<ReinforcedFenceGateBlock> reinforcedFenceGateBlock(String id, Block vanillaBlock, WoodType woodType) {
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedFenceGateBlock(p, woodType, vanillaBlock));
+	}
+
+	private static DeferredBlock<SecretStandingSignBlock> secretStandingSign(String id, Block standingSign, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return secretSign(id, SecretStandingSignBlock::new, standingSign, propertyEditor);
+	}
+
+	private static DeferredBlock<SecretWallSignBlock> secretWallSign(String id, Block standingSign, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return secretSign(id, SecretWallSignBlock::new, standingSign, propertyEditor);
+	}
+
+	private static DeferredBlock<SecretCeilingHangingSignBlock> secretCeilingHangingSign(String id, Block ceilingSign) {
+		return secretSign(id, SecretCeilingHangingSignBlock::new, ceilingSign, UnaryOperator.identity());
+	}
+
+	private static DeferredBlock<SecretWallHangingSignBlock> secretWallHangingSign(String id, Block ceilingSign, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return secretSign(id, SecretWallHangingSignBlock::new, ceilingSign, propertyEditor);
+	}
+
+	private static <T extends SignBlock> DeferredBlock<T> secretSign(String id, BiFunction<BlockBehaviour.Properties, WoodType, T> signConstructor, Block baseSign, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return BLOCKS.registerBlock(id, p -> signConstructor.apply(p, SignBlock.getWoodType(baseSign)), propertyEditor.apply(reinforcedCopy(baseSign)));
 	}
 
 	private static <I extends Item> DeferredItem<I> registerItem(String name, Function<Item.Properties, ? extends I> func, Supplier<Item.Properties> props) {
