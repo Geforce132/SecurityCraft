@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -145,7 +146,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 		if (!state.is(newState.getBlock())) {
 			BlockEntity be = level.getBlockEntity(pos);
 
-			if (be instanceof IModuleInventory inv && state.getValue(HALF) == DoubleBlockHalf.LOWER)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && be instanceof IModuleInventory inv && state.getValue(HALF) == DoubleBlockHalf.LOWER)
 				inv.dropAllModules();
 
 			if (be instanceof IPasscodeProtected passcodeProtected)
