@@ -44,7 +44,12 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
+
+		if (disguisedState.getBlock() != state.getBlock())
+			return disguisedState.getDestroyProgress(player, level, pos);
+		else
+			return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
 	}
 
 	@Override
