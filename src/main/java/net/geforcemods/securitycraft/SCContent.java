@@ -331,7 +331,6 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries.Keys;
 
 // TODO: config translations
 // TODO: edit help entries of UBR and potentially reinforced blocks
-// TODO: add "Disabled" tooltip to UBR
 public class SCContent {
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(SecurityCraft.MODID);
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, SecurityCraft.MODID);

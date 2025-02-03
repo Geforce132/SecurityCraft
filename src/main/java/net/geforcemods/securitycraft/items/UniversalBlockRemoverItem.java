@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
+import java.util.List;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IBlockMine;
@@ -22,12 +24,14 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +41,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public class UniversalBlockRemoverItem extends Item {
+	private static final Component DISABLED_ITEM_TOOLTIP = Component.translatable("item.disabled").withStyle(ChatFormatting.RED);
+
 	public UniversalBlockRemoverItem(Properties properties) {
 		super(properties);
 	}
@@ -125,6 +131,14 @@ public class UniversalBlockRemoverItem extends Item {
 		}
 
 		return InteractionResult.PASS;
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+		if (ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+			tooltipComponents.add(DISABLED_ITEM_TOOLTIP);
+
+		super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 	}
 
 	private static boolean isOwnableBlock(Block block, BlockEntity be) {
