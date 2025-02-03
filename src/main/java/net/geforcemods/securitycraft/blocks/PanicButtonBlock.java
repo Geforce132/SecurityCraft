@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.blockentities.PanicButtonBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -55,6 +56,11 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 	public PanicButtonBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType, int ticksToStayPressed) {
 		super(blockSetType, ticksToStayPressed, properties);
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
 	}
 
 	@Override

@@ -1382,8 +1382,6 @@
 	"option.securitycraft.username_logger.repeatedLogInterval.description": "同一名玩家被再次记录的间隔是多少秒。",
 	"option.securitycraft.username_logger.searchRadius": "搜索范围：%s",
 	"option.securitycraft.username_logger.searchRadius.description": "用户名记录器搜索玩家的范围。",
-	"securitycraft.configuration.ableToBreakMines": "允许破坏地雷",
-	"securitycraft.configuration.ableToBreakMines.tooltip": "玩家是否能在不引爆地雷的情况下破坏它？",
 	"securitycraft.configuration.allowAdminTool": "允许管理员工具",
 	"securitycraft.configuration.allowAdminTool.tooltip": "是否能使用管理员工具？",
 	"securitycraft.configuration.allowBlockClaim": "允许方块认领",

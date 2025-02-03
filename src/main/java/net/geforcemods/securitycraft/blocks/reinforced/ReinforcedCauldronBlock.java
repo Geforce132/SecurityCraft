@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -68,6 +69,11 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	@Override
 	protected MapCodec<? extends AbstractCauldronBlock> codec() {
 		return CODEC;
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
 	}
 
 	@Override

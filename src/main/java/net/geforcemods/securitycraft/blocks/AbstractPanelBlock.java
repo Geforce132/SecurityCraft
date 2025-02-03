@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -111,7 +112,7 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 		if (!state.is(newState.getBlock())) {
 			BlockEntity be = level.getBlockEntity(pos);
 
-			if (be instanceof IModuleInventory inv)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && be instanceof IModuleInventory inv)
 				inv.dropAllModules();
 
 			if (state.getValue(POWERED)) {

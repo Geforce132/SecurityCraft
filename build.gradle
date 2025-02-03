@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.71'
+	id 'net.neoforged.moddev' version '2.0.76'
 }
 
 import groovy.json.JsonOutput
@@ -43,24 +43,24 @@ neoForge {
 			systemProperty 'forge.logging.console.level', 'debug'
 			ideName = "SC ${project.mc_version} " + ideName.get()
 		}
-	
+
 		client {
 			client()
 			gameDirectory = project.file('run/client')
 		}
-	
+
 		client2 {
 			client()
 			gameDirectory = project.file('run/client')
 			programArguments.addAll('--username', 'Dev2')
 		}
-	
+
 		server {
 			server()
 			gameDirectory = project.file('run/server')
 			programArgument('-nogui')
 		}
-	
+
 		data {
 			clientData()
 			gameDirectory = project.file('run/data')

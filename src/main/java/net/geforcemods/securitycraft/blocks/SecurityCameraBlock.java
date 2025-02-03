@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IDisguisable;
@@ -99,7 +100,9 @@ public class SecurityCameraBlock extends DisguisableBlock implements SimpleWater
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-			be.dropAllModules();
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+				be.dropAllModules();
+
 			Containers.dropContents(level, pos, be.getLensContainer());
 		}
 

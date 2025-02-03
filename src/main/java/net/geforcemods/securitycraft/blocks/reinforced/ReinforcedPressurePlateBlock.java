@@ -3,17 +3,20 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -32,6 +35,11 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		super(blockSetType, properties);
 		this.vanillaBlock = vanillaBlock;
 		DoorActivator.addActivator(this);
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
 	}
 
 	@Override
@@ -69,7 +77,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 				inv.dropAllModules();
 
 			if (!isMoving && getSignalForState(state) > 0) {
