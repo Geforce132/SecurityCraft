@@ -271,12 +271,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-		Entity entity = source.getEntity();
-
-		if (!(entity instanceof Player player) || isOwnedBy(player) || player.isCreative())
-			return super.hurtServer(level, source, amount);
-		else
-			return false;
+		return source.getEntity() instanceof Player player && isOwnedBy(player) && super.hurtServer(level, source, amount);
 	}
 
 	@Override

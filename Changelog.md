@@ -20,6 +20,7 @@
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
 - Fix: Several reinforced blocks can be broken by pistons
 - Fix: Wall hanging signs have an incorrect translation key
+- Fix: Security sea boats cannot be broken by players like normal boats
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
