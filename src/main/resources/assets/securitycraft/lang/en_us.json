@@ -1538,6 +1538,7 @@
 	"tooltip.securitycraft:projector": "Projects fake blocks into the world.",
 	"tooltip.securitycraft:sentry": "Sentry %s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "Linked to %s block(s).",
+	"tooltip.securitycraft:universal_block_remover.disabled": "Disabled. Use vanilla tools to break reinforced blocks.",
 	"waila.securitycraft:customName": "Custom name: %s",
 	"waila.securitycraft:equipped": "Equipped with:",
 	"waila.securitycraft:owner": "Owner: %s"

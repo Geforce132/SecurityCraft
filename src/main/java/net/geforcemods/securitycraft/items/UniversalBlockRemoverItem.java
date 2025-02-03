@@ -41,7 +41,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 
 public class UniversalBlockRemoverItem extends Item {
-	private static final Component DISABLED_ITEM_TOOLTIP = Component.translatable("item.disabled").withStyle(ChatFormatting.RED);
+	private static final Component DISABLED_ITEM_TOOLTIP = Component.translatable("tooltip.securitycraft:universal_block_remover.disabled").withStyle(ChatFormatting.RED);
 
 	public UniversalBlockRemoverItem(Properties properties) {
 		super(properties);
