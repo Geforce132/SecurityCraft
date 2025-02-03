@@ -67,7 +67,7 @@ public class UniversalBlockRemoverItem extends Item {
 
 				if (!ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() && !(isDefault && state.is(SCContent.FRAME.get())) && !ownable.isOwnedBy(player)) {
 					if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof IDisguisable db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable)))
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_BLOCK_REMOVER.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(owner)), ChatFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(owner)), ChatFormatting.RED);
 
 					return InteractionResult.FAIL;
 				}
