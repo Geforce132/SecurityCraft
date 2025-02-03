@@ -244,7 +244,7 @@ public class ConfigHandler {
 					.define("vanilla_tool_block_breaking", true);
 
 			alwaysDrop = builder
-					.comment("Whether SecurityCraft's blocks always drop themselves no matter which tool is used. If this is set to false, the correct tool must be used for the block to drop (e.g. axe for reinforced oak planks).",
+					.comment("Whether SecurityCraft's blocks always drop themselves no matter which tool is used. If this is set to false, the correct tool must be used for the block to drop (e.g. pickaxe for reinforced stone, or anything for reinforced dirt).",
 							"This only applies when \"vanilla_tool_block_breaking\" is set to true.")
 					.define("always_drop", true);
 
