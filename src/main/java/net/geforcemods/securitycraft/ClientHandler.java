@@ -287,7 +287,7 @@ public class ClientHandler {
 
 		if (sheet.equals(InventoryMenu.BLOCK_ATLAS))
 			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/frame/noise_background"));
-		else if (event.getAtlas().location().equals(Sheets.CHEST_SHEET)) {
+		else if (sheet.equals(Sheets.CHEST_SHEET)) {
 			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/active"));
 			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/inactive"));
 			event.addSprite(new ResourceLocation(SecurityCraft.MODID, "entity/chest/left_active"));
