@@ -1385,8 +1385,6 @@
 	"option.securitycraft.username_logger.repeatedLogInterval.description": "Сколько секунд должно пройти, прежде чем тот же игрок может быть снова записан.",
 	"option.securitycraft.username_logger.searchRadius": "Радиус поиска: %s",
 	"option.securitycraft.username_logger.searchRadius.description": "Диапазон в блоках, в котором регистратор имён пользователей ищет игроков.",
-	"securitycraft.configuration.ableToBreakMines": "Можно разрушать мины",
-	"securitycraft.configuration.ableToBreakMines.tooltip": "Должны ли игроки иметь возможность разрушать мины без их взрыва?",
 	"securitycraft.configuration.allowAdminTool": "Разрешить административный инструмент",
 	"securitycraft.configuration.allowAdminTool.tooltip": "Можно ли использовать административный инструмент?",
 	"securitycraft.configuration.allowBlockClaim": "Разрешить присвоение блоков",

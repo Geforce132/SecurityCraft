@@ -1374,8 +1374,6 @@
 	"option.securitycraft.username_logger.repeatedLogInterval.description": "Combien de secondes avant que le même joueur ne soit à nouveau enregistré.",
 	"option.securitycraft.username_logger.searchRadius": "Rayon de recherche : %s",
 	"option.securitycraft.username_logger.searchRadius.description": "La portée en blocs dans laquelle l'enregistreur de nom d'utilisateur recherche des joueurs.",
-	"securitycraft.configuration.ableToBreakMines": "Capacité de détruire les mines",
-	"securitycraft.configuration.ableToBreakMines.tooltip": "Les joueurs devraient-ils être capables de détruire les mines sans qu'elles explosent ?",
 	"securitycraft.configuration.allowAdminTool": "Autoriser l'Outil Administrateur",
 	"securitycraft.configuration.allowAdminTool.tooltip": "L'Outil Administrateur peut-il être utilisé ?",
 	"securitycraft.configuration.allowBlockClaim": "Autoriser l'appropriation des blocs",

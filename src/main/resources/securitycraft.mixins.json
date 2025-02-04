@@ -9,6 +9,8 @@
 		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
 		"camera.ViewAreaMixin",
+		"cobweb.ShearsItemMixin",
+		"cobweb.SwordItemMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
 		"taser.ItemInHandRendererMixin"

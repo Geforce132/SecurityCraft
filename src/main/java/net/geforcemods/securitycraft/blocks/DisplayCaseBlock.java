@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -202,7 +203,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 			if (be instanceof DisplayCaseBlockEntity displayCase)
 				Block.popResource(level, pos, displayCase.getDisplayedStack());
 
-			if (be instanceof IModuleInventory inv)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && be instanceof IModuleInventory inv)
 				inv.dropAllModules();
 
 			if (be instanceof IPasscodeProtected passcodeProtected)

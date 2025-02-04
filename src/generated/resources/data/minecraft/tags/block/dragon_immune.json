@@ -567,6 +567,11 @@
     "securitycraft:secret_mangrove_wall_hanging_sign",
     "securitycraft:secret_cherry_hanging_sign",
     "securitycraft:secret_cherry_wall_hanging_sign",
+<<<<<<< HEAD
+=======
+    "securitycraft:secret_pale_oak_hanging_sign",
+    "securitycraft:secret_pale_oak_wall_hanging_sign",
+>>>>>>> cd39f0cde (Allow blocks to be broken with normal tools)
     "securitycraft:secret_bamboo_hanging_sign",
     "securitycraft:secret_bamboo_wall_hanging_sign",
     "securitycraft:secret_crimson_hanging_sign",
