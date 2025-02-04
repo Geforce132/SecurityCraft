@@ -21,7 +21,7 @@ import net.minecraft.world.item.component.Tool;
 public class ShearsItemMixin {
 	@SuppressWarnings("rawtypes")
 	@WrapOperation(method = "createToolProperties", at = @At(value = "INVOKE", target = "Ljava/util/List;of(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/List;"))
-	private static List securitycraft$addReinforcedCobwebToSwordProperties(Object minesAndDropsCobweb, Object overrideLeavesSpeed, Object overrideWoolSpeed, Object overrideVineAndGlowLichenSpeed, Operation<List> original) {
+	private static List securitycraft$addReinforcedCobwebToShearsProperties(Object minesAndDropsCobweb, Object overrideLeavesSpeed, Object overrideWoolSpeed, Object overrideVineAndGlowLichenSpeed, Operation<List> original) {
 		List list = new ArrayList();
 
 		list.add(Tool.Rule.minesAndDrops(HolderSet.direct(SCContent.REINFORCED_COBWEB.getDelegate()), 15.0F));

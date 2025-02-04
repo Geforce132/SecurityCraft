@@ -3397,14 +3397,6 @@ public class SCContent {
 		return ITEMS.register(name, key -> func.apply(props.get().setId(ResourceKey.create(Registries.ITEM, key))));
 	}
 
-	public static BlockBehaviour.Properties setId(String id, BlockBehaviour.Properties properties) {
-		return properties.setId(ResourceKey.create(Registries.BLOCK, SecurityCraft.resLoc(id)));
-	}
-
-	public static Item.Properties setId(String id, Item.Properties properties) {
-		return setId(id, properties, false);
-	}
-
 	public static Item.Properties setId(String id, Item.Properties properties, boolean useBlockDescriptionPrefix) {
 		properties.setId(ResourceKey.create(Registries.ITEM, SecurityCraft.resLoc(id)));
 
