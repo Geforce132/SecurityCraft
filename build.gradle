@@ -41,8 +41,7 @@ minecraft {
 	copyIdeResources = true
 
 	runs {
-		client {
-			workingDirectory project.file('run/client')
+		configureEach {
 			property 'forge.logging.console.level', 'debug'
 			args '-mixin.config=securitycraft.mixins.json'
 
@@ -53,28 +52,28 @@ minecraft {
 			}
 		}
 
-		server {
-			workingDirectory project.file('run/server')
-			property 'forge.logging.console.level', 'debug'
-			args '-nogui', '-mixin.config=securitycraft.mixins.json'
+		client {
+			taskName 'SC 1.20.1 Client'
+			workingDirectory project.file('run/client')
+		}
+		
+		client2 {
+			parent runs.client
+			taskName 'SC 1.20.1 Client2'
+			workingDirectory project.file('run/client')
+			args '--username', 'Dev2'
+		}
 
-			mods {
-				securitycraft {
-					source sourceSets.main
-				}
-			}
+		server {
+			taskName 'SC 1.20.1 Server'
+			workingDirectory project.file('run/server')
+			args '-nogui'
 		}
 
 		data {
+			taskName 'SC 1.20.1 Data'
 			workingDirectory project.file('run/data')
-			property 'forge.logging.console.level', 'debug'
 			args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-			mods {
-				securitycraft {
-					source sourceSets.main
-				}
-			}
 		}
 	}
 }
