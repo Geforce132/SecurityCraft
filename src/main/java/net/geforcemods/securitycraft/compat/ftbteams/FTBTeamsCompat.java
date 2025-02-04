@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import dev.ftb.mods.ftbteams.api.FTBTeamsAPI;
 import dev.ftb.mods.ftbteams.api.FTBTeamsAPI.API;
+import dev.ftb.mods.ftbteams.api.Team;
 import dev.ftb.mods.ftbteams.api.client.ClientTeamManager;
 import dev.ftb.mods.ftbteams.api.client.KnownClientPlayer;
 import dev.ftb.mods.ftbteams.api.property.TeamProperties;
@@ -15,7 +16,6 @@ import net.geforcemods.securitycraft.util.TeamHandler;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.scores.Team;
 
 public class FTBTeamsCompat implements TeamHandler {
 	@Override
