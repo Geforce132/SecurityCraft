@@ -668,6 +668,11 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
+		public boolean isMouseOver(double mouseX, double mouseY) {
+			return currentPage == -1 && super.isMouseOver(mouseX, mouseY);
+		}
+
+		@Override
 		public NarrationPriority narrationPriority() {
 			return NarrationPriority.NONE;
 		}

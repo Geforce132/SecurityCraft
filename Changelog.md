@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.12-beta4 of SecurityCraft--------------------------
 
 - Fix: "Designed by" text in the SC Manual is not rendered correctly
+- Fix: The buttons to change the subpage in the SC Manual cannot be clicked
 
 --------------------------Changelog for v1.9.12-beta3 of SecurityCraft--------------------------
 
