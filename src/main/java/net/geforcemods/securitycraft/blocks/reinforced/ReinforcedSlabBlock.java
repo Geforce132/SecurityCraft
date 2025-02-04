@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -41,10 +40,6 @@ public class ReinforcedSlabBlock extends BaseReinforcedBlock implements SimpleWa
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape BOTTOM_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D);
 	protected static final VoxelShape TOP_SHAPE = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-
-	public ReinforcedSlabBlock(Block vB) {
-		this(SCContent.reinforcedCopy(vB), () -> vB);
-	}
 
 	public ReinforcedSlabBlock(BlockBehaviour.Properties properties, Block vB) {
 		this(properties, () -> vB);
