@@ -37,10 +37,9 @@ minecraft {
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
 	runs {
-        client {
-            workingDirectory project.file('run/client')
-            property 'forge.logging.console.level', 'debug'
-            args '-mixin.config=securitycraft.mixins.json'
+		configureEach {
+			property 'forge.logging.console.level', 'debug'
+			args '-mixin.config=securitycraft.mixins.json'
 
             mods {
                 securitycraft {
@@ -49,29 +48,29 @@ minecraft {
             }
         }
 
-        server {
-            workingDirectory project.file('run/server')
-            property 'forge.logging.console.level', 'debug'
-            args '-nogui', '-mixin.config=securitycraft.mixins.json'
+		client {
+			taskName 'SC 1.19.4 Client'
+			workingDirectory project.file('run/client')
+		}
+		
+		client2 {
+			parent runs.client
+			taskName 'SC 1.19.4 Client2'
+			workingDirectory project.file('run/client')
+			args '--username', 'Dev2'
+		}
 
-            mods {
-                securitycraft {
-                    source sourceSets.main
-                }
-            }
-        }
+		server {
+			taskName 'SC 1.19.4 Server'
+			workingDirectory project.file('run/server')
+			args '-nogui'
+		}
 
 		data {
+			taskName 'SC 1.19.4 Data'
 			workingDirectory project.file('run/data')
-			property 'forge.logging.console.level', 'debug'
 			args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                securitycraft {
-                    source sourceSets.main
-                }
-            }
-        }
+		}
 	}
 }
 
