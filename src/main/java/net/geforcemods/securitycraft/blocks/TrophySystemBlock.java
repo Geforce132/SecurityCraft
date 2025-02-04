@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.stream.Stream;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
@@ -100,8 +101,10 @@ public class TrophySystemBlock extends DisguisableBlock {
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be) {
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+				be.dropAllModules();
+
 			Containers.dropContents(level, pos, be.getLensContainer());
-			be.dropAllModules();
 			level.updateNeighbourForOutputSignal(pos, this);
 		}
 
