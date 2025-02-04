@@ -2,10 +2,12 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.function.BiConsumer;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -32,6 +34,16 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	public ReinforcedSnowyDirtBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties);
 		this.vanillaBlock = vB;
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	@Override

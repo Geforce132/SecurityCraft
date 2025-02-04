@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +27,16 @@ import net.minecraftforge.common.MinecraftForge;
 public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements EntityBlock, IReinforcedBlock {
 	public ReinforcedPistonHeadBlock(BlockBehaviour.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	@Override

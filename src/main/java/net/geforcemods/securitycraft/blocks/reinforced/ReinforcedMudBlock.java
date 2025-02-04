@@ -10,10 +10,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class ReinforcedMud extends BaseReinforcedBlock {
+public class ReinforcedMudBlock extends BaseReinforcedBlock {
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D);
 
-	public ReinforcedMud(BlockBehaviour.Properties properties, Block vB) {
+	public ReinforcedMudBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties, vB);
 	}
 
