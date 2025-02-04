@@ -160,7 +160,7 @@ public class SCManualScreen extends Screen {
 				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 100, 0x8E8270, false);
 
 			if (designedBy != null)
-				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, 0);
+				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, 0, false);
 
 			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0, false);
 			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0, false);

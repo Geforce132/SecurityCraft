@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.12-beta4 of SecurityCraft--------------------------
+
+- Fix: "Designed by" text in the SC Manual is not rendered correctly
+
 --------------------------Changelog for v1.9.12-beta3 of SecurityCraft--------------------------
 
 - API: Added IModuleInventoryWithContainer to discern between module inventory and normal inventory of a block, without relying on vanilla's Container
