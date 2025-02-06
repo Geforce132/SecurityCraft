@@ -80,7 +80,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		simpleBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
 		simpleBlockWithRenderType(SCContent.REINFORCED_GLASS.get(), "cutout");
 		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		reinforcedPaneBlock((IronBarsBlock) SCContent.REINFORCED_GLASS_PANE.get(), "cutout_mipped");
+		reinforcedPaneBlock(SCContent.REINFORCED_GLASS_PANE.get(), "cutout_mipped");
 
 		reinforcedFenceBlock(SCContent.REINFORCED_OAK_FENCE.get(), "oak_planks");
 		reinforcedFenceBlock(SCContent.REINFORCED_SPRUCE_FENCE.get(), "spruce_planks");

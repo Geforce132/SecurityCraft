@@ -48,6 +48,10 @@ public interface IDisguisable {
 			return state;
 	}
 
+	public static Optional<BlockState> getDisguisedBlockState(BlockEntity be) {
+		return be.hasLevel() ? getDisguisedBlockState(be, be.getLevel()) : Optional.empty();
+	}
+
 	public static Optional<BlockState> getDisguisedBlockState(BlockEntity be, LevelReader level) {
 		if (be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.DISGUISE))
 			return getDisguisedBlockStateFromStack(level.holderLookup(Registries.BLOCK), moduleInv.getModule(ModuleType.DISGUISE));

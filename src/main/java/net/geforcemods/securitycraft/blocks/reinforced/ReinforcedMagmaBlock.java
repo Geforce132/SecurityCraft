@@ -16,12 +16,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.SeagrassBlock;
 import net.minecraft.world.level.block.TallSeagrassBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.IPlantable;
 
 public class ReinforcedMagmaBlock extends BaseReinforcedBlock {
-	public ReinforcedMagmaBlock(Block vanillaBlock) {
-		super(vanillaBlock);
+	public ReinforcedMagmaBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {
+		super(properties, vanillaBlock);
 	}
 
 	@Override
