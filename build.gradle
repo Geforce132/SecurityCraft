@@ -49,25 +49,25 @@ minecraft {
         }
 
 		client {
-			taskName 'SC 1.19.4 Client'
+			taskName "SC_${project.mc_version}_Client"
 			workingDirectory project.file('run/client')
 		}
 
 		client2 {
 			parent runs.client
-			taskName 'SC 1.19.4 Client2'
+			taskName "SC_${project.mc_version}_Client2"
 			workingDirectory project.file('run/client')
 			args '--username', 'Dev2'
 		}
 
 		server {
-			taskName 'SC 1.19.4 Server'
+			taskName "SC_${project.mc_version}_Server"
 			workingDirectory project.file('run/server')
 			args '-nogui'
 		}
 
 		data {
-			taskName 'SC 1.19.4 Data'
+			taskName "SC_${project.mc_version}_Data"
 			workingDirectory project.file('run/data')
 			args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 		}
@@ -102,7 +102,7 @@ mixin {
 
 jar {
 	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
-	archiveFileName = "[1.19.4] SecurityCraft v${version}.jar"
+	archiveFileName = "[${project.mc_version}] SecurityCraft v${version}.jar"
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
                     "Specification-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep",
