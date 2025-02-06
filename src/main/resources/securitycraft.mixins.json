@@ -22,6 +22,7 @@
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
+		"noteblock.NoteBlockInstrumentMixin"
 		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.BubbleColumnBlockMixin",
