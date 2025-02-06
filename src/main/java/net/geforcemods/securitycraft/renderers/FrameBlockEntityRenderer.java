@@ -132,9 +132,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (compiledShader.PROJECTION_MATRIX != null)
 				compiledShader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
 
-			//Tesselator tess = RenderSystem.renderThreadTesselator();
-			//BufferBuilder test = tess.begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-
 			compiledShader.apply();
 			lastPose = pose.last().pose();
 			bufferBuilder = buffer.getBuffer(CAMERA_IN_FRAME_RENDER_TYPE);
@@ -142,7 +139,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setUv(1, 1).setColor(0xFFFFFF);
 			bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setUv(0, 1).setColor(0xFFFFFF);
 			bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setUv(0, 0).setColor(0xFFFFFF);
-			//BufferUploader.draw(bufferBuilder.build());
 			compiledShader.clear();
 			RenderSystem.clearShader();
 
