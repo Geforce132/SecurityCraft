@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.INameSetter;
@@ -10,6 +11,7 @@ import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -40,6 +42,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock, IDisguisable, IOverlayDisplay {
 	protected SpecialDoorBlock(BlockBehaviour.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
+
+		if (disguisedState.getBlock() != state.getBlock())
+			return disguisedState.getDestroyProgress(player, level, pos);
+		else
+			return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	@Override
@@ -138,7 +155,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 		if (!state.is(newState.getBlock())) {
 			BlockEntity be = level.getBlockEntity(pos);
 
-			if (be instanceof IModuleInventory inv && state.getValue(HALF) == DoubleBlockHalf.LOWER)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && be instanceof IModuleInventory inv && state.getValue(HALF) == DoubleBlockHalf.LOWER)
 				inv.dropAllModules();
 
 			if (be instanceof IPasscodeProtected passcodeProtected)

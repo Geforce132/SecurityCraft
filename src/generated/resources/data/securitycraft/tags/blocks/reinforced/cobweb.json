@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#securitycraft:reinforced/walls"
+    "securitycraft:reinforced_cobweb"
   ]
 }

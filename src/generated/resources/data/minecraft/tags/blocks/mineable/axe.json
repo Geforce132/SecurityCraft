@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "securitycraft:reinforced_bookshelf",
+    "securitycraft:reinforced_ladder",
+    "securitycraft:reinforced_lectern",
+    "securitycraft:reinforced_scaffolding",
+    "#securitycraft:reinforced/wooden_fence_gates",
+    "#securitycraft:reinforced/logs",
+    "#securitycraft:reinforced/planks",
+    "#securitycraft:secret_signs",
+    "#securitycraft:reinforced/wooden_buttons",
+    "#securitycraft:reinforced/wooden_fences",
+    "#securitycraft:reinforced/wooden_pressure_plates",
+    "#securitycraft:reinforced/wooden_slabs",
+    "#securitycraft:reinforced/wooden_stairs"
+  ]
+}

@@ -2,11 +2,20 @@
 
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
 - New: Several server and client config settings to control chunk loading in camera feeds
+- New: All blocks can now be broken only by the owner with normal tools (axe, shovel, hoe, ...) and the Universal Block Remover has been disabled by default
+- New: Config to re-enable the Universal Block Remover and disable normal block breaking
+- New: Config to define tool requirement behavior (e.g. does Reinforced Stone always drop, or just when breaking it using a pickaxe?)
+- New: Config to allow other players to break anyone's blocks (disallowed by default)
+- New: Config for defining how much longer it should take to break another player's block compared to breaking one's own
 - Change: The block mine overlay now shows in the first person hand models as well
 - Change: Camera model animations are now synchronized between players
 - API: IDisguisable has been simplified
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: The display of items in the SC Manual can change too fast in certain situations
+- Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
+- Fix: Several reinforced blocks can be broken by pistons
+- Fix: The claymore does not ignore the owner if the "Ignore Owner" option is true, and vice versa
+- Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
 

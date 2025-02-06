@@ -2,6 +2,9 @@ package net.geforcemods.securitycraft;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import com.google.common.base.Predicates;
 
@@ -122,7 +125,6 @@ import net.geforcemods.securitycraft.blocks.mines.TrackMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBars;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedAmethystBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
@@ -151,6 +153,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldron
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLecternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMagmaBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMossBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedNyliumBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObserverBlock;
@@ -239,7 +242,6 @@ import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.RegisterItemBlock.SCItemGroup;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -249,7 +251,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.DoubleHighBlockItem;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
@@ -260,12 +261,12 @@ import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.PressurePlateBlock.Sensitivity;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
-import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -318,2021 +319,2022 @@ public class SCContent {
 	//blocks
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> ALARM = BLOCKS.register("alarm", () -> new AlarmBlock(prop(Material.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0)));
+	public static final RegistryObject<AlarmBlock> ALARM = registerBlock("alarm", AlarmBlock::new, prop(Material.METAL, MaterialColor.COLOR_RED, 3.5F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> BLOCK_CHANGE_DETECTOR = BLOCKS.register("block_change_detector", () -> new BlockChangeDetectorBlock(propDisguisable()));
+	public static final RegistryObject<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable(3.5F));
 	@HasManualPage(designedBy = "Henzoid")
 	@RegisterItemBlock
-	public static final RegistryObject<Block> BLOCK_POCKET_MANAGER = BLOCKS.register("block_pocket_manager", () -> new BlockPocketManagerBlock(prop(MaterialColor.COLOR_CYAN)));
+	public static final RegistryObject<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 5.0F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> BLOCK_POCKET_WALL = BLOCKS.register("block_pocket_wall", () -> new BlockPocketWallBlock(prop().noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation)));
+	public static final RegistryObject<BlockPocketWallBlock> BLOCK_POCKET_WALL = registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 0.8F).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> BOUNCING_BETTY = BLOCKS.register("bouncing_betty", () -> new BouncingBettyBlock(prop(Material.METAL, 1.0F)));
+	public static final RegistryObject<BouncingBettyBlock> BOUNCING_BETTY = registerBlock("bouncing_betty", BouncingBettyBlock::new, prop(Material.METAL, 3.5F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> CAGE_TRAP = BLOCKS.register("cage_trap", () -> new CageTrapBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
+	public static final RegistryObject<CageTrapBlock> CAGE_TRAP = registerBlock("cage_trap", CageTrapBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL).noCollission());
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> CLAYMORE = BLOCKS.register("claymore", () -> new ClaymoreBlock(prop(Material.METAL)));
+	public static final RegistryObject<ClaymoreBlock> CLAYMORE = registerBlock("claymore", ClaymoreBlock::new, prop(Material.METAL, MaterialColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
-	public static final RegistryObject<Block> DISPLAY_CASE = BLOCKS.register(DISPLAY_CASE_PATH, () -> new DisplayCaseBlock(prop(Material.METAL).sound(SoundType.METAL), false));
+	public static final RegistryObject<DisplayCaseBlock> DISPLAY_CASE = registerBlock(DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, false), prop(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> FLOOR_TRAP = BLOCKS.register("floor_trap", () -> new FloorTrapBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<FloorTrapBlock> FLOOR_TRAP = registerBlock("floor_trap", FloorTrapBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> FRAME = BLOCKS.register("keypad_frame", () -> new FrameBlock(prop().sound(SoundType.METAL)));
+	public static final RegistryObject<FrameBlock> FRAME = registerBlock("keypad_frame", FrameBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
-	public static final RegistryObject<Block> GLOW_DISPLAY_CASE = BLOCKS.register(GLOW_DISPLAY_CASE_PATH, () -> new DisplayCaseBlock(prop(Material.METAL).sound(SoundType.METAL), true));
+	public static final RegistryObject<DisplayCaseBlock> GLOW_DISPLAY_CASE = registerBlock(GLOW_DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, true), prop(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> IMS = BLOCKS.register("ims", () -> new IMSBlock(prop(Material.METAL, 0.7F).sound(SoundType.METAL)));
+	public static final RegistryObject<IMSBlock> IMS = registerBlock("ims", IMSBlock::new, prop(Material.METAL, MaterialColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> INVENTORY_SCANNER = BLOCKS.register("inventory_scanner", () -> new InventoryScannerBlock(propDisguisable()));
-	public static final RegistryObject<Block> INVENTORY_SCANNER_FIELD = BLOCKS.register("inventory_scanner_field", () -> new InventoryScannerFieldBlock(prop(Material.GLASS)));
+	public static final RegistryObject<InventoryScannerBlock> INVENTORY_SCANNER = registerBlock("inventory_scanner", InventoryScannerBlock::new, propDisguisable(3.5F));
+	public static final RegistryObject<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = registerBlock("inventory_scanner_field", InventoryScannerFieldBlock::new, prop(Material.GLASS, -1.0F));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> ELECTRIFIED_IRON_FENCE = BLOCKS.register("electrified_iron_fence", () -> new ElectrifiedIronFenceBlock(prop(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> KEY_PANEL_BLOCK = BLOCKS.register("key_panel", () -> new KeyPanelBlock(prop(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = registerBlock("electrified_iron_fence", ElectrifiedIronFenceBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL));
+	public static final RegistryObject<KeyPanelBlock> KEY_PANEL_BLOCK = registerBlock("key_panel", KeyPanelBlock::new, prop(Material.METAL, 3.5F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> KEYCARD_LOCK = BLOCKS.register("keycard_lock", () -> new KeycardLockBlock(prop()));
+	public static final RegistryObject<KeycardLockBlock> KEYCARD_LOCK = registerBlock("keycard_lock", KeycardLockBlock::new, prop(2.0F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> KEYCARD_READER = BLOCKS.register("keycard_reader", () -> new KeycardReaderBlock(propDisguisable()));
+	public static final RegistryObject<KeycardReaderBlock> KEYCARD_READER = registerBlock("keycard_reader", KeycardReaderBlock::new, propDisguisable(3.5F));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<Block> KEYPAD = BLOCKS.register("keypad", () -> new KeypadBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<KeypadBlock> KEYPAD = registerBlock("keypad", KeypadBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<Block> KEYPAD_BARREL = BLOCKS.register("keypad_barrel", () -> new KeypadBarrelBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<KeypadBarrelBlock> KEYPAD_BARREL = registerBlock("keypad_barrel", KeypadBarrelBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final RegistryObject<Block> KEYPAD_CHEST = BLOCKS.register(KEYPAD_CHEST_PATH, () -> new KeypadChestBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> KEYPAD_DOOR = BLOCKS.register("keypad_door", () -> new KeypadDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
-	@HasManualPage(hasRecipeDescription = true)
-	@RegisterItemBlock
-	public static final RegistryObject<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.register("keypad_trapdoor", () -> new KeypadTrapDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).isValidSpawn(SCContent::never)));
+	public static final RegistryObject<KeypadChestBlock> KEYPAD_CHEST = registerBlock(KEYPAD_CHEST_PATH, KeypadChestBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
+	public static final RegistryObject<KeypadDoorBlock> KEYPAD_DOOR = registerBlock("keypad_door", p -> new KeypadDoorBlock(p), propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.register("keypad_furnace", () -> new KeypadFurnaceBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
+	public static final RegistryObject<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = registerBlock("keypad_trapdoor", KeypadTrapDoorBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL).isValidSpawn(SCContent::never));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_SMOKER = BLOCKS.register("keypad_smoker", () -> new KeypadSmokerBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
+	public static final RegistryObject<KeypadFurnaceBlock> KEYPAD_FURNACE = registerBlock("keypad_furnace", KeypadFurnaceBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final RegistryObject<AbstractKeypadFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.register("keypad_blast_furnace", () -> new KeypadBlastFurnaceBlock(prop(Material.METAL).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0)));
+	public static final RegistryObject<KeypadSmokerBlock> KEYPAD_SMOKER = registerBlock("keypad_smoker", KeypadSmokerBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	@HasManualPage(hasRecipeDescription = true)
+	@RegisterItemBlock
+	public static final RegistryObject<KeypadBlastFurnaceBlock> KEYPAD_BLAST_FURNACE = registerBlock("keypad_blast_furnace", KeypadBlastFurnaceBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> LASER_BLOCK = BLOCKS.register("laser_block", () -> new LaserBlock(propDisguisable()));
-	public static final RegistryObject<LaserFieldBlock> LASER_FIELD = BLOCKS.register("laser", () -> new LaserFieldBlock(prop(Material.GLASS)));
+	public static final RegistryObject<LaserBlock> LASER_BLOCK = registerBlock("laser_block", LaserBlock::new, propDisguisable(3.5F));
+	public static final RegistryObject<LaserFieldBlock> LASER_FIELD = registerBlock("laser", LaserFieldBlock::new, prop(Material.GLASS, -1.0F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> MOTION_ACTIVATED_LIGHT = BLOCKS.register("motion_activated_light", () -> new MotionActivatedLightBlock(prop(Material.GLASS).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0)));
+	public static final RegistryObject<MotionActivatedLightBlock> MOTION_ACTIVATED_LIGHT = registerBlock("motion_activated_light", MotionActivatedLightBlock::new, prop(Material.GLASS, 5.0F).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PANIC_BUTTON = BLOCKS.register("panic_button", () -> new PanicButtonBlock(false, prop().lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0)));
+	public static final RegistryObject<PanicButtonBlock> PANIC_BUTTON = registerBlock("panic_button", p -> new PanicButtonBlock(false, p), prop(3.5F).lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PORTABLE_RADAR = BLOCKS.register("portable_radar", () -> new PortableRadarBlock(prop(Material.METAL)));
+	public static final RegistryObject<PortableRadarBlock> PORTABLE_RADAR = registerBlock("portable_radar", PortableRadarBlock::new, prop(Material.METAL, MaterialColor.COLOR_BLACK, 5.0F));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PROJECTOR = BLOCKS.register("projector", () -> new ProjectorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<ProjectorBlock> PROJECTOR = registerBlock("projector", ProjectorBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> PROTECTO = BLOCKS.register("protecto", () -> new ProtectoBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).lightLevel(state -> 7)));
+	public static final RegistryObject<ProtectoBlock> PROTECTO = registerBlock("protecto", ProtectoBlock::new, propDisguisable(Material.METAL, 10.0F).sound(SoundType.METAL).lightLevel(state -> 7));
 	@OwnableBE
-	public static final RegistryObject<Block> REINFORCED_DOOR = BLOCKS.register("iron_door_reinforced", () -> new ReinforcedDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion()));
+	public static final RegistryObject<ReinforcedDoorBlock> REINFORCED_DOOR = registerBlock("iron_door_reinforced", ReinforcedDoorBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL).noOcclusion());
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> ELECTRIFIED_IRON_FENCE_GATE = BLOCKS.register("reinforced_fence_gate", () -> new ElectrifiedIronFenceGateBlock(prop(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<ElectrifiedIronFenceGateBlock> ELECTRIFIED_IRON_FENCE_GATE = registerBlock("reinforced_fence_gate", ElectrifiedIronFenceGateBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> RETINAL_SCANNER = BLOCKS.register("retinal_scanner", () -> new RetinalScannerBlock(propDisguisable()));
-	public static final RegistryObject<Block> RIFT_STABILIZER = BLOCKS.register("rift_stabilizer", () -> new RiftStabilizerBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
-	public static final RegistryObject<Block> SCANNER_DOOR = BLOCKS.register("scanner_door", () -> new ScannerDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<RetinalScannerBlock> RETINAL_SCANNER = registerBlock("retinal_scanner", RetinalScannerBlock::new, propDisguisable(3.5F));
+	public static final RegistryObject<RiftStabilizerBlock> RIFT_STABILIZER = registerBlock("rift_stabilizer", RiftStabilizerBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
+	public static final RegistryObject<ScannerDoorBlock> SCANNER_DOOR = registerBlock("scanner_door", ScannerDoorBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.register("scanner_trapdoor", () -> new ScannerTrapDoorBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).isValidSpawn(SCContent::never)));
-	public static final RegistryObject<Block> SECRET_OAK_SIGN = BLOCKS.register("secret_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.OAK));
-	public static final RegistryObject<Block> SECRET_OAK_WALL_SIGN = BLOCKS.register("secret_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD).sound(SoundType.WOOD), WoodType.OAK));
-	public static final RegistryObject<Block> SECRET_SPRUCE_SIGN = BLOCKS.register("secret_spruce_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), WoodType.SPRUCE));
-	public static final RegistryObject<Block> SECRET_SPRUCE_WALL_SIGN = BLOCKS.register("secret_spruce_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), WoodType.SPRUCE));
-	public static final RegistryObject<Block> SECRET_BIRCH_SIGN = BLOCKS.register("secret_birch_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), WoodType.BIRCH));
-	public static final RegistryObject<Block> SECRET_BIRCH_WALL_SIGN = BLOCKS.register("secret_birch_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), WoodType.BIRCH));
-	public static final RegistryObject<Block> SECRET_JUNGLE_SIGN = BLOCKS.register("secret_jungle_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), WoodType.JUNGLE));
-	public static final RegistryObject<Block> SECRET_JUNGLE_WALL_SIGN = BLOCKS.register("secret_jungle_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), WoodType.JUNGLE));
-	public static final RegistryObject<Block> SECRET_ACACIA_SIGN = BLOCKS.register("secret_acacia_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOD), WoodType.ACACIA));
-	public static final RegistryObject<Block> SECRET_ACACIA_WALL_SIGN = BLOCKS.register("secret_acacia_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOD), WoodType.ACACIA));
-	public static final RegistryObject<Block> SECRET_DARK_OAK_SIGN = BLOCKS.register("secret_dark_oak_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), WoodType.DARK_OAK));
-	public static final RegistryObject<Block> SECRET_DARK_OAK_WALL_SIGN = BLOCKS.register("secret_dark_oak_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), WoodType.DARK_OAK));
-	public static final RegistryObject<Block> SECRET_CRIMSON_SIGN = BLOCKS.register("secret_crimson_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.WOOD), WoodType.CRIMSON));
-	public static final RegistryObject<Block> SECRET_CRIMSON_WALL_SIGN = BLOCKS.register("secret_crimson_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.WOOD), WoodType.CRIMSON));
-	public static final RegistryObject<Block> SECRET_WARPED_SIGN = BLOCKS.register("secret_warped_sign_standing", () -> new SecretStandingSignBlock(prop(Material.WOOD, MaterialColor.WARPED_STEM).sound(SoundType.WOOD), WoodType.WARPED));
-	public static final RegistryObject<Block> SECRET_WARPED_WALL_SIGN = BLOCKS.register("secret_warped_sign_wall", () -> new SecretWallSignBlock(prop(Material.WOOD, MaterialColor.WARPED_STEM).sound(SoundType.WOOD), WoodType.WARPED));
+	public static final RegistryObject<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = registerBlock("scanner_trapdoor", ScannerTrapDoorBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL).isValidSpawn(SCContent::never));
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_OAK_SIGN = secretStandingSign("secret_sign_standing", Blocks.OAK_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_OAK_WALL_SIGN = secretWallSign("secret_sign_wall", Blocks.OAK_SIGN);
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_SPRUCE_SIGN = secretStandingSign("secret_spruce_sign_standing", Blocks.SPRUCE_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_SPRUCE_WALL_SIGN = secretWallSign("secret_spruce_sign_wall", Blocks.SPRUCE_SIGN);
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_BIRCH_SIGN = secretStandingSign("secret_birch_sign_standing", Blocks.BIRCH_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_BIRCH_WALL_SIGN = secretWallSign("secret_birch_sign_wall", Blocks.BIRCH_SIGN);
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_JUNGLE_SIGN = secretStandingSign("secret_jungle_sign_standing", Blocks.JUNGLE_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_JUNGLE_WALL_SIGN = secretWallSign("secret_jungle_sign_wall", Blocks.JUNGLE_SIGN);
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_ACACIA_SIGN = secretStandingSign("secret_acacia_sign_standing", Blocks.ACACIA_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_ACACIA_WALL_SIGN = secretWallSign("secret_acacia_sign_wall", Blocks.ACACIA_SIGN);
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_DARK_OAK_SIGN = secretStandingSign("secret_dark_oak_sign_standing", Blocks.DARK_OAK_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_DARK_OAK_WALL_SIGN = secretWallSign("secret_dark_oak_sign_wall", Blocks.DARK_OAK_SIGN);
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_CRIMSON_SIGN = secretStandingSign("secret_crimson_sign_standing", Blocks.CRIMSON_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_CRIMSON_WALL_SIGN = secretWallSign("secret_crimson_sign_wall", Blocks.CRIMSON_SIGN);
+	public static final RegistryObject<SecretStandingSignBlock> SECRET_WARPED_SIGN = secretStandingSign("secret_warped_sign_standing", Blocks.WARPED_SIGN);
+	public static final RegistryObject<SecretWallSignBlock> SECRET_WARPED_WALL_SIGN = secretWallSign("secret_warped_sign_wall", Blocks.WARPED_SIGN);
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SECURE_REDSTONE_INTERFACE = BLOCKS.register("secure_redstone_interface", () -> new SecureRedstoneInterfaceBlock(propDisguisable()));
+	public static final RegistryObject<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> SECURITY_CAMERA = BLOCKS.register("security_camera", () -> new SecurityCameraBlock(propDisguisable(Material.METAL).noCollission()));
+	public static final RegistryObject<SecurityCameraBlock> SECURITY_CAMERA = registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(Material.METAL, 5.0F).noCollission());
 	@HasManualPage
-	public static final RegistryObject<Block> SONIC_SECURITY_SYSTEM = BLOCKS.register("sonic_security_system", () -> new SonicSecuritySystemBlock(propDisguisable(Material.METAL).sound(SoundType.METAL).noCollission()));
+	public static final RegistryObject<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL).noCollission());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final RegistryObject<Block> TRACK_MINE = BLOCKS.register("track_mine", () -> new TrackMineBlock(prop(Material.METAL, 0.7F).noCollission().sound(SoundType.METAL)));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.TECHNICAL)
-	public static final RegistryObject<Block> TROPHY_SYSTEM = BLOCKS.register("trophy_system", () -> new TrophySystemBlock(propDisguisable(Material.METAL).sound(SoundType.METAL)));
+	public static final RegistryObject<TrophySystemBlock> TROPHY_SYSTEM = registerBlock("trophy_system", TrophySystemBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final RegistryObject<Block> USERNAME_LOGGER = BLOCKS.register("username_logger", () -> new UsernameLoggerBlock(propDisguisable()));
+	public static final RegistryObject<UsernameLoggerBlock> USERNAME_LOGGER = registerBlock("username_logger", UsernameLoggerBlock::new, propDisguisable(3.5F));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> MINE = BLOCKS.register("mine", () -> new MineBlock(prop(Material.METAL, 1.0F)));
-	public static final RegistryObject<Block> FAKE_WATER_BLOCK = BLOCKS.register("fake_water_block", () -> new FakeWaterBlock(prop(Material.WATER).noCollission(), FAKE_WATER));
-	public static final RegistryObject<Block> FAKE_LAVA_BLOCK = BLOCKS.register("fake_lava_block", () -> new FakeLavaBlock(prop(Material.LAVA).noCollission().randomTicks().lightLevel(state -> 15), FAKE_LAVA));
+	public static final RegistryObject<MineBlock> MINE = registerBlock("mine", MineBlock::new, prop(Material.METAL, 3.5F).sound(SoundType.METAL));
+	public static final RegistryObject<FakeWaterBlock> FAKE_WATER_BLOCK = registerBlock("fake_water_block", p -> new FakeWaterBlock(p, FAKE_WATER), reinforcedCopy(Blocks.WATER));
+	public static final RegistryObject<FakeLavaBlock> FAKE_LAVA_BLOCK = registerBlock("fake_lava_block", p -> new FakeLavaBlock(p, FAKE_LAVA), reinforcedCopy(Blocks.LAVA));
 
 	//block mines
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> STONE_MINE = BLOCKS.register("stone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.STONE), Blocks.STONE));
+	public static final RegistryObject<BaseFullMineBlock> STONE_MINE = blockMine("stone_mine", Blocks.STONE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_MINE = BLOCKS.register("deepslate_mine", () -> new DeepslateMineBlock(mineProp(Blocks.DEEPSLATE), Blocks.DEEPSLATE));
+	public static final RegistryObject<DeepslateMineBlock> DEEPSLATE_MINE = reinforcedBlock("deepslate_mine", Blocks.DEEPSLATE, DeepslateMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> COBBLED_DEEPSLATE_MINE = BLOCKS.register("cobbled_deepslate_mine", () -> new BaseFullMineBlock(mineProp(Blocks.COBBLED_DEEPSLATE), Blocks.COBBLED_DEEPSLATE));
+	public static final RegistryObject<BaseFullMineBlock> COBBLED_DEEPSLATE_MINE = blockMine("cobbled_deepslate_mine", Blocks.COBBLED_DEEPSLATE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DIRT_MINE = BLOCKS.register("dirt_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DIRT), Blocks.DIRT));
+	public static final RegistryObject<BaseFullMineBlock> DIRT_MINE = blockMine("dirt_mine", Blocks.DIRT);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> COBBLESTONE_MINE = BLOCKS.register("cobblestone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.COBBLESTONE), Blocks.COBBLESTONE));
+	public static final RegistryObject<BaseFullMineBlock> COBBLESTONE_MINE = blockMine("cobblestone_mine", Blocks.COBBLESTONE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> SAND_MINE = BLOCKS.register("sand_mine", () -> new FallingBlockMineBlock(mineProp(Blocks.SAND), Blocks.SAND));
+	public static final RegistryObject<FallingBlockMineBlock> SAND_MINE = reinforcedBlock("sand_mine", Blocks.SAND, FallingBlockMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> GRAVEL_MINE = BLOCKS.register("gravel_mine", () -> new FallingBlockMineBlock(mineProp(Blocks.GRAVEL), Blocks.GRAVEL));
+	public static final RegistryObject<FallingBlockMineBlock> GRAVEL_MINE = reinforcedBlock("gravel_mine", Blocks.GRAVEL, FallingBlockMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> NETHERRACK_MINE = BLOCKS.register("netherrack_mine", () -> new BaseFullMineBlock(mineProp(Blocks.NETHERRACK), Blocks.NETHERRACK));
+	public static final RegistryObject<BaseFullMineBlock> NETHERRACK_MINE = blockMine("netherrack_mine", Blocks.NETHERRACK);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> END_STONE_MINE = BLOCKS.register("end_stone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.END_STONE), Blocks.END_STONE));
+	public static final RegistryObject<BaseFullMineBlock> END_STONE_MINE = blockMine("end_stone_mine", Blocks.END_STONE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> COAL_ORE_MINE = BLOCKS.register("coal_mine", () -> new BaseFullMineBlock(mineProp(Blocks.COAL_ORE), Blocks.COAL_ORE));
+	public static final RegistryObject<BaseFullMineBlock> COAL_ORE_MINE = blockMine("coal_mine", Blocks.COAL_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_COAL_ORE_MINE = BLOCKS.register("deepslate_coal_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DEEPSLATE_COAL_ORE), Blocks.DEEPSLATE_COAL_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DEEPSLATE_COAL_ORE_MINE = blockMine("deepslate_coal_mine", Blocks.DEEPSLATE_COAL_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> IRON_ORE_MINE = BLOCKS.register("iron_mine", () -> new BaseFullMineBlock(mineProp(Blocks.IRON_ORE), Blocks.IRON_ORE));
+	public static final RegistryObject<BaseFullMineBlock> IRON_ORE_MINE = blockMine("iron_mine", Blocks.IRON_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_IRON_ORE_MINE = BLOCKS.register("deepslate_iron_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DEEPSLATE_IRON_ORE), Blocks.DEEPSLATE_IRON_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DEEPSLATE_IRON_ORE_MINE = blockMine("deepslate_iron_mine", Blocks.DEEPSLATE_IRON_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> GOLD_ORE_MINE = BLOCKS.register("gold_mine", () -> new BaseFullMineBlock(mineProp(Blocks.GOLD_ORE), Blocks.GOLD_ORE));
+	public static final RegistryObject<BaseFullMineBlock> GOLD_ORE_MINE = blockMine("gold_mine", Blocks.GOLD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_GOLD_ORE_MINE = BLOCKS.register("deepslate_gold_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DEEPSLATE_GOLD_ORE), Blocks.DEEPSLATE_GOLD_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DEEPSLATE_GOLD_ORE_MINE = blockMine("deepslate_gold_mine", Blocks.DEEPSLATE_GOLD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> COPPER_ORE_MINE = BLOCKS.register("copper_mine", () -> new BaseFullMineBlock(mineProp(Blocks.COPPER_ORE), Blocks.COPPER_ORE));
+	public static final RegistryObject<BaseFullMineBlock> COPPER_ORE_MINE = blockMine("copper_mine", Blocks.COPPER_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_COPPER_ORE_MINE = BLOCKS.register("deepslate_copper_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DEEPSLATE_COPPER_ORE), Blocks.DEEPSLATE_COPPER_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DEEPSLATE_COPPER_ORE_MINE = blockMine("deepslate_copper_mine", Blocks.DEEPSLATE_COPPER_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> REDSTONE_ORE_MINE = BLOCKS.register("redstone_mine", () -> new RedstoneOreMineBlock(mineProp(Blocks.REDSTONE_ORE), Blocks.REDSTONE_ORE));
+	public static final RegistryObject<RedstoneOreMineBlock> REDSTONE_ORE_MINE = reinforcedBlock("redstone_mine", Blocks.REDSTONE_ORE, RedstoneOreMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_REDSTONE_ORE_MINE = BLOCKS.register("deepslate_redstone_mine", () -> new RedstoneOreMineBlock(mineProp(Blocks.DEEPSLATE_REDSTONE_ORE), Blocks.DEEPSLATE_REDSTONE_ORE));
+	public static final RegistryObject<RedstoneOreMineBlock> DEEPSLATE_REDSTONE_ORE_MINE = reinforcedBlock("deepslate_redstone_mine", Blocks.DEEPSLATE_REDSTONE_ORE, RedstoneOreMineBlock::new);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> EMERALD_ORE_MINE = BLOCKS.register("emerald_mine", () -> new BaseFullMineBlock(mineProp(Blocks.EMERALD_ORE), Blocks.EMERALD_ORE));
+	public static final RegistryObject<BaseFullMineBlock> EMERALD_ORE_MINE = blockMine("emerald_mine", Blocks.EMERALD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_EMERALD_ORE_MINE = BLOCKS.register("deepslate_emerald_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DEEPSLATE_EMERALD_ORE), Blocks.DEEPSLATE_EMERALD_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DEEPSLATE_EMERALD_ORE_MINE = blockMine("deepslate_emerald_mine", Blocks.DEEPSLATE_EMERALD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> LAPIS_ORE_MINE = BLOCKS.register("lapis_mine", () -> new BaseFullMineBlock(mineProp(Blocks.LAPIS_ORE), Blocks.LAPIS_ORE));
+	public static final RegistryObject<BaseFullMineBlock> LAPIS_ORE_MINE = blockMine("lapis_mine", Blocks.LAPIS_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_LAPIS_ORE_MINE = BLOCKS.register("deepslate_lapis_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DEEPSLATE_LAPIS_ORE), Blocks.DEEPSLATE_LAPIS_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DEEPSLATE_LAPIS_ORE_MINE = blockMine("deepslate_lapis_mine", Blocks.DEEPSLATE_LAPIS_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DIAMOND_ORE_MINE = BLOCKS.register("diamond_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DIAMOND_ORE), Blocks.DIAMOND_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DIAMOND_ORE_MINE = blockMine("diamond_mine", Blocks.DIAMOND_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> DEEPSLATE_DIAMOND_ORE_MINE = BLOCKS.register("deepslate_diamond_mine", () -> new BaseFullMineBlock(mineProp(Blocks.DEEPSLATE_DIAMOND_ORE), Blocks.DEEPSLATE_DIAMOND_ORE));
+	public static final RegistryObject<BaseFullMineBlock> DEEPSLATE_DIAMOND_ORE_MINE = blockMine("deepslate_diamond_mine", Blocks.DEEPSLATE_DIAMOND_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> NETHER_GOLD_ORE_MINE = BLOCKS.register("nether_gold_mine", () -> new BaseFullMineBlock(mineProp(Blocks.NETHER_GOLD_ORE), Blocks.NETHER_GOLD_ORE));
+	public static final RegistryObject<BaseFullMineBlock> NETHER_GOLD_ORE_MINE = blockMine("nether_gold_mine", Blocks.NETHER_GOLD_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> QUARTZ_ORE_MINE = BLOCKS.register("quartz_mine", () -> new BaseFullMineBlock(mineProp(Blocks.NETHER_QUARTZ_ORE), Blocks.NETHER_QUARTZ_ORE));
+	public static final RegistryObject<BaseFullMineBlock> QUARTZ_ORE_MINE = blockMine("quartz_mine", Blocks.NETHER_QUARTZ_ORE);
 	@HasManualPage(PageGroup.BLOCK_MINES)
-	public static final RegistryObject<Block> ANCIENT_DEBRIS_MINE = BLOCKS.register("ancient_debris_mine", () -> new BaseFullMineBlock(mineProp(Blocks.ANCIENT_DEBRIS), Blocks.ANCIENT_DEBRIS));
+	public static final RegistryObject<BaseFullMineBlock> ANCIENT_DEBRIS_MINE = blockMine("ancient_debris_mine", Blocks.ANCIENT_DEBRIS);
 	@HasManualPage(PageGroup.BLOCK_MINES)
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> GILDED_BLACKSTONE_MINE = BLOCKS.register("gilded_blackstone_mine", () -> new BaseFullMineBlock(mineProp(Blocks.GILDED_BLACKSTONE), Blocks.GILDED_BLACKSTONE));
+	public static final RegistryObject<BaseFullMineBlock> GILDED_BLACKSTONE_MINE = blockMine("gilded_blackstone_mine", Blocks.GILDED_BLACKSTONE);
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> FURNACE_MINE = BLOCKS.register("furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.FURNACE));
+	public static final RegistryObject<FurnaceMineBlock> FURNACE_MINE = reinforcedBlock("furnace_mine", Blocks.FURNACE, FurnaceMineBlock::new, p -> p.lightLevel(state -> 0));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> SMOKER_MINE = BLOCKS.register("smoker_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.SMOKER));
+	public static final RegistryObject<FurnaceMineBlock> SMOKER_MINE = reinforcedBlock("smoker_mine", Blocks.SMOKER, FurnaceMineBlock::new, p -> p.lightLevel(state -> 0));
 	@HasManualPage(PageGroup.FURNACE_MINES)
 	@OwnableBE
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<Block> BLAST_FURNACE_MINE = BLOCKS.register("blast_furnace_mine", () -> new FurnaceMineBlock(prop(Material.STONE, 3.5F).requiresCorrectToolForDrops(), Blocks.BLAST_FURNACE));
+	public static final RegistryObject<FurnaceMineBlock> BLAST_FURNACE_MINE = reinforcedBlock("blast_furnace_mine", Blocks.BLAST_FURNACE, FurnaceMineBlock::new, p -> p.lightLevel(state -> 0));
 
 	//reinforced blocks (ordered by vanilla building blocks creative tab order)
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE = BLOCKS.register("reinforced_stone", () -> new BaseReinforcedBlock(prop(), Blocks.STONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_STONE = reinforcedBlock("reinforced_stone", Blocks.STONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRANITE = BLOCKS.register("reinforced_granite", () -> new BaseReinforcedBlock(prop(MaterialColor.DIRT), Blocks.GRANITE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GRANITE = reinforcedBlock("reinforced_granite", Blocks.GRANITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_GRANITE = BLOCKS.register("reinforced_polished_granite", () -> new BaseReinforcedBlock(prop(MaterialColor.DIRT), Blocks.POLISHED_GRANITE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_POLISHED_GRANITE = reinforcedBlock("reinforced_polished_granite", Blocks.POLISHED_GRANITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DIORITE = BLOCKS.register("reinforced_diorite", () -> new BaseReinforcedBlock(prop(MaterialColor.QUARTZ), Blocks.DIORITE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DIORITE = reinforcedBlock("reinforced_diorite", Blocks.DIORITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_DIORITE = BLOCKS.register("reinforced_polished_diorite", () -> new BaseReinforcedBlock(prop(MaterialColor.QUARTZ), Blocks.POLISHED_DIORITE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_POLISHED_DIORITE = reinforcedBlock("reinforced_polished_diorite", Blocks.POLISHED_DIORITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ANDESITE = BLOCKS.register("reinforced_andesite", () -> new BaseReinforcedBlock(prop(), Blocks.ANDESITE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_ANDESITE = reinforcedBlock("reinforced_andesite", Blocks.ANDESITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_ANDESITE = BLOCKS.register("reinforced_polished_andesite", () -> new BaseReinforcedBlock(prop(), Blocks.POLISHED_ANDESITE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_POLISHED_ANDESITE = reinforcedBlock("reinforced_polished_andesite", Blocks.POLISHED_ANDESITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE = BLOCKS.register("reinforced_deepslate", () -> new ReinforcedRotatedPillarBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE), Blocks.DEEPSLATE));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_DEEPSLATE = reinforcedBlock("reinforced_deepslate", Blocks.DEEPSLATE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLED_DEEPSLATE = BLOCKS.register("reinforced_cobbled_deepslate", () -> new BaseReinforcedBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE), Blocks.COBBLED_DEEPSLATE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_COBBLED_DEEPSLATE = reinforcedBlock("reinforced_cobbled_deepslate", Blocks.COBBLED_DEEPSLATE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_DEEPSLATE = BLOCKS.register("reinforced_polished_deepslate", () -> new BaseReinforcedBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE), Blocks.POLISHED_DEEPSLATE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_POLISHED_DEEPSLATE = reinforcedBlock("reinforced_polished_deepslate", Blocks.POLISHED_DEEPSLATE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CALCITE = BLOCKS.register("reinforced_calcite", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_WHITE).sound(SoundType.CALCITE), Blocks.CALCITE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CALCITE = reinforcedBlock("reinforced_calcite", Blocks.CALCITE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_TUFF = BLOCKS.register("reinforced_tuff", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_GRAY).sound(SoundType.TUFF), Blocks.TUFF));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_TUFF = reinforcedBlock("reinforced_tuff", Blocks.TUFF);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DRIPSTONE_BLOCK = BLOCKS.register("reinforced_dripstone_block", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_BROWN).sound(SoundType.DRIPSTONE_BLOCK), Blocks.DRIPSTONE_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DRIPSTONE_BLOCK = reinforcedBlock("reinforced_dripstone_block", Blocks.DRIPSTONE_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRASS_BLOCK = BLOCKS.register("reinforced_grass_block", () -> new ReinforcedGrassBlock(prop(Material.GRASS).sound(SoundType.GRASS)));
+	public static final RegistryObject<ReinforcedGrassBlock> REINFORCED_GRASS_BLOCK = reinforcedBlock("reinforced_grass_block", Blocks.GRASS_BLOCK, (p, b) -> new ReinforcedGrassBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DIRT = BLOCKS.register("reinforced_dirt", () -> new BaseReinforcedBlock(prop(Material.DIRT).sound(SoundType.GRAVEL), Blocks.DIRT));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DIRT = reinforcedBlock("reinforced_dirt", Blocks.DIRT);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COARSE_DIRT = BLOCKS.register("reinforced_coarse_dirt", () -> new BaseReinforcedBlock(prop(Material.DIRT).sound(SoundType.GRAVEL), Blocks.COARSE_DIRT));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_COARSE_DIRT = reinforcedBlock("reinforced_coarse_dirt", Blocks.COARSE_DIRT);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PODZOL = BLOCKS.register("reinforced_podzol", () -> new ReinforcedSnowyDirtBlock(prop(Material.DIRT, MaterialColor.PODZOL).sound(SoundType.GRAVEL), Blocks.PODZOL));
+	public static final RegistryObject<ReinforcedSnowyDirtBlock> REINFORCED_PODZOL = reinforcedBlock("reinforced_podzol", Blocks.PODZOL, ReinforcedSnowyDirtBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_NYLIUM = BLOCKS.register("reinforced_crimson_nylium", () -> new ReinforcedNyliumBlock(prop(MaterialColor.CRIMSON_NYLIUM).sound(SoundType.NYLIUM), Blocks.CRIMSON_NYLIUM));
+	public static final RegistryObject<ReinforcedNyliumBlock> REINFORCED_CRIMSON_NYLIUM = reinforcedBlock("reinforced_crimson_nylium", Blocks.CRIMSON_NYLIUM, ReinforcedNyliumBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_NYLIUM = BLOCKS.register("reinforced_warped_nylium", () -> new ReinforcedNyliumBlock(prop(MaterialColor.WARPED_NYLIUM).sound(SoundType.NYLIUM), Blocks.WARPED_NYLIUM));
+	public static final RegistryObject<ReinforcedNyliumBlock> REINFORCED_WARPED_NYLIUM = reinforcedBlock("reinforced_warped_nylium", Blocks.WARPED_NYLIUM, ReinforcedNyliumBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ROOTED_DIRT = BLOCKS.register("reinforced_rooted_dirt", () -> new ReinforcedRootedDirtBlock(prop(Material.DIRT).sound(SoundType.ROOTED_DIRT), Blocks.ROOTED_DIRT));
+	public static final RegistryObject<ReinforcedRootedDirtBlock> REINFORCED_ROOTED_DIRT = reinforcedBlock("reinforced_rooted_dirt", Blocks.ROOTED_DIRT, ReinforcedRootedDirtBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLESTONE = BLOCKS.register("reinforced_cobblestone", () -> new BaseReinforcedBlock(prop(), Blocks.COBBLESTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_COBBLESTONE = reinforcedBlock("reinforced_cobblestone", Blocks.COBBLESTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_PLANKS = BLOCKS.register("reinforced_oak_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.OAK_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_OAK_PLANKS = reinforcedBlock("reinforced_oak_planks", Blocks.OAK_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_PLANKS = BLOCKS.register("reinforced_spruce_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.SPRUCE_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SPRUCE_PLANKS = reinforcedBlock("reinforced_spruce_planks", Blocks.SPRUCE_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_PLANKS = BLOCKS.register("reinforced_birch_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), Blocks.BIRCH_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BIRCH_PLANKS = reinforcedBlock("reinforced_birch_planks", Blocks.BIRCH_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_PLANKS = BLOCKS.register("reinforced_jungle_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), Blocks.JUNGLE_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_JUNGLE_PLANKS = reinforcedBlock("reinforced_jungle_planks", Blocks.JUNGLE_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_PLANKS = BLOCKS.register("reinforced_acacia_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOD), Blocks.ACACIA_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_ACACIA_PLANKS = reinforcedBlock("reinforced_acacia_planks", Blocks.ACACIA_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_PLANKS = BLOCKS.register("reinforced_dark_oak_planks", () -> new BaseReinforcedBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.DARK_OAK_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DARK_OAK_PLANKS = reinforcedBlock("reinforced_dark_oak_planks", Blocks.DARK_OAK_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_PLANKS = BLOCKS.register("reinforced_crimson_planks", () -> new BaseReinforcedBlock(prop(Material.NETHER_WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.WOOD), Blocks.CRIMSON_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CRIMSON_PLANKS = reinforcedBlock("reinforced_crimson_planks", Blocks.CRIMSON_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_PLANKS = BLOCKS.register("reinforced_warped_planks", () -> new BaseReinforcedBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_STEM).sound(SoundType.WOOD), Blocks.WARPED_PLANKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_WARPED_PLANKS = reinforcedBlock("reinforced_warped_planks", Blocks.WARPED_PLANKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SAND = BLOCKS.register("reinforced_sand", () -> new ReinforcedFallingBlock(prop(Material.SAND).sound(SoundType.SAND), Blocks.SAND));
+	public static final RegistryObject<ReinforcedFallingBlock> REINFORCED_SAND = reinforcedBlock("reinforced_sand", Blocks.SAND, ReinforcedFallingBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_SAND = BLOCKS.register("reinforced_red_sand", () -> new ReinforcedFallingBlock(prop(Material.SAND, MaterialColor.COLOR_ORANGE).sound(SoundType.SAND), Blocks.RED_SAND));
+	public static final RegistryObject<ReinforcedFallingBlock> REINFORCED_RED_SAND = reinforcedBlock("reinforced_red_sand", Blocks.RED_SAND, ReinforcedFallingBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRAVEL = BLOCKS.register("reinforced_gravel", () -> new ReinforcedFallingBlock(prop(Material.DIRT, MaterialColor.STONE).sound(SoundType.GRAVEL), Blocks.GRAVEL));
+	public static final RegistryObject<ReinforcedFallingBlock> REINFORCED_GRAVEL = reinforcedBlock("reinforced_gravel", Blocks.GRAVEL, ReinforcedFallingBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COAL_BLOCK = BLOCKS.register("reinforced_coal_block", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK), Blocks.COAL_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_COAL_BLOCK = reinforcedBlock("reinforced_coal_block", Blocks.COAL_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RAW_IRON_BLOCK = BLOCKS.register("reinforced_raw_iron_block", () -> new BaseReinforcedBlock(prop(MaterialColor.RAW_IRON), Blocks.RAW_IRON_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RAW_IRON_BLOCK = reinforcedBlock("reinforced_raw_iron_block", Blocks.RAW_IRON_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RAW_COPPER_BLOCK = BLOCKS.register("reinforced_raw_copper_block", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.RAW_COPPER_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RAW_COPPER_BLOCK = reinforcedBlock("reinforced_raw_copper_block", Blocks.RAW_COPPER_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RAW_GOLD_BLOCK = BLOCKS.register("reinforced_raw_gold_block", () -> new BaseReinforcedBlock(prop(MaterialColor.GOLD), Blocks.RAW_GOLD_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RAW_GOLD_BLOCK = reinforcedBlock("reinforced_raw_gold_block", Blocks.RAW_GOLD_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_AMETHYST_BLOCK = BLOCKS.register("reinforced_amethyst_block", () -> new ReinforcedAmethystBlock(prop(MaterialColor.COLOR_PURPLE).sound(SoundType.AMETHYST), Blocks.AMETHYST_BLOCK));
+	public static final RegistryObject<ReinforcedAmethystBlock> REINFORCED_AMETHYST_BLOCK = reinforcedBlock("reinforced_amethyst_block", Blocks.AMETHYST_BLOCK, ReinforcedAmethystBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_IRON_BLOCK = BLOCKS.register("reinforced_iron_block", () -> new BaseReinforcedBlock(prop(Material.METAL).sound(SoundType.METAL), Blocks.IRON_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_IRON_BLOCK = reinforcedBlock("reinforced_iron_block", Blocks.IRON_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COPPER_BLOCK = BLOCKS.register("reinforced_copper_block", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.COLOR_ORANGE).sound(SoundType.COPPER), Blocks.COPPER_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_COPPER_BLOCK = reinforcedBlock("reinforced_copper_block", Blocks.COPPER_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GOLD_BLOCK = BLOCKS.register("reinforced_gold_block", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.GOLD).sound(SoundType.METAL), Blocks.GOLD_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GOLD_BLOCK = reinforcedBlock("reinforced_gold_block", Blocks.GOLD_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DIAMOND_BLOCK = BLOCKS.register("reinforced_diamond_block", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.DIAMOND).sound(SoundType.METAL), Blocks.DIAMOND_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DIAMOND_BLOCK = reinforcedBlock("reinforced_diamond_block", Blocks.DIAMOND_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHERITE_BLOCK = BLOCKS.register("reinforced_netherite_block", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.COLOR_BLACK).sound(SoundType.NETHERITE_BLOCK), Blocks.NETHERITE_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_NETHERITE_BLOCK = reinforcedBlock("reinforced_netherite_block", Blocks.NETHERITE_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_EXPOSED_COPPER = BLOCKS.register("reinforced_exposed_copper", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER), Blocks.EXPOSED_COPPER));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_EXPOSED_COPPER = reinforcedBlock("reinforced_exposed_copper", Blocks.EXPOSED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WEATHERED_COPPER = BLOCKS.register("reinforced_weathered_copper", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.WARPED_STEM).sound(SoundType.COPPER), Blocks.WEATHERED_COPPER));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_WEATHERED_COPPER = reinforcedBlock("reinforced_weathered_copper", Blocks.WEATHERED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OXIDIZED_COPPER = BLOCKS.register("reinforced_oxidized_copper", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.WARPED_NYLIUM).sound(SoundType.COPPER), Blocks.OXIDIZED_COPPER));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_OXIDIZED_COPPER = reinforcedBlock("reinforced_oxidized_copper", Blocks.OXIDIZED_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CUT_COPPER = BLOCKS.register("reinforced_cut_copper", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.COLOR_ORANGE).sound(SoundType.COPPER), Blocks.CUT_COPPER));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CUT_COPPER = reinforcedBlock("reinforced_cut_copper", Blocks.CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_EXPOSED_CUT_COPPER = BLOCKS.register("reinforced_exposed_cut_copper", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER), Blocks.EXPOSED_CUT_COPPER));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_EXPOSED_CUT_COPPER = reinforcedBlock("reinforced_exposed_cut_copper", Blocks.EXPOSED_CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WEATHERED_CUT_COPPER = BLOCKS.register("reinforced_weathered_cut_copper", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.WARPED_STEM).sound(SoundType.COPPER), Blocks.WEATHERED_CUT_COPPER));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_WEATHERED_CUT_COPPER = reinforcedBlock("reinforced_weathered_cut_copper", Blocks.WEATHERED_CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OXIDIZED_CUT_COPPER = BLOCKS.register("reinforced_oxidized_cut_copper", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.WARPED_NYLIUM).sound(SoundType.COPPER), Blocks.OXIDIZED_CUT_COPPER));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_OXIDIZED_CUT_COPPER = reinforcedBlock("reinforced_oxidized_cut_copper", Blocks.OXIDIZED_CUT_COPPER);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CUT_COPPER_STAIRS = BLOCKS.register("reinforced_cut_copper_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_ORANGE).sound(SoundType.COPPER), Blocks.CUT_COPPER_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_EXPOSED_CUT_COPPER_STAIRS = BLOCKS.register("reinforced_exposed_cut_copper_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER), Blocks.EXPOSED_CUT_COPPER_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_EXPOSED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_exposed_cut_copper_stairs", Blocks.EXPOSED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WEATHERED_CUT_COPPER_STAIRS = BLOCKS.register("reinforced_weathered_cut_copper_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.WARPED_STEM).sound(SoundType.COPPER), Blocks.WEATHERED_CUT_COPPER_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_WEATHERED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_weathered_cut_copper_stairs", Blocks.WEATHERED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OXIDIZED_CUT_COPPER_STAIRS = BLOCKS.register("reinforced_oxidized_cut_copper_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.WARPED_NYLIUM).sound(SoundType.COPPER), Blocks.OXIDIZED_CUT_COPPER_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_OXIDIZED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_oxidized_cut_copper_stairs", Blocks.OXIDIZED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CUT_COPPER_SLAB = BLOCKS.register("reinforced_cut_copper_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_ORANGE).sound(SoundType.COPPER), Blocks.CUT_COPPER_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_cut_copper_slab", Blocks.CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_EXPOSED_CUT_COPPER_SLAB = BLOCKS.register("reinforced_exposed_cut_copper_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.TERRACOTTA_LIGHT_GRAY).sound(SoundType.COPPER), Blocks.EXPOSED_CUT_COPPER_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_EXPOSED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_exposed_cut_copper_slab", Blocks.EXPOSED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WEATHERED_CUT_COPPER_SLAB = BLOCKS.register("reinforced_weathered_cut_copper_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.WARPED_STEM).sound(SoundType.COPPER), Blocks.WEATHERED_CUT_COPPER_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_WEATHERED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_weathered_cut_copper_slab", Blocks.WEATHERED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OXIDIZED_CUT_COPPER_SLAB = BLOCKS.register("reinforced_oxidized_cut_copper_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.WARPED_NYLIUM).sound(SoundType.COPPER), Blocks.OXIDIZED_CUT_COPPER_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_OXIDIZED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_oxidized_cut_copper_slab", Blocks.OXIDIZED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_LOG = BLOCKS.register("reinforced_oak_log", () -> new ReinforcedRotatedPillarBlock(logProp(MaterialColor.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.OAK_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_OAK_LOG = reinforcedBlock("reinforced_oak_log", Blocks.OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_LOG = BLOCKS.register("reinforced_spruce_log", () -> new ReinforcedRotatedPillarBlock(logProp(MaterialColor.PODZOL, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.SPRUCE_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_SPRUCE_LOG = reinforcedBlock("reinforced_spruce_log", Blocks.SPRUCE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_LOG = BLOCKS.register("reinforced_birch_log", () -> new ReinforcedRotatedPillarBlock(logProp(MaterialColor.SAND, MaterialColor.QUARTZ).sound(SoundType.WOOD), Blocks.BIRCH_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_BIRCH_LOG = reinforcedBlock("reinforced_birch_log", Blocks.BIRCH_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_LOG = BLOCKS.register("reinforced_jungle_log", () -> new ReinforcedRotatedPillarBlock(logProp(MaterialColor.DIRT, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.JUNGLE_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_JUNGLE_LOG = reinforcedBlock("reinforced_jungle_log", Blocks.JUNGLE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_LOG = BLOCKS.register("reinforced_acacia_log", () -> new ReinforcedRotatedPillarBlock(logProp(MaterialColor.COLOR_ORANGE, MaterialColor.STONE).sound(SoundType.WOOD), Blocks.ACACIA_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_ACACIA_LOG = reinforcedBlock("reinforced_acacia_log", Blocks.ACACIA_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_LOG = BLOCKS.register("reinforced_dark_oak_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.DARK_OAK_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_DARK_OAK_LOG = reinforcedBlock("reinforced_dark_oak_log", Blocks.DARK_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_STEM = BLOCKS.register("reinforced_crimson_stem", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.STEM), Blocks.CRIMSON_STEM));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_CRIMSON_STEM = reinforcedBlock("reinforced_crimson_stem", Blocks.CRIMSON_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_STEM = BLOCKS.register("reinforced_warped_stem", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_STEM).sound(SoundType.STEM), Blocks.WARPED_STEM));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_WARPED_STEM = reinforcedBlock("reinforced_warped_stem", Blocks.WARPED_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_OAK_LOG = BLOCKS.register("reinforced_stripped_oak_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.STRIPPED_OAK_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_OAK_LOG = reinforcedBlock("reinforced_stripped_oak_log", Blocks.STRIPPED_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_SPRUCE_LOG = BLOCKS.register("reinforced_stripped_spruce_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.STRIPPED_SPRUCE_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_SPRUCE_LOG = reinforcedBlock("reinforced_stripped_spruce_log", Blocks.STRIPPED_SPRUCE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_BIRCH_LOG = BLOCKS.register("reinforced_stripped_birch_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), Blocks.STRIPPED_BIRCH_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BIRCH_LOG = reinforcedBlock("reinforced_stripped_birch_log", Blocks.STRIPPED_BIRCH_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_JUNGLE_LOG = BLOCKS.register("reinforced_stripped_jungle_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), Blocks.STRIPPED_JUNGLE_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_JUNGLE_LOG = reinforcedBlock("reinforced_stripped_jungle_log", Blocks.STRIPPED_JUNGLE_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_ACACIA_LOG = BLOCKS.register("reinforced_stripped_acacia_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOD), Blocks.STRIPPED_ACACIA_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_ACACIA_LOG = reinforcedBlock("reinforced_stripped_acacia_log", Blocks.STRIPPED_ACACIA_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_DARK_OAK_LOG = BLOCKS.register("reinforced_stripped_dark_oak_log", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.STRIPPED_DARK_OAK_LOG));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_DARK_OAK_LOG = reinforcedBlock("reinforced_stripped_dark_oak_log", Blocks.STRIPPED_DARK_OAK_LOG, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_CRIMSON_STEM = BLOCKS.register("reinforced_stripped_crimson_stem", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.STEM), Blocks.STRIPPED_CRIMSON_STEM));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CRIMSON_STEM = reinforcedBlock("reinforced_stripped_crimson_stem", Blocks.STRIPPED_CRIMSON_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_WARPED_STEM = BLOCKS.register("reinforced_stripped_warped_stem", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_STEM).sound(SoundType.STEM), Blocks.STRIPPED_WARPED_STEM));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_WARPED_STEM = reinforcedBlock("reinforced_stripped_warped_stem", Blocks.STRIPPED_WARPED_STEM, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_OAK_WOOD = BLOCKS.register("reinforced_stripped_oak_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.STRIPPED_OAK_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_OAK_WOOD = reinforcedBlock("reinforced_stripped_oak_wood", Blocks.STRIPPED_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_SPRUCE_WOOD = BLOCKS.register("reinforced_stripped_spruce_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.STRIPPED_SPRUCE_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_SPRUCE_WOOD = reinforcedBlock("reinforced_stripped_spruce_wood", Blocks.STRIPPED_SPRUCE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_BIRCH_WOOD = BLOCKS.register("reinforced_stripped_birch_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), Blocks.STRIPPED_BIRCH_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_BIRCH_WOOD = reinforcedBlock("reinforced_stripped_birch_wood", Blocks.STRIPPED_BIRCH_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_JUNGLE_WOOD = BLOCKS.register("reinforced_stripped_jungle_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), Blocks.STRIPPED_JUNGLE_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_JUNGLE_WOOD = reinforcedBlock("reinforced_stripped_jungle_wood", Blocks.STRIPPED_JUNGLE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_ACACIA_WOOD = BLOCKS.register("reinforced_stripped_acacia_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOD), Blocks.STRIPPED_ACACIA_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_ACACIA_WOOD = reinforcedBlock("reinforced_stripped_acacia_wood", Blocks.STRIPPED_ACACIA_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_DARK_OAK_WOOD = BLOCKS.register("reinforced_stripped_dark_oak_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.STRIPPED_DARK_OAK_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_DARK_OAK_WOOD = reinforcedBlock("reinforced_stripped_dark_oak_wood", Blocks.STRIPPED_DARK_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_CRIMSON_HYPHAE = BLOCKS.register("reinforced_stripped_crimson_hyphae", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.CRIMSON_HYPHAE).sound(SoundType.STEM), Blocks.STRIPPED_CRIMSON_HYPHAE));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_CRIMSON_HYPHAE = reinforcedBlock("reinforced_stripped_crimson_hyphae", Blocks.STRIPPED_CRIMSON_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STRIPPED_WARPED_HYPHAE = BLOCKS.register("reinforced_stripped_warped_hyphae", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_HYPHAE).sound(SoundType.STEM), Blocks.STRIPPED_WARPED_HYPHAE));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_STRIPPED_WARPED_HYPHAE = reinforcedBlock("reinforced_stripped_warped_hyphae", Blocks.STRIPPED_WARPED_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_WOOD = BLOCKS.register("reinforced_oak_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.OAK_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_OAK_WOOD = reinforcedBlock("reinforced_oak_wood", Blocks.OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_WOOD = BLOCKS.register("reinforced_spruce_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.SPRUCE_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_SPRUCE_WOOD = reinforcedBlock("reinforced_spruce_wood", Blocks.SPRUCE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_WOOD = BLOCKS.register("reinforced_birch_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), Blocks.BIRCH_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_BIRCH_WOOD = reinforcedBlock("reinforced_birch_wood", Blocks.BIRCH_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_WOOD = BLOCKS.register("reinforced_jungle_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), Blocks.JUNGLE_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_JUNGLE_WOOD = reinforcedBlock("reinforced_jungle_wood", Blocks.JUNGLE_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_WOOD = BLOCKS.register("reinforced_acacia_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_GRAY).sound(SoundType.WOOD), Blocks.ACACIA_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_ACACIA_WOOD = reinforcedBlock("reinforced_acacia_wood", Blocks.ACACIA_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_WOOD = BLOCKS.register("reinforced_dark_oak_wood", () -> new ReinforcedRotatedPillarBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.DARK_OAK_WOOD));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_DARK_OAK_WOOD = reinforcedBlock("reinforced_dark_oak_wood", Blocks.DARK_OAK_WOOD, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_HYPHAE = BLOCKS.register("reinforced_crimson_hyphae", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.CRIMSON_HYPHAE).sound(SoundType.STEM), Blocks.CRIMSON_HYPHAE));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_CRIMSON_HYPHAE = reinforcedBlock("reinforced_crimson_hyphae", Blocks.CRIMSON_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_HYPHAE = BLOCKS.register("reinforced_warped_hyphae", () -> new ReinforcedRotatedPillarBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_HYPHAE).sound(SoundType.STEM), Blocks.WARPED_HYPHAE));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_WARPED_HYPHAE = reinforcedBlock("reinforced_warped_hyphae", Blocks.WARPED_HYPHAE, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GLASS = BLOCKS.register("reinforced_glass", () -> new ReinforcedGlassBlock(glassProp(MaterialColor.NONE), Blocks.GLASS));
+	public static final RegistryObject<ReinforcedGlassBlock> REINFORCED_GLASS = reinforcedBlock("reinforced_glass", Blocks.GLASS, ReinforcedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_TINTED_GLASS = BLOCKS.register("reinforced_tinted_glass", () -> new ReinforcedTintedGlassBlock(glassProp(MaterialColor.COLOR_GRAY), Blocks.TINTED_GLASS));
+	public static final RegistryObject<ReinforcedTintedGlassBlock> REINFORCED_TINTED_GLASS = reinforcedBlock("reinforced_tinted_glass", Blocks.TINTED_GLASS, ReinforcedTintedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LAPIS_BLOCK = BLOCKS.register("reinforced_lapis_block", () -> new BaseReinforcedBlock(prop(MaterialColor.LAPIS), Blocks.LAPIS_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LAPIS_BLOCK = reinforcedBlock("reinforced_lapis_block", Blocks.LAPIS_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SANDSTONE = BLOCKS.register("reinforced_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.SAND), Blocks.SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SANDSTONE = reinforcedBlock("reinforced_sandstone", Blocks.SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHISELED_SANDSTONE = BLOCKS.register("reinforced_chiseled_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.SAND), Blocks.CHISELED_SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CHISELED_SANDSTONE = reinforcedBlock("reinforced_chiseled_sandstone", Blocks.CHISELED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CUT_SANDSTONE = BLOCKS.register("reinforced_cut_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.SAND), Blocks.CUT_SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CUT_SANDSTONE = reinforcedBlock("reinforced_cut_sandstone", Blocks.CUT_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WHITE_WOOL = BLOCKS.register("reinforced_white_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.SNOW).sound(SoundType.WOOL), Blocks.WHITE_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_WHITE_WOOL = reinforcedBlock("reinforced_white_wool", Blocks.WHITE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ORANGE_WOOL = BLOCKS.register("reinforced_orange_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOL), Blocks.ORANGE_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_ORANGE_WOOL = reinforcedBlock("reinforced_orange_wool", Blocks.ORANGE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_WOOL = BLOCKS.register("reinforced_magenta_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_MAGENTA).sound(SoundType.WOOL), Blocks.MAGENTA_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_MAGENTA_WOOL = reinforcedBlock("reinforced_magenta_wool", Blocks.MAGENTA_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_WOOL = BLOCKS.register("reinforced_light_blue_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_LIGHT_BLUE).sound(SoundType.WOOL), Blocks.LIGHT_BLUE_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_WOOL = reinforcedBlock("reinforced_light_blue_wool", Blocks.LIGHT_BLUE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_YELLOW_WOOL = BLOCKS.register("reinforced_yellow_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_YELLOW).sound(SoundType.WOOL), Blocks.YELLOW_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_YELLOW_WOOL = reinforcedBlock("reinforced_yellow_wool", Blocks.YELLOW_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIME_WOOL = BLOCKS.register("reinforced_lime_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_LIGHT_GREEN).sound(SoundType.WOOL), Blocks.LIME_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIME_WOOL = reinforcedBlock("reinforced_lime_wool", Blocks.LIME_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PINK_WOOL = BLOCKS.register("reinforced_pink_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_PINK).sound(SoundType.WOOL), Blocks.PINK_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PINK_WOOL = reinforcedBlock("reinforced_pink_wool", Blocks.PINK_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRAY_WOOL = BLOCKS.register("reinforced_gray_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_GRAY).sound(SoundType.WOOL), Blocks.GRAY_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GRAY_WOOL = reinforcedBlock("reinforced_gray_wool", Blocks.GRAY_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_WOOL = BLOCKS.register("reinforced_light_gray_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_LIGHT_GRAY).sound(SoundType.WOOL), Blocks.LIGHT_GRAY_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_WOOL = reinforcedBlock("reinforced_light_gray_wool", Blocks.LIGHT_GRAY_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CYAN_WOOL = BLOCKS.register("reinforced_cyan_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_CYAN).sound(SoundType.WOOL), Blocks.CYAN_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CYAN_WOOL = reinforcedBlock("reinforced_cyan_wool", Blocks.CYAN_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPLE_WOOL = BLOCKS.register("reinforced_purple_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_PURPLE).sound(SoundType.WOOL), Blocks.PURPLE_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PURPLE_WOOL = reinforcedBlock("reinforced_purple_wool", Blocks.PURPLE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLUE_WOOL = BLOCKS.register("reinforced_blue_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL), Blocks.BLUE_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLUE_WOOL = reinforcedBlock("reinforced_blue_wool", Blocks.BLUE_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BROWN_WOOL = BLOCKS.register("reinforced_brown_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_BROWN).sound(SoundType.WOOL), Blocks.BROWN_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BROWN_WOOL = reinforcedBlock("reinforced_brown_wool", Blocks.BROWN_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GREEN_WOOL = BLOCKS.register("reinforced_green_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_GREEN).sound(SoundType.WOOL), Blocks.GREEN_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GREEN_WOOL = reinforcedBlock("reinforced_green_wool", Blocks.GREEN_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_WOOL = BLOCKS.register("reinforced_red_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_RED).sound(SoundType.WOOL), Blocks.RED_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RED_WOOL = reinforcedBlock("reinforced_red_wool", Blocks.RED_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACK_WOOL = BLOCKS.register("reinforced_black_wool", () -> new BaseReinforcedBlock(prop(Material.WOOL, MaterialColor.COLOR_BLACK).sound(SoundType.WOOL), Blocks.BLACK_WOOL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLACK_WOOL = reinforcedBlock("reinforced_black_wool", Blocks.BLACK_WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_SLAB = BLOCKS.register("reinforced_oak_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.OAK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_OAK_SLAB = reinforcedBlock("reinforced_oak_slab", Blocks.OAK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_SLAB = BLOCKS.register("reinforced_spruce_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.SPRUCE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_SPRUCE_SLAB = reinforcedBlock("reinforced_spruce_slab", Blocks.SPRUCE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_SLAB = BLOCKS.register("reinforced_birch_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), Blocks.BIRCH_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_BIRCH_SLAB = reinforcedBlock("reinforced_birch_slab", Blocks.BIRCH_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_SLAB = BLOCKS.register("reinforced_jungle_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), Blocks.JUNGLE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_JUNGLE_SLAB = reinforcedBlock("reinforced_jungle_slab", Blocks.JUNGLE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_SLAB = BLOCKS.register("reinforced_acacia_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOD), Blocks.ACACIA_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_ACACIA_SLAB = reinforcedBlock("reinforced_acacia_slab", Blocks.ACACIA_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_SLAB = BLOCKS.register("reinforced_dark_oak_slab", () -> new ReinforcedSlabBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.DARK_OAK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_DARK_OAK_SLAB = reinforcedBlock("reinforced_dark_oak_slab", Blocks.DARK_OAK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_SLAB = BLOCKS.register("reinforced_crimson_slab", () -> new ReinforcedSlabBlock(prop(Material.NETHER_WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.WOOD), Blocks.CRIMSON_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_CRIMSON_SLAB = reinforcedBlock("reinforced_crimson_slab", Blocks.CRIMSON_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_SLAB = BLOCKS.register("reinforced_warped_slab", () -> new ReinforcedSlabBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_STEM).sound(SoundType.WOOD), Blocks.WARPED_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_WARPED_SLAB = reinforcedBlock("reinforced_warped_slab", Blocks.WARPED_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NORMAL_STONE_SLAB = BLOCKS.register("reinforced_normal_stone_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.STONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_NORMAL_STONE_SLAB = reinforcedBlock("reinforced_normal_stone_slab", Blocks.STONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_STONE_SLAB = BLOCKS.register("reinforced_stone_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.SMOOTH_STONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_SMOOTH_STONE_SLAB = reinforcedBlock("reinforced_stone_slab", Blocks.SMOOTH_STONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SANDSTONE_SLAB = BLOCKS.register("reinforced_sandstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.SAND), Blocks.SANDSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_SANDSTONE_SLAB = reinforcedBlock("reinforced_sandstone_slab", Blocks.SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CUT_SANDSTONE_SLAB = BLOCKS.register("reinforced_cut_sandstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.SAND), Blocks.CUT_SANDSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_CUT_SANDSTONE_SLAB = reinforcedBlock("reinforced_cut_sandstone_slab", Blocks.CUT_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLESTONE_SLAB = BLOCKS.register("reinforced_cobblestone_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.COBBLESTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_COBBLESTONE_SLAB = reinforcedBlock("reinforced_cobblestone_slab", Blocks.COBBLESTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BRICK_SLAB = BLOCKS.register("reinforced_brick_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_RED), Blocks.BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_BRICK_SLAB = reinforcedBlock("reinforced_brick_slab", Blocks.BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_BRICK_SLAB = BLOCKS.register("reinforced_stone_brick_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.STONE_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_STONE_BRICK_SLAB = reinforcedBlock("reinforced_stone_brick_slab", Blocks.STONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHER_BRICK_SLAB = BLOCKS.register("reinforced_nether_brick_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_NETHER_BRICK_SLAB = reinforcedBlock("reinforced_nether_brick_slab", Blocks.NETHER_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_QUARTZ_SLAB = BLOCKS.register("reinforced_quartz_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.QUARTZ), Blocks.QUARTZ_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_QUARTZ_SLAB = reinforcedBlock("reinforced_quartz_slab", Blocks.QUARTZ_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_SANDSTONE_SLAB = BLOCKS.register("reinforced_red_sandstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.RED_SANDSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_RED_SANDSTONE_SLAB = reinforcedBlock("reinforced_red_sandstone_slab", Blocks.RED_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CUT_RED_SANDSTONE_SLAB = BLOCKS.register("reinforced_cut_red_sandstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.CUT_RED_SANDSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_CUT_RED_SANDSTONE_SLAB = reinforcedBlock("reinforced_cut_red_sandstone_slab", Blocks.CUT_RED_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPUR_SLAB = BLOCKS.register("reinforced_purpur_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_MAGENTA), Blocks.PURPUR_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_PURPUR_SLAB = reinforcedBlock("reinforced_purpur_slab", Blocks.PURPUR_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PRISMARINE_SLAB = BLOCKS.register("reinforced_prismarine_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_CYAN), Blocks.PRISMARINE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_PRISMARINE_SLAB = reinforcedBlock("reinforced_prismarine_slab", Blocks.PRISMARINE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PRISMARINE_BRICK_SLAB = BLOCKS.register("reinforced_prismarine_brick_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DIAMOND), Blocks.PRISMARINE_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_PRISMARINE_BRICK_SLAB = reinforcedBlock("reinforced_prismarine_brick_slab", Blocks.PRISMARINE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_PRISMARINE_SLAB = BLOCKS.register("reinforced_dark_prismarine_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DIAMOND), Blocks.DARK_PRISMARINE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_DARK_PRISMARINE_SLAB = reinforcedBlock("reinforced_dark_prismarine_slab", Blocks.DARK_PRISMARINE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_QUARTZ = BLOCKS.register("reinforced_smooth_quartz", () -> new BaseReinforcedBlock(prop(MaterialColor.QUARTZ), Blocks.SMOOTH_QUARTZ));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SMOOTH_QUARTZ = reinforcedBlock("reinforced_smooth_quartz", Blocks.SMOOTH_QUARTZ);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_RED_SANDSTONE = BLOCKS.register("reinforced_smooth_red_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.SMOOTH_RED_SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SMOOTH_RED_SANDSTONE = reinforcedBlock("reinforced_smooth_red_sandstone", Blocks.SMOOTH_RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_SANDSTONE = BLOCKS.register("reinforced_smooth_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.SAND), Blocks.SMOOTH_SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SMOOTH_SANDSTONE = reinforcedBlock("reinforced_smooth_sandstone", Blocks.SMOOTH_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_STONE = BLOCKS.register("reinforced_smooth_stone", () -> new BaseReinforcedBlock(prop(), Blocks.SMOOTH_STONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SMOOTH_STONE = reinforcedBlock("reinforced_smooth_stone", Blocks.SMOOTH_STONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BRICKS = BLOCKS.register("reinforced_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_RED), Blocks.BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BRICKS = reinforcedBlock("reinforced_bricks", Blocks.BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BOOKSHELF = BLOCKS.register("reinforced_bookshelf", () -> new ReinforcedBookshelfBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.BOOKSHELF));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BOOKSHELF = reinforcedBlock("reinforced_bookshelf", Blocks.BOOKSHELF);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_COBBLESTONE = BLOCKS.register("reinforced_mossy_cobblestone", () -> new BaseReinforcedBlock(prop(), Blocks.MOSSY_COBBLESTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_MOSSY_COBBLESTONE = reinforcedBlock("reinforced_mossy_cobblestone", Blocks.MOSSY_COBBLESTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OBSIDIAN = BLOCKS.register("reinforced_obsidian", () -> new ReinforcedObsidianBlock(prop(MaterialColor.COLOR_BLACK), Blocks.OBSIDIAN));
+	public static final RegistryObject<ReinforcedObsidianBlock> REINFORCED_OBSIDIAN = reinforcedBlock("reinforced_obsidian", Blocks.OBSIDIAN, ReinforcedObsidianBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPUR_BLOCK = BLOCKS.register("reinforced_purpur_block", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_MAGENTA), Blocks.PURPUR_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PURPUR_BLOCK = reinforcedBlock("reinforced_purpur_block", Blocks.PURPUR_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPUR_PILLAR = BLOCKS.register("reinforced_purpur_pillar", () -> new ReinforcedRotatedPillarBlock(prop(MaterialColor.COLOR_MAGENTA), Blocks.PURPUR_PILLAR));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_PURPUR_PILLAR = reinforcedBlock("reinforced_purpur_pillar", Blocks.PURPUR_PILLAR, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPUR_STAIRS = BLOCKS.register("reinforced_purpur_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_MAGENTA), Blocks.PURPUR_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_PURPUR_STAIRS = reinforcedBlock("reinforced_purpur_stairs", Blocks.PURPUR_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_STAIRS = BLOCKS.register("reinforced_oak_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD).sound(SoundType.WOOD), Blocks.OAK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_OAK_STAIRS = reinforcedBlock("reinforced_oak_stairs", Blocks.OAK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLESTONE_STAIRS = BLOCKS.register("reinforced_cobblestone_stairs", () -> new ReinforcedStairsBlock(prop(), Blocks.COBBLESTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_COBBLESTONE_STAIRS = reinforcedBlock("reinforced_cobblestone_stairs", Blocks.COBBLESTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ICE = BLOCKS.register("reinforced_ice", () -> new BaseReinforcedBlock(prop(Material.ICE).friction(0.98F).sound(SoundType.GLASS).noOcclusion().isValidSpawn((state, level, pos, type) -> type == EntityType.POLAR_BEAR), Blocks.ICE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_ICE = reinforcedBlock("reinforced_ice", Blocks.ICE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SNOW_BLOCK = BLOCKS.register("reinforced_snow_block", () -> new BaseReinforcedBlock(prop(Material.SNOW).sound(SoundType.SNOW), Blocks.SNOW_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SNOW_BLOCK = reinforcedBlock("reinforced_snow_block", Blocks.SNOW_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CLAY = BLOCKS.register("reinforced_clay", () -> new BaseReinforcedBlock(prop(Material.CLAY).sound(SoundType.GRAVEL), Blocks.CLAY));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CLAY = reinforcedBlock("reinforced_clay", Blocks.CLAY);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHERRACK = BLOCKS.register("reinforced_netherrack", () -> new BaseReinforcedBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHERRACK), Blocks.NETHERRACK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_NETHERRACK = reinforcedBlock("reinforced_netherrack", Blocks.NETHERRACK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<ReinforcedSoulSandBlock> REINFORCED_SOUL_SAND = BLOCKS.register("reinforced_soul_sand", () -> new ReinforcedSoulSandBlock(Blocks.SOUL_SAND));
+	public static final RegistryObject<ReinforcedSoulSandBlock> REINFORCED_SOUL_SAND = reinforcedBlock("reinforced_soul_sand", Blocks.SOUL_SAND, ReinforcedSoulSandBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SOUL_SOIL = BLOCKS.register("reinforced_soul_soil", () -> new BaseReinforcedBlock(prop(Material.DIRT, MaterialColor.COLOR_BROWN).sound(SoundType.SOUL_SOIL), Blocks.SOUL_SOIL));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SOUL_SOIL = reinforcedBlock("reinforced_soul_soil", Blocks.SOUL_SOIL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BASALT = BLOCKS.register("reinforced_basalt", () -> new ReinforcedRotatedPillarBlock(prop(MaterialColor.COLOR_BLACK).sound(SoundType.BASALT), Blocks.BASALT));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_BASALT = reinforcedBlock("reinforced_basalt", Blocks.BASALT, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BASALT = BLOCKS.register("reinforced_polished_basalt", () -> new ReinforcedRotatedPillarBlock(prop(MaterialColor.COLOR_BLACK).sound(SoundType.BASALT), Blocks.POLISHED_BASALT));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_POLISHED_BASALT = reinforcedBlock("reinforced_polished_basalt", Blocks.POLISHED_BASALT, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_BASALT = BLOCKS.register("reinforced_smooth_basalt", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK).sound(SoundType.BASALT), Blocks.SMOOTH_BASALT));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SMOOTH_BASALT = reinforcedBlock("reinforced_smooth_basalt", Blocks.SMOOTH_BASALT);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GLOWSTONE = BLOCKS.register("reinforced_glowstone", () -> new BaseReinforcedBlock(prop(Material.GLASS, MaterialColor.SAND).sound(SoundType.GLASS).lightLevel(state -> 15), Blocks.GLOWSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GLOWSTONE = reinforcedBlock("reinforced_glowstone", Blocks.GLOWSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_BRICKS = BLOCKS.register("reinforced_stone_bricks", () -> new BaseReinforcedBlock(prop(), Blocks.STONE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_STONE_BRICKS = reinforcedBlock("reinforced_stone_bricks", Blocks.STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_STONE_BRICKS = BLOCKS.register("reinforced_mossy_stone_bricks", () -> new BaseReinforcedBlock(prop(), Blocks.MOSSY_STONE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_MOSSY_STONE_BRICKS = reinforcedBlock("reinforced_mossy_stone_bricks", Blocks.MOSSY_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRACKED_STONE_BRICKS = BLOCKS.register("reinforced_cracked_stone_bricks", () -> new BaseReinforcedBlock(prop(), Blocks.CRACKED_STONE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CRACKED_STONE_BRICKS = reinforcedBlock("reinforced_cracked_stone_bricks", Blocks.CRACKED_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHISELED_STONE_BRICKS = BLOCKS.register("reinforced_chiseled_stone_bricks", () -> new BaseReinforcedBlock(prop(), Blocks.CHISELED_STONE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CHISELED_STONE_BRICKS = reinforcedBlock("reinforced_chiseled_stone_bricks", Blocks.CHISELED_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_BRICKS = BLOCKS.register("reinforced_deepslate_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS), Blocks.DEEPSLATE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DEEPSLATE_BRICKS = reinforcedBlock("reinforced_deepslate_bricks", Blocks.DEEPSLATE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRACKED_DEEPSLATE_BRICKS = BLOCKS.register("reinforced_cracked_deepslate_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS), Blocks.CRACKED_DEEPSLATE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CRACKED_DEEPSLATE_BRICKS = reinforcedBlock("reinforced_cracked_deepslate_bricks", Blocks.CRACKED_DEEPSLATE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_TILES = BLOCKS.register("reinforced_deepslate_tiles", () -> new BaseReinforcedBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES), Blocks.DEEPSLATE_TILES));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DEEPSLATE_TILES = reinforcedBlock("reinforced_deepslate_tiles", Blocks.DEEPSLATE_TILES);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRACKED_DEEPSLATE_TILES = BLOCKS.register("reinforced_cracked_deepslate_tiles", () -> new BaseReinforcedBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES), Blocks.CRACKED_DEEPSLATE_TILES));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CRACKED_DEEPSLATE_TILES = reinforcedBlock("reinforced_cracked_deepslate_tiles", Blocks.CRACKED_DEEPSLATE_TILES);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHISELED_DEEPSLATE = BLOCKS.register("reinforced_chiseled_deepslate", () -> new BaseReinforcedBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS), Blocks.CHISELED_DEEPSLATE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CHISELED_DEEPSLATE = reinforcedBlock("reinforced_chiseled_deepslate", Blocks.CHISELED_DEEPSLATE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BRICK_STAIRS = BLOCKS.register("reinforced_brick_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_RED), Blocks.BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_BRICK_STAIRS = reinforcedBlock("reinforced_brick_stairs", Blocks.BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_BRICK_STAIRS = BLOCKS.register("reinforced_stone_brick_stairs", () -> new ReinforcedStairsBlock(prop(), Blocks.STONE_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_STONE_BRICK_STAIRS = reinforcedBlock("reinforced_stone_brick_stairs", Blocks.STONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MYCELIUM = BLOCKS.register("reinforced_mycelium", () -> new ReinforcedSnowyDirtBlock(prop(Material.GRASS, MaterialColor.COLOR_PURPLE).sound(SoundType.GRASS), Blocks.MYCELIUM));
+	public static final RegistryObject<ReinforcedSnowyDirtBlock> REINFORCED_MYCELIUM = reinforcedBlock("reinforced_mycelium", Blocks.MYCELIUM, ReinforcedSnowyDirtBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHER_BRICKS = BLOCKS.register("reinforced_nether_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_NETHER_BRICKS = reinforcedBlock("reinforced_nether_bricks", Blocks.NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRACKED_NETHER_BRICKS = BLOCKS.register("reinforced_cracked_nether_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.CRACKED_NETHER_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CRACKED_NETHER_BRICKS = reinforcedBlock("reinforced_cracked_nether_bricks", Blocks.CRACKED_NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHISELED_NETHER_BRICKS = BLOCKS.register("reinforced_chiseled_nether_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.CHISELED_NETHER_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CHISELED_NETHER_BRICKS = reinforcedBlock("reinforced_chiseled_nether_bricks", Blocks.CHISELED_NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHER_BRICK_STAIRS = BLOCKS.register("reinforced_nether_brick_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_NETHER_BRICK_STAIRS = reinforcedBlock("reinforced_nether_brick_stairs", Blocks.NETHER_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_STONE = BLOCKS.register("reinforced_end_stone", () -> new BaseReinforcedBlock(prop(MaterialColor.SAND), Blocks.END_STONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_END_STONE = reinforcedBlock("reinforced_end_stone", Blocks.END_STONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_STONE_BRICKS = BLOCKS.register("reinforced_end_stone_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.SAND), Blocks.END_STONE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_END_STONE_BRICKS = reinforcedBlock("reinforced_end_stone_bricks", Blocks.END_STONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SANDSTONE_STAIRS = BLOCKS.register("reinforced_sandstone_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.SAND), Blocks.SANDSTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_SANDSTONE_STAIRS = reinforcedBlock("reinforced_sandstone_stairs", Blocks.SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_EMERALD_BLOCK = BLOCKS.register("reinforced_emerald_block", () -> new BaseReinforcedBlock(prop(Material.METAL, MaterialColor.EMERALD).sound(SoundType.METAL), Blocks.EMERALD_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_EMERALD_BLOCK = reinforcedBlock("reinforced_emerald_block", Blocks.EMERALD_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_STAIRS = BLOCKS.register("reinforced_spruce_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, MaterialColor.PODZOL).sound(SoundType.WOOD), Blocks.SPRUCE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_SPRUCE_STAIRS = reinforcedBlock("reinforced_spruce_stairs", Blocks.SPRUCE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_STAIRS = BLOCKS.register("reinforced_birch_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, MaterialColor.SAND).sound(SoundType.WOOD), Blocks.BIRCH_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_BIRCH_STAIRS = reinforcedBlock("reinforced_birch_stairs", Blocks.BIRCH_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_STAIRS = BLOCKS.register("reinforced_jungle_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, MaterialColor.DIRT).sound(SoundType.WOOD), Blocks.JUNGLE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_JUNGLE_STAIRS = reinforcedBlock("reinforced_jungle_stairs", Blocks.JUNGLE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_STAIRS = BLOCKS.register("reinforced_crimson_stairs", () -> new ReinforcedStairsBlock(prop(Material.NETHER_WOOD, MaterialColor.CRIMSON_STEM).sound(SoundType.WOOD), Blocks.CRIMSON_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_CRIMSON_STAIRS = reinforcedBlock("reinforced_crimson_stairs", Blocks.CRIMSON_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_STAIRS = BLOCKS.register("reinforced_warped_stairs", () -> new ReinforcedStairsBlock(prop(Material.NETHER_WOOD, MaterialColor.WARPED_STEM).sound(SoundType.WOOD), Blocks.WARPED_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_WARPED_STAIRS = reinforcedBlock("reinforced_warped_stairs", Blocks.WARPED_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHISELED_QUARTZ = BLOCKS.register("reinforced_chiseled_quartz_block", () -> new BaseReinforcedBlock(prop(MaterialColor.QUARTZ), Blocks.CHISELED_QUARTZ_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CHISELED_QUARTZ = reinforcedBlock("reinforced_chiseled_quartz_block", Blocks.CHISELED_QUARTZ_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_QUARTZ_BLOCK = BLOCKS.register("reinforced_quartz_block", () -> new BaseReinforcedBlock(prop(MaterialColor.QUARTZ), Blocks.QUARTZ_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_QUARTZ_BLOCK = reinforcedBlock("reinforced_quartz_block", Blocks.QUARTZ_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_QUARTZ_BRICKS = BLOCKS.register("reinforced_quartz_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.QUARTZ), Blocks.QUARTZ_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_QUARTZ_BRICKS = reinforcedBlock("reinforced_quartz_bricks", Blocks.QUARTZ_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_QUARTZ_PILLAR = BLOCKS.register("reinforced_quartz_pillar", () -> new ReinforcedRotatedPillarBlock(prop(MaterialColor.QUARTZ), Blocks.QUARTZ_PILLAR));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_QUARTZ_PILLAR = reinforcedBlock("reinforced_quartz_pillar", Blocks.QUARTZ_PILLAR, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_QUARTZ_STAIRS = BLOCKS.register("reinforced_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.QUARTZ), Blocks.QUARTZ_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_QUARTZ_STAIRS = reinforcedBlock("reinforced_quartz_stairs", Blocks.QUARTZ_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WHITE_TERRACOTTA = BLOCKS.register("reinforced_white_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_WHITE), Blocks.WHITE_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_WHITE_TERRACOTTA = reinforcedBlock("reinforced_white_terracotta", Blocks.WHITE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ORANGE_TERRACOTTA = BLOCKS.register("reinforced_orange_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_ORANGE), Blocks.ORANGE_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_ORANGE_TERRACOTTA = reinforcedBlock("reinforced_orange_terracotta", Blocks.ORANGE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_TERRACOTTA = BLOCKS.register("reinforced_magenta_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_MAGENTA), Blocks.MAGENTA_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_MAGENTA_TERRACOTTA = reinforcedBlock("reinforced_magenta_terracotta", Blocks.MAGENTA_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_TERRACOTTA = BLOCKS.register("reinforced_light_blue_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_LIGHT_BLUE), Blocks.LIGHT_BLUE_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_TERRACOTTA = reinforcedBlock("reinforced_light_blue_terracotta", Blocks.LIGHT_BLUE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_YELLOW_TERRACOTTA = BLOCKS.register("reinforced_yellow_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_YELLOW), Blocks.YELLOW_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_YELLOW_TERRACOTTA = reinforcedBlock("reinforced_yellow_terracotta", Blocks.YELLOW_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIME_TERRACOTTA = BLOCKS.register("reinforced_lime_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_LIGHT_GREEN), Blocks.LIME_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIME_TERRACOTTA = reinforcedBlock("reinforced_lime_terracotta", Blocks.LIME_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PINK_TERRACOTTA = BLOCKS.register("reinforced_pink_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_PINK), Blocks.PINK_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PINK_TERRACOTTA = reinforcedBlock("reinforced_pink_terracotta", Blocks.PINK_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRAY_TERRACOTTA = BLOCKS.register("reinforced_gray_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_GRAY), Blocks.GRAY_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GRAY_TERRACOTTA = reinforcedBlock("reinforced_gray_terracotta", Blocks.GRAY_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_TERRACOTTA = BLOCKS.register("reinforced_light_gray_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_LIGHT_GRAY), Blocks.LIGHT_GRAY_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_TERRACOTTA = reinforcedBlock("reinforced_light_gray_terracotta", Blocks.LIGHT_GRAY_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CYAN_TERRACOTTA = BLOCKS.register("reinforced_cyan_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_CYAN), Blocks.CYAN_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CYAN_TERRACOTTA = reinforcedBlock("reinforced_cyan_terracotta", Blocks.CYAN_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPLE_TERRACOTTA = BLOCKS.register("reinforced_purple_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_PURPLE), Blocks.PURPLE_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PURPLE_TERRACOTTA = reinforcedBlock("reinforced_purple_terracotta", Blocks.PURPLE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLUE_TERRACOTTA = BLOCKS.register("reinforced_blue_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_BLUE), Blocks.BLUE_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLUE_TERRACOTTA = reinforcedBlock("reinforced_blue_terracotta", Blocks.BLUE_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BROWN_TERRACOTTA = BLOCKS.register("reinforced_brown_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_BROWN), Blocks.BROWN_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BROWN_TERRACOTTA = reinforcedBlock("reinforced_brown_terracotta", Blocks.BROWN_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GREEN_TERRACOTTA = BLOCKS.register("reinforced_green_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_GREEN), Blocks.GREEN_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GREEN_TERRACOTTA = reinforcedBlock("reinforced_green_terracotta", Blocks.GREEN_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_TERRACOTTA = BLOCKS.register("reinforced_red_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_RED), Blocks.RED_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RED_TERRACOTTA = reinforcedBlock("reinforced_red_terracotta", Blocks.RED_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACK_TERRACOTTA = BLOCKS.register("reinforced_black_terracotta", () -> new BaseReinforcedBlock(prop(MaterialColor.TERRACOTTA_BLACK), Blocks.BLACK_TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLACK_TERRACOTTA = reinforcedBlock("reinforced_black_terracotta", Blocks.BLACK_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_TERRACOTTA = BLOCKS.register("reinforced_hardened_clay", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.TERRACOTTA));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_TERRACOTTA = reinforcedBlock("reinforced_hardened_clay", Blocks.TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PACKED_ICE = BLOCKS.register("reinforced_packed_ice", () -> new BaseReinforcedBlock(prop(Material.ICE_SOLID).sound(SoundType.GLASS).friction(0.98F), Blocks.PACKED_ICE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PACKED_ICE = reinforcedBlock("reinforced_packed_ice", Blocks.PACKED_ICE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_STAIRS = BLOCKS.register("reinforced_acacia_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOD), Blocks.ACACIA_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_ACACIA_STAIRS = reinforcedBlock("reinforced_acacia_stairs", Blocks.ACACIA_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_STAIRS = BLOCKS.register("reinforced_dark_oak_stairs", () -> new ReinforcedStairsBlock(prop(Material.WOOD, MaterialColor.COLOR_BROWN).sound(SoundType.WOOD), Blocks.DARK_OAK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_DARK_OAK_STAIRS = reinforcedBlock("reinforced_dark_oak_stairs", Blocks.DARK_OAK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_WHITE_STAINED_GLASS = BLOCKS.register("reinforced_white_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.SNOW), DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_WHITE_STAINED_GLASS = reinforcedBlock("reinforced_white_stained_glass", Blocks.WHITE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_ORANGE_STAINED_GLASS = BLOCKS.register("reinforced_orange_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_ORANGE), DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_ORANGE_STAINED_GLASS = reinforcedBlock("reinforced_orange_stained_glass", Blocks.ORANGE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_STAINED_GLASS = BLOCKS.register("reinforced_magenta_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_MAGENTA), DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_MAGENTA_STAINED_GLASS = reinforcedBlock("reinforced_magenta_stained_glass", Blocks.MAGENTA_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_light_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_LIGHT_BLUE), DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_light_blue_stained_glass", Blocks.LIGHT_BLUE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_YELLOW_STAINED_GLASS = BLOCKS.register("reinforced_yellow_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_YELLOW), DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_YELLOW_STAINED_GLASS = reinforcedBlock("reinforced_yellow_stained_glass", Blocks.YELLOW_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIME_STAINED_GLASS = BLOCKS.register("reinforced_lime_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_LIGHT_GREEN), DyeColor.LIME, Blocks.LIME_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_LIME_STAINED_GLASS = reinforcedBlock("reinforced_lime_stained_glass", Blocks.LIME_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_PINK_STAINED_GLASS = BLOCKS.register("reinforced_pink_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_PINK), DyeColor.PINK, Blocks.PINK_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_PINK_STAINED_GLASS = reinforcedBlock("reinforced_pink_stained_glass", Blocks.PINK_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_GRAY), DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_gray_stained_glass", Blocks.GRAY_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_STAINED_GLASS = BLOCKS.register("reinforced_light_gray_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_LIGHT_GRAY), DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_light_gray_stained_glass", Blocks.LIGHT_GRAY_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_CYAN_STAINED_GLASS = BLOCKS.register("reinforced_cyan_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_CYAN), DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_CYAN_STAINED_GLASS = reinforcedBlock("reinforced_cyan_stained_glass", Blocks.CYAN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_PURPLE_STAINED_GLASS = BLOCKS.register("reinforced_purple_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_PURPLE), DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_PURPLE_STAINED_GLASS = reinforcedBlock("reinforced_purple_stained_glass", Blocks.PURPLE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BLUE_STAINED_GLASS = BLOCKS.register("reinforced_blue_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_BLUE), DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_blue_stained_glass", Blocks.BLUE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BROWN_STAINED_GLASS = BLOCKS.register("reinforced_brown_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_BROWN), DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_BROWN_STAINED_GLASS = reinforcedBlock("reinforced_brown_stained_glass", Blocks.BROWN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS = BLOCKS.register("reinforced_green_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_GREEN), DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_GREEN_STAINED_GLASS = reinforcedBlock("reinforced_green_stained_glass", Blocks.GREEN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS = BLOCKS.register("reinforced_red_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_RED), DyeColor.RED, Blocks.RED_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_RED_STAINED_GLASS = reinforcedBlock("reinforced_red_stained_glass", Blocks.RED_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS = BLOCKS.register("reinforced_black_stained_glass", () -> new ReinforcedStainedGlassBlock(glassProp(MaterialColor.COLOR_BLACK), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS));
+	public static final RegistryObject<ReinforcedStainedGlassBlock> REINFORCED_BLACK_STAINED_GLASS = reinforcedBlock("reinforced_black_stained_glass", Blocks.BLACK_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PRISMARINE = BLOCKS.register("reinforced_prismarine", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_CYAN), Blocks.PRISMARINE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PRISMARINE = reinforcedBlock("reinforced_prismarine", Blocks.PRISMARINE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PRISMARINE_BRICKS = BLOCKS.register("reinforced_prismarine_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.DIAMOND), Blocks.PRISMARINE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PRISMARINE_BRICKS = reinforcedBlock("reinforced_prismarine_bricks", Blocks.PRISMARINE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_PRISMARINE = BLOCKS.register("reinforced_dark_prismarine", () -> new BaseReinforcedBlock(prop(MaterialColor.DIAMOND), Blocks.DARK_PRISMARINE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_DARK_PRISMARINE = reinforcedBlock("reinforced_dark_prismarine", Blocks.DARK_PRISMARINE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PRISMARINE_STAIRS = BLOCKS.register("reinforced_prismarine_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_CYAN), Blocks.PRISMARINE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_PRISMARINE_STAIRS = reinforcedBlock("reinforced_prismarine_stairs", Blocks.PRISMARINE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PRISMARINE_BRICK_STAIRS = BLOCKS.register("reinforced_prismarine_brick_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DIAMOND), Blocks.PRISMARINE_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_PRISMARINE_BRICK_STAIRS = reinforcedBlock("reinforced_prismarine_brick_stairs", Blocks.PRISMARINE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_PRISMARINE_STAIRS = BLOCKS.register("reinforced_dark_prismarine_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DIAMOND), Blocks.DARK_PRISMARINE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_DARK_PRISMARINE_STAIRS = reinforcedBlock("reinforced_dark_prismarine_stairs", Blocks.DARK_PRISMARINE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SEA_LANTERN = BLOCKS.register("reinforced_sea_lantern", () -> new BaseReinforcedBlock(prop(Material.GLASS, MaterialColor.QUARTZ).sound(SoundType.GLASS).lightLevel(state -> 15), Blocks.SEA_LANTERN));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SEA_LANTERN = reinforcedBlock("reinforced_sea_lantern", Blocks.SEA_LANTERN);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_SANDSTONE = BLOCKS.register("reinforced_red_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.RED_SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RED_SANDSTONE = reinforcedBlock("reinforced_red_sandstone", Blocks.RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHISELED_RED_SANDSTONE = BLOCKS.register("reinforced_chiseled_red_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.CHISELED_RED_SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CHISELED_RED_SANDSTONE = reinforcedBlock("reinforced_chiseled_red_sandstone", Blocks.CHISELED_RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CUT_RED_SANDSTONE = BLOCKS.register("reinforced_cut_red_sandstone", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.CUT_RED_SANDSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CUT_RED_SANDSTONE = reinforcedBlock("reinforced_cut_red_sandstone", Blocks.CUT_RED_SANDSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_SANDSTONE_STAIRS = BLOCKS.register("reinforced_red_sandstone_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.RED_SANDSTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_RED_SANDSTONE_STAIRS = reinforcedBlock("reinforced_red_sandstone_stairs", Blocks.RED_SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<ReinforcedMagmaBlock> REINFORCED_MAGMA_BLOCK = BLOCKS.register("reinforced_magma_block", () -> new ReinforcedMagmaBlock(Blocks.MAGMA_BLOCK));
+	public static final RegistryObject<ReinforcedMagmaBlock> REINFORCED_MAGMA_BLOCK = reinforcedBlock("reinforced_magma_block", Blocks.MAGMA_BLOCK, ReinforcedMagmaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHER_WART_BLOCK = BLOCKS.register("reinforced_nether_wart_block", () -> new BaseReinforcedBlock(prop(Material.GRASS, MaterialColor.COLOR_RED).sound(SoundType.WART_BLOCK), Blocks.NETHER_WART_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_NETHER_WART_BLOCK = reinforcedBlock("reinforced_nether_wart_block", Blocks.NETHER_WART_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_WART_BLOCK = BLOCKS.register("reinforced_warped_wart_block", () -> new BaseReinforcedBlock(prop(Material.GRASS, MaterialColor.WARPED_WART_BLOCK).sound(SoundType.WART_BLOCK), Blocks.WARPED_WART_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_WARPED_WART_BLOCK = reinforcedBlock("reinforced_warped_wart_block", Blocks.WARPED_WART_BLOCK);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICKS = BLOCKS.register("reinforced_red_nether_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.RED_NETHER_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RED_NETHER_BRICKS = reinforcedBlock("reinforced_red_nether_bricks", Blocks.RED_NETHER_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BONE_BLOCK = BLOCKS.register("reinforced_bone_block", () -> new ReinforcedRotatedPillarBlock(prop(MaterialColor.SAND).sound(SoundType.BONE_BLOCK), Blocks.BONE_BLOCK));
+	public static final RegistryObject<ReinforcedRotatedPillarBlock> REINFORCED_BONE_BLOCK = reinforcedBlock("reinforced_bone_block", Blocks.BONE_BLOCK, ReinforcedRotatedPillarBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WHITE_CONCRETE = BLOCKS.register("reinforced_white_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.SNOW), Blocks.WHITE_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_WHITE_CONCRETE = reinforcedBlock("reinforced_white_concrete", Blocks.WHITE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ORANGE_CONCRETE = BLOCKS.register("reinforced_orange_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.ORANGE_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_ORANGE_CONCRETE = reinforcedBlock("reinforced_orange_concrete", Blocks.ORANGE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_CONCRETE = BLOCKS.register("reinforced_magenta_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_MAGENTA), Blocks.MAGENTA_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_MAGENTA_CONCRETE = reinforcedBlock("reinforced_magenta_concrete", Blocks.MAGENTA_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_CONCRETE = BLOCKS.register("reinforced_light_blue_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_LIGHT_BLUE), Blocks.LIGHT_BLUE_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_CONCRETE = reinforcedBlock("reinforced_light_blue_concrete", Blocks.LIGHT_BLUE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_YELLOW_CONCRETE = BLOCKS.register("reinforced_yellow_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_YELLOW), Blocks.YELLOW_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_YELLOW_CONCRETE = reinforcedBlock("reinforced_yellow_concrete", Blocks.YELLOW_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIME_CONCRETE = BLOCKS.register("reinforced_lime_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_LIGHT_GREEN), Blocks.LIME_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIME_CONCRETE = reinforcedBlock("reinforced_lime_concrete", Blocks.LIME_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PINK_CONCRETE = BLOCKS.register("reinforced_pink_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_PINK), Blocks.PINK_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PINK_CONCRETE = reinforcedBlock("reinforced_pink_concrete", Blocks.PINK_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRAY_CONCRETE = BLOCKS.register("reinforced_gray_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_GRAY), Blocks.GRAY_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GRAY_CONCRETE = reinforcedBlock("reinforced_gray_concrete", Blocks.GRAY_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_CONCRETE = BLOCKS.register("reinforced_light_gray_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_LIGHT_GRAY), Blocks.LIGHT_GRAY_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_CONCRETE = reinforcedBlock("reinforced_light_gray_concrete", Blocks.LIGHT_GRAY_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CYAN_CONCRETE = BLOCKS.register("reinforced_cyan_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_CYAN), Blocks.CYAN_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CYAN_CONCRETE = reinforcedBlock("reinforced_cyan_concrete", Blocks.CYAN_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPLE_CONCRETE = BLOCKS.register("reinforced_purple_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_PURPLE), Blocks.PURPLE_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_PURPLE_CONCRETE = reinforcedBlock("reinforced_purple_concrete", Blocks.PURPLE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLUE_CONCRETE = BLOCKS.register("reinforced_blue_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLUE), Blocks.BLUE_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLUE_CONCRETE = reinforcedBlock("reinforced_blue_concrete", Blocks.BLUE_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BROWN_CONCRETE = BLOCKS.register("reinforced_brown_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BROWN), Blocks.BROWN_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BROWN_CONCRETE = reinforcedBlock("reinforced_brown_concrete", Blocks.BROWN_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GREEN_CONCRETE = BLOCKS.register("reinforced_green_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_GREEN), Blocks.GREEN_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_GREEN_CONCRETE = reinforcedBlock("reinforced_green_concrete", Blocks.GREEN_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_CONCRETE = BLOCKS.register("reinforced_red_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_RED), Blocks.RED_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_RED_CONCRETE = reinforcedBlock("reinforced_red_concrete", Blocks.RED_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACK_CONCRETE = BLOCKS.register("reinforced_black_concrete", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK), Blocks.BLACK_CONCRETE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLACK_CONCRETE = reinforcedBlock("reinforced_black_concrete", Blocks.BLACK_CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLUE_ICE = BLOCKS.register("reinforced_blue_ice", () -> new BaseReinforcedBlock(prop(Material.ICE_SOLID).sound(SoundType.GLASS).friction(0.989F), Blocks.BLUE_ICE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLUE_ICE = reinforcedBlock("reinforced_blue_ice", Blocks.BLUE_ICE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_GRANITE_STAIRS = BLOCKS.register("reinforced_polished_granite_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DIRT), Blocks.POLISHED_GRANITE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_POLISHED_GRANITE_STAIRS = reinforcedBlock("reinforced_polished_granite_stairs", Blocks.POLISHED_GRANITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS = BLOCKS.register("reinforced_smooth_red_sandstone_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.SMOOTH_RED_SANDSTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS = reinforcedBlock("reinforced_smooth_red_sandstone_stairs", Blocks.SMOOTH_RED_SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_STONE_BRICK_STAIRS = BLOCKS.register("reinforced_mossy_stone_brick_stairs", () -> new ReinforcedStairsBlock(prop(), Blocks.MOSSY_STONE_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_MOSSY_STONE_BRICK_STAIRS = reinforcedBlock("reinforced_mossy_stone_brick_stairs", Blocks.MOSSY_STONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_DIORITE_STAIRS = BLOCKS.register("reinforced_polished_diorite_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.QUARTZ), Blocks.POLISHED_DIORITE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_POLISHED_DIORITE_STAIRS = reinforcedBlock("reinforced_polished_diorite_stairs", Blocks.POLISHED_DIORITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_COBBLESTONE_STAIRS = BLOCKS.register("reinforced_mossy_cobblestone_stairs", () -> new ReinforcedStairsBlock(prop(), Blocks.MOSSY_COBBLESTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_MOSSY_COBBLESTONE_STAIRS = reinforcedBlock("reinforced_mossy_cobblestone_stairs", Blocks.MOSSY_COBBLESTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_STONE_BRICK_STAIRS = BLOCKS.register("reinforced_end_stone_brick_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.SAND), Blocks.END_STONE_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_END_STONE_BRICK_STAIRS = reinforcedBlock("reinforced_end_stone_brick_stairs", Blocks.END_STONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_STAIRS = BLOCKS.register("reinforced_stone_stairs", () -> new ReinforcedStairsBlock(prop(), Blocks.STONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_STONE_STAIRS = reinforcedBlock("reinforced_stone_stairs", Blocks.STONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_SANDSTONE_STAIRS = BLOCKS.register("reinforced_smooth_sandstone_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.SAND), Blocks.SMOOTH_SANDSTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_SMOOTH_SANDSTONE_STAIRS = reinforcedBlock("reinforced_smooth_sandstone_stairs", Blocks.SMOOTH_SANDSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_QUARTZ_STAIRS = BLOCKS.register("reinforced_smooth_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.QUARTZ), Blocks.SMOOTH_QUARTZ_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_SMOOTH_QUARTZ_STAIRS = reinforcedBlock("reinforced_smooth_quartz_stairs", Blocks.SMOOTH_QUARTZ_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRANITE_STAIRS = BLOCKS.register("reinforced_granite_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DIRT), Blocks.GRANITE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_GRANITE_STAIRS = reinforcedBlock("reinforced_granite_stairs", Blocks.GRANITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ANDESITE_STAIRS = BLOCKS.register("reinforced_andesite_stairs", () -> new ReinforcedStairsBlock(prop(), Blocks.ANDESITE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_ANDESITE_STAIRS = reinforcedBlock("reinforced_andesite_stairs", Blocks.ANDESITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICK_STAIRS = BLOCKS.register("reinforced_red_nether_brick_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.RED_NETHER_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_RED_NETHER_BRICK_STAIRS = reinforcedBlock("reinforced_red_nether_brick_stairs", Blocks.RED_NETHER_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_ANDESITE_STAIRS = BLOCKS.register("reinforced_polished_andesite_stairs", () -> new ReinforcedStairsBlock(prop(), Blocks.POLISHED_ANDESITE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_POLISHED_ANDESITE_STAIRS = reinforcedBlock("reinforced_polished_andesite_stairs", Blocks.POLISHED_ANDESITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DIORITE_STAIRS = BLOCKS.register("reinforced_diorite_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.QUARTZ), Blocks.DIORITE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_DIORITE_STAIRS = reinforcedBlock("reinforced_diorite_stairs", Blocks.DIORITE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLED_DEEPSLATE_STAIRS = BLOCKS.register("reinforced_cobbled_deepslate_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE), Blocks.COBBLED_DEEPSLATE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_COBBLED_DEEPSLATE_STAIRS = reinforcedBlock("reinforced_cobbled_deepslate_stairs", Blocks.COBBLED_DEEPSLATE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_DEEPSLATE_STAIRS = BLOCKS.register("reinforced_polished_deepslate_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE), Blocks.POLISHED_DEEPSLATE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_POLISHED_DEEPSLATE_STAIRS = reinforcedBlock("reinforced_polished_deepslate_stairs", Blocks.POLISHED_DEEPSLATE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_BRICK_STAIRS = BLOCKS.register("reinforced_deepslate_brick_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS), Blocks.DEEPSLATE_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_DEEPSLATE_BRICK_STAIRS = reinforcedBlock("reinforced_deepslate_brick_stairs", Blocks.DEEPSLATE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_TILE_STAIRS = BLOCKS.register("reinforced_deepslate_tile_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES), Blocks.DEEPSLATE_TILE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_DEEPSLATE_TILE_STAIRS = reinforcedBlock("reinforced_deepslate_tile_stairs", Blocks.DEEPSLATE_TILE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_GRANITE_SLAB = BLOCKS.register("reinforced_polished_granite_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DIRT), Blocks.POLISHED_GRANITE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_POLISHED_GRANITE_SLAB = reinforcedBlock("reinforced_polished_granite_slab", Blocks.POLISHED_GRANITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_RED_SANDSTONE_SLAB = BLOCKS.register("reinforced_smooth_red_sandstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.SMOOTH_RED_SANDSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_SMOOTH_RED_SANDSTONE_SLAB = reinforcedBlock("reinforced_smooth_red_sandstone_slab", Blocks.SMOOTH_RED_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_STONE_BRICK_SLAB = BLOCKS.register("reinforced_mossy_stone_brick_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.MOSSY_STONE_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_MOSSY_STONE_BRICK_SLAB = reinforcedBlock("reinforced_mossy_stone_brick_slab", Blocks.MOSSY_STONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_DIORITE_SLAB = BLOCKS.register("reinforced_polished_diorite_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.QUARTZ), Blocks.POLISHED_DIORITE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_POLISHED_DIORITE_SLAB = reinforcedBlock("reinforced_polished_diorite_slab", Blocks.POLISHED_DIORITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_COBBLESTONE_SLAB = BLOCKS.register("reinforced_mossy_cobblestone_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.MOSSY_COBBLESTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_MOSSY_COBBLESTONE_SLAB = reinforcedBlock("reinforced_mossy_cobblestone_slab", Blocks.MOSSY_COBBLESTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_STONE_BRICK_SLAB = BLOCKS.register("reinforced_end_stone_brick_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.SAND), Blocks.END_STONE_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_END_STONE_BRICK_SLAB = reinforcedBlock("reinforced_end_stone_brick_slab", Blocks.END_STONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_SANDSTONE_SLAB = BLOCKS.register("reinforced_smooth_sandstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.SAND), Blocks.SMOOTH_SANDSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_SMOOTH_SANDSTONE_SLAB = reinforcedBlock("reinforced_smooth_sandstone_slab", Blocks.SMOOTH_SANDSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_quartz_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.QUARTZ), Blocks.SMOOTH_QUARTZ_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_SMOOTH_QUARTZ_SLAB = reinforcedBlock("reinforced_smooth_quartz_slab", Blocks.SMOOTH_QUARTZ_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRANITE_SLAB = BLOCKS.register("reinforced_granite_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DIRT), Blocks.GRANITE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_GRANITE_SLAB = reinforcedBlock("reinforced_granite_slab", Blocks.GRANITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ANDESITE_SLAB = BLOCKS.register("reinforced_andesite_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.ANDESITE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_ANDESITE_SLAB = reinforcedBlock("reinforced_andesite_slab", Blocks.ANDESITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICK_SLAB = BLOCKS.register("reinforced_red_nether_brick_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.RED_NETHER_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_RED_NETHER_BRICK_SLAB = reinforcedBlock("reinforced_red_nether_brick_slab", Blocks.RED_NETHER_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_ANDESITE_SLAB = BLOCKS.register("reinforced_polished_andesite_slab", () -> new ReinforcedSlabBlock(prop(), Blocks.POLISHED_ANDESITE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_POLISHED_ANDESITE_SLAB = reinforcedBlock("reinforced_polished_andesite_slab", Blocks.POLISHED_ANDESITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DIORITE_SLAB = BLOCKS.register("reinforced_diorite_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.QUARTZ), Blocks.DIORITE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_DIORITE_SLAB = reinforcedBlock("reinforced_diorite_slab", Blocks.DIORITE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLED_DEEPSLATE_SLAB = BLOCKS.register("reinforced_cobbled_deepslate_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE), Blocks.COBBLED_DEEPSLATE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_COBBLED_DEEPSLATE_SLAB = reinforcedBlock("reinforced_cobbled_deepslate_slab", Blocks.COBBLED_DEEPSLATE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_DEEPSLATE_SLAB = BLOCKS.register("reinforced_polished_deepslate_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE), Blocks.POLISHED_DEEPSLATE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_POLISHED_DEEPSLATE_SLAB = reinforcedBlock("reinforced_polished_deepslate_slab", Blocks.POLISHED_DEEPSLATE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_BRICK_SLAB = BLOCKS.register("reinforced_deepslate_brick_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS), Blocks.DEEPSLATE_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_DEEPSLATE_BRICK_SLAB = reinforcedBlock("reinforced_deepslate_brick_slab", Blocks.DEEPSLATE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_TILE_SLAB = BLOCKS.register("reinforced_deepslate_tile_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES), Blocks.DEEPSLATE_TILE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_DEEPSLATE_TILE_SLAB = reinforcedBlock("reinforced_deepslate_tile_slab", Blocks.DEEPSLATE_TILE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRYING_OBSIDIAN = BLOCKS.register("reinforced_crying_obsidian", () -> new ReinforcedCryingObsidianBlock(prop(MaterialColor.COLOR_BLACK).lightLevel(state -> 10), Blocks.CRYING_OBSIDIAN));
+	public static final RegistryObject<ReinforcedCryingObsidianBlock> REINFORCED_CRYING_OBSIDIAN = reinforcedBlock("reinforced_crying_obsidian", Blocks.CRYING_OBSIDIAN, ReinforcedCryingObsidianBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACKSTONE = BLOCKS.register("reinforced_blackstone", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK), Blocks.BLACKSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_BLACKSTONE = reinforcedBlock("reinforced_blackstone", Blocks.BLACKSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACKSTONE_SLAB = BLOCKS.register("reinforced_blackstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_BLACK), Blocks.BLACKSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_BLACKSTONE_SLAB = reinforcedBlock("reinforced_blackstone_slab", Blocks.BLACKSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACKSTONE_STAIRS = BLOCKS.register("reinforced_blackstone_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_BLACK), Blocks.BLACKSTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_BLACKSTONE_STAIRS = reinforcedBlock("reinforced_blackstone_stairs", Blocks.BLACKSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE = BLOCKS.register("reinforced_polished_blackstone", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_POLISHED_BLACKSTONE = reinforcedBlock("reinforced_polished_blackstone", Blocks.POLISHED_BLACKSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_SLAB = BLOCKS.register("reinforced_polished_blackstone_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_POLISHED_BLACKSTONE_SLAB = reinforcedBlock("reinforced_polished_blackstone_slab", Blocks.POLISHED_BLACKSTONE_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_STAIRS = BLOCKS.register("reinforced_polished_blackstone_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_POLISHED_BLACKSTONE_STAIRS = reinforcedBlock("reinforced_polished_blackstone_stairs", Blocks.POLISHED_BLACKSTONE_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHISELED_POLISHED_BLACKSTONE = BLOCKS.register("reinforced_chiseled_polished_blackstone", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK), Blocks.CHISELED_POLISHED_BLACKSTONE));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CHISELED_POLISHED_BLACKSTONE = reinforcedBlock("reinforced_chiseled_polished_blackstone", Blocks.CHISELED_POLISHED_BLACKSTONE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BRICKS = BLOCKS.register("reinforced_polished_blackstone_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_POLISHED_BLACKSTONE_BRICKS = reinforcedBlock("reinforced_polished_blackstone_bricks", Blocks.POLISHED_BLACKSTONE_BRICKS);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB = BLOCKS.register("reinforced_polished_blackstone_brick_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE_BRICK_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB = reinforcedBlock("reinforced_polished_blackstone_brick_slab", Blocks.POLISHED_BLACKSTONE_BRICK_SLAB, ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS = BLOCKS.register("reinforced_polished_blackstone_brick_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS = reinforcedBlock("reinforced_polished_blackstone_brick_stairs", Blocks.POLISHED_BLACKSTONE_BRICK_STAIRS, ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS = BLOCKS.register("reinforced_cracked_polished_blackstone_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_BLACK), Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS = reinforcedBlock("reinforced_cracked_polished_blackstone_bricks", Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS);
 
 	//ordered by vanilla decoration blocks creative tab order
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBWEB = BLOCKS.register("reinforced_cobweb", () -> new ReinforcedCobwebBlock(prop(Material.GLASS, MaterialColor.WOOL).noCollission(), Blocks.COBWEB));
+	public static final RegistryObject<ReinforcedCobwebBlock> REINFORCED_COBWEB = reinforcedBlock("reinforced_cobweb", Blocks.COBWEB, ReinforcedCobwebBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSS_CARPET = BLOCKS.register("reinforced_moss_carpet", () -> new ReinforcedCarpetBlock(prop(Material.MOSS, MaterialColor.COLOR_GREEN).sound(SoundType.MOSS_CARPET), Blocks.MOSS_CARPET));
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_MOSS_CARPET = reinforcedBlock("reinforced_moss_carpet", Blocks.MOSS_CARPET, ReinforcedCarpetBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSS_BLOCK = BLOCKS.register("reinforced_moss_block", () -> new BaseReinforcedBlock(prop(Material.MOSS, MaterialColor.COLOR_GREEN).sound(SoundType.MOSS), Blocks.MOSS_BLOCK));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_MOSS_BLOCK = reinforcedBlock("reinforced_moss_block", Blocks.MOSS_BLOCK, ReinforcedMossBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_ROD = BLOCKS.register("reinforced_end_rod", () -> new ReinforcedEndRodBlock(prop(MaterialColor.NONE).lightLevel(state -> 14).sound(SoundType.WOOD).noOcclusion()));
+	public static final RegistryObject<ReinforcedEndRodBlock> REINFORCED_END_ROD = reinforcedBlock("reinforced_end_rod", Blocks.END_ROD, (p, b) -> new ReinforcedEndRodBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LADDER = BLOCKS.register("reinforced_ladder", () -> new ReinforcedLadderBlock(prop(Material.DECORATION).sound(SoundType.LADDER).noOcclusion()));
+	public static final RegistryObject<ReinforcedLadderBlock> REINFORCED_LADDER = reinforcedBlock("reinforced_ladder", Blocks.LADDER, (p, b) -> new ReinforcedLadderBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_FENCE = BLOCKS.register("reinforced_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.OAK_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.OAK_FENCE));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_OAK_FENCE = reinforcedBlock("reinforced_oak_fence", Blocks.OAK_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_FENCE = BLOCKS.register("reinforced_spruce_fence", () -> new ReinforcedFenceBlock(prop(Blocks.SPRUCE_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.SPRUCE_FENCE));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_SPRUCE_FENCE = reinforcedBlock("reinforced_spruce_fence", Blocks.SPRUCE_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_FENCE = BLOCKS.register("reinforced_birch_fence", () -> new ReinforcedFenceBlock(prop(Blocks.BIRCH_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.BIRCH_FENCE));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_BIRCH_FENCE = reinforcedBlock("reinforced_birch_fence", Blocks.BIRCH_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_FENCE = BLOCKS.register("reinforced_jungle_fence", () -> new ReinforcedFenceBlock(prop(Blocks.JUNGLE_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.JUNGLE_FENCE));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_JUNGLE_FENCE = reinforcedBlock("reinforced_jungle_fence", Blocks.JUNGLE_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_FENCE = BLOCKS.register("reinforced_acacia_fence", () -> new ReinforcedFenceBlock(prop(Blocks.ACACIA_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.ACACIA_FENCE));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_ACACIA_FENCE = reinforcedBlock("reinforced_acacia_fence", Blocks.ACACIA_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_FENCE = BLOCKS.register("reinforced_dark_oak_fence", () -> new ReinforcedFenceBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.DARK_OAK_FENCE));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_DARK_OAK_FENCE = reinforcedBlock("reinforced_dark_oak_fence", Blocks.DARK_OAK_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_FENCE = BLOCKS.register("reinforced_crimson_fence", () -> new ReinforcedFenceBlock(prop(Blocks.CRIMSON_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.CRIMSON_FENCE));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_CRIMSON_FENCE = reinforcedBlock("reinforced_crimson_fence", Blocks.CRIMSON_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_FENCE = BLOCKS.register("reinforced_warped_fence", () -> new ReinforcedFenceBlock(prop(Blocks.WARPED_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.WARPED_FENCE));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_IRON_BARS = BLOCKS.register("reinforced_iron_bars", () -> new ReinforcedIronBarsBlock(prop(Material.METAL, MaterialColor.NONE).sound(SoundType.METAL), Blocks.IRON_BARS));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CHAIN = BLOCKS.register("reinforced_chain", () -> new ReinforcedChainBlock(prop(Material.METAL, MaterialColor.NONE).sound(SoundType.CHAIN), Blocks.CHAIN));
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_WARPED_FENCE = reinforcedBlock("reinforced_warped_fence", Blocks.WARPED_FENCE, ReinforcedFenceBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GLASS_PANE = BLOCKS.register("reinforced_glass_pane", () -> new ReinforcedPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), Blocks.GLASS_PANE));
+	public static final RegistryObject<ReinforcedIronBarsBlock> REINFORCED_IRON_BARS = reinforcedBlock("reinforced_iron_bars", Blocks.IRON_BARS, ReinforcedIronBarsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHER_BRICK_FENCE = BLOCKS.register("reinforced_nether_brick_fence", () -> new ReinforcedFenceBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICK_FENCE));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLESTONE_WALL = BLOCKS.register("reinforced_cobblestone_wall", () -> new ReinforcedWallBlock(prop(), Blocks.COBBLESTONE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_COBBLESTONE_WALL = BLOCKS.register("reinforced_mossy_cobblestone_wall", () -> new ReinforcedWallBlock(prop(), Blocks.MOSSY_COBBLESTONE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BRICK_WALL = BLOCKS.register("reinforced_brick_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.COLOR_RED), Blocks.BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PRISMARINE_WALL = BLOCKS.register("reinforced_prismarine_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.COLOR_CYAN), Blocks.PRISMARINE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_SANDSTONE_WALL = BLOCKS.register("reinforced_red_sandstone_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.COLOR_ORANGE), Blocks.RED_SANDSTONE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MOSSY_STONE_BRICK_WALL = BLOCKS.register("reinforced_mossy_stone_brick_wall", () -> new ReinforcedWallBlock(prop(), Blocks.MOSSY_STONE_BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRANITE_WALL = BLOCKS.register("reinforced_granite_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.DIRT), Blocks.GRANITE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_BRICK_WALL = BLOCKS.register("reinforced_stone_brick_wall", () -> new ReinforcedWallBlock(prop(), Blocks.STONE_BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_NETHER_BRICK_WALL = BLOCKS.register("reinforced_nether_brick_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.NETHER_BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ANDESITE_WALL = BLOCKS.register("reinforced_andesite_wall", () -> new ReinforcedWallBlock(prop(), Blocks.ANDESITE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_NETHER_BRICK_WALL = BLOCKS.register("reinforced_red_nether_brick_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.NETHER).sound(SoundType.NETHER_BRICKS), Blocks.RED_NETHER_BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SANDSTONE_WALL = BLOCKS.register("reinforced_sandstone_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.SAND), Blocks.SANDSTONE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_END_STONE_BRICK_WALL = BLOCKS.register("reinforced_end_stone_brick_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.SAND), Blocks.END_STONE_BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DIORITE_WALL = BLOCKS.register("reinforced_diorite_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.QUARTZ), Blocks.DIORITE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACKSTONE_WALL = BLOCKS.register("reinforced_blackstone_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.COLOR_BLACK), Blocks.BLACKSTONE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_WALL = BLOCKS.register("reinforced_polished_blackstone_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL = BLOCKS.register("reinforced_polished_blackstone_brick_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.COLOR_BLACK), Blocks.POLISHED_BLACKSTONE_BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_COBBLED_DEEPSLATE_WALL = BLOCKS.register("reinforced_cobbled_deepslate_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE), Blocks.COBBLED_DEEPSLATE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_DEEPSLATE_WALL = BLOCKS.register("reinforced_polished_deepslate_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.POLISHED_DEEPSLATE), Blocks.POLISHED_DEEPSLATE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_BRICK_WALL = BLOCKS.register("reinforced_deepslate_brick_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_BRICKS), Blocks.DEEPSLATE_BRICK_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DEEPSLATE_TILE_WALL = BLOCKS.register("reinforced_deepslate_tile_wall", () -> new ReinforcedWallBlock(prop(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE_TILES), Blocks.DEEPSLATE_TILE_WALL));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WHITE_CARPET = BLOCKS.register("reinforced_white_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.SNOW).sound(SoundType.WOOL), Blocks.WHITE_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ORANGE_CARPET = BLOCKS.register("reinforced_orange_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_ORANGE).sound(SoundType.WOOL), Blocks.ORANGE_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_CARPET = BLOCKS.register("reinforced_magenta_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_MAGENTA).sound(SoundType.WOOL), Blocks.MAGENTA_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_CARPET = BLOCKS.register("reinforced_light_blue_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_LIGHT_BLUE).sound(SoundType.WOOL), Blocks.LIGHT_BLUE_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_YELLOW_CARPET = BLOCKS.register("reinforced_yellow_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_YELLOW).sound(SoundType.WOOL), Blocks.YELLOW_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIME_CARPET = BLOCKS.register("reinforced_lime_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_LIGHT_GREEN).sound(SoundType.WOOL), Blocks.LIME_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PINK_CARPET = BLOCKS.register("reinforced_pink_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_PINK).sound(SoundType.WOOL), Blocks.PINK_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRAY_CARPET = BLOCKS.register("reinforced_gray_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_GRAY).sound(SoundType.WOOL), Blocks.GRAY_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_CARPET = BLOCKS.register("reinforced_light_gray_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_LIGHT_GRAY).sound(SoundType.WOOL), Blocks.LIGHT_GRAY_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CYAN_CARPET = BLOCKS.register("reinforced_cyan_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_CYAN).sound(SoundType.WOOL), Blocks.CYAN_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPLE_CARPET = BLOCKS.register("reinforced_purple_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_PURPLE).sound(SoundType.WOOL), Blocks.PURPLE_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLUE_CARPET = BLOCKS.register("reinforced_blue_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL), Blocks.BLUE_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BROWN_CARPET = BLOCKS.register("reinforced_brown_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_BROWN).sound(SoundType.WOOL), Blocks.BROWN_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GREEN_CARPET = BLOCKS.register("reinforced_green_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_GREEN).sound(SoundType.WOOL), Blocks.GREEN_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_CARPET = BLOCKS.register("reinforced_red_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_RED).sound(SoundType.WOOL), Blocks.RED_CARPET));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACK_CARPET = BLOCKS.register("reinforced_black_carpet", () -> new ReinforcedCarpetBlock(prop(Material.WOOL, MaterialColor.COLOR_BLACK).sound(SoundType.WOOL), Blocks.BLACK_CARPET));
+	public static final RegistryObject<ReinforcedChainBlock> REINFORCED_CHAIN = reinforcedBlock("reinforced_chain", Blocks.CHAIN, ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_WHITE_STAINED_GLASS_PANE = BLOCKS.register("reinforced_white_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.WHITE, Blocks.WHITE_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedPaneBlock> REINFORCED_GLASS_PANE = reinforcedBlock("reinforced_glass_pane", Blocks.GLASS_PANE, ReinforcedPaneBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedFenceBlock> REINFORCED_NETHER_BRICK_FENCE = reinforcedBlock("reinforced_nether_brick_fence", Blocks.NETHER_BRICK_FENCE, ReinforcedFenceBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_COBBLESTONE_WALL = reinforcedBlock("reinforced_cobblestone_wall", Blocks.COBBLESTONE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_MOSSY_COBBLESTONE_WALL = reinforcedBlock("reinforced_mossy_cobblestone_wall", Blocks.MOSSY_COBBLESTONE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_BRICK_WALL = reinforcedBlock("reinforced_brick_wall", Blocks.BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_PRISMARINE_WALL = reinforcedBlock("reinforced_prismarine_wall", Blocks.PRISMARINE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_RED_SANDSTONE_WALL = reinforcedBlock("reinforced_red_sandstone_wall", Blocks.RED_SANDSTONE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_MOSSY_STONE_BRICK_WALL = reinforcedBlock("reinforced_mossy_stone_brick_wall", Blocks.MOSSY_STONE_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_GRANITE_WALL = reinforcedBlock("reinforced_granite_wall", Blocks.GRANITE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_STONE_BRICK_WALL = reinforcedBlock("reinforced_stone_brick_wall", Blocks.STONE_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_NETHER_BRICK_WALL = reinforcedBlock("reinforced_nether_brick_wall", Blocks.NETHER_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_ANDESITE_WALL = reinforcedBlock("reinforced_andesite_wall", Blocks.ANDESITE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_RED_NETHER_BRICK_WALL = reinforcedBlock("reinforced_red_nether_brick_wall", Blocks.RED_NETHER_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_SANDSTONE_WALL = reinforcedBlock("reinforced_sandstone_wall", Blocks.SANDSTONE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_END_STONE_BRICK_WALL = reinforcedBlock("reinforced_end_stone_brick_wall", Blocks.END_STONE_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_DIORITE_WALL = reinforcedBlock("reinforced_diorite_wall", Blocks.DIORITE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_BLACKSTONE_WALL = reinforcedBlock("reinforced_blackstone_wall", Blocks.BLACKSTONE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_POLISHED_BLACKSTONE_WALL = reinforcedBlock("reinforced_polished_blackstone_wall", Blocks.POLISHED_BLACKSTONE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL = reinforcedBlock("reinforced_polished_blackstone_brick_wall", Blocks.POLISHED_BLACKSTONE_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_COBBLED_DEEPSLATE_WALL = reinforcedBlock("reinforced_cobbled_deepslate_wall", Blocks.COBBLED_DEEPSLATE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_POLISHED_DEEPSLATE_WALL = reinforcedBlock("reinforced_polished_deepslate_wall", Blocks.POLISHED_DEEPSLATE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_DEEPSLATE_BRICK_WALL = reinforcedBlock("reinforced_deepslate_brick_wall", Blocks.DEEPSLATE_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedWallBlock> REINFORCED_DEEPSLATE_TILE_WALL = reinforcedBlock("reinforced_deepslate_tile_wall", Blocks.DEEPSLATE_TILE_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = reinforcedBlock("reinforced_white_carpet", Blocks.WHITE_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = reinforcedBlock("reinforced_orange_carpet", Blocks.ORANGE_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = reinforcedBlock("reinforced_magenta_carpet", Blocks.MAGENTA_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = reinforcedBlock("reinforced_light_blue_carpet", Blocks.LIGHT_BLUE_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = reinforcedBlock("reinforced_yellow_carpet", Blocks.YELLOW_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = reinforcedBlock("reinforced_lime_carpet", Blocks.LIME_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = reinforcedBlock("reinforced_pink_carpet", Blocks.PINK_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = reinforcedBlock("reinforced_gray_carpet", Blocks.GRAY_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = reinforcedBlock("reinforced_light_gray_carpet", Blocks.LIGHT_GRAY_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = reinforcedBlock("reinforced_cyan_carpet", Blocks.CYAN_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = reinforcedBlock("reinforced_purple_carpet", Blocks.PURPLE_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = reinforcedBlock("reinforced_blue_carpet", Blocks.BLUE_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = reinforcedBlock("reinforced_brown_carpet", Blocks.BROWN_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = reinforcedBlock("reinforced_green_carpet", Blocks.GREEN_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = reinforcedBlock("reinforced_red_carpet", Blocks.RED_CARPET, ReinforcedCarpetBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = reinforcedBlock("reinforced_black_carpet", Blocks.BLACK_CARPET, ReinforcedCarpetBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_ORANGE_STAINED_GLASS_PANE = BLOCKS.register("reinforced_orange_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.ORANGE, Blocks.ORANGE_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_WHITE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_white_stained_glass_pane", Blocks.WHITE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_STAINED_GLASS_PANE = BLOCKS.register("reinforced_magenta_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.MAGENTA, Blocks.MAGENTA_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_ORANGE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_orange_stained_glass_pane", Blocks.ORANGE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE = BLOCKS.register("reinforced_light_blue_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.LIGHT_BLUE, Blocks.LIGHT_BLUE_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_MAGENTA_STAINED_GLASS_PANE = reinforcedBlock("reinforced_magenta_stained_glass_pane", Blocks.MAGENTA_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_YELLOW_STAINED_GLASS_PANE = BLOCKS.register("reinforced_yellow_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.YELLOW, Blocks.YELLOW_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_blue_stained_glass_pane", Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIME_STAINED_GLASS_PANE = BLOCKS.register("reinforced_lime_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.LIME, Blocks.LIME_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_YELLOW_STAINED_GLASS_PANE = reinforcedBlock("reinforced_yellow_stained_glass_pane", Blocks.YELLOW_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_PINK_STAINED_GLASS_PANE = BLOCKS.register("reinforced_pink_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.PINK, Blocks.PINK_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_LIME_STAINED_GLASS_PANE = reinforcedBlock("reinforced_lime_stained_glass_pane", Blocks.LIME_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GRAY_STAINED_GLASS_PANE = BLOCKS.register("reinforced_gray_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.GRAY, Blocks.GRAY_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_PINK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_pink_stained_glass_pane", Blocks.PINK_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE = BLOCKS.register("reinforced_light_gray_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.LIGHT_GRAY, Blocks.LIGHT_GRAY_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_gray_stained_glass_pane", Blocks.GRAY_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_CYAN_STAINED_GLASS_PANE = BLOCKS.register("reinforced_cyan_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.CYAN, Blocks.CYAN_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_gray_stained_glass_pane", Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_PURPLE_STAINED_GLASS_PANE = BLOCKS.register("reinforced_purple_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.PURPLE, Blocks.PURPLE_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_CYAN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_cyan_stained_glass_pane", Blocks.CYAN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BLUE_STAINED_GLASS_PANE = BLOCKS.register("reinforced_blue_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.BLUE, Blocks.BLUE_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_PURPLE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_purple_stained_glass_pane", Blocks.PURPLE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BROWN_STAINED_GLASS_PANE = BLOCKS.register("reinforced_brown_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.BROWN, Blocks.BROWN_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_blue_stained_glass_pane", Blocks.BLUE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_GREEN_STAINED_GLASS_PANE = BLOCKS.register("reinforced_green_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.GREEN, Blocks.GREEN_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_BROWN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_brown_stained_glass_pane", Blocks.BROWN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_RED_STAINED_GLASS_PANE = BLOCKS.register("reinforced_red_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.RED, Blocks.RED_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_GREEN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_green_stained_glass_pane", Blocks.GREEN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_BLACK_STAINED_GLASS_PANE = BLOCKS.register("reinforced_black_stained_glass_pane", () -> new ReinforcedStainedGlassPaneBlock(prop(Material.GLASS).sound(SoundType.GLASS), DyeColor.BLACK, Blocks.BLACK_STAINED_GLASS_PANE));
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_RED_STAINED_GLASS_PANE = reinforcedBlock("reinforced_red_stained_glass_pane", Blocks.RED_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced(hasReinforcedTint = false)
+	public static final RegistryObject<ReinforcedStainedGlassPaneBlock> REINFORCED_BLACK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_black_stained_glass_pane", Blocks.BLACK_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WHITE_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_white_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.WHITE.getMaterialColor()), Blocks.WHITE_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_WHITE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_white_glazed_terracotta", Blocks.WHITE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ORANGE_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_orange_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.ORANGE.getMaterialColor()), Blocks.ORANGE_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_ORANGE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_orange_glazed_terracotta", Blocks.ORANGE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_MAGENTA_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_magenta_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.MAGENTA.getMaterialColor()), Blocks.MAGENTA_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_MAGENTA_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_magenta_glazed_terracotta", Blocks.MAGENTA_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_light_blue_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.LIGHT_BLUE.getMaterialColor()), Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_blue_glazed_terracotta", Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_YELLOW_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_yellow_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.YELLOW.getMaterialColor()), Blocks.YELLOW_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_YELLOW_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_yellow_glazed_terracotta", Blocks.YELLOW_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIME_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_lime_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.LIME.getMaterialColor()), Blocks.LIME_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_LIME_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_lime_glazed_terracotta", Blocks.LIME_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PINK_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_pink_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.PINK.getMaterialColor()), Blocks.PINK_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_PINK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_pink_glazed_terracotta", Blocks.PINK_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GRAY_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_gray_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.GRAY.getMaterialColor()), Blocks.GRAY_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_gray_glazed_terracotta", Blocks.GRAY_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_light_gray_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.LIGHT_GRAY.getMaterialColor()), Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_gray_glazed_terracotta", Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CYAN_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_cyan_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.CYAN.getMaterialColor()), Blocks.CYAN_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_CYAN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_cyan_glazed_terracotta", Blocks.CYAN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PURPLE_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_purple_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.PURPLE.getMaterialColor()), Blocks.PURPLE_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_PURPLE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_purple_glazed_terracotta", Blocks.PURPLE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLUE_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_blue_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.BLUE.getMaterialColor()), Blocks.BLUE_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_blue_glazed_terracotta", Blocks.BLUE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BROWN_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_brown_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.BROWN.getMaterialColor()), Blocks.BROWN_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_BROWN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_brown_glazed_terracotta", Blocks.BROWN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_GREEN_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_green_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.GREEN.getMaterialColor()), Blocks.GREEN_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_GREEN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_green_glazed_terracotta", Blocks.GREEN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_RED_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_red_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.RED.getMaterialColor()), Blocks.RED_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_RED_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_red_glazed_terracotta", Blocks.RED_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BLACK_GLAZED_TERRACOTTA = BLOCKS.register("reinforced_black_glazed_terracotta", () -> new ReinforcedGlazedTerracottaBlock(prop(Material.STONE, DyeColor.BLACK.getMaterialColor()), Blocks.BLACK_GLAZED_TERRACOTTA));
+	public static final RegistryObject<ReinforcedGlazedTerracottaBlock> REINFORCED_BLACK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_black_glazed_terracotta", Blocks.BLACK_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
-	public static final RegistryObject<Block> REINFORCED_SCAFFOLDING = BLOCKS.register("reinforced_scaffolding", () -> new ReinforcedScaffoldingBlock(reinforcedCopy(Blocks.SCAFFOLDING)));
+	public static final RegistryObject<ReinforcedScaffoldingBlock> REINFORCED_SCAFFOLDING = reinforcedBlock("reinforced_scaffolding", Blocks.SCAFFOLDING, (p, b) -> new ReinforcedScaffoldingBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LANTERN = BLOCKS.register("reinforced_lantern", () -> new ReinforcedLanternBlock(prop(Material.METAL).sound(SoundType.LANTERN).lightLevel(state -> 15), Blocks.LANTERN));
+	public static final RegistryObject<ReinforcedLanternBlock> REINFORCED_LANTERN = reinforcedBlock("reinforced_lantern", Blocks.LANTERN, ReinforcedLanternBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SOUL_LANTERN = BLOCKS.register("reinforced_soul_lantern", () -> new ReinforcedLanternBlock(prop(Material.METAL).sound(SoundType.LANTERN).lightLevel(state -> 10), Blocks.SOUL_LANTERN));
+	public static final RegistryObject<ReinforcedLanternBlock> REINFORCED_SOUL_LANTERN = reinforcedBlock("reinforced_soul_lantern", Blocks.SOUL_LANTERN, ReinforcedLanternBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SHROOMLIGHT = BLOCKS.register("reinforced_shroomlight", () -> new BaseReinforcedBlock(prop(Material.GRASS, MaterialColor.COLOR_RED).sound(SoundType.SHROOMLIGHT).lightLevel(state -> 15), Blocks.SHROOMLIGHT));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SHROOMLIGHT = reinforcedBlock("reinforced_shroomlight", Blocks.SHROOMLIGHT);
 
 	//ordered by vanilla redstone tab order
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_REDSTONE_BLOCK = BLOCKS.register("reinforced_redstone_block", () -> new ReinforcedRedstoneBlock(prop(Material.METAL, MaterialColor.FIRE).sound(SoundType.METAL).isRedstoneConductor(SCContent::never), Blocks.REDSTONE_BLOCK));
+	public static final RegistryObject<ReinforcedRedstoneBlock> REINFORCED_REDSTONE_BLOCK = reinforcedBlock("reinforced_redstone_block", Blocks.REDSTONE_BLOCK, ReinforcedRedstoneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_PISTON = BLOCKS.register("reinforced_piston", () -> new ReinforcedPistonBaseBlock(false, prop(Material.PISTON).isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
+	public static final RegistryObject<ReinforcedPistonBaseBlock> REINFORCED_PISTON = reinforcedBlock("reinforced_piston", Blocks.PISTON, (p, b) -> new ReinforcedPistonBaseBlock(false, p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STICKY_PISTON = BLOCKS.register("reinforced_sticky_piston", () -> new ReinforcedPistonBaseBlock(true, prop(Material.PISTON).isRedstoneConductor(SCContent::never).isSuffocating((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED)).isViewBlocking((s, w, p) -> !s.getValue(PistonBaseBlock.EXTENDED))));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OBSERVER = BLOCKS.register("reinforced_observer", () -> new ReinforcedObserverBlock(propDisguisable().isRedstoneConductor(SCContent::never)));
-	@HasManualPage
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_HOPPER = BLOCKS.register("reinforced_hopper", () -> new ReinforcedHopperBlock(propDisguisable(Material.METAL, MaterialColor.STONE).sound(SoundType.METAL)));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DISPENSER = BLOCKS.register("reinforced_dispenser", () -> new ReinforcedDispenserBlock(propDisguisable()));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DROPPER = BLOCKS.register("reinforced_dropper", () -> new ReinforcedDropperBlock(propDisguisable()));
-	@HasManualPage(PageGroup.REINFORCED)
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LECTERN = BLOCKS.register("reinforced_lectern", () -> new ReinforcedLecternBlock(prop(Material.WOOD).sound(SoundType.WOOD)));
-	@HasManualPage
-	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_LEVER = BLOCKS.register("reinforced_lever", () -> new ReinforcedLeverBlock(prop(MaterialColor.NONE).noCollission().sound(SoundType.WOOD)));
+	public static final RegistryObject<ReinforcedPistonBaseBlock> REINFORCED_STICKY_PISTON = reinforcedBlock("reinforced_sticky_piston", Blocks.STICKY_PISTON, (p, b) -> new ReinforcedPistonBaseBlock(true, p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_REDSTONE_LAMP = BLOCKS.register("reinforced_redstone_lamp", () -> new ReinforcedRedstoneLampBlock(prop(Material.BUILDABLE_GLASS).sound(SoundType.GLASS).lightLevel(state -> state.getValue(ReinforcedRedstoneLampBlock.LIT) ? 15 : 0), Blocks.REDSTONE_LAMP));
+	public static final RegistryObject<ReinforcedObserverBlock> REINFORCED_OBSERVER = reinforcedBlock("reinforced_observer", Blocks.OBSERVER, (p, b) -> new ReinforcedObserverBlock(propDisguisable(p)));
+	@HasManualPage
+	@Reinforced
+	public static final RegistryObject<ReinforcedHopperBlock> REINFORCED_HOPPER = reinforcedBlock("reinforced_hopper", Blocks.HOPPER, (p, b) -> new ReinforcedHopperBlock(propDisguisable(p)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final RegistryObject<ReinforcedDispenserBlock> REINFORCED_DISPENSER = reinforcedBlock("reinforced_dispenser", Blocks.DISPENSER, (p, b) -> new ReinforcedDispenserBlock(propDisguisable(p)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final RegistryObject<ReinforcedDropperBlock> REINFORCED_DROPPER = reinforcedBlock("reinforced_dropper", Blocks.DROPPER, (p, b) -> new ReinforcedDropperBlock(propDisguisable(p)));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final RegistryObject<ReinforcedLecternBlock> REINFORCED_LECTERN = reinforcedBlock("reinforced_lectern", Blocks.LECTERN, (p, b) -> new ReinforcedLecternBlock(p));
+	@HasManualPage
+	@Reinforced
+	public static final RegistryObject<ReinforcedLeverBlock> REINFORCED_LEVER = reinforcedBlock("reinforced_lever", Blocks.LEVER, (p, b) -> new ReinforcedLeverBlock(p));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final RegistryObject<ReinforcedRedstoneLampBlock> REINFORCED_REDSTONE_LAMP = reinforcedBlock("reinforced_redstone_lamp", Blocks.REDSTONE_LAMP, ReinforcedRedstoneLampBlock::new);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_BUTTON = BLOCKS.register("reinforced_stone_button", () -> new ReinforcedButtonBlock(false, prop(Material.STONE, MaterialColor.NONE).noCollission(), Blocks.STONE_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_STONE_BUTTON = stoneButton("reinforced_stone_button", Blocks.STONE_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_BUTTON = BLOCKS.register("reinforced_polished_blackstone_button", () -> new ReinforcedButtonBlock(false, prop(Material.STONE, MaterialColor.NONE).noCollission(), Blocks.POLISHED_BLACKSTONE_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_POLISHED_BLACKSTONE_BUTTON = stoneButton("reinforced_polished_blackstone_button", Blocks.POLISHED_BLACKSTONE_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_BUTTON = BLOCKS.register("reinforced_oak_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.OAK_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_OAK_BUTTON = woodenButton("reinforced_oak_button", Blocks.OAK_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_BUTTON = BLOCKS.register("reinforced_spruce_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.SPRUCE_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_SPRUCE_BUTTON = woodenButton("reinforced_spruce_button", Blocks.SPRUCE_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_BUTTON = BLOCKS.register("reinforced_birch_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.BIRCH_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_BIRCH_BUTTON = woodenButton("reinforced_birch_button", Blocks.BIRCH_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_BUTTON = BLOCKS.register("reinforced_jungle_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.JUNGLE_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_JUNGLE_BUTTON = woodenButton("reinforced_jungle_button", Blocks.JUNGLE_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_BUTTON = BLOCKS.register("reinforced_acacia_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.ACACIA_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_ACACIA_BUTTON = woodenButton("reinforced_acacia_button", Blocks.ACACIA_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_BUTTON = BLOCKS.register("reinforced_dark_oak_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.DARK_OAK_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_DARK_OAK_BUTTON = woodenButton("reinforced_dark_oak_button", Blocks.DARK_OAK_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_BUTTON = BLOCKS.register("reinforced_crimson_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.CRIMSON_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_CRIMSON_BUTTON = woodenButton("reinforced_crimson_button", Blocks.CRIMSON_BUTTON);
 	@HasManualPage(PageGroup.BUTTONS)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_BUTTON = BLOCKS.register("reinforced_warped_button", () -> new ReinforcedButtonBlock(true, prop(Material.WOOD, MaterialColor.NONE).noCollission().sound(SoundType.WOOD), Blocks.WARPED_BUTTON));
+	public static final RegistryObject<ReinforcedButtonBlock> REINFORCED_WARPED_BUTTON = woodenButton("reinforced_warped_button", Blocks.WARPED_BUTTON);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_STONE_PRESSURE_PLATE = BLOCKS.register("reinforced_stone_pressure_plate", () -> stonePressurePlate(Blocks.STONE_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_STONE_PRESSURE_PLATE = stonePressurePlate("reinforced_stone_pressure_plate", Blocks.STONE_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE = BLOCKS.register("reinforced_polished_blackstone_pressure_plate", () -> stonePressurePlate(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE = stonePressurePlate("reinforced_polished_blackstone_pressure_plate", Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_oak_pressure_plate", () -> woodenPressurePlate(Blocks.OAK_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_OAK_PRESSURE_PLATE = woodenPressurePlate("reinforced_oak_pressure_plate", Blocks.OAK_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_PRESSURE_PLATE = BLOCKS.register("reinforced_spruce_pressure_plate", () -> woodenPressurePlate(Blocks.SPRUCE_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_SPRUCE_PRESSURE_PLATE = woodenPressurePlate("reinforced_spruce_pressure_plate", Blocks.SPRUCE_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_PRESSURE_PLATE = BLOCKS.register("reinforced_birch_pressure_plate", () -> woodenPressurePlate(Blocks.BIRCH_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_BIRCH_PRESSURE_PLATE = woodenPressurePlate("reinforced_birch_pressure_plate", Blocks.BIRCH_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_PRESSURE_PLATE = BLOCKS.register("reinforced_jungle_pressure_plate", () -> woodenPressurePlate(Blocks.JUNGLE_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_JUNGLE_PRESSURE_PLATE = woodenPressurePlate("reinforced_jungle_pressure_plate", Blocks.JUNGLE_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_PRESSURE_PLATE = BLOCKS.register("reinforced_acacia_pressure_plate", () -> woodenPressurePlate(Blocks.ACACIA_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_ACACIA_PRESSURE_PLATE = woodenPressurePlate("reinforced_acacia_pressure_plate", Blocks.ACACIA_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_PRESSURE_PLATE = BLOCKS.register("reinforced_dark_oak_pressure_plate", () -> woodenPressurePlate(Blocks.DARK_OAK_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_DARK_OAK_PRESSURE_PLATE = woodenPressurePlate("reinforced_dark_oak_pressure_plate", Blocks.DARK_OAK_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_PRESSURE_PLATE = BLOCKS.register("reinforced_crimson_pressure_plate", () -> woodenPressurePlate(Blocks.CRIMSON_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_CRIMSON_PRESSURE_PLATE = woodenPressurePlate("reinforced_crimson_pressure_plate", Blocks.CRIMSON_PRESSURE_PLATE);
 	@HasManualPage(PageGroup.PRESSURE_PLATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_PRESSURE_PLATE = BLOCKS.register("reinforced_warped_pressure_plate", () -> woodenPressurePlate(Blocks.WARPED_PRESSURE_PLATE));
+	public static final RegistryObject<ReinforcedPressurePlateBlock> REINFORCED_WARPED_PRESSURE_PLATE = woodenPressurePlate("reinforced_warped_pressure_plate", Blocks.WARPED_PRESSURE_PLATE);
 	@HasManualPage(hasRecipeDescription = true)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final RegistryObject<Block> REINFORCED_IRON_TRAPDOOR = BLOCKS.register("reinforced_iron_trapdoor", () -> new ReinforcedIronTrapDoorBlock(prop(Material.METAL).sound(SoundType.METAL).noOcclusion().isValidSpawn(SCContent::never)));
+	public static final RegistryObject<ReinforcedIronTrapDoorBlock> REINFORCED_IRON_TRAPDOOR = reinforcedBlock("reinforced_iron_trapdoor", Blocks.IRON_TRAPDOOR, (p, b) -> new ReinforcedIronTrapDoorBlock(p));
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_OAK_FENCE_GATE = BLOCKS.register("reinforced_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.OAK_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.OAK_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_OAK_FENCE_GATE = reinforcedFenceGateBlock("reinforced_oak_fence_gate", Blocks.OAK_FENCE_GATE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_SPRUCE_FENCE_GATE = BLOCKS.register("reinforced_spruce_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.SPRUCE_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.SPRUCE_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_SPRUCE_FENCE_GATE = reinforcedFenceGateBlock("reinforced_spruce_fence_gate", Blocks.SPRUCE_FENCE_GATE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_BIRCH_FENCE_GATE = BLOCKS.register("reinforced_birch_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.BIRCH_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.BIRCH_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_BIRCH_FENCE_GATE = reinforcedFenceGateBlock("reinforced_birch_fence_gate", Blocks.BIRCH_FENCE_GATE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_JUNGLE_FENCE_GATE = BLOCKS.register("reinforced_jungle_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.JUNGLE_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.JUNGLE_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_JUNGLE_FENCE_GATE = reinforcedFenceGateBlock("reinforced_jungle_fence_gate", Blocks.JUNGLE_FENCE_GATE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_ACACIA_FENCE_GATE = BLOCKS.register("reinforced_acacia_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.ACACIA_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.ACACIA_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_ACACIA_FENCE_GATE = reinforcedFenceGateBlock("reinforced_acacia_fence_gate", Blocks.ACACIA_FENCE_GATE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DARK_OAK_FENCE_GATE = BLOCKS.register("reinforced_dark_oak_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.DARK_OAK_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.DARK_OAK_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_DARK_OAK_FENCE_GATE = reinforcedFenceGateBlock("reinforced_dark_oak_fence_gate", Blocks.DARK_OAK_FENCE_GATE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CRIMSON_FENCE_GATE = BLOCKS.register("reinforced_crimson_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.CRIMSON_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.CRIMSON_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_CRIMSON_FENCE_GATE = reinforcedFenceGateBlock("reinforced_crimson_fence_gate", Blocks.CRIMSON_FENCE_GATE);
 	@HasManualPage(PageGroup.FENCE_GATES)
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_WARPED_FENCE_GATE = BLOCKS.register("reinforced_warped_fence_gate", () -> new ReinforcedFenceGateBlock(prop(Blocks.WARPED_PLANKS.defaultMaterialColor()).sound(SoundType.WOOD), Blocks.WARPED_FENCE_GATE));
+	public static final RegistryObject<ReinforcedFenceGateBlock> REINFORCED_WARPED_FENCE_GATE = reinforcedFenceGateBlock("reinforced_warped_fence_gate", Blocks.WARPED_FENCE_GATE);
 
 	//ordered by vanilla brewing tab order
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_CAULDRON = BLOCKS.register("reinforced_cauldron", () -> new ReinforcedCauldronBlock(prop(Material.METAL, MaterialColor.STONE).noOcclusion(), IReinforcedCauldronInteraction.EMPTY));
+	public static final RegistryObject<ReinforcedCauldronBlock> REINFORCED_CAULDRON = reinforcedBlock("reinforced_cauldron", Blocks.CAULDRON, (p, b) -> new ReinforcedCauldronBlock(p, IReinforcedCauldronInteraction.EMPTY));
 	@Reinforced(registerBlockItem = false)
-	public static final RegistryObject<Block> REINFORCED_WATER_CAULDRON = BLOCKS.register("reinforced_water_cauldron", () -> new ReinforcedLayeredCauldronBlock(prop(Material.METAL, MaterialColor.STONE).noOcclusion(), LayeredCauldronBlock.RAIN, IReinforcedCauldronInteraction.WATER, Blocks.WATER_CAULDRON));
+	public static final RegistryObject<ReinforcedLayeredCauldronBlock> REINFORCED_WATER_CAULDRON = reinforcedBlock("reinforced_water_cauldron", Blocks.WATER_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(p, LayeredCauldronBlock.RAIN, IReinforcedCauldronInteraction.WATER, b));
 	@Reinforced(registerBlockItem = false)
-	public static final RegistryObject<Block> REINFORCED_LAVA_CAULDRON = BLOCKS.register("reinforced_lava_cauldron", () -> new ReinforcedLavaCauldronBlock(prop(Material.METAL, MaterialColor.STONE).noOcclusion().lightLevel(state -> 15)));
+	public static final RegistryObject<ReinforcedLavaCauldronBlock> REINFORCED_LAVA_CAULDRON = reinforcedBlock("reinforced_lava_cauldron", Blocks.LAVA_CAULDRON, (p, b) -> new ReinforcedLavaCauldronBlock(p));
 	@Reinforced(registerBlockItem = false)
-	public static final RegistryObject<Block> REINFORCED_POWDER_SNOW_CAULDRON = BLOCKS.register("reinforced_powder_snow_cauldron", () -> new ReinforcedLayeredCauldronBlock(prop(Material.METAL, MaterialColor.STONE).noOcclusion(), LayeredCauldronBlock.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, Blocks.POWDER_SNOW_CAULDRON));
+	public static final RegistryObject<ReinforcedLayeredCauldronBlock> REINFORCED_POWDER_SNOW_CAULDRON = reinforcedBlock("reinforced_powder_snow_cauldron", Blocks.POWDER_SNOW_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(p, LayeredCauldronBlock.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, b));
 
 	//misc
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_SLAB = BLOCKS.register("crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<SlabBlock> CRYSTAL_QUARTZ_SLAB = registerBlock("crystal_quartz_slab", SlabBlock::new, ofFullCopy(Blocks.QUARTZ_SLAB), p -> p.color(MaterialColor.COLOR_CYAN));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("smooth_crystal_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ = registerBlock("smooth_crystal_quartz", Block::new, ofFullCopy(Blocks.SMOOTH_QUARTZ), p -> p.color(MaterialColor.COLOR_CYAN));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("chiseled_crystal_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CHISELED_CRYSTAL_QUARTZ = registerBlock("chiseled_crystal_quartz", Block::new, ofFullCopy(Blocks.CHISELED_QUARTZ_BLOCK), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("crystal_quartz", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BLOCK = registerBlock("crystal_quartz", Block::new, ofFullCopy(Blocks.QUARTZ_BLOCK), p -> p.color(MaterialColor.COLOR_CYAN));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("crystal_quartz_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<Block> CRYSTAL_QUARTZ_BRICKS = registerBlock("crystal_quartz_bricks", Block::new, ofFullCopy(Blocks.QUARTZ_BRICKS), p -> p.color(MaterialColor.COLOR_CYAN));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("crystal_quartz_pillar", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(0.8F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<RotatedPillarBlock> CRYSTAL_QUARTZ_PILLAR = registerBlock("crystal_quartz_pillar", RotatedPillarBlock::new, ofFullCopy(Blocks.QUARTZ_PILLAR), p -> p.color(MaterialColor.COLOR_CYAN));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("crystal_quartz_stairs", () -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.copy(CRYSTAL_QUARTZ_BLOCK.get())));
+	public static final RegistryObject<StairBlock> CRYSTAL_QUARTZ_STAIRS = registerBlock("crystal_quartz_stairs", p -> new StairBlock(() -> CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), p), ofFullCopy(Blocks.QUARTZ_STAIRS), p -> p.color(MaterialColor.COLOR_CYAN));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("smooth_crystal_quartz_stairs", () -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), BlockBehaviour.Properties.copy(SMOOTH_CRYSTAL_QUARTZ.get())));
+	public static final RegistryObject<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = registerBlock("smooth_crystal_quartz_stairs", p -> new StairBlock(() -> SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), p), ofFullCopy(Blocks.SMOOTH_QUARTZ_STAIRS), p -> p.color(MaterialColor.COLOR_CYAN));
 	@RegisterItemBlock(SCItemGroup.DECORATION)
-	public static final RegistryObject<Block> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("smooth_crystal_quartz_slab", () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_CYAN).strength(2.0F, 6.0F).requiresCorrectToolForDrops()));
+	public static final RegistryObject<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = registerBlock("smooth_crystal_quartz_slab", SlabBlock::new, ofFullCopy(Blocks.SMOOTH_QUARTZ_SLAB), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_CRYSTAL_QUARTZ_SLAB = registerBlock("reinforced_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.CRYSTAL_QUARTZ_SLAB::get), reinforcedCopy(Blocks.QUARTZ_SLAB), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_smooth_crystal_quartz", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = registerBlock("reinforced_smooth_crystal_quartz", p -> new BaseReinforcedBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ), reinforcedCopy(Blocks.SMOOTH_QUARTZ), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.register("reinforced_chiseled_crystal_quartz_block", () -> new BlockPocketBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CHISELED_CRYSTAL_QUARTZ));
+	public static final RegistryObject<BlockPocketBlock> REINFORCED_CHISELED_CRYSTAL_QUARTZ = registerBlock("reinforced_chiseled_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CHISELED_CRYSTAL_QUARTZ), reinforcedCopy(Blocks.CHISELED_QUARTZ_BLOCK), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.register("reinforced_crystal_quartz_block", () -> new BlockPocketBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BLOCK));
+	public static final RegistryObject<BlockPocketBlock> REINFORCED_CRYSTAL_QUARTZ_BLOCK = registerBlock("reinforced_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CRYSTAL_QUARTZ_BLOCK), reinforcedCopy(Blocks.QUARTZ_BLOCK), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.register("reinforced_crystal_quartz_bricks", () -> new BaseReinforcedBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_BRICKS));
+	public static final RegistryObject<BaseReinforcedBlock> REINFORCED_CRYSTAL_QUARTZ_BRICKS = registerBlock("reinforced_crystal_quartz_bricks", p -> new BaseReinforcedBlock(p, SCContent.CRYSTAL_QUARTZ_BRICKS), reinforcedCopy(Blocks.QUARTZ_BRICKS), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.register("reinforced_crystal_quartz_pillar", () -> new ReinforcedRotatedCrystalQuartzPillar(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_PILLAR));
+	public static final RegistryObject<ReinforcedRotatedCrystalQuartzPillar> REINFORCED_CRYSTAL_QUARTZ_PILLAR = registerBlock("reinforced_crystal_quartz_pillar", p -> new ReinforcedRotatedCrystalQuartzPillar(p, SCContent.CRYSTAL_QUARTZ_PILLAR::get), reinforcedCopy(Blocks.QUARTZ_PILLAR), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_CYAN), SCContent.CRYSTAL_QUARTZ_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_CRYSTAL_QUARTZ_STAIRS = registerBlock("reinforced_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.CRYSTAL_QUARTZ_STAIRS::get), reinforcedCopy(Blocks.QUARTZ_STAIRS), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.register("reinforced_smooth_crystal_quartz_stairs", () -> new ReinforcedStairsBlock(prop(MaterialColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS));
+	public static final RegistryObject<ReinforcedStairsBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = registerBlock("reinforced_smooth_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS::get), reinforcedCopy(Blocks.SMOOTH_QUARTZ_STAIRS), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = 0x15B3A2)
-	public static final RegistryObject<Block> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.register("reinforced_smooth_crystal_quartz_slab", () -> new ReinforcedSlabBlock(prop(MaterialColor.COLOR_CYAN), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB));
+	public static final RegistryObject<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = registerBlock("reinforced_smooth_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB::get), reinforcedCopy(Blocks.SMOOTH_QUARTZ_SLAB), p -> p.color(MaterialColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
-	public static final RegistryObject<Block> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.register("horizontal_reinforced_iron_bars", () -> new HorizontalReinforcedIronBars(prop(Material.METAL).sound(SoundType.METAL), Blocks.IRON_BLOCK));
+	public static final RegistryObject<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = registerBlock("horizontal_reinforced_iron_bars", HorizontalReinforcedIronBars::new, reinforcedCopy(Blocks.IRON_BARS));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final RegistryObject<Block> REINFORCED_DIRT_PATH = BLOCKS.register("reinforced_grass_path", () -> new ReinforcedDirtPathBlock(prop(Material.DIRT).sound(SoundType.GRASS), Blocks.DIRT_PATH));
-	public static final RegistryObject<Block> REINFORCED_MOVING_PISTON = BLOCKS.register("reinforced_moving_piston", () -> new ReinforcedMovingPistonBlock(prop(Material.PISTON).dynamicShape().noDrops().noOcclusion().isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never)));
+	public static final RegistryObject<ReinforcedDirtPathBlock> REINFORCED_DIRT_PATH = reinforcedBlock("reinforced_grass_path", Blocks.DIRT_PATH, ReinforcedDirtPathBlock::new);
+	@OwnableBE
+	public static final RegistryObject<ReinforcedMovingPistonBlock> REINFORCED_MOVING_PISTON = reinforcedBlock("reinforced_moving_piston", Blocks.MOVING_PISTON, (p, b) -> new ReinforcedMovingPistonBlock(p));
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
-	public static final RegistryObject<Block> REINFORCED_PISTON_HEAD = BLOCKS.register("reinforced_piston_head", () -> new ReinforcedPistonHeadBlock(prop(Material.PISTON).noDrops()));
-	public static final RegistryObject<Block> SENTRY_DISGUISE = BLOCKS.register("sentry_disguise", () -> new SometimesVisibleBlock(propDisguisable(Material.AIR).noDrops()));
+	public static final RegistryObject<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = reinforcedBlock("reinforced_piston_head", Blocks.PISTON_HEAD, (p, b) -> new ReinforcedPistonHeadBlock(p));
+	public static final RegistryObject<SometimesVisibleBlock> SENTRY_DISGUISE = registerBlock("sentry_disguise", SometimesVisibleBlock::new, propDisguisable(-1.0F));
 
 	//items
 	@HasManualPage(hasRecipeDescription = true)
@@ -2682,52 +2684,40 @@ public class SCContent {
 	public static final RegistryObject<MenuType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IForgeMenuType.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level, data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
 	public static final RegistryObject<MenuType<ReinforcedLecternMenu>> REINFORCED_LECTERN_MENU = MENU_TYPES.register("reinforced_lectern", () -> IForgeMenuType.create((windowId, inv, data) -> new ReinforcedLecternMenu(windowId, inv.player.level, data.readBlockPos())));
 
-	private static final BlockBehaviour.Properties prop() {
-		return prop(Material.STONE);
-	}
-
-	private static final BlockBehaviour.Properties prop(MaterialColor color) {
-		return prop(Material.STONE, color);
-	}
-
-	private static final BlockBehaviour.Properties prop(Material mat) {
-		return BlockBehaviour.Properties.of(mat).strength(-1.0F, Float.MAX_VALUE);
-	}
-
 	public static final BlockBehaviour.Properties reinforcedCopy(Block block) {
-		return BlockBehaviour.Properties.copy(block).strength(-1.0F, Float.MAX_VALUE);
+		return reinforcedCopy(block, UnaryOperator.identity());
 	}
 
-	private static final BlockBehaviour.Properties prop(Material mat, float hardness) {
-		return BlockBehaviour.Properties.of(mat).strength(hardness, Float.MAX_VALUE);
+	public static final BlockBehaviour.Properties reinforcedCopy(Block block, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return propertyEditor.apply(ofFullCopy(block).explosionResistance(Float.MAX_VALUE));
 	}
 
-	private static final BlockBehaviour.Properties prop(Material mat, MaterialColor color) {
-		return BlockBehaviour.Properties.of(mat, color).strength(-1.0F, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties prop(float hardness) {
+		return prop(Material.STONE, hardness);
 	}
 
-	private static final BlockBehaviour.Properties logProp(MaterialColor topColor, MaterialColor sideColor) {
-		return BlockBehaviour.Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? topColor : sideColor).strength(-1.0F, Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties prop(Material material, float hardness) {
+		return prop(material, material.getColor(), hardness);
 	}
 
-	private static final BlockBehaviour.Properties propDisguisable() {
-		return propDisguisable(Material.STONE);
+	private static final BlockBehaviour.Properties prop(Material material, MaterialColor color, float hardness) {
+		return BlockBehaviour.Properties.of(material, color).strength(hardness, Float.MAX_VALUE).requiresCorrectToolForDrops();
 	}
 
-	private static final BlockBehaviour.Properties propDisguisable(Material mat) {
-		return prop(mat).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
+	private static final BlockBehaviour.Properties propDisguisable(float hardness) {
+		return propDisguisable(Material.STONE, hardness);
 	}
 
-	private static final BlockBehaviour.Properties propDisguisable(Material mat, MaterialColor color) {
-		return prop(mat, color).noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
+	private static final BlockBehaviour.Properties propDisguisable(Material material, float hardness) {
+		return propDisguisable(material, material.getColor(), hardness);
 	}
 
-	private static final BlockBehaviour.Properties glassProp(MaterialColor color) {
-		return prop(Material.GLASS, color).sound(SoundType.GLASS).noOcclusion().isValidSpawn(SCContent::never).isRedstoneConductor(SCContent::never).isSuffocating(SCContent::never).isViewBlocking(SCContent::never);
+	private static final BlockBehaviour.Properties propDisguisable(Material material, MaterialColor color, float hardness) {
+		return propDisguisable(prop(material, color, hardness));
 	}
 
-	private static BlockBehaviour.Properties mineProp(Block block) {
-		return BlockBehaviour.Properties.copy(block).explosionResistance(Float.MAX_VALUE);
+	private static final BlockBehaviour.Properties propDisguisable(BlockBehaviour.Properties properties) {
+		return properties.noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
 	private static final Item.Properties itemProp(CreativeModeTab tab) {
@@ -2746,12 +2736,78 @@ public class SCContent {
 		return false;
 	}
 
-	private static ReinforcedPressurePlateBlock woodenPressurePlate(Block vanillaBlock) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, prop(Material.WOOD, vanillaBlock.defaultMaterialColor()).noCollission().sound(SoundType.WOOD), vanillaBlock);
+	private static RegistryObject<BaseReinforcedBlock> reinforcedBlock(String name, Block vanillaBlock) {
+		return reinforcedBlock(name, vanillaBlock, UnaryOperator.identity());
 	}
 
-	private static ReinforcedPressurePlateBlock stonePressurePlate(Block vanillaBlock) {
-		return new ReinforcedPressurePlateBlock(Sensitivity.MOBS, prop(vanillaBlock.defaultMaterialColor()).noCollission(), vanillaBlock);
+	private static RegistryObject<BaseReinforcedBlock> reinforcedBlock(String name, Block vanillaBlock, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return registerBlock(name, p -> new BaseReinforcedBlock(p, vanillaBlock), reinforcedCopy(vanillaBlock, propertyEditor));
+	}
+
+	private static <B extends Block> RegistryObject<B> reinforcedBlock(String name, Block vanillaBlock, BiFunction<BlockBehaviour.Properties, Block, B> constructor) {
+		return reinforcedBlock(name, vanillaBlock, constructor, UnaryOperator.identity());
+	}
+
+	private static <B extends Block> RegistryObject<B> reinforcedBlock(String name, Block vanillaBlock, BiFunction<BlockBehaviour.Properties, Block, B> constructor, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return registerBlock(name, p -> constructor.apply(p, vanillaBlock), reinforcedCopy(vanillaBlock, propertyEditor));
+	}
+
+	private static RegistryObject<BaseFullMineBlock> blockMine(String name, Block vanillaBlock) {
+		return reinforcedBlock(name, vanillaBlock, BaseFullMineBlock::new);
+	}
+
+	private static RegistryObject<ReinforcedButtonBlock> woodenButton(String id, Block vanillaBlock) {
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedButtonBlock(true, p, vanillaBlock));
+	}
+
+	private static RegistryObject<ReinforcedButtonBlock> stoneButton(String id, Block vanillaBlock) {
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedButtonBlock(false, p, vanillaBlock));
+	}
+
+	private static RegistryObject<ReinforcedPressurePlateBlock> woodenPressurePlate(String id, Block vanillaBlock) {
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedPressurePlateBlock(Sensitivity.EVERYTHING, p, vanillaBlock));
+	}
+
+	private static RegistryObject<ReinforcedPressurePlateBlock> stonePressurePlate(String id, Block vanillaBlock) {
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedPressurePlateBlock(Sensitivity.MOBS, p, vanillaBlock));
+	}
+
+	private static RegistryObject<ReinforcedFenceGateBlock> reinforcedFenceGateBlock(String id, Block vanillaBlock) {
+		return reinforcedBlock(id, vanillaBlock, (p, _vanillaBlock) -> new ReinforcedFenceGateBlock(p, vanillaBlock));
+	}
+
+	private static RegistryObject<SecretStandingSignBlock> secretStandingSign(String id, Block standingSign) {
+		return secretSign(id, SecretStandingSignBlock::new, standingSign);
+	}
+
+	private static RegistryObject<SecretWallSignBlock> secretWallSign(String id, Block standingSign) {
+		return secretSign(id, SecretWallSignBlock::new, standingSign);
+	}
+
+	private static <T extends SignBlock> RegistryObject<T> secretSign(String id, BiFunction<BlockBehaviour.Properties, WoodType, T> signConstructor, Block baseSign) {
+		return registerBlock(id, p -> signConstructor.apply(p, ((SignBlock) baseSign).type()), reinforcedCopy(baseSign));
+	}
+
+	private static <B extends Block> RegistryObject<B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> constructor, BlockBehaviour.Properties properties) {
+		return registerBlock(name, constructor, properties, UnaryOperator.identity());
+	}
+
+	private static <B extends Block> RegistryObject<B> registerBlock(String name, Function<BlockBehaviour.Properties, ? extends B> constructor, BlockBehaviour.Properties properties, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return BLOCKS.register(name, () -> constructor.apply(propertyEditor.apply(properties)));
+	}
+
+	private static BlockBehaviour.Properties ofFullCopy(BlockBehaviour blockBehaviour) {
+		BlockBehaviour.Properties copy = BlockBehaviour.Properties.copy(blockBehaviour);
+		BlockBehaviour.Properties original = blockBehaviour.properties;
+
+		copy.jumpFactor = original.jumpFactor;
+		copy.isRedstoneConductor = original.isRedstoneConductor;
+		copy.isValidSpawn = original.isValidSpawn;
+		copy.hasPostProcess = original.hasPostProcess;
+		copy.isSuffocating = original.isSuffocating;
+		copy.isViewBlocking = original.isViewBlocking;
+		copy.drops = original.drops;
+		return copy;
 	}
 
 	private SCContent() {}

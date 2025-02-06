@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "securitycraft:ancient_debris_mine"
+    "securitycraft:ancient_debris_mine",
+    "securitycraft:protecto",
+    "securitycraft:reinforced_obsidian",
+    "securitycraft:reinforced_crying_obsidian",
+    "securitycraft:reinforced_netherite_block"
   ]
 }

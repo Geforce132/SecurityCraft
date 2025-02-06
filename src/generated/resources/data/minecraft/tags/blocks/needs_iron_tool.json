@@ -8,6 +8,10 @@
     "securitycraft:emerald_mine",
     "securitycraft:deepslate_emerald_mine",
     "securitycraft:diamond_mine",
-    "securitycraft:deepslate_diamond_mine"
+    "securitycraft:deepslate_diamond_mine",
+    "securitycraft:reinforced_diamond_block",
+    "securitycraft:reinforced_emerald_block",
+    "securitycraft:reinforced_gold_block",
+    "securitycraft:reinforced_raw_gold_block"
   ]
 }

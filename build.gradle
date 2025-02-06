@@ -52,7 +52,7 @@ minecraft {
 			taskName 'SC 1.18.2 Client'
 			workingDirectory project.file('run/client')
 		}
-		
+
 		client2 {
 			parent runs.client
 			taskName 'SC 1.18.2 Client2'

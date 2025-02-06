@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -126,5 +127,24 @@ public class BlockUtils {
 				modifiedPos = pos.relative(direction, ++i);
 			}
 		}
+	}
+
+	public static float getDestroyProgress(DestroyProgress destroyProgress, BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		if (state.getBlock() instanceof IBlockMine)
+			return destroyProgress.get(state, player, level, pos);
+
+		if (ConfigHandler.SERVER.vanillaToolBlockBreaking.get()) {
+			if (level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player))
+				return destroyProgress.get(state, player, level, pos);
+			else if (ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get())
+				return (float) (destroyProgress.get(state, player, level, pos) / ConfigHandler.SERVER.nonOwnedBreakingSlowdown.get());
+		}
+
+		return 0.0F;
+	}
+
+	@FunctionalInterface
+	public static interface DestroyProgress {
+		float get(BlockState state, Player player, BlockGetter level, BlockPos pos);
 	}
 }

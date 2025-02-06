@@ -71,7 +71,7 @@ public class BlockModelAndStateGenerator extends BlockStateProvider {
 		simpleBlock(SCContent.FLOOR_TRAP.get());
 		simpleBlock(SCContent.REINFORCED_GLASS.get());
 		reinforcedCarpetBlock(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		reinforcedPaneBlock((IronBarsBlock) SCContent.REINFORCED_GLASS_PANE.get());
+		reinforcedPaneBlock(SCContent.REINFORCED_GLASS_PANE.get());
 
 		reinforcedFenceBlock(SCContent.REINFORCED_OAK_FENCE.get(), "oak_planks");
 		reinforcedFenceBlock(SCContent.REINFORCED_SPRUCE_FENCE.get(), "spruce_planks");
