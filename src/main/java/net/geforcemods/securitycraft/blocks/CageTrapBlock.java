@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
@@ -173,6 +174,30 @@ public class CageTrapBlock extends DisguisableBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new CageTrapBlockEntity(pos, state);
+	}
+
+	@Override
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+		disassembleIronBars(state, level, pos, level.getBlockEntity(pos) instanceof CageTrapBlockEntity be ? be.getOwner() : null);
+		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+	}
+
+	public static boolean disassembleIronBars(BlockState state, Level level, BlockPos cageTrapPos, Owner cageTrapOwner) {
+		if (cageTrapOwner != null && !level.isClientSide && state.getValue(CageTrapBlock.DEACTIVATED)) {
+			loopIronBarPositions(cageTrapPos.mutable(), barPos -> {
+				BlockEntity barBe = level.getBlockEntity(barPos);
+
+				if (barBe instanceof IOwnable ownableBar && cageTrapOwner.owns(ownableBar)) {
+					Block barBlock = level.getBlockState(barPos).getBlock();
+
+					if (barBlock == SCContent.REINFORCED_IRON_BARS.get() || barBlock == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get())
+						level.destroyBlock(barPos, false);
+				}
+			});
+			return true;
+		}
+
+		return false;
 	}
 
 	public static void loopIronBarPositions(BlockPos.MutableBlockPos pos, Consumer<BlockPos.MutableBlockPos> positionAction) {
