@@ -69,7 +69,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 		boolean isInPlayerRange = storage.inRange(x, z);
 		boolean shouldAddChunk = false;
 
-		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.xChunk, cameraEntity.zChunk)) <= (renderDistance + 1))
+		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.blockPosition())) <= (renderDistance + 1))
 			shouldAddChunk = true;
 		else {
 			for (GlobalPos cameraPos : CameraController.FRAME_LINKS.keySet()) {
