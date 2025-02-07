@@ -2758,7 +2758,7 @@ public class SCContent {
 	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB), reinforcedCopy(Blocks.SMOOTH_QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
-	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.registerBlock("horizontal_reinforced_iron_bars", HorizontalReinforcedIronBars::new, reinforcedCopy(Blocks.IRON_BARS).noLootTable());
+	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.registerBlock("horizontal_reinforced_iron_bars", HorizontalReinforcedIronBars::new, reinforcedCopy(Blocks.IRON_BARS).noLootTable().overrideDescription("block.securitycraft.reinforced_iron_bars"));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced

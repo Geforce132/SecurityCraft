@@ -24,7 +24,7 @@
 - Fix: Potential startup crash
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
 - Fix: Several reinforced blocks can be broken by pistons
-- Fix: Wall hanging signs have an incorrect translation key
+- Fix: Wall hanging signs and horizontal reinforced iron bars have an incorrect translation key
 - Fix: Security sea boats cannot be broken by players like normal boats
 - Fix: The claymore does not ignore the owner if the "Ignore Owner" option is true, and vice versa
 - Removed: Configuration "ableToBreakMines"
