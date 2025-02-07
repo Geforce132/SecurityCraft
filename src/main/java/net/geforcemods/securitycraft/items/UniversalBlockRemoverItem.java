@@ -89,22 +89,9 @@ public class UniversalBlockRemoverItem extends Item {
 						stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(ctx.getHand()));
 					}
 				}
-				else if (block == SCContent.CAGE_TRAP.get() && state.getValue(CageTrapBlock.DEACTIVATED)) {
-					BlockPos originalPos = pos;
-					BlockPos middlePos = originalPos.above(4);
-
-					if (!level.isClientSide) {
-						CageTrapBlock.loopIronBarPositions(originalPos.mutable(), barPos -> {
-							BlockEntity barBe = level.getBlockEntity(barPos);
-
-							if (barBe instanceof IOwnable ownableBar && owner.owns(ownableBar)) {
-								Block barBlock = level.getBlockState(barPos).getBlock();
-
-								if (barBlock == SCContent.REINFORCED_IRON_BARS.get() || (barPos.equals(middlePos) && barBlock == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get()))
-									level.destroyBlock(barPos, false);
-							}
-						});
-						level.destroyBlock(originalPos, true);
+				else if (block == SCContent.CAGE_TRAP.get()) {
+					if (CageTrapBlock.disassembleIronBars(state, level, pos, owner)) {
+						level.destroyBlock(pos, true);
 						stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(ctx.getHand()));
 					}
 				}
