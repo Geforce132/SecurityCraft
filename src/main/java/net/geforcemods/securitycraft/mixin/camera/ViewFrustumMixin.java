@@ -17,7 +17,7 @@ import net.minecraft.entity.Entity;
 @Mixin(value = ViewFrustum.class, priority = 1100)
 public class ViewFrustumMixin {
 	@Inject(method = "repositionCamera", at = @At("HEAD"), cancellable = true)
-	public void securitycraft$preventCameraRepositioning(double x, double z, CallbackInfo ci) {
+	private void securitycraft$preventCameraRepositioning(double x, double z, CallbackInfo ci) {
 		Entity camera = Minecraft.getInstance().cameraEntity;
 
 		if (camera instanceof SecurityCamera && (x != camera.getX() || z != camera.getZ()))

@@ -18,12 +18,12 @@ public class DebugOverlayGuiMixin {
 	protected RayTraceResult block;
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getBlockState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/block/BlockState;"))
-	public BlockState securitycraft$spoofBlockState(BlockState originalState) {
+	private BlockState securitycraft$spoofBlockState(BlockState originalState) {
 		return F3Spoofer.spoofBlockState(originalState, ((BlockRayTraceResult) block).getBlockPos());
 	}
 
 	@ModifyVariable(method = "getSystemInformation", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/world/ClientWorld;getFluidState(Lnet/minecraft/util/math/BlockPos;)Lnet/minecraft/fluid/FluidState;"))
-	public FluidState securitycraft$spoofFluidState(FluidState originalState) {
+	private FluidState securitycraft$spoofFluidState(FluidState originalState) {
 		return F3Spoofer.spoofFluidState(originalState);
 	}
 }

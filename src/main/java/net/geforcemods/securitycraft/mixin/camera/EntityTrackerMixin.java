@@ -53,7 +53,7 @@ public abstract class EntityTrackerMixin {
 	 * Enables entities that should be sent as well as security camera entities to be sent to the client
 	 */
 	@ModifyVariable(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE))
-	public boolean securitycraft$modifyFlag(boolean original) {
+	private boolean securitycraft$modifyFlag(boolean original) {
 		boolean originalShouldBeSent = shouldBeSent;
 
 		shouldBeSent = false;

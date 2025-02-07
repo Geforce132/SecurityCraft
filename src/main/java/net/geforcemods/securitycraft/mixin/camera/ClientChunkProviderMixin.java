@@ -45,7 +45,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Initializes the camera storage
 	 */
 	@Inject(method = "<init>", at = @At(value = "TAIL"))
-	public void securitycraft$onInit(ClientWorld level, int viewDistance, CallbackInfo ci) {
+	private void securitycraft$onInit(ClientWorld level, int viewDistance, CallbackInfo ci) {
 		CameraController.setCameraStorage(newStorage(Math.max(2, viewDistance) + 3));
 	}
 
@@ -54,7 +54,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * previous one
 	 */
 	@Inject(method = "updateViewRadius", at = @At(value = "FIELD", target = "Lnet/minecraft/client/multiplayer/ClientChunkProvider;storage:Lnet/minecraft/client/multiplayer/ClientChunkProvider$ChunkArray;", ordinal = 1))
-	public void securitycraft$onUpdateViewRadius(int viewDistance, CallbackInfo ci) {
+	private void securitycraft$onUpdateViewRadius(int viewDistance, CallbackInfo ci) {
 		ClientChunkProvider.ChunkArray oldStorage = CameraController.getCameraStorage();
 		ClientChunkProvider.ChunkArray newStorage = newStorage(Math.max(2, viewDistance) + 3);
 
@@ -79,7 +79,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Handles chunks that are unloaded in range of the camera storage
 	 */
 	@Inject(method = "drop", at = @At(value = "HEAD"))
-	public void securitycraft$onDrop(int x, int z, CallbackInfo ci) {
+	private void securitycraft$onDrop(int x, int z, CallbackInfo ci) {
 		ClientChunkProvider.ChunkArray cameraStorage = CameraController.getCameraStorage();
 
 		if (cameraStorage.inRange(x, z)) {
