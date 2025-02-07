@@ -52,12 +52,11 @@ sourceSets {
 minecraft {
     mappings channel: 'parchment', version: '2022.03.06-1.16.5'
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-	
-    runs {
-        client {
-            workingDirectory project.file('run/client')
-            property 'forge.logging.console.level', 'debug'
-            args '-mixin.config=securitycraft.mixins.json'
+
+	runs {
+		configureEach {
+			property 'forge.logging.console.level', 'debug'
+			args '-mixin.config=securitycraft.mixins.json'
 
             mods {
                 securitycraft {
@@ -66,29 +65,29 @@ minecraft {
             }
         }
 
-        server {
-            workingDirectory project.file('run/server')
-            property 'forge.logging.console.level', 'debug'
-            args '-nogui', '-mixin.config=securitycraft.mixins.json'
+		client {
+			taskName "SC_${project.mc_version}_Client"
+			workingDirectory project.file('run/client')
+		}
+		
+		client2 {
+			parent runs.client
+			taskName "SC_${project.mc_version}_Client2"
+			workingDirectory project.file('run/client')
+			args '--username', 'Dev2'
+		}
 
-            mods {
-                securitycraft {
-                    source sourceSets.main
-                }
-            }
-        }
+		server {
+			taskName "SC_${project.mc_version}_Server"
+			workingDirectory project.file('run/server')
+			args '-nogui'
+		}
 
 		data {
+			taskName "SC_${project.mc_version}_Data"
 			workingDirectory project.file('run/data')
-			property 'forge.logging.console.level', 'debug'
 			args '--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                securitycraft {
-                    source sourceSets.main
-                }
-            }
-        }
+		}
 	}
 }
 
@@ -121,7 +120,7 @@ mixin {
 
 jar {
 	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
-	archiveFileName = "[1.16.5] SecurityCraft ${version}.jar"
+	archiveFileName = "[${project.mc_version}] SecurityCraft ${version}.jar"
     manifest {
         attributes(["Specification-Title": "SecurityCraft",
                     "Specification-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep",
