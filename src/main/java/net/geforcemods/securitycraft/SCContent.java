@@ -414,7 +414,7 @@ public class SCContent {
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<FrameBlock> FRAME = BLOCKS.registerBlock("keypad_frame", FrameBlock::new, prop(5.0F).sound(SoundType.METAL));
+	public static final DeferredBlock<FrameBlock> FRAME = BLOCKS.registerBlock("keypad_frame", FrameBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
 	public static final DeferredBlock<DisplayCaseBlock> GLOW_DISPLAY_CASE = BLOCKS.registerBlock(GLOW_DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, true), prop(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
