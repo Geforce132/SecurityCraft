@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -34,10 +33,15 @@ public class BlockEntityNBTCondition implements LootItemCondition {
 
 	@Override
 	public boolean test(LootContext lootContext) {
-		BlockEntity be = lootContext.getLevel().getBlockEntity(BlockPos.containing(lootContext.getParamOrNull(LootContextParams.ORIGIN)));
-		CompoundTag nbt = be.saveWithFullMetadata();
+		BlockEntity be = lootContext.getParamOrNull(LootContextParams.BLOCK_ENTITY);
 
-		return nbt.contains(key) && nbt.getBoolean(key) == value;
+		if (be != null) {
+			CompoundTag nbt = be.saveWithFullMetadata();
+
+			return nbt.contains(key) && nbt.getBoolean(key) == value;
+		}
+
+		return false;
 	}
 
 	@Override
