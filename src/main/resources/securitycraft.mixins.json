@@ -10,8 +10,6 @@
 		"camera.MinecraftMixin",
 		"camera.RenderTargetMixin",
 		"camera.ViewAreaMixin",
-		"cobweb.ShearsItemMixin",
-		"cobweb.ToolMaterialMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
 		"taser.ItemInHandRendererMixin"
@@ -21,6 +19,8 @@
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
+		"cobweb.ShearsItemMixin",
+		"cobweb.ToolMaterialMixin",
 		"datafix.BoatSplitFixMixin",
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
