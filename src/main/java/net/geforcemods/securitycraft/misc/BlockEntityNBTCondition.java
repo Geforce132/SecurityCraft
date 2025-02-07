@@ -7,7 +7,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -32,10 +31,15 @@ public record BlockEntityNBTCondition(String key, boolean value) implements Loot
 
 	@Override
 	public boolean test(LootContext lootContext) {
-		BlockEntity be = lootContext.getLevel().getBlockEntity(BlockPos.containing(lootContext.getParameter(LootContextParams.ORIGIN)));
-		CompoundTag nbt = be.saveWithFullMetadata(lootContext.getLevel().registryAccess());
+		BlockEntity be = lootContext.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 
-		return nbt.getBooleanOr(key, !value) == value;
+		if (be != null) {
+			CompoundTag nbt = be.saveWithFullMetadata(lootContext.getLevel().registryAccess());
+
+			return nbt.getBooleanOr(key, !value) == value;
+		}
+
+		return false;
 	}
 
 	@Override
