@@ -1,7 +1,9 @@
 --------------------------Changelog for v1.9.12-beta4 of SecurityCraft--------------------------
 
 - Fix: "Designed by" text in the SC Manual is not rendered correctly
-- Fix: The buttons to change the subpage in the SC Manual cannot be clicked
+- Fix: The buttons to change the subpage in the SC Manual cannot be pressed
+- Fix: Compatibility with NeoForge 21.4.84-beta
+- Misc.: The minimum required NeoForge version is now 21.4.84-beta
 
 --------------------------Changelog for v1.9.12-beta3 of SecurityCraft--------------------------
 

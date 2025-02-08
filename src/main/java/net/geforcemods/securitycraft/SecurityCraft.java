@@ -60,7 +60,7 @@ import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -134,8 +134,8 @@ public class SecurityCraft {
 		collectSCContentData(event.getServer(), true);
 	}
 
-	public static void addReloadListener(AddReloadListenerEvent event) {
-		event.addListener((barrier, manager, e1, e2) -> CompletableFuture.runAsync(() -> collectSCContentData(true), e1).thenCompose(barrier::wait));
+	public static void addReloadListener(AddServerReloadListenersEvent event) {
+		event.addListener(resLoc("collect_sc_content_data"), (barrier, manager, e1, e2) -> CompletableFuture.runAsync(() -> collectSCContentData(true), e1).thenCompose(barrier::wait));
 	}
 
 	@SubscribeEvent
