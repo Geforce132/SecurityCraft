@@ -57,6 +57,7 @@
         "1.21-recommended": "1.9.10-beta7",
         "1.21.2-latest": "1.9.11-beta2",
         "1.21.2-recommended": "1.9.11-beta2",
+
         "1.12.2-latest": "v1.9.12",
         "1.12.2-recommended": "v1.9.12",
         "1.16.5-latest": "v1.9.12.1",
@@ -75,8 +76,8 @@
         "1.21.1-recommended": "1.9.12",
         "1.21.3-latest": "1.9.12",
         "1.21.3-recommended": "1.9.12",
-        "1.21.4-latest": "1.9.12-beta3",
-        "1.21.4-recommended": "1.9.12-beta3"
+        "1.21.4-latest": "1.9.12-beta4",
+        "1.21.4-recommended": "1.9.12-beta4"
     },
     "1.7.10": {
         "v1.8.13": "https://github.com/Geforce132/SecurityCraft/blob/1.7.10/Changelog%20v1.8.x.md"
@@ -162,6 +163,7 @@
     "1.21.2": {
         "1.9.11-beta2": "https://github.com/Geforce132/SecurityCraft/blob/63c87ccbc661cecac0e75d54b81b571a3d17a29e/Changelog.md"
     },
+
     "1.12.2": {
         "v1.9.12": "https://github.com/Geforce132/SecurityCraft/blob/1.12.2/Changelog.md"
     },
@@ -190,6 +192,6 @@
         "1.9.12": "https://github.com/Geforce132/SecurityCraft/blob/1.21.3/Changelog.md"
     },
     "1.21.4": {
-        "1.9.12-beta3": "https://github.com/Geforce132/SecurityCraft/blob/1.21.4/Changelog.md"
+        "1.9.12-beta4": "https://github.com/Geforce132/SecurityCraft/blob/1.21.4/Changelog.md"
     }
 }
