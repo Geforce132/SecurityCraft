@@ -8,21 +8,12 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements IBeaconBeamColorProvider {
-	private final DyeColor color;
-
-	public ReinforcedStainedGlassBlock(AbstractBlock.Properties properties, DyeColor color, Block vB) {
+	public ReinforcedStainedGlassBlock(AbstractBlock.Properties properties, Block vB) {
 		super(properties, vB);
-		this.color = color;
-	}
-
-	@Override
-	public float[] getBeaconColorMultiplier(BlockState state, IWorldReader level, BlockPos pos, BlockPos beaconPos) {
-		return color.getTextureDiffuseColors();
 	}
 
 	@Override
@@ -32,7 +23,7 @@ public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements
 
 	@Override
 	public DyeColor getColor() {
-		return color;
+		return getVanillaBlock() instanceof IBeaconBeamColorProvider ? ((IBeaconBeamColorProvider) getVanillaBlock()).getColor() : DyeColor.WHITE;
 	}
 
 	@Override

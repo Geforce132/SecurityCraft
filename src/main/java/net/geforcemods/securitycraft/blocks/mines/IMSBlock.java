@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -56,7 +57,12 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	@Override
@@ -99,7 +105,7 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof IModuleInventory)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && te instanceof IModuleInventory)
 				((IModuleInventory) te).dropAllModules();
 		}
 

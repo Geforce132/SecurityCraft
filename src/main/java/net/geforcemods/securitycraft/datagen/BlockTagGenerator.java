@@ -57,6 +57,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(SCTags.Blocks.REINFORCED_COBBLESTONE).add(
 				SCContent.REINFORCED_COBBLESTONE.get(),
 				SCContent.REINFORCED_MOSSY_COBBLESTONE.get());
+		tag(SCTags.Blocks.REINFORCED_COBWEB).add(SCContent.REINFORCED_COBWEB.get());
 		tag(SCTags.Blocks.REINFORCED_CRIMSON_STEMS).add(
 				SCContent.REINFORCED_CRIMSON_STEM.get(),
 				SCContent.REINFORCED_CRIMSON_HYPHAE.get(),
@@ -331,26 +332,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.STANDING_SIGNS).addTag(SCTags.Blocks.SECRET_STANDING_SIGNS);
 		tag(BlockTags.TRAPDOORS).add(SCContent.REINFORCED_IRON_TRAPDOOR.get(), SCContent.KEYPAD_TRAPDOOR.get(), SCContent.SCANNER_TRAPDOOR.get());
 		tag(BlockTags.WALL_SIGNS).addTag(SCTags.Blocks.SECRET_WALL_SIGNS);
-		tag(BlockTags.WALLS).add(
-				SCContent.REINFORCED_COBBLESTONE_WALL.get(),
-				SCContent.REINFORCED_MOSSY_COBBLESTONE_WALL.get(),
-				SCContent.REINFORCED_BRICK_WALL.get(),
-				SCContent.REINFORCED_PRISMARINE_WALL.get(),
-				SCContent.REINFORCED_RED_SANDSTONE_WALL.get(),
-				SCContent.REINFORCED_MOSSY_STONE_BRICK_WALL.get(),
-				SCContent.REINFORCED_GRANITE_WALL.get(),
-				SCContent.REINFORCED_STONE_BRICK_WALL.get(),
-				SCContent.REINFORCED_NETHER_BRICK_WALL.get(),
-				SCContent.REINFORCED_ANDESITE_WALL.get(),
-				SCContent.REINFORCED_RED_NETHER_BRICK_WALL.get(),
-				SCContent.REINFORCED_SANDSTONE_WALL.get(),
-				SCContent.REINFORCED_END_STONE_BRICK_WALL.get(),
-				SCContent.REINFORCED_DIORITE_WALL.get(),
-				SCContent.REINFORCED_BLACKSTONE_WALL.get(),
-				SCContent.REINFORCED_POLISHED_BLACKSTONE_WALL.get(),
-				SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_WALL.get());
+		tag(BlockTags.WALLS).addTag(SCTags.Blocks.REINFORCED_WALLS);
 		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.WOODEN_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES);
+		tag(BlockTags.WOOL).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		//@formatter:on
 
 		//Forge tags
@@ -374,7 +359,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			else if (block instanceof ReinforcedStairsBlock && block.getSoundType(block.defaultBlockState()) != SoundType.WOOD)
 				tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
 			else if (block instanceof ReinforcedWallBlock)
-				tag(BlockTags.WALLS).add(block);
+				tag(SCTags.Blocks.REINFORCED_WALLS).add(block);
 		}
 	}
 

@@ -10,10 +10,21 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implements IReinforcedBlock {
 	public ReinforcedIronTrapDoorBlock(AbstractBlock.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public ToolType getHarvestTool(BlockState state) {
+		return getVanillaBlock().getHarvestTool(convertToVanilla(null, null, state));
+	}
+
+	@Override
+	public int getHarvestLevel(BlockState state) {
+		return getVanillaBlock().getHarvestLevel(convertToVanilla(null, null, state));
 	}
 
 	@Override
@@ -45,7 +56,7 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 
 	@Override
 	public BlockState convertToVanilla(World level, BlockPos pos, BlockState reinforcedState) {
-		boolean isPowered = level.hasNeighborSignal(pos);
+		boolean isPowered = level != null && pos != null && level.hasNeighborSignal(pos);
 
 		return defaultBlockState().setValue(FACING, reinforcedState.getValue(FACING)).setValue(OPEN, isPowered).setValue(HALF, reinforcedState.getValue(HALF)).setValue(POWERED, isPowered).setValue(WATERLOGGED, reinforcedState.getValue(WATERLOGGED));
 	}

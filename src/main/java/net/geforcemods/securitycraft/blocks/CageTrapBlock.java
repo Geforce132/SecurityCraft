@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -20,6 +19,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -114,7 +114,7 @@ public class CageTrapBlock extends DisguisableBlock {
 						if (barPos.equals(topMiddle))
 							level.setBlockAndUpdate(barPos, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
 						else
-							level.setBlockAndUpdate(barPos, ((ReinforcedPaneBlock) SCContent.REINFORCED_IRON_BARS.get()).getStateForPlacement(level, barPos));
+							level.setBlockAndUpdate(barPos, SCContent.REINFORCED_IRON_BARS.get().getStateForPlacement(level, barPos));
 					}
 
 					TileEntity barBe = level.getBlockEntity(barPos);
@@ -175,6 +175,32 @@ public class CageTrapBlock extends DisguisableBlock {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new CageTrapBlockEntity();
+	}
+
+	@Override
+	public boolean removedByPlayer(BlockState state, World level, BlockPos pos, PlayerEntity player, boolean willHarvest, FluidState fluid) {
+		TileEntity be = level.getBlockEntity(pos);
+
+		disassembleIronBars(state, level, pos, be instanceof CageTrapBlockEntity ? ((CageTrapBlockEntity) be).getOwner() : null);
+		return super.removedByPlayer(state, level, pos, player, willHarvest, fluid);
+	}
+
+	public static boolean disassembleIronBars(BlockState state, World level, BlockPos cageTrapPos, Owner cageTrapOwner) {
+		if (cageTrapOwner != null && !level.isClientSide && state.getValue(CageTrapBlock.DEACTIVATED)) {
+			loopIronBarPositions(cageTrapPos.mutable(), barPos -> {
+				TileEntity barBe = level.getBlockEntity(barPos);
+
+				if (barBe instanceof IOwnable && cageTrapOwner.owns((IOwnable) barBe)) {
+					Block barBlock = level.getBlockState(barPos).getBlock();
+
+					if (barBlock == SCContent.REINFORCED_IRON_BARS.get() || barBlock == SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get())
+						level.destroyBlock(barPos, false);
+				}
+			});
+			return true;
+		}
+
+		return false;
 	}
 
 	public static void loopIronBarPositions(BlockPos.Mutable pos, Consumer<BlockPos.Mutable> positionAction) {

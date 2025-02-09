@@ -3,11 +3,14 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Collections;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.MovingPistonBlock;
 import net.minecraft.block.PistonBlock;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootContext;
 import net.minecraft.loot.LootParameters;
@@ -25,6 +28,16 @@ import net.minecraft.world.World;
 public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	public ReinforcedMovingPistonBlock(AbstractBlock.Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	public static TileEntity createTilePiston(BlockState state, CompoundNBT tag, Direction direction, boolean extending, boolean shouldHeadBeRendered) {

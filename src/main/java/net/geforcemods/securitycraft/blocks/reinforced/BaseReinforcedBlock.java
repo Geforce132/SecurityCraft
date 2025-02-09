@@ -29,13 +29,10 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
+import net.minecraftforge.common.ToolType;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
-
-	public BaseReinforcedBlock(Block vB) {
-		this(SCContent.reinforcedCopy(vB), () -> vB);
-	}
 
 	public BaseReinforcedBlock(AbstractBlock.Properties properties, Block vB) {
 		this(properties, () -> vB);
@@ -43,8 +40,17 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 
 	public BaseReinforcedBlock(AbstractBlock.Properties properties, Supplier<Block> vB) {
 		super(properties);
-
 		vanillaBlockSupplier = vB;
+	}
+
+	@Override
+	public ToolType getHarvestTool(BlockState state) {
+		return getVanillaBlock().getHarvestTool(convertToVanilla(null, null, state));
+	}
+
+	@Override
+	public int getHarvestLevel(BlockState state) {
+		return getVanillaBlock().getHarvestLevel(convertToVanilla(null, null, state));
 	}
 
 	@Override

@@ -46,7 +46,7 @@ import net.minecraftforge.fml.RegistryObject;
 
 public class BlockLootTableGenerator implements IDataProvider {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-	protected final Map<Supplier<Block>, LootTable.Builder> lootTables = new HashMap<>();
+	protected final Map<Supplier<? extends Block>, LootTable.Builder> lootTables = new HashMap<>();
 	private final DataGenerator generator;
 
 	public BlockLootTableGenerator(DataGenerator generator) {
@@ -146,7 +146,7 @@ public class BlockLootTableGenerator implements IDataProvider {
 		//@formatter:on
 	}
 
-	protected final LootTable.Builder createStandardBlockLootTable(Supplier<Block> drop) {
+	protected final LootTable.Builder createStandardBlockLootTable(Supplier<? extends Block> drop) {
 		return createStandardBlockLootTable(drop.get());
 	}
 
@@ -160,11 +160,11 @@ public class BlockLootTableGenerator implements IDataProvider {
 		//@formatter:on
 	}
 
-	protected final void putTwoHighBlockLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
+	protected final void putTwoHighBlockLootTable(Supplier<? extends Block> door, Supplier<Item> doorItem) {
 		lootTables.put(door, createTwoHighBlockLootTable(door, doorItem));
 	}
 
-	protected final LootTable.Builder createTwoHighBlockLootTable(Supplier<Block> door, Supplier<Item> doorItem) {
+	protected final LootTable.Builder createTwoHighBlockLootTable(Supplier<? extends Block> door, Supplier<Item> doorItem) {
 		//@formatter:off
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool()
@@ -177,15 +177,15 @@ public class BlockLootTableGenerator implements IDataProvider {
 		//@formatter:on
 	}
 
-	protected final void putStandardBlockLootTable(Supplier<Block> block) {
+	protected final void putStandardBlockLootTable(Supplier<? extends Block> block) {
 		putStandardBlockLootTable(block, block.get());
 	}
 
-	protected final void putStandardBlockLootTable(Supplier<Block> block, IItemProvider drop) {
+	protected final void putStandardBlockLootTable(Supplier<? extends Block> block, IItemProvider drop) {
 		lootTables.put(block, createStandardBlockLootTable(drop));
 	}
 
-	protected final void putSlabLootTable(Supplier<Block> slab) {
+	protected final void putSlabLootTable(Supplier<? extends Block> slab) {
 		//@formatter:off
 		lootTables.put(slab, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
@@ -205,7 +205,7 @@ public class BlockLootTableGenerator implements IDataProvider {
 
 		addTables();
 
-		for (Map.Entry<Supplier<Block>, LootTable.Builder> entry : lootTables.entrySet()) {
+		for (Map.Entry<Supplier<? extends Block>, LootTable.Builder> entry : lootTables.entrySet()) {
 			tables.put(entry.getKey().get().getLootTable(), entry.getValue().setParamSet(LootParameterSets.BLOCK).build());
 		}
 

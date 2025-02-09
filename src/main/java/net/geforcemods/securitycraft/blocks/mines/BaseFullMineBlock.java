@@ -25,6 +25,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
 
 public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 	private final Block blockDisguisedAs;
@@ -32,6 +33,16 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	public BaseFullMineBlock(AbstractBlock.Properties properties, Block disguisedBlock) {
 		super(properties);
 		blockDisguisedAs = disguisedBlock;
+	}
+
+	@Override
+	public ToolType getHarvestTool(BlockState state) {
+		return blockDisguisedAs.getHarvestTool(blockDisguisedAs.defaultBlockState());
+	}
+
+	@Override
+	public int getHarvestLevel(BlockState state) {
+		return blockDisguisedAs.getHarvestLevel(blockDisguisedAs.defaultBlockState());
 	}
 
 	@Override

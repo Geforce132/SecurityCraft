@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.stream.Stream;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IDisguisable;
@@ -93,7 +94,7 @@ public class SonicSecuritySystemBlock extends DisguisableBlock implements IWater
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof IModuleInventory)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && te instanceof IModuleInventory)
 				((IModuleInventory) te).dropAllModules();
 		}
 

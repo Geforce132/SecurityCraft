@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IDisguisable;
@@ -98,7 +99,9 @@ public class SecurityCameraBlock extends DisguisableBlock implements IWaterLogga
 			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof SecurityCameraBlockEntity) {
-				((SecurityCameraBlockEntity) te).dropAllModules();
+				if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+					((SecurityCameraBlockEntity) te).dropAllModules();
+
 				InventoryHelper.dropContents(level, pos, ((SecurityCameraBlockEntity) te).getLensContainer());
 			}
 		}

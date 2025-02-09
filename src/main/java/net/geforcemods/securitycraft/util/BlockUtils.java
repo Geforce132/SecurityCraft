@@ -17,6 +17,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.Explosion.Mode;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -127,5 +128,26 @@ public class BlockUtils {
 				modifiedPos = pos.relative(direction, ++i);
 			}
 		}
+	}
+
+	public static float getDestroyProgress(DestroyProgress destroyProgress, BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		if (state.getBlock() instanceof IBlockMine)
+			return destroyProgress.get(state, player, level, pos);
+
+		if (ConfigHandler.SERVER.vanillaToolBlockBreaking.get()) {
+			TileEntity te = level.getBlockEntity(pos);
+
+			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
+				return destroyProgress.get(state, player, level, pos);
+			else if (ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get())
+				return (float) (destroyProgress.get(state, player, level, pos) / ConfigHandler.SERVER.nonOwnedBreakingSlowdown.get());
+		}
+
+		return 0.0F;
+	}
+
+	@FunctionalInterface
+	public static interface DestroyProgress {
+		float get(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos);
 	}
 }

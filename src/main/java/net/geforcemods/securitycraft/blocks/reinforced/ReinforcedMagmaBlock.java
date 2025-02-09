@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import java.util.Random;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -23,8 +24,8 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.IPlantable;
 
 public class ReinforcedMagmaBlock extends BaseReinforcedBlock {
-	public ReinforcedMagmaBlock(Block vanillaBlock) {
-		super(vanillaBlock);
+	public ReinforcedMagmaBlock(AbstractBlock.Properties properties, Block vanillaBlock) {
+		super(properties, vanillaBlock);
 	}
 
 	@Override

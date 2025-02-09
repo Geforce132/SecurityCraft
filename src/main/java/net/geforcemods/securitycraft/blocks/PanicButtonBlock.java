@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractButtonBlock;
 import net.minecraft.block.Block;
@@ -55,6 +57,16 @@ public class PanicButtonBlock extends AbstractButtonBlock implements IWaterLogga
 	public PanicButtonBlock(boolean isWooden, AbstractBlock.Properties properties) {
 		super(isWooden, properties);
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	@Override

@@ -17,7 +17,6 @@ import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.JSONUtils;
-import net.minecraft.util.math.BlockPos;
 
 public class BlockEntityNBTCondition implements ILootCondition {
 	private String key;
@@ -35,10 +34,15 @@ public class BlockEntityNBTCondition implements ILootCondition {
 
 	@Override
 	public boolean test(LootContext lootContext) {
-		TileEntity be = lootContext.getLevel().getBlockEntity(new BlockPos(lootContext.getParamOrNull(LootParameters.ORIGIN)));
-		CompoundNBT nbt = be.save(new CompoundNBT());
+		TileEntity be = lootContext.getParamOrNull(LootParameters.BLOCK_ENTITY);
 
-		return nbt.contains(key) && nbt.getBoolean(key) == value;
+		if (be != null) {
+			CompoundNBT nbt = be.save(new CompoundNBT());
+
+			return nbt.contains(key) && nbt.getBoolean(key) == value;
+		}
+
+		return false;
 	}
 
 	@Override

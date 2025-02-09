@@ -69,7 +69,7 @@ minecraft {
 			taskName "SC_${project.mc_version}_Client"
 			workingDirectory project.file('run/client')
 		}
-		
+
 		client2 {
 			parent runs.client
 			taskName "SC_${project.mc_version}_Client2"

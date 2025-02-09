@@ -1,8 +1,18 @@
 --------------------------Changelog for the upcoming version of SecurityCraft--------------------------
 
+- New: All blocks can now be broken only by the owner with normal tools (axe, shovel, hoe, ...) and the Universal Block Remover has been disabled by default
+- New: Config to re-enable the Universal Block Remover and disable normal block breaking
+- New: Config to define tool requirement behavior (e.g. does Reinforced Stone always drop, or just when breaking it using a pickaxe?)
+- New: Config to allow other players to break anyone's blocks (disallowed by default)
+- New: Config for defining how much longer it should take to break another player's block compared to breaking one's own
 - Change: The block mine overlay now shows in the first person hand models as well
 - API: IDisguisable has been simplified
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
+- Fix: The display of items in the SC Manual can change too fast in certain situations
+- Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
+- Fix: Several reinforced blocks can be broken by pistons
+- Fix: The claymore does not ignore the owner if the "Ignore Owner" option is true, and vice versa
+- Removed: Configuration "ableToBreakMines"
 
 --------------------------Changelog for v1.9.12.1 of SecurityCraft--------------------------
 

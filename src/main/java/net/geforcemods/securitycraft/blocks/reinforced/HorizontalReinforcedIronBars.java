@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,14 +24,29 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
+import net.minecraftforge.common.ToolType;
 
-public class HorizontalReinforcedIronBars extends BaseReinforcedBlock implements IWaterLoggable {
+public class HorizontalReinforcedIronBars extends OwnableBlock implements IWaterLoggable {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final VoxelShape SHAPE = Block.box(-8.0D, 14.0D, -8.0D, 24.0D, 16.0D, 24.0D);
 
-	public HorizontalReinforcedIronBars(AbstractBlock.Properties properties, Block vB) {
-		super(properties, vB);
+	public HorizontalReinforcedIronBars(AbstractBlock.Properties properties) {
+		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public ToolType getHarvestTool(BlockState state) {
+		Block bars = SCContent.REINFORCED_IRON_BARS.get();
+
+		return bars.getHarvestTool(bars.defaultBlockState());
+	}
+
+	@Override
+	public int getHarvestLevel(BlockState state) {
+		Block bars = SCContent.REINFORCED_IRON_BARS.get();
+
+		return bars.getHarvestLevel(bars.defaultBlockState());
 	}
 
 	@Override

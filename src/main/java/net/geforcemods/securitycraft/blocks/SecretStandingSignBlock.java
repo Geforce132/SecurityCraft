@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.StandingSignBlock;
@@ -25,6 +27,16 @@ import net.minecraftforge.common.MinecraftForge;
 public class SecretStandingSignBlock extends StandingSignBlock {
 	public SecretStandingSignBlock(AbstractBlock.Properties properties, WoodType woodType) {
 		super(properties, woodType);
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	@Override
@@ -56,7 +68,7 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof IModuleInventory)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && te instanceof IModuleInventory)
 				((IModuleInventory) te).dropAllModules();
 		}
 

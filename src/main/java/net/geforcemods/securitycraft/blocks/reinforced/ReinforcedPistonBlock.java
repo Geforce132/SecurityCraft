@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
@@ -16,6 +17,7 @@ import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ReinforcedPistonBlockStructureHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -39,11 +41,32 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlock {
 	public ReinforcedPistonBlock(boolean sticky, AbstractBlock.Properties properties) {
 		super(sticky, properties);
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
+	}
+
+	@Override
+	public ToolType getHarvestTool(BlockState state) {
+		return getVanillaBlock().getHarvestTool(convertToVanilla(null, null, state));
+	}
+
+	@Override
+	public int getHarvestLevel(BlockState state) {
+		return getVanillaBlock().getHarvestLevel(convertToVanilla(null, null, state));
 	}
 
 	@Override

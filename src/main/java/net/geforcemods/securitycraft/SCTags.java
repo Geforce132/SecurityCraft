@@ -18,6 +18,7 @@ public class SCTags {
 		public static final IOptionalNamedTag<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final IOptionalNamedTag<Block> REINFORCED_CARPETS = tag("reinforced/carpets");
 		public static final IOptionalNamedTag<Block> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
+		public static final IOptionalNamedTag<Block> REINFORCED_COBWEB = tag("reinforced/cobweb"); 
 		public static final IOptionalNamedTag<Block> REINFORCED_CRIMSON_STEMS = tag("reinforced/crimson_stems");
 		public static final IOptionalNamedTag<Block> REINFORCED_DARK_OAK_LOGS = tag("reinforced/dark_oak_logs");
 		public static final IOptionalNamedTag<Block> REINFORCED_DIRT = tag("reinforced/dirt");
@@ -40,6 +41,7 @@ public class SCTags {
 		public static final IOptionalNamedTag<Block> REINFORCED_STONE_BRICKS = tag("reinforced/stone_bricks");
 		public static final IOptionalNamedTag<Block> REINFORCED_STONE_PRESSURE_PLATES = tag("reinforced/stone_pressure_plates");
 		public static final IOptionalNamedTag<Block> REINFORCED_TERRACOTTA = tag("reinforced/terracotta");
+		public static final IOptionalNamedTag<Block> REINFORCED_WALLS = tag("reinforced/walls"); 
 		public static final IOptionalNamedTag<Block> REINFORCED_WARPED_STEMS = tag("reinforced/warped_stems");
 		public static final IOptionalNamedTag<Block> REINFORCED_WOODEN_BUTTONS = tag("reinforced/wooden_buttons");
 		public static final IOptionalNamedTag<Block> REINFORCED_WOODEN_FENCES = tag("reinforced/wooden_fences");

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -20,8 +21,8 @@ import net.minecraft.world.server.ServerWorld;
 public class ReinforcedSoulSandBlock extends BaseReinforcedBlock {
 	protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 14.0D, 16.0D);
 
-	public ReinforcedSoulSandBlock(Block vanillaBlock) {
-		super(vanillaBlock);
+	public ReinforcedSoulSandBlock(AbstractBlock.Properties properties, Block vanillaBlock) {
+		super(properties, vanillaBlock);
 	}
 
 	@Override

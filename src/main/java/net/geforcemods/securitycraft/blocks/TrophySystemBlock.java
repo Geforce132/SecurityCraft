@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.stream.Stream;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -112,8 +113,10 @@ public class TrophySystemBlock extends DisguisableBlock {
 			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof TrophySystemBlockEntity) {
+				if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+					((TrophySystemBlockEntity) te).dropAllModules();
+
 				InventoryHelper.dropContents(level, pos, ((TrophySystemBlockEntity) te).getLensContainer());
-				((TrophySystemBlockEntity) te).dropAllModules();
 				level.updateNeighbourForOutputSignal(pos, this);
 			}
 		}

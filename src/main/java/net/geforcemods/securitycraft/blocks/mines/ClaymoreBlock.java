@@ -100,7 +100,7 @@ public class ClaymoreBlock extends ExplosiveBlock implements IWaterLoggable {
 
 			level.destroyBlock(pos, false);
 
-			if (claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || claymore.ignoresOwner()))
+			if (claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || !claymore.ignoresOwner()))
 				explode(level, pos);
 		}
 
@@ -173,7 +173,9 @@ public class ClaymoreBlock extends ExplosiveBlock implements IWaterLoggable {
 			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof ClaymoreBlockEntity) {
-				((ClaymoreBlockEntity) te).dropAllModules();
+				if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+					((ClaymoreBlockEntity) te).dropAllModules();
+
 				InventoryHelper.dropContents(level, pos, ((ClaymoreBlockEntity) te).getLensContainer());
 			}
 		}

@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -35,6 +37,7 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolType;
 
 public class ReinforcedDispenserBlock extends DispenserBlock implements IReinforcedBlock, IWaterLoggable, IOverlayDisplay, IDisguisable {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -42,6 +45,31 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 	public ReinforcedDispenserBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
+
+		if (disguisedState.getBlock() != state.getBlock())
+			return disguisedState.getDestroyProgress(player, level, pos);
+		else
+			return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
+	}
+
+	@Override
+	public ToolType getHarvestTool(BlockState state) {
+		return getVanillaBlock().getHarvestTool(convertToVanilla(null, null, state));
+	}
+
+	@Override
+	public int getHarvestLevel(BlockState state) {
+		return getVanillaBlock().getHarvestLevel(convertToVanilla(null, null, state));
 	}
 
 	@Override

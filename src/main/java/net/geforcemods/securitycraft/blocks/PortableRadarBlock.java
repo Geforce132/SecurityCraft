@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -121,7 +122,7 @@ public class PortableRadarBlock extends OwnableBlock implements IWaterLoggable {
 		if (!state.is(newState.getBlock())) {
 			TileEntity te = level.getBlockEntity(pos);
 
-			if (te instanceof IModuleInventory)
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && te instanceof IModuleInventory)
 				((IModuleInventory) te).dropAllModules();
 		}
 

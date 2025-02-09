@@ -23,6 +23,8 @@
 		"potion.BrewingStandContainerMixin",
 		"reinforced.AbstractTrunkPlacerMixin",
 		"reinforced.BubbleColumnBlockMixin",
+		"reinforced.NoteBlockInstrumentMixin",
+		"reinforced.SwordAndShearsItemMixin",
 		"reinforced.TreeFeatureMixin",
 		"reinforced.WritableAndWrittenBookItemMixin"
 	],
