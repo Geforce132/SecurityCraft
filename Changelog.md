@@ -2,6 +2,7 @@
 
 - Change: The block mine overlay now shows in the first person hand models as well
 - API: IDisguisable has been simplified
+- Fix: The SC Manual shows incorrect info if the config setting "ableToCraftMines" is disabled
 
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
 

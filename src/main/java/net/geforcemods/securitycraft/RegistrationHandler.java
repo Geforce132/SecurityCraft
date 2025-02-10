@@ -7,6 +7,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.CustomizableBlockEntity;
 import net.geforcemods.securitycraft.api.NamedBlockEntity;
@@ -179,7 +180,8 @@ public class RegistrationHandler {
 	private static Map<PageGroup, List<Block>> pageTypeBlocks = new EnumMap<>(PageGroup.class);
 	private static Map<PageGroup, List<ItemStack>> pageTypeStacks = new EnumMap<>(PageGroup.class);
 	private static Map<Block, String> blocksDesignedBy = new HashMap<>();
-	private static Map<Block, Boolean> blockConfigValues = new HashMap<>();
+	private static Map<Block, Supplier<Boolean>> blockConfigValues = new HashMap<>();
+	private static final Supplier<Boolean> ABLE_TO_CRAFT_MINES = () -> ConfigHandler.ableToCraftMines;
 
 	private RegistrationHandler() {}
 
@@ -188,7 +190,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.laserBlock);
 		event.getRegistry().register(SCContent.laserField);
 		registerBlock(event, SCContent.keypad);
-		registerBlock(event, SCContent.mine, ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.mine, ABLE_TO_CRAFT_MINES);
 		event.getRegistry().register(SCContent.mineCut);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
@@ -198,10 +200,10 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.bogusWaterFlowing, PageGroup.NO_PAGE);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.reinforcedIronTrapdoor);
-		registerBlock(event, SCContent.bouncingBetty, ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.bouncingBetty, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);
-		registerBlock(event, SCContent.trackMine, ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.trackMine, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.cageTrap);
 		event.getRegistry().register(SCContent.horizontalReinforcedIronBars);
 		registerBlock(event, SCContent.portableRadar);
@@ -218,7 +220,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.panicButton);
 		registerBlock(event, SCContent.frame);
-		registerBlock(event, SCContent.claymore, ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.claymore, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.keypadFurnace);
 		registerBlock(event, SCContent.securityCamera);
 		registerBlock(event, SCContent.reinforcedStairsOak, PageGroup.REINFORCED);
@@ -231,7 +233,7 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedStairsDarkoak, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStairsStone, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.electrifiedIronFence);
-		registerBlock(event, SCContent.ims, ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.ims, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.reinforcedGlass, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(SCContent.reinforcedWoodSlabs), PageGroup.REINFORCED);
@@ -383,7 +385,7 @@ public class RegistrationHandler {
 		registerBlockMine(event, SCContent.redstoneOreMine);
 		registerBlockMine(event, SCContent.emeraldOreMine);
 		registerBlockMine(event, SCContent.quartzOreMine);
-		registerBlock(event, SCContent.furnaceMine, ConfigHandler.ableToCraftMines);
+		registerBlock(event, SCContent.furnaceMine, ABLE_TO_CRAFT_MINES);
 	}
 
 	@SubscribeEvent
@@ -403,7 +405,7 @@ public class RegistrationHandler {
 					Utils.localize("help." + block.getTranslationKey().substring(5) + ".info"),
 					blocksDesignedBy.getOrDefault(block, ""),
 					false,
-					blockConfigValues.getOrDefault(block, true)));
+					blockConfigValues.getOrDefault(block, () -> true)));
 			//@formatter:on
 		}
 
@@ -411,12 +413,12 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.reinforcedDoorItem);
 		registerItem(event, SCContent.scannerDoorItem);
 		registerItem(event, SCContent.universalBlockRemover);
-		registerItem(event, SCContent.keycardLvl1, PageGroup.KEYCARDS, ConfigHandler.ableToCraftKeycard1);
-		registerItem(event, SCContent.keycardLvl2, PageGroup.KEYCARDS, ConfigHandler.ableToCraftKeycard2);
-		registerItem(event, SCContent.keycardLvl3, PageGroup.KEYCARDS, ConfigHandler.ableToCraftKeycard3);
-		registerItem(event, SCContent.keycardLvl4, PageGroup.KEYCARDS, ConfigHandler.ableToCraftKeycard4);
-		registerItem(event, SCContent.keycardLvl5, PageGroup.KEYCARDS, ConfigHandler.ableToCraftKeycard5);
-		registerItem(event, SCContent.limitedUseKeycard, PageGroup.SINGLE_ITEM, ConfigHandler.ableToCraftLUKeycard);
+		registerItem(event, SCContent.keycardLvl1, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard1);
+		registerItem(event, SCContent.keycardLvl2, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard2);
+		registerItem(event, SCContent.keycardLvl3, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard3);
+		registerItem(event, SCContent.keycardLvl4, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard4);
+		registerItem(event, SCContent.keycardLvl5, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard5);
+		registerItem(event, SCContent.limitedUseKeycard, PageGroup.SINGLE_ITEM, () -> ConfigHandler.ableToCraftLUKeycard);
 		registerItem(event, SCContent.mineRemoteAccessTool);
 		registerItem(event, SCContent.sentryRemoteAccessTool);
 		registerItem(event, SCContent.fWaterBucket);
@@ -444,7 +446,7 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.universalKeyChanger);
 		event.getRegistry().register(SCContent.taserPowered); //won't show up in the manual
 		registerItem(event, SCContent.secretSignItem);
-		registerItem(event, SCContent.sentry, PageGroup.SINGLE_ITEM, true, "Henzoid");
+		registerItem(event, SCContent.sentry, PageGroup.SINGLE_ITEM, () -> true, "Henzoid");
 		registerItem(event, SCContent.crystalQuartzItem);
 		registerItem(event, SCContent.keypadDoorItem);
 		registerItem(event, SCContent.portableTunePlayer);
@@ -1068,7 +1070,7 @@ public class RegistrationHandler {
 	 */
 	private static void registerBlockMine(RegistryEvent.Register<Block> event, Block block) {
 		registerBlock(event, block, new ItemBlock(block), PageGroup.BLOCK_MINES);
-		blockConfigValues.put(block, ConfigHandler.ableToBreakMines);
+		blockConfigValues.put(block, ABLE_TO_CRAFT_MINES);
 	}
 
 	/**
@@ -1078,7 +1080,7 @@ public class RegistrationHandler {
 	 * @param block The block to register
 	 * @param configValue The config value
 	 */
-	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, boolean configValue) {
+	private static void registerBlock(RegistryEvent.Register<Block> event, Block block, Supplier<Boolean> configValue) {
 		registerBlock(event, block, new ItemBlock(block), PageGroup.SINGLE_ITEM);
 		blockConfigValues.put(block, configValue);
 	}
@@ -1140,14 +1142,14 @@ public class RegistrationHandler {
 	 * manual item.
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item) {
-		registerItem(event, item, PageGroup.SINGLE_ITEM, true, "");
+		registerItem(event, item, PageGroup.SINGLE_ITEM, () -> true, "");
 	}
 
 	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
 	 * manual item. Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageGroup pageType, boolean configValue) {
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageGroup pageType, Supplier<Boolean> configValue) {
 		registerItem(event, item, pageType, configValue, "");
 	}
 
@@ -1156,14 +1158,14 @@ public class RegistrationHandler {
 	 * manual item.
 	 */
 	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageGroup pageType) {
-		registerItem(event, item, pageType, true, "");
+		registerItem(event, item, pageType, () -> true, "");
 	}
 
 	/**
 	 * Registers the given item with GameData.register_implItem(), and adds the help info for the item to the SecurityCraft
 	 * manual item. Additionally, a configuration value can be set to have this item's recipe show as disabled in the manual.
 	 */
-	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageGroup pageType, boolean configValue, String designedBy) {
+	private static void registerItem(RegistryEvent.Register<Item> event, Item item, PageGroup pageType, Supplier<Boolean> configValue, String designedBy) {
 		event.getRegistry().register(item);
 
 		if (pageType == PageGroup.NO_PAGE)

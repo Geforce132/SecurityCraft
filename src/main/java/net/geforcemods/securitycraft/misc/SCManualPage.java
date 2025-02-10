@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.util.function.Supplier;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -14,7 +16,7 @@ public class SCManualPage {
 	private final TextComponentTranslation helpInfo;
 	private final String designedBy;
 	private final boolean hasRecipeDescription;
-	private final boolean configValue;
+	private final Supplier<Boolean> configValue;
 
 	public SCManualPage(Item item, PageGroup pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription) {
 		this.item = item;
@@ -23,10 +25,10 @@ public class SCManualPage {
 		this.helpInfo = helpInfo;
 		this.designedBy = designedBy;
 		this.hasRecipeDescription = hasRecipeDescription;
-		configValue = true;
+		configValue = () -> true;
 	}
 
-	public SCManualPage(Item item, PageGroup pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription, boolean configValue) {
+	public SCManualPage(Item item, PageGroup pageType, TextComponentTranslation title, TextComponentTranslation helpInfo, String designedBy, boolean hasRecipeDescription, Supplier<Boolean> configValue) {
 		this.item = item;
 		this.pageType = pageType;
 		this.title = title;
@@ -61,7 +63,7 @@ public class SCManualPage {
 	}
 
 	public boolean isRecipeDisabled() {
-		return !configValue;
+		return !configValue.get();
 	}
 
 	public Object getInWorldObject() {
