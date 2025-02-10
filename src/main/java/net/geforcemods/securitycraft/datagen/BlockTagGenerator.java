@@ -933,11 +933,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GOLD_BLOCK.get(),
 				SCContent.REINFORCED_RAW_GOLD_BLOCK.get());
 		tag(BlockTags.NEEDS_STONE_TOOL).add(
-				SCContent.BLOCK_POCKET_MANAGER.get(),
 				SCContent.BOUNCING_BETTY.get(),
 				SCContent.CAGE_TRAP.get(),
 				SCContent.CLAYMORE.get(),
 				SCContent.FLOOR_TRAP.get(),
+				SCContent.IMS.get(),
 				SCContent.DISPLAY_CASE.get(),
 				SCContent.GLOW_DISPLAY_CASE.get(),
 				SCContent.FRAME.get(),
