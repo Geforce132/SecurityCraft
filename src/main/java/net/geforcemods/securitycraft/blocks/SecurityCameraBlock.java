@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -50,6 +51,8 @@ public class SecurityCameraBlock extends DisguisableBlock {
 	public SecurityCameraBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -101,7 +104,9 @@ public class SecurityCameraBlock extends DisguisableBlock {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof SecurityCameraBlockEntity) {
-			((SecurityCameraBlockEntity) te).dropAllModules();
+			if (!ConfigHandler.vanillaToolBlockBreaking)
+				((SecurityCameraBlockEntity) te).dropAllModules();
+
 			InventoryHelper.dropInventoryItems(world, pos, ((SecurityCameraBlockEntity) te).getLensContainer());
 		}
 

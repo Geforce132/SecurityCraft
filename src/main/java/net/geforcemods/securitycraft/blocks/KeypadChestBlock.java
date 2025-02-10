@@ -63,6 +63,8 @@ public class KeypadChestBlock extends DisguisableBlock {
 		super(Material.IRON);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

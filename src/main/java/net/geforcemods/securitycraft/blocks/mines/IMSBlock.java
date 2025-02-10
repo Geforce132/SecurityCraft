@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -14,6 +15,7 @@ import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -39,6 +41,8 @@ public class IMSBlock extends OwnableBlock {
 	public IMSBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		setHarvestLevel("pickaxe", 1);
+		blockMapColor = MapColor.GREEN_STAINED_HARDENED_CLAY;
 	}
 
 	@Override
@@ -84,7 +88,7 @@ public class IMSBlock extends OwnableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		super.breakBlock(world, pos, state);

@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -17,7 +15,7 @@ public class ReinforcedGrassPathBlock extends BaseReinforcedBlock {
 	protected static final AxisAlignedBB GRASS_PATH_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.9375D, 1.0D);
 
 	public ReinforcedGrassPathBlock() {
-		super(Material.GROUND, SoundType.PLANT, Blocks.GRASS_PATH);
+		super(Blocks.GRASS_PATH);
 
 		setLightOpacity(255);
 	}

@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -17,7 +15,7 @@ import net.minecraft.world.World;
 
 public class ReinforcedMagmaBlock extends BaseReinforcedBlock {
 	public ReinforcedMagmaBlock() {
-		super(Material.ROCK, MapColor.NETHERRACK, Blocks.MAGMA);
+		super(Blocks.MAGMA);
 		setLightLevel(0.2F);
 	}
 

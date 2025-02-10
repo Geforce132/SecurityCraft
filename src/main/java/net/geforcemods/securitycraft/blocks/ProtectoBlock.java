@@ -19,6 +19,8 @@ public class ProtectoBlock extends DisguisableBlock {
 	public ProtectoBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		setHardness(10.0F);
+		setHarvestLevel("pickaxe", 3);
 	}
 
 	@Override

@@ -40,11 +40,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisguisable, IOverlayDisplay {
 	public KeypadTrapDoorBlock(Material mat) {
 		super(mat);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		IBlockState actualState = getDisguisedBlockState(level.getTileEntity(pos));
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
+		else
+			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
 	}
 
 	@Override

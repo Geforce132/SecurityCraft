@@ -28,6 +28,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	public BouncingBettyBlock(Material material) {
 		super(material);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

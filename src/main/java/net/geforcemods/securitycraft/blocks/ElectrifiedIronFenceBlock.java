@@ -27,6 +27,8 @@ public class ElectrifiedIronFenceBlock extends OwnableFenceBlock {
 	public ElectrifiedIronFenceBlock(Material material) {
 		super(material, MapColor.IRON);
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

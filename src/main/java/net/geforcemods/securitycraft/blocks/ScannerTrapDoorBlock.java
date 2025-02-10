@@ -31,6 +31,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IOverlayDisplay, IDisguisable {
 	public ScannerTrapDoorBlock(Material material) {
 		super(material);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
@@ -55,6 +57,16 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IOver
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 		return false;
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		IBlockState actualState = getDisguisedBlockState(level.getTileEntity(pos));
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
+		else
+			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
 	}
 
 	@Override

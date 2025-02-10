@@ -48,6 +48,8 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 		super(material);
 		setSoundType(SoundType.METAL);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HALF, EnumDoorHalf.LOWER).withProperty(POWERED, false));
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,9 +27,11 @@ public class OldLitAlarmBlock extends OwnableBlock {
 
 	public OldLitAlarmBlock(Material material) {
 		super(material);
-
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setLightLevel(1.0F);
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
+		blockMapColor = MapColor.RED;
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -38,6 +38,8 @@ public class KeypadBlock extends DisguisableBlock {
 	public KeypadBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

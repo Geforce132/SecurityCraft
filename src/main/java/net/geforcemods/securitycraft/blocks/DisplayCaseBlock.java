@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Arrays;
 import java.util.List;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -64,6 +65,8 @@ public class DisplayCaseBlock extends OwnableBlock {
 		super(material);
 		setSoundType(SoundType.METAL);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ATTACH_FACE, AttachFace.WALL));
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -230,7 +233,9 @@ public class DisplayCaseBlock extends OwnableBlock {
 		if (te instanceof DisplayCaseBlockEntity) {
 			DisplayCaseBlockEntity be = (DisplayCaseBlockEntity) te;
 
-			be.dropAllModules();
+			if (!ConfigHandler.vanillaToolBlockBreaking)
+				be.dropAllModules();
+
 			Block.spawnAsEntity(world, pos, be.getDisplayedStack());
 		}
 

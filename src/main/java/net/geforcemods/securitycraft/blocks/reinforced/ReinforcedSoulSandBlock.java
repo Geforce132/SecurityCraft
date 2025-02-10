@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -15,7 +13,7 @@ public class ReinforcedSoulSandBlock extends BaseReinforcedBlock {
 	protected static final AxisAlignedBB SHAPE = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.875D, 1.0D);
 
 	public ReinforcedSoulSandBlock() {
-		super(Material.SAND, MapColor.BROWN, Blocks.SOUL_SAND);
+		super(Blocks.SOUL_SAND);
 		setSoundType(SoundType.SAND);
 	}
 

@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -45,6 +46,8 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	public ClaymoreBlock(Material material) {
 		super(material);
+		setHarvestLevel("pickaxe", 1);
+		blockMapColor = MapColor.GREEN_STAINED_HARDENED_CLAY;
 	}
 
 	@Override
@@ -111,7 +114,9 @@ public class ClaymoreBlock extends ExplosiveBlock {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof ClaymoreBlockEntity) {
-			((ClaymoreBlockEntity) te).dropAllModules();
+			if (!ConfigHandler.vanillaToolBlockBreaking)
+				((ClaymoreBlockEntity) te).dropAllModules();
+
 			InventoryHelper.dropInventoryItems(world, pos, ((ClaymoreBlockEntity) te).getLensContainer());
 		}
 
@@ -133,9 +138,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 		if (!player.capabilities.isCreativeMode && !world.isRemote && !world.getBlockState(pos).getValue(ClaymoreBlock.DEACTIVATED)) {
 			ClaymoreBlockEntity claymore = (ClaymoreBlockEntity) world.getTileEntity(pos);
 
-			world.destroyBlock(pos, false);
-
-			if (claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || claymore.ignoresOwner()))
+			if (claymore.getTargetingMode().allowsPlayers() && (!claymore.isOwnedBy(player) || !claymore.ignoresOwner()))
 				explode(world, pos);
 		}
 

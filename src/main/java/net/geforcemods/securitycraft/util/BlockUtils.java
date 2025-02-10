@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.util;
 
 import java.util.function.BiPredicate;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -142,5 +143,26 @@ public class BlockUtils {
 				modifiedPos = pos.offset(direction, ++i);
 			}
 		}
+	}
+
+	public static float getDestroyProgress(DestroyProgress destroyProgress, IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		if (state.getBlock() instanceof IBlockMine)
+			return destroyProgress.get(state, player, level, pos);
+
+		if (ConfigHandler.vanillaToolBlockBreaking) {
+			TileEntity te = level.getTileEntity(pos);
+
+			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
+				return destroyProgress.get(state, player, level, pos);
+			else if (ConfigHandler.allowBreakingNonOwnedBlocks)
+				return (float) (destroyProgress.get(state, player, level, pos) / ConfigHandler.nonOwnedBreakingSlowdown);
+		}
+
+		return 0.0F;
+	}
+
+	@FunctionalInterface
+	public static interface DestroyProgress {
+		float get(IBlockState state, EntityPlayer player, World level, BlockPos pos);
 	}
 }

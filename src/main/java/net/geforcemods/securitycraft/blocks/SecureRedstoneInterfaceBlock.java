@@ -49,6 +49,8 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	public SecureRedstoneInterfaceBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(SENDER, true).withProperty(FACING, EnumFacing.UP));
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override

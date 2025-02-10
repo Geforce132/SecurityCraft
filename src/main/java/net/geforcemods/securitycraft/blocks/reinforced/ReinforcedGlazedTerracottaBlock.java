@@ -3,27 +3,21 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ReinforcedGlazedTerracottaBlock extends BaseReinforcedBlock {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	private final EnumDyeColor color;
 
-	public ReinforcedGlazedTerracottaBlock(EnumDyeColor color, Block vB) {
-		super(Material.ROCK, vB);
-		this.color = color;
+	public ReinforcedGlazedTerracottaBlock(Block vB) {
+		super(vB);
 	}
 
 	@Override
@@ -59,10 +53,5 @@ public class ReinforcedGlazedTerracottaBlock extends BaseReinforcedBlock {
 	@Override
 	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.PUSH_ONLY;
-	}
-
-	@Override
-	public MapColor getMapColor(IBlockState state, IBlockAccess world, BlockPos pos) {
-		return MapColor.getBlockColor(color);
 	}
 }

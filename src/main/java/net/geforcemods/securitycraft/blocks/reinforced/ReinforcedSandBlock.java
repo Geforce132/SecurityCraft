@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -18,7 +17,7 @@ public class ReinforcedSandBlock extends ReinforcedFallingBlock {
 	public static final PropertyEnum<BlockSand.EnumType> VARIANT = PropertyEnum.<BlockSand.EnumType>create("variant", BlockSand.EnumType.class);
 
 	public ReinforcedSandBlock() {
-		super(Material.SAND, Blocks.SAND);
+		super(Blocks.SAND);
 
 		setSoundType(SoundType.SAND);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, BlockSand.EnumType.SAND));

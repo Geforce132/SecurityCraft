@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -10,6 +11,7 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.OpenScreen.DataType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
@@ -35,8 +37,10 @@ public class AlarmBlock extends OwnableBlock {
 
 	public AlarmBlock(Material material) {
 		super(material);
-
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
+		blockMapColor = MapColor.RED;
 	}
 
 	@Override
@@ -147,7 +151,7 @@ public class AlarmBlock extends OwnableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		super.breakBlock(world, pos, state);

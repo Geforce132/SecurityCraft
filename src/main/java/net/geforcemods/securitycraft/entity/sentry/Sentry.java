@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -206,7 +207,7 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 				if (!player.isCreative())
 					player.getHeldItemMainhand().shrink(1);
 			}
-			else if (item == SCContent.universalBlockRemover) {
+			else if (item == SCContent.universalBlockRemover && !ConfigHandler.vanillaToolBlockBreaking) {
 				remove();
 
 				if (!player.isCreative())

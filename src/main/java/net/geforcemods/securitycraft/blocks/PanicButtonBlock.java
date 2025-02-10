@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.EnumPushReaction;
@@ -26,6 +28,18 @@ import net.minecraftforge.common.MinecraftForge;
 public class PanicButtonBlock extends BlockButton implements ITileEntityProvider {
 	public PanicButtonBlock() {
 		super(false);
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
 	}
 
 	@Override

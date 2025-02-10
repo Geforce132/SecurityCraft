@@ -27,23 +27,57 @@ import net.minecraft.world.World;
 public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay, IBlockMine {
 	private final Block blockDisguisedAs;
 
-	public BaseFullMineBlock(Material material, Block disguisedBlock, int harvestLevel, MapColor color) {
-		super(material);
+	public BaseFullMineBlock(Block disguisedBlock) {
+		super(disguisedBlock.getMaterial(disguisedBlock.getDefaultState()));
 		blockDisguisedAs = disguisedBlock;
-		blockMapColor = color;
+	}
 
-		if (material == Material.SAND) {
-			setSoundType(SoundType.SAND);
-			setHarvestLevel("shovel", harvestLevel);
-		}
-		else if (material == Material.GROUND) {
-			setSoundType(SoundType.GROUND);
-			setHarvestLevel("shovel", harvestLevel);
-		}
-		else {
-			setSoundType(SoundType.STONE);
-			setHarvestLevel("pickaxe", harvestLevel);
-		}
+	@Override
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+		return blockDisguisedAs.getDefaultState().getBlockHardness(world, pos);
+	}
+
+	@Override
+	public Material getMaterial(IBlockState state) {
+		return blockDisguisedAs.getDefaultState().getMaterial();
+	}
+
+	@Override
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
+		IBlockState vanillaState = blockDisguisedAs.getDefaultState();
+
+		return vanillaState.getBlock().getSoundType(vanillaState, world, pos, entity);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess level, BlockPos pos) {
+		return blockDisguisedAs.getDefaultState().getMapColor(level, pos);
+	}
+
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		IBlockState vanillaState = blockDisguisedAs.getDefaultState();
+
+		return vanillaState.getBlock().getHarvestTool(vanillaState);
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		IBlockState vanillaState = blockDisguisedAs.getDefaultState();
+
+		return vanillaState.getBlock().isToolEffective(type, vanillaState);
+	}
+
+	@Override
+	public int getHarvestLevel(IBlockState state) {
+		IBlockState vanillaState = blockDisguisedAs.getDefaultState();
+
+		return vanillaState.getBlock().getHarvestLevel(vanillaState);
+	}
+
+	@Override
+	public boolean isTranslucent(IBlockState state) {
+		return blockDisguisedAs.getDefaultState().isTranslucent();
 	}
 
 	@Override

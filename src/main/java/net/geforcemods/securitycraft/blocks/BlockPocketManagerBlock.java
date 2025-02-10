@@ -28,7 +28,9 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	public BlockPocketManagerBlock() {
-		super(Material.IRON);
+		super(Material.ROCK);
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override

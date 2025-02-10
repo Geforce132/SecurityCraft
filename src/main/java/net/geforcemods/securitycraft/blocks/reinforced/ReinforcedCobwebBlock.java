@@ -3,9 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
@@ -17,8 +15,7 @@ import net.minecraft.world.World;
 
 public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 	public ReinforcedCobwebBlock() {
-		super(Material.WEB, Blocks.WEB);
-		setSoundType(SoundType.STONE);
+		super(Blocks.WEB);
 	}
 
 	@Override

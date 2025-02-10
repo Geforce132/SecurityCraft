@@ -50,6 +50,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		super(material);
 		setSoundType(SoundType.STONE);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HORIZONTAL, false));
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDoorBlockEntity;
@@ -34,6 +35,18 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 	public ReinforcedDoorBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 0);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
 	}
 
 	@Override
@@ -149,7 +162,7 @@ public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvide
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		world.removeTileEntity(pos);

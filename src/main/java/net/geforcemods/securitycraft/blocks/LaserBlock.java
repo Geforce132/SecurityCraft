@@ -37,6 +37,8 @@ public class LaserBlock extends DisguisableBlock {
 
 	public LaserBlock(Material material) {
 		super(material);
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
@@ -34,6 +35,17 @@ import net.minecraftforge.common.MinecraftForge;
 public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntityProvider, IBlockWithNoDrops {
 	public TrackMineBlock() {
 		setSoundType(SoundType.METAL);
+		setHarvestLevel("pickaxe", 0);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
 	}
 
 	@Override

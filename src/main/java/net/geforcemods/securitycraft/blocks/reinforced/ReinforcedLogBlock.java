@@ -4,8 +4,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog.EnumAxis;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +18,7 @@ public abstract class ReinforcedLogBlock extends BaseReinforcedBlock implements 
 	public static final PropertyEnum<EnumAxis> LOG_AXIS = PropertyEnum.create("axis", EnumAxis.class);
 
 	protected ReinforcedLogBlock(Block... vB) {
-		super(Material.WOOD, SoundType.WOOD, vB);
+		super(vB);
 	}
 
 	@Override

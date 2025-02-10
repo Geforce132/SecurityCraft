@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -21,6 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -28,6 +30,16 @@ public class BaseIronTrapDoorBlock extends BlockTrapDoor implements ITileEntityP
 	public BaseIronTrapDoorBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFenceGate;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
@@ -42,7 +41,7 @@ public class ReinforcedWallBlock extends BaseReinforcedBlock {
 	};
 
 	public ReinforcedWallBlock() {
-		super(Material.ROCK, Blocks.COBBLESTONE_WALL);
+		super(Blocks.COBBLESTONE_WALL);
 		setDefaultState(blockState.getBaseState().withProperty(UP, false).withProperty(NORTH, false).withProperty(EAST, false).withProperty(SOUTH, false).withProperty(WEST, false).withProperty(VARIANT, EnumType.NORMAL));
 	}
 

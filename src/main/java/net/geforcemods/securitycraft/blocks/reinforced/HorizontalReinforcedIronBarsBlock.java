@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
@@ -31,6 +32,43 @@ public class HorizontalReinforcedIronBarsBlock extends OwnableBlock {
 	public HorizontalReinforcedIronBarsBlock() {
 		super(Material.IRON);
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+		return SCContent.reinforcedIronBars.getDefaultState().getBlockHardness(world, pos);
+	}
+
+	@Override
+	public Material getMaterial(IBlockState state) {
+		return SCContent.reinforcedIronBars.getDefaultState().getMaterial();
+	}
+
+	@Override
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
+		IBlockState vanillaState = SCContent.reinforcedIronBars.getDefaultState();
+
+		return vanillaState.getBlock().getSoundType(vanillaState, world, pos, entity);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess level, BlockPos pos) {
+		return SCContent.reinforcedIronBars.getDefaultState().getMapColor(level, pos);
+	}
+
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		return SCContent.reinforcedIronBars.getHarvestTool(SCContent.reinforcedIronBars.getDefaultState());
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		return SCContent.reinforcedIronBars.isToolEffective(type, SCContent.reinforcedIronBars.getDefaultState());
+	}
+
+	@Override
+	public boolean isTranslucent(IBlockState state) {
+		return SCContent.reinforcedIronBars.getDefaultState().isTranslucent();
 	}
 
 	@Override

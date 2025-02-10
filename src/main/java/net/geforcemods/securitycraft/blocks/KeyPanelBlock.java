@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -38,8 +39,9 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 
 	protected KeyPanelBlock(Material material) {
 		super(material);
-
 		setSoundType(SoundType.METAL);
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		if (state.getValue(POWERED)) {

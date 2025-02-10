@@ -5,7 +5,6 @@ import java.util.Random;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.entity.FallingOwnableBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -16,18 +15,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FallingBlockMineBlock extends BaseFullMineBlock {
-	public FallingBlockMineBlock(Material material, Block disguisedBlock, MapColor color) {
-		super(material, disguisedBlock, 0, color);
+	public FallingBlockMineBlock(Block disguisedBlock) {
+		super(disguisedBlock);
 	}
 
 	@Override
 	public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
-		world.scheduleUpdate(pos, this, this.tickRate(world));
+		world.scheduleUpdate(pos, this, tickRate(world));
 	}
 
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
-		world.scheduleUpdate(pos, this, this.tickRate(world));
+		world.scheduleUpdate(pos, this, tickRate(world));
 	}
 
 	@Override

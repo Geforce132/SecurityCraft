@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
@@ -26,6 +27,8 @@ public class TrophySystemBlock extends DisguisableBlock {
 	public TrophySystemBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -111,8 +114,10 @@ public class TrophySystemBlock extends DisguisableBlock {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof TrophySystemBlockEntity) {
+			if (!ConfigHandler.vanillaToolBlockBreaking)
+				((TrophySystemBlockEntity) te).dropAllModules();
+
 			InventoryHelper.dropInventoryItems(world, pos, ((TrophySystemBlockEntity) te).getLensContainer());
-			((TrophySystemBlockEntity) te).dropAllModules();
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.trophySystem);
 		}
 

@@ -1,8 +1,10 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.INameSetter;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,6 +17,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -30,6 +33,16 @@ public class OwnableBlock extends BlockContainer {
 			setSoundType(SoundType.GLASS);
 		else
 			setSoundType(SoundType.STONE);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
 	}
 
 	@Override

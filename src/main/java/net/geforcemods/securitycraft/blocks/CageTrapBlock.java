@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
@@ -45,6 +46,8 @@ public class CageTrapBlock extends DisguisableBlock {
 	public CageTrapBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -205,6 +208,32 @@ public class CageTrapBlock extends DisguisableBlock {
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new CageTrapBlockEntity();
+	}
+
+	@Override
+	public boolean removedByPlayer(IBlockState state, World level, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+		TileEntity be = level.getTileEntity(pos);
+
+		disassembleIronBars(state, level, pos, be instanceof CageTrapBlockEntity ? ((CageTrapBlockEntity) be).getOwner() : null);
+		return super.removedByPlayer(state, level, pos, player, willHarvest);
+	}
+
+	public static boolean disassembleIronBars(IBlockState state, World level, BlockPos cageTrapPos, Owner cageTrapOwner) {
+		if (cageTrapOwner != null && !level.isRemote && state.getValue(CageTrapBlock.DEACTIVATED)) {
+			loopIronBarPositions(new MutableBlockPos(cageTrapPos), barPos -> {
+				TileEntity barBe = level.getTileEntity(barPos);
+
+				if (barBe instanceof IOwnable && cageTrapOwner.owns((IOwnable) barBe)) {
+					Block barBlock = level.getBlockState(barPos).getBlock();
+
+					if (barBlock == SCContent.reinforcedIronBars || barBlock == SCContent.horizontalReinforcedIronBars)
+						level.destroyBlock(barPos, false);
+				}
+			});
+			return true;
+		}
+
+		return false;
 	}
 
 	public static void loopIronBarPositions(MutableBlockPos pos, Consumer<MutableBlockPos> positionAction) {

@@ -19,6 +19,8 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(INVISIBLE, false));
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

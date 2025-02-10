@@ -30,6 +30,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	public MineBlock(Material material) {
 		super(material);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

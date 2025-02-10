@@ -4,6 +4,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
@@ -62,7 +63,7 @@ public class SecretSignBlock extends OwnableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		super.breakBlock(world, pos, state);

@@ -16,34 +16,69 @@ import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private List<Block> vanillaBlocks;
 
-	public BaseReinforcedBlock(Material mat, Block... vB) {
-		super(mat);
+	public BaseReinforcedBlock(Block... vB) {
+		super(vB[0].getMaterial(vB[0].getDefaultState()));
 		vanillaBlocks = Arrays.asList(vB);
 	}
 
-	public BaseReinforcedBlock(Material mat, MapColor color, Block... vB) {
-		this(mat, vB);
-		blockMapColor = color;
+	@Override
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
-	public BaseReinforcedBlock(Material mat, SoundType sound, Block... vB) {
-		this(mat, vB);
-		setSoundType(sound);
+	@Override
+	public Material getMaterial(IBlockState state) {
+		return convertToVanillaState(state).getMaterial();
 	}
 
-	public BaseReinforcedBlock(Material mat, SoundType sound, MapColor color, Block... vB) {
-		this(mat, color, vB);
-		setSoundType(sound);
+	@Override
+	public SoundType getSoundType(IBlockState state, World world, BlockPos pos, Entity entity) {
+		IBlockState vanillaState = convertToVanillaState(state);
+
+		return vanillaState.getBlock().getSoundType(vanillaState, world, pos, entity);
+	}
+
+	@Override
+	public MapColor getMapColor(IBlockState state, IBlockAccess level, BlockPos pos) {
+		return convertToVanillaState(state).getMapColor(level, pos);
+	}
+
+	@Override
+	public String getHarvestTool(IBlockState state) {
+		IBlockState vanillaState = convertToVanillaState(state);
+
+		return vanillaState.getBlock().getHarvestTool(vanillaState);
+	}
+
+	@Override
+	public boolean isToolEffective(String type, IBlockState state) {
+		IBlockState vanillaState = convertToVanillaState(state);
+
+		return vanillaState.getBlock().isToolEffective(type, vanillaState);
+	}
+
+	@Override
+	public int getHarvestLevel(IBlockState state) {
+		IBlockState vanillaState = convertToVanillaState(state);
+
+		return vanillaState.getBlock().getHarvestLevel(vanillaState);
+	}
+
+	@Override
+	public boolean isTranslucent(IBlockState state) {
+		return convertToVanillaState(state).isTranslucent();
 	}
 
 	@Override

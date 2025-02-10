@@ -17,6 +17,9 @@
 		"camera.PlayerListMixin",
 		"portal.TeleporterMixin",
 		"potion.ContainerBrewingStandMixin",
+		"reinforced.ItemShearsMixin",
+		"reinforced.ItemSwordMixin",
+		"reinforced.TileEntityNoteMixin",
 		"riftstabilizer.ItemChorusFruitMixin"
 	],
 	"minVersion": "0.8"

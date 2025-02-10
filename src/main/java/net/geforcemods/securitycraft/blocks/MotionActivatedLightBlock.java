@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.minecraft.block.Block;
@@ -29,6 +30,8 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		super(material);
 		setSoundType(SoundType.GLASS);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -101,7 +104,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		super.breakBlock(world, pos, state);

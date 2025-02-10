@@ -6,6 +6,7 @@ import java.util.Random;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
@@ -32,8 +33,10 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 
 	public BlockPocketWallBlock() {
 		super(Material.ROCK);
-
 		setDefaultState(blockState.getBaseState().withProperty(SEE_THROUGH, true).withProperty(SOLID, false));
+		setHardness(0.8F);
+		setHarvestLevel("pickaxe", 0);
+		blockMapColor = MapColor.CYAN;
 	}
 
 	@Override

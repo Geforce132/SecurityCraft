@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
@@ -38,6 +39,8 @@ public class PortableRadarBlock extends OwnableBlock {
 	public PortableRadarBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, false).withProperty(FACING, EnumFacing.UP));
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -113,7 +116,7 @@ public class PortableRadarBlock extends OwnableBlock {
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		super.breakBlock(world, pos, state);

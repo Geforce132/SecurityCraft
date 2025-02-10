@@ -27,6 +27,8 @@ public class FrameBlock extends OwnableBlock {
 	public FrameBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

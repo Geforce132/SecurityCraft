@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -21,7 +20,7 @@ public class ReinforcedGrassBlock extends BaseReinforcedBlock implements IGrowab
 	public static final PropertyBool SNOWY = PropertyBool.create("snowy");
 
 	public ReinforcedGrassBlock() {
-		super(Material.GRASS, Blocks.GRASS);
+		super(Blocks.GRASS);
 
 		setDefaultState(blockState.getBaseState().withProperty(SNOWY, false));
 		setTickRandomly(true);

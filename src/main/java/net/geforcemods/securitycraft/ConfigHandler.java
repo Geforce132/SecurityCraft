@@ -41,10 +41,6 @@ public class ConfigHandler {
 	@LangKey("config.securitycraft:shouldSpawnFire")
 	public static boolean shouldSpawnFire = true;
 
-	@Name("Are mines breakable?")
-	@LangKey("config.securitycraft:ableToBreakMines")
-	@RequiresMcRestart
-	public static boolean ableToBreakMines = true;
 
 	@Name("Craftable level 1 keycard?")
 	@LangKey("config.securitycraft:ableToCraftKeycard1")
@@ -219,6 +215,33 @@ public class ConfigHandler {
 	@Name("Disable In-world Un-/reinforcing")
 	@Comment("Setting this to false disables the ability of the Universal Block Reinforcer to (un-)reinforce blocks that are placed in the world.")
 	public static boolean inWorldUnReinforcing = true;
+
+	@Name("Vanilla Tool Block Breaking")
+	@Comment("Whether SecurityCraft's blocks should be broken using vanilla tools (axe, shovel, hoe, ...), instead of the Universal Block Remover. If set to true, this will disable the Universal Block Remover.")
+	public static boolean vanillaToolBlockBreaking = true;
+
+	@Name("Always Drop")
+	@Comment({
+		"Whether SecurityCraft's blocks always drop themselves no matter which tool is used. If this is set to false, the correct tool must be used for the block to drop (e.g. pickaxe for reinforced stone, or anything for reinforced dirt).",
+		"This only applies when \"Vanilla Tool Block Breaking\" is set to true."
+	})
+	public static boolean alwaysDrop = true;
+
+	@Name("Allow Breaking Non-owned Blocks")
+	@Comment({
+		"Whether players who are not the owner of a block can still destroy it.",
+		"This applies regardless of what \"Vanilla Tool Block Breaking\" is set to."
+	})
+	public static boolean allowBreakingNonOwnedBlocks = false;
+
+	@Name("Non-owned Breaking Slowdown")
+	@RangeDouble(min = 0.0D)
+	@Comment({
+		"How much slower it should be to break a block that is not owned by the player breaking it.",
+		"The value is calculated as the normal block breaking speed divided by the non-owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
+		"This only applies when \"Allow Breaking Non-owned Blocks\" and \"Vanilla Tool Block Breaking\" are set to true."
+	})
+	public static double nonOwnedBreakingSlowdown = 1.0D;
 
 	/**
 	 * @deprecated Use {@link #TASER_EFFECTS}

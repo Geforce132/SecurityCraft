@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -17,7 +16,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 	public static final PropertyBool LIT = PropertyBool.create("lit");
 
 	public ReinforcedRedstoneLampBlock() {
-		super(Material.REDSTONE_LIGHT, Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
+		super(Blocks.REDSTONE_LAMP, Blocks.LIT_REDSTONE_LAMP);
 
 		setDefaultState(getDefaultState().withProperty(LIT, false));
 		setSoundType(SoundType.GLASS);

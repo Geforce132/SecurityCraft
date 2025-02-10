@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.List;
 import java.util.Random;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -39,6 +40,21 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	protected SpecialDoorBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		IBlockState actualState = getDisguisedBlockState(level.getTileEntity(pos));
+
+		if (actualState != null && actualState.getBlock() != this)
+			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
+		else
+			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
+	}
+
+	@Override
+	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
 	}
 
 	@Override
@@ -149,7 +165,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
 		TileEntity te = world.getTileEntity(pos);
 
-		if (te instanceof IModuleInventory)
+		if (!ConfigHandler.vanillaToolBlockBreaking && te instanceof IModuleInventory)
 			((IModuleInventory) te).dropAllModules();
 
 		if (te instanceof IPasscodeProtected)

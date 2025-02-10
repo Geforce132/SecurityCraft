@@ -46,6 +46,8 @@ public class ProjectorBlock extends DisguisableBlock {
 		super(Material.IRON);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HANGING, false));
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

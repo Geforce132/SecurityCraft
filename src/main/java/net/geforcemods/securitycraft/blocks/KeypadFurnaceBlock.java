@@ -52,6 +52,8 @@ public class KeypadFurnaceBlock extends DisguisableBlock {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(OPEN, false).withProperty(LIT, false));
 		setSoundType(SoundType.METAL);
+		setHardness(5.0F);
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override

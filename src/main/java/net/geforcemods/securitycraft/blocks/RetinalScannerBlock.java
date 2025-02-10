@@ -26,8 +26,10 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
-	public RetinalScannerBlock(Material par1) {
-		super(par1);
+	public RetinalScannerBlock(Material material) {
+		super(material);
+		setHardness(3.5F);
+		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
