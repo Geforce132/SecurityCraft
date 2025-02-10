@@ -362,7 +362,7 @@ public class SCContent {
 	public static final DeferredBlock<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = BLOCKS.registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable(3.5F));
 	@HasManualPage(designedBy = "Henzoid")
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(MapColor.COLOR_CYAN, 5.0F));
+	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(MapColor.COLOR_CYAN, 3.5F));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(MapColor.COLOR_CYAN, 0.8F).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
