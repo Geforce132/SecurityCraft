@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -53,16 +54,6 @@ public class IMSBlock extends OwnableBlock implements IWaterLoggable {
 	public IMSBlock(AbstractBlock.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(MINES, 4).setValue(WATERLOGGED, false));
-	}
-
-	@Override
-	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
-	}
-
-	@Override
-	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
-		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
 
 	@Override

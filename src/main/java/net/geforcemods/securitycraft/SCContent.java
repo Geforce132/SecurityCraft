@@ -287,7 +287,7 @@ public class SCContent {
 	public static final RegistryObject<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable(3.5F).harvestTool(ToolType.PICKAXE));
 	@HasManualPage(designedBy = "Henzoid")
 	@RegisterItemBlock
-	public static final RegistryObject<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 5.0F).harvestTool(ToolType.PICKAXE).harvestLevel(ItemTier.STONE.getLevel()));
+	public static final RegistryObject<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 3.5F).harvestTool(ToolType.PICKAXE));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.DECORATION)
 	public static final RegistryObject<BlockPocketWallBlock> BLOCK_POCKET_WALL = registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 0.8F).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never).harvestTool(ToolType.PICKAXE));
@@ -311,7 +311,7 @@ public class SCContent {
 	public static final RegistryObject<FrameBlock> FRAME = registerBlock("keypad_frame", FrameBlock::new, prop(Material.METAL, 5.0F).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(ItemTier.STONE.getLevel()));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final RegistryObject<IMSBlock> IMS = registerBlock("ims", IMSBlock::new, prop(Material.METAL, MaterialColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE));
+	public static final RegistryObject<IMSBlock> IMS = registerBlock("ims", IMSBlock::new, prop(Material.METAL, MaterialColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL).harvestTool(ToolType.PICKAXE).harvestLevel(ItemTier.STONE.getLevel()));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<InventoryScannerBlock> INVENTORY_SCANNER = registerBlock("inventory_scanner", InventoryScannerBlock::new, propDisguisable(3.5F).harvestTool(ToolType.PICKAXE));
