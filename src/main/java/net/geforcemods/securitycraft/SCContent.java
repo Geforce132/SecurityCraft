@@ -325,7 +325,7 @@ public class SCContent {
 	public static final RegistryObject<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable(3.5F));
 	@HasManualPage(designedBy = "Henzoid")
 	@RegisterItemBlock
-	public static final RegistryObject<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 5.0F));
+	public static final RegistryObject<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 3.5F));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<BlockPocketWallBlock> BLOCK_POCKET_WALL = registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(Material.STONE, MaterialColor.COLOR_CYAN, 0.8F).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
