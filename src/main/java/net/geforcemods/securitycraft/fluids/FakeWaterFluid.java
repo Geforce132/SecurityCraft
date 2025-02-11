@@ -5,15 +5,12 @@ import javax.annotation.Nullable;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -102,11 +99,6 @@ public abstract class FakeWaterFluid extends ForgeFlowingFluid {
 	@Override
 	public int getTickDelay(LevelReader level) {
 		return 5;
-	}
-
-	@Override
-	public boolean canBeReplacedWith(FluidState fluidState, BlockGetter level, BlockPos pos, Fluid fluid, Direction dir) {
-		return dir == Direction.DOWN && !fluid.is(FluidTags.WATER);
 	}
 
 	@Override
