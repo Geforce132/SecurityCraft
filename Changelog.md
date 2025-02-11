@@ -7,6 +7,7 @@
 - New: Config for defining how much longer it should take to break another player's block compared to breaking one's own
 - New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: The block mine overlay now shows in the first person hand models as well
+- Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
 - Fix: The SC Manual shows incorrect info if the config setting "ableToCraftMines" is disabled
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts

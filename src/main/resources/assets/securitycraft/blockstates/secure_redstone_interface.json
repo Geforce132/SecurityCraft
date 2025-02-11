@@ -1,54 +1,106 @@
 {
   "variants": {
-    "facing=down,sender=false": {
+    "facing=down,powered=false,sender=false": {
       "model": "securitycraft:secure_redstone_interface_receiver",
       "x": 180
     },
-    "facing=up,sender=false": {
+    "facing=up,powered=false,sender=false": {
       "model": "securitycraft:secure_redstone_interface_receiver"
     },
-    "facing=north,sender=false": {
+    "facing=north,powered=false,sender=false": {
       "model": "securitycraft:secure_redstone_interface_receiver",
       "x": 90
     },
-    "facing=south,sender=false": {
+    "facing=south,powered=false,sender=false": {
       "model": "securitycraft:secure_redstone_interface_receiver",
       "x": 90,
       "y": 180
     },
-    "facing=west,sender=false": {
+    "facing=west,powered=false,sender=false": {
       "model": "securitycraft:secure_redstone_interface_receiver",
       "x": 90,
       "y": 270
     },
-    "facing=east,sender=false": {
+    "facing=east,powered=false,sender=false": {
       "model": "securitycraft:secure_redstone_interface_receiver",
       "x": 90,
       "y": 90
     },
-    "facing=down,sender=true": {
+    "facing=down,powered=false,sender=true": {
       "model": "securitycraft:secure_redstone_interface_sender",
       "x": 180
     },
-    "facing=up,sender=true": {
+    "facing=up,powered=false,sender=true": {
       "model": "securitycraft:secure_redstone_interface_sender"
     },
-    "facing=north,sender=true": {
+    "facing=north,powered=false,sender=true": {
       "model": "securitycraft:secure_redstone_interface_sender",
       "x": 90
     },
-    "facing=south,sender=true": {
+    "facing=south,powered=false,sender=true": {
       "model": "securitycraft:secure_redstone_interface_sender",
       "x": 90,
       "y": 180
     },
-    "facing=west,sender=true": {
+    "facing=west,powered=false,sender=true": {
       "model": "securitycraft:secure_redstone_interface_sender",
       "x": 90,
       "y": 270
     },
-    "facing=east,sender=true": {
+    "facing=east,powered=false,sender=true": {
       "model": "securitycraft:secure_redstone_interface_sender",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,powered=true,sender=false": {
+      "model": "securitycraft:secure_redstone_interface_receiver_on",
+      "x": 180
+    },
+    "facing=up,powered=true,sender=false": {
+      "model": "securitycraft:secure_redstone_interface_receiver_on"
+    },
+    "facing=north,powered=true,sender=false": {
+      "model": "securitycraft:secure_redstone_interface_receiver_on",
+      "x": 90
+    },
+    "facing=south,powered=true,sender=false": {
+      "model": "securitycraft:secure_redstone_interface_receiver_on",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,powered=true,sender=false": {
+      "model": "securitycraft:secure_redstone_interface_receiver_on",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,powered=true,sender=false": {
+      "model": "securitycraft:secure_redstone_interface_receiver_on",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,powered=true,sender=true": {
+      "model": "securitycraft:secure_redstone_interface_sender_on",
+      "x": 180
+    },
+    "facing=up,powered=true,sender=true": {
+      "model": "securitycraft:secure_redstone_interface_sender_on"
+    },
+    "facing=north,powered=true,sender=true": {
+      "model": "securitycraft:secure_redstone_interface_sender_on",
+      "x": 90
+    },
+    "facing=south,powered=true,sender=true": {
+      "model": "securitycraft:secure_redstone_interface_sender_on",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,powered=true,sender=true": {
+      "model": "securitycraft:secure_redstone_interface_sender_on",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,powered=true,sender=true": {
+      "model": "securitycraft:secure_redstone_interface_sender_on",
       "x": 90,
       "y": 90
     }

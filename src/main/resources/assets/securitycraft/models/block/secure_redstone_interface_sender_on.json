@@ -1,0 +1,9 @@
+{
+	"parent": "securitycraft:block/base_secure_redstone_interface_sender",
+	"textures": {
+		"particle": "securitycraft:blocks/secure_redstone_interface_top_on",
+		"top": "securitycraft:blocks/secure_redstone_interface_top_on",
+		"side": "securitycraft:blocks/secure_redstone_interface_side_on",
+		"bottom": "blocks/stone_slab_top"
+	}
+}

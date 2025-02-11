@@ -31,6 +31,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
+	public static final PropertyBool POWERED = PropertyBool.create("powered");
 	public static final PropertyBool SENDER = PropertyBool.create("sender");
 	public static final PropertyDirection FACING = PropertyDirection.create("facing");
 	private static final AxisAlignedBB[] SHAPES = {
@@ -153,13 +154,26 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	}
 
 	@Override
+	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		IBlockState actualState = super.getActualState(state, world, pos);
+
+		if (actualState.getBlock() == this) {
+			SecureRedstoneInterfaceBlockEntity be = (SecureRedstoneInterfaceBlockEntity) world.getTileEntity(pos);
+
+			actualState = actualState.withProperty(POWERED, be.getPower() > 0);
+		}
+
+		return actualState;
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new SecureRedstoneInterfaceBlockEntity();
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, SENDER, FACING);
+		return new BlockStateContainer(this, SENDER, FACING, POWERED);
 	}
 
 	public static class DoorActivator implements Function<Object, IDoorActivator>, IDoorActivator {
