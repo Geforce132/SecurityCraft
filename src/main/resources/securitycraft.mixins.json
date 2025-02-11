@@ -22,7 +22,7 @@
 		"camera.SodiumRenderSectionManagerMixin",
 		"camera.TrackedEntityMixin",
 		"cobweb.ShearsItemMixin",
-		"cobweb.ToolMaterialMixin",
+		"cobweb.SwordItemMixin",
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
 		"portal.PortalForcerMixin",
