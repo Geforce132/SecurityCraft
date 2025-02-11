@@ -182,7 +182,7 @@ public class CageTrapBlock extends DisguisableBlock {
 		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 
-	public static boolean disassembleIronBars(BlockState state, Level level, BlockPos cageTrapPos, Owner cageTrapOwner) {
+	public static void disassembleIronBars(BlockState state, Level level, BlockPos cageTrapPos, Owner cageTrapOwner) {
 		if (cageTrapOwner != null && !level.isClientSide && state.getValue(CageTrapBlock.DEACTIVATED)) {
 			loopIronBarPositions(cageTrapPos.mutable(), barPos -> {
 				BlockEntity barBe = level.getBlockEntity(barPos);
@@ -194,10 +194,7 @@ public class CageTrapBlock extends DisguisableBlock {
 						level.destroyBlock(barPos, false);
 				}
 			});
-			return true;
 		}
-
-		return false;
 	}
 
 	public static void loopIronBarPositions(BlockPos.MutableBlockPos pos, Consumer<BlockPos.MutableBlockPos> positionAction) {
