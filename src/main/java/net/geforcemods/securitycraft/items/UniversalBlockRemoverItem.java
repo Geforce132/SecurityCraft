@@ -80,7 +80,8 @@ public class UniversalBlockRemoverItem extends Item {
 					}
 				}
 				else if (block == SCContent.cageTrap) {
-					if (CageTrapBlock.disassembleIronBars(state, world, pos, ((IOwnable) tileEntity).getOwner())) {
+					if (!world.isRemote) {
+						CageTrapBlock.disassembleIronBars(state, world, pos, ((IOwnable) tileEntity).getOwner());
 						world.destroyBlock(pos, true);
 						player.getHeldItem(hand).damageItem(1, player);
 					}

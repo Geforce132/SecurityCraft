@@ -5,6 +5,7 @@
 - New: Config to define tool requirement behavior (e.g. does Reinforced Stone always drop, or just when breaking it using a pickaxe?)
 - New: Config to allow other players to break anyone's blocks (disallowed by default)
 - New: Config for defining how much longer it should take to break another player's block compared to breaking one's own
+- New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: The block mine overlay now shows in the first person hand models as well
 - API: IDisguisable has been simplified
 - Fix: The SC Manual shows incorrect info if the config setting "ableToCraftMines" is disabled
