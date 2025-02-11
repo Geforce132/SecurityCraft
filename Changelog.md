@@ -11,6 +11,7 @@
 - New: Secret Pale Oak (Hanging) Sign
 - New: Pale Oak Security Sea Boat
 - New: Creaking Heart Mine
+- New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: The block mine overlay now shows in the first person hand models as well
 - Change: Camera model animations are now synchronized between players
 - API: IDisguisable has been simplified
