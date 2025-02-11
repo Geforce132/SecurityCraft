@@ -35,6 +35,7 @@
 - Fix: Anything can pull books out of a Reinforced Chiseled Bookshelf
 - Fix: Reinforced buttons and levers can be triggered by wind charges
 - Fix: Reinforced grass blocks and water cauldrons are still tinted even if the reinforced tint is turned off
+- Fix: Fake water does not flow the same way as regular water
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
