@@ -142,11 +142,10 @@ public class CageTrapBlock extends DisguisableBlock {
 
 					TileEntity barBe = world.getTileEntity(barPos);
 
-					if (barBe instanceof IOwnable)
-						((IOwnable) barBe).setOwner(ownerUUID, ownerName);
-
-					if (barBe instanceof ReinforcedIronBarsBlockEntity)
+					if (barBe instanceof ReinforcedIronBarsBlockEntity) {
+						((ReinforcedIronBarsBlockEntity) barBe).setOwner(ownerUUID, ownerName);
 						((ReinforcedIronBarsBlockEntity) barBe).setCanDrop(false);
+					}
 				});
 				world.setBlockState(pos, getDefaultState().withProperty(DEACTIVATED, true));
 				world.playSound(null, pos, SoundEvents.BLOCK_ANVIL_USE, SoundCategory.BLOCKS, 3.0F, 1.0F);

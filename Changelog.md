@@ -11,6 +11,7 @@
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
 - Fix: Several reinforced blocks can be broken by pistons
 - Fix: The claymore does not ignore the owner if the "Ignore Owner" option is true, and vice versa
+- Fix: Cage traps can be used to maliciously change ownership of blocks
 - Removed: Configuration "ableToBreakMines"
 
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
