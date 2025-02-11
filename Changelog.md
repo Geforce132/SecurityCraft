@@ -16,6 +16,7 @@
 - Fix: Some tooltips of GUI components like buttons and checkboxes do not show up
 - Fix: Cage traps can be used to maliciously change ownership of blocks
 - Fix: Limited use keycards can be used indefinitely in a keycard holder
+- Fix: A portable radar chat message is broken in German
 - Removed: Configuration "ableToBreakMines"
 
 --------------------------Changelog for v1.9.12.1 of SecurityCraft--------------------------
