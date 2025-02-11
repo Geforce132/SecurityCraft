@@ -140,8 +140,10 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 					if (keycardStack.getItem() instanceof KeycardItem && keycardStack.hasTagCompound()) {
 						feedback = insertCard(keycardStack, player);
 
-						if (feedback == null)
+						if (feedback == null) {
+							holderInventory.writeToNBT(stack.getTagCompound());
 							return true;
+						}
 					}
 				}
 

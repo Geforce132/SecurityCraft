@@ -13,6 +13,7 @@
 - Fix: Several reinforced blocks can be broken by pistons
 - Fix: The claymore does not ignore the owner if the "Ignore Owner" option is true, and vice versa
 - Fix: Cage traps can be used to maliciously change ownership of blocks
+- Fix: Limited use keycards can be used indefinitely in a keycard holder
 - Removed: Configuration "ableToBreakMines"
 
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------
