@@ -12,6 +12,7 @@
 - New: Secret Pale Oak (Hanging) Sign
 - New: Pale Oak Security Sea Boat
 - New: Creaking Heart Mine
+- New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: Camera model animations are now synchronized between players
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
