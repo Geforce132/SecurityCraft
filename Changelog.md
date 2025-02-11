@@ -16,6 +16,7 @@
 - Fix: Cage traps can be used to maliciously change ownership of blocks
 - Fix: Limited use keycards can be used indefinitely in a keycard holder
 - Fix: Crash involving disguised scanner and keypad doors
+- Fix: Reinforced grass blocks and water cauldrons are still tinted even if the reinforced tint is turned off
 - Removed: Configuration "ableToBreakMines"
 
 --------------------------Changelog for v1.9.12 of SecurityCraft--------------------------

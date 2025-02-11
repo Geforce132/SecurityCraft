@@ -294,7 +294,7 @@ public class ClientProxy implements IProxy {
 					return mixWithReinforcedTintIfEnabled(grassTint);
 				}
 
-				return ConfigHandler.reinforcedBlockTintColor;
+				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
 			}, SCContent.reinforcedGrass);
 			event.getBlockColors().registerBlockColorHandler((state, world, pos, tintIndex) -> world != null && pos != null ? BiomeColorHelper.getWaterColorAtPos(world, pos) : -1, SCContent.fakeWater, SCContent.bogusWaterFlowing);
 			event.getBlockColors().registerBlockColorHandler((state, level, pos, tintIndex) -> {
