@@ -602,13 +602,13 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1)
 				return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
 
-			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);
