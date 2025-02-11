@@ -140,8 +140,12 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public static ModelData getModelData(BlockEntity be) {
+		return getModelDataBuilder(be).build();
+	}
+
+	public static ModelData.Builder getModelDataBuilder(BlockEntity be) {
 		BlockState disguisedState = IDisguisable.getDisguisedStateOrDefault(be, Blocks.AIR.defaultBlockState(), be.getLevel(), be.getBlockPos());
 
-		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
+		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState);
 	}
 }
