@@ -595,7 +595,7 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		event.getBlockColors().register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);

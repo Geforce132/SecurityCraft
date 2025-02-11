@@ -18,6 +18,7 @@
 - Fix: Cage traps can be used to maliciously change ownership of blocks
 - Fix: Limited use keycards can be used indefinitely in a keycard holder
 - Fix: A portable radar chat message is broken in German
+- Fix: Reinforced grass blocks and water cauldrons are still tinted even if the reinforced tint is turned off
 - Removed: Configuration "ableToBreakMines"
 
 --------------------------Changelog for v1.9.12.1 of SecurityCraft--------------------------
