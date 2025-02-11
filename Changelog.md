@@ -14,6 +14,7 @@
 - New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: The block mine overlay now shows in the first person hand models as well
 - Change: Camera model animations are now synchronized between players
+- Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
