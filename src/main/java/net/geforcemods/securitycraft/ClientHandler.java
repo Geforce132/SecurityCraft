@@ -27,6 +27,7 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -43,6 +44,7 @@ import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.models.IMSBombModel;
+import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceBakedModel;
 import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
@@ -152,6 +154,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -197,7 +200,8 @@ public class ClientHandler {
 			SCContent.SCANNER_DOOR.get(),
 			SCContent.SCANNER_TRAPDOOR.get(),
 			SCContent.SECURITY_CAMERA.get(),
-			SCContent.SECURE_REDSTONE_INTERFACE.get(),
+			//Excluded because it has its own custom baked model
+			//SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get(),
 			SCContent.TROPHY_SYSTEM.get(),
@@ -217,7 +221,15 @@ public class ClientHandler {
 	private ClientHandler() {}
 
 	@SubscribeEvent
-	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
+	public static void onModelRegisterAdditional(ModelEvent.RegisterAdditional event) {
+		ResourceLocation sriName = Utils.getRegistryName(SCContent.SECURE_REDSTONE_INTERFACE.get()).withPrefix("block/");
+
+		event.register(sriName.withSuffix("_sender_on"));
+		event.register(sriName.withSuffix("_receiver_on"));
+	}
+
+	@SubscribeEvent
+	public static void onModelModifyBakingResult(ModelEvent.ModifyBakingResult event) {
 		//@formatter:off
 		String[] mines = {
 				"ancient_debris",
@@ -253,13 +265,24 @@ public class ClientHandler {
 				"suspicious_sand"
 		};
 		//@formatter:on
-
 		Map<ResourceLocation, BakedModel> modelRegistry = event.getModels();
+		Block sri = SCContent.SECURE_REDSTONE_INTERFACE.get();
+		ResourceLocation sriName = Utils.getRegistryName(sri);
+		ResourceLocation modelBase = sriName.withPrefix("block/");
+		BakedModel poweredSriSender = modelRegistry.get(modelBase.withSuffix("_sender_on"));
+		BakedModel poweredSriReceiver = modelRegistry.get(modelBase.withSuffix("_receiver_on"));
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
-				registerDisguisedModel(modelRegistry, Utils.getRegistryName(block), state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(",")));
+				registerDisguisedModel(modelRegistry, state, DisguisableDynamicBakedModel::new);
 			}
+		}
+
+		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
+			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriSender, oldModel));
+			else
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriReceiver, oldModel));
 		}
 
 		for (String mine : mines) {
@@ -269,10 +292,12 @@ public class ClientHandler {
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
 	}
 
-	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, ResourceLocation rl, String stateString) {
+	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, BlockState state, Function<BakedModel, IDynamicBakedModel> modelFunction) {
+		ResourceLocation rl = Utils.getRegistryName(state.getBlock());
+		String stateString = state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(","));
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
-		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
+		modelRegistry.put(mrl, modelFunction.apply(modelRegistry.get(mrl)));
 	}
 
 	private static void registerBlockMineModel(ModelEvent.ModifyBakingResult event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
