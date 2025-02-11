@@ -24,6 +24,7 @@
 - Fix: Security sea boats cannot be broken by players like normal boats
 - Fix: The claymore does not ignore the owner if the "Ignore Owner" option is true, and vice versa
 - Fix: Cage traps can be used to maliciously change ownership of blocks
+- Fix: Limited use keycards can be used indefinitely in a keycard holder
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
