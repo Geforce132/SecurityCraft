@@ -14,6 +14,7 @@
 - New: Creaking Heart Mine
 - New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: Camera model animations are now synchronized between players
+- Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
 - Fix: The display of items in the SC Manual can change too fast in certain situations
