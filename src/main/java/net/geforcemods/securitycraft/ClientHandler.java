@@ -33,6 +33,7 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -49,6 +50,7 @@ import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.models.IMSBombModel;
+import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceBakedModel;
 import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
@@ -152,12 +154,15 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.client.model.ModelDataManager;
+import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -207,7 +212,8 @@ public class ClientHandler {
 			SCContent.SCANNER_DOOR.get(),
 			SCContent.SCANNER_TRAPDOOR.get(),
 			SCContent.SECURITY_CAMERA.get(),
-			SCContent.SECURE_REDSTONE_INTERFACE.get(),
+			//Excluded because it has its own custom baked model
+			//SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get(),
 			SCContent.TROPHY_SYSTEM.get(),
@@ -217,6 +223,12 @@ public class ClientHandler {
 	public static final ResourceLocation LINKING_STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "linking_state");
 
 	private ClientHandler() {}
+
+	@SubscribeEvent
+	public static void onModelRegistry(ModelRegistryEvent event) {
+		ForgeModelBakery.addSpecialModel(new ResourceLocation(SecurityCraft.MODID, "block/secure_redstone_interface_sender_on"));
+		ForgeModelBakery.addSpecialModel(new ResourceLocation(SecurityCraft.MODID, "block/secure_redstone_interface_receiver_on"));
+	}
 
 	@SubscribeEvent
 	public static void onModelBake(ModelBakeEvent event) {
@@ -253,13 +265,22 @@ public class ClientHandler {
 				"stone"
 		};
 		//@formatter:on
-
 		Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
+		Block sri = SCContent.SECURE_REDSTONE_INTERFACE.get();
+		BakedModel poweredSriSender = modelRegistry.get(new ResourceLocation(SecurityCraft.MODID, "block/secure_redstone_interface_sender_on"));
+		BakedModel poweredSriReceiver = modelRegistry.get(new ResourceLocation(SecurityCraft.MODID, "block/secure_redstone_interface_receiver_on"));
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
-				registerDisguisedModel(modelRegistry, block.getRegistryName(), state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(",")));
+				registerDisguisedModel(modelRegistry, state, DisguisableDynamicBakedModel::new);
 			}
+		}
+
+		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
+			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriSender, oldModel));
+			else
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriReceiver, oldModel));
 		}
 
 		for (String mine : mines) {
@@ -269,10 +290,12 @@ public class ClientHandler {
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
 	}
 
-	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, ResourceLocation rl, String stateString) {
+	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, BlockState state, Function<BakedModel, IDynamicBakedModel> modelFunction) {
+		ResourceLocation rl = state.getBlock().getRegistryName();
+		String stateString = state.getValues().entrySet().stream().map(StateHolder.PROPERTY_ENTRY_TO_STRING_FUNCTION).collect(Collectors.joining(","));
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
-		modelRegistry.put(mrl, new DisguisableDynamicBakedModel(modelRegistry.get(mrl)));
+		modelRegistry.put(mrl, modelFunction.apply(modelRegistry.get(mrl)));
 	}
 
 	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
