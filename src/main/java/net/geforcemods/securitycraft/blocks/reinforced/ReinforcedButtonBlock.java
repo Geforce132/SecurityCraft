@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
+import java.util.function.BiConsumer;
+
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
@@ -13,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
@@ -36,6 +39,12 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
 		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+	}
+
+	@Override
+	public void onExplosionHit(BlockState state, Level level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> dropConsumer) {
+		if (explosion.getBlockInteraction() != Explosion.BlockInteraction.TRIGGER_BLOCK)
+			super.onExplosionHit(state, level, pos, explosion, dropConsumer);
 	}
 
 	@Override

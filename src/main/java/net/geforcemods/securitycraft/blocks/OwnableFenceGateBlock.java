@@ -40,7 +40,10 @@ public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock
 	}
 
 	@Override
-	public void onExplosionHit(BlockState state, Level level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> dropConsumer) {} //disallow wind charges to open the gate
+	public void onExplosionHit(BlockState state, Level level, BlockPos pos, Explosion explosion, BiConsumer<ItemStack, BlockPos> dropConsumer) {
+		if (explosion.getBlockInteraction() != Explosion.BlockInteraction.TRIGGER_BLOCK)
+			super.onExplosionHit(state, level, pos, explosion, dropConsumer);
+	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
