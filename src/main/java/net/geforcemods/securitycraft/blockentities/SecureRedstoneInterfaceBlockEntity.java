@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -10,14 +12,19 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceBakedModel;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleOptions;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -25,8 +32,16 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.client.model.data.IModelData;
+import net.minecraftforge.client.model.data.ModelDataMap;
 
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickableTileEntity {
+	//@formatter:off
+	public static final Supplier<IModelData> DEFAULT_MODEL_DATA = () -> new ModelDataMap.Builder()
+			.withInitial(DisguisableDynamicBakedModel.DISGUISED_STATE, Blocks.AIR.defaultBlockState())
+			.withInitial(SecureRedstoneInterfaceBakedModel.POWERED, false)
+			.build();
+	//@formatter:on
 	public static final Vector3f SENDER_PARTICLE_COLOR = new Vector3f(0.0F, 1.0F, 0.0F);
 	public static final Vector3f RECEIVER_PARTICLE_COLOR = new Vector3f(1.0F, 1.0F, 0.0F);
 	public static final Vector3f RECEIVER_PARTICLE_COLOR_NO_SIGNAL = new Vector3f(1.0F, 1.0F, 1.0F);
@@ -203,6 +218,12 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		tag.putBoolean("receive_inverted_power", receiveInvertedPower);
 		tag.putBoolean("highlight_connections", highlightConnections);
 		return tag;
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
+		super.onDataPacket(net, pkt);
+		ClientHandler.refreshModelData(this);
 	}
 
 	public boolean isSender() {
@@ -507,5 +528,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	public void setChanged() {
 		changed = true;
 		super.setChanged();
+	}
+
+	@Override
+	public IModelData getModelData() {
+		return DEFAULT_MODEL_DATA.get();
 	}
 }
