@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items.properties;
 
+import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.components.GlobalPositionComponent;
@@ -28,7 +29,7 @@ public record BlockLinked(DataComponentType<?> positionComponent, HitCheck hitCh
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(be instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-						if (IDisguisable.getDisguisedBlockState(be).isPresent())
+						if (be.getBlockState().getBlock() instanceof IBlockMine || IDisguisable.getDisguisedBlockState(be).isPresent())
 							return returnBasedOnComponent(positions);
 					}
 
