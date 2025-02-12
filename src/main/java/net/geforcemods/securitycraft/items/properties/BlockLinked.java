@@ -44,7 +44,7 @@ public record BlockLinked(DataComponentType<?> positionComponent, HitCheck hitCh
 
 					//if the block is not ownable/not owned by the player looking at it, don't show the indicator if it's disguised
 					if (!(be instanceof IOwnable ownable) || !ownable.isOwnedBy(player)) {
-						if (be.getBlockState().getBlock() instanceof IBlockMine || IDisguisable.getDisguisedBlockState(be).isPresent())
+						if (be == null || be.getBlockState().getBlock() instanceof IBlockMine || IDisguisable.getDisguisedBlockState(be).isPresent())
 							return returnBasedOnComponent(positions);
 					}
 
