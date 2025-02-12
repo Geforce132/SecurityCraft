@@ -15,6 +15,7 @@
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: Holding a camera monitor makes it possible to identify disguised cameras
 - Fix: Items that can have linked positions (e.g. Camera Monitor) show the idle animation even when they have positions and are either dropped, or held by a non-player entity
+- Fix: The mine remote access tool can identify block mines
 - Fix: The display of items in the SC Manual can change too fast in certain situations
 - Fix: Potential startup crash
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
