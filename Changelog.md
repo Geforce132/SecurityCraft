@@ -17,6 +17,7 @@
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
+- Fix: The mine remote access tool can identify block mines
 - Fix: The display of items in the SC Manual can change too fast in certain situations
 - Fix: Potential startup crash
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
