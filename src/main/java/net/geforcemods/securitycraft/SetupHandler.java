@@ -166,8 +166,8 @@ public class SetupHandler {
 	public static void init() {
 		//blocks
 		SCContent.laserBlock = new LaserBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("laser_block").setTranslationKey("securitycraft:laserBlock");
-		SCContent.laserField = new LaserFieldBlock(Material.ROCK).setRegistryName("laser").setTranslationKey("securitycraft:laserField");
-		SCContent.keypad = new KeypadBlock(Material.IRON).setBlockUnbreakable().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
+		SCContent.laserField = new LaserFieldBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("laser").setTranslationKey("securitycraft:laserField");
+		SCContent.keypad = new KeypadBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
 		SCContent.retinalScanner = new RetinalScannerBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
 		SCContent.reinforcedDoor = new ReinforcedDoorBlock(Material.IRON).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
 		SCContent.fakeLava = (BlockStaticLiquid) new FakeLavaBaseBlock(Material.LAVA).setHardness(100.0F).setLightLevel(1.0F).setRegistryName("bogus_lava").setTranslationKey("securitycraft:bogusLava");
