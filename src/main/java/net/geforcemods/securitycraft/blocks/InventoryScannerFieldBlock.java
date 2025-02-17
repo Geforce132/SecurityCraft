@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
-import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -44,7 +43,7 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlayDisplay, SimpleWaterloggedBlock {
+public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HORIZONTAL = InventoryScannerBlock.HORIZONTAL;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -345,15 +344,5 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
-	public boolean shouldShowSCInfo(Level level, BlockState state, BlockPos pos) {
-		return false;
 	}
 }
