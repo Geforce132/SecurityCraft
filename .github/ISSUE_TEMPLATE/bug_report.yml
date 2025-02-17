@@ -1,4 +1,4 @@
-name: General Issue (not for suggestions)
+name: Bug report (not for suggestions)
 description: Report a bug or problem with SecurityCraft
 body:
   - type: markdown
@@ -49,6 +49,9 @@ body:
       label: SecurityCraft version
       description: What version of SecurityCraft are you using?
       options:
+        - v1.9.12-beta4
+        - v1.9.12-beta3
+        - v1.9.12-beta2
         - v1.9.12-beta1
         - v1.9.12
         - v1.9.11
