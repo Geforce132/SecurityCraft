@@ -1,11 +1,7 @@
 {
   "pack": {
     "description": "SecurityCraft resources & data",
-<<<<<<< HEAD
     "pack_format": 34,
-=======
-    "pack_format": 46,
->>>>>>> cd39f0cde (Allow blocks to be broken with normal tools)
     "supported_formats": [
       0,
       2147483647
