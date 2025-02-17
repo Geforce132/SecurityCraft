@@ -18,8 +18,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
-import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
-import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
@@ -65,8 +63,6 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 		registration.registerComponentProvider(this, TooltipPosition.HEAD, BaseFullMineBlock.class);
 		registration.registerComponentProvider(this, TooltipPosition.HEAD, FurnaceMineBlock.class);
 		registration.registerComponentProvider(this, TooltipPosition.BODY, OwnableBlock.class);
-		registration.registerComponentProvider(this, TooltipPosition.BODY, InventoryScannerFieldBlock.class);
-		registration.registerComponentProvider(this, TooltipPosition.BODY, LaserFieldBlock.class);
 		registration.registerComponentProvider(this, TooltipPosition.BODY, ReinforcedCauldronBlock.class);
 		registration.registerComponentProvider(this, TooltipPosition.BODY, ReinforcedPaneBlock.class);
 		registration.registerIconProvider(this, DisguisableBlock.class);

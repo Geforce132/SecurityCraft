@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
-import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.CustomDamageSources;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -37,7 +36,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, SimpleWaterloggedBlock {
+public class LaserFieldBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final IntegerProperty BOUNDTYPE = IntegerProperty.create("boundtype", 1, 3);
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	private static final VoxelShape SHAPE_X = Block.box(0, 6.75, 6.75, 16, 9.25, 9.25);
@@ -184,15 +183,5 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay, Si
 			case 3 -> 2;
 			default -> 1;
 		});
-	}
-
-	@Override
-	public ItemStack getDisplayStack(Level level, BlockState state, BlockPos pos) {
-		return null;
-	}
-
-	@Override
-	public boolean shouldShowSCInfo(Level level, BlockState state, BlockPos pos) {
-		return false;
 	}
 }

@@ -21,6 +21,7 @@
 - Fix: Limited use keycards can be used indefinitely in a keycard holder
 - Fix: A portable radar chat message is broken in German
 - Fix: Reinforced grass blocks and water cauldrons are still tinted even if the reinforced tint is turned off
+- Fix: Laser and inventory scanner fields don't show up properly in the overlay of Jade/TOP/etc.
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
