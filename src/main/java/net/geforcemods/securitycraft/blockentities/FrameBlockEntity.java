@@ -166,7 +166,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		for (int i = 0; i < cameraPositions.size(); i++) {
 			NamedPositions.Entry entry = cameraPositions.get(i);
 
-			if (entry.globalPos().equals(cameraPos)) {
+			if (entry != null && entry.globalPos().equals(cameraPos)) {
 				cameraPositions.set(i, null);
 				break;
 			}
