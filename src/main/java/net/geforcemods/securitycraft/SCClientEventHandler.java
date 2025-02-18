@@ -241,7 +241,6 @@ public class SCClientEventHandler {
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setRenderHand(false);
 		mc.gameRenderer.setPanoramicMode(true);
-		mc.options.setServerRenderDistance(newFrameFeedViewDistance);
 		window.setWidth(100);
 		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
@@ -330,7 +329,6 @@ public class SCClientEventHandler {
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
-		mc.options.setServerRenderDistance(oldServerRenderDistance);
 		mc.gameRenderer.setRenderHand(true);
 		mc.gameRenderer.setPanoramicMode(false);
 		mc.getMainRenderTarget().bindWrite(true);
