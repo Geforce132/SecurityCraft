@@ -30,7 +30,7 @@ public class SyncFrame {
 
 	public SyncFrame(FriendlyByteBuf buf) {
 		pos = buf.readBlockPos();
-		requestedRenderDistance = buf.readInt();
+		requestedRenderDistance = buf.readVarInt();
 		removedCamera = buf.readOptional(FriendlyByteBuf::readGlobalPos);
 		currentCamera = buf.readOptional(FriendlyByteBuf::readGlobalPos);
 		disableCurrentCamera = buf.readBoolean();
@@ -38,7 +38,7 @@ public class SyncFrame {
 	
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
-		buf.writeInt(requestedRenderDistance);
+		buf.writeVarInt(requestedRenderDistance);
 		buf.writeOptional(removedCamera, FriendlyByteBuf::writeGlobalPos);
 		buf.writeOptional(currentCamera, FriendlyByteBuf::writeGlobalPos);
 		buf.writeBoolean(disableCurrentCamera);
