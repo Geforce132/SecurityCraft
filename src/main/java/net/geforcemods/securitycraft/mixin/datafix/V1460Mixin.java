@@ -29,7 +29,7 @@ public class V1460Mixin {
 	 * Registers SecurityCraft's block entities to datafixers, so the item stacks in them can be fixed.
 	 */
 	@Inject(method = "registerBlockEntities", at = @At("TAIL"))
-	private void securitycraft$registerBlockEntities(Schema schema, CallbackInfoReturnable<Map<String, Supplier<TypeTemplate>>> ci, @Local Map<String, Supplier<TypeTemplate>> map) {
+	private void securitycraft$registerBlockEntities(Schema schema, CallbackInfoReturnable<Map<String, Supplier<TypeTemplate>>> cir, @Local Map<String, Supplier<TypeTemplate>> map) {
 		DataFixHandler.registerBlockEntities(schema, map);
 	}
 
@@ -38,7 +38,7 @@ public class V1460Mixin {
 	 * fixed properly
 	 */
 	@Inject(method = "registerEntities", at = @At("TAIL"))
-	private void securitycraft$registerEntities(Schema schema, CallbackInfoReturnable<Map<String, Supplier<TypeTemplate>>> ci, @Local Map<String, Supplier<TypeTemplate>> map) {
+	private void securitycraft$registerEntities(Schema schema, CallbackInfoReturnable<Map<String, Supplier<TypeTemplate>>> cir, @Local Map<String, Supplier<TypeTemplate>> map) {
 		DataFixHandler.registerEntities(schema, map);
 	}
 
@@ -46,7 +46,7 @@ public class V1460Mixin {
 	 * Captures the Schema method parameter necessary for the mixin below.
 	 */
 	@Inject(method = "lambda$registerTypes$35", at = @At("HEAD"))
-	private static void securitycraft$captureSchema(Schema schema, CallbackInfoReturnable<TypeTemplate> callbackInfo, @Share("schema") LocalRef<Schema> schemaRef) {
+	private static void securitycraft$captureSchema(Schema schema, CallbackInfoReturnable<TypeTemplate> cir, @Share("schema") LocalRef<Schema> schemaRef) {
 		schemaRef.set(schema);
 	}
 

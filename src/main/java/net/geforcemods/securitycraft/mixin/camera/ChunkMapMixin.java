@@ -46,7 +46,7 @@ public abstract class ChunkMapMixin {
 	 * camera or a stopped frame camera feed.
 	 */
 	@Inject(method = "updateChunkTracking", at = @At("HEAD"))
-	private void securitycraft$onUpdateChunkTracking(ServerPlayer player, CallbackInfo callback) {
+	private void securitycraft$onUpdateChunkTracking(ServerPlayer player, CallbackInfo ci) {
 		Level level = player.level();
 		int viewDistance = getPlayerViewDistance(player);
 
@@ -92,7 +92,7 @@ public abstract class ChunkMapMixin {
 	 * the camera feed in a frame.
 	 */
 	@Inject(method = "onChunkReadyToSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getChunkTrackingView()Lnet/minecraft/server/level/ChunkTrackingView;"))
-	private void securitycraft$sendChunksToCameras(ChunkHolder holder, LevelChunk chunk, CallbackInfo callback, @Local ServerPlayer player) {
+	private void securitycraft$sendChunksToCameras(ChunkHolder holder, LevelChunk chunk, CallbackInfo ci, @Local ServerPlayer player) {
 		ChunkPos pos = chunk.getPos();
 
 		if ((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(pos)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
@@ -103,17 +103,17 @@ public abstract class ChunkMapMixin {
 	 * Fixes block updates not getting sent to chunks around mounted or frame cameras by marking all nearby chunks as tracked
 	 */
 	@Inject(method = "isChunkTracked", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onIsChunkTracked(ServerPlayer player, int x, int z, CallbackInfoReturnable<Boolean> callback) {
+	private void securitycraft$onIsChunkTracked(ServerPlayer player, int x, int z, CallbackInfoReturnable<Boolean> cir) {
 		if (((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(x, z)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkTracked(player, x, z)).isEmpty()) && !player.connection.chunkSender.isPending(ChunkPos.asLong(x, z)))
-			callback.setReturnValue(true);
+			cir.setReturnValue(true);
 	}
 
 	/**
 	 * Makes sure that chunks in the view area of a frame do not get dropped when the player moves out of them
 	 */
 	@Inject(method = "dropChunk", at = @At("HEAD"), cancellable = true)
-	private static void securitycraft$onDropChunk(ServerPlayer player, ChunkPos pos, CallbackInfo callback) {
+	private static void securitycraft$onDropChunk(ServerPlayer player, ChunkPos pos, CallbackInfo ci) {
 		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), be -> be.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
-			callback.cancel();
+			ci.cancel();
 	}
 }
