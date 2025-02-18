@@ -92,7 +92,7 @@ public abstract class LevelRendererMixin {
 	 * Embeddium or Sodium is installed, these mods may perform their visible section capture themselves since it's much more
 	 * performant, and since that happens in setupRender too, the method is not exited early in this case.
 	 */
-	@Inject(method = "setupRender", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
 		if (CameraController.currentlyCapturedCamera != null && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
 			callbackInfo.cancel();
