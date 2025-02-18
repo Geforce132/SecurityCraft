@@ -122,4 +122,17 @@ public abstract class LevelRendererMixin {
 				callbackInfo.setReturnValue(true);
 		}
 	}
+
+	/**
+	 * Sets the correct fog distance for rendering a frame feed, depending on clientside view distance configuration settings.
+	 * Note that the frame block entity chunk loading distance option is not respected for this, since it is only supposed to
+	 * affect the server by setting a limit on forceloaded chunks and unfit to be handled on the client side.
+	 */
+	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;computeFogColor(Lnet/minecraft/client/Camera;FLnet/minecraft/client/multiplayer/ClientLevel;IF)Lorg/joml/Vector4f;"), ordinal = 1)
+	private float securitycraft$modifyFogRenderDistance(float original) {
+		if (CameraController.currentlyCapturedCamera != null)
+			return CameraController.getFrameFeedViewDistance(null) * 16;
+
+		return original;
+	}
 }
