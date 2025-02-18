@@ -21,7 +21,7 @@ import net.minecraft.util.datafix.schemas.V4067;
 @Mixin(V4067.class)
 public class V4067Mixin {
 	@Inject(method = "registerEntities", at = @At("TAIL"))
-	private void securitycraft$unRegisterSecuritySeaBoatEntityTypes(Schema schema, CallbackInfoReturnable<Map<String, Supplier<TypeTemplate>>> ci, @Local Map<String, Supplier<TypeTemplate>> map) {
+	private void securitycraft$unRegisterSecuritySeaBoatEntityTypes(Schema schema, CallbackInfoReturnable<Map<String, Supplier<TypeTemplate>>> cir, @Local Map<String, Supplier<TypeTemplate>> map) {
 		map.remove("securitycraft:security_sea_boat");
 		DataFixHandler.registerInventoryAndModules(schema, map, "securitycraft:oak_security_sea_boat");
 		DataFixHandler.registerInventoryAndModules(schema, map, "securitycraft:spruce_security_sea_boat");

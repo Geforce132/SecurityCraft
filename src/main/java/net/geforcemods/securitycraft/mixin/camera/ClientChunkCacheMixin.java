@@ -94,12 +94,12 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * If the requested chunk is absent in the vanilla storage but present in the camera client chunk cache, return that chunk
 	 */
 	@Inject(method = "getChunk(IILnet/minecraft/world/level/chunk/status/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/LevelChunk;", at = @At("TAIL"), cancellable = true)
-	private void securitycraft$onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean requireChunk, CallbackInfoReturnable<LevelChunk> callback) {
+	private void securitycraft$onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean requireChunk, CallbackInfoReturnable<LevelChunk> cir) {
 		if (!storage.inRange(x, z)) {
 			LevelChunk chunk = CameraClientChunkCacheExtension.getChunk(x, z);
 
 			if (chunk != null)
-				callback.setReturnValue(chunk);
+				cir.setReturnValue(chunk);
 		}
 	}
 }
