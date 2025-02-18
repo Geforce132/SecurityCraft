@@ -121,44 +121,46 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		SecurityCameraBlockEntity.resetForceLoadingCounter();
+		if (event.phase == Phase.START) {
+			SecurityCameraBlockEntity.resetForceLoadingCounter();
 
-		if (event.phase == Phase.START && (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward())) {
-			PLAYING_TUNES.forEach((player, pair) -> {
-				int ticksRemaining = pair.getLeft();
+			if (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward()) {
+				PLAYING_TUNES.forEach((player, pair) -> {
+					int ticksRemaining = pair.getLeft();
 
-				if (ticksRemaining == 0) {
-					if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.PORTABLE_TUNE_PLAYER.get()).isEmpty()) {
-						pair.setLeft(-1);
-						return;
-					}
+					if (ticksRemaining == 0) {
+						if (PlayerUtils.getItemStackFromAnyHand(player, SCContent.PORTABLE_TUNE_PLAYER.get()).isEmpty()) {
+							pair.setLeft(-1);
+							return;
+						}
 
-					NoteWrapper note = pair.getRight().poll();
+						NoteWrapper note = pair.getRight().poll();
 
-					if (note != null) {
-						NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
-						SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSoundId())) : instrument.getSoundEvent().value();
-						float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D) : 1.0F;
+						if (note != null) {
+							NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
+							SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSoundId())) : instrument.getSoundEvent().value();
+							float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D) : 1.0F;
 
-						player.level().playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
-						handlePlayedNote(player.level(), player.blockPosition(), note.noteID(), instrument, note.customSoundId());
-						player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
-						pair.setLeft(NOTE_DELAY);
+							player.level().playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
+							handlePlayedNote(player.level(), player.blockPosition(), note.noteID(), instrument, note.customSoundId());
+							player.gameEvent(GameEvent.NOTE_BLOCK_PLAY);
+							pair.setLeft(NOTE_DELAY);
+						}
+						else
+							pair.setLeft(-1);
 					}
 					else
-						pair.setLeft(-1);
-				}
-				else
-					pair.setLeft(ticksRemaining - 1);
-			});
+						pair.setLeft(ticksRemaining - 1);
+				});
 
-			//remove finished tunes
-			if (PLAYING_TUNES.size() > 0) {
-				Iterator<Entry<Player, MutablePair<Integer, Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
+				//remove finished tunes
+				if (PLAYING_TUNES.size() > 0) {
+					Iterator<Entry<Player, MutablePair<Integer, Deque<NoteWrapper>>>> entries = PLAYING_TUNES.entrySet().iterator();
 
-				while (entries.hasNext()) {
-					if (entries.next().getValue().left == -1)
-						entries.remove();
+					while (entries.hasNext()) {
+						if (entries.next().getValue().left == -1)
+							entries.remove();
+					}
 				}
 			}
 		}
