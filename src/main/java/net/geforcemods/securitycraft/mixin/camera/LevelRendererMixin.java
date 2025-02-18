@@ -61,7 +61,7 @@ public abstract class LevelRendererMixin {
 	 * always rendered.
 	 */
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"))
-	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo callbackInfo, @Local Frustum frustum) {
+	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local Frustum frustum) {
 		if (SecurityCraftClient.INSTALLED_IUM_MOD != IumCompat.NONE && !CameraController.FRAME_CAMERA_FEEDS.isEmpty()) {
 			ProfilerFiller profiler = Profiler.get();
 
@@ -95,16 +95,16 @@ public abstract class LevelRendererMixin {
 	 * performant, and since that happens in setupRender too, the method is not exited early in this case.
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
+	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
 		if (CameraController.currentlyCapturedCamera != null && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
-			callbackInfo.cancel();
+			ci.cancel();
 	}
 
 	/**
 	 * Updates the camera view area with the refreshed section render dispatcher when F3+A is pressed
 	 */
 	@Inject(method = "allChanged", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SectionOcclusionGraph;waitAndReset(Lnet/minecraft/client/renderer/ViewArea;)V"))
-	private void securitycraft$onAllChanged(CallbackInfo callbackInfo) {
+	private void securitycraft$onAllChanged(CallbackInfo ci) {
 		CameraViewAreaExtension.allChanged(sectionRenderDispatcher, level);
 	}
 
@@ -113,13 +113,13 @@ public abstract class LevelRendererMixin {
 	 * treated as compiled (e.g. for the purpose of entity rendering)
 	 */
 	@Inject(method = "isSectionCompiled", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> callbackInfo) {
+	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
 		if (CameraController.currentlyCapturedCamera != null) {
 			SectionPos sectionPos = SectionPos.of(pos);
 			SectionRenderDispatcher.RenderSection renderSection = CameraViewAreaExtension.rawFetch(sectionPos.x(), sectionPos.y(), sectionPos.z(), false);
 
 			if (renderSection != null && renderSection.compiled.get() != SectionRenderDispatcher.CompiledSection.UNCOMPILED)
-				callbackInfo.setReturnValue(true);
+				cir.setReturnValue(true);
 		}
 	}
 
