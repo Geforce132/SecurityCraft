@@ -221,7 +221,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.level.ChunkEvent;
 
 // Taken and modified from Immersive Portals
-// Modifications include simplifications, adaptation to NeoForge, and removals of code unused by SecurityCraft
+// Modifications include simplifications, adaptation to NeoForge, MC version porting-related changes, and removals of code unused by SecurityCraft
 // https://github.com/iPortalTeam/ImmersivePortalsMod/blob/1.21/src/main/java/qouteall/imm_ptl/core/chunk_loading/ImmPtlClientChunkMap.java
 public class CameraClientChunkCacheExtension {
 	private static final Long2ObjectOpenHashMap<LevelChunk> CHUNK_MAP = new Long2ObjectOpenHashMap<>();
