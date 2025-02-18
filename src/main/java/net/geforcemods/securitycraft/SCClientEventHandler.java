@@ -267,7 +267,6 @@ public class SCClientEventHandler {
 					CameraController.currentlyCapturedCamera = cameraPos;
 					mc.levelRenderer.visibleSections.clear();
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
-					SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
 
@@ -287,7 +286,6 @@ public class SCClientEventHandler {
 						frameTarget.unbindWrite();
 					}
 
-					SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
 					profiler.push("securitycraft:apply_frame_frustum");
 
 					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
