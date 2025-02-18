@@ -77,7 +77,7 @@ public abstract class LevelRendererMixin {
 	 * outline.
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"), ordinal = 3)
-	private boolean modifyEntityOutlineRendered(boolean original) {
+	private boolean securitycraft$modifyEntityOutlineRendered(boolean original) {
 		if (SecurityCraftClient.INSTALLED_IUM_MOD != IumCompat.NONE && securitycraft$entityOutlineRendered) {
 			securitycraft$entityOutlineRendered = false;
 			return true;
