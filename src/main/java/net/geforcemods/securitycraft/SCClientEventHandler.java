@@ -272,7 +272,6 @@ public class SCClientEventHandler {
 					CameraController.currentlyCapturedCamera = cameraPos;
 					mc.levelRenderer.visibleSections.clear();
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
-					SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
 
