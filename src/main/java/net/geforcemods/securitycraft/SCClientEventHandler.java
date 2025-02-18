@@ -220,7 +220,6 @@ public class SCClientEventHandler {
 		int oldWidth = window.getWidth();
 		int oldHeight = window.getHeight();
 		List<SectionRenderDispatcher.RenderSection> oldVisibleSections = mc.levelRenderer.visibleSections.clone();
-		int oldServerRenderDistance = mc.options.serverRenderDistance;
 		int newFrameFeedViewDistance = CameraController.getFrameFeedViewDistance(null);
 		double oldX = player.getX();
 		double oldXO = player.xOld;
