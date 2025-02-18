@@ -52,7 +52,7 @@ public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 					ContainerOrHandler containerOrHandler = HopperBlockEntity.getContainerOrHandlerAt(level, pos.relative(direction), direction.getOpposite());
 					ItemStack afterDispenseStack;
 
-					if (containerOrHandler == null)
+					if (containerOrHandler.isEmpty())
 						afterDispenseStack = DISPENSE_BEHAVIOUR.dispense(source, dispenseStack);
 					else {
 						if (containerOrHandler.container() != null)

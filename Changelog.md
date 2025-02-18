@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.9.12-beta5 of SecurityCraft--------------------------
+
+- Fix: The Reinforced Dropper does not work
+
 --------------------------Changelog for v1.9.12-beta4 of SecurityCraft--------------------------
 
 - Fix: "Designed by" text in the SC Manual is not rendered correctly
