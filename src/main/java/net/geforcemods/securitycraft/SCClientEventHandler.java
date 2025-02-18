@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,6 +182,7 @@ public class SCClientEventHandler {
 
 		ProfilerFiller profiler = Profiler.get();
 		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
+		List<GlobalPos> erroringFrameCameraFeeds = new ArrayList<>();
 		//+1 helps to reduce stuttering when many frames are active at once
 		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1;
 		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
@@ -274,11 +276,19 @@ public class SCClientEventHandler {
 					SecurityCraftClient.INSTALLED_IUM_MOD.switchToEmptyRenderLists();
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
-					profiler.popPush("securitycraft:bind_frame_target");
-					profiler.pop();
-					RenderSystem.getDevice().createCommandEncoder().clearColorAndDepthTextures(frameTarget.getColorTexture(), 0, frameTarget.getDepthTexture(), 1.0);
-					mc.gameRenderer.renderLevel(DeltaTracker.ONE);
-					SecurityCraftClient.INSTALLED_IUM_MOD.switchToPreviousRenderLists();
+
+					try {
+						profiler.popPush("securitycraft:bind_frame_target");
+						profiler.pop();
+						RenderSystem.getDevice().createCommandEncoder().clearColorAndDepthTextures(frameTarget.getColorTexture(), 0, frameTarget.getDepthTexture(), 1.0);
+						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
+					}
+					catch (Exception e) {
+						SecurityCraft.LOGGER.error("Frame feed at " + be.getBlockPos() + " threw an exception while rendering (see below). Deactivating clientside rendering");
+						e.printStackTrace();
+						erroringFrameCameraFeeds.add(cameraPos);
+					}
+
 					profiler.push("securitycraft:apply_frame_frustum");
 
 					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
@@ -324,6 +334,10 @@ public class SCClientEventHandler {
 
 		profiler.pop();
 		profiler.pop();
+
+		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
+			CameraController.removeAllFrameLinks(erroringFeed);
+		}
 	}
 
 	private static boolean isFrameInFrustum(GlobalPos cameraPos, Frustum beFrustum) {
