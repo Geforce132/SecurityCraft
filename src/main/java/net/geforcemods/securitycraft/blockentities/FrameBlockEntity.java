@@ -77,10 +77,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void setRemoved() {
 		super.setRemoved();
 
-		if (currentCameraPosition != null && clientInteracted) {
+		if (currentCameraPosition != null) {
 			if (!level.isClientSide)
 				switchCameras(null, null, 0, false);
-			else
+			else if (clientInteracted)
 				PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
 		}
 	}
