@@ -44,7 +44,7 @@ public abstract class ChunkMapMixin {
 	 * Sends chunks loaded by mounted cameras or frame cameras to the client. Also drops chunks that were near a dismounted
 	 * camera or a stopped frame camera feed.
 	 */
-	@Inject(method = "updateChunkTracking", at = @At(value = "HEAD"))
+	@Inject(method = "updateChunkTracking", at = @At("HEAD"))
 	private void securitycraft$onUpdateChunkTracking(ServerPlayer player, CallbackInfo callback) {
 		Level level = player.level();
 		int viewDistance = getPlayerViewDistance(player);
