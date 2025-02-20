@@ -6,14 +6,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
 import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.math.vector.Matrix4f;
 
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
@@ -40,5 +45,15 @@ public class WorldRendererMixin {
 	@Inject(method = "allChanged", at = @At("TAIL"))
 	private void securitycraft$onAllChanged(CallbackInfo callbackInfo) {
 		CameraViewAreaExtension.allChanged(chunkRenderDispatcher);
+	}
+
+	/**
+	 * Captures the last used rendering and projection matrices used by rendering any level. This happens regardless of if any
+	 * frame is active, though the memory implications from this should be minimal.
+	 */
+	@Inject(method = "renderLevel", at = @At("HEAD"))
+	private void securitycraft$captureMainLevelRenderMatrix(MatrixStack renderMatrix, float partialTick, long nanos, boolean renderBlockOutline, ActiveRenderInfo renderInfo, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci) {
+		CameraController.lastUsedRenderMatrix = renderMatrix.last().pose();
+		CameraController.lastUsedProjectionMatrix = projectionMatrix;
 	}
 }

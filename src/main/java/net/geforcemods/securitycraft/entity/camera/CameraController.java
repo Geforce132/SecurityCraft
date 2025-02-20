@@ -48,6 +48,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.SectionPos;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -79,6 +80,8 @@ public class CameraController {
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
 	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
 	public static GlobalPos currentlyCapturedCamera;
+	public static Matrix4f lastUsedRenderMatrix;
+	public static Matrix4f lastUsedProjectionMatrix;
 	public static int shaderId = -1;
 	public static double lastFrameRendered = 0.0D;
 
@@ -255,7 +258,7 @@ public class CameraController {
 		LocalRenderInformationContainer startingSection = Minecraft.getInstance().levelRenderer.new LocalRenderInformationContainer(CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), MathHelper.clamp(cameraSectionPos.y(), 0, 15), cameraSectionPos.z(), true), null, 0);
 		CameraFeed cameraFeed = new CameraFeed(new Framebuffer(resolution, resolution, true, Minecraft.ON_OSX), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 
-		cameraFeed.compilingSectionsQueue.add(startingSection);
+		cameraFeed.compilingSectionsQueue.add(startingSection.chunk);
 		cameraFeed.sectionsInRange.add(startingSection);
 		cameraFeed.sectionsInRangePositions.add(startingSection.chunk.getOrigin().asLong());
 		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(null), cameraFeed);
@@ -287,20 +290,19 @@ public class CameraController {
 	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
 		List<LocalRenderInformationContainer> visibleSections = feed.sectionsInRange;
-		List<LocalRenderInformationContainer> sectionQueue = feed.compilingSectionsQueue;
+		List<ChunkRender> sectionQueue = feed.compilingSectionsQueue;
 		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
-		Deque<LocalRenderInformationContainer> queueToCheck = new ArrayDeque<>(sectionQueue);
+		Deque<ChunkRender> queueToCheck = new ArrayDeque<>(sectionQueue);
 
 		sectionQueue.clear();
 
 		while (!queueToCheck.isEmpty()) {
-			LocalRenderInformationContainer currentSectionInfo = queueToCheck.poll();
-			ChunkRender currentSection = currentSectionInfo.chunk;
+			ChunkRender currentSection = queueToCheck.poll();
 			BlockPos origin = currentSection.getOrigin();
 			CompiledChunk currentCompiledSection = currentSection.getCompiledChunk();
 
-			if (currentCompiledSection == CompiledChunk.UNCOMPILED) {
-				sectionQueue.add(currentSectionInfo);
+			if (currentCompiledSection == CompiledChunk.UNCOMPILED && currentSection.hasAllNeighbors()) { //TODO check that!
+				sectionQueue.add(currentSection);
 				continue;
 			}
 
@@ -321,7 +323,7 @@ public class CameraController {
 
 							visibleSections.add(neighbourChunkInfo); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
 							visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
-							sectionQueue.add(neighbourChunkInfo);
+							sectionQueue.add(neighbourChunkInfo.chunk);
 							FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
 						}
 					}
@@ -385,9 +387,9 @@ public class CameraController {
 		protected final List<LocalRenderInformationContainer> sectionsInRange;
 		protected final Set<Long> sectionsInRangePositions;
 		protected final List<LocalRenderInformationContainer> visibleSections;
-		protected final List<LocalRenderInformationContainer> compilingSectionsQueue;
+		protected final List<ChunkRender> compilingSectionsQueue;
 
-		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<LocalRenderInformationContainer> sectionsInRange, Set<Long> sectionsInRangePositions, List<LocalRenderInformationContainer> visibleSections, List<LocalRenderInformationContainer> compilingSectionsQueue) {
+		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<LocalRenderInformationContainer> sectionsInRange, Set<Long> sectionsInRangePositions, List<LocalRenderInformationContainer> visibleSections, List<ChunkRender> compilingSectionsQueue) {
 			this.renderTarget = renderTarget;
 			this.lastActiveTime = lastActiveTime;
 			this.sectionsInRange = sectionsInRange;
@@ -416,7 +418,7 @@ public class CameraController {
 			return visibleSections;
 		}
 
-		public List<LocalRenderInformationContainer> compilingSectionsQueue() {
+		public List<ChunkRender> compilingSectionsQueue() {
 			return compilingSectionsQueue;
 		}
 	}

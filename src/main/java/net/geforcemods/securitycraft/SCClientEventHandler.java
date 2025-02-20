@@ -222,6 +222,7 @@ public class SCClientEventHandler {
 			return;
 
 		CameraController.lastFrameRendered = currentTime;
+		profiler.pop(); //out of "render"
 		profiler.push("gameRenderer");
 		profiler.push("securitycraft:frame_level");
 
@@ -253,7 +254,14 @@ public class SCClientEventHandler {
 		PointOfView oldCameraType = mc.options.getCameraType();
 		//TODO: marker clone
 		Entity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
-		//		ClippingHelper playerFrustum = mc.levelRenderer.capturedFrustum; //Saved once before the loop, because the frustum changes depending on which camera is viewed
+		ClippingHelper playerFrustum = null; //Saved once before the loop, because the frustum changes depending on which camera is viewed
+
+		if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
+			Vector3d activeRenderInfoPos = camera.getPosition();
+
+			playerFrustum = new ClippingHelper(CameraController.lastUsedRenderMatrix, CameraController.lastUsedProjectionMatrix); //TODO prepare
+			playerFrustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
+		}
 
 		mc.gameRenderer.renderBlockOutline = false;
 		mc.gameRenderer.renderHand = false;
@@ -273,8 +281,8 @@ public class SCClientEventHandler {
 				TileEntity te = level.getBlockEntity(pos);
 
 				if (te instanceof SecurityCameraBlockEntity) {
-					//					if (!isFrameInFrustum(cameraPos, playerFrustum))
-					//						continue;
+					if (playerFrustum != null && !isFrameInFrustum(cameraPos, playerFrustum))
+						continue;
 
 					SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
 					CameraFeed feed = cameraView.getValue();
@@ -290,8 +298,10 @@ public class SCClientEventHandler {
 					CameraController.currentlyCapturedCamera = cameraPos;
 					mc.levelRenderer.renderChunks.clear();
 					mc.levelRenderer.renderChunks.addAll(feed.visibleSections());
+					mc.levelRenderer.chunksToCompile.clear();
+					mc.levelRenderer.chunksToCompile.addAll(feed.compilingSectionsQueue());
 
-					//					if (SecurityCraft.IS_A_SODIUM_MOD_INSTALLED)
+					//					if (SecurityCraft.IS_A_SODIUM_MOD_INSTALLED) //TODO sodium compat
 					//						SodiumCompat.clearRenderList();
 
 					profiler.push("securitycraft:discover_frame_sections");
@@ -304,13 +314,22 @@ public class SCClientEventHandler {
 					frameTarget.unbindWrite();
 					profiler.push("securitycraft:apply_frame_frustum");
 
+					ClippingHelper frustum = null; //TODO put this in a separate CameraController method? Because also used below
+
+					if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
+						Vector3d activeRenderInfoPos = camera.getPosition();
+
+						frustum = new ClippingHelper(CameraController.lastUsedRenderMatrix, CameraController.lastUsedProjectionMatrix);
+						frustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
+					}
+
 					if (be.shouldRotate() || feed.visibleSections().isEmpty() || CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.contains(cameraPos)) {
 						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.remove(cameraPos);
 						feed.visibleSections().clear();
 
 						for (LocalRenderInformationContainer section : feed.sectionsInRange()) {
-							//							if (playerFrustum.isVisible(section.chunk.bb))
-							feed.visibleSections().add(section);
+							if (frustum == null || frustum.isVisible(section.chunk.bb))
+								feed.visibleSections().add(section);
 						}
 					}
 
@@ -346,6 +365,7 @@ public class SCClientEventHandler {
 
 		profiler.pop();
 		profiler.pop();
+		profiler.push("render");
 	}
 
 	private static boolean isFrameInFrustum(GlobalPos cameraPos, ClippingHelper beFrustum) {
