@@ -1,6 +1,15 @@
 package net.geforcemods.securitycraft.renderers;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -11,13 +20,16 @@ import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.model.RenderMaterial;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.PlayerContainer;
@@ -108,11 +120,82 @@ public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntit
 
 			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
 
-			//TODO: render
+			//TODO figure out how much of the below is actually needed (some things are already commented out without changing anything)
+			GL20.glUseProgram(CameraController.shaderId); //From MyRenderHelper#drawFrameBufferUp -> ShaderManager#load
+
+			int uniModelView = GL20.glGetUniformLocation(CameraController.shaderId, "modelView");
+			int uniProjection = GL20.glGetUniformLocation(CameraController.shaderId, "projection");
+			int uniSampler = GL20.glGetUniformLocation(CameraController.shaderId, "sampler");
+			int uniWidth = GL20.glGetUniformLocation(CameraController.shaderId, "w");
+			int uniHeight = GL20.glGetUniformLocation(CameraController.shaderId, "h");
+
+			GL20.glUniformMatrix4fv(uniModelView, false, getMatrix(GL11.GL_MODELVIEW_MATRIX));
+			GL20.glUniformMatrix4fv(uniProjection, false, getMatrix(GL11.GL_PROJECTION_MATRIX));
+			GL20.glUniform1i(uniSampler, target.getColorTextureId());
+			GL20.glUniform1f(uniWidth, Minecraft.getInstance().getWindow().getWidth());
+			GL20.glUniform1f(uniHeight, Minecraft.getInstance().getWindow().getHeight());
+
+			GlStateManager._enableTexture(); //MyRenderHelper#drawFrameBufferUp
+			GlStateManager._activeTexture(GL13.GL_TEXTURE0);
+
+			target.bindRead(); //ImmPtl MyRenderHelper drawFramebufferWithViewport
+			GlStateManager._texParameter(3553, 10241, 9729); //TODO replace ImmPtl magic numbers with actual values, if findable
+			GlStateManager._texParameter(3553, 10240, 9729);
+			GlStateManager._texParameter(3553, 10242, 10496);
+			GlStateManager._texParameter(3553, 10243, 10496);
+
+			Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
+			BufferBuilder bufferBuilder = tessellator.getBuilder();
+			Matrix4f lastPose = pose.last().pose();
+
+			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+			bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 0).endVertex(); //TODO These vertices are the most prone-to-break point
+			bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 1).endVertex();
+			bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 1).endVertex();
+			bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 0).endVertex();
+			//GL11.glEnable(GL32.GL_DEPTH_CLAMP);
+
+			runWithTransformation(
+					pose,
+					tessellator::end
+			);
+			//GL11.glDisable(GL32.GL_DEPTH_CLAMP);  //ViewAreaRenderer#draw, still
+
+			GlStateManager._glUseProgram(0);; //MyRenderHelper drawFramebufferWithViewport
+
+			target.unbindRead();
+
+			//GlStateManager._enableCull();
 
 			if (lens.getItem() instanceof IDyeableArmorItem && ((IDyeableArmorItem) lens.getItem()).hasCustomColor(lens))
 				renderOverlay(pose, buffer, xStart, xEnd, zStart, zEnd, ((IDyeableArmorItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), packedLight, normal, margin);
 		}
+	}
+
+	public static FloatBuffer getMatrix(int matrixId) {
+		FloatBuffer temp = BufferUtils.createFloatBuffer(16);
+
+		GL11.glGetFloatv(matrixId, temp);
+
+		return temp;
+	}
+
+	public static void runWithTransformation(MatrixStack matrixStack, Runnable renderingFunc) {
+		transformationPush(matrixStack);
+		renderingFunc.run();
+		transformationPop();
+	}
+
+	public static void transformationPop() {
+		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+		RenderSystem.popMatrix();
+	}
+
+	public static void transformationPush(MatrixStack matrixStack) {
+		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+		RenderSystem.pushMatrix();
+		RenderSystem.loadIdentity();
+		RenderSystem.multMatrix(matrixStack.last().pose());
 	}
 
 	private void renderNoise(MatrixStack pose, IRenderTypeBuffer buffer, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vector3i normal, float margin) {

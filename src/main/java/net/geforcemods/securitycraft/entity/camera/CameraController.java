@@ -79,6 +79,7 @@ public class CameraController {
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
 	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
 	public static GlobalPos currentlyCapturedCamera;
+	public static int shaderId = -1;
 	public static double lastFrameRendered = 0.0D;
 
 	private CameraController() {}
