@@ -35,7 +35,7 @@ public class SyncFrame {
 
 	public SyncFrame(PacketBuffer buf) {
 		pos = buf.readBlockPos();
-		requestedRenderDistance = buf.readInt();
+		requestedRenderDistance = buf.readVarInt();
 		removedCamera = readOptional(buf, this::readGlobalPos);
 		currentCamera = readOptional(buf, this::readGlobalPos);
 		disableCurrentCamera = buf.readBoolean();
@@ -43,7 +43,7 @@ public class SyncFrame {
 
 	public void encode(PacketBuffer buf) {
 		buf.writeBlockPos(pos);
-		buf.writeInt(requestedRenderDistance);
+		buf.writeVarInt(requestedRenderDistance);
 		writeOptional(buf, removedCamera, this::writeGlobalPos);
 		writeOptional(buf, currentCamera, this::writeGlobalPos);
 		buf.writeBoolean(disableCurrentCamera);
