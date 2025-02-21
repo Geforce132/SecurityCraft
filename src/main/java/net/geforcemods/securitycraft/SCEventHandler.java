@@ -94,13 +94,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.neoforge.event.TickEvent.Phase;
 import net.neoforged.neoforge.event.TickEvent.ServerTickEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingAttackEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
@@ -167,23 +167,24 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
-		ServerPlayer player = (ServerPlayer) event.getEntity();
-		Level level = player.level();
+	public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player) {
+			Level level = event.getLevel();
 
-		if (player.getCamera() instanceof SecurityCamera cam) {
-			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
-				player.removeEffect(MobEffects.NIGHT_VISION);
+			if (player.getCamera() instanceof SecurityCamera cam) {
+				if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
+					player.removeEffect(MobEffects.NIGHT_VISION);
 
-			if (level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
-				camBe.stopViewing();
+				if (level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
+					camBe.stopViewing();
 
-			cam.discard();
-		}
+				cam.discard();
+			}
 
-		for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.getCameraFeedChunks(player) != null || be.hasPlayerFrameLink(player))) {
-			viewedCamera.unlinkFrameForPlayer(player.getUUID(), null);
-			viewedCamera.clearCameraFeedChunks(player);
+			for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.getCameraFeedChunks(player) != null || be.hasPlayerFrameLink(player))) {
+				viewedCamera.unlinkFrameForPlayer(player.getUUID(), null);
+				viewedCamera.clearCameraFeedChunks(player);
+			}
 		}
 	}
 
