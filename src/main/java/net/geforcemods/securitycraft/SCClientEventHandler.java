@@ -236,7 +236,6 @@ public class SCClientEventHandler {
 		int oldWidth = window.getWidth();
 		int oldHeight = window.getHeight();
 		List<WorldRenderer.LocalRenderInformationContainer> oldVisibleSections = new ObjectArrayList<>(mc.levelRenderer.renderChunks);
-		int oldServerRenderDistance = mc.options.renderDistance;
 		int newFrameFeedViewDistance = CameraController.getFrameFeedViewDistance(null);
 		double oldX = player.getX();
 		double oldXO = player.xOld;
@@ -268,7 +267,6 @@ public class SCClientEventHandler {
 		mc.gameRenderer.renderBlockOutline = false;
 		mc.gameRenderer.renderHand = false;
 		mc.gameRenderer.panoramicMode = true;
-		mc.options.renderDistance = newFrameFeedViewDistance;
 		window.framebufferWidth = 100;
 		window.framebufferHeight = 100; //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(PointOfView.FIRST_PERSON);
@@ -370,7 +368,6 @@ public class SCClientEventHandler {
 		mc.levelRenderer.renderChunks.addAll(oldVisibleSections);
 		window.framebufferWidth = oldWidth;
 		window.framebufferHeight = oldHeight;
-		mc.options.renderDistance = oldServerRenderDistance;
 		mc.gameRenderer.renderHand = oldRenderHand;
 		mc.gameRenderer.panoramicMode = oldPanoramicMode;
 		mc.getMainRenderTarget().bindWrite(true);

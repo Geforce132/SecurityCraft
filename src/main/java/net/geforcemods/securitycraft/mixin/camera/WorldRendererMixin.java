@@ -4,6 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -55,5 +56,18 @@ public class WorldRendererMixin {
 	private void securitycraft$captureMainLevelRenderMatrix(MatrixStack renderMatrix, float partialTick, long nanos, boolean renderBlockOutline, ActiveRenderInfo renderInfo, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci) {
 		CameraController.lastUsedRenderMatrix = renderMatrix.last().pose();
 		CameraController.lastUsedProjectionMatrix = projectionMatrix;
+	}
+
+	/**
+	 * Sets the correct fog distance for rendering a frame feed, depending on clientside view distance configuration settings.
+	 * Note that the frame block entity chunk loading distance option is not respected for this, since it is only supposed to
+	 * affect the server by setting a limit on forceloaded chunks and unfit to be handled on the client side.
+	 */
+	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;setupColor(Lnet/minecraft/client/renderer/ActiveRenderInfo;FLnet/minecraft/client/world/ClientWorld;IF)V"), ordinal = 1)
+	private float securitycraft$modifyFogRenderDistance(float original) {
+		if (CameraController.currentlyCapturedCamera != null)
+			return CameraController.getFrameFeedViewDistance(null) * 16;
+
+		return original;
 	}
 }
