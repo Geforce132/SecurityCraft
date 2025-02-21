@@ -91,6 +91,25 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				setDefaultViewingDirection(facing, initialZoom);
 		}
 
+		if (!level.isClientSide && !chunkForceLoadQueue.isEmpty()) {
+			Set<Long> queueCopy = new HashSet<>(chunkForceLoadQueue);
+
+			for (Long chunkPosLong : queueCopy) {
+				if (forceLoadingCounter > 16) //Through forceloading 16 chunks per tick, a default camera view area of 32x32 chunks is fully loaded within 40 server ticks (which might take more than 2 seconds, depending on forceloading speed)
+					break;
+
+				ChunkPos chunkPos = new ChunkPos(chunkPosLong);
+
+				if (!FORCE_LOADED_CAMERA_CHUNKS.contains(chunkPosLong)) {
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, chunkPos.x, chunkPos.z, true, false);
+					FORCE_LOADED_CAMERA_CHUNKS.add(chunkPosLong);
+					forceLoadingCounter++;
+				}
+
+				chunkForceLoadQueue.remove(chunkPosLong);
+			}
+		}
+
 		oCameraRotation = getCameraRotation();
 
 		if (!shutDown && !disabled.get()) {
@@ -127,25 +146,6 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				cameraRotation = getCameraRotation() - rotationSpeedOption.get();
 			else
 				addToRotation = true;
-		}
-
-		if (!level.isClientSide && !chunkForceLoadQueue.isEmpty()) {
-			Set<Long> queueCopy = new HashSet<>(chunkForceLoadQueue);
-
-			for (Long chunkPosLong : queueCopy) {
-				if (forceLoadingCounter > 16) //Through forceloading 16 chunks per tick, a default camera view area of 32x32 chunks is fully loaded within 40 server ticks (which might take more than 2 seconds, depending on forceloading speed)
-					break;
-
-				ChunkPos chunkPos = new ChunkPos(chunkPosLong);
-
-				if (!FORCE_LOADED_CAMERA_CHUNKS.contains(chunkPosLong)) {
-					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, chunkPos.x, chunkPos.z, true, false);
-					FORCE_LOADED_CAMERA_CHUNKS.add(chunkPosLong);
-					forceLoadingCounter++;
-				}
-
-				chunkForceLoadQueue.remove(chunkPosLong);
-			}
 		}
 	}
 
