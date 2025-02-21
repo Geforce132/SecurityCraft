@@ -36,6 +36,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.LevelRenderer.RenderChunkInfo;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -55,7 +56,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.Marker;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
@@ -175,9 +175,9 @@ public class SCClientEventHandler {
 			return;
 
 		Minecraft mc = Minecraft.getInstance();
-		Player player = mc.player;
+		LocalPlayer player = mc.player;
 
-		if (player == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+		if (player == null || player.connection.getLevel() == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
 		ProfilerFiller profiler = mc.getProfiler();
