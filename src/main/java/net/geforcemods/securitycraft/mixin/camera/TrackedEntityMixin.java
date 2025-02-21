@@ -39,7 +39,7 @@ public class TrackedEntityMixin {
 	 * shouldBeSent
 	 */
 	@Inject(method = "updatePlayer", at = @At(value = "FIELD", target = "Lnet/minecraft/world/phys/Vec3;x:D", ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void securitycraft$onUpdatePlayer(ServerPlayer player, CallbackInfo callback, Vec3 unused, double viewDistance) {
+	private void securitycraft$onUpdatePlayer(ServerPlayer player, CallbackInfo ci, Vec3 unused, double viewDistance) {
 		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesAround(player.level, entity.blockPosition(), (int) viewDistance).isEmpty())
 			securitycraft$shouldBeSent = true;
 		else if (PlayerUtils.isPlayerMountedOnCamera(player)) {

@@ -22,7 +22,7 @@ import net.minecraft.world.level.Level;
 @Mixin(value = PlayerList.class, priority = 1100)
 public class PlayerListMixin {
 	@Inject(method = "broadcast", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/server/level/ServerPlayer;getZ()D"), locals = LocalCapture.CAPTURE_FAILSOFT, cancellable = true)
-	private void securitycraft$broadcastToCameras(Player except, double x, double y, double z, double radius, ResourceKey<Level> dimension, Packet<?> packet, CallbackInfo callback, int iteration, ServerPlayer player) {
+	private void securitycraft$broadcastToCameras(Player except, double x, double y, double z, double radius, ResourceKey<Level> dimension, Packet<?> packet, CallbackInfo ci, int iteration, ServerPlayer player) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			SecurityCamera camera = (SecurityCamera) player.getCamera();
 			double dX = x - camera.getX();
@@ -32,7 +32,7 @@ public class PlayerListMixin {
 			if (dX * dX + dY * dY + dZ * dZ < radius * radius)
 				player.connection.send(packet);
 
-			callback.cancel();
+			ci.cancel();
 		}
 	}
 }
