@@ -48,6 +48,7 @@ import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -255,7 +256,7 @@ public class SCClientEventHandler {
 		boolean oldPanoramicMode = mc.gameRenderer.panoramicMode;
 		PointOfView oldCameraType = mc.options.getCameraType();
 		//TODO: marker clone
-		Entity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
+		ArmorStandEntity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		ClippingHelper playerFrustum = null; //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
 		if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
@@ -295,7 +296,7 @@ public class SCClientEventHandler {
 					securityCamera.setPos(cameraEntityPos.x, cameraEntityPos.y, cameraEntityPos.z);
 					mc.setCameraEntity(securityCamera);
 					securityCamera.xRot = cameraXRot;
-					securityCamera.yRot = cameraYRot;
+					securityCamera.yHeadRot = cameraYRot;
 					CameraController.currentlyCapturedCamera = cameraPos;
 					mc.levelRenderer.renderChunks.clear();
 					mc.levelRenderer.renderChunks.addAll(feed.visibleSections());
