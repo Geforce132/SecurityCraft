@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin.cobweb;
+package net.geforcemods.securitycraft.mixin.reinforced;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
