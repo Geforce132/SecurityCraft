@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin.cobweb;
+package net.geforcemods.securitycraft.mixin.reinforced;
 
 import java.util.ArrayList;
 import java.util.List;

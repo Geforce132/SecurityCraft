@@ -19,14 +19,14 @@
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
-		"cobweb.ShearsItemMixin",
-		"cobweb.ToolMaterialMixin",
 		"datafix.BoatSplitFixMixin",
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
 		"datafix.V4067Mixin",
-		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
+		"reinforced.PortalForcerMixin",
+		"reinforced.ShearsItemMixin",
+		"reinforced.ToolMaterialMixin",
 		"suspiciousmines.BrushItemMixin"
 	],
 	"minVersion": "0.8"
