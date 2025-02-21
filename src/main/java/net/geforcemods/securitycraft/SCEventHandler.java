@@ -183,7 +183,7 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerLeaveLevel(EntityLeaveLevelEvent event) {
+	public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
 			Level level = event.getLevel();
 

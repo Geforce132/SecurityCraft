@@ -273,15 +273,15 @@ public class SCClientEventHandler {
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
+					profiler.popPush("securitycraft:bind_frame_target");
+					RenderSystem.getDevice().createCommandEncoder().clearColorAndDepthTextures(frameTarget.getColorTexture(), 0, frameTarget.getDepthTexture(), 1.0);
+					profiler.pop();
 
 					try {
-						profiler.popPush("securitycraft:bind_frame_target");
-						profiler.pop();
-						RenderSystem.getDevice().createCommandEncoder().clearColorAndDepthTextures(frameTarget.getColorTexture(), 0, frameTarget.getDepthTexture(), 1.0);
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}
 					catch (Exception e) {
-						SecurityCraft.LOGGER.error("Frame feed at " + be.getBlockPos() + " threw an exception while rendering (see below). Deactivating clientside rendering");
+						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this frame", be.getBlockPos());
 						e.printStackTrace();
 						erroringFrameCameraFeeds.add(cameraPos);
 					}
