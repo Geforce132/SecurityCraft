@@ -18,15 +18,15 @@
 		"camera.EntityTrackerMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerEntityMixin",
-		"piston.WorldMixin",
-		"portal.TeleporterMixin",
 		"potion.BrewingStandContainerMixin",
 		"reinforced.AbstractTrunkPlacerMixin",
 		"reinforced.BubbleColumnBlockMixin",
 		"reinforced.NoteBlockInstrumentMixin",
 		"reinforced.SwordAndShearsItemMixin",
+		"reinforced.TeleporterMixin",
 		"reinforced.TreeFeatureMixin",
-		"reinforced.WritableAndWrittenBookItemMixin"
+		"reinforced.WritableAndWrittenBookItemMixin",
+		"reinforced.WorldMixin"
 	],
 	"minVersion": "0.8"
 }

@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin.piston;
+package net.geforcemods.securitycraft.mixin.reinforced;
 
 import java.util.List;
 
