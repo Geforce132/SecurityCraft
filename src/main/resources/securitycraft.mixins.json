@@ -21,10 +21,10 @@
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
-		"cobweb.SwordAndShearsItemMixin",
-		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.BubbleColumnBlockMixin",
+		"reinforced.PortalForcerMixin",
+		"reinforced.SwordAndShearsItemMixin",
 		"reinforced.WritableAndWrittenBookItemMixin",
 		"suspiciousmines.BrushItemMixin"
 	],
