@@ -20,12 +20,12 @@ import net.minecraft.world.gen.trunkplacer.AbstractTrunkPlacer;
 @Mixin(AbstractTrunkPlacer.class)
 public class AbstractTrunkPlacerMixin {
 	@Inject(method = "setDirtAt", at = @At("HEAD"), cancellable = true)
-	private static void securitycraft$onSetDirtAt(IWorldGenerationReader simulatedLevel, BlockPos pos, CallbackInfo callback) {
+	private static void securitycraft$onSetDirtAt(IWorldGenerationReader simulatedLevel, BlockPos pos, CallbackInfo ci) {
 		if (simulatedLevel instanceof IWorldReader) {
 			Block block = ((IWorldReader) simulatedLevel).getBlockState(pos).getBlock();
 
 			if (block instanceof BaseReinforcedBlock || block instanceof ReinforcedSnowyDirtBlock)
-				callback.cancel();
+				ci.cancel();
 		}
 	}
 }

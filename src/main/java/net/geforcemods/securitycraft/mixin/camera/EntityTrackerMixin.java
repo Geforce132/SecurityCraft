@@ -38,7 +38,7 @@ public abstract class EntityTrackerMixin {
 	 * shouldBeSent
 	 */
 	@Inject(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;min(II)I"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void securitycraft$onUpdatePlayer(ServerPlayerEntity player, CallbackInfo callback, Vector3d unused, int viewDistance) {
+	private void securitycraft$onUpdatePlayer(ServerPlayerEntity player, CallbackInfo ci, Vector3d unused, int viewDistance) {
 		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesAround(player.level, entity.blockPosition(), viewDistance).isEmpty())
 			securitycraft$shouldBeSent = true;
 		else if (PlayerUtils.isPlayerMountedOnCamera(player)) {

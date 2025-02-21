@@ -74,7 +74,7 @@ public abstract class ChunkManagerMixin {
 	 * camera or a stopped frame camera feed.
 	 */
 	@Inject(method = "move", at = @At(value = "TAIL"))
-	private void securitycraft$trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo callback) {
+	private void securitycraft$trackCameraLoadedChunks(ServerPlayerEntity player, CallbackInfo ci) {
 		World level = player.level;
 		ChunkPos playerPos = new ChunkPos(player.xChunk, player.zChunk);
 
@@ -140,8 +140,8 @@ public abstract class ChunkManagerMixin {
 	 * Makes sure that chunks in the view area of a frame do not get dropped when the player moves out of them
 	 */
 	@Inject(method = "updateChunkTracking", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onDropChunk(ServerPlayerEntity player, ChunkPos pos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load, CallbackInfo callbackInfo) {
+	private void securitycraft$onDropChunk(ServerPlayerEntity player, ChunkPos pos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load, CallbackInfo ci) {
 		if (wasLoaded && !load && !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level, be -> be.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
-			callbackInfo.cancel();
+			ci.cancel();
 	}
 }

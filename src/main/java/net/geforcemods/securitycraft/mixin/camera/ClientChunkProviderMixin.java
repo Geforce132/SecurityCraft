@@ -62,7 +62,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * cache
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onReplaceChunk(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> ci) {
+	private void securitycraft$onReplaceChunk(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> cir) {
 		int renderDistance = Minecraft.getInstance().options.renderDistance;
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
 		ChunkPos pos = new ChunkPos(x, z);
@@ -84,7 +84,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 			Chunk newChunk = CameraClientChunkCacheExtension.replaceWithPacketData(level, x, z, biomeContainer, new PacketBuffer(buffer.copy()), chunkTag, size, fullChunk);
 
 			if (!isInPlayerRange)
-				ci.setReturnValue(newChunk);
+				cir.setReturnValue(newChunk);
 		}
 	}
 
@@ -92,12 +92,12 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * If chunks in range of a camera storage need to be acquired, ask the camera storage about these chunks
 	 */
 	@Inject(method = "getChunk(IILnet/minecraft/world/chunk/ChunkStatus;Z)Lnet/minecraft/world/chunk/Chunk;", at = @At("TAIL"), cancellable = true)
-	private void securitycraft$onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean requireChunk, CallbackInfoReturnable<Chunk> callback) {
+	private void securitycraft$onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean requireChunk, CallbackInfoReturnable<Chunk> cir) {
 		if (!storage.inRange(x, z)) {
 			Chunk chunk = CameraClientChunkCacheExtension.getChunk(x, z);
 
 			if (chunk != null)
-				callback.setReturnValue(chunk);
+				cir.setReturnValue(chunk);
 		}
 	}
 }

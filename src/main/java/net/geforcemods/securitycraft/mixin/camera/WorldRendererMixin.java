@@ -35,16 +35,16 @@ public class WorldRendererMixin {
 	 * performant, and since that happens in setupRender too, the method is not exited early in this case.
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
-	public void securitycraft$onSetupRender(ActiveRenderInfo camera, ClippingHelper frustum, boolean hasCapturedFrustum, int frameCount, boolean isSpectator, CallbackInfo callbackInfo) {
+	public void securitycraft$onSetupRender(ActiveRenderInfo camera, ClippingHelper frustum, boolean hasCapturedFrustum, int frameCount, boolean isSpectator, CallbackInfo ci) {
 		if (CameraController.currentlyCapturedCamera != null && !SecurityCraft.isASodiumModInstalled)
-			callbackInfo.cancel();
+			ci.cancel();
 	}
 
 	/**
 	 * Updates the camera view area with the refreshed section render dispatcher when F3+A is pressed
 	 */
 	@Inject(method = "allChanged", at = @At("TAIL"))
-	private void securitycraft$onAllChanged(CallbackInfo callbackInfo) {
+	private void securitycraft$onAllChanged(CallbackInfo ci) {
 		CameraViewAreaExtension.allChanged(chunkRenderDispatcher);
 	}
 
