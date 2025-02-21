@@ -90,7 +90,7 @@ public abstract class ChunkMapMixin {
 	 * camera or a stopped frame camera feed.
 	 */
 	@Inject(method = "move", at = @At("TAIL"))
-	private void securitycraft$trackCameraLoadedChunks(ServerPlayer player, CallbackInfo callback) {
+	private void securitycraft$trackCameraLoadedChunks(ServerPlayer player, CallbackInfo ci) {
 		Level level = player.level();
 		ChunkPos playerPos = player.chunkPosition();
 
@@ -153,7 +153,7 @@ public abstract class ChunkMapMixin {
 	 * the camera feed in a frame.
 	 */
 	@Inject(method = "getPlayers", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getLastSectionPos()Lnet/minecraft/core/SectionPos;"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void securitycraft$sendChunksToCameras(ChunkPos pos, boolean boundaryOnly, CallbackInfoReturnable<List<ServerPlayer>> callbackInfo, Set<ServerPlayer> allPlayers, ImmutableList.Builder<ServerPlayer> playerList, Iterator<Player> playerIterator, ServerPlayer player) {
+	private void securitycraft$sendChunksToCameras(ChunkPos pos, boolean boundaryOnly, CallbackInfoReturnable<List<ServerPlayer>> cir, Set<ServerPlayer> allPlayers, ImmutableList.Builder<ServerPlayer> playerList, Iterator<Player> playerIterator, ServerPlayer player) {
 		SectionPos playerPos = player.getLastSectionPos();
 
 		if (!ChunkMap.isChunkInRange(pos.x, pos.z, playerPos.x(), playerPos.z(), viewDistance)) {
@@ -172,8 +172,8 @@ public abstract class ChunkMapMixin {
 	 * Makes sure that chunks in the view area of a frame do not get dropped when the player moves out of them
 	 */
 	@Inject(method = "updateChunkTracking", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onDropChunk(ServerPlayer player, ChunkPos pos, MutableObject<ClientboundLevelChunkWithLightPacket> packetCache, boolean wasLoaded, boolean load, CallbackInfo callbackInfo) {
+	private void securitycraft$onDropChunk(ServerPlayer player, ChunkPos pos, MutableObject<ClientboundLevelChunkWithLightPacket> packetCache, boolean wasLoaded, boolean load, CallbackInfo ci) {
 		if (wasLoaded && !load && !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), be -> be.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
-			callbackInfo.cancel();
+			ci.cancel();
 	}
 }

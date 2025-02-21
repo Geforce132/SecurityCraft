@@ -35,16 +35,16 @@ public class LevelRendererMixin {
 	 * performant, and since that happens in setupRender too, the method is not exited early in this case.
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
+	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
 		if (CameraController.currentlyCapturedCamera != null && !SecurityCraft.IS_A_SODIUM_MOD_INSTALLED)
-			callbackInfo.cancel();
+			ci.cancel();
 	}
 
 	/**
 	 * Updates the camera view area with the refreshed section render dispatcher when F3+A is pressed
 	 */
 	@Inject(method = "allChanged", at = @At(value = "INVOKE", target = "Ljava/util/concurrent/atomic/AtomicReference;set(Ljava/lang/Object;)V"))
-	private void securitycraft$onAllChanged(CallbackInfo callbackInfo) {
+	private void securitycraft$onAllChanged(CallbackInfo ci) {
 		CameraViewAreaExtension.allChanged(chunkRenderDispatcher, level);
 	}
 
@@ -53,13 +53,13 @@ public class LevelRendererMixin {
 	 * treated as compiled (e.g. for the purpose of entity rendering)
 	 */
 	@Inject(method = "isChunkCompiled", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> callbackInfo) {
+	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> ci) {
 		if (CameraController.currentlyCapturedCamera != null) {
 			SectionPos sectionPos = SectionPos.of(pos);
 			RenderChunk renderSection = CameraViewAreaExtension.rawFetch(sectionPos.x(), sectionPos.y(), sectionPos.z(), false);
 
 			if (renderSection != null && renderSection.compiled.get() != CompiledChunk.UNCOMPILED)
-				callbackInfo.setReturnValue(true);
+				ci.setReturnValue(true);
 		}
 	}
 

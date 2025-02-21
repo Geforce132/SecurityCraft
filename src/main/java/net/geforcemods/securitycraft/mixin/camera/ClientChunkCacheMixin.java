@@ -64,7 +64,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * cache
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onReplaceChunk(int x, int z, FriendlyByteBuf buffer, CompoundTag chunkTag, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> callbackInfo) {
+	private void securitycraft$onReplaceChunk(int x, int z, FriendlyByteBuf buffer, CompoundTag chunkTag, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> cir) {
 		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
 		ChunkPos pos = new ChunkPos(x, z);
@@ -86,7 +86,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 			LevelChunk newChunk = CameraClientChunkCacheExtension.replaceWithPacketData(level, x, z, new FriendlyByteBuf(buffer.copy()), chunkTag, tagOutputConsumer);
 
 			if (!isInPlayerRange)
-				callbackInfo.setReturnValue(newChunk);
+				cir.setReturnValue(newChunk);
 		}
 	}
 
@@ -94,12 +94,12 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * If the requested chunk is absent in the vanilla storage but present in the camera client chunk cache, return that chunk
 	 */
 	@Inject(method = "getChunk(IILnet/minecraft/world/level/chunk/ChunkStatus;Z)Lnet/minecraft/world/level/chunk/LevelChunk;", at = @At("TAIL"), cancellable = true)
-	private void securitycraft$onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean requireChunk, CallbackInfoReturnable<LevelChunk> callback) {
+	private void securitycraft$onGetChunk(int x, int z, ChunkStatus requiredStatus, boolean requireChunk, CallbackInfoReturnable<LevelChunk> cir) {
 		if (!storage.inRange(x, z)) {
 			LevelChunk chunk = CameraClientChunkCacheExtension.getChunk(x, z);
 
 			if (chunk != null)
-				callback.setReturnValue(chunk);
+				cir.setReturnValue(chunk);
 		}
 	}
 }
