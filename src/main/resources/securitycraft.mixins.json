@@ -6,10 +6,8 @@
 	"client": [
 		"camera.ClientChunkCacheMixin",
 		"camera.GameRendererMixin",
-		"camera.ISodiumWorldRendererAccessor",
 		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
-		"camera.SodiumRenderSectionManagerMixin",
 		"camera.ViewAreaMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
