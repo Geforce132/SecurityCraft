@@ -278,7 +278,7 @@ public class SCClientEventHandler {
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}
 					catch (Exception e) {
-						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this frame", be.getBlockPos());
+						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
 						e.printStackTrace();
 						erroringFrameCameraFeeds.add(cameraPos);
 					}
