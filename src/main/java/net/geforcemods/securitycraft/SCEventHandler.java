@@ -119,9 +119,9 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		SecurityCameraBlockEntity.resetForceLoadingCounter();
-
 		if (event.phase == Phase.END) {
+			SecurityCameraBlockEntity.resetForceLoadingCounter();
+
 			PLAYING_TUNES.forEach((player, pair) -> {
 				int ticksRemaining = pair.getLeft();
 
