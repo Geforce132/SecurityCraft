@@ -269,23 +269,21 @@ public class SCClientEventHandler {
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
+					profiler.popPush("securitycraft:bind_frame_target");
+					frameTarget.clear(true);
+					frameTarget.bindWrite(true);
+					profiler.pop();
 
 					try {
-						profiler.popPush("securitycraft:bind_frame_target");
-						frameTarget.clear(true);
-						frameTarget.bindWrite(true);
-						profiler.pop();
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}
 					catch (Exception e) {
-						SecurityCraft.LOGGER.error("Frame feed at " + be.getBlockPos() + " threw an exception while rendering (see below). Deactivating clientside rendering");
+						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this frame", be.getBlockPos());
 						e.printStackTrace();
 						erroringFrameCameraFeeds.add(cameraPos);
 					}
-					finally {
-						frameTarget.unbindWrite();
-					}
 
+					frameTarget.unbindWrite();
 					profiler.push("securitycraft:apply_frame_frustum");
 
 					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
