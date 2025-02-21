@@ -19,11 +19,11 @@
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
-		"cobweb.SwordAndShearsItemMixin",
-		"dispenser.IAbstractProjectileDispenseBehaviorAccessor",
-		"portal.PortalForcerMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.BubbleColumnBlockMixin",
+		"reinforced.IAbstractProjectileDispenseBehaviorAccessor",
+		"reinforced.PortalForcerMixin",
+		"reinforced.SwordAndShearsItemMixin",
 		"suspiciousmines.BrushItemMixin"
 	],
 	"minVersion": "0.8"

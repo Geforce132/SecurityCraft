@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
-import net.geforcemods.securitycraft.mixin.dispenser.IAbstractProjectileDispenseBehaviorAccessor;
+import net.geforcemods.securitycraft.mixin.reinforced.IAbstractProjectileDispenseBehaviorAccessor;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
