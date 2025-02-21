@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -194,6 +195,7 @@ public class SCClientEventHandler {
 
 		IProfiler profiler = mc.getProfiler();
 		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
+		List<GlobalPos> erroringFrameCameraFeeds = new ArrayList<>();
 		//+1 helps to reduce stuttering when many frames are active at once
 		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1;
 		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
@@ -306,12 +308,23 @@ public class SCClientEventHandler {
 
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
-					profiler.popPush("securitycraft:bind_frame_target");
-					frameTarget.clear(true);
-					frameTarget.bindWrite(true);
-					profiler.pop();
-					mc.gameRenderer.renderLevel(1.0F, 0L, new MatrixStack());
-					frameTarget.unbindWrite();
+
+					try {
+						profiler.popPush("securitycraft:bind_frame_target");
+						frameTarget.clear(true);
+						frameTarget.bindWrite(true);
+						profiler.pop();
+						mc.gameRenderer.renderLevel(1.0F, 0L, new MatrixStack());
+					}
+					catch (Exception e) {
+						SecurityCraft.LOGGER.error("Frame feed at " + be.getBlockPos() + " threw an exception while rendering (see below). Deactivating clientside rendering");
+						e.printStackTrace();
+						erroringFrameCameraFeeds.add(cameraPos);
+					}
+					finally {
+						frameTarget.unbindWrite();
+					}
+
 					profiler.push("securitycraft:apply_frame_frustum");
 
 					ClippingHelper frustum = null; //TODO put this in a separate CameraController method? Because also used below
@@ -366,6 +379,10 @@ public class SCClientEventHandler {
 		profiler.pop();
 		profiler.pop();
 		profiler.push("render");
+
+		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
+			CameraController.removeAllFrameLinks(erroringFeed);
+		}
 	}
 
 	private static boolean isFrameInFrustum(GlobalPos cameraPos, ClippingHelper beFrustum) {
