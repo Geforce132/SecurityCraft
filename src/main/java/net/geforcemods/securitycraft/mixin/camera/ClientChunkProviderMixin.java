@@ -40,7 +40,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Removes dropped chunks from the camera client chunk cache, unless the chunk is in range of a currently mounted camera or a
 	 * frame camera
 	 */
-	@Inject(method = "drop", at = @At(value = "HEAD"))
+	@Inject(method = "drop", at = @At("HEAD"))
 	private void securitycraft$onDrop(int x, int z, CallbackInfo ci) {
 		ChunkPos pos = new ChunkPos(x, z);
 		int renderDistance = Minecraft.getInstance().options.renderDistance;
@@ -61,7 +61,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 	 * Places clientside received chunks which are in range of a mounted camera or a frame camera into the camera client chunk
 	 * cache
 	 */
-	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "replaceWithPacketData", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onReplaceChunk(int x, int z, BiomeContainer biomeContainer, PacketBuffer buffer, CompoundNBT chunkTag, int size, boolean fullChunk, CallbackInfoReturnable<Chunk> ci) {
 		int renderDistance = Minecraft.getInstance().options.renderDistance;
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
