@@ -31,7 +31,7 @@ public class LevelRendererMixin {
 	 * When rendering the world in a frame, the necessary visible sections are captured manually within SecurityCraft. Vanilla
 	 * usually does the same process in setupRender, so that method is exited early when a frame feed is rendered.
 	 */
-	@Inject(method = "setupRender", at = @At(value = "HEAD"), cancellable = true)
+	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo callbackInfo) {
 		if (CameraController.currentlyCapturedCamera != null)
 			callbackInfo.cancel();
