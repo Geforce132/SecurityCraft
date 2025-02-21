@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.ViewArea;
 @Mixin(ViewArea.class)
 public class ViewAreaMixin {
 	@Inject(method = "setDirty", at = @At("HEAD"))
-	private void securitycraft$onSetChunkDirty(int cx, int cy, int cz, boolean reRenderOnMainThread, CallbackInfo callbackInfo) {
+	private void securitycraft$onSetChunkDirty(int cx, int cy, int cz, boolean reRenderOnMainThread, CallbackInfo ci) {
 		CameraViewAreaExtension.setDirty(cx, cy, cz, reRenderOnMainThread);
 	}
 }
