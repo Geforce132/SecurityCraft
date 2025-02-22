@@ -211,6 +211,7 @@ public class SCClientEventHandler {
 			return;
 
 		CameraController.lastFrameRendered = currentTime;
+		profiler.pop(); //out of "render"
 		profiler.push("gameRenderer");
 		profiler.push("securitycraft:frame_level");
 
@@ -335,6 +336,7 @@ public class SCClientEventHandler {
 
 		profiler.pop();
 		profiler.pop();
+		profiler.push("render");
 
 		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
 			CameraController.removeAllFrameLinks(erroringFeed);
