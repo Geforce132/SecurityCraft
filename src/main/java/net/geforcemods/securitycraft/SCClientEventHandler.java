@@ -308,6 +308,7 @@ public class SCClientEventHandler {
 
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
+					mc.levelRenderer.chunksToCompile.addAll(CameraController.getDirtyRenderChunks(feed));
 					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear(true);
 					frameTarget.bindWrite(true);

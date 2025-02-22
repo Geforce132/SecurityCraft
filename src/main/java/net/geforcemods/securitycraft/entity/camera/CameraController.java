@@ -354,6 +354,19 @@ public class CameraController {
 		return Math.min(frameSpecificRenderDistance, Math.min(ConfigHandler.CLIENT.frameFeedRenderDistance.get(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), Minecraft.getInstance().options.renderDistance)));
 	}
 
+	public static List<ChunkRender> getDirtyRenderChunks(CameraFeed feed) {
+		List<ChunkRender> dirtyRenderChunks = new ArrayList<>();
+
+		for (LocalRenderInformationContainer container : feed.sectionsInRange) {
+			ChunkRender renderChunk = container.chunk;
+
+			if (renderChunk.isDirty())
+				dirtyRenderChunks.add(renderChunk);
+		}
+
+		return dirtyRenderChunks;
+	}
+
 	public static float getMovementSpeed(SecurityCamera cam) {
 		SecurityCameraBlockEntity be = cam.getBlockEntity();
 
