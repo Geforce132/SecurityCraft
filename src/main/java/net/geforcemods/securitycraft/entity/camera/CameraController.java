@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.util.concurrent.AtomicDouble;
 
@@ -258,7 +261,7 @@ public class CameraController {
 		LocalRenderInformationContainer startingSection = Minecraft.getInstance().levelRenderer.new LocalRenderInformationContainer(CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), MathHelper.clamp(cameraSectionPos.y(), 0, 15), cameraSectionPos.z(), true), null, 0);
 		CameraFeed cameraFeed = new CameraFeed(new Framebuffer(resolution, resolution, true, Minecraft.ON_OSX), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 
-		cameraFeed.compilingSectionsQueue.add(startingSection.chunk);
+		cameraFeed.compilingSectionsQueue.add(Pair.of(startingSection.chunk, false));
 		cameraFeed.sectionsInRange.add(startingSection);
 		cameraFeed.sectionsInRangePositions.add(startingSection.chunk.getOrigin().asLong());
 		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(null), cameraFeed);
@@ -290,19 +293,23 @@ public class CameraController {
 	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
 		List<LocalRenderInformationContainer> visibleSections = feed.sectionsInRange;
-		List<ChunkRender> sectionQueue = feed.compilingSectionsQueue;
+		List<Pair<ChunkRender, Boolean>> sectionQueue = feed.compilingSectionsQueue;
 		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
-		Deque<ChunkRender> queueToCheck = new ArrayDeque<>(sectionQueue);
+		Deque<Pair<ChunkRender, Boolean>> queueToCheck = new ArrayDeque<>(sectionQueue);
 
 		sectionQueue.clear();
 
 		while (!queueToCheck.isEmpty()) {
-			ChunkRender currentSection = queueToCheck.poll();
+			ChunkRender currentSection = queueToCheck.poll().getLeft();
 			BlockPos origin = currentSection.getOrigin();
 			CompiledChunk currentCompiledSection = currentSection.getCompiledChunk();
 
-			if (currentCompiledSection == CompiledChunk.UNCOMPILED && currentSection.hasAllNeighbors()) { //TODO check that!
-				sectionQueue.add(currentSection);
+			if (!currentSection.hasAllNeighbors()) {
+				sectionQueue.add(Pair.of(currentSection, false));
+				continue;
+			}
+			else if (currentCompiledSection == CompiledChunk.UNCOMPILED) {
+				sectionQueue.add(Pair.of(currentSection, true));
 				continue;
 			}
 
@@ -323,7 +330,7 @@ public class CameraController {
 
 							visibleSections.add(neighbourChunkInfo); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
 							visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
-							sectionQueue.add(neighbourChunkInfo.chunk);
+							sectionQueue.add(Pair.of(neighbourChunkInfo.chunk, false));
 							FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
 						}
 					}
@@ -387,9 +394,9 @@ public class CameraController {
 		protected final List<LocalRenderInformationContainer> sectionsInRange;
 		protected final Set<Long> sectionsInRangePositions;
 		protected final List<LocalRenderInformationContainer> visibleSections;
-		protected final List<ChunkRender> compilingSectionsQueue;
+		protected final List<Pair<ChunkRender, Boolean>> compilingSectionsQueue;
 
-		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<LocalRenderInformationContainer> sectionsInRange, Set<Long> sectionsInRangePositions, List<LocalRenderInformationContainer> visibleSections, List<ChunkRender> compilingSectionsQueue) {
+		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<LocalRenderInformationContainer> sectionsInRange, Set<Long> sectionsInRangePositions, List<LocalRenderInformationContainer> visibleSections, List<Pair<ChunkRender, Boolean>> compilingSectionsQueue) {
 			this.renderTarget = renderTarget;
 			this.lastActiveTime = lastActiveTime;
 			this.sectionsInRange = sectionsInRange;
@@ -418,8 +425,8 @@ public class CameraController {
 			return visibleSections;
 		}
 
-		public List<ChunkRender> compilingSectionsQueue() {
-			return compilingSectionsQueue;
+		public List<ChunkRender> getSectionsToCompile() {
+			return compilingSectionsQueue.stream().filter(Pair::getRight).map(Pair::getLeft).collect(Collectors.toList());
 		}
 	}
 }

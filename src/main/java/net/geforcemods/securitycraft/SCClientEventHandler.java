@@ -301,7 +301,7 @@ public class SCClientEventHandler {
 					mc.levelRenderer.renderChunks.clear();
 					mc.levelRenderer.renderChunks.addAll(feed.visibleSections());
 					mc.levelRenderer.chunksToCompile.clear();
-					mc.levelRenderer.chunksToCompile.addAll(feed.compilingSectionsQueue());
+					mc.levelRenderer.chunksToCompile.addAll(feed.getSectionsToCompile());
 
 					//					if (SecurityCraft.IS_A_SODIUM_MOD_INSTALLED) //TODO sodium compat
 					//						SodiumCompat.clearRenderList();
