@@ -360,7 +360,7 @@ public class CameraController {
 		for (LocalRenderInformationContainer container : feed.sectionsInRange) {
 			ChunkRender renderChunk = container.chunk;
 
-			if (renderChunk.isDirty())
+			if (renderChunk.isDirty() && renderChunk.hasAllNeighbors())
 				dirtyRenderChunks.add(renderChunk);
 		}
 
