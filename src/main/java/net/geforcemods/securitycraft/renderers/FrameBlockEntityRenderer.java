@@ -155,10 +155,11 @@ public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntit
 			bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 0).endVertex();
 			//GL11.glEnable(GL32.GL_DEPTH_CLAMP);
 
-			runWithTransformation(
+			/*runWithTransformation(
 					pose,
 					tessellator::end
-			);
+			);*/
+			tessellator.end();
 			//GL11.glDisable(GL32.GL_DEPTH_CLAMP);  //ViewAreaRenderer#draw, still
 
 			GlStateManager._glUseProgram(0);; //MyRenderHelper drawFramebufferWithViewport
