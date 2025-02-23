@@ -1,9 +1,6 @@
 package net.geforcemods.securitycraft;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +10,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.opengl.GL20;
-
-import com.mojang.blaze3d.platform.GlStateManager;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IDisguisable;
@@ -37,7 +29,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -516,58 +507,6 @@ public class ClientHandler {
 	public static void registerParticleProviders(ParticleFactoryRegisterEvent event) {
 		Minecraft.getInstance().particleEngine.register(SCContent.FLOOR_TRAP_CLOUD.get(), FloorTrapCloudParticle.Provider::new);
 		Minecraft.getInstance().particleEngine.register(SCContent.INTERFACE_HIGHLIGHT.get(), InterfaceHighlightParticle.Provider::new);
-		loadShaders(); //TODO find a better place for this that is also called by the actual Render Thread
-	}
-
-	private static void loadShaders() {
-		int idVertexShader = compileShader(new ResourceLocation(SecurityCraft.MODID, "shaders/frame_draw_fb_in_area_vs.glsl"), GL20.GL_VERTEX_SHADER);
-		int idFragmentShader = compileShader(new ResourceLocation(SecurityCraft.MODID, "shaders/frame_draw_fb_in_area_fs.glsl"), GL20.GL_FRAGMENT_SHADER);
-
-		int idProgram = GL20.glCreateProgram();
-		GL20.glAttachShader(idProgram, idVertexShader);
-		GL20.glAttachShader(idProgram, idFragmentShader);
-		GL20.glLinkProgram(idProgram);
-
-		//check errors
-		int logLength = GL20.glGetProgrami(idProgram, GL20.GL_INFO_LOG_LENGTH);
-
-		if (logLength > 0)
-			System.err.println("LINKING ERROR"); //TODO better error?
-
-		//TODO: Figure out if this is required or unnecessary
-		GL20.glDeleteShader(idVertexShader);
-		GL20.glDeleteShader(idFragmentShader);
-
-		CameraController.shaderId = idProgram;
-	}
-
-	private static int compileShader(ResourceLocation resourceName, int shaderType) {
-		try {
-			InputStream inputStream = Minecraft.getInstance().getResourceManager().getResource(resourceName).getInputStream();
-			String shaderCode = IOUtils.toString(inputStream, Charset.defaultCharset());
-
-			int idShader = GlStateManager.glCreateShader(shaderType); //TODO use GlStateManager more
-
-			GlStateManager.glShaderSource(idShader, shaderCode);
-			GlStateManager.glCompileShader(idShader);
-
-			//Check compiling errors
-			int logLength = GlStateManager.glGetShaderi(idShader, GL20.GL_INFO_LOG_LENGTH);
-
-			if (logLength > 0) {
-				String errorLog = GlStateManager.glGetShaderInfoLog(idShader, logLength);
-
-				System.err.println("SHADER COMPILE ERROR"); //TODO
-				System.err.print(errorLog);
-			}
-
-			return idShader;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return -1;
 	}
 
 	private static void initTint() {
