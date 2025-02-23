@@ -38,35 +38,44 @@ public abstract class ChunkManagerMixin {
 	protected abstract void updateChunkTracking(ServerPlayerEntity player, ChunkPos chunkPos, IPacket<?>[] packetCache, boolean wasLoaded, boolean load);
 
 	/**
-	 * Fixes block updates not getting sent to chunks loaded by cameras by returning the camera's SectionPos to the distance
-	 * checking method
+	 * Fixes block updates not being sent to chunks loaded by cameras. For mounted cameras, this is being done by returning
+	 * the camera's SectionPos to the distance check. For frame cameras, it is checked whether any frame camera is close enough
+	 * to the given chunk pos, and if so, the chunk pos itself is returned to make the distance check always pass.
 	 */
 	@Redirect(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/ServerPlayerEntity;getLastSectionPos()Lnet/minecraft/util/math/SectionPos;"))
-	private static SectionPos securitycraft$getCameraSectionPos(ServerPlayerEntity player) {
+	private static SectionPos securitycraft$getCameraSectionPos(ServerPlayerEntity player, ChunkPos chunkPos) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			return SectionPos.of(player.getCamera());
+		else if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level, camera -> camera.shouldKeepChunkTracked(player, chunkPos.x, chunkPos.z)).isEmpty())
+			return SectionPos.of(chunkPos, 0);
 
 		return player.getLastSectionPos();
 	}
 
 	/**
-	 * Fixes entities not getting sent to chunks loaded by cameras by returning the camera's position to the distance checking
-	 * method
+	 * Fixes entities not being sent to chunks loaded by cameras. For mounted cameras, this is being done by returning
+	 * the camera's SectionPos to the distance check. For frame cameras, it is checked whether any frame camera is close enough
+	 * to the given chunk pos, and if so, the chunk pos itself is returned to make the distance check always pass.
 	 */
 	@ModifyArgs(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;floor(D)I", ordinal = 0))
 	private static void securitycraft$modifyPlayerX(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			args.set(0, player.getCamera().getX() / 16.0D);
+		else if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level, camera -> camera.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
+			args.set(0, (double) pos.x);
 	}
 
 	/**
-	 * Fixes entities not getting sent to chunks loaded by cameras by returning the camera's position to the distance checking
-	 * method
+	 * Fixes entities not being sent to chunks loaded by cameras. For mounted cameras, this is being done by returning
+	 * the camera's SectionPos to the distance check. For frame cameras, it is checked whether any frame camera is close enough
+	 * to the given chunk pos, and if so, the chunk pos itself is returned to make the distance check always pass.
 	 */
 	@ModifyArgs(method = "checkerboardDistance(Lnet/minecraft/util/math/ChunkPos;Lnet/minecraft/entity/player/ServerPlayerEntity;Z)I", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;floor(D)I", ordinal = 1))
 	private static void securitycraft$modifyPlayerZ(Args args, ChunkPos pos, ServerPlayerEntity player, boolean useSectionPos) {
 		if (PlayerUtils.isPlayerMountedOnCamera(player))
 			args.set(0, player.getCamera().getZ() / 16.0D);
+		else if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level, camera -> camera.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
+			args.set(0, (double) pos.z);
 	}
 
 	/**
