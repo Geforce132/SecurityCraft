@@ -6,6 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
@@ -69,5 +70,15 @@ public class WorldRendererMixin {
 			return CameraController.getFrameFeedViewDistance(null) * 16;
 
 		return original;
+	}
+
+	/**
+	 * Prevents entity outlines from rendering in a frame feed, which fixes Minecraft unbinding the feed's frame buffer when
+	 * setting up the appropriate entity outline renderer
+	 */
+	@Inject(method = "shouldShowEntityOutlines", at = @At("HEAD"), cancellable = true)
+	private void preventEntityOutlines(CallbackInfoReturnable<Boolean> cir) {
+		if (CameraController.currentlyCapturedCamera != null)
+			cir.setReturnValue(false);
 	}
 }

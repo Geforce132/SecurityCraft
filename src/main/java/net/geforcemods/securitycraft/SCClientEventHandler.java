@@ -43,8 +43,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.WorldRenderer.LocalRenderInformationContainer;
 import net.minecraft.client.renderer.culling.ClippingHelper;
+import net.minecraft.client.settings.GraphicsFanciness;
 import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.client.shader.ShaderGroup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Pose;
@@ -238,6 +240,10 @@ public class SCClientEventHandler {
 		int oldWidth = window.getWidth();
 		int oldHeight = window.getHeight();
 		List<WorldRenderer.LocalRenderInformationContainer> oldVisibleSections = new ObjectArrayList<>(mc.levelRenderer.renderChunks);
+		GraphicsFanciness oldGraphicsMode = mc.options.graphicsMode;
+		Framebuffer oldItemEntityTarget = mc.levelRenderer.getItemEntityTarget();
+		Framebuffer oldWeatherTarget = mc.levelRenderer.getWeatherTarget();
+		ShaderGroup oldTransparencyChain = mc.levelRenderer.transparencyChain;
 		int newFrameFeedViewDistance = CameraController.getFrameFeedViewDistance(null);
 		double oldX = player.getX();
 		double oldXO = player.xOld;
@@ -269,6 +275,13 @@ public class SCClientEventHandler {
 		mc.gameRenderer.renderBlockOutline = false;
 		mc.gameRenderer.renderHand = false;
 		mc.gameRenderer.panoramicMode = true;
+
+		if (mc.options.graphicsMode.getId() > GraphicsFanciness.FANCY.getId())
+			mc.options.graphicsMode = GraphicsFanciness.FANCY;
+
+		mc.levelRenderer.itemEntityTarget = null;
+		mc.levelRenderer.weatherTarget = null;
+		mc.levelRenderer.transparencyChain = null;
 		window.framebufferWidth = 100;
 		window.framebufferHeight = 100; //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(PointOfView.FIRST_PERSON);
@@ -364,9 +377,13 @@ public class SCClientEventHandler {
 		camera.eyeHeight = oldEyeHeight;
 		camera.eyeHeightOld = oldEyeHeightO;
 		mc.options.setCameraType(oldCameraType);
+		mc.options.graphicsMode = oldGraphicsMode;
 		mc.gameRenderer.renderBlockOutline = oldRenderBlockOutline;
 		mc.levelRenderer.renderChunks.clear();
 		mc.levelRenderer.renderChunks.addAll(oldVisibleSections);
+		mc.levelRenderer.itemEntityTarget = oldItemEntityTarget;
+		mc.levelRenderer.weatherTarget = oldWeatherTarget;
+		mc.levelRenderer.transparencyChain = oldTransparencyChain;
 		window.framebufferWidth = oldWidth;
 		window.framebufferHeight = oldHeight;
 		mc.gameRenderer.renderHand = oldRenderHand;
