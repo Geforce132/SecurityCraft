@@ -121,7 +121,7 @@ public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntit
 			Matrix4f lastPose = pose.last().pose();
 
 			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
-			bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 0).endVertex(); //TODO These vertices are the most prone-to-break point
+			bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 0).endVertex();
 			bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 1).endVertex();
 			bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 1).endVertex();
 			bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 0).endVertex();

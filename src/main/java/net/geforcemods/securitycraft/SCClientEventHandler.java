@@ -261,7 +261,6 @@ public class SCClientEventHandler {
 		boolean oldRenderBlockOutline = mc.gameRenderer.renderBlockOutline;
 		boolean oldPanoramicMode = mc.gameRenderer.panoramicMode;
 		PointOfView oldCameraType = mc.options.getCameraType();
-		//TODO: marker clone
 		ArmorStandEntity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		ClippingHelper playerFrustum = getCurrentFrustum(camera); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
@@ -308,10 +307,6 @@ public class SCClientEventHandler {
 					mc.levelRenderer.renderChunks.addAll(feed.visibleSections());
 					mc.levelRenderer.chunksToCompile.clear();
 					mc.levelRenderer.chunksToCompile.addAll(feed.getSectionsToCompile());
-
-					//					if (SecurityCraft.IS_A_SODIUM_MOD_INSTALLED) //TODO sodium compat
-					//						SodiumCompat.clearRenderList();
-
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
 					mc.levelRenderer.chunksToCompile.addAll(CameraController.getDirtyRenderChunks(feed));
