@@ -263,14 +263,7 @@ public class SCClientEventHandler {
 		PointOfView oldCameraType = mc.options.getCameraType();
 		//TODO: marker clone
 		ArmorStandEntity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
-		ClippingHelper playerFrustum = null; //Saved once before the loop, because the frustum changes depending on which camera is viewed
-
-		if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
-			Vector3d activeRenderInfoPos = camera.getPosition();
-
-			playerFrustum = new ClippingHelper(CameraController.lastUsedRenderMatrix, CameraController.lastUsedProjectionMatrix); //TODO prepare
-			playerFrustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
-		}
+		ClippingHelper playerFrustum = getCurrentFrustum(camera); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
 		mc.gameRenderer.renderBlockOutline = false;
 		mc.gameRenderer.renderHand = false;
@@ -339,14 +332,7 @@ public class SCClientEventHandler {
 					frameTarget.unbindWrite();
 					profiler.push("securitycraft:apply_frame_frustum");
 
-					ClippingHelper frustum = null; //TODO put this in a separate CameraController method? Because also used below
-
-					if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
-						Vector3d activeRenderInfoPos = camera.getPosition();
-
-						frustum = new ClippingHelper(CameraController.lastUsedRenderMatrix, CameraController.lastUsedProjectionMatrix);
-						frustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
-					}
+					ClippingHelper frustum = getCurrentFrustum(camera);
 
 					if (be.shouldRotate() || feed.visibleSections().isEmpty() || CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.contains(cameraPos)) {
 						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.remove(cameraPos);
@@ -398,6 +384,19 @@ public class SCClientEventHandler {
 		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
 			CameraController.removeAllFrameLinks(erroringFeed);
 		}
+	}
+
+	private static ClippingHelper getCurrentFrustum(ActiveRenderInfo camera) {
+		ClippingHelper frustum = null;
+
+		if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
+			Vector3d activeRenderInfoPos = camera.getPosition();
+
+			frustum = new ClippingHelper(CameraController.lastUsedRenderMatrix, CameraController.lastUsedProjectionMatrix);
+			frustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
+		}
+
+		return frustum;
 	}
 
 	private static boolean isFrameInFrustum(GlobalPos cameraPos, ClippingHelper beFrustum) {
