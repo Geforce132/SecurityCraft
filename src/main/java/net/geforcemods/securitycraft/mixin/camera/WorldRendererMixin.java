@@ -55,7 +55,7 @@ public class WorldRendererMixin {
 	 */
 	@Inject(method = "renderLevel", at = @At("HEAD"))
 	private void securitycraft$captureMainLevelRenderMatrix(MatrixStack renderMatrix, float partialTick, long nanos, boolean renderBlockOutline, ActiveRenderInfo renderInfo, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci) {
-		CameraController.lastUsedRenderMatrix = renderMatrix.last().pose();
+		CameraController.lastUsedRenderMatrix = new Matrix4f(renderMatrix.last().pose());
 		CameraController.lastUsedProjectionMatrix = projectionMatrix;
 	}
 
