@@ -30,6 +30,10 @@ public class OwnableBlock extends BaseEntityBlock {
 		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
 	}
 
+	public float defaultDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return super.getDestroyProgress(state, player, level, pos);
+	}
+
 	@Override
 	public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
 		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
