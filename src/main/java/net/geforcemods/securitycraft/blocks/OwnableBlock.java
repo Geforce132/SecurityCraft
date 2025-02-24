@@ -28,6 +28,10 @@ public class OwnableBlock extends BaseEntityBlock {
 		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
 	}
 
+	public float defaultDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return super.getDestroyProgress(state, player, level, pos);
+	}
+
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		if (placer instanceof Player player)
