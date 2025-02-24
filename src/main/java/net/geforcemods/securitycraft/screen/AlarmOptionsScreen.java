@@ -17,6 +17,7 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -106,7 +107,7 @@ public class AlarmOptionsScreen extends Screen {
 	public void setSoundLength(int newSoundLength, boolean updateTimeEditBox) {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
-		int soundLength = Math.max(1, Math.min(newSoundLength, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH));
+		int soundLength = MathHelper.clamp(newSoundLength, 1, AlarmBlockEntity.MAXIMUM_ALARM_SOUND_LENGTH);
 
 		if (updateTimeEditBox)
 			soundLengthEditBox.setValue(String.format("%02d:%02d", soundLength / 60, soundLength % 60));

@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -30,22 +31,24 @@ public abstract class EntityTrackerMixin {
 	@Final
 	private Entity entity;
 	@Unique
-	private boolean shouldBeSent = false;
+	private boolean securitycraft$shouldBeSent = false;
 
 	/**
 	 * Checks if this entity is in range of a camera that is currently being viewed, and stores the result in the field
 	 * shouldBeSent
 	 */
 	@Inject(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/lang/Math;min(II)I"), locals = LocalCapture.CAPTURE_FAILSOFT)
-	private void securitycraft$onUpdatePlayer(ServerPlayerEntity player, CallbackInfo callback, Vector3d unused, int viewDistance) {
-		if (PlayerUtils.isPlayerMountedOnCamera(player)) {
+	private void securitycraft$onUpdatePlayer(ServerPlayerEntity player, CallbackInfo ci, Vector3d unused, int viewDistance) {
+		if (!BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesAround(player.level, entity.blockPosition(), viewDistance).isEmpty())
+			securitycraft$shouldBeSent = true;
+		else if (PlayerUtils.isPlayerMountedOnCamera(player)) {
 			if (entity == player.camera) //If the player is mounted to a camera entity, that entity always needs to be sent to the client regardless of distance
-				shouldBeSent = true;
+				securitycraft$shouldBeSent = true;
 
 			Vector3d relativePosToCamera = player.getCamera().position().subtract(serverEntity.sentPos());
 
 			if (relativePosToCamera.x >= -viewDistance && relativePosToCamera.x <= viewDistance && relativePosToCamera.z >= -viewDistance && relativePosToCamera.z <= viewDistance)
-				shouldBeSent = true;
+				securitycraft$shouldBeSent = true;
 		}
 	}
 
@@ -54,9 +57,11 @@ public abstract class EntityTrackerMixin {
 	 */
 	@ModifyVariable(method = "updatePlayer(Lnet/minecraft/entity/player/ServerPlayerEntity;)V", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE))
 	private boolean securitycraft$modifyFlag(boolean original) {
-		boolean originalShouldBeSent = shouldBeSent;
+		if (securitycraft$shouldBeSent) {
+			this.securitycraft$shouldBeSent = false;
+			return true;
+		}
 
-		shouldBeSent = false;
-		return original || originalShouldBeSent;
+		return original;
 	}
 }

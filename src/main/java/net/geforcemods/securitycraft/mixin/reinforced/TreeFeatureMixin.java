@@ -16,8 +16,8 @@ import net.minecraft.world.gen.feature.TreeFeature;
 @Mixin(TreeFeature.class)
 public class TreeFeatureMixin {
 	@Inject(method = "isGrassOrDirtOrFarmland", at = @At("HEAD"), cancellable = true)
-	private static void securitycraft$onCheckGrassOrDirt(IWorldGenerationBaseReader level, BlockPos pos, CallbackInfoReturnable<Boolean> callback) {
+	private static void securitycraft$onCheckGrassOrDirt(IWorldGenerationBaseReader level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
 		if (level.isStateAtPosition(pos, state -> state.is(SCTags.Blocks.REINFORCED_DIRT)))
-			callback.setReturnValue(true);
+			cir.setReturnValue(true);
 	}
 }
