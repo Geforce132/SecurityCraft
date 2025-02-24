@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.network.client.InteractWithFrame;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -60,6 +61,11 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public FrameBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(this::defaultDestroyProgress, state, player, level, pos, true);
 	}
 
 	@Override
