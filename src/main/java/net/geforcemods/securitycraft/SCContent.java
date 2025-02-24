@@ -2487,7 +2487,7 @@ public class SCContent {
 	}
 
 	private static <T extends AbstractSignBlock> RegistryObject<T> secretSign(String id, BiFunction<AbstractBlock.Properties, WoodType, T> signConstructor, Block baseSign) {
-		return registerBlock(id, p -> signConstructor.apply(p, ((AbstractSignBlock) baseSign).type()), reinforcedCopy(baseSign));
+		return registerBlock(id, p -> signConstructor.apply(p, ((AbstractSignBlock) baseSign).type), reinforcedCopy(baseSign));
 	}
 
 	private static <B extends Block> RegistryObject<B> registerBlock(String name, Function<AbstractBlock.Properties, ? extends B> constructor, AbstractBlock.Properties properties) {
