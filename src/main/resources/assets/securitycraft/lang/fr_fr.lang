@@ -433,7 +433,6 @@ messages.securitycraft:codebreaker.failed=La tentative de la chute de code a éc
 messages.securitycraft:codebreaker.owned=Vous êtes en train d'essayer de casser le code d'un bloc qui vous appartient. Si vous avez oublié le code d'accès, utilisez plutôt le modificateur de code universel.
 messages.securitycraft:codebreakerDisabled=Le décrypteur de code a été désactivé via le fichier de configuration.
 messages.securitycraft:formattedCoordinates=X : %1$s Y : %2$s Z : %3$s
-messages.securitycraft:frame.rightclick=La vue d'un moniteur de caméra dans un cadre n'est pas actuellement possible parce que LookingGlass n'a pas été porté à n'importe quelle version plus récente que 1.7.10. Dans une future mise à jour, cette fonction pourrait revenir sans dépendre d'aucun mod de type API comme LookingGlass, mais on ne sait pas exactement quand.
 messages.securitycraft:invScan.notConnected=Pas de connexions à un autre bloc de scanner d'inventaire !
 messages.securitycraft:keycardReader.cantUse=Vous ne pouvez pas utiliser cette carte d'accès. 
 messages.securitycraft:keycardReader.differentOwner=Le lecteur de carte d'accès auquel cette carte était liée appartient à un joueur différent de celui que vous essayez d'utiliser !

@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
@@ -91,6 +92,7 @@ import net.geforcemods.securitycraft.misc.PartialNBTIngredient;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
+import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
@@ -125,6 +127,7 @@ import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
+import net.geforcemods.securitycraft.network.server.SyncFrame;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
@@ -535,6 +538,7 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(ReinforcedDispenserBlockEntity.class, new ResourceLocation("securitycraft:reinforced_dispenser"));
 		GameRegistry.registerTileEntity(ReinforcedDropperBlockEntity.class, new ResourceLocation("securitycraft:reinforced_dropper"));
 		GameRegistry.registerTileEntity(SecureRedstoneInterfaceBlockEntity.class, new ResourceLocation("securitycraft:secure_redstone_interface"));
+		GameRegistry.registerTileEntity(FrameBlockEntity.class, new ResourceLocation("securitycraft:frame"));
 	}
 
 	@SubscribeEvent
@@ -617,6 +621,8 @@ public class RegistrationHandler {
 		network.registerMessage(SetDefaultCameraViewingDirection.Handler.class, SetDefaultCameraViewingDirection.class, 57, Side.SERVER);
 		network.registerMessage(SyncSecureRedstoneInterface.Handler.class, SyncSecureRedstoneInterface.class, 58, Side.SERVER);
 		network.registerMessage(SpawnInterfaceHighlightParticle.Handler.class, SpawnInterfaceHighlightParticle.class, 59, Side.CLIENT);
+		network.registerMessage(InteractWithFrame.Handler.class, InteractWithFrame.class, 60, Side.CLIENT);
+		network.registerMessage(SyncFrame.Handler.class, SyncFrame.class, 61, Side.SERVER);
 	}
 
 	@SubscribeEvent

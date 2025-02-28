@@ -20,7 +20,7 @@ public class MinecraftMixin {
 	public EntityPlayerSP player;
 
 	/**
-	 * Fixes players being able to change to third person when viewing a camera
+	 * Fixes players being able to change to third person while being mounted to a camera
 	 */
 	@ModifyConstant(method = "processKeyBinds", constant = @Constant(intValue = 2))
 	private int securitycraft$resetView(int i) {
@@ -31,8 +31,8 @@ public class MinecraftMixin {
 	}
 
 	/**
-	 * Fixes players being able to move mounted entities while viewing a camera, by updating keybinds used by the camera after
-	 * they get set, but before they get used in World#updateEntities
+	 * Fixes players being able to move mounted entities while being mounted to a camera, by updating keybinds used by the camera
+	 * after they get set, but before they get used in World#updateEntities
 	 */
 	@Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;runTickKeyboard()V", shift = At.Shift.AFTER))
 	private void securitycraft$updateCameraKeyBindings(CallbackInfo callback) {

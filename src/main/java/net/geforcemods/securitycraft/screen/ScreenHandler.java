@@ -3,9 +3,11 @@ package net.geforcemods.securitycraft.screen;
 import java.util.function.BiFunction;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeycardReaderBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
@@ -33,10 +35,12 @@ import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -81,9 +85,16 @@ public class ScreenHandler implements IGuiHandler {
 			(player, te) -> PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor).isEmpty() ? null : new GenericMenu(te),
 			(player, te) -> {
 				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor);
+				NBTTagCompound stackTag = heldStack.getTagCompound();
 
-				return heldStack.isEmpty() ? null : new CameraMonitorScreen(player.inventory, (CameraMonitorItem) heldStack.getItem(), heldStack.getTagCompound());
+				return heldStack.isEmpty() ? null : new CameraSelectScreen(CameraMonitorItem.getCameraPositions(stackTag), camID -> CameraMonitorItem.removeCameraOnClient(camID, stackTag), pos -> SecurityCraft.network.sendToServer(new MountCamera(pos.pos())), false, false);
 			}),
+		FRAME(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> frame(player, (FrameBlockEntity) te, false)),
+		FRAME_READ_ONLY(
+			(player, te) -> new GenericMenu(te),
+			(player, te) -> frame(player, (FrameBlockEntity) te, true)),
 		BRIEFCASE_CODE_SETUP(
 			(player, te) -> PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase).isEmpty() ? null : new GenericMenu(te),
 			(player, te) -> {
@@ -205,6 +216,20 @@ public class ScreenHandler implements IGuiHandler {
 			this.server = server;
 			this.client = client;
 		}
+
+		public BiFunction<EntityPlayer, TileEntity, Object> getServer() {
+			return server;
+		}
+
+		public BiFunction<EntityPlayer, TileEntity, Object> getClient() {
+			return client;
+		}
+	}
+
+	private static CameraSelectScreen frame(EntityPlayer player, FrameBlockEntity be, boolean readOnly) {
+		ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor);
+
+		return heldStack.isEmpty() ? null : new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null);
 	}
 
 	@Override

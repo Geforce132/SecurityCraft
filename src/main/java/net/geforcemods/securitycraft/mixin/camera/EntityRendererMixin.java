@@ -8,10 +8,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.minecraft.client.Minecraft;
@@ -32,7 +34,7 @@ public class EntityRendererMixin {
 	Minecraft mc;
 
 	/**
-	 * Makes sure the camera zooming works, because the fov is only updated when the camera entity is the player itself
+	 * Makes sure camera zooming works, because the fov is only updated when the camera entity is the player itself
 	 */
 	@ModifyConstant(method = "updateFovModifierHand", constant = @Constant(floatValue = 1.0F))
 	private float securitycraft$modifyInitialFValue(float f) {
@@ -68,5 +70,13 @@ public class EntityRendererMixin {
 				GlStateManager.disableBlend();
 			}
 		}
+	}
+
+	/**
+	 * Makes sure distortion effects are not rendered in camera feeds
+	 */
+	@ModifyVariable(method = "setupCameraTransform", at = @At(value = "JUMP", opcode = Opcodes.IFGT, shift = At.Shift.BEFORE))
+	private float securitycraft$disableFeedDistortion(float original) {
+		return CameraController.currentlyCapturedCamera != null ? 0.0F : original;
 	}
 }

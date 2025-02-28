@@ -136,6 +136,15 @@ public class Utils {
 			return uuidFromIntArray(array);
 	}
 
+	public static boolean isInViewDistance(int centerX, int centerZ, int viewDistance, int x, int z) {
+		int xDistance = Math.max(0, Math.abs(x - centerX) - 1);
+		int zDistance = Math.max(0, Math.abs(z - centerZ) - 1);
+		int squareDistance = xDistance * xDistance + zDistance * zDistance;
+		int squareViewDistance = viewDistance * viewDistance;
+
+		return squareDistance < squareViewDistance;
+	}
+
 	private static UUID uuidFromIntArray(int[] array) {
 		return new UUID((long) array[0] << 32 | array[1] & 4294967295L, (long) array[2] << 32 | array[3] & 4294967295L);
 	}

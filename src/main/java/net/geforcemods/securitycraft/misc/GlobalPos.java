@@ -1,25 +1,23 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
-/**
- * Simple wrapper class for LookingGlass camera views that SecurityCraft uses. Provides easy access to the view's coordinates
- * and a formatted string for storage in HashMaps, as well as a few helpful methods.
- *
- * @version 1.0.0
- * @author Geforce
- */
-public class CameraView {
+public class GlobalPos {
 	private final BlockPos pos;
 	private final int dimension;
 
-	public CameraView(int x, int y, int z, int dim) {
-		this(new BlockPos(x, y, z), dim);
-	}
-
-	public CameraView(BlockPos pos, int dim) {
+	private GlobalPos(BlockPos pos, int dim) {
 		this.pos = pos;
 		dimension = dim;
+	}
+
+	public static GlobalPos of(int x, int y, int z, int dim) {
+		return new GlobalPos(new BlockPos(x, y, z), dim);
+	}
+
+	public static GlobalPos of(int dim, BlockPos pos) {
+		return new GlobalPos(pos, dim);
 	}
 
 	/**
@@ -34,21 +32,33 @@ public class CameraView {
 		int zPos = Integer.parseInt(coordinates[2]);
 		int dim = (coordinates.length == 4 ? Integer.parseInt(coordinates[3]) : 0);
 
-		return (pos.getX() == xPos && pos.getY() == yPos && pos.getZ() == zPos && getDimension() == dim);
+		return (pos.getX() == xPos && pos.getY() == yPos && pos.getZ() == zPos && dimension() == dim);
 	}
 
 	/**
 	 * @return A formatted string of this view's location. Format: "*X* *Y* *Z* *dimension ID*"
 	 */
 	public String toNBTString() {
-		return pos.getX() + " " + pos.getY() + " " + pos.getZ() + " " + getDimension();
+		return pos.getX() + " " + pos.getY() + " " + pos.getZ() + " " + dimension();
 	}
 
-	public BlockPos getPos() {
+	public BlockPos pos() {
 		return pos;
 	}
 
-	public int getDimension() {
+	public int dimension() {
 		return dimension;
+	}
+
+	public NBTTagCompound save() {
+		NBTTagCompound tag = new NBTTagCompound();
+
+		tag.setLong("pos", pos.toLong());
+		tag.setInteger("dimension", dimension);
+		return tag;
+	}
+
+	public static GlobalPos load(NBTTagCompound tag) {
+		return new GlobalPos(BlockPos.fromLong(tag.getLong("pos")), tag.getInteger("dimension"));
 	}
 }

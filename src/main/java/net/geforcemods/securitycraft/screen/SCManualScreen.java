@@ -219,6 +219,16 @@ public class SCManualScreen extends GuiScreen {
 	}
 
 	@Override
+	public void updateScreen() {
+		super.updateScreen();
+		pageIcon.tick();
+
+		for (IngredientDisplay display : displays) {
+			display.tick();
+		}
+	}
+
+	@Override
 	public void onGuiClosed() {
 		super.onGuiClosed();
 		lastPage = currentPage;

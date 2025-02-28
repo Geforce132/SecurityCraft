@@ -227,6 +227,30 @@ public class ConfigHandler {
 	})
 	public static boolean alwaysDrop = true;
 
+	@Name("Frame Feed Render Distance")
+	@RangeInt(min = 2, max = 32)
+	@Comment("Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.")
+	public static int frameFeedRenderDistance = 16;
+
+	@Name("Frame Feed Resolution")
+	@RangeInt(min = 1, max = 16384)
+	@Comment("Set the resolution of the Frame camera feed. This is always a square resolution. Smaller values will be less detailed, higher values may lead to diminishing returns.")
+	public static int frameFeedResolution = 512;
+
+	@Name("Frame Feed FPS Limit")
+	@RangeInt(min = 10, max = 260)
+	@Comment("The maximum amount of frames per second the Frame camera feed renders at. Higher values will lead to worse performance.")
+	public static int frameFeedFpsLimit = 30;
+
+	@Name("Frame Feed Viewing Enabled")
+	@Comment("Set this to false to disable the feature that camera feeds can be viewed in frames. While this feature is generally stable, it may also impact server performance due to loading chunks within all active frame cameras' views.")
+	public static boolean frameFeedViewingEnabled = true;
+
+	@Name("Frame Feed View Distance")
+	@RangeInt(min = 2, max = 32)
+	@Comment("Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.")
+	public static int frameFeedViewDistance = 16;
+
 	@Name("Allow Breaking Non-owned Blocks")
 	@Comment({
 		"Whether players who are not the owner of a block can still destroy it.",

@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadBlockEntity;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -210,8 +211,16 @@ public class KeypadBlock extends DisguisableBlock {
 
 		@Override
 		public boolean protect(EntityPlayer player, World world, BlockPos pos) {
-			Owner owner = ((IOwnable) world.getTileEntity(pos)).getOwner();
+			FrameBlockEntity be = (FrameBlockEntity) world.getTileEntity(pos);
 
+			if (be.getCurrentCamera() != null) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.cannotConvert"), TextFormatting.RED);
+				return false;
+			}
+
+			Owner owner = be.getOwner();
+
+			be.dropAllModules();
 			world.setBlockState(pos, SCContent.keypad.getDefaultState().withProperty(KeypadBlock.FACING, world.getBlockState(pos).getValue(FrameBlock.FACING)).withProperty(KeypadBlock.POWERED, false));
 			((IOwnable) world.getTileEntity(pos)).setOwner(owner.getUUID(), owner.getName());
 			return true;

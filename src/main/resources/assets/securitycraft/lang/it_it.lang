@@ -435,7 +435,6 @@ messages.securitycraft:cameraMonitor.unbound=Telecamera scollegata a %s dal moni
 messages.securitycraft:codebreaker.failed=Tentativo di decrittazione fallito, per favore ritenta.
 messages.securitycraft:codebreaker.owned=Stai provando a carpire il codice di qualcosa che possiedi. Se hai dimenticato il codice, usa il cambia-codici universale.
 messages.securitycraft:codebreakerDisabled=Il decrittatore è stato disabilitato dal file di configurazione.
-messages.securitycraft:frame.rightclick=Clicca col tasto destro tenendo un monitor collegato per vederlo.
 messages.securitycraft:invScan.notConnected=Questo scanner non è connesso a un altro!
 messages.securitycraft:keycardReader.cantUse=Non puoi usare questa Tessera.
 messages.securitycraft:keycardReader.differentOwner=Il lettore a cui questa tessera era collegata appartiene a un giocatore diverso rispetto a quello che stai cercando di usare!

@@ -76,13 +76,14 @@ public class ItemContainer implements IInventory {
 	public ItemStack decrStackSize(int index, int size) {
 		ItemStack stack = getStackInSlot(index);
 
-		if (!stack.isEmpty())
+		if (!stack.isEmpty()) {
 			if (stack.getCount() > size) {
 				stack = stack.splitStack(size);
 				markDirty();
 			}
 			else
 				setInventorySlotContents(index, ItemStack.EMPTY);
+		}
 
 		return stack;
 	}

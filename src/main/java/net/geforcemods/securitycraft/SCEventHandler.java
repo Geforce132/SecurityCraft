@@ -35,7 +35,9 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
+import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -65,7 +67,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -114,7 +115,6 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 
@@ -134,7 +134,9 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerTick(ServerTickEvent event) {
-		if (event.phase == Phase.END) {
+		if (event.phase == Phase.START)
+			SecurityCameraBlockEntity.resetForceLoadingCounter();
+		else {
 			PLAYING_TUNES.forEach((player, pair) -> {
 				int ticksRemaining = pair.getLeft();
 
@@ -193,30 +195,20 @@ public class SCEventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
-		EntityPlayerMP player = (EntityPlayerMP) event.player;
-
-		if (player.getSpectatingEntity() instanceof SecurityCamera) {
-			SecurityCamera cam = (SecurityCamera) player.getSpectatingEntity();
-			TileEntity tile = player.world.getTileEntity(new BlockPos(cam.posX, cam.posY, cam.posZ));
-
-			if (player.getActivePotionEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
-				player.removePotionEffect(MobEffects.NIGHT_VISION);
-
-			if (tile instanceof SecurityCameraBlockEntity)
-				((SecurityCameraBlockEntity) tile).stopViewing();
-
-			cam.setDead();
-		}
-	}
-
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLevelLoad(WorldEvent.Load event) {
 		World world = event.getWorld();
 
-		if (world instanceof WorldServer && world.provider.getDimension() == 0)
+		if (world instanceof WorldServer && world.provider.getDimension() == 0) {
 			SaltData.refreshLevel(((WorldServer) world));
+			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
+		}
+		else if (world.isRemote) {
+			CameraController.FRAME_LINKS.clear();
+			CameraController.FRAME_CAMERA_FEEDS.clear();
+			CameraClientChunkCacheExtension.clear();
+			CameraViewAreaExtension.clear();
+		}
 	}
 
 	@SubscribeEvent

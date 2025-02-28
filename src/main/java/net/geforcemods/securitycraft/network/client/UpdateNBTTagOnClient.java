@@ -17,9 +17,8 @@ public class UpdateNBTTagOnClient implements IMessage {
 	public UpdateNBTTagOnClient() {}
 
 	public UpdateNBTTagOnClient(ItemStack stack) {
-		if (!stack.isEmpty() && stack.hasTagCompound()) {
+		if (!stack.isEmpty() && stack.hasTagCompound())
 			this.stack = stack;
-		}
 	}
 
 	@Override
