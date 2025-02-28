@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.geforcemods.securitycraft.network.client.InteractWithFrame;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
@@ -43,6 +44,11 @@ public class FrameBlock extends OwnableBlock {
 		setSoundType(SoundType.METAL);
 		setHardness(5.0F);
 		setHarvestLevel("pickaxe", 1);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(this::defaultPlayerRelativeBlockHardness, state, player, level, pos, true);
 	}
 
 	@Override
