@@ -262,8 +262,6 @@ public class Sentry extends EntityCreature implements IRangedAttackMob, IEMPAffe
 				dataManager.set(ALLOWLIST, new NBTTagCompound());
 				dataManager.set(HAS_SPEED_MODULE, false);
 			}
-			else if (item == SCContent.sentryRemoteAccessTool)
-				item.onItemUse(player, world, pos, hand, EnumFacing.NORTH, 0.0F, 0.0F, 0.0F);
 			else if (item == SCContent.universalOwnerChanger) {
 				String newOwner = player.getHeldItemMainhand().getDisplayName();
 
