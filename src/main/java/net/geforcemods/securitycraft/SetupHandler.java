@@ -344,7 +344,6 @@ public class SetupHandler {
 		SCContent.bouncingBetty = new BouncingBettyBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
 		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
 		SCContent.ims = new IMSBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("ims").setTranslationKey("securitycraft:ims");
-		SCContent.quartzOreMine = new BaseFullMineBlock(Blocks.QUARTZ_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
 
 		//items
 		SCContent.codebreaker = new CodebreakerItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");

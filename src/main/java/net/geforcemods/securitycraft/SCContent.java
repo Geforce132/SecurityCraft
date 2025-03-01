@@ -65,7 +65,6 @@ public class SCContent {
 	public static Block portableRadar;
 	public static Block projector;
 	public static Block protecto;
-	public static Block quartzOreMine;
 	@Reinforced
 	@Tinted
 	public static Block reinforcedBoneBlock;
