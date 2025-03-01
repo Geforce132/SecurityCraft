@@ -23,6 +23,7 @@ import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.pathfinding.PathType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer.Builder;
@@ -148,6 +149,11 @@ public class FrameBlock extends OwnableBlock implements IWaterLoggable {
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED, WATERLOGGED);
+	}
+
+	@Override
+	public boolean isPathfindable(BlockState state, IBlockReader level, BlockPos pos, PathType type) {
+		return false;
 	}
 
 	@Override
