@@ -15,7 +15,7 @@ public class SCExplosivesTab extends CreativeTabs {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack createIcon() {
-		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
+		return new ItemStack(Item.getItemFromBlock(SCContent.blockChangeDetectorFloorCeiling));
 	}
 
 	@Override

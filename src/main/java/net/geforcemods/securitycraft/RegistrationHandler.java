@@ -190,8 +190,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.laserBlock);
 		event.getRegistry().register(SCContent.laserField);
 		registerBlock(event, SCContent.keypad);
-		registerBlock(event, SCContent.mine, ABLE_TO_CRAFT_MINES);
-		event.getRegistry().register(SCContent.mineCut);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
 		registerBlock(event, SCContent.fakeLava, PageGroup.NO_PAGE);
@@ -1014,7 +1012,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
 		//mines
-		registerInventoryModel(SCContent.mine, 0, "mine");
 		registerInventoryModel(SCContent.dirtMine, 0, "dirt_mine");
 		registerInventoryModel(SCContent.stoneMine, 0, "stone_mine");
 		registerInventoryModel(SCContent.cobblestoneMine, 0, "cobblestone_mine");

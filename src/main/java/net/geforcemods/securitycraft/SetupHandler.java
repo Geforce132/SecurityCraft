@@ -57,7 +57,6 @@ import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.blocks.mines.FallingBlockMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
-import net.geforcemods.securitycraft.blocks.mines.MineBlock;
 import net.geforcemods.securitycraft.blocks.mines.RedstoneOreMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.TrackMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
@@ -342,8 +341,6 @@ public class SetupHandler {
 		SCContent.reinforcedSoulSand = new ReinforcedSoulSandBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_soul_sand").setTranslationKey("securitycraft:reinforced_soul_sand");
 
 		//mines
-		SCContent.mine = (MineBlock) new MineBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("mine").setTranslationKey("securitycraft:mine");
-		SCContent.mineCut = (MineBlock) new MineBlock(Material.IRON).setHardness(3.5F).setRegistryName("mine_cut").setTranslationKey("securitycraft:mineCut");
 		SCContent.dirtMine = new BaseFullMineBlock(Blocks.DIRT).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
 		SCContent.stoneMine = new BaseFullMineBlock(Blocks.STONE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
 		SCContent.cobblestoneMine = new BaseFullMineBlock(Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");

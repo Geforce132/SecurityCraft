@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.blocks.ScannerTrapDoorBlock;
-import net.geforcemods.securitycraft.blocks.mines.MineBlock;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -71,8 +70,6 @@ public class SCContent {
 	public static Block lapisOreMine;
 	public static Block laserBlock;
 	public static Block laserField;
-	public static MineBlock mine;
-	public static MineBlock mineCut;
 	public static Block motionActivatedLight;
 	public static Block netherrackMine;
 	public static Block panicButton;
