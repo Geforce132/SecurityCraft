@@ -437,7 +437,6 @@ public class SCContent {
 	public static Block reinforcedWool;
 	public static Block retinalScanner;
 	public static Block riftStabilizer;
-	public static Block sandMine;
 	public static Block scannerDoor;
 	public static ScannerTrapDoorBlock scannerTrapdoor;
 	public static Block secretSignStanding;
