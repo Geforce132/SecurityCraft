@@ -113,20 +113,18 @@ public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntit
 			}
 
 			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			target.bindRead();
-			GlStateManager._enableDepthTest();
-
 			Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
 			BufferBuilder bufferBuilder = tessellator.getBuilder();
 			Matrix4f lastPose = pose.last().pose();
 
+			target.bindRead();
+			GlStateManager._enableDepthTest();
 			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
 			bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 0).endVertex();
 			bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 1).endVertex();
 			bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 1).endVertex();
 			bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 0).endVertex();
 			tessellator.end();
-
 			target.unbindRead();
 			GlStateManager._disableDepthTest();
 
