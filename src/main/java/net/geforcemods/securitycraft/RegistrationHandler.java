@@ -52,7 +52,6 @@ import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -90,7 +89,6 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
-import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.SpawnInterfaceHighlightParticle;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -102,11 +100,8 @@ import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.MountCamera;
-import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
-import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
-import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
@@ -127,7 +122,6 @@ import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
-import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
@@ -271,7 +265,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedGlowstone, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedSand, new ItemBlockReinforcedSand(SCContent.reinforcedSand), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedGravel, PageGroup.REINFORCED);
-		registerBlock(event, SCContent.trophySystem);
 		registerBlock(event, SCContent.crystalQuartz, new ItemBlockCustomQuartz(SCContent.crystalQuartz), PageGroup.SINGLE_ITEM);
 		registerBlock(event, SCContent.reinforcedCrystalQuartz, new ItemBlockCustomQuartz(SCContent.reinforcedCrystalQuartz), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.crystalQuartzSlab, new ItemBlockCrystalQuartzSlab(SCContent.crystalQuartzSlab), PageGroup.NO_PAGE);
@@ -391,7 +384,6 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.keycardLvl4, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard4);
 		registerItem(event, SCContent.keycardLvl5, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard5);
 		registerItem(event, SCContent.limitedUseKeycard, PageGroup.SINGLE_ITEM, () -> ConfigHandler.ableToCraftLUKeycard);
-		registerItem(event, SCContent.mineRemoteAccessTool);
 		registerItem(event, SCContent.sentryRemoteAccessTool);
 		registerItem(event, SCContent.fWaterBucket);
 		registerItem(event, SCContent.fLavaBucket);
@@ -478,7 +470,6 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(ScannerDoorBlockEntity.class, new ResourceLocation("securitycraft:scanner_door"));
 		GameRegistry.registerTileEntity(SecretSignBlockEntity.class, new ResourceLocation("securitycraft:secret_sign"));
 		GameRegistry.registerTileEntity(MotionActivatedLightBlockEntity.class, new ResourceLocation("securitycraft:motion_light"));
-		GameRegistry.registerTileEntity(TrophySystemBlockEntity.class, new ResourceLocation("securitycraft:trophy_system"));
 		GameRegistry.registerTileEntity(BlockPocketManagerBlockEntity.class, new ResourceLocation("securitycraft:block_pocket_manager"));
 		GameRegistry.registerTileEntity(BlockPocketBlockEntity.class, new ResourceLocation("securitycraft:block_pocket"));
 		GameRegistry.registerTileEntity(AllowlistOnlyBlockEntity.class, new ResourceLocation("securitycraft:reinforced_pressure_plate"));
@@ -532,7 +523,6 @@ public class RegistrationHandler {
 		network.registerMessage(SyncKeycardSettings.Handler.class, SyncKeycardSettings.class, 3, Side.SERVER);
 		network.registerMessage(UpdateLogger.Handler.class, UpdateLogger.class, 4, Side.CLIENT);
 		network.registerMessage(UpdateNBTTagOnClient.Handler.class, UpdateNBTTagOnClient.class, 5, Side.CLIENT);
-		network.registerMessage(RemoteControlMine.Handler.class, RemoteControlMine.class, 8, Side.SERVER);
 		network.registerMessage(ToggleNightVision.Handler.class, ToggleNightVision.class, 9, Side.SERVER);
 		network.registerMessage(SetPasscode.Handler.class, SetPasscode.class, 12, Side.SERVER);
 		network.registerMessage(CheckPasscode.Handler.class, CheckPasscode.class, 13, Side.SERVER);
@@ -549,8 +539,6 @@ public class RegistrationHandler {
 		network.registerMessage(AssembleBlockPocket.Handler.class, AssembleBlockPocket.class, 30, Side.SERVER);
 		network.registerMessage(SyncProjector.Handler.class, SyncProjector.class, 31, Side.SERVER);
 		network.registerMessage(SyncBlockPocketManager.Handler.class, SyncBlockPocketManager.class, 32, Side.SERVER);
-		network.registerMessage(SyncTrophySystem.Handler.class, SyncTrophySystem.class, 33, Side.SERVER);
-		network.registerMessage(SetTrophySystemTarget.Handler.class, SetTrophySystemTarget.class, 34, Side.CLIENT);
 		network.registerMessage(SetKeycardUses.Handler.class, SetKeycardUses.class, 35, Side.SERVER);
 		network.registerMessage(SetCameraView.Handler.class, SetCameraView.class, 36, Side.CLIENT);
 		network.registerMessage(DismountCamera.Handler.class, DismountCamera.class, 37, Side.SERVER);
@@ -559,9 +547,7 @@ public class RegistrationHandler {
 		network.registerMessage(SyncBlockChangeDetector.Handler.class, SyncBlockChangeDetector.class, 40, Side.SERVER);
 		network.registerMessage(ToggleModule.Handler.class, ToggleModule.class, 41, Side.SERVER);
 		network.registerMessage(SetGhostSlot.Handler.class, SetGhostSlot.class, 42, Side.SERVER);
-		network.registerMessage(RemoveMineFromMRAT.Handler.class, RemoveMineFromMRAT.class, 43, Side.SERVER);
 		network.registerMessage(RemovePositionFromSSS.Handler.class, RemovePositionFromSSS.class, 44, Side.SERVER);
-		network.registerMessage(RemoveSentryFromSRAT.Handler.class, RemoveSentryFromSRAT.class, 45, Side.SERVER);
 		network.registerMessage(SetBriefcasePasscodeAndOwner.Handler.class, SetBriefcasePasscodeAndOwner.class, 46, Side.SERVER);
 		network.registerMessage(SetListModuleData.Handler.class, SetListModuleData.class, 47, Side.SERVER);
 		network.registerMessage(SetStateOnDisguiseModule.Handler.class, SetStateOnDisguiseModule.class, 48, Side.SERVER);
@@ -844,7 +830,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedSand, 0, "reinforced_sand");
 		registerInventoryModel(SCContent.reinforcedSand, 1, "reinforced_red_sand");
 		registerInventoryModel(SCContent.reinforcedGravel, 0, "reinforced_gravel");
-		registerInventoryModel(SCContent.trophySystem, 0, "trophy_system");
 		registerInventoryModel(SCContent.crystalQuartz, 0, "crystal_quartz_default");
 		registerInventoryModel(SCContent.crystalQuartz, 1, "crystal_quartz_chiseled");
 		registerInventoryModel(SCContent.crystalQuartz, 2, "crystal_quartz_pillar");
@@ -926,7 +911,6 @@ public class RegistrationHandler {
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");
-		registerInventoryModel(SCContent.mineRemoteAccessTool, 0, "remote_access_mine");
 		registerInventoryModel(SCContent.sentryRemoteAccessTool, 0, "remote_access_sentry");
 		registerInventoryModel(SCContent.reinforcedDoorItem, 0, "door_indestructible_iron_item");
 		registerInventoryModel(SCContent.fWaterBucket, 0, "bucket_f_water");
