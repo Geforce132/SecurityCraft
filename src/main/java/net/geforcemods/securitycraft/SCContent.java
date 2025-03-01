@@ -32,7 +32,6 @@ public class SCContent {
 	public static Block cageTrap;
 	public static Block claymore;
 	public static Block coalOreMine;
-	public static Block cobblestoneMine;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block crystalQuartz;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
@@ -449,7 +448,6 @@ public class SCContent {
 	public static Block sonicSecuritySystem;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block stairsCrystalQuartz;
-	public static Block stoneMine;
 	public static Block trackMine;
 	public static Block trophySystem;
 	public static Block usernameLogger;
