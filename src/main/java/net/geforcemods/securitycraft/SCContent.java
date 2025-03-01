@@ -28,7 +28,6 @@ public class SCContent {
 	public static Block blockPocketWall;
 	public static Block bogusLavaFlowing;
 	public static Block bogusWaterFlowing;
-	public static Block bouncingBetty;
 	public static Block cageTrap;
 	public static Block claymore;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)

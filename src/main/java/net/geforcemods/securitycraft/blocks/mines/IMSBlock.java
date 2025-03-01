@@ -95,33 +95,6 @@ public class IMSBlock extends OwnableBlock {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity tile = world.getTileEntity(pos);
-
-		if (tile instanceof IMSBlockEntity) {
-			IMSBlockEntity te = (IMSBlockEntity) tile;
-
-			if (te.isDisabled())
-				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-			else if (te.isOwnedBy(player)) {
-				ItemStack held = player.getHeldItem(hand);
-				int mines = state.getValue(MINES);
-
-				if (held.getItem() == Item.getItemFromBlock(SCContent.bouncingBetty) && mines < 4) {
-					if (!player.capabilities.isCreativeMode)
-						held.shrink(1);
-
-					world.setBlockState(pos, state.withProperty(MINES, mines + 1));
-					te.setBombsRemaining(mines + 1);
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
 		if (world.getTileEntity(pos) instanceof IMSBlockEntity && ((IMSBlockEntity) world.getTileEntity(pos)).getBombsRemaining() == 0) {
@@ -147,8 +120,6 @@ public class IMSBlock extends OwnableBlock {
 		int mines = state.getValue(MINES);
 		ArrayList<ItemStack> drops = new ArrayList<>();
 
-		if (mines != 0)
-			drops.add(new ItemStack(SCContent.bouncingBetty, mines));
 
 		return drops;
 	}

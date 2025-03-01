@@ -197,7 +197,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.bogusWaterFlowing, PageGroup.NO_PAGE);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.reinforcedIronTrapdoor);
-		registerBlock(event, SCContent.bouncingBetty, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);
 		registerBlock(event, SCContent.cageTrap);
@@ -518,11 +517,6 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
 		//@formatter:off
-		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation(SecurityCraft.MODID, "bouncingbetty"), 0)
-				.entity(BouncingBetty.class)
-				.name("BBetty")
-				.tracker(128, 1, true).build());
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "imsbomb"), 3)
 				.entity(IMSBomb.class)
