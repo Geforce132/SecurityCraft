@@ -173,25 +173,25 @@ public class SCEventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
-		if (ConfigHandler.sayThanksMessage) {
-			String tipKey = getRandomTip();
-			//@formatter:off
-			ITextComponent message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] ")
-					.appendSibling(Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()))
-					.appendSibling(new TextComponentString(" "))
-					.appendSibling(Utils.localize("messages.securitycraft:tip"))
-					.appendSibling(new TextComponentString(" "))
-					.appendSibling(Utils.localize(tipKey));
-			//@formatter:on
-
-			if (TIPS_WITH_LINK.containsKey(tipKey.split("\\.")[2]))
-				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));
-
-			event.player.sendMessage(message);
-		}
-	}
+//	@SubscribeEvent
+//	public static void onPlayerLoggedIn(PlayerLoggedInEvent event) {
+//		if (ConfigHandler.sayThanksMessage) {
+//			String tipKey = getRandomTip();
+//			//@formatter:off
+//			ITextComponent message = new TextComponentString("[" + TextFormatting.GOLD + "SecurityCraft" + TextFormatting.WHITE + "] ")
+//					.appendSibling(Utils.localize("messages.securitycraft:thanks", SecurityCraft.getVersion()))
+//					.appendSibling(new TextComponentString(" "))
+//					.appendSibling(Utils.localize("messages.securitycraft:tip"))
+//					.appendSibling(new TextComponentString(" "))
+//					.appendSibling(Utils.localize(tipKey));
+//			//@formatter:on
+//
+//			if (TIPS_WITH_LINK.containsKey(tipKey.split("\\.")[2]))
+//				message.appendSibling(new TextComponentString(" ")).appendSibling(ForgeHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));
+//
+//			event.player.sendMessage(message);
+//		}
+//	}
 
 	@SubscribeEvent
 	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
