@@ -343,7 +343,6 @@ public class SetupHandler {
 		//mines
 		SCContent.diamondOreMine = new BaseFullMineBlock(Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("diamond_mine").setTranslationKey("securitycraft:diamondMine");
 		SCContent.furnaceMine = new FurnaceMineBlock().setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
-		SCContent.gravelMine = new FallingBlockMineBlock(Blocks.GRAVEL).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("gravel_mine").setTranslationKey("securitycraft:gravelMine");
 		SCContent.trackMine = new TrackMineBlock().setHardness(0.7F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
 		SCContent.bouncingBetty = new BouncingBettyBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
 		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
