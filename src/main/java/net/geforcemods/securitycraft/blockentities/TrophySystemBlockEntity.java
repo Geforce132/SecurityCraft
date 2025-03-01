@@ -13,7 +13,6 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
@@ -81,7 +80,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation("minecraft:spectral_arrow")), true);
 		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation("minecraft:arrow")), true);
 		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation("minecraft:small_fireball")), true);
-		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation(SecurityCraft.MODID, "imsbomb")), true);
 		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation("minecraft:fireball")), true);
 		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation("minecraft:dragon_fireball")), true);
 		projectileFilter.put(ForgeRegistries.ENTITIES.getValue(new ResourceLocation("minecraft:wither_skull")), true);
@@ -256,8 +254,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 		potentialTargets.addAll(world.getEntitiesWithinAABB(Entity.class, area, this::isAllowedToTarget));
 
-		//remove bullets/IMS bombs shot by sentries/IMS of this trophy system's owner or players on the allowlist
-		potentialTargets = potentialTargets.stream().filter(this::filterSCProjectiles).collect(Collectors.toList());
 
 		// If there are no projectiles, return
 		if (potentialTargets.isEmpty())
@@ -282,16 +278,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		return false;
 	}
 
-	private boolean filterSCProjectiles(Entity projectile) {
-		Owner owner = null;
-
-		if (projectile instanceof Bullet)
-			owner = ((Bullet) projectile).getOwner();
-		else if (projectile instanceof IMSBomb)
-			owner = ((IMSBomb) projectile).getOwner();
-
-		return owner == null || (!owner.owns(this) && !isAllowed(owner.getName()));
-	}
 
 	/**
 	 * Returns the entity who shot the given projectile
