@@ -368,7 +368,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedSoulSand);
 
 		//block mines
-		registerBlockMine(event, SCContent.redstoneOreMine);
 		registerBlockMine(event, SCContent.quartzOreMine);
 		registerBlock(event, SCContent.furnaceMine, ABLE_TO_CRAFT_MINES);
 	}
@@ -1005,7 +1004,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.claymore, 0, "claymore");
 		registerInventoryModel(SCContent.ims, 0, "ims");
 		registerInventoryModel(SCContent.quartzOreMine, 0, "quartz_ore_mine");
-		registerInventoryModel(SCContent.redstoneOreMine, 0, "redstone_ore_mine");
 	}
 
 	private static void registerInventoryModel(Block block, int metadata, String name) {

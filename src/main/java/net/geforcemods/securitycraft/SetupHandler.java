@@ -54,10 +54,8 @@ import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
 import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BouncingBettyBlock;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
-import net.geforcemods.securitycraft.blocks.mines.FallingBlockMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
-import net.geforcemods.securitycraft.blocks.mines.RedstoneOreMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.TrackMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBarsBlock;
@@ -347,7 +345,6 @@ public class SetupHandler {
 		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
 		SCContent.ims = new IMSBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("ims").setTranslationKey("securitycraft:ims");
 		SCContent.quartzOreMine = new BaseFullMineBlock(Blocks.QUARTZ_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
-		SCContent.redstoneOreMine = new RedstoneOreMineBlock().setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("redstone_mine").setTranslationKey("securitycraft:redstone_mine");
 
 		//items
 		SCContent.codebreaker = new CodebreakerItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");

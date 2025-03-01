@@ -66,7 +66,6 @@ public class SCContent {
 	public static Block projector;
 	public static Block protecto;
 	public static Block quartzOreMine;
-	public static Block redstoneOreMine;
 	@Reinforced
 	@Tinted
 	public static Block reinforcedBoneBlock;
