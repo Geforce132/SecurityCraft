@@ -68,7 +68,6 @@ public class SCContent {
 	public static Block laserBlock;
 	public static Block laserField;
 	public static Block motionActivatedLight;
-	public static Block netherrackMine;
 	public static Block panicButton;
 	public static Block portableRadar;
 	public static Block projector;
