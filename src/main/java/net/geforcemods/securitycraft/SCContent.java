@@ -43,7 +43,6 @@ public class SCContent {
 	public static Block electrifiedIronFence;
 	public static Block electrifiedIronFenceGate;
 	public static Block emeraldOreMine;
-	public static Block endStoneMine;
 	public static BlockStaticLiquid fakeLava;
 	public static BlockStaticLiquid fakeWater;
 	public static Block floorTrap;

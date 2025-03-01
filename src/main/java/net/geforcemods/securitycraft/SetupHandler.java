@@ -354,7 +354,6 @@ public class SetupHandler {
 		SCContent.lapisOreMine = new BaseFullMineBlock(Blocks.LAPIS_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("lapis_mine").setTranslationKey("securitycraft:lapis_mine");
 		SCContent.quartzOreMine = new BaseFullMineBlock(Blocks.QUARTZ_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
 		SCContent.redstoneOreMine = new RedstoneOreMineBlock().setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("redstone_mine").setTranslationKey("securitycraft:redstone_mine");
-		SCContent.endStoneMine = new BaseFullMineBlock(Blocks.END_STONE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("end_stone_mine").setTranslationKey("securitycraft:end_stone_mine");
 
 		//items
 		SCContent.codebreaker = new CodebreakerItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");
