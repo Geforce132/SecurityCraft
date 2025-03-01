@@ -349,7 +349,6 @@ public class SetupHandler {
 		SCContent.ims = new IMSBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("ims").setTranslationKey("securitycraft:ims");
 		SCContent.coalOreMine = new BaseFullMineBlock(Blocks.COAL_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("coal_mine").setTranslationKey("securitycraft:coal_mine");
 		SCContent.emeraldOreMine = new BaseFullMineBlock(Blocks.EMERALD_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("emerald_mine").setTranslationKey("securitycraft:emerald_mine");
-		SCContent.goldOreMine = new BaseFullMineBlock(Blocks.GOLD_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("gold_mine").setTranslationKey("securitycraft:gold_mine");
 		SCContent.ironOreMine = new BaseFullMineBlock(Blocks.IRON_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("iron_mine").setTranslationKey("securitycraft:iron_mine");
 		SCContent.lapisOreMine = new BaseFullMineBlock(Blocks.LAPIS_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("lapis_mine").setTranslationKey("securitycraft:lapis_mine");
 		SCContent.quartzOreMine = new BaseFullMineBlock(Blocks.QUARTZ_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("quartz_mine").setTranslationKey("securitycraft:quartz_mine");
