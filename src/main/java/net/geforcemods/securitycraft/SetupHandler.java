@@ -341,7 +341,6 @@ public class SetupHandler {
 		SCContent.reinforcedSoulSand = new ReinforcedSoulSandBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_soul_sand").setTranslationKey("securitycraft:reinforced_soul_sand");
 
 		//mines
-		SCContent.dirtMine = new BaseFullMineBlock(Blocks.DIRT).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
 		SCContent.stoneMine = new BaseFullMineBlock(Blocks.STONE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
 		SCContent.cobblestoneMine = new BaseFullMineBlock(Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");
 		SCContent.sandMine = new FallingBlockMineBlock(Blocks.SAND).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("sand_mine").setTranslationKey("securitycraft:sandMine");
