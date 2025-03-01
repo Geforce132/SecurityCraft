@@ -36,7 +36,6 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
-import net.geforcemods.securitycraft.entity.BouncingBetty;
 import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
@@ -46,7 +45,6 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.renderers.BlockEntityItemRenderer;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
-import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
 import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
@@ -176,8 +174,6 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void registerEntityRenderingHandlers() {
-		RenderingRegistry.registerEntityRenderingHandler(BouncingBetty.class, BouncingBettyRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(IMSBomb.class, IMSBombRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Sentry.class, SentryRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Bullet.class, BulletRenderer::new);
 	}

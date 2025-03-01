@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
 import net.geforcemods.securitycraft.entity.IMSBomb;
-import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;

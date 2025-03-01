@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.entity;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.projectile.EntityFireball;

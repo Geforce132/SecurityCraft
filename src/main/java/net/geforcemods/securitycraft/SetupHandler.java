@@ -52,7 +52,6 @@ import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
-import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedBoneBlock;
@@ -336,7 +335,6 @@ public class SetupHandler {
 
 		//mines
 		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
-		SCContent.ims = new IMSBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("ims").setTranslationKey("securitycraft:ims");
 
 		//items
 		SCContent.codebreaker = new CodebreakerItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");

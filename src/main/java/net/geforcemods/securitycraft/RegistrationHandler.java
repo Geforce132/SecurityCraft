@@ -23,7 +23,6 @@ import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
@@ -57,8 +56,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
-import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -228,7 +225,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedStairsDarkoak, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStairsStone, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.electrifiedIronFence);
-		registerBlock(event, SCContent.ims, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.reinforcedGlass, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(SCContent.reinforcedWoodSlabs), PageGroup.REINFORCED);
@@ -480,7 +476,6 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(AlarmBlockEntity.class, new ResourceLocation("securitycraft:alarm"));
 		GameRegistry.registerTileEntity(ClaymoreBlockEntity.class, new ResourceLocation("securitycraft:claymore"));
 		GameRegistry.registerTileEntity(KeypadFurnaceBlockEntity.class, new ResourceLocation("securitycraft:keypad_furnace"));
-		GameRegistry.registerTileEntity(IMSBlockEntity.class, new ResourceLocation("securitycraft:ims"));
 		GameRegistry.registerTileEntity(ProtectoBlockEntity.class, new ResourceLocation("securitycraft:protecto"));
 		GameRegistry.registerTileEntity(CustomizableBlockEntity.class, new ResourceLocation("securitycraft:customizable"));
 		GameRegistry.registerTileEntity(ScannerDoorBlockEntity.class, new ResourceLocation("securitycraft:scanner_door"));
@@ -517,11 +512,6 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
 		//@formatter:off
-		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation(SecurityCraft.MODID, "imsbomb"), 3)
-				.entity(IMSBomb.class)
-				.name("IMSBomb")
-				.tracker(256, 1, true).build());
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "securitycamera"), 4)
 				.entity(SecurityCamera.class)
@@ -986,9 +976,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
 		//mines
-		registerInventoryModel(SCContent.bouncingBetty, 0, "bouncing_betty");
 		registerInventoryModel(SCContent.claymore, 0, "claymore");
-		registerInventoryModel(SCContent.ims, 0, "ims");
 	}
 
 	private static void registerInventoryModel(Block block, int metadata, String name) {
