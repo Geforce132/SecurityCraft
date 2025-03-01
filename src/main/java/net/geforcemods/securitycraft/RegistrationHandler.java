@@ -368,7 +368,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedSoulSand);
 
 		//block mines
-		registerBlockMine(event, SCContent.lapisOreMine);
 		registerBlockMine(event, SCContent.diamondOreMine);
 		registerBlockMine(event, SCContent.redstoneOreMine);
 		registerBlockMine(event, SCContent.emeraldOreMine);
@@ -1009,7 +1008,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.claymore, 0, "claymore");
 		registerInventoryModel(SCContent.ims, 0, "ims");
 		registerInventoryModel(SCContent.emeraldOreMine, 0, "emerald_ore_mine");
-		registerInventoryModel(SCContent.lapisOreMine, 0, "lapis_ore_mine");
 		registerInventoryModel(SCContent.quartzOreMine, 0, "quartz_ore_mine");
 		registerInventoryModel(SCContent.redstoneOreMine, 0, "redstone_ore_mine");
 	}

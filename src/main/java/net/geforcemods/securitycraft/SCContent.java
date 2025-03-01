@@ -60,7 +60,6 @@ public class SCContent {
 	public static Block keypadDoor;
 	public static Block keypadFurnace;
 	public static KeypadTrapDoorBlock keypadTrapdoor;
-	public static Block lapisOreMine;
 	public static Block laserBlock;
 	public static Block laserField;
 	public static Block motionActivatedLight;
