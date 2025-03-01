@@ -35,7 +35,6 @@ public class SCContent {
 	public static Block crystalQuartz;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block crystalQuartzSlab;
-	public static Block diamondOreMine;
 	public static Block displayCase;
 	@Tinted(customTint = 0x15b3a2, hasReinforcedTint = false)
 	public static Block doubleCrystalQuartzSlab;
