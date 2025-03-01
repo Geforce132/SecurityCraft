@@ -54,7 +54,6 @@ import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
@@ -201,7 +200,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.bouncingBetty, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);
-		registerBlock(event, SCContent.trackMine, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.cageTrap);
 		event.getRegistry().register(SCContent.horizontalReinforcedIronBars);
 		registerBlock(event, SCContent.portableRadar);
@@ -489,7 +487,6 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(ScannerDoorBlockEntity.class, new ResourceLocation("securitycraft:scanner_door"));
 		GameRegistry.registerTileEntity(SecretSignBlockEntity.class, new ResourceLocation("securitycraft:secret_sign"));
 		GameRegistry.registerTileEntity(MotionActivatedLightBlockEntity.class, new ResourceLocation("securitycraft:motion_light"));
-		GameRegistry.registerTileEntity(TrackMineBlockEntity.class, new ResourceLocation("securitycraft:track_mine"));
 		GameRegistry.registerTileEntity(TrophySystemBlockEntity.class, new ResourceLocation("securitycraft:trophy_system"));
 		GameRegistry.registerTileEntity(BlockPocketManagerBlockEntity.class, new ResourceLocation("securitycraft:block_pocket_manager"));
 		GameRegistry.registerTileEntity(BlockPocketBlockEntity.class, new ResourceLocation("securitycraft:block_pocket"));
@@ -995,7 +992,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
 		//mines
-		registerInventoryModel(SCContent.trackMine, 0, "track_mine");
 		registerInventoryModel(SCContent.bouncingBetty, 0, "bouncing_betty");
 		registerInventoryModel(SCContent.claymore, 0, "claymore");
 		registerInventoryModel(SCContent.ims, 0, "ims");
