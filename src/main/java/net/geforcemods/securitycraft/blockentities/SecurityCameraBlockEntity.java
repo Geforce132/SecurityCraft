@@ -169,6 +169,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 		tag.putDouble("camera_rotation", cameraRotation);
+		tag.putBoolean("add_to_rotation", addToRotation);
 		tag.putBoolean("shutDown", shutDown);
 		tag.put("lens", lens.createTag(lookupProvider));
 		tag.putFloat("initial_x_rotation", initialXRotation);
@@ -183,6 +184,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 		cameraRotation = newCamRotation;
 		oCameraRotation = newCamRotation;
+		addToRotation = tag.getBooleanOr("add_to_rotation", false);
 		shutDown = tag.getBooleanOr("shutDown", false);
 		lens.fromTag(tag.getListOrEmpty("lens"), lookupProvider);
 		initialXRotation = tag.getFloatOr("initial_x_rotation", 1.0F);
@@ -343,6 +345,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		playerViewedFrames.add(framePos.asLong());
+		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //Syncs the camera's rotation to all clients again, in case a client is desynched
 	}
 
 	public void unlinkFrameForPlayer(UUID playerUUID, BlockPos framePos) {
