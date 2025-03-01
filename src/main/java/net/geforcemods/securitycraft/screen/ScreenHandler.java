@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.blockentities.KeypadFurnaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockChangeDetectorMenu;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
@@ -30,7 +29,6 @@ import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu;
-import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -48,20 +46,6 @@ public class ScreenHandler implements IGuiHandler {
 		KEYCARD_READER(
 			(player, te) -> new KeycardReaderMenu(player.inventory, (KeycardReaderBlockEntity) te),
 			(player, te) -> new KeycardReaderScreen(player.inventory, (KeycardReaderBlockEntity) te)),
-		MRAT(
-			(player, te) -> new GenericMenu(te),
-			(player, te) -> {
-				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.mineRemoteAccessTool);
-
-				return heldStack.isEmpty() ? null : new MineRemoteAccessToolScreen(heldStack);
-			}),
-		SRAT(
-			(player, te) -> new GenericMenu(te),
-			(player, te) -> {
-				ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.sentryRemoteAccessTool);
-
-				return heldStack.isEmpty() ? null : new SentryRemoteAccessToolScreen(PlayerUtils.getItemStackFromAnyHand(player, SCContent.sentryRemoteAccessTool));
-			}),
 		INVENTORY_SCANNER(
 			(player, te) -> new InventoryScannerMenu(player.inventory, (InventoryScannerBlockEntity) te),
 			(player, te) -> new InventoryScannerScreen(player.inventory, (InventoryScannerBlockEntity) te, player)),
@@ -112,9 +96,6 @@ public class ScreenHandler implements IGuiHandler {
 		KEY_CHANGER(
 			(player, te) -> te == null || PlayerUtils.getItemStackFromAnyHand(player, SCContent.universalKeyChanger).isEmpty() ? null : new GenericMenu(te),
 			(player, te) -> te == null || PlayerUtils.getItemStackFromAnyHand(player, SCContent.universalKeyChanger).isEmpty() ? null : new KeyChangerScreen(te)),
-		TROPHY_SYSTEM(
-			(player, te) -> new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory),
-			(player, te) -> new TrophySystemScreen(new TrophySystemMenu((TrophySystemBlockEntity) te, player.inventory))),
 		CUSTOMIZE_BLOCK(
 			(player, te) -> new CustomizeBlockMenu(player.inventory, (IModuleInventory) te),
 			(player, te) -> new CustomizeBlockScreen(player.inventory, (IModuleInventory) te)),

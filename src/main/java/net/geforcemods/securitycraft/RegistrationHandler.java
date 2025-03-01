@@ -19,11 +19,9 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
-import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FloorTrapBlockEntity;
-import net.geforcemods.securitycraft.blockentities.IMSBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.IronFenceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeyPanelBlockEntity;
@@ -55,11 +53,9 @@ import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockE
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -95,7 +91,6 @@ import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
-import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.SpawnInterfaceHighlightParticle;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
@@ -109,9 +104,7 @@ import net.geforcemods.securitycraft.network.server.DismountCamera;
 import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
-import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
-import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
@@ -132,7 +125,6 @@ import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.network.server.SyncTENBTTag;
-import net.geforcemods.securitycraft.network.server.SyncTrophySystem;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
@@ -181,7 +173,6 @@ public class RegistrationHandler {
 	private static Map<PageGroup, List<ItemStack>> pageTypeStacks = new EnumMap<>(PageGroup.class);
 	private static Map<Block, String> blocksDesignedBy = new HashMap<>();
 	private static Map<Block, Supplier<Boolean>> blockConfigValues = new HashMap<>();
-	private static final Supplier<Boolean> ABLE_TO_CRAFT_MINES = () -> ConfigHandler.ableToCraftMines;
 
 	private RegistrationHandler() {}
 
@@ -190,8 +181,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.laserBlock);
 		event.getRegistry().register(SCContent.laserField);
 		registerBlock(event, SCContent.keypad);
-		registerBlock(event, SCContent.mine, ABLE_TO_CRAFT_MINES);
-		event.getRegistry().register(SCContent.mineCut);
 		registerBlock(event, SCContent.retinalScanner);
 		event.getRegistry().register(SCContent.reinforcedDoor);
 		registerBlock(event, SCContent.fakeLava, PageGroup.NO_PAGE);
@@ -200,10 +189,8 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.bogusWaterFlowing, PageGroup.NO_PAGE);
 		registerBlock(event, SCContent.keycardReader);
 		registerBlock(event, SCContent.reinforcedIronTrapdoor);
-		registerBlock(event, SCContent.bouncingBetty, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.inventoryScanner);
 		event.getRegistry().register(SCContent.inventoryScannerField);
-		registerBlock(event, SCContent.trackMine, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.cageTrap);
 		event.getRegistry().register(SCContent.horizontalReinforcedIronBars);
 		registerBlock(event, SCContent.portableRadar);
@@ -220,7 +207,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.panicButton);
 		registerBlock(event, SCContent.frame);
-		registerBlock(event, SCContent.claymore, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.keypadFurnace);
 		registerBlock(event, SCContent.securityCamera);
 		registerBlock(event, SCContent.reinforcedStairsOak, PageGroup.REINFORCED);
@@ -233,7 +219,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedStairsDarkoak, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStairsStone, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.electrifiedIronFence);
-		registerBlock(event, SCContent.ims, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.reinforcedGlass, PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedStainedGlass, new ItemBlockReinforcedStainedBlock(SCContent.reinforcedStainedGlass), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.reinforcedWoodSlabs, new ItemBlockReinforcedWoodSlabs(SCContent.reinforcedWoodSlabs), PageGroup.REINFORCED);
@@ -368,24 +353,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.secureRedstoneInterface);
 		registerBlock(event, SCContent.reinforcedMagmaBlock);
 		registerBlock(event, SCContent.reinforcedSoulSand);
-
-		//block mines
-		registerBlockMine(event, SCContent.stoneMine);
-		registerBlockMine(event, SCContent.dirtMine);
-		registerBlockMine(event, SCContent.cobblestoneMine);
-		registerBlockMine(event, SCContent.sandMine);
-		registerBlockMine(event, SCContent.gravelMine);
-		registerBlockMine(event, SCContent.netherrackMine);
-		registerBlockMine(event, SCContent.endStoneMine);
-		registerBlockMine(event, SCContent.goldOreMine);
-		registerBlockMine(event, SCContent.ironOreMine);
-		registerBlockMine(event, SCContent.coalOreMine);
-		registerBlockMine(event, SCContent.lapisOreMine);
-		registerBlockMine(event, SCContent.diamondOreMine);
-		registerBlockMine(event, SCContent.redstoneOreMine);
-		registerBlockMine(event, SCContent.emeraldOreMine);
-		registerBlockMine(event, SCContent.quartzOreMine);
-		registerBlock(event, SCContent.furnaceMine, ABLE_TO_CRAFT_MINES);
 	}
 
 	@SubscribeEvent
@@ -419,7 +386,6 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.keycardLvl4, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard4);
 		registerItem(event, SCContent.keycardLvl5, PageGroup.KEYCARDS, () -> ConfigHandler.ableToCraftKeycard5);
 		registerItem(event, SCContent.limitedUseKeycard, PageGroup.SINGLE_ITEM, () -> ConfigHandler.ableToCraftLUKeycard);
-		registerItem(event, SCContent.mineRemoteAccessTool);
 		registerItem(event, SCContent.sentryRemoteAccessTool);
 		registerItem(event, SCContent.fWaterBucket);
 		registerItem(event, SCContent.fLavaBucket);
@@ -500,16 +466,13 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(RetinalScannerBlockEntity.class, new ResourceLocation("securitycraft:retinal_scanner"));
 		GameRegistry.registerTileEntity(KeypadChestBlockEntity.class, new ResourceLocation("securitycraft:keypad_chest"));
 		GameRegistry.registerTileEntity(AlarmBlockEntity.class, new ResourceLocation("securitycraft:alarm"));
-		GameRegistry.registerTileEntity(ClaymoreBlockEntity.class, new ResourceLocation("securitycraft:claymore"));
 		GameRegistry.registerTileEntity(KeypadFurnaceBlockEntity.class, new ResourceLocation("securitycraft:keypad_furnace"));
-		GameRegistry.registerTileEntity(IMSBlockEntity.class, new ResourceLocation("securitycraft:ims"));
 		GameRegistry.registerTileEntity(ProtectoBlockEntity.class, new ResourceLocation("securitycraft:protecto"));
 		GameRegistry.registerTileEntity(CustomizableBlockEntity.class, new ResourceLocation("securitycraft:customizable"));
 		GameRegistry.registerTileEntity(ScannerDoorBlockEntity.class, new ResourceLocation("securitycraft:scanner_door"));
 		GameRegistry.registerTileEntity(SecretSignBlockEntity.class, new ResourceLocation("securitycraft:secret_sign"));
 		GameRegistry.registerTileEntity(MotionActivatedLightBlockEntity.class, new ResourceLocation("securitycraft:motion_light"));
 		GameRegistry.registerTileEntity(TrackMineBlockEntity.class, new ResourceLocation("securitycraft:track_mine"));
-		GameRegistry.registerTileEntity(TrophySystemBlockEntity.class, new ResourceLocation("securitycraft:trophy_system"));
 		GameRegistry.registerTileEntity(BlockPocketManagerBlockEntity.class, new ResourceLocation("securitycraft:block_pocket_manager"));
 		GameRegistry.registerTileEntity(BlockPocketBlockEntity.class, new ResourceLocation("securitycraft:block_pocket"));
 		GameRegistry.registerTileEntity(AllowlistOnlyBlockEntity.class, new ResourceLocation("securitycraft:reinforced_pressure_plate"));
@@ -545,11 +508,6 @@ public class RegistrationHandler {
 				.entity(BouncingBetty.class)
 				.name("BBetty")
 				.tracker(128, 1, true).build());
-		event.getRegistry().register(EntityEntryBuilder.create()
-				.id(new ResourceLocation(SecurityCraft.MODID, "imsbomb"), 3)
-				.entity(IMSBomb.class)
-				.name("IMSBomb")
-				.tracker(256, 1, true).build());
 		event.getRegistry().register(EntityEntryBuilder.create()
 				.id(new ResourceLocation(SecurityCraft.MODID, "securitycamera"), 4)
 				.entity(SecurityCamera.class)
@@ -590,8 +548,6 @@ public class RegistrationHandler {
 		network.registerMessage(AssembleBlockPocket.Handler.class, AssembleBlockPocket.class, 30, Side.SERVER);
 		network.registerMessage(SyncProjector.Handler.class, SyncProjector.class, 31, Side.SERVER);
 		network.registerMessage(SyncBlockPocketManager.Handler.class, SyncBlockPocketManager.class, 32, Side.SERVER);
-		network.registerMessage(SyncTrophySystem.Handler.class, SyncTrophySystem.class, 33, Side.SERVER);
-		network.registerMessage(SetTrophySystemTarget.Handler.class, SetTrophySystemTarget.class, 34, Side.CLIENT);
 		network.registerMessage(SetKeycardUses.Handler.class, SetKeycardUses.class, 35, Side.SERVER);
 		network.registerMessage(SetCameraView.Handler.class, SetCameraView.class, 36, Side.CLIENT);
 		network.registerMessage(DismountCamera.Handler.class, DismountCamera.class, 37, Side.SERVER);
@@ -600,9 +556,7 @@ public class RegistrationHandler {
 		network.registerMessage(SyncBlockChangeDetector.Handler.class, SyncBlockChangeDetector.class, 40, Side.SERVER);
 		network.registerMessage(ToggleModule.Handler.class, ToggleModule.class, 41, Side.SERVER);
 		network.registerMessage(SetGhostSlot.Handler.class, SetGhostSlot.class, 42, Side.SERVER);
-		network.registerMessage(RemoveMineFromMRAT.Handler.class, RemoveMineFromMRAT.class, 43, Side.SERVER);
 		network.registerMessage(RemovePositionFromSSS.Handler.class, RemovePositionFromSSS.class, 44, Side.SERVER);
-		network.registerMessage(RemoveSentryFromSRAT.Handler.class, RemoveSentryFromSRAT.class, 45, Side.SERVER);
 		network.registerMessage(SetBriefcasePasscodeAndOwner.Handler.class, SetBriefcasePasscodeAndOwner.class, 46, Side.SERVER);
 		network.registerMessage(SetListModuleData.Handler.class, SetListModuleData.class, 47, Side.SERVER);
 		network.registerMessage(SetStateOnDisguiseModule.Handler.class, SetStateOnDisguiseModule.class, 48, Side.SERVER);
@@ -967,7 +921,6 @@ public class RegistrationHandler {
 
 		//items
 		registerInventoryModel(SCContent.codebreaker, 0, "codebreaker");
-		registerInventoryModel(SCContent.mineRemoteAccessTool, 0, "remote_access_mine");
 		registerInventoryModel(SCContent.sentryRemoteAccessTool, 0, "remote_access_sentry");
 		registerInventoryModel(SCContent.reinforcedDoorItem, 0, "door_indestructible_iron_item");
 		registerInventoryModel(SCContent.fWaterBucket, 0, "bucket_f_water");
@@ -1013,28 +966,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.keycardLock, 0, "keycard_lock");
 		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
-		//mines
-		registerInventoryModel(SCContent.mine, 0, "mine");
-		registerInventoryModel(SCContent.dirtMine, 0, "dirt_mine");
-		registerInventoryModel(SCContent.stoneMine, 0, "stone_mine");
-		registerInventoryModel(SCContent.cobblestoneMine, 0, "cobblestone_mine");
-		registerInventoryModel(SCContent.sandMine, 0, "sand_mine");
-		registerInventoryModel(SCContent.diamondOreMine, 0, "diamond_mine");
-		registerInventoryModel(SCContent.furnaceMine, 0, "furnace_mine");
-		registerInventoryModel(SCContent.trackMine, 0, "track_mine");
-		registerInventoryModel(SCContent.bouncingBetty, 0, "bouncing_betty");
-		registerInventoryModel(SCContent.claymore, 0, "claymore");
-		registerInventoryModel(SCContent.ims, 0, "ims");
-		registerInventoryModel(SCContent.gravelMine, 0, "gravel_mine");
-		registerInventoryModel(SCContent.coalOreMine, 0, "coal_ore_mine");
-		registerInventoryModel(SCContent.emeraldOreMine, 0, "emerald_ore_mine");
-		registerInventoryModel(SCContent.goldOreMine, 0, "gold_ore_mine");
-		registerInventoryModel(SCContent.ironOreMine, 0, "iron_ore_mine");
-		registerInventoryModel(SCContent.lapisOreMine, 0, "lapis_ore_mine");
-		registerInventoryModel(SCContent.quartzOreMine, 0, "quartz_ore_mine");
-		registerInventoryModel(SCContent.redstoneOreMine, 0, "redstone_ore_mine");
-		registerInventoryModel(SCContent.netherrackMine, 0, "netherrack_mine");
-		registerInventoryModel(SCContent.endStoneMine, 0, "end_stone_mine");
 	}
 
 	private static void registerInventoryModel(Block block, int metadata, String name) {
@@ -1068,10 +999,7 @@ public class RegistrationHandler {
 	 *
 	 * @param block The block to register
 	 */
-	private static void registerBlockMine(RegistryEvent.Register<Block> event, Block block) {
-		registerBlock(event, block, new ItemBlock(block), PageGroup.BLOCK_MINES);
-		blockConfigValues.put(block, ABLE_TO_CRAFT_MINES);
-	}
+
 
 	/**
 	 * Registers a block and its ItemBlock and adds the help info for the block to the SecurityCraft manual item. Additionally, a

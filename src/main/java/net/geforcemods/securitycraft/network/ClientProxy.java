@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.CageTrapBlockEntity;
-import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -30,14 +29,12 @@ import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
-import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.entity.IMSBomb;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
@@ -46,12 +43,9 @@ import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.renderers.BlockEntityItemRenderer;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
-import net.geforcemods.securitycraft.renderers.BouncingBettyRenderer;
 import net.geforcemods.securitycraft.renderers.BulletRenderer;
-import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
-import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.ProjectorRenderer;
 import net.geforcemods.securitycraft.renderers.ReinforcedPistonRenderer;
@@ -61,7 +55,6 @@ import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
-import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
 import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -204,8 +197,6 @@ public class ClientProxy implements IProxy {
 
 	@Override
 	public void registerEntityRenderingHandlers() {
-		RenderingRegistry.registerEntityRenderingHandler(BouncingBetty.class, BouncingBettyRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(IMSBomb.class, IMSBombRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Sentry.class, SentryRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(Bullet.class, BulletRenderer::new);
 	}
@@ -219,13 +210,11 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(SecurityCameraBlockEntity.class, new SecurityCameraRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(RetinalScannerBlockEntity.class, new RetinalScannerRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecretSignBlockEntity.class, new SecretSignRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TrophySystemBlockEntity.class, new TrophySystemRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(BlockPocketManagerBlockEntity.class, new BlockPocketManagerRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ProjectorBlockEntity.class, new ProjectorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(ReinforcedPistonBlockEntity.class, new ReinforcedPistonRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SonicSecuritySystemBlockEntity.class, new SonicSecuritySystemRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(DisplayCaseBlockEntity.class, new DisplayCaseRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(ClaymoreBlockEntity.class, new ClaymoreRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecureRedstoneInterfaceBlockEntity.class, new SecureRedstoneInterfaceRenderer());
 		//disguisable tile entity renderers
 		ClientRegistry.bindTileEntitySpecialRenderer(BlockChangeDetectorBlockEntity.class, new DisguisableBlockEntityRenderer<>());

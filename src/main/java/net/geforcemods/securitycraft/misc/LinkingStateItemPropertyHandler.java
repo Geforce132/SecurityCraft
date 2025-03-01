@@ -6,14 +6,11 @@ import java.util.function.BiPredicate;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IDisguisable;
-import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
-import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
-import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
@@ -56,54 +53,6 @@ public class LinkingStateItemPropertyHandler {
 		}
 		else
 			return linkingState;
-	}
-
-	public static float mineRemoteAccessTool(ItemStack stack, World world, EntityLivingBase entity) {
-		if (!(entity instanceof EntityPlayer))
-			return EMPTY_STATE;
-
-		EntityPlayer player = (EntityPlayer) entity;
-		float linkingState = getLinkingState(world, player, stack, (_world, pos) -> _world.getBlockState(pos).getBlock() instanceof IExplosive, 30, (tag, i) -> {
-			if (tag.getIntArray("mine" + i).length > 0)
-				return Arrays.stream(tag.getIntArray("mine" + i)).boxed().toArray(Integer[]::new);
-			else
-				return null;
-		});
-
-		if (!MineRemoteAccessToolItem.hasMineAdded(stack.getTagCompound())) {
-			if (linkingState == NOT_LINKED_STATE)
-				return NOT_LINKED_STATE;
-			else
-				return EMPTY_STATE;
-		}
-		else
-			return linkingState;
-	}
-
-	public static float sentryRemoteAccessTool(ItemStack stack, World world, EntityLivingBase entity) {
-		if (!(entity instanceof EntityPlayer))
-			return EMPTY_STATE;
-
-		if (Minecraft.getMinecraft().pointedEntity instanceof Sentry) {
-			Sentry sentry = (Sentry) Minecraft.getMinecraft().pointedEntity;
-			float linkingState;
-
-			if (!stack.hasTagCompound())
-				stack.setTagCompound(new NBTTagCompound());
-
-			linkingState = loop(12, (tag, i) -> Arrays.stream(tag.getIntArray("sentry" + i)).boxed().toArray(Integer[]::new), stack.getTagCompound(), sentry.getPosition());
-
-			if (!SentryRemoteAccessToolItem.hasSentryAdded(stack.getTagCompound())) {
-				if (linkingState == NOT_LINKED_STATE)
-					return NOT_LINKED_STATE;
-				else
-					return EMPTY_STATE;
-			}
-			else
-				return linkingState;
-		}
-		else
-			return (SentryRemoteAccessToolItem.hasSentryAdded(stack.getTagCompound()) ? UNKNOWN_STATE : EMPTY_STATE);
 	}
 
 	public static float sonicSecuritySystem(ItemStack stack, World world, EntityLivingBase entity) {
