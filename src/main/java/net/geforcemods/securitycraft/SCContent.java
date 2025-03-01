@@ -51,7 +51,6 @@ public class SCContent {
 	public static Block ims;
 	public static Block inventoryScanner;
 	public static Block inventoryScannerField;
-	public static Block ironOreMine;
 	public static Block keycardLockFloorCeilingBlock;
 	public static Block keycardLockWallBlock;
 	public static Block keycardReader;
