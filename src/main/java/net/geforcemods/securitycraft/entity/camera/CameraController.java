@@ -360,7 +360,7 @@ public class CameraController {
 		for (LocalRenderInformationContainer container : feed.sectionsInRange) {
 			ChunkRender renderChunk = container.chunk;
 
-			if (renderChunk.isDirty() && renderChunk.hasAllNeighbors())
+			if (renderChunk.isDirty() && renderChunk.hasAllNeighbors() && renderChunk.lastRebuildTask == null)
 				dirtyRenderChunks.add(renderChunk);
 		}
 
@@ -439,7 +439,7 @@ public class CameraController {
 		}
 
 		public List<ChunkRender> getSectionsToCompile() {
-			return compilingSectionsQueue.stream().filter(Pair::getRight).map(Pair::getLeft).collect(Collectors.toList());
+			return compilingSectionsQueue.stream().filter(p -> p.getRight() && p.getLeft().lastRebuildTask == null).map(Pair::getLeft).collect(Collectors.toList());
 		}
 	}
 }
