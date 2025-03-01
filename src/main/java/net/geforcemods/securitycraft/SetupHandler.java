@@ -51,7 +51,6 @@ import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
-import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.HorizontalReinforcedIronBarsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedBoneBlock;
@@ -332,9 +331,6 @@ public class SetupHandler {
 		SCContent.secureRedstoneInterface = new SecureRedstoneInterfaceBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("secure_redstone_interface").setTranslationKey("securitycraft:secure_redstone_interface");
 		SCContent.reinforcedMagmaBlock = new ReinforcedMagmaBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_magma_block").setTranslationKey("securitycraft:reinforced_magma_block");
 		SCContent.reinforcedSoulSand = new ReinforcedSoulSandBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_soul_sand").setTranslationKey("securitycraft:reinforced_soul_sand");
-
-		//mines
-		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
 
 		//items
 		SCContent.codebreaker = new CodebreakerItem().setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("codebreaker").setTranslationKey("securitycraft:codebreaker");

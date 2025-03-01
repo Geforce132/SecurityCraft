@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.RespectInvisibilityOption;
 import net.geforcemods.securitycraft.api.Option.TargetingModeOption;
-import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;

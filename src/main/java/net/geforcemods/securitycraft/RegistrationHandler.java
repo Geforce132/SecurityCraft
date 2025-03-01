@@ -212,7 +212,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedWoodPlanks, new ItemBlockReinforcedPlanks(SCContent.reinforcedWoodPlanks), PageGroup.REINFORCED);
 		registerBlock(event, SCContent.panicButton);
 		registerBlock(event, SCContent.frame);
-		registerBlock(event, SCContent.claymore, ABLE_TO_CRAFT_MINES);
 		registerBlock(event, SCContent.keypadFurnace);
 		registerBlock(event, SCContent.securityCamera);
 		registerBlock(event, SCContent.reinforcedStairsOak, PageGroup.REINFORCED);
@@ -474,7 +473,6 @@ public class RegistrationHandler {
 		GameRegistry.registerTileEntity(RetinalScannerBlockEntity.class, new ResourceLocation("securitycraft:retinal_scanner"));
 		GameRegistry.registerTileEntity(KeypadChestBlockEntity.class, new ResourceLocation("securitycraft:keypad_chest"));
 		GameRegistry.registerTileEntity(AlarmBlockEntity.class, new ResourceLocation("securitycraft:alarm"));
-		GameRegistry.registerTileEntity(ClaymoreBlockEntity.class, new ResourceLocation("securitycraft:claymore"));
 		GameRegistry.registerTileEntity(KeypadFurnaceBlockEntity.class, new ResourceLocation("securitycraft:keypad_furnace"));
 		GameRegistry.registerTileEntity(ProtectoBlockEntity.class, new ResourceLocation("securitycraft:protecto"));
 		GameRegistry.registerTileEntity(CustomizableBlockEntity.class, new ResourceLocation("securitycraft:customizable"));
@@ -975,8 +973,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.keycardLock, 0, "keycard_lock");
 		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
-		//mines
-		registerInventoryModel(SCContent.claymore, 0, "claymore");
 	}
 
 	private static void registerInventoryModel(Block block, int metadata, String name) {

@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.renderers;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
-import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.items.ColorableItem;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.BufferBuilder;

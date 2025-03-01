@@ -193,7 +193,6 @@ public class ClientProxy implements IProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(ReinforcedPistonBlockEntity.class, new ReinforcedPistonRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SonicSecuritySystemBlockEntity.class, new SonicSecuritySystemRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(DisplayCaseBlockEntity.class, new DisplayCaseRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(ClaymoreBlockEntity.class, new ClaymoreRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(SecureRedstoneInterfaceBlockEntity.class, new SecureRedstoneInterfaceRenderer());
 		//disguisable tile entity renderers
 		ClientRegistry.bindTileEntitySpecialRenderer(BlockChangeDetectorBlockEntity.class, new DisguisableBlockEntityRenderer<>());
