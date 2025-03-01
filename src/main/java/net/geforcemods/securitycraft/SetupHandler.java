@@ -51,10 +51,8 @@ import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
 import net.geforcemods.securitycraft.blocks.TrophySystemBlock;
 import net.geforcemods.securitycraft.blocks.UsernameLoggerBlock;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.BouncingBettyBlock;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
-import net.geforcemods.securitycraft.blocks.mines.FurnaceMineBlock;
 import net.geforcemods.securitycraft.blocks.mines.IMSBlock;
 import net.geforcemods.securitycraft.blocks.mines.TrackMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseReinforcedBlock;
@@ -339,7 +337,6 @@ public class SetupHandler {
 		SCContent.reinforcedSoulSand = new ReinforcedSoulSandBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_soul_sand").setTranslationKey("securitycraft:reinforced_soul_sand");
 
 		//mines
-		SCContent.furnaceMine = new FurnaceMineBlock().setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
 		SCContent.trackMine = new TrackMineBlock().setHardness(0.7F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
 		SCContent.bouncingBetty = new BouncingBettyBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
 		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");

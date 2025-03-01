@@ -8,7 +8,6 @@
 		"camera.MinecraftMixin",
 		"camera.ViewFrustumMixin",
 		"camera.RenderPlayerMixin",
-		"f3.GuiOverlayDebugMixin",
 		"taser.ModelBipedMixin"
 	],
 	"mixins": [

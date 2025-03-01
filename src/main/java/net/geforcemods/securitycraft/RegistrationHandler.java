@@ -367,8 +367,6 @@ public class RegistrationHandler {
 		registerBlock(event, SCContent.reinforcedMagmaBlock);
 		registerBlock(event, SCContent.reinforcedSoulSand);
 
-		//block mines
-		registerBlock(event, SCContent.furnaceMine, ABLE_TO_CRAFT_MINES);
 	}
 
 	@SubscribeEvent
@@ -997,7 +995,6 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.blockChangeDetectorItem, 0, "block_change_detector");
 
 		//mines
-		registerInventoryModel(SCContent.furnaceMine, 0, "furnace_mine");
 		registerInventoryModel(SCContent.trackMine, 0, "track_mine");
 		registerInventoryModel(SCContent.bouncingBetty, 0, "bouncing_betty");
 		registerInventoryModel(SCContent.claymore, 0, "claymore");
