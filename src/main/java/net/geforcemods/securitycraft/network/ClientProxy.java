@@ -103,34 +103,6 @@ import net.minecraftforge.fml.relauncher.Side;
 public class ClientProxy implements IProxy {
 	private static Map<Block, Pair<IBlockColor, IItemColor>> toTint = new HashMap<>();
 
-	@SubscribeEvent
-	public static void onModelBake(ModelBakeEvent event) {
-		//@formatter:off
-		String[] mines = {
-				"coal_ore",
-				"cobblestone",
-				"dirt",
-				"emerald_ore",
-				"gravel",
-				"gold_ore",
-				"furnace",
-				"iron_ore",
-				"lapis_ore",
-				"redstone_ore",
-				"sand",
-				"stone",
-				"end_stone",
-				"netherrack"
-		};
-		//@formatter:on
-
-		for (String mine : mines) {
-			registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, mine + "_mine"), new ResourceLocation(mine));
-		}
-
-		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "diamond_mine"), new ResourceLocation("diamond_ore"));
-		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
-	}
 
 	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
 		ModelResourceLocation mineMrl = new ModelResourceLocation(mineRl, "inventory");
