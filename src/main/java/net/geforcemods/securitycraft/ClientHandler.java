@@ -111,6 +111,7 @@ import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -634,7 +635,8 @@ public class ClientHandler {
 			else
 				return 0xFFFFFF;
 		}, block));
-		event.getBlockColors().register((state, level, pos, tintIndex) -> {
+
+		BlockColor disguisableBlockColor = (state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
 			if (block instanceof IDisguisable disguisedBlock) {
@@ -649,7 +651,10 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
 			else
 				return 0xFFFFFF;
-		}, disguisableBlocks.get());
+		};
+
+		event.getBlockColors().register(disguisableBlockColor, disguisableBlocks.get());
+		event.getBlockColors().register(disguisableBlockColor, SCContent.SECURE_REDSTONE_INTERFACE.get());
 		event.getBlockColors().register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
