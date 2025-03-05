@@ -109,6 +109,7 @@ import net.minecraft.client.gui.screen.EditSignScreen;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.tileentity.LecternTileEntityRenderer;
@@ -581,7 +582,8 @@ public class ClientHandler {
 			else
 				return 0xFFFFFF;
 		}, block));
-		event.getBlockColors().register((state, level, pos, tintIndex) -> {
+
+		IBlockColor disguisableBlockColor = (state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
 			if (block instanceof IDisguisable) {
@@ -595,7 +597,10 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(0xFFFFFF);
 			else
 				return 0xFFFFFF;
-		}, disguisableBlocks.get());
+		};
+
+		event.getBlockColors().register(disguisableBlockColor, disguisableBlocks.get());
+		event.getBlockColors().register(disguisableBlockColor, SCContent.SECURE_REDSTONE_INTERFACE.get());
 		event.getBlockColors().register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColors.get(0.5D, 1.0D);
