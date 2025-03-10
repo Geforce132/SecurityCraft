@@ -99,7 +99,12 @@ task noMixinJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 	archiveName = "[1.12.2] SecurityCraft ${version} (No mixin).jar"
 	
 	manifest {
-		inheritFrom jar.manifest
+		attributes(
+			'FMLCorePluginContainsFMLMod': true,
+			'FMLCorePlugin': 'net.geforcemods.securitycraft.SecurityCraftLoadingPlugin',
+			'ForceLoadAsMod': true,
+			'FMLAT': 'securitycraft_at.cfg'
+		)
 	}
 
 	from sourceSets.main.output
