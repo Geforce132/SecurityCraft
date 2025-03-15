@@ -115,7 +115,7 @@ public class CameraSelectScreen extends GuiContainer {
 
 						mc.displayGuiScreen(null);
 					}));
-					tpButton.tooltip = new Tooltip(this, fontRenderer, Utils.localize("chat.coordinates.tooltip"));
+					tpButton.tooltip = new Tooltip(this, fontRenderer, Utils.localize("securitycraft.teleport"));
 				}
 			}
 			else
