@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.9.12-beta5 of SecurityCraft--------------------------
 
 - Fix: The Reinforced Dropper does not work
+- Fix: Change entry buttons in the Block Change Detector UI cannot be clicked
 
 --------------------------Changelog for v1.9.12-beta4 of SecurityCraft--------------------------
 

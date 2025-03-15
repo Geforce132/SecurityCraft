@@ -375,6 +375,11 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
+		public boolean isMouseOver(double mouseX, double mouseY) {
+			return super.isMouseOver(mouseX, mouseY) && (mouseX > left + width - 6 || mouseY > top + getContentHeight());
+		}
+
+		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (mouseY < top || mouseY > bottom)
 				return false;
