@@ -10,7 +10,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -19,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -101,19 +102,12 @@ public class ClientUtils {
 		float toGreen = (toColor >> 8 & 255) / 255.0F;
 		float toBlue = (toColor & 255) / 255.0F;
 		Matrix4f mat = guiGraphics.pose().last().pose();
-		BufferBuilder buffer;
+		VertexConsumer buffer = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(RenderType.gui());
 
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-		buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
 		buffer.addVertex(mat, right, top, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
 		buffer.addVertex(mat, left, top, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
 		buffer.addVertex(mat, left, bottom, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
 		buffer.addVertex(mat, right, bottom, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
-		BufferUploader.drawWithShader(buffer.buildOrThrow());
-		RenderSystem.disableBlend();
 	}
 
 	public static int HSBtoRGB(float hue, float saturation, float brightness) {
