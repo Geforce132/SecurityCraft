@@ -128,6 +128,11 @@ public class FrameBlock extends OwnableBlock {
 	}
 
 	@Override
+	public boolean isOpaqueCube(IBlockState state) { //Required to remove the dark tint on all textures rendered within the frame's bounding box
+		return false;
+	}
+
+	@Override
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, FACING, POWERED);
 	}

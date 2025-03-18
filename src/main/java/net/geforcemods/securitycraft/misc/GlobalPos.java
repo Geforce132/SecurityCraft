@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.util.Objects;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 
@@ -60,5 +62,28 @@ public class GlobalPos {
 
 	public static GlobalPos load(NBTTagCompound tag) {
 		return new GlobalPos(BlockPos.fromLong(tag.getLong("pos")), tag.getInteger("dimension"));
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		if (this == object)
+			return true;
+		else if (object instanceof GlobalPos) {
+			GlobalPos otherPos = (GlobalPos) object;
+
+			return dimension == otherPos.dimension && pos.equals(otherPos.pos());
+		}
+
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dimension, pos);
+	}
+
+	@Override
+	public String toString() {
+		return "Dimension id " + dimension + " " + pos;
 	}
 }

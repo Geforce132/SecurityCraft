@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -39,6 +38,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.RenderGlobal.ContainerLocalRenderInformation;
 import net.minecraft.client.renderer.chunk.CompiledChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.shader.Framebuffer;
@@ -49,7 +49,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -73,9 +75,7 @@ public class CameraController {
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
 	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
 	public static GlobalPos currentlyCapturedCamera;
-	public static FloatBuffer lastUsedRenderMatrix;
-	public static FloatBuffer lastUsedProjectionMatrix;
-	public static int shaderId = -1;
+	public static ClippingHelper lastUsedClippingHelper;
 	public static double lastFrameRendered = 0.0D;
 
 	private CameraController() {}
@@ -247,8 +247,7 @@ public class CameraController {
 	private static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
 		int resolution = ConfigHandler.frameFeedResolution;
 		BlockPos pos = cameraPos.pos();
-		SectionPos cameraSectionPos = SectionPos.of(pos);
-		ContainerLocalRenderInformation startingSection = Minecraft.getMinecraft().renderGlobal.new ContainerLocalRenderInformation(CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), MathHelper.clamp(cameraSectionPos.y(), 0, 15), cameraSectionPos.z(), true), null, 0);
+		ContainerLocalRenderInformation startingSection = Minecraft.getMinecraft().renderGlobal.new ContainerLocalRenderInformation(CameraViewAreaExtension.rawFetch(pos.getX() >> 4, MathHelper.clamp(pos.getY() >> 4, 0, 15), pos.getZ() >> 4, true), null, 0);
 		CameraFeed cameraFeed = new CameraFeed(new Framebuffer(resolution, resolution, true), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 
 		cameraFeed.compilingSectionsQueue.add(Pair.of(startingSection.renderChunk, false));
@@ -281,7 +280,7 @@ public class CameraController {
 	}
 
 	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
-		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
+		ChunkPos cameraSectionPos = new ChunkPos(cameraPos.pos());
 		List<ContainerLocalRenderInformation> visibleSections = feed.sectionsInRange;
 		List<Pair<RenderChunk, Boolean>> sectionQueue = feed.compilingSectionsQueue;
 		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
@@ -294,20 +293,22 @@ public class CameraController {
 			BlockPos origin = currentSection.getPosition();
 			CompiledChunk currentCompiledSection = currentSection.getCompiledChunk();
 
-			/*
-			 * if (!currentSection.hasAllNeighbors()) { sectionQueue.add(Pair.of(currentSection, false)); continue; } else
-			 */ if (currentCompiledSection == CompiledChunk.DUMMY) {
+			if (!hasAllNeighbors(currentSection)) {
+				sectionQueue.add(Pair.of(currentSection, false));
+				continue;
+			}
+			else if (currentCompiledSection == CompiledChunk.DUMMY) {
 				sectionQueue.add(Pair.of(currentSection, true));
 				continue;
 			}
 
 			//Once a section in the queue is compiled, it knows which neighbours it can and cannot see. This information is used to more cleverly determine which chunks the player can actually see
 			for (EnumFacing dir : EnumFacing.values()) {
-				int cx = SectionPos.blockToSectionCoord(origin.getX()) + dir.getXOffset();
-				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getYOffset();
-				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getZOffset();
+				int cx = (origin.getX() >> 4) + dir.getXOffset();
+				int cy = (origin.getY() >> 4) + dir.getYOffset();
+				int cz = (origin.getZ() >> 4) + dir.getZOffset();
 
-				if (Utils.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz)) {
+				if (Utils.isInViewDistance(cameraSectionPos.x, cameraSectionPos.z, viewDistance, cx, cz)) {
 					RenderChunk neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
 
 					if (neighbourSection != null) {
@@ -325,6 +326,15 @@ public class CameraController {
 				}
 			}
 		}
+	}
+
+	private static boolean hasAllNeighbors(RenderChunk renderChunk) {
+		World world = Minecraft.getMinecraft().world;
+		BlockPos chunkBlockPos = renderChunk.getPosition();
+		int chunkX = chunkBlockPos.getX() >> 4;
+		int chunkZ = chunkBlockPos.getZ() >> 4;
+
+		return !world.getChunk(chunkX + 1, chunkZ).isEmpty() && !world.getChunk(chunkX - 1, chunkZ).isEmpty() && !world.getChunk(chunkX, chunkZ + 1).isEmpty() && !world.getChunk(chunkX, chunkZ - 1).isEmpty();
 	}
 
 	private static boolean canSeeNeighborFace(CompiledChunk currentCompiledSection, EnumFacing dir) {

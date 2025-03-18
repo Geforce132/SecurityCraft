@@ -52,6 +52,9 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 		float zStart = 0.0F;
 		float zEnd = 1.0F;
 
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y, z);
+
 		switch (direction) {
 			case NORTH:
 				xStart = margin;
@@ -102,19 +105,19 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 			BufferBuilder bufferBuilder = tessellator.getBuffer();
 
 			target.bindFramebufferTexture();
-			GlStateManager.enableDepth();
 			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-			bufferBuilder.pos(xStart, margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).tex(1, 0).endVertex();
-			bufferBuilder.pos(xStart, 1 - margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).tex(1, 1).endVertex();
-			bufferBuilder.pos(xEnd, 1 - margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).tex(0, 1).endVertex();
-			bufferBuilder.pos(xEnd, margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).tex(0, 0).endVertex();
+			bufferBuilder.pos(xStart, margin, zStart).tex(1, 0).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
+			bufferBuilder.pos(xStart, 1 - margin, zStart).tex(1, 1).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
+			bufferBuilder.pos(xEnd, 1 - margin, zEnd).tex(0, 1).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
+			bufferBuilder.pos(xEnd, margin, zEnd).tex(0, 0).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
 			tessellator.draw();
 			target.unbindFramebufferTexture();
-			GlStateManager.disableDepth();
 
 			if (lens.getItem() instanceof ColorableItem && ((ColorableItem) lens.getItem()).hasColor(lens))
 				renderOverlay(xStart, xEnd, zStart, zEnd, ((ColorableItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), normal, margin);
 		}
+
+		GlStateManager.popMatrix();
 	}
 
 	private void renderNoise(float xStart, float xEnd, float zStart, float zEnd, Vec3i normal, float margin) {
@@ -152,10 +155,10 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
-		bufferBuilder.pos(xStart, margin, zStart).color(r, g, b, a).tex(u1, v1).normal(nx, ny, nz).endVertex();
-		bufferBuilder.pos(xStart, 1 - margin, zStart).color(r, g, b, a).tex(u1, v0).normal(nx, ny, nz).endVertex();
-		bufferBuilder.pos(xEnd, 1 - margin, zEnd).color(r, g, b, a).tex(u0, v0).normal(nx, ny, nz).endVertex();
-		bufferBuilder.pos(xEnd, margin, zEnd).color(r, g, b, a).tex(u0, v1).normal(nx, ny, nz).endVertex();
+		bufferBuilder.pos(xStart, margin, zStart).tex(u1, v1).color(r, g, b, a).normal(nx, ny, nz).endVertex();
+		bufferBuilder.pos(xStart, 1 - margin, zStart).tex(u1, v0).color(r, g, b, a).normal(nx, ny, nz).endVertex();
+		bufferBuilder.pos(xEnd, 1 - margin, zEnd).tex(u0, v0).color(r, g, b, a).normal(nx, ny, nz).endVertex();
+		bufferBuilder.pos(xEnd, margin, zEnd).tex(u0, v1).color(r, g, b, a).normal(nx, ny, nz).endVertex();
 		tessellator.draw();
 	}
 }

@@ -24,10 +24,9 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal.ContainerLocalRenderInformation;
-import net.minecraft.client.renderer.culling.ClippingHelper;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -156,15 +155,15 @@ public class SCClientEventHandler {
 		//+1 helps to reduce stuttering when many frames are active at once
 		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1;
 		double fpsCap = ConfigHandler.frameFeedFpsLimit;
-		double currentTime = System.nanoTime();
-		double frameInterval = 1.0D / fpsCap;
+		double currentTime = System.nanoTime() / 1E9D;
+		double frameInterval = 1.0D / fpsCap; //A fps cap of 30 means that one thirtieth of a second needs to pass before the same frame may be rendered again
+		double timeBetweenFrames = frameInterval / feedsToRender; //A fps cap of 30 with three feeds to render means that 1/90 of a second needs to pass between two different frame feed captures
 		double activeFramesPerMcFrame = MathHelper.ceil((fpsCap * feedsToRender) / Minecraft.getDebugFPS());
 
 		if (fpsCap < 260.0D) {
 			activeFrameCameraFeeds = new HashMap<>();
 
 			for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
-				double timeBetweenFrames = frameInterval / feedsToRender;
 				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
 
 				if (currentTime < lastActiveTime + frameInterval || currentTime < CameraController.lastFrameRendered + timeBetweenFrames || activeFramesPerMcFrame-- <= 0)
@@ -188,14 +187,12 @@ public class SCClientEventHandler {
 		World level = player.world;
 		float partialTick = event.renderTickTime;
 		Entity oldCamEntity = mc.getRenderViewEntity();
+
+		int oldWidth = mc.displayWidth;
+		int oldHeight = mc.displayHeight;
+		int frameFeedResolution = ConfigHandler.frameFeedResolution;
 		List<ContainerLocalRenderInformation> oldVisibleSections = new ObjectArrayList<>(mc.renderGlobal.renderInfos);
 		int newFrameFeedViewDistance = CameraController.getFrameFeedViewDistance(null);
-		double oldX = player.posX;
-		double oldXO = player.lastTickPosX;
-		double oldY = player.posY;
-		double oldYO = player.lastTickPosY;
-		double oldZ = player.posZ;
-		double oldZO = player.lastTickPosZ;
 		float oldXRot = player.cameraPitch;
 		float oldXRotO = player.prevCameraPitch;
 		float oldYRot = player.cameraYaw;
@@ -203,14 +200,14 @@ public class SCClientEventHandler {
 		float oldEyeHeight = player.eyeHeight;
 		boolean oldRenderHand = mc.entityRenderer.renderHand;
 		boolean oldRenderBlockOutline = mc.entityRenderer.drawBlockOutline;
-		boolean oldPanoramicMode = mc.entityRenderer.debugView;
 		int oldCameraType = mc.gameSettings.thirdPersonView;
 		EntityArmorStand securityCamera = new EntityArmorStand(level); //A separate entity is used instead of moving the player to allow the player to see themselves
-		ClippingHelper playerFrustum = getCurrentFrustum(camera); //Saved once before the loop, because the frustum changes depending on which camera is viewed
+		Frustum playerFrustum = getCurrentFrustum(oldCamEntity); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
 		mc.entityRenderer.drawBlockOutline = false;
 		mc.entityRenderer.renderHand = false;
-		mc.entityRenderer.debugView = true;
+		mc.displayWidth = frameFeedResolution;
+		mc.displayHeight = frameFeedResolution;
 		mc.gameSettings.thirdPersonView = 0;
 
 		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
@@ -234,7 +231,7 @@ public class SCClientEventHandler {
 					securityCamera.setPosition(cameraEntityPos.x, cameraEntityPos.y, cameraEntityPos.z);
 					mc.setRenderViewEntity(securityCamera);
 					securityCamera.rotationPitch = cameraXRot;
-					securityCamera.rotationYawHead = cameraYRot;
+					securityCamera.rotationYaw = cameraYRot;
 					CameraController.currentlyCapturedCamera = cameraPos;
 					mc.renderGlobal.renderInfos.clear();
 					mc.renderGlobal.renderInfos.addAll(feed.visibleSections());
@@ -249,7 +246,7 @@ public class SCClientEventHandler {
 					profiler.endSection();
 
 					try {
-						mc.entityRenderer.renderWorld(1.0F, 0L);
+						mc.entityRenderer.renderWorld(1.0F, System.nanoTime() + 4166666);
 					}
 					catch (Exception e) {
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getPos());
@@ -260,7 +257,7 @@ public class SCClientEventHandler {
 					frameTarget.unbindFramebuffer();
 					profiler.startSection("securitycraft:apply_frame_frustum");
 
-					ClippingHelper frustum = getCurrentFrustum(camera);
+					Frustum frustum = getCurrentFrustum(securityCamera);
 
 					if (be.shouldRotate() || feed.visibleSections().isEmpty() || CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.contains(cameraPos)) {
 						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.remove(cameraPos);
@@ -281,21 +278,18 @@ public class SCClientEventHandler {
 
 		securityCamera.setDead();
 		mc.setRenderViewEntity(oldCamEntity);
-		player.setPositionAndUpdate(oldX, oldY, oldZ);
-		player.posX = player.lastTickPosX = oldXO;
-		player.posY = player.lastTickPosY = oldYO;
-		player.posZ = player.lastTickPosZ = oldZO;
 		player.cameraPitch = oldXRot;
 		player.prevCameraPitch = oldXRotO;
 		player.cameraYaw = oldYRot;
-		player.prevChasingPosX = oldYRotO;
+		player.prevCameraYaw = oldYRotO;
 		player.eyeHeight = oldEyeHeight;
 		mc.gameSettings.thirdPersonView = oldCameraType;
 		mc.entityRenderer.drawBlockOutline = oldRenderBlockOutline;
 		mc.renderGlobal.renderInfos.clear();
 		mc.renderGlobal.renderInfos.addAll(oldVisibleSections);
 		mc.entityRenderer.renderHand = oldRenderHand;
-		mc.entityRenderer.debugView = oldPanoramicMode;
+		mc.displayWidth = oldWidth;
+		mc.displayHeight = oldHeight;
 		mc.getFramebuffer().bindFramebuffer(true);
 		CameraController.currentlyCapturedCamera = null;
 
@@ -308,20 +302,18 @@ public class SCClientEventHandler {
 		}
 	}
 
-	private static ClippingHelper getCurrentFrustum(ActiveRenderInfo camera) {
-		ClippingHelper frustum = null;
+	private static Frustum getCurrentFrustum(Entity entity) {
+		Frustum frustum = null;
 
-		if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
-			Vec3d activeRenderInfoPos = ActiveRenderInfo.getCameraPosition();
-
-			frustum = new ClippingHelper(CameraController.lastUsedRenderMatrix, CameraController.lastUsedProjectionMatrix);
-			frustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
+		if (CameraController.lastUsedClippingHelper != null) {
+			frustum = new Frustum(CameraController.lastUsedClippingHelper);
+			frustum.setPosition(entity.posX, entity.posY, entity.posZ);
 		}
 
 		return frustum;
 	}
 
-	private static boolean isFrameInFrustum(GlobalPos cameraPos, ClippingHelper beFrustum) {
+	private static boolean isFrameInFrustum(GlobalPos cameraPos, Frustum beFrustum) {
 		for (BlockPos framePos : CameraController.FRAME_LINKS.get(cameraPos)) {
 			AxisAlignedBB bb = new AxisAlignedBB(framePos);
 

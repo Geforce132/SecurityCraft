@@ -2,8 +2,8 @@
 	"parent": "block/block",
 	"ambientocclusion": false,
 	"textures": {
-		"particle": "block/iron_block",
-		"iron_block": "block/iron_block"
+		"particle": "blocks/iron_block",
+		"iron_block": "blocks/iron_block"
 	},
 	"elements": [
 		{

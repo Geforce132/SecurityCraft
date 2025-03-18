@@ -359,6 +359,8 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
 					Long forceLoadingPos = ChunkPos.asLong(x, z);
 
+					((WorldServer) world).getPlayerChunkMap().getOrCreateEntry(x, z).addPlayer(player); //Tracks loaded chunks for the player loading them
+
 					//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
 					if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
 						chunkForceLoadQueue.add(forceLoadingPos);
@@ -382,18 +384,18 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				linkedFrames.remove(playerUUID);
 
 			if (linkedFrames.isEmpty()) {
-				SectionPos cameraChunkPos = SectionPos.of(pos);
+				ChunkPos cameraChunkPos = new ChunkPos(pos);
 
 				addRecentlyUnviewedCamera(this);
 				BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
 
-				for (int x = cameraChunkPos.getX() - maxChunkLoadingRadius; x <= cameraChunkPos.getX() + maxChunkLoadingRadius; x++) {
-					for (int z = cameraChunkPos.getZ() - maxChunkLoadingRadius; z <= cameraChunkPos.getZ() + maxChunkLoadingRadius; z++) {
+				for (int x = cameraChunkPos.x - maxChunkLoadingRadius; x <= cameraChunkPos.x + maxChunkLoadingRadius; x++) {
+					for (int z = cameraChunkPos.z - maxChunkLoadingRadius; z <= cameraChunkPos.z + maxChunkLoadingRadius; z++) {
 						ChunkPos chunkPos = new ChunkPos(x, z);
 						Long chunkPosLong = ChunkPos.asLong(chunkPos.x, chunkPos.z);
 
 						if (FORCE_LOADED_CAMERA_CHUNKS.contains(chunkPosLong) && BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getTileEntitiesWithCondition(world, be -> be.shouldKeepChunkForceloaded(chunkPos)).isEmpty()) {
-							unforceChunk(chunkPos);
+							unforceChunk(chunkPos); //TODO do we also need to untrack?
 							FORCE_LOADED_CAMERA_CHUNKS.remove(chunkPosLong);
 						}
 					}
@@ -405,7 +407,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	private void getTicketAndForceChunk(ChunkPos chunkPos) {
-		if (chunkTicket == null)
+		if (chunkTicket == null) //TODO can camera A unforce chunk of camera B? Because it seems as though there is no position tracking
 			chunkTicket = ForgeChunkManager.requestTicket(SecurityCraft.instance, world, Type.NORMAL);
 
 		ForgeChunkManager.forceChunk(chunkTicket, chunkPos);

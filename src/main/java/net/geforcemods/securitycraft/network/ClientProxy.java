@@ -33,6 +33,7 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedGrassBlock;
@@ -199,6 +200,7 @@ public class ClientProxy implements IProxy {
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedJungleFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedDarkOakFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
 		ModelLoader.setCustomStateMapper(SCContent.reinforcedAcaciaFenceGate, new StateMap.Builder().ignore(BlockFenceGate.POWERED).build());
+		ModelLoader.setCustomStateMapper(SCContent.frame, new StateMap.Builder().ignore(FrameBlock.POWERED).build());
 	}
 
 	private Item findItem(String modid, String resourceName) {

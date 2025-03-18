@@ -229,7 +229,7 @@ public class ScreenHandler implements IGuiHandler {
 	private static CameraSelectScreen frame(EntityPlayer player, FrameBlockEntity be, boolean readOnly) {
 		ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor);
 
-		return heldStack.isEmpty() ? null : new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null);
+		return heldStack.isEmpty() ? new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null) : null;
 	}
 
 	@Override
