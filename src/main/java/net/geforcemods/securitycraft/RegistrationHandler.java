@@ -100,6 +100,7 @@ import net.geforcemods.securitycraft.network.client.SpawnInterfaceHighlightParti
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
+import net.geforcemods.securitycraft.network.client.UpdateTeamPrecedence;
 import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
@@ -617,6 +618,7 @@ public class RegistrationHandler {
 		network.registerMessage(SetDefaultCameraViewingDirection.Handler.class, SetDefaultCameraViewingDirection.class, 57, Side.SERVER);
 		network.registerMessage(SyncSecureRedstoneInterface.Handler.class, SyncSecureRedstoneInterface.class, 58, Side.SERVER);
 		network.registerMessage(SpawnInterfaceHighlightParticle.Handler.class, SpawnInterfaceHighlightParticle.class, 59, Side.CLIENT);
+		network.registerMessage(UpdateTeamPrecedence.Handler.class, UpdateTeamPrecedence.class, 60, Side.CLIENT);
 	}
 
 	@SubscribeEvent

@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 
 public class TeamUtils {
-	private static List<TeamHandler> teamPrecedence;
+	private static List<TeamHandler> teamPrecedence = new ArrayList<>();
 
 	private TeamUtils() {}
 

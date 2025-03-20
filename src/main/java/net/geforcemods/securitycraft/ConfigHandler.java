@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.network.client.UpdateTeamPrecedence;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -19,9 +20,11 @@ import net.minecraftforge.common.config.Config.RangeDouble;
 import net.minecraftforge.common.config.Config.RangeInt;
 import net.minecraftforge.common.config.Config.RequiresMcRestart;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Config(modid = SecurityCraft.MODID, category = "options")
 @EventBusSubscriber(modid = SecurityCraft.MODID)
@@ -284,7 +287,7 @@ public class ConfigHandler {
 	public static void onConfigChanged(OnConfigChangedEvent event) {
 		if (SecurityCraft.MODID.equals(event.getModID())) {
 			loadEffects();
-			updateTeamPrecedence();
+			updateTeamPrecedenceFromConfigValues(teamOwnershipPrecedence);
 		}
 	}
 
@@ -331,9 +334,9 @@ public class ConfigHandler {
 		return true;
 	}
 
-	private static void updateTeamPrecedence() {
+	public static void updateTeamPrecedenceFromConfigValues(String[] precedence) {
 		//@formatter:off
-		TeamUtils.setPrecedence(Arrays.stream(teamOwnershipPrecedence)
+		TeamUtils.setPrecedence(Arrays.stream(precedence)
 				.distinct()
 				.map(s -> {
 					try {
@@ -347,5 +350,8 @@ public class ConfigHandler {
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList()));
 		//@formatter:on
+
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
+			SecurityCraft.network.sendToAll(new UpdateTeamPrecedence(precedence));
 	}
 }

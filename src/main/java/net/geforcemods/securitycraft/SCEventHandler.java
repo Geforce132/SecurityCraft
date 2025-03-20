@@ -48,6 +48,7 @@ import net.geforcemods.securitycraft.misc.PortalSize;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.misc.SCWorldListener;
 import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.network.client.UpdateTeamPrecedence;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -191,6 +192,9 @@ public class SCEventHandler {
 
 			event.player.sendMessage(message);
 		}
+
+		if (ConfigHandler.enableTeamOwnership && event.player instanceof EntityPlayerMP)
+			SecurityCraft.network.sendTo(new UpdateTeamPrecedence(ConfigHandler.teamOwnershipPrecedence), (EntityPlayerMP) event.player);
 	}
 
 	@SubscribeEvent
