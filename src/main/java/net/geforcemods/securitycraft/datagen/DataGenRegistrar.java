@@ -42,10 +42,6 @@ public class DataGenRegistrar {
 		generator.addProvider(event.includeServer(), new LootTableProvider(output, Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK))));
 		generator.addProvider(event.includeServer(), blockTagGenerator);
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), existingFileHelper));
-
-		//		if (ModList.get().isLoaded("projecte"))
-		//			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
-
 		//@formatter:off
 		generator.addProvider(true, new PackMetadataGenerator(output)
                 .add(PackMetadataSection.TYPE, new PackMetadataSection(Component.literal("SecurityCraft resources & data"),

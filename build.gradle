@@ -95,7 +95,6 @@ dependencies {
 	implementation "curse.maven:cloth-config-348521:4973457" //betterf3 dependency
 	implementation "curse.maven:wthit-forge-455982:5208362"
 	implementation "curse.maven:badpackets-615134:5130415" //wthit dependency
-//	implementation "curse.maven:projecte-226410:3955047"
 	implementation "curse.maven:embeddium-908741:5077203"
 }
 

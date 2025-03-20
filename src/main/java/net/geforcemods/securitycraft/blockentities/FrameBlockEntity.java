@@ -311,7 +311,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (module == ModuleType.ALLOWLIST)
 			switchCameras(null, null, 0, false); //Disable the frame feed for all players if the allowlist module is removed, because frames on the server side don't know which players are currently viewing them
-		if (module == ModuleType.REDSTONE) {
+		else if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = false;
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FrameBlock.POWERED, false));
 			setChanged();
