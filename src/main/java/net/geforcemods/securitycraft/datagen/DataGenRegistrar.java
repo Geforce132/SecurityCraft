@@ -19,6 +19,7 @@ import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -45,8 +46,8 @@ public class DataGenRegistrar {
 		generator.addProvider(event.includeServer(), blockTagGenerator);
 		generator.addProvider(event.includeServer(), new ItemTagGenerator(output, lookupProvider, blockTagGenerator.contentsGetter(), existingFileHelper));
 
-		//		if (ModList.get().isLoaded("projecte"))
-		//			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
+		if (ModList.get().isLoaded("projecte"))
+			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(output, lookupProvider));
 
 		//@formatter:off
 		generator.addProvider(true, new PackMetadataGenerator(output)

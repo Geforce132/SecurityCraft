@@ -1,0 +1,6151 @@
+{
+  "comment": "Conversions for vanilla blocks to reinforced blocks. The only cost is durability of the reinforcer, so they are close enough to balance out.",
+  "values": {
+    "conversion": [
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:granite"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_granite"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_granite"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_granite"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:diorite"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_diorite"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_diorite"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_diorite"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:andesite"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_andesite"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_andesite"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_andesite"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobbled_deepslate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobbled_deepslate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_deepslate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_deepslate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:calcite"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_calcite"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dripstone_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dripstone_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:grass_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_grass_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dirt"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dirt"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:coarse_dirt"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_coarse_dirt"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:podzol"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_podzol"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mud"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mud"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_nylium"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_nylium"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_nylium"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_nylium"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:rooted_dirt"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_rooted_dirt"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobblestone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobblestone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:sand"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_sand"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_sand"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_sand"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gravel"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gravel"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:coal_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_coal_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:raw_iron_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_raw_iron_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:raw_copper_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_raw_copper_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:raw_gold_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_raw_gold_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:amethyst_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_amethyst_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:iron_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_iron_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:copper_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_copper_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gold_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gold_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:diamond_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_diamond_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:netherite_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_netherite_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:exposed_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_exposed_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:weathered_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_weathered_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oxidized_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oxidized_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cut_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cut_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:exposed_cut_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_exposed_cut_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:weathered_cut_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_weathered_cut_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oxidized_cut_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oxidized_cut_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cut_copper_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cut_copper_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:exposed_cut_copper_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_exposed_cut_copper_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:weathered_cut_copper_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_weathered_cut_copper_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oxidized_cut_copper_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oxidized_cut_copper_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cut_copper_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cut_copper_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:exposed_cut_copper_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_exposed_cut_copper_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:weathered_cut_copper_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_weathered_cut_copper_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oxidized_cut_copper_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oxidized_cut_copper_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_stem"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_stem"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_stem"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_stem"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_oak_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_oak_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_spruce_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_spruce_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_birch_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_birch_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_jungle_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_jungle_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_acacia_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_acacia_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_dark_oak_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_dark_oak_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_mangrove_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_mangrove_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_crimson_stem"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_crimson_stem"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_warped_stem"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_warped_stem"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_oak_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_oak_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_spruce_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_spruce_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_birch_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_birch_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_jungle_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_jungle_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_acacia_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_acacia_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_dark_oak_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_dark_oak_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_mangrove_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_mangrove_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_crimson_hyphae"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_crimson_hyphae"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_warped_hyphae"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_warped_hyphae"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_hyphae"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_hyphae"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_hyphae"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_hyphae"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tinted_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tinted_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lapis_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lapis_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cut_sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cut_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:white_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_white_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:orange_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_orange_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magenta_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magenta_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_blue_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_blue_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:yellow_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_yellow_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lime_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lime_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pink_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pink_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gray_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gray_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_gray_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_gray_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cyan_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cyan_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purple_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purple_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brown_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brown_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:green_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_green_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:black_wool"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_black_wool"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_normal_stone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_stone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:sandstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_sandstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cut_sandstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cut_sandstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobblestone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobblestone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mud_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mud_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:nether_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_nether_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:quartz_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_quartz_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_sandstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_sandstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cut_red_sandstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cut_red_sandstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purpur_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purpur_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:prismarine_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_prismarine_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:prismarine_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_prismarine_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_prismarine_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_prismarine_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_quartz"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_quartz"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_red_sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_red_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_stone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_stone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bookshelf"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bookshelf"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_cobblestone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_cobblestone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:obsidian"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_obsidian"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purpur_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purpur_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purpur_pillar"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purpur_pillar"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purpur_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purpur_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobblestone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobblestone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:ice"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_ice"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:snow_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_snow_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:clay"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_clay"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:netherrack"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_netherrack"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:soul_sand"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_soul_sand"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:soul_soil"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_soul_soil"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:basalt"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_basalt"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_basalt"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_basalt"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_basalt"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_basalt"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:glowstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_glowstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_stone_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_stone_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cracked_stone_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cracked_stone_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_stone_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_stone_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:packed_mud"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_packed_mud"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mud_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mud_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cracked_deepslate_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cracked_deepslate_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_tiles"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_tiles"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cracked_deepslate_tiles"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cracked_deepslate_tiles"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_deepslate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_deepslate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mud_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mud_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mycelium"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mycelium"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:nether_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_nether_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cracked_nether_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cracked_nether_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_nether_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_nether_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:nether_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_nether_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:end_stone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_end_stone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:end_stone_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_end_stone_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:sandstone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_sandstone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:emerald_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_emerald_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_quartz_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_quartz_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:quartz_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_quartz_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:quartz_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_quartz_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:quartz_pillar"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_quartz_pillar"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:quartz_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_quartz_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:white_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_white_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:orange_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_orange_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magenta_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magenta_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_blue_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_blue_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:yellow_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_yellow_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lime_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lime_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pink_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pink_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gray_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gray_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_gray_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_gray_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cyan_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cyan_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purple_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purple_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brown_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brown_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:green_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_green_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:black_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_black_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_hardened_clay"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:packed_ice"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_packed_ice"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:white_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_white_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:orange_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_orange_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magenta_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magenta_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_blue_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_blue_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:yellow_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_yellow_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lime_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lime_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pink_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pink_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gray_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gray_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_gray_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_gray_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cyan_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cyan_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purple_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purple_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brown_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brown_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:green_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_green_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:black_stained_glass"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_black_stained_glass"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:prismarine"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_prismarine"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:prismarine_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_prismarine_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_prismarine"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_prismarine"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:prismarine_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_prismarine_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:prismarine_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_prismarine_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_prismarine_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_prismarine_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:sea_lantern"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_sea_lantern"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_red_sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_red_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cut_red_sandstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cut_red_sandstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_sandstone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_sandstone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magma_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magma_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:nether_wart_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_nether_wart_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_wart_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_wart_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_nether_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_nether_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bone_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bone_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:white_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_white_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:orange_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_orange_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magenta_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magenta_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_blue_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_blue_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:yellow_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_yellow_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lime_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lime_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pink_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pink_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gray_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gray_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_gray_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_gray_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cyan_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cyan_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purple_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purple_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brown_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brown_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:green_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_green_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:black_concrete"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_black_concrete"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_ice"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_ice"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_granite_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_granite_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_red_sandstone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_red_sandstone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_stone_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_stone_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_diorite_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_diorite_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_cobblestone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_cobblestone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:end_stone_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_end_stone_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_sandstone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_sandstone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_quartz_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_quartz_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:granite_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_granite_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:andesite_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_andesite_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_nether_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_nether_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_andesite_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_andesite_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:diorite_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_diorite_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobbled_deepslate_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobbled_deepslate_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_deepslate_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_deepslate_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_tile_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_tile_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_granite_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_granite_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_red_sandstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_red_sandstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_stone_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_stone_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_diorite_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_diorite_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_cobblestone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_cobblestone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:end_stone_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_end_stone_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_sandstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_sandstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:smooth_quartz_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_quartz_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:granite_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_granite_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:andesite_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_andesite_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_nether_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_nether_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_andesite_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_andesite_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:diorite_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_diorite_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobbled_deepslate_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobbled_deepslate_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_deepslate_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_deepslate_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_tile_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_tile_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crying_obsidian"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crying_obsidian"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blackstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blackstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blackstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blackstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blackstone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blackstone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_polished_blackstone"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_polished_blackstone"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cracked_polished_blackstone_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cracked_polished_blackstone_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobweb"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobweb"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:moss_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_moss_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:moss_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_moss_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:end_rod"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_end_rod"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:iron_bars"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_iron_bars"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:ladder"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_ladder"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chain"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chain"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobblestone_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobblestone_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_cobblestone_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_cobblestone_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:prismarine_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_prismarine_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_sandstone_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_sandstone_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mossy_stone_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mossy_stone_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:granite_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_granite_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mud_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mud_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:nether_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_nether_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:andesite_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_andesite_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_nether_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_nether_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:sandstone_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_sandstone_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:end_stone_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_end_stone_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:diorite_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_diorite_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blackstone_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blackstone_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cobbled_deepslate_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cobbled_deepslate_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_deepslate_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_deepslate_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:deepslate_tile_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_deepslate_tile_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:white_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_white_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:orange_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_orange_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magenta_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magenta_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_blue_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_blue_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:yellow_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_yellow_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lime_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lime_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pink_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pink_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gray_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gray_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_gray_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_gray_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cyan_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cyan_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purple_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purple_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brown_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brown_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:green_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_green_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:black_carpet"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_black_carpet"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:white_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_white_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:orange_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_orange_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magenta_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magenta_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_blue_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_blue_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:yellow_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_yellow_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lime_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lime_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pink_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pink_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gray_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gray_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_gray_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_gray_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cyan_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cyan_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purple_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purple_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brown_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brown_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:green_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_green_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:black_stained_glass_pane"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_black_stained_glass_pane"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:white_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_white_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:orange_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_orange_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:magenta_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_magenta_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_blue_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_blue_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:yellow_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_yellow_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lime_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lime_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pink_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pink_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:gray_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_gray_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:light_gray_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_light_gray_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cyan_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cyan_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:purple_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_purple_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:blue_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_blue_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:brown_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_brown_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:green_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_green_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:red_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_red_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:black_glazed_terracotta"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_black_glazed_terracotta"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:scaffolding"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_scaffolding"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lantern"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lantern"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:soul_lantern"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_soul_lantern"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:shroomlight"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_shroomlight"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:ochre_froglight"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_ochre_froglight"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:verdant_froglight"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_verdant_froglight"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:pearlescent_froglight"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_pearlescent_froglight"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:redstone_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_redstone_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:piston"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_piston"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:sticky_piston"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_sticky_piston"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:observer"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_observer"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:hopper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_hopper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dispenser"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dispenser"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dropper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dropper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lectern"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lectern"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:lever"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lever"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:redstone_lamp"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_redstone_lamp"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stone_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stone_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_blackstone_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_blackstone_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:iron_trapdoor"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_iron_trapdoor"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cauldron"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cauldron"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_bamboo_block"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_bamboo_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_mosaic"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_mosaic"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_mosaic_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_mosaic_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_mosaic_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_mosaic_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_bookshelf"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_bookshelf"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_cherry_log"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_cherry_log"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:stripped_cherry_wood"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_stripped_cherry_wood"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_planks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_planks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_pressure_plate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_pressure_plate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_button"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_button"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:nether_brick_fence"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_nether_brick_fence"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oak_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oak_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:spruce_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_spruce_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:birch_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_birch_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:jungle_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_jungle_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:acacia_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_acacia_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dark_oak_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_dark_oak_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:mangrove_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_mangrove_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:cherry_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_cherry_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:bamboo_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_bamboo_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:crimson_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crimson_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:warped_fence_gate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_warped_fence_gate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:exposed_chiseled_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_exposed_chiseled_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:weathered_chiseled_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_weathered_chiseled_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oxidized_chiseled_copper"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oxidized_chiseled_copper"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:copper_grate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_copper_grate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:exposed_copper_grate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_exposed_copper_grate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:weathered_copper_grate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_weathered_copper_grate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oxidized_copper_grate"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oxidized_copper_grate"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:copper_bulb"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_copper_bulb"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:exposed_copper_bulb"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_exposed_copper_bulb"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:weathered_copper_bulb"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_weathered_copper_bulb"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:oxidized_copper_bulb"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_oxidized_copper_bulb"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_tuff"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_tuff"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_tuff"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_tuff"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_tuff_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_tuff_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_tuff_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_tuff_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:polished_tuff_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_polished_tuff_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff_brick_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff_brick_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff_brick_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff_brick_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:tuff_brick_wall"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_tuff_brick_wall"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:chiseled_tuff_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_tuff_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:crystal_quartz_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crystal_quartz_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:smooth_crystal_quartz"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_crystal_quartz"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:chiseled_crystal_quartz"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_chiseled_crystal_quartz_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:crystal_quartz"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crystal_quartz_block"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:crystal_quartz_bricks"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crystal_quartz_bricks"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:crystal_quartz_pillar"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crystal_quartz_pillar"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:crystal_quartz_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_crystal_quartz_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:smooth_crystal_quartz_stairs"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_crystal_quartz_stairs"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "securitycraft:smooth_crystal_quartz_slab"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_smooth_crystal_quartz_slab"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
+            "id": "minecraft:dirt_path"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_grass_path"
+        }
+      }
+    ]
+  }
+}

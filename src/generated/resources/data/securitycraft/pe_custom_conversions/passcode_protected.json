@@ -1,0 +1,42 @@
+{
+  "comment": "Passcode-protected blocks are created by rightclicking a non-passcode-protected block with a key panel, so the EMC is that block's EMC + the key panel's EMC.",
+  "values": {
+    "before": [
+      {
+        "type": "projecte:item",
+        "emc_value": 2376,
+        "id": "securitycraft:keypad"
+      },
+      {
+        "type": "projecte:item",
+        "emc_value": 584,
+        "id": "securitycraft:keypad_chest"
+      },
+      {
+        "type": "projecte:item",
+        "emc_value": 528,
+        "id": "securitycraft:keypad_furnace"
+      },
+      {
+        "type": "projecte:item",
+        "emc_value": 656,
+        "id": "securitycraft:keypad_smoker"
+      },
+      {
+        "type": "projecte:item",
+        "emc_value": 1811,
+        "id": "securitycraft:keypad_blast_furnace"
+      },
+      {
+        "type": "projecte:item",
+        "emc_value": 1544,
+        "id": "securitycraft:keypad_trapdoor"
+      },
+      {
+        "type": "projecte:item",
+        "emc_value": 576,
+        "id": "securitycraft:keypad_barrel"
+      }
+    ]
+  }
+}
