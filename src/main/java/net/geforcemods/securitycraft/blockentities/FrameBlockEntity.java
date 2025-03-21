@@ -73,9 +73,18 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 	}
 
 	@Override
+	public void onChunkUnloaded() {
+		super.onChunkUnloaded();
+		removeLinkWithCamera();
+	}
+
+	@Override
 	public void setRemoved() {
 		super.setRemoved();
+		removeLinkWithCamera();
+	}
 
+	private void removeLinkWithCamera() {
 		if (currentCameraPosition != null) {
 			if (!level.isClientSide)
 				switchCameras(null, null, 0, false);
