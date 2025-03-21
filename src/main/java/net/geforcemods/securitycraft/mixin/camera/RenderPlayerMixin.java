@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 
 /**
- * Fixes players not being able to see themselves while mounted to a camera
+ * Fixes players not being able to see themselves while mounted to a camera or viewing a camera frame feed
  */
 @Mixin(value = RenderPlayer.class, priority = 1100)
 public class RenderPlayerMixin {

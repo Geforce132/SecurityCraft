@@ -651,8 +651,6 @@ option.generic.targetingMode.description=Welche Entitäten können diesen Block 
 option.generic.targetingMode=Zielmodus: %s
 option.generic.viewActivated.maximumDistance.description=Von wie vielen Blöcken weit weg ist es maximal möglich, diesen Block zu aktivieren?
 option.generic.viewActivated.maximumDistance=Maximale Distanz: %s
-option.securitycraft.keypadFrame.chunkLoadingDistance.description=In welchem Radius sollen Chunks, die innerhalb einer Rahmenübertragung liegen, geladen werden? Falls der Wert dieser Option die \"view-distance\"-Servereinstellung oder deine \"Sichtweite\"-Option übersteigt, werden diese Werte stattdessen verwendet.
-option.securitycraft.keypadFrame.chunkLoadingDistance=Chunkladereichweite: %s
 option.securitycraft:alarm.range.description=Wie viele Blöcke weit kann der Alarm-Sound gehört werden?
 option.securitycraft:alarm.range=Reichweite: %s
 option.securitycraft:alarm.resetCooldown.description=Soll die Abklingzeit zwischen Alarmsounds zurückgesetzt werden, sobald der Alarm ein Redstonesignal bekommt, sodass der Alarmsound immer sofort abgespielt wird?
@@ -679,6 +677,8 @@ option.securitycraft:inventoryScanner.solidifyField.description=Sollen sich die 
 option.securitycraft:inventoryScanner.solidifyField=Felder verfestigen: %s
 option.securitycraft:keycard_lock.exactLevel.description=Soll dieses Schlüsselkartenschloss nur den genauen Schlüsselkarten-Level akzeptieren, oder ebenfalls alle Level darüber?
 option.securitycraft:keycard_lock.exactLevel=Genauer Level: %s
+option.securitycraft:keypadFrame.chunkLoadingDistance.description=In welchem Radius sollen Chunks, die innerhalb einer Rahmenübertragung liegen, geladen werden? Falls der Wert dieser Option die "view-distance"-Servereinstellung oder deine "Sichtweite"-Option übersteigt, werden diese Werte stattdessen verwendet.
+option.securitycraft:keypadFrame.chunkLoadingDistance=Chunkladereichweite: %s
 option.securitycraft:keypad_door.signalLength.description=Wie lange soll die Tür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Tür nicht schließt)
 option.securitycraft:keypad_door.signalLength=Dauer zum Schließen: %s
 option.securitycraft:keypad_trapdoor.signalLength.description=Wie lange soll die Falltür offen bleiben? (In Ticks, 20 Ticks = 1 Sekunde. Setze auf 0, damit sich die Falltür nicht schließt)

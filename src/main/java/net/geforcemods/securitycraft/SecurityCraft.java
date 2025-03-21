@@ -44,6 +44,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -92,6 +93,14 @@ public class SecurityCraft {
 
 		if (Loader.isModLoaded("icbmclassic"))
 			MinecraftForge.EVENT_BUS.register(new ICBMClassicEMPCompat());
+
+		Configuration config = ForgeChunkManager.getConfig();
+
+		if (!config.hasCategory(SecurityCraft.MODID)) {
+			config.get(SecurityCraft.MODID, "maximumChunksPerTicket", 1000).setMinValue(0);
+			config.get(SecurityCraft.MODID, "maximumTicketCount", 1000).setMinValue(0);
+			config.save();
+		}
 	}
 
 	@EventHandler

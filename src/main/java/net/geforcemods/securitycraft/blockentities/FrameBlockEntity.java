@@ -70,9 +70,18 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 	}
 
 	@Override
+	public void onChunkUnload() {
+		super.onChunkUnload();
+		removeLinkWithCamera();
+	}
+
+	@Override
 	public void invalidate() {
 		super.invalidate();
+		removeLinkWithCamera();
+	}
 
+	private void removeLinkWithCamera() {
 		if (currentCameraPosition != null) {
 			if (!world.isRemote)
 				switchCameras(null, null, 0, false);
@@ -218,7 +227,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 	}
 
 	public void switchCameras(GlobalPos newCameraPos, EntityPlayer player, int requestedRenderDistance, boolean disableNewCamera) {
-		GlobalPos previousCameraPos = getCurrentCamera();
+ 		GlobalPos previousCameraPos = getCurrentCamera();
 
 		setCurrentCamera(newCameraPos);
 

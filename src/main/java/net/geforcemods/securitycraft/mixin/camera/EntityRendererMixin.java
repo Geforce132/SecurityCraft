@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
+import javax.vecmath.Vector3f;
+
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,6 +36,12 @@ public abstract class EntityRendererMixin {
 	@Shadow
 	@Final
 	private Minecraft mc;
+	@Shadow
+	private float fogColorRed;
+	@Shadow
+	private float fogColorGreen;
+	@Shadow
+	private float fogColorBlue;
 
 	@Shadow
 	protected abstract void orientCamera(float partialTicks);
@@ -112,6 +120,19 @@ public abstract class EntityRendererMixin {
 		if (CameraController.currentlyCapturedCamera != null) {
 			orientCamera(partialTicks);
 			ci.cancel();
+		}
+	}
+
+	/**
+	 * Minecraft does not specifically render a fog on the entire sky, but only renders it where e.g. a color gradient is
+	 * required and uses the GL background color instead. Since this background (which is controlled by the fog color
+	 * calculations) cannot be captured by the frame feed itself, the necessary background color is stored here to make it
+	 * accessible to the frame feed renderer, which manually renders the background behind the frame feed.
+	 */
+	@Inject(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;clearColor(FFFF)V"))
+	private void setFrameFeedBackgroundColor(float partialTicks, CallbackInfo ci) {
+		if (CameraController.currentlyCapturedCamera != null) {
+			CameraController.currentlyCapturedCamera.getRight().setBackgroundColor(new Vector3f(fogColorRed, fogColorGreen, fogColorBlue));
 		}
 	}
 }

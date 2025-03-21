@@ -12,6 +12,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import javax.vecmath.Vector3f;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.google.common.util.concurrent.AtomicDouble;
@@ -74,7 +76,7 @@ public class CameraController {
 	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
 	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
-	public static GlobalPos currentlyCapturedCamera;
+	public static Pair<GlobalPos, CameraFeed> currentlyCapturedCamera;
 	public static ClippingHelper lastUsedClippingHelper;
 	public static double lastFrameRendered = 0.0D;
 
@@ -275,10 +277,6 @@ public class CameraController {
 		}
 	}
 
-	public static Framebuffer getViewForFrame(GlobalPos cameraPos) {
-		return FRAME_CAMERA_FEEDS.containsKey(cameraPos) ? FRAME_CAMERA_FEEDS.get(cameraPos).renderTarget : null;
-	}
-
 	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
 		ChunkPos cameraSectionPos = new ChunkPos(cameraPos.pos());
 		List<ContainerLocalRenderInformation> visibleSections = feed.sectionsInRange;
@@ -406,6 +404,7 @@ public class CameraController {
 		protected final Set<Long> sectionsInRangePositions;
 		protected final List<ContainerLocalRenderInformation> visibleSections;
 		protected final List<Pair<RenderChunk, Boolean>> compilingSectionsQueue;
+		protected Vector3f backgroundColor = new Vector3f(0, 0, 0);
 
 		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<ContainerLocalRenderInformation> sectionsInRange, Set<Long> sectionsInRangePositions, List<ContainerLocalRenderInformation> visibleSections, List<Pair<RenderChunk, Boolean>> compilingSectionsQueue) {
 			this.renderTarget = renderTarget;
@@ -437,7 +436,15 @@ public class CameraController {
 		}
 
 		public List<RenderChunk> getSectionsToCompile() {
-			return compilingSectionsQueue.stream().filter(Pair::getRight).map(Pair::getLeft).collect(Collectors.toList());
+			return compilingSectionsQueue.stream().filter(p -> p.getRight() && (p.getLeft().compileTask == null || !p.getLeft().compileTask.isFinished())).map(Pair::getLeft).collect(Collectors.toList());
+		}
+
+		public Vector3f getBackgroundColor() {
+			return backgroundColor;
+		}
+
+		public void setBackgroundColor(Vector3f newColor) {
+			backgroundColor = newColor;
 		}
 	}
 }

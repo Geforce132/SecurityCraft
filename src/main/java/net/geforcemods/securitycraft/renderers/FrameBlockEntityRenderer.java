@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
+import javax.vecmath.Vector3f;
+
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -7,6 +9,7 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.CameraController.CameraFeed;
 import net.geforcemods.securitycraft.items.ColorableItem;
 import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.minecraft.block.state.IBlockState;
@@ -93,7 +96,8 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 			renderSolidTexture(CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, normal, margin);
 		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
 			SecurityCameraBlockEntity cameraBlockEntity = (SecurityCameraBlockEntity) level.getTileEntity(cameraPos.pos());
-			Framebuffer target = CameraController.getViewForFrame(cameraPos);
+			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
+			Framebuffer target = feed != null ? feed.renderTarget() : null;
 
 			if (target == null) {
 				renderSolidTexture(CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, normal, margin);
@@ -103,7 +107,9 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 			ItemStack lens = cameraBlockEntity.getLensContainer().getStackInSlot(0);
 			Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
 			BufferBuilder bufferBuilder = tessellator.getBuffer();
+			Vector3f backgroundColor = feed.getBackgroundColor();
 
+			renderOverlay(xStart, xEnd, zStart, zEnd, (int) (backgroundColor.x * 255.0F), (int) (backgroundColor.y * 255.0F), (int) (backgroundColor.z * 255.0F), 255, normal, margin);
 			target.bindFramebufferTexture();
 			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
 			bufferBuilder.pos(xStart, margin, zStart).tex(1, 0).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
@@ -123,35 +129,35 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 	private void renderNoise(float xStart, float xEnd, float zStart, float zEnd, Vec3i normal, float margin) {
 		TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(NOISE_BACKGROUND.toString());
 
-		renderTexture(TextureMap.LOCATION_BLOCKS_TEXTURE, xStart, xEnd, zStart, zEnd, sprite.getMinU(), sprite.getMinV(), sprite.getMaxU(), sprite.getMaxV(), 0xFFFFFF, normal, margin);
+		renderTexture(TextureMap.LOCATION_BLOCKS_TEXTURE, xStart, xEnd, zStart, zEnd, sprite.getMinU(), sprite.getMinV(), sprite.getMaxU(), sprite.getMaxV(), 255, 255, 255, 255, normal, margin);
 	}
 
 	private void renderSolidTexture(ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, Vec3i normal, float margin) {
-		renderTexture(texture, xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, 0xFFFFFFFF, normal, margin);
+		renderTexture(texture, xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, 255, 255, 255, 255, normal, margin);
 	}
 
 	private void renderCutoutTexture(ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, Vec3i normal, float margin) {
 		GlStateManager.enableBlend();
-		renderTexture(texture, xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, 0xFFFFFFFF, normal, margin);
+		renderTexture(texture, xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, 255, 255, 255, 255, normal, margin);
 		GlStateManager.disableBlend();
 	}
 
 	private void renderOverlay(float xStart, float xEnd, float zStart, float zEnd, int color, Vec3i normal, float margin) {
+		renderOverlay(xStart, xEnd, zStart, zEnd, color >> 16 & 255, color >> 8 & 255, color & 255, color >> 24, normal, margin);
+	}
+
+	private void renderOverlay(float xStart, float xEnd, float zStart, float zEnd, int r, int g, int b, int a, Vec3i normal, float margin) {
 		GlStateManager.enableBlend();
-		renderTexture(WHITE, xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, color, normal, margin);
+		renderTexture(WHITE, xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, r, g, b, a, normal, margin);
 		GlStateManager.disableBlend();
 	}
 
-	private void renderTexture(ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, float u0, float v0, float u1, float v1, int color, Vec3i normal, float margin) {
+	private void renderTexture(ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, float u0, float v0, float u1, float v1, int r, int g, int b, int a, Vec3i normal, float margin) {
 		Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
 		BufferBuilder bufferBuilder = tessellator.getBuffer();
 		int nx = normal.getX();
 		int ny = normal.getY();
 		int nz = normal.getZ();
-		int r = color >> 16 & 255;
-		int g = color >> 8 & 255;
-		int b = color & 255;
-		int a = color >> 24;
 
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);

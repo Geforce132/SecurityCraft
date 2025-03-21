@@ -27,7 +27,7 @@ public class ViewFrustumMixin {
 		for (int x = MathHelper.intFloorDiv(minX, 16); x <= maxChunkX; x++) {
 			for (int y = MathHelper.intFloorDiv(minY, 16); y <= maxChunkY; y++) {
 				for (int z = MathHelper.intFloorDiv(minZ, 16); z <= maxChunkZ; z++) {
-					CameraViewAreaExtension.setDirty(x, y, z, updateImmediately); //TODO this does not work yet in faraway chunks
+					CameraViewAreaExtension.setDirty(x, y, z, updateImmediately);
 				}
 			}
 		}

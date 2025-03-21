@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
@@ -185,7 +187,7 @@ public class SCClientEventHandler {
 		profiler.startSection("securitycraft:frame_level");
 
 		World level = player.world;
-		float partialTick = event.renderTickTime;
+		float partialTick = mc.isGamePaused() ? mc.renderPartialTicksPaused : event.renderTickTime;
 		Entity oldCamEntity = mc.getRenderViewEntity();
 
 		int oldWidth = mc.displayWidth;
@@ -232,7 +234,9 @@ public class SCClientEventHandler {
 					mc.setRenderViewEntity(securityCamera);
 					securityCamera.rotationPitch = cameraXRot;
 					securityCamera.rotationYaw = cameraYRot;
-					CameraController.currentlyCapturedCamera = cameraPos;
+					securityCamera.prevRotationPitch = cameraXRot;
+					securityCamera.prevRotationYaw = cameraYRot;
+					CameraController.currentlyCapturedCamera = Pair.of(cameraPos, feed);
 					mc.renderGlobal.renderInfos.clear();
 					mc.renderGlobal.renderInfos.addAll(feed.visibleSections());
 					mc.renderGlobal.chunksToUpdate.clear();
