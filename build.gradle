@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.4.86-beta"
+	version = "21.5.0-alpha.1.21.5-rc1.20250321.225134"
 	validateAccessTransformers = true
 
 	runs {
@@ -70,6 +70,15 @@ neoForge {
 }
 
 repositories {
+    maven {
+        name 'Maven for PR #2039' // https://github.com/neoforged/NeoForge/pull/2039
+        url 'https://prmaven.neoforged.net/NeoForge/pr2039'
+        content {
+            includeModule('net.neoforged', 'neoforge')
+            includeModule('net.neoforged', 'testframework')
+        }
+    }
+
 	maven {
 		url = "https://cursemaven.com/"
 		content {
@@ -96,10 +105,10 @@ dependencies {
 //	implementation "curse.maven:jei-238222:5567933"
 //	implementation "curse.maven:the-one-probe-245211:5502323"
 //	implementation "curse.maven:jade-324717:6011327"
-	implementation "curse.maven:betterf3-401648:5873289"
-	implementation "curse.maven:cloth-config-348521:5834708" //betterf3 dependency
+//	implementation "curse.maven:betterf3-401648:5873289"
+//	implementation "curse.maven:cloth-config-348521:5834708" //betterf3 dependency
 //	implementation "curse.maven:wthit-forge-455982:5977924"
-	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
+//	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 //	implementation "curse.maven:embeddium-908741:6116910"
 //	implementation "maven.modrinth:sodium:mc1.21.4-0.6.6-neoforge" //incompatible with embeddium
