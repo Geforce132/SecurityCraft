@@ -59,7 +59,7 @@ public class ReinforcedScaffoldingBlock extends ScaffoldingBlock implements Enti
 		if (ctx instanceof EntityCollisionContext ectx && ownsScaffolding(level, pos, ectx.getEntity()))
 			return super.getShape(state, level, pos, ctx);
 		else
-			return state.getValue(BOTTOM) ? UNSTABLE_SHAPE : STABLE_SHAPE;
+			return state.getValue(BOTTOM) ? SHAPE_UNSTABLE : SHAPE_STABLE;
 	}
 
 	@Override
