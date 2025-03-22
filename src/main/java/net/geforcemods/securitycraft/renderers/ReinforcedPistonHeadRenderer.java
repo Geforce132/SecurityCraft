@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.renderers;
 
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -8,16 +10,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.PistonType;
-import net.neoforged.neoforge.client.ClientHooks;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.RenderTypeHelper;
 
 public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<ReinforcedPistonMovingBlockEntity> {
 	private BlockRenderDispatcher blockRenderer;
@@ -27,7 +32,7 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 	}
 
 	@Override
-	public void render(ReinforcedPistonMovingBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+	public void render(ReinforcedPistonMovingBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
 		Level level = be.getLevel();
 
 		if (level != null) {
@@ -64,11 +69,13 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 		}
 	}
 
-	private void renderBlocks(BlockPos pos, BlockState state, PoseStack poseStack, MultiBufferSource buffer, Level level, boolean checkSides, int combinedOverlay) {
+	private void renderBlocks(BlockPos pos, BlockState state, PoseStack poseStack, MultiBufferSource buffer, Level level, boolean extended, int combinedOverlay) {
 		if (blockRenderer == null)
 			blockRenderer = Minecraft.getInstance().getBlockRenderer();
 
-		ClientHooks.renderPistonMovedBlocks(pos, state, poseStack, buffer, level, checkSides, combinedOverlay, blockRenderer);
+		List<BlockModelPart> list = blockRenderer.getBlockModel(state).collectParts(level, pos, state, RandomSource.create(state.getSeed(pos)));
+
+		blockRenderer.getModelRenderer().tesselateBlock(level, list, state, pos, poseStack, renderType -> buffer.getBuffer(RenderTypeHelper.getMovingBlockRenderType(renderType)), extended, combinedOverlay);
 	}
 
 	@Override

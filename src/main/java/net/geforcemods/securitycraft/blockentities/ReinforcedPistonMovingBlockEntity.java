@@ -10,15 +10,14 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -44,15 +43,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IOwnable { //this class doesn't extend PistonBlockEntity because almost all of that class' content is private
-	private BlockState movedState;
+	private static final BlockState DEFAULT_BLOCK_STATE = Blocks.AIR.defaultBlockState();
+	private BlockState movedState = DEFAULT_BLOCK_STATE;
 	private CompoundTag movedBlockEntityTag;
 	private Direction direction;
-	private boolean extending;
-	private boolean isSourcePiston;
+	private boolean extending = false;
+	private boolean isSourcePiston = false;
 	private static final ThreadLocal<Direction> NOCLIP = ThreadLocal.withInitial(() -> null);
-	private float progress;
+	private float progress = 0.0F;
 	/** The extension / retraction progress */
-	private float lastProgress;
+	private float lastProgress = 0.0F;
 	private long lastTicked;
 	private int deathTicks;
 	private Owner owner = new Owner();
@@ -197,7 +197,6 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	private static void moveEntityByPiston(Direction direction, Entity entity, double progress, Direction moveDirection) {
 		NOCLIP.set(direction);
 		entity.move(MoverType.PISTON, new Vec3(progress * moveDirection.getStepX(), progress * moveDirection.getStepY(), progress * moveDirection.getStepZ()));
-		entity.applyEffectsFromBlocks();
 		NOCLIP.set(null);
 	}
 
@@ -332,7 +331,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					BlockState pushedState = Block.updateFromNeighbourShapes(be.movedState, level, pos);
 
 					if (pushedState.isAir()) {
-						level.setBlock(pos, be.movedState, 84);
+						level.setBlock(pos, be.movedState, 340);
 						Block.updateOrDestroy(be.movedState, pushedState, level, pos, 3);
 					}
 					else {
@@ -378,26 +377,28 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		HolderGetter<Block> holderGetter;
+		RegistryOps<Tag> registryOps;
 
 		super.loadAdditional(tag, lookupProvider);
-
-		holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK;
-		movedState = NbtUtils.readBlockState(holderGetter, tag.getCompound("blockState"));
-		direction = Direction.from3DDataValue(tag.getInt("facing"));
-		progress = tag.getFloat("progress");
+		registryOps = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
+		movedState = tag.read("blockState", BlockState.CODEC, registryOps).orElse(DEFAULT_BLOCK_STATE);
+		direction = tag.read("facing", Direction.LEGACY_ID_CODEC).orElse(Direction.DOWN);
+		progress = tag.getFloatOr("progress", 0.0F);
 		lastProgress = progress;
-		extending = tag.getBoolean("extending");
-		isSourcePiston = tag.getBoolean("source");
+		extending = tag.getBooleanOr("extending", false);
+		isSourcePiston = tag.getBooleanOr("source", false);
 		movedBlockEntityTag = (CompoundTag) tag.get("movedBlockEntityTag");
 		owner.load(tag);
 	}
 
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+		RegistryOps<Tag> registryOps;
+
 		super.saveAdditional(tag, lookupProvider);
-		tag.put("blockState", NbtUtils.writeBlockState(movedState));
-		tag.putInt("facing", direction.get3DDataValue());
+		registryOps = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
+		tag.store("blockState", BlockState.CODEC, registryOps, movedState);
+		tag.store("facing", Direction.LEGACY_ID_CODEC, direction);
 		tag.putFloat("progress", lastProgress);
 		tag.putBoolean("extending", extending);
 		tag.putBoolean("source", isSourcePiston);

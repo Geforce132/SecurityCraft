@@ -131,7 +131,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			if (EventHooks.onPistonMovePre(level, pos, direction, true))
 				return false;
 
-			if (!this.moveBlocks(level, pos, direction, true))
+			if (!moveBlocks(level, pos, direction, true))
 				return false;
 
 			level.setBlock(pos, extendedState, 67);
@@ -148,9 +148,9 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			BlockEntity be = level.getBlockEntity(pos);
 			BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, direction).setValue(MovingPistonBlock.TYPE, isSticky ? PistonType.STICKY : PistonType.DEFAULT);
 
-			level.setBlock(pos, movingPiston, 20);
+			level.setBlock(pos, movingPiston, 276);
 			level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(pos, movingPiston, defaultBlockState().setValue(FACING, Direction.from3DDataValue(param & 7)), be != null ? be.getUpdateTag(level.registryAccess()) : null, direction, false, true));
-			level.blockUpdated(pos, movingPiston.getBlock());
+			level.updateNeighborsAt(pos, movingPiston.getBlock());
 			movingPiston.updateNeighbourShapes(level, pos, 2);
 
 			if (isSticky) {
@@ -226,7 +226,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 		BlockEntity pistonBe = level.getBlockEntity(pos);
 
 		if (!extending && level.getBlockState(frontPos).is(SCContent.REINFORCED_PISTON_HEAD.get()))
-			level.setBlock(frontPos, Blocks.AIR.defaultBlockState(), 20);
+			level.setBlock(frontPos, Blocks.AIR.defaultBlockState(), 276);
 
 		ReinforcedPistonStructureResolver structureResolver = new ReinforcedPistonStructureResolver(level, pos, facing, extending);
 
@@ -256,12 +256,12 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				BlockEntity beToDestroy = stateToDestroy.hasBlockEntity() ? level.getBlockEntity(posToDestroy) : null;
 
 				dropResources(stateToDestroy, level, posToDestroy, beToDestroy);
+
+				if (!stateToDestroy.is(BlockTags.FIRE) && level.isClientSide)
+					level.levelEvent(2001, posToDestroy, getId(stateToDestroy));
+
 				level.setBlock(posToDestroy, Blocks.AIR.defaultBlockState(), 18);
 				level.gameEvent(GameEvent.BLOCK_DESTROY, posToDestroy, GameEvent.Context.of(stateToDestroy));
-
-				if (!stateToDestroy.is(BlockTags.FIRE))
-					level.addDestroyBlockEffect(posToDestroy, stateToDestroy);
-
 				updatedBlocks[j++] = stateToDestroy;
 			}
 
@@ -282,7 +282,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				}
 
 				stateToPosMap.remove(posToMove);
-				level.setBlock(posToMove, SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, facing), 68);
+				level.setBlock(posToMove, SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, facing), 324);
 				level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(posToMove, movingPiston, statesToMove.get(l), tag, facing, extending, false));
 				updatedBlocks[j++] = stateToMove;
 			}
@@ -297,7 +297,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 					headBe.setOwner(ownable.getOwner().getUUID(), ownable.getOwner().getName());
 
 				stateToPosMap.remove(frontPos);
-				level.setBlock(frontPos, movingPiston, 68);
+				level.setBlock(frontPos, movingPiston, 324);
 				level.setBlockEntity(ReinforcedMovingPistonBlock.newMovingBlockEntity(frontPos, movingPiston, pistonHead, headBe.getUpdateTag(level.registryAccess()), facing, true, true));
 			}
 
@@ -323,6 +323,9 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			for (int i1 = blocksToDestroy.size() - 1; i1 >= 0; --i1) {
 				BlockState updatedState = updatedBlocks[j++];
 				BlockPos posToDestroy = blocksToDestroy.get(i1);
+
+				if (level instanceof ServerLevel serverlevel)
+					updatedState.affectNeighborsAfterRemoval(serverlevel, posToDestroy, false);
 
 				updatedState.updateIndirectNeighbourShapes(level, posToDestroy, 2);
 				level.updateNeighborsAt(posToDestroy, updatedState.getBlock(), orientation);
