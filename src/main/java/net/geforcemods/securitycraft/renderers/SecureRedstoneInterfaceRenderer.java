@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<SecureRedstoneInterfaceBlockEntity> {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/secure_redstone_interface_dish.png");
@@ -25,8 +26,8 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 	}
 
 	@Override
-	public void render(SecureRedstoneInterfaceBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
-		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
+	public void render(SecureRedstoneInterfaceBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
 
 		if (!be.isModuleEnabled(ModuleType.DISGUISE) && !be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER)) {
 			pose.translate(0.5D, 0.5D, 0.5D);

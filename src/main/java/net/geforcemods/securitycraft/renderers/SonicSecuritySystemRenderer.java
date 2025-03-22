@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSecuritySystemBlockEntity> {
 	private static final Quaternionf POSITIVE_X_180 = Axis.XP.rotationDegrees(180.0F);
@@ -36,10 +37,10 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	}
 
 	@Override
-	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+	public void render(SonicSecuritySystemBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 cameraPos) {
 		boolean recording = be.isRecording();
 
-		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay);
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay, cameraPos);
 		pose.translate(0.5D, 1.5D, 0.5D);
 
 		if (recording || be.isListening() && !be.isShutDown()) {

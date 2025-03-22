@@ -14,6 +14,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 public class BlockEntityRenderDelegate {
 	private final Map<BlockEntity, DelegateRendererInfo> renderDelegates = new HashMap<>();
@@ -49,7 +50,7 @@ public class BlockEntityRenderDelegate {
 		renderDelegates.remove(originalBlockEntity);
 	}
 
-	public boolean tryRenderDelegate(BlockEntity originalBlockEntity, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+	public boolean tryRenderDelegate(BlockEntity originalBlockEntity, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
 		DelegateRendererInfo delegateRendererInfo = renderDelegates.get(originalBlockEntity);
 
 		if (delegateRendererInfo != null) {
@@ -59,7 +60,7 @@ public class BlockEntityRenderDelegate {
 				copyPose.pushPose();
 				copyPose.last().pose().mul(pose.last().pose());
 				copyPose.last().normal().mul(pose.last().normal());
-				delegateRendererInfo.delegateRenderer().render(delegateRendererInfo.delegateBlockEntity(), partialTicks, copyPose, buffer, combinedLight, combinedOverlay);
+				delegateRendererInfo.delegateRenderer().render(delegateRendererInfo.delegateBlockEntity(), partialTicks, copyPose, buffer, combinedLight, combinedOverlay, cameraPos);
 				copyPose.popPose();
 			}
 			catch (Exception e) {

@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity> {
 	public static final int RENDER_DISTANCE = 100;
@@ -20,7 +21,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	public BlockPocketManagerRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(BlockPocketManagerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+	public void render(BlockPocketManagerBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
 		// The code below draws the outline border of a block pocket.
 
 		if (!be.showsOutline() || !be.isOwnedBy(Minecraft.getInstance().player))

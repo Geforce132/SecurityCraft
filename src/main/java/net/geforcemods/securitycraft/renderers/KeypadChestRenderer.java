@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.phys.Vec3;
 
 public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 	private static final Material ACTIVE = createMaterial("active");
@@ -38,11 +39,11 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 	}
 
 	@Override
-	public void render(ChestBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, poseStack, buffer, packedLight, packedOverlay);
+	public void render(ChestBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 cameraPos) {
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, poseStack, buffer, packedLight, packedOverlay, cameraPos);
 
 		if (be instanceof IModuleInventory moduleInv && !moduleInv.isModuleEnabled(ModuleType.DISGUISE))
-			super.render(be, partialTicks, poseStack, buffer, packedLight, packedOverlay);
+			super.render(be, partialTicks, poseStack, buffer, packedLight, packedOverlay, cameraPos);
 	}
 
 	@Override
