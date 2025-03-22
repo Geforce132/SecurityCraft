@@ -20,6 +20,7 @@
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
 		"datafix.V4067Mixin",
+		"datafix.V99Mixin",
 		"datagen.BlockStateGeneratorCollectorMixin",
 		"hopper.HopperBlockEntityMixin",
 		"hopper.VanillaInventoryCodeHooksMixin",

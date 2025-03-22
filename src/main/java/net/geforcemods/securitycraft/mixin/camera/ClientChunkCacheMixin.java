@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
+import java.util.Map;
 import java.util.function.Consumer;
 
 import org.spongepowered.asm.mixin.Final;
@@ -17,12 +18,12 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
+import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData.BlockEntityTagOutput;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
+import net.minecraft.world.level.levelgen.Heightmap.Types;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 
@@ -103,7 +104,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * them to be acquired afterwards
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At(value = "HEAD"), cancellable = true)
-	private void securitycraft$onReplace(int x, int z, FriendlyByteBuf buffer, CompoundTag chunkTag, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> callback) {
+	private void securitycraft$onReplace(int x, int z, FriendlyByteBuf buffer, Map<Types, long[]> heightmaps, Consumer<BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> cir) {
 		ClientChunkCache.Storage cameraStorage = CameraController.getCameraStorage();
 
 		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && cameraStorage.inRange(x, z)) {
@@ -113,16 +114,16 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 
 			if (!isValidChunk(chunk, x, z)) {
 				chunk = new LevelChunk(level, chunkPos);
-				chunk.replaceWithPacketData(buffer, chunkTag, tagOutputConsumer);
+				chunk.replaceWithPacketData(buffer, heightmaps, tagOutputConsumer);
 				cameraStorage.replace(index, chunk);
 			}
 			else
-				chunk.replaceWithPacketData(buffer, chunkTag, tagOutputConsumer);
+				chunk.replaceWithPacketData(buffer, heightmaps, tagOutputConsumer);
 
 			level.onChunkLoaded(chunkPos);
 			SecurityCraftClient.INSTALLED_IUM_MOD.onChunkStatusAdded(level, x, z);
 			NeoForge.EVENT_BUS.post(new ChunkEvent.Load(chunk, false));
-			callback.setReturnValue(chunk);
+			cir.setReturnValue(chunk);
 		}
 	}
 

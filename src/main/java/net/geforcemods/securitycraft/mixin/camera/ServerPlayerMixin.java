@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
  */
 @Mixin(value = ServerPlayer.class, priority = 1100)
 public class ServerPlayerMixin {
-	@WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;absMoveTo(DDDFF)V"))
+	@WrapWithCondition(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;absSnapTo(DDDFF)V"))
 	private boolean securitycraft$shouldMoveTo(ServerPlayer player, double x, double y, double z, float yaw, float pitch) {
 		return !PlayerUtils.isPlayerMountedOnCamera(player);
 	}
