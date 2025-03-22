@@ -25,7 +25,9 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 	public BlockReinforcerMenu(int windowId, Inventory inventory, boolean isLvl1) {
 		super(SCContent.BLOCK_REINFORCER_MENU.get(), windowId);
 
-		blockReinforcer = inventory.getSelected().getItem() instanceof UniversalBlockReinforcerItem ? inventory.getSelected() : inventory.offhand.get(0);
+		Player player = inventory.player;
+
+		blockReinforcer = player.getMainHandItem().getItem() instanceof UniversalBlockReinforcerItem ? player.getMainHandItem() : player.getOffhandItem();
 		this.isLvl1 = isLvl1;
 		this.isReinforcing = UniversalBlockReinforcerItem.isReinforcing(blockReinforcer);
 

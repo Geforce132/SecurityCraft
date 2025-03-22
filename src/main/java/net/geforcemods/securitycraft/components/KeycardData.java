@@ -11,6 +11,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.items.KeycardItem;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -37,7 +38,7 @@ public record KeycardData(int signature, boolean limited, int usesLeft, Optional
 			KeycardData::new);
 	//@formatter:on
 	@Override
-	public void addToTooltip(TooltipContext ctx, Consumer<Component> lineAdder, TooltipFlag flag) {
+	public void addToTooltip(TooltipContext ctx, Consumer<Component> lineAdder, TooltipFlag flag, DataComponentGetter componentGetter) {
 		lineAdder.accept(Component.translatable("tooltip.securitycraft:keycard.signature", StringUtils.leftPad("" + signature, 5, "0")).setStyle(Utils.GRAY_STYLE));
 		lineAdder.accept(Component.translatable("tooltip.securitycraft:keycard.usable_by", usableBy.map(Component::literal).orElse(Component.translatable("tooltip.securitycraft:keycard.everyone"))).setStyle(Utils.GRAY_STYLE));
 

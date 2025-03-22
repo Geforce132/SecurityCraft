@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.TriState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.TallSeagrassBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.enums.BubbleColumnDirection;
-import net.neoforged.neoforge.common.util.TriState;
 
 public class ReinforcedMagmaBlock extends BaseReinforcedBlock {
 	public ReinforcedMagmaBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {

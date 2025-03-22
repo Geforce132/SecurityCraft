@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.TriState;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.AzaleaBlock;
@@ -29,7 +30,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.common.util.TriState;
 
 public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBlock {
 	private final Supplier<? extends Block> vanillaBlockSupplier;

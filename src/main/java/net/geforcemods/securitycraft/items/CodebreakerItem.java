@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -22,6 +22,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 
@@ -85,13 +86,13 @@ public class CodebreakerItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
 		double chance = getSuccessChance(stack) * 100;
 
 		if (chance < 0.0D)
-			list.add(DISABLED);
+			tooltipAdder.accept(DISABLED);
 		else
-			list.add(Component.translatable("tooltip.securitycraft.component.success_chance", chance + "%").withStyle(ChatFormatting.GRAY));
+			tooltipAdder.accept(Component.translatable("tooltip.securitycraft.component.success_chance", chance + "%").withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override

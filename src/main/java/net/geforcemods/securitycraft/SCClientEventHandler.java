@@ -151,7 +151,7 @@ public class SCClientEventHandler {
 						tooltip.add(line);
 					else
 						tooltip.add(index, line);
-				}, flag);
+				}, flag, stack.getComponents());
 			}
 		}
 	}

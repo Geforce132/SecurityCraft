@@ -15,6 +15,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -76,7 +77,7 @@ public class TaserItem extends Item {
 					redstoneStack.setCount(redstoneStack.getCount() - 1);
 
 					if (redstoneSlot == -1)
-						player.getInventory().offhand.set(0, redstoneStack);
+						player.setItemSlot(EquipmentSlot.OFFHAND, redstoneStack);
 					else
 						player.getInventory().setItem(redstoneSlot, redstoneStack);
 
@@ -140,8 +141,8 @@ public class TaserItem extends Item {
 		PotionContents effects = new PotionContents(Potions.WATER);
 
 		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.WEAKNESS, 200, 1));
-		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.CONFUSION, 200, 1));
-		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 1));
+		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.NAUSEA, 200, 1));
+		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.SLOWNESS, 200, 1));
 		return effects;
 	}
 
@@ -149,8 +150,8 @@ public class TaserItem extends Item {
 		PotionContents effects = new PotionContents(Potions.WATER);
 
 		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.WEAKNESS, 400, 4));
-		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.CONFUSION, 400, 4));
-		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 4));
+		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.NAUSEA, 400, 4));
+		effects = effects.withEffectAdded(new MobEffectInstance(MobEffects.SLOWNESS, 400, 4));
 		return effects;
 	}
 }

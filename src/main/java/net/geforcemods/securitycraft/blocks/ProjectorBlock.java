@@ -1,24 +1,16 @@
 package net.geforcemods.securitycraft.blocks;
 
-import java.util.List;
-
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.util.LevelUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item.TooltipContext;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -39,7 +31,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ProjectorBlock extends DisguisableBlock {
-	private static final MutableComponent TOOLTIP = Component.translatable("tooltip.securitycraft:projector").setStyle(Utils.GRAY_STYLE);
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty HANGING = BlockStateProperties.HANGING;
 	private static final VoxelShape FLOOR_NORTH = Shapes.or(Block.box(12, 0, 12, 15, 2, 15), Block.box(1, 2, 1, 15, 7, 15), Block.box(9, 2, 15, 14, 7, 16), Block.box(12, 0, 1, 15, 2, 4), Block.box(1, 0, 1, 4, 2, 4), Block.box(1, 0, 12, 4, 2, 15));
@@ -145,10 +136,5 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(TOOLTIP);
 	}
 }

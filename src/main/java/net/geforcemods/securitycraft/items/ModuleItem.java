@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -107,24 +109,24 @@ public class ModuleItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
 		if (containsCustomData || canBeCustomized())
-			list.add(MODIFIABLE);
+			tooltipAdder.accept(MODIFIABLE);
 		else
-			list.add(NOT_MODIFIABLE);
+			tooltipAdder.accept(NOT_MODIFIABLE);
 
 		if (canBeCustomized()) {
 			Block addon = getBlockAddon(stack);
 
 			if (addon != null)
-				list.add(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(Utils.GRAY_STYLE));
+				tooltipAdder.accept(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(Utils.GRAY_STYLE));
 		}
 
 		if (containsCustomData) {
 			ListModuleData listModuleData = stack.get(SCContent.LIST_MODULE_DATA);
 
 			if (listModuleData != null)
-				listModuleData.addToTooltip(ctx, list::add, flag);
+				listModuleData.addToTooltip(ctx, tooltipAdder, flag, stack.getComponents());
 		}
 	}
 

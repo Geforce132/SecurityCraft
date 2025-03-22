@@ -3,6 +3,8 @@ package net.geforcemods.securitycraft.screen;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,7 +47,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.ClickEvent.Action;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
@@ -121,7 +122,12 @@ public class SCManualScreen extends Screen {
 		byte startY = 2;
 
 		startX = (width - 256) / 2;
-		patreonLinkButton = addRenderableWidget(new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
+		patreonLinkButton = addRenderableWidget(new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> {
+			try {
+				handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(new URI("https://www.patreon.com/Geforce"))));
+			}
+			catch (URISyntaxException e) {}
+		}));
 		patronList = addRenderableWidget(new PatronList(minecraft, 115, 90, 50, startX + 125));
 		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 95, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousSubpage()));
 		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 95, PAGE_FORWARD_SPRITE, PAGE_FORWARD_HIGHLIGHTED_SPRITE, b -> nextSubpage()));

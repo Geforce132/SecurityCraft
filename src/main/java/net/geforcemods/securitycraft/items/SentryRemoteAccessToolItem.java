@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.items;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.NamedPositions;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -90,7 +92,7 @@ public class SentryRemoteAccessToolItem extends Item {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
 		NamedPositions positions = stack.get(SCContent.BOUND_SENTRIES);
 
 		if (positions != null && !positions.isEmpty()) {
@@ -100,7 +102,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				NamedPositions.Entry entry = entries.get(i);
 
 				if (entry == null)
-					tooltip.add(Component.literal(ChatFormatting.GRAY + "---"));
+					tooltipAdder.accept(Component.literal(ChatFormatting.GRAY + "---"));
 				else {
 					BlockPos pos = entry.globalPos().pos();
 					String nameToShow = null;
@@ -116,7 +118,7 @@ public class SentryRemoteAccessToolItem extends Item {
 							nameToShow = Utils.localize("tooltip.securitycraft:sentry", i).getString();
 					}
 
-					tooltip.add(Component.literal(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
+					tooltipAdder.accept(Component.literal(ChatFormatting.GRAY + nameToShow + ": " + Utils.getFormattedCoordinates(pos).getString()));
 				}
 			}
 		}

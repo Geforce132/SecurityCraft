@@ -16,6 +16,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BundleContents;
@@ -133,25 +134,22 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (be.isOwnedBy(player) && be.ignoresOwner()))
 			return false;
 
-		return loopInventory(player.getInventory().items, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().armor, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule) || loopInventory(player.getInventory().offhand, prohibitedItems, be, hasSmartModule, hasStorageModule, hasRedstoneModule);
-	}
-
-	private static boolean loopInventory(NonNullList<ItemStack> inventory, List<ItemStack> prohibitedItems, InventoryScannerBlockEntity be, boolean hasSmartModule, boolean hasStorageModule, boolean hasRedstoneModule) {
+		Inventory inventory = player.getInventory();
 		boolean itemFound = false;
 
-		for (int i = 0; i < inventory.size(); i++) {
-			ItemStack stackToCheck = inventory.get(i);
+		for (int i = 0; i < inventory.getContainerSize(); i++) {
+			ItemStack stackToCheck = inventory.getItem(i);
 
 			if (!stackToCheck.isEmpty()) {
 				for (ItemStack prohibitedItem : prohibitedItems) {
 					if (areItemsEqual(stackToCheck, prohibitedItem, hasSmartModule)) {
 						if (hasStorageModule) {
-							ItemStack remainder = be.addItemToStorage(inventory.get(i));
+							ItemStack remainder = be.addItemToStorage(stackToCheck);
 
 							if (!remainder.isEmpty())
 								Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
 
-							inventory.set(i, ItemStack.EMPTY);
+							inventory.setItem(i, ItemStack.EMPTY);
 						}
 
 						if (hasRedstoneModule)

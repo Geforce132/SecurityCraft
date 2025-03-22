@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -22,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -91,7 +92,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
 		GlobalPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
 
 		if (sssLinkedBlocks != null) {
@@ -99,7 +100,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 			long numOfLinkedBlocks = sssLinkedBlocks.positions().stream().filter(Objects::nonNull).count();
 
 			if (numOfLinkedBlocks > 0)
-				tooltip.add(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));
+				tooltipAdder.accept(Utils.localize("tooltip.securitycraft:sonicSecuritySystem.linkedTo", numOfLinkedBlocks).withStyle(Utils.GRAY_STYLE));
 		}
 	}
 }

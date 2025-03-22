@@ -8,6 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -28,7 +29,7 @@ public record Notes(List<NoteWrapper> notes) implements TooltipProvider {
 	//@formatter:on
 
 	@Override
-	public void addToTooltip(TooltipContext ctx, Consumer<Component> lineAdder, TooltipFlag flag) {
+	public void addToTooltip(TooltipContext ctx, Consumer<Component> lineAdder, TooltipFlag flag, DataComponentGetter componentGetter) {
 		lineAdder.accept(Utils.localize("tooltip.securitycraft.component.notes", notes.size()).withStyle(Utils.GRAY_STYLE));
 	}
 

@@ -237,6 +237,7 @@ import net.geforcemods.securitycraft.items.LensItem;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
+import net.geforcemods.securitycraft.items.ProjectorItem;
 import net.geforcemods.securitycraft.items.ReinforcedScaffoldingBlockItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.SecuritySeaBoatItem;
@@ -475,7 +476,6 @@ public class SCContent {
 	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.METAL));
 	@HasManualPage
 	@OwnableBE
-	@RegisterItemBlock
 	public static final DeferredBlock<ProjectorBlock> PROJECTOR = BLOCKS.registerBlock("projector", ProjectorBlock::new, propDisguisable(MapColor.METAL).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
@@ -2760,6 +2760,8 @@ public class SCContent {
 	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = registerItem("remote_access_mine", MineRemoteAccessToolItem::new, () -> itemProp(1).component(BOUND_MINES, GlobalPositions.sized(MineRemoteAccessToolItem.MAX_MINES)));
 	@HasManualPage
 	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = registerItem("remote_access_sentry", SentryRemoteAccessToolItem::new, () -> itemProp(1).component(BOUND_SENTRIES, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS));
+	@HasManualPage
+	public static final DeferredItem<ProjectorItem> PROJECTOR_ITEM = ITEMS.registerItem("projector", ProjectorItem::new, itemProp().useBlockDescriptionPrefix());
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> RIFT_STABILIZER_ITEM = ITEMS.registerItem("rift_stabilizer", p -> new DoubleHighBlockItem(RIFT_STABILIZER.get(), p), itemProp().useBlockDescriptionPrefix());
 	@HasManualPage

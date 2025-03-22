@@ -19,7 +19,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -99,13 +98,11 @@ public class PlayerUtils {
 	 * @return The ItemStack whose item matches the given item, {@link ItemStack#EMPTY} if the player is not holding the item
 	 */
 	public static ItemStack getItemStackFromAnyHand(Player player, Item item) {
-		Inventory inventory = player.getInventory();
+		if (player.getMainHandItem().is(item))
+			return player.getMainHandItem();
 
-		if (inventory.getSelected().is(item))
-			return inventory.getSelected();
-
-		if (inventory.offhand.get(0).is(item))
-			return inventory.offhand.get(0);
+		if (player.getOffhandItem().is(item))
+			return player.getOffhandItem();
 
 		return ItemStack.EMPTY;
 	}
