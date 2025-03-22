@@ -38,14 +38,6 @@ public class SecretStandingSignBlock extends StandingSignBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
-			inv.dropAllModules();
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof SecretSignBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
 			return super.useWithoutItem(state, level, pos, player, hit);

@@ -683,6 +683,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null)
+			Containers.dropContents(level, pos, getStorage());
+
+		super.preRemoveSideEffects(pos, state);
+	}
+
+	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.DISGUISE, ModuleType.ALLOWLIST, ModuleType.STORAGE

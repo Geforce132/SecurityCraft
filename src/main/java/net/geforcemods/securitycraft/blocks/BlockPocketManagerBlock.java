@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -36,17 +35,6 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 			player.openMenu(be, pos);
 
 		return InteractionResult.SUCCESS;
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (level.isClientSide || state.getBlock() == newState.getBlock())
-			return;
-
-		if (level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be)
-			Containers.dropContents(level, pos, be.getStorage());
-
-		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

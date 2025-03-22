@@ -66,21 +66,6 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 		return super.playerWillDestroy(level, pos, state, player);
 	}
 
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof IModuleInventory inv)
-				inv.dropAllModules();
-
-			if (!isMoving && getSignalForState(state) > 0) {
-				level.updateNeighborsAt(pos, this);
-				level.updateNeighborsAt(pos.below(), this);
-			}
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
 	public boolean isAllowedToPress(AllowlistOnlyBlockEntity be, Player entity) {
 		return be.isOwnedBy(entity) || be.isAllowed(entity);
 	}

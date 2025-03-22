@@ -95,14 +95,6 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock() && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be)
-			Block.popResource(level, pos, be.getStackInSlot(36));
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (state.getValue(POWERED)) {
 			level.setBlockAndUpdate(pos, state.setValue(POWERED, false));

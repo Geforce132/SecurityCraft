@@ -59,6 +59,14 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 	}
 
 	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		//if (isMoving) //TODO: Re-implement
+		//	be.clearContent(); //Clear the books from the block before it is moved by a piston to prevent book duplication
+
+		super.preRemoveSideEffects(pos, state);
+	}
+
+	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider lookupProvider) {
 		return saveCustomOnly(lookupProvider);
 	}

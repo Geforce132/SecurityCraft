@@ -119,20 +119,6 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 	}
 
 	@Override
-	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be) {
-			be.disabled.setValue(true); //make sure receivers that update themselves don't check for this one
-
-			if (be.isSender())
-				be.tellSimilarReceiversToRefresh();
-			else
-				be.updateNeighbors();
-		}
-
-		super.onRemove(state, level, pos, newState, movedByPiston);
-	}
-
-	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getClickedFace());
 	}

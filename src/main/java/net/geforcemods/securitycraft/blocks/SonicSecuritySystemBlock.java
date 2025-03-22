@@ -84,14 +84,6 @@ public class SonicSecuritySystemBlock extends DisguisableBlock implements Simple
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
-			inv.dropAllModules();
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
 	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (stack.getItem() == SCContent.PORTABLE_TUNE_PLAYER.get())
 			return InteractionResult.PASS;

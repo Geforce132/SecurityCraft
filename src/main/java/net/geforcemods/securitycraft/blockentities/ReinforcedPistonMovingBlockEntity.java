@@ -308,6 +308,11 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		}
 	}
 
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		finalTick();
+	}
+
 	public Direction getPushDirection() {
 		return extending ? direction : direction.getOpposite();
 	}

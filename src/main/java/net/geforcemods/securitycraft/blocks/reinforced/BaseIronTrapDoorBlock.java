@@ -40,14 +40,6 @@ public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock 
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		super.onRemove(state, level, pos, newState, isMoving);
-
-		if (!(newState.getBlock() instanceof BaseIronTrapDoorBlock))
-			level.removeBlockEntity(pos);
-	}
-
-	@Override
 	public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int id, int param) {
 		BlockEntity be = level.getBlockEntity(pos);
 

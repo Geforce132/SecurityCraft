@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -113,6 +114,12 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 			sendAllowlistMessage.setValue(false);
 			sendDenylistMessage.setValue(false);
 		}
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		SaltData.removeSalt(saltKey);
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	@Override

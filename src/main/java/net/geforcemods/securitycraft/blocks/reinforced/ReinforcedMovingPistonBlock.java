@@ -40,12 +40,6 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() != newState.getBlock() && level.getBlockEntity(pos) instanceof ReinforcedPistonMovingBlockEntity pistonBlockEntity)
-			pistonBlockEntity.finalTick();
-	}
-
-	@Override
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
 		BlockPos oppositePos = pos.relative(state.getValue(FACING).getOpposite());
 		BlockState oppositeState = level.getBlockState(oppositePos);

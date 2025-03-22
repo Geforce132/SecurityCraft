@@ -18,7 +18,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -97,17 +96,12 @@ public class SecurityCameraBlock extends DisguisableBlock implements SimpleWater
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-			be.dropAllModules();
-			Containers.dropContents(level, pos, be.getLensContainer());
-		}
-
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
 		level.updateNeighborsAt(pos.north(), state.getBlock());
 		level.updateNeighborsAt(pos.south(), state.getBlock());
 		level.updateNeighborsAt(pos.east(), state.getBlock());
 		level.updateNeighborsAt(pos.west(), state.getBlock());
-		super.onRemove(state, level, pos, newState, isMoving);
+		super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
 	}
 
 	@Override

@@ -114,6 +114,20 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null) {
+			//first 10 slots (0-9) are the prohibited slots
+			for (int i = 10; i < getContainerSize(); i++) {
+				Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), getContents().get(i));
+			}
+
+			Containers.dropContents(level, pos, getLensContainer());
+		}
+
+		super.preRemoveSideEffects(pos, state);
+	}
+
+	@Override
 	public int getContainerSize() {
 		return 37;
 	}

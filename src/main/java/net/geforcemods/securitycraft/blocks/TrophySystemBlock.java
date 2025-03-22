@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.Containers;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -99,14 +99,9 @@ public class TrophySystemBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be) {
-			Containers.dropContents(level, pos, be.getLensContainer());
-			be.dropAllModules();
-			level.updateNeighbourForOutputSignal(pos, this);
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
+		level.updateNeighbourForOutputSignal(pos, this);
+		super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
 	}
 
 	@Override

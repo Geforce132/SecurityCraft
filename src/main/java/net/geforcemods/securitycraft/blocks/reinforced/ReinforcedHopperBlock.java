@@ -59,18 +59,6 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be) {
-			if (isMoving)
-				be.clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
-
-			level.updateNeighbourForOutputSignal(pos, this);
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
 			HopperBlockEntity.entityInside(level, pos, state, entity, be);

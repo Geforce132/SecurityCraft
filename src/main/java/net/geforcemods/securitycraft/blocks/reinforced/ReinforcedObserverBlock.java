@@ -116,13 +116,11 @@ public class ReinforcedObserverBlock extends DisguisableBlock implements IReinfo
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (!level.isClientSide && state.getValue(POWERED) && level.getBlockTicks().hasScheduledTick(pos, this))
-				updateNeighborsInFront(level, pos, state.setValue(POWERED, false));
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
+		if (state.getValue(POWERED) && level.getBlockTicks().hasScheduledTick(pos, this))
+			updateNeighborsInFront(level, pos, state.setValue(POWERED, false));
 
-			level.removeBlockEntity(pos);
-		}
+		super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -84,6 +85,14 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 			resetSavedState();
 		else
 			setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK, tag.getCompound("SavedState")));
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null)
+			Block.popResource(level, pos, getStackInSlot(36));
+
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	public int getProjectionWidth() {

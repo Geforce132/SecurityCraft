@@ -109,14 +109,6 @@ public class PortableRadarBlock extends OwnableBlock implements SimpleWaterlogge
 		return super.playerWillDestroy(level, pos, state, player);
 	}
 
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
-			inv.dropAllModules();
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
 	public static void togglePowerOutput(Level level, BlockPos pos, boolean shouldPower) {
 		BlockState state = level.getBlockState(pos);
 

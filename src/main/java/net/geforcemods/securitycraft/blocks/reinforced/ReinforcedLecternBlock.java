@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -52,15 +53,9 @@ public class ReinforcedLecternBlock extends LecternBlock implements IReinforcedB
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof ReinforcedLecternBlockEntity be) {
-			if (isMoving)
-				be.clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
-
-			level.updateNeighbourForOutputSignal(pos, this);
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
+		level.updateNeighbourForOutputSignal(pos, this);
+		super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
 	}
 
 	@Override

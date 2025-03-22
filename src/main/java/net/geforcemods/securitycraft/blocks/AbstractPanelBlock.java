@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
-import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -107,23 +104,13 @@ public abstract class AbstractPanelBlock extends OwnableBlock implements SimpleW
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			BlockEntity be = level.getBlockEntity(pos);
-
-			if (be instanceof IModuleInventory inv)
-				inv.dropAllModules();
-
-			if (state.getValue(POWERED)) {
-				level.updateNeighborsAt(pos, this);
-				level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
-			}
-
-			if (be instanceof IPasscodeProtected passcodeProtected)
-				SaltData.removeSalt(passcodeProtected.getSaltKey());
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
+		if (state.getValue(POWERED)) {
+			level.updateNeighborsAt(pos, this);
+			level.updateNeighborsAt(pos.relative(getConnectedDirection(state).getOpposite()), this);
 		}
 
-		super.onRemove(state, level, pos, newState, isMoving);
+		super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
 	}
 
 	@Override

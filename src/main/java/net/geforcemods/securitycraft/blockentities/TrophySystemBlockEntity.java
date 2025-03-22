@@ -36,6 +36,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
@@ -167,6 +168,16 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		}
 
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null) {
+			Containers.dropContents(level, pos, getLensContainer());
+			dropAllModules();
+		}
+
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	public static IItemHandler getCapability(TrophySystemBlockEntity be, Direction side) {

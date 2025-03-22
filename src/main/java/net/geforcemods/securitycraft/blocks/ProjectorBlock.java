@@ -2,14 +2,12 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
-import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -89,14 +87,6 @@ public class ProjectorBlock extends DisguisableBlock {
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
 		return direction != null && direction.getAxis() != Axis.Y;
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be)
-			LevelUtils.addScheduledTask(level, () -> level.addFreshEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), be.getStackInSlot(36))));
-
-		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

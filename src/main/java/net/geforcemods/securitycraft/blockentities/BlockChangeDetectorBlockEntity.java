@@ -134,6 +134,14 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null)
+			Block.popResource(level, pos, getStackInSlot(36));
+
+		super.preRemoveSideEffects(pos, state);
+	}
+
+	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		if (option == signalLength) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));

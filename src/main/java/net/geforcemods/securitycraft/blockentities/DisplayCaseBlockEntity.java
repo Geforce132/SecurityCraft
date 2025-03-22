@@ -26,6 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -136,6 +137,14 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 			sendAllowlistMessage.setValue(false);
 			sendDenylistMessage.setValue(false);
 		}
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null)
+			Block.popResource(level, pos, getDisplayedStack());
+
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	@Override

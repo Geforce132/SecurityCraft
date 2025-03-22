@@ -21,8 +21,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -142,10 +142,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (level.isClientSide || state.getBlock() == newState.getBlock())
-			return;
-
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) { //TODO removing an invscanner might be broken, test please
 		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(level, pos, state, null);
 
 		BlockUtils.removeInSequence((direction, stateToCheck) -> {
@@ -157,19 +154,8 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			return stateToCheckFacing == direction || stateToCheckFacing == direction.getOpposite();
 		}, level, pos, state.getValue(FACING));
 
-		if (level.getBlockEntity(pos) instanceof InventoryScannerBlockEntity be) {
-			//first 10 slots (0-9) are the prohibited slots
-			for (int i = 10; i < be.getContainerSize(); i++) {
-				Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), be.getContents().get(i));
-			}
-
-			Containers.dropContents(level, pos, be.getLensContainer());
-
-			if (be.isProvidingPower()) {
-				level.updateNeighborsAt(pos, this);
-				BlockUtils.updateIndirectNeighbors(level, pos, this);
-			}
-		}
+		level.updateNeighborsAt(pos, this);
+		BlockUtils.updateIndirectNeighbors(level, pos, this);
 
 		if (connectedScanner != null) {
 			for (int i = 0; i < connectedScanner.getContents().size(); i++) {
@@ -179,7 +165,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			connectedScanner.getLensContainer().clearContent();
 		}
 
-		super.onRemove(state, level, pos, newState, isMoving);
+		super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
 	}
 
 	private boolean isFacingAnotherScanner(Level level, BlockPos pos) {

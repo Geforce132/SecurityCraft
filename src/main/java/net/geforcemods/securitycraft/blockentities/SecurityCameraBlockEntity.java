@@ -27,6 +27,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -110,6 +111,16 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 		if (tag.contains("initial_zoom"))
 			initialZoom = tag.getFloat("initial_zoom");
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null) {
+			dropAllModules();
+			Containers.dropContents(level, pos, getLensContainer());
+		}
+
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	public static IItemHandler getCapability(SecurityCameraBlockEntity be, Direction side) {

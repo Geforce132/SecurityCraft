@@ -2,10 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadBarrelBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
-import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -18,8 +16,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.Container;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -117,20 +113,9 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			BlockEntity be = level.getBlockEntity(pos);
-
-			if (be instanceof Container container) {
-				Containers.dropContents(level, pos, container);
-				level.updateNeighbourForOutputSignal(pos, this);
-			}
-
-			if (be instanceof IPasscodeProtected passcodeProtected)
-				SaltData.removeSalt(passcodeProtected.getSaltKey());
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
+		level.updateNeighbourForOutputSignal(pos, this);
+		super.affectNeighborsAfterRemoval(state, level, pos, isMoving);
 	}
 
 	@Override

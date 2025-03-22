@@ -2,10 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.misc.SaltData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -127,21 +125,6 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 		BlockState state = super.getStateForPlacement(ctx);
 
 		return state == null ? null : state.setValue(OPEN, false).setValue(POWERED, false);
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			BlockEntity be = level.getBlockEntity(pos);
-
-			if (be instanceof IModuleInventory inv && state.getValue(HALF) == DoubleBlockHalf.LOWER)
-				inv.dropAllModules();
-
-			if (be instanceof IPasscodeProtected passcodeProtected)
-				SaltData.removeSalt(passcodeProtected.getSaltKey());
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

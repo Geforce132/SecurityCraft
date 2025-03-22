@@ -2,10 +2,8 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blockentities.GlowDisplayCaseBlockEntity;
-import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -189,24 +187,6 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 			inv.getInventory().clear();
 
 		return super.playerWillDestroy(level, pos, state, player);
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			BlockEntity be = level.getBlockEntity(pos);
-
-			if (be instanceof DisplayCaseBlockEntity displayCase)
-				Block.popResource(level, pos, displayCase.getDisplayedStack());
-
-			if (be instanceof IModuleInventory inv)
-				inv.dropAllModules();
-
-			if (be instanceof IPasscodeProtected passcodeProtected)
-				SaltData.removeSalt(passcodeProtected.getSaltKey());
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

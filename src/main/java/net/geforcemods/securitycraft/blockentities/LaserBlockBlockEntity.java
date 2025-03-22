@@ -39,6 +39,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -123,6 +124,16 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 
 		return sideConfig;
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null) {
+			Containers.dropContents(level, pos, lenses);
+			lenses.clearContent();
+		}
+
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	@Override

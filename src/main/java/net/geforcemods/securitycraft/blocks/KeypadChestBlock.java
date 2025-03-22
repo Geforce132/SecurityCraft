@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -206,14 +205,6 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 		if (level.getBlockEntity(pos) instanceof KeypadChestBlockEntity be)
 			be.setBlockState(state);
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-			SaltData.removeSalt(be.getSaltKey());
-
-		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

@@ -87,14 +87,6 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
-			inv.dropAllModules();
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
 	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof IMSBlockEntity be) {
 			if (be.isDisabled())

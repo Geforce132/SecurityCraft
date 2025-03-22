@@ -26,6 +26,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
+import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -93,6 +94,14 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		super.loadAdditional(tag, lookupProvider);
 		cooldown = tag.getInt("cooldown");
 		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null)
+			Containers.dropContents(level, pos, getLensContainer());
+
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	public static IItemHandler getCapability(ClaymoreBlockEntity be, Direction side) {

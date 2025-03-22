@@ -4,11 +4,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
-import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.KeypadTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blocks.reinforced.BaseIronTrapDoorBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -111,14 +109,6 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 			level.setBlockAndUpdate(pos, state.setValue(OPEN, false));
 			playSound(null, level, pos, false);
 		}
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IPasscodeProtected be)
-			SaltData.removeSalt(be.getSaltKey());
-
-		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

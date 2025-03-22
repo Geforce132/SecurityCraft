@@ -204,6 +204,20 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		tag.putBoolean("highlight_connections", highlightConnections);
 	}
 
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		disabled.setValue(true); //make sure receivers that update themselves don't check for this one
+
+		if (level != null) {
+			if (isSender())
+				tellSimilarReceiversToRefresh();
+			else
+				updateNeighbors();
+		}
+
+		super.preRemoveSideEffects(pos, state);
+	}
+
 	public boolean isSender() {
 		return sender;
 	}

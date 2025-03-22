@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChiseledBookShelfBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -39,14 +38,6 @@ public class ReinforcedChiseledBookshelfBlock extends ChiseledBookShelfBlock imp
 			return super.useWithoutItem(state, level, pos, player, hit);
 
 		return InteractionResult.PASS;
-	}
-
-	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (isMoving && level.getBlockEntity(pos) instanceof ChiseledBookShelfBlockEntity be)
-			be.clearContent(); //Clear the books from the block before it is moved by a piston to prevent book duplication
-
-		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

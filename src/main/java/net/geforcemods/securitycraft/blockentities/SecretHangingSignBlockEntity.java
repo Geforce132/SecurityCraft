@@ -87,6 +87,14 @@ public class SecretHangingSignBlockEntity extends HangingSignBlockEntity impleme
 	}
 
 	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (level != null)
+			dropAllModules();
+
+		super.preRemoveSideEffects(pos, state);
+	}
+
+	@Override
 	public NonNullList<ItemStack> getInventory() {
 		return modules;
 	}

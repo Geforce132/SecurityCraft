@@ -89,18 +89,6 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof ReinforcedDispenserBlockEntity be) {
-			if (isMoving)
-				be.clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
-
-			level.updateNeighbourForOutputSignal(pos, this);
-		}
-
-		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new ReinforcedDispenserBlockEntity(pos, state);
 	}
