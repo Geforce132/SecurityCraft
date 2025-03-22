@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -27,7 +28,7 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
 		if (entity instanceof Player player && level.getBlockEntity(pos) instanceof OwnableBlockEntity be && be.isOwnedBy(player))
 			return;
 
