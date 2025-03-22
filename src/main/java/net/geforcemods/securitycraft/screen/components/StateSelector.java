@@ -29,9 +29,10 @@ import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +43,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.level.EmptyBlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
@@ -51,8 +53,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.neoforged.neoforge.client.RenderTypeHelper;
-import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class StateSelector extends Screen implements GuiEventListener, NarratableEntry, ContainerListener {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/state_selector.png");
@@ -141,7 +141,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		renderBlockModel(state, pose, bufferSource);
 
 		if (beRenderer != null)
-			beRenderer.render(be, partialTick, pose, bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
+			beRenderer.render(be, partialTick, pose, bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, minecraft.gameRenderer.getMainCamera().getPosition());
 
 		pose.popPose();
 		guiGraphics.flush();
@@ -262,15 +262,13 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	public void renderBlockModel(BlockState state, PoseStack pose, MultiBufferSource bufferSource) {
 		if (state.getRenderShape() == RenderShape.MODEL) {
 			BlockRenderDispatcher blockRenderer = minecraft.getBlockRenderer();
-			BakedModel blockModel = blockRenderer.getBlockModel(state);
+			BlockStateModel blockModel = blockRenderer.getBlockModel(state);
 			int color = minecraft.getBlockColors().getColor(state, null, null, 0);
 			float r = (color >> 16 & 255) / 255.0F;
 			float g = (color >> 8 & 255) / 255.0F;
 			float b = (color & 255) / 255.0F;
 
-			for (RenderType renderType : blockModel.getRenderTypes(state, minecraft.level.random, ModelData.EMPTY)) {
-				blockRenderer.getModelRenderer().renderModel(pose.last(), bufferSource.getBuffer(RenderTypeHelper.getEntityRenderType(renderType)), state, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
-			}
+			ModelBlockRenderer.renderModel(pose.last(), bufferSource, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, EmptyBlockAndTintGetter.INSTANCE, BlockPos.ZERO, state);
 		}
 	}
 

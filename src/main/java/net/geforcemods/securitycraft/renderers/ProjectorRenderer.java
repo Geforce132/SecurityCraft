@@ -8,19 +8,17 @@ import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.common.util.TriPredicate;
 
 public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
@@ -34,6 +32,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
 
 		if (be.isActive() && !be.isContainerEmpty()) {
+			Level level = be.getLevel();
 			BlockState state = be.getProjectedState();
 			boolean hanging = be.getBlockState().getValue(ProjectorBlock.HANGING);
 			BlockPos pos;
@@ -50,15 +49,12 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					else
 						pos = translateProjection(be.getBlockPos(), pose, be.getBlockState().getValue(ProjectorBlock.FACING), x, be.getProjectionRange() - 16, y + 1, be.getProjectionOffset());
 
-					if (pos != null && (be.isOverridingBlocks() || be.getLevel().isEmptyBlock(pos))) {
+					if (pos != null && (be.isOverridingBlocks() || level.isEmptyBlock(pos))) {
 						BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
-						BakedModel model = dispatcher.getBlockModel(state);
+						BlockStateModel model = dispatcher.getBlockModel(state);
 
-						for (RenderType renderType : model.getRenderTypes(state, RandomSource.create(state.getSeed(pos)), ModelData.EMPTY)) {
-							dispatcher.renderBatched(state, pos, be.getLevel(), pose, buffer.getBuffer(renderType), true, be.getLevel().random, ModelData.EMPTY, renderType);
-						}
-
-						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
+						dispatcher.renderBatched(state, pos, level, pose, buffer::getBuffer, true, model.collectParts(be.getLevel(), pos, state, level.random));
+						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
 					}
 
 					pose.popPose();

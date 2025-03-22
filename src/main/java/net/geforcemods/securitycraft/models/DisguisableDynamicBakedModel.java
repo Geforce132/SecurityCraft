@@ -3,71 +3,77 @@ package net.geforcemods.securitycraft.models;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.BlockModelPart;
+import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.Direction;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.client.ChunkRenderTypeSet;
-import net.neoforged.neoforge.client.model.IDynamicBakedModel;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 
-public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
+public class DisguisableDynamicBakedModel implements BlockStateModel {
 	public static final ModelProperty<BlockState> DISGUISED_STATE = new ModelProperty<>();
-	private final BakedModel oldModel;
+	private final BlockStateModel oldModel;
 
-	public DisguisableDynamicBakedModel(BakedModel oldModel) {
+	public DisguisableDynamicBakedModel(BlockStateModel oldModel) {
 		this.oldModel = oldModel;
 	}
 
 	@Override
-	public List<BakedQuad> getQuads(BlockState state, Direction side, RandomSource rand, ModelData modelData, RenderType renderType) {
+	public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockModelPart> parts) {
+		ModelData modelData = level.getModelData(pos);
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
 		if (disguisedState != null) {
 			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
-				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
 
-				if (model != null && model != this)
-					return model.getQuads(disguisedState, side, rand, modelData, renderType);
+				if (model != this) {
+					parts.addAll(model.collectParts(level, pos, state, random));
+					return;
+				}
 			}
 		}
 
-		return oldModel.getQuads(state, side, rand, modelData, renderType);
+		parts.addAll(oldModel.collectParts(level, pos, state, random));
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleIcon(ModelData modelData) {
+	public void collectParts(RandomSource random, List<BlockModelPart> modelList) {
+		modelList.addAll(oldModel.collectParts(random));
+	}
+
+	@Override
+	public TextureAtlasSprite particleIcon(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		ModelData modelData = level.getModelData(pos);
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
 		if (disguisedState != null) {
 			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
-				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
 
-				if (model != null && model != this)
-					return model.getParticleIcon(modelData);
+				if (model != this)
+					return model.particleIcon(level, pos, state);
 			}
 		}
 
-		return oldModel.getParticleIcon(modelData);
+		return oldModel.particleIcon(level, pos, state);
 	}
 
 	@Override
-	public TextureAtlasSprite getParticleIcon() {
-		return oldModel.getParticleIcon();
+	public TextureAtlasSprite particleIcon() {
+		return oldModel.particleIcon();
 	}
 
-	@Override
+	/*@Override //TODO figure out ingame how much of this is actually needed
 	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData modelData) {
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
@@ -103,5 +109,5 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 	@Override
 	public ItemTransforms getTransforms() {
 		return oldModel.getTransforms();
-	}
+	}*/
 }
