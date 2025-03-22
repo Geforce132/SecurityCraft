@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -195,7 +194,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+		protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
 			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 		}
 
@@ -218,7 +217,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int baseY, Tesselator tesselator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int baseY, int mouseX, int mouseY) {
 			Font font = Minecraft.getInstance().font;
 			int slotBuffer = SLOT_HEIGHT - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));

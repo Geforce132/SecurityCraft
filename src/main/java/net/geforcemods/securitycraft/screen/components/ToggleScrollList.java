@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mojang.blaze3d.vertex.Tesselator;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.Utils;
@@ -82,7 +80,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 	}
 
 	@Override
-	protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+	protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
 		drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 	}
 
@@ -105,7 +103,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 	}
 
 	@Override
-	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 		Font font = Minecraft.getInstance().font;
 		int baseY = top + border - (int) scrollDistance;
 		int slotBuffer = SLOT_HEIGHT - 4;

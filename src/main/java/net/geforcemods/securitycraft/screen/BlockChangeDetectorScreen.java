@@ -8,8 +8,6 @@ import java.util.Locale;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
-import com.mojang.blaze3d.vertex.Tesselator;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
@@ -292,7 +290,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 			for (int i = 0; i < filteredEntries.size(); i++) {
 				filteredEntries.get(i).render(guiGraphics, mouseX, mouseY, 0.0F);
 			}

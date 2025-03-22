@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.mojang.blaze3d.vertex.Tesselator;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.util.Utils;
@@ -73,12 +71,12 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	}
 
 	@Override
-	protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+	protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
 		drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 	}
 
 	@Override
-	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 		int baseY = top + border - (int) scrollDistance;
 		int slotBuffer = SLOT_HEIGHT - 4;
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));

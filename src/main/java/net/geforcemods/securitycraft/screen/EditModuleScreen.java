@@ -10,7 +10,6 @@ import org.lwjgl.glfw.GLFW;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -302,12 +301,12 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+		protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
 			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 			ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
 
 			if (listModuleData != null) {
@@ -393,7 +392,7 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+		protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
 			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 		}
 
@@ -418,7 +417,7 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tessellator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
 			int slotIndex = mouseListY / SLOT_HEIGHT;

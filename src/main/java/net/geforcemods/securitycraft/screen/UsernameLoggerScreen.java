@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
@@ -118,7 +117,7 @@ public class UsernameLoggerScreen extends Screen {
 		}
 
 		@Override
-		protected void drawBackground(GuiGraphics guiGraphics, Tesselator tess, float partialTick) {
+		protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
 			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 		}
 
@@ -148,7 +147,7 @@ public class UsernameLoggerScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, Tesselator tesselator, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = SLOT_HEIGHT - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - border);
