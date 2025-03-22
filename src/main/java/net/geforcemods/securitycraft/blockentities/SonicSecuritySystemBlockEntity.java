@@ -26,6 +26,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap.Builder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -514,7 +515,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	protected void applyImplicitComponents(DataComponentInput input) {
+	protected void applyImplicitComponents(DataComponentGetter input) {
 		super.applyImplicitComponents(input);
 
 		GlobalPositions sssLinkedBlocks = input.get(SCContent.SSS_LINKED_BLOCKS);

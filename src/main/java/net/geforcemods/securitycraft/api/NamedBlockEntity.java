@@ -4,12 +4,12 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Nameable;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -70,7 +70,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 	}
 
 	@Override
-	protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+	protected void applyImplicitComponents(DataComponentGetter input) {
 		super.applyImplicitComponents(input);
 		customName = input.get(DataComponents.CUSTOM_NAME);
 	}
