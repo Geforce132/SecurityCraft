@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.IPistonMoveListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlockEntity implements IOwnable, IModuleInventory {
+public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlockEntity implements IOwnable, IModuleInventory, IPistonMoveListener {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
@@ -59,11 +60,8 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 	}
 
 	@Override
-	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-		//if (isMoving) //TODO: Re-implement
-		//	be.clearContent(); //Clear the books from the block before it is moved by a piston to prevent book duplication
-
-		super.preRemoveSideEffects(pos, state);
+	public void prePistonPushSideEffects(BlockPos pos, BlockState state) { //TODO Test whether dupe is still fixed
+		clearContent(); //Clear the books from the block before it is moved by a piston to prevent book duplication
 	}
 
 	@Override

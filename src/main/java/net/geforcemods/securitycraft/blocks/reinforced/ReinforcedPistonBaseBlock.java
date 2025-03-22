@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.IPistonMoveListener;
 import net.geforcemods.securitycraft.util.ReinforcedPistonStructureResolver;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -279,6 +280,9 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 					tag.putInt("x", posToMove.getX());
 					tag.putInt("y", posToMove.getY());
 					tag.putInt("z", posToMove.getZ());
+
+					if (beToMove instanceof IPistonMoveListener listener)
+						listener.prePistonPushSideEffects(posToMove, stateToMove);
 				}
 
 				stateToPosMap.remove(posToMove);

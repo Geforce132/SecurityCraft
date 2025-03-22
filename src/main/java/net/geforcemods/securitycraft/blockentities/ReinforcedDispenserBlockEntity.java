@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.IPistonMoveListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,7 +27,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
-public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity implements IOwnable, IModuleInventory {
+public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity implements IOwnable, IModuleInventory, IPistonMoveListener {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Owner owner = new Owner();
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
@@ -65,11 +66,8 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 	}
 
 	@Override
-	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-		//if (isMoving) //TODO: Re-implement
-		//	be.clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
-
-		super.preRemoveSideEffects(pos, state);
+	public void prePistonPushSideEffects(BlockPos pos, BlockState state) { //TODO Test whether dupe is still fixed
+		clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
 	}
 
 	@Override
