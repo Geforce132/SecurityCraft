@@ -31,7 +31,7 @@ public class LevelUtils {
 	public static LightningBolt createLightning(Level level, Vec3 pos, boolean effectOnly) {
 		LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
 
-		lightning.moveTo(pos);
+		lightning.snapTo(pos);
 		lightning.setVisualOnly(effectOnly);
 		return lightning;
 	}

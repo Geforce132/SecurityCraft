@@ -7,6 +7,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -115,12 +117,13 @@ public interface IOwnable {
 	 */
 	public default boolean allowsOwnableEntity(OwnableEntity entity) {
 		Owner beOwner = getOwner();
+		EntityReference<LivingEntity> ownerReference = entity.getOwnerReference();
 
-		return entity.getOwnerUUID() != null && (entity.getOwnerUUID().toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
+		return ownerReference != null && (ownerReference.getUUID().toString().equals(beOwner.getUUID()) || TeamUtils.areOnSameTeam(beOwner, new Owner(entity.getOwner())));
 	}
 
 	/**
-	 * Checks if this block entity should ignore its owner. Note that this is not used in {@link #isOwnedBy(Player)}, so there
+	 * Checks if this block entity should ignore its owner. Note that this is not used in {@link #isOwnedBy(Owner)}, so there
 	 * are cases where SecurityCraft does not use this method in conjunction with owner checks (e.g. breaking reinforced blocks).
 	 *
 	 * @return true if the owner is ignored, false otherwise
