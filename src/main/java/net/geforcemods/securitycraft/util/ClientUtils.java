@@ -5,20 +5,14 @@ import java.util.Arrays;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat.Mode;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -45,37 +39,20 @@ public class ClientUtils {
 		float alpha = isModuleInstalled ? 1.0F : 0.5F;
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
-		Matrix4f m4f = guiGraphics.pose().last().pose();
 
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
-		RenderSystem.setShaderTexture(0, MODULE_TEXTURES[module.ordinal()]);
-		drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
+		drawTexture(guiGraphics, MODULE_TEXTURES[module.ordinal()], moduleLeft, moduleTop, alpha);
 
-		if (module == ModuleType.REDSTONE) {
-			RenderSystem.setShaderTexture(0, REDSTONE_TEXTURE);
-			drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
-		}
-		else if (module == ModuleType.SPEED) {
-			RenderSystem.setShaderTexture(0, SUGAR_TEXTURE);
-			drawTexture(m4f, moduleLeft, moduleTop, moduleRight, moduleBottom, alpha);
-		}
-
-		RenderSystem.disableBlend();
+		if (module == ModuleType.REDSTONE)
+			drawTexture(guiGraphics, REDSTONE_TEXTURE, moduleLeft, moduleTop, alpha);
+		else if (module == ModuleType.SPEED)
+			drawTexture(guiGraphics, SUGAR_TEXTURE, moduleLeft, moduleTop, alpha);
 
 		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom && mc.screen != null)
 			guiGraphics.renderComponentTooltip(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
-	private static void drawTexture(Matrix4f m4f, int moduleLeft, int moduleTop, int moduleRight, int moduleBottom, float alpha) {
-		BufferBuilder bufferBuilder = Tesselator.getInstance().begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-
-		bufferBuilder.addVertex(m4f, moduleLeft, moduleBottom, 0).setUv(0, 1).setColor(1.0F, 1.0F, 1.0F, alpha);
-		bufferBuilder.addVertex(m4f, moduleRight, moduleBottom, 0).setUv(1, 1).setColor(1.0F, 1.0F, 1.0F, alpha);
-		bufferBuilder.addVertex(m4f, moduleRight, moduleTop, 0).setUv(1, 0).setColor(1.0F, 1.0F, 1.0F, alpha);
-		bufferBuilder.addVertex(m4f, moduleLeft, moduleTop, 0).setUv(0, 0).setColor(1.0F, 1.0F, 1.0F, alpha);
-		BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
+	private static void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int moduleLeft, int moduleTop, float alpha) {
+		guiGraphics.blit(RenderType::guiTextured, texture, moduleLeft, moduleTop, 0.0F, 0.0F, 1, 1, 16, 16);
 	}
 
 	public static Quaternionf fromXYZDegrees(float x, float y, float z) {
@@ -100,20 +77,15 @@ public class ClientUtils {
 		float toRed = (toColor >> 16 & 255) / 255.0F;
 		float toGreen = (toColor >> 8 & 255) / 255.0F;
 		float toBlue = (toColor & 255) / 255.0F;
-		Matrix4f mat = guiGraphics.pose().last().pose();
-		BufferBuilder buffer;
+		guiGraphics.drawSpecial(bufferSource -> {
+			Matrix4f mat = guiGraphics.pose().last().pose();
+			VertexConsumer builder = bufferSource.getBuffer(RenderType.gui());
 
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableBlend();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.setShader(CoreShaders.POSITION_COLOR);
-		buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		buffer.addVertex(mat, right, top, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
-		buffer.addVertex(mat, left, top, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
-		buffer.addVertex(mat, left, bottom, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
-		buffer.addVertex(mat, right, bottom, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
-		BufferUploader.drawWithShader(buffer.buildOrThrow());
-		RenderSystem.disableBlend();
+			builder.addVertex(mat, right, top, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
+			builder.addVertex(mat, left, top, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
+			builder.addVertex(mat, left, bottom, zLevel).setColor(fromRed, fromGreen, fromBlue, fromAlpha);
+			builder.addVertex(mat, right, bottom, zLevel).setColor(toRed, toGreen, toBlue, toAlpha);
+		});
 	}
 
 	public static int HSBtoRGB(float hue, float saturation, float brightness) {

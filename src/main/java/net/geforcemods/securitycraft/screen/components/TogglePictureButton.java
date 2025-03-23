@@ -1,11 +1,8 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.CoreShaders;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,7 +33,6 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 		if (visible) {
 			ResourceLocation sprite = getCurrentSprite();
 
-			RenderSystem.setShader(CoreShaders.POSITION_TEX);
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 			guiGraphics.blitSprite(RenderType::guiTextured, SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
 

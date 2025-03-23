@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -36,7 +35,6 @@ public class SentryRenderer extends EntityRenderer<Sentry, SentryRenderState> {
 		pose.scale(scale, scale, scale);
 		pose.translate(0.0D, 1.5D, 0.0D);
 		pose.scale(-1, -1, 1); //rotate model rightside up
-		RenderSystem.setShaderTexture(0, TEXTURE);
 		model.renderBase(pose, builder, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 		pose.mulPose(Axis.YP.rotationDegrees(state.headRotation));
 		pose.translate(0.0F, state.headY, 0.0F);

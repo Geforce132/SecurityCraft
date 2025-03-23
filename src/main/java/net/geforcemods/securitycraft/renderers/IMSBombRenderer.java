@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -29,7 +28,6 @@ public class IMSBombRenderer extends EntityRenderer<IMSBomb, EntityRenderState> 
 	public void render(EntityRenderState state, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		pose.translate(-0.1D, 0, 0.1D);
 		pose.scale(1.4F, 1.4F, 1.4F);
-		RenderSystem.setShaderTexture(0, TEXTURE);
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 	}
 
