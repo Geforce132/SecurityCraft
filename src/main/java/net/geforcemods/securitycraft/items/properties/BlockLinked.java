@@ -66,6 +66,11 @@ public record BlockLinked(DataComponentType<?> positionComponent, HitCheck hitCh
 	}
 
 	@Override
+	public Codec<String> valueCodec() {
+		return Codec.STRING;
+	}
+
+	@Override
 	public Type<? extends SelectItemModelProperty<String>, String> type() {
 		return TYPE;
 	}

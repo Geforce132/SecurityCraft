@@ -127,8 +127,8 @@ public class TaserItem extends Item {
 	}
 
 	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotIndex, boolean isSelected) {
-		if (!level.isClientSide && stack.getDamageValue() >= 1)
+	public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, EquipmentSlot slot) {
+		if (stack.getDamageValue() >= 1)
 			stack.setDamageValue(stack.getDamageValue() - 1);
 	}
 

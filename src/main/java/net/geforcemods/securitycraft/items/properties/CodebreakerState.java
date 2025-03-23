@@ -59,6 +59,11 @@ public record CodebreakerState(HitCheck hitCheck) implements SelectItemModelProp
 	}
 
 	@Override
+	public Codec<String> valueCodec() {
+		return Codec.STRING;
+	}
+
+	@Override
 	public Type<? extends SelectItemModelProperty<String>, String> type() {
 		return TYPE;
 	}

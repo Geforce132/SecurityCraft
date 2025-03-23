@@ -37,6 +37,11 @@ public record SentryLinked() implements SelectItemModelProperty<String> {
 	}
 
 	@Override
+	public Codec<String> valueCodec() {
+		return Codec.STRING;
+	}
+
+	@Override
 	public Type<? extends SelectItemModelProperty<String>, String> type() {
 		return TYPE;
 	}
