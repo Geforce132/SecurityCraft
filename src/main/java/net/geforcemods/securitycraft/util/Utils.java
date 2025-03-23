@@ -49,7 +49,7 @@ public class Utils {
 	}
 
 	public static ItemStack parseOptional(HolderLookup.Provider provider, CompoundTag tag) {
-		return !tag.contains("id") || Items.AIR.toString().equals(tag.getString("id")) ? ItemStack.EMPTY : ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY);
+		return !tag.contains("id") || tag.getStringOr("id", "minecraft:air").equals(Items.AIR.toString()) ? ItemStack.EMPTY : ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY);
 	}
 
 	public static BlockPos readBlockPos(CompoundTag tag) {
