@@ -1927,9 +1927,8 @@ public class RecipeGenerator extends RecipeProvider {
 		k3 = (int) (k3 * f / f1);
 
 		int l3 = ARGB.color(0, l2, i3, k3);
-		boolean flag = existingColor == null || existingColor.showInTooltip();
 
-		copy.set(DataComponents.DYED_COLOR, new DyedItemColor(l3, flag));
+		copy.set(DataComponents.DYED_COLOR, new DyedItemColor(l3));
 		return copy;
 	}
 

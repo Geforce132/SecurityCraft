@@ -14,11 +14,13 @@ import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.BlockModelGenerators.BlockFamilyProvider;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +30,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	private final TextureMapping mapping;
 	private final Map<ModelTemplate, ResourceLocation> models = Maps.newHashMap();
 	private final BlockFamily family;
-	private ResourceLocation fullBlock;
+	private Variant fullBlock;
 	private final Set<Block> skipGeneratingModelsFor = new HashSet<>();
 	private final BlockModelGenerators blockModelGenerators = BlockModelAndStateGenerator.blockModelGenerators;
 	private final BiConsumer<ResourceLocation, ModelInstance> modelOutput = BlockModelAndStateGenerator.modelOutput;
@@ -44,12 +46,12 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	public ReinforcedBlockFamilyProvider fullBlock(Block block, ModelTemplate modelTemplate) {
 		Block fullVanillaBlock = family.getBaseBlock();
 
-		fullBlock = modelTemplate.create(block, mapping, modelOutput);
+		fullBlock = BlockModelGenerators.plainModel(modelTemplate.create(block, mapping, modelOutput));
 
-		if (blockModelGenerators.fullBlockModelCustomGenerators.containsKey(fullVanillaBlock))
+		if (BlockModelGenerators.FULL_BLOCK_MODEL_CUSTOM_GENERATORS.containsKey(fullVanillaBlock))
 			BlockModelAndStateGenerator.generate(block, BlockModelAndStateGenerator.FULL_BLOCK_MODEL_CUSTOM_GENERATORS.get(fullVanillaBlock).create(block, fullBlock, mapping, modelOutput));
 		else
-			BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, fullBlock));
+			BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.variant(fullBlock)));
 
 		BlockModelAndStateGenerator.registerReinforcedItemModel(block);
 		return this;
@@ -57,7 +59,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 
 	@Override
 	public ReinforcedBlockFamilyProvider donateModelTo(Block sourceBlock, Block block) {
-		ResourceLocation modelLocation = ModelLocationUtils.getModelLocation(sourceBlock);
+		MultiVariant modelLocation = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(sourceBlock));
 
 		BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, modelLocation));
 		blockModelGenerators.itemModelOutput.copy(sourceBlock.asItem(), block.asItem());
@@ -117,23 +119,25 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 		if (fullBlock == null)
 			throw new IllegalStateException("Full block not generated yet");
 		else {
-			ResourceLocation bottomModel = getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_BOTTOM, slabBlock);
-			ResourceLocation topModel = getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_TOP, slabBlock);
+			ResourceLocation bottomModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_BOTTOM, slabBlock);
+			MultiVariant bottomModel = BlockModelGenerators.plainVariant(bottomModelLocation);
+			MultiVariant topModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_TOP, slabBlock));
 
-			BlockModelAndStateGenerator.generate(slabBlock, BlockModelGenerators.createSlab(slabBlock, bottomModel, topModel, fullBlock));
-			BlockModelAndStateGenerator.registerReinforcedItemModel(slabBlock, bottomModel);
+			BlockModelAndStateGenerator.generate(slabBlock, BlockModelGenerators.createSlab(slabBlock, bottomModel, topModel, BlockModelGenerators.variant(fullBlock)));
+			BlockModelAndStateGenerator.registerReinforcedItemModel(slabBlock, bottomModelLocation);
 			return this;
 		}
 	}
 
 	@Override
 	public ReinforcedBlockFamilyProvider stairs(Block stairsBlock) {
-		ResourceLocation innerModel = getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_INNER, stairsBlock);
-		ResourceLocation straightModel = getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_STRAIGHT, stairsBlock);
-		ResourceLocation outerModel = getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_OUTER, stairsBlock);
+		MultiVariant innerModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_INNER, stairsBlock));
+		ResourceLocation straightModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_STRAIGHT, stairsBlock);
+		MultiVariant straightModel = BlockModelGenerators.plainVariant(straightModelLocation);
+		MultiVariant outerModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_OUTER, stairsBlock));
 
 		BlockModelAndStateGenerator.generate(stairsBlock, BlockModelGenerators.createStairs(stairsBlock, innerModel, straightModel, outerModel));
-		BlockModelAndStateGenerator.registerReinforcedItemModel(stairsBlock, straightModel);
+		BlockModelAndStateGenerator.registerReinforcedItemModel(stairsBlock, straightModelLocation);
 		return this;
 	}
 
@@ -141,9 +145,9 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	public ReinforcedBlockFamilyProvider fullBlockVariant(Block block) {
 		Block vanillaBlock = ((IReinforcedBlock) block).getVanillaBlock();
 		TexturedModel texturedModel = BlockModelAndStateGenerator.TEXTURED_MODELS.getOrDefault(vanillaBlock, SCTexturedModels.REINFORCED_CUBE.get(vanillaBlock));
-		ResourceLocation modelLocation = texturedModel.create(block, modelOutput);
+		MultiVariant model = BlockModelGenerators.plainVariant(texturedModel.create(block, modelOutput));
 
-		BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, modelLocation));
+		BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, model));
 		BlockModelAndStateGenerator.registerReinforcedItemModel(block);
 		return this;
 	}

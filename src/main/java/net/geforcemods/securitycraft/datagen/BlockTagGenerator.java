@@ -407,7 +407,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_SCAFFOLDING.get());
 		tag(BlockTags.CRYSTAL_SOUND_BLOCKS).add(SCContent.REINFORCED_AMETHYST_BLOCK.get());
 		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(SCTags.Blocks.REINFORCED_WOOL);
-		tag(BlockTags.DEAD_BUSH_MAY_PLACE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_DIRT);
+		tag(BlockTags.DRY_VEGETATION_MAY_PLACE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(SCContent.REINFORCED_BOOKSHELF.get());
 		tag(BlockTags.FALL_DAMAGE_RESETTING).add(SCContent.REINFORCED_LADDER.get());

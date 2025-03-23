@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -36,24 +37,24 @@ public class ReinforcedWoodProvider {
 		TextureMapping textureMapping = mapping.copyAndUpdate(TextureSlot.END, mapping.get(TextureSlot.SIDE));
 		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN.create(woodBlock, textureMapping, modelOutput);
 
-		BlockModelAndStateGenerator.generate(woodBlock, BlockModelGenerators.createAxisAlignedPillarBlock(woodBlock, modelLocation));
+		BlockModelAndStateGenerator.generate(woodBlock, BlockModelGenerators.createAxisAlignedPillarBlock(woodBlock, BlockModelGenerators.plainVariant(modelLocation)));
 		BlockModelAndStateGenerator.registerReinforcedItemModel(woodBlock);
 		return this;
 	}
 
 	public ReinforcedWoodProvider log(Block logBlock) {
-		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN.create(logBlock, mapping, modelOutput);
+		MultiVariant model = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_CUBE_COLUMN.create(logBlock, mapping, modelOutput));
 
-		BlockModelAndStateGenerator.generate(logBlock, BlockModelGenerators.createAxisAlignedPillarBlock(logBlock, modelLocation));
+		BlockModelAndStateGenerator.generate(logBlock, BlockModelGenerators.createAxisAlignedPillarBlock(logBlock, model));
 		BlockModelAndStateGenerator.registerReinforcedItemModel(logBlock);
 		return this;
 	}
 
 	public ReinforcedWoodProvider logWithHorizontal(Block logBlock) {
-		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN.create(logBlock, mapping, modelOutput);
-		ResourceLocation horizontalModelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN_HORIZONTAL.create(logBlock, mapping, modelOutput);
+		MultiVariant verticalModel = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_CUBE_COLUMN.create(logBlock, mapping, modelOutput));
+		MultiVariant horizontalModel = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_CUBE_COLUMN_HORIZONTAL.create(logBlock, mapping, modelOutput));
 
-		BlockModelAndStateGenerator.generate(logBlock, BlockModelGenerators.createRotatedPillarWithHorizontalVariant(logBlock, modelLocation, horizontalModelLocation));
+		BlockModelAndStateGenerator.generate(logBlock, BlockModelGenerators.createRotatedPillarWithHorizontalVariant(logBlock, verticalModel, horizontalModel));
 		BlockModelAndStateGenerator.registerReinforcedItemModel(logBlock);
 		return this;
 	}
