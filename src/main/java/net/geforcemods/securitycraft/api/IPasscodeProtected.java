@@ -17,8 +17,8 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -173,8 +173,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param tag The tag that the salt key information is stored in
 	 */
 	default void loadSaltKey(CompoundTag tag) {
-		UUID saltKey = tag.contains("saltKey") ? tag.getUUID("saltKey") : null;
-		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
+		UUID saltKey = tag.read("saltKey", UUIDUtil.CODEC).orElse(null);
+		String passcode = tag.getStringOr(tag.contains("Passcode") ? "Passcode" : "passcode", ""); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		if (passcode.length() == 32) {
 			if (!SaltData.containsKey(saltKey)) { //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found, a new passcode needs to be set
@@ -195,7 +195,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param tag The tag that the passcode information is stored in
 	 */
 	default void loadPasscode(CompoundTag tag) {
-		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
+		String passcode = tag.getStringOr(tag.contains("Passcode") ? "Passcode" : "passcode", ""); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		//SecurityCraft's passcode-protected blocks did not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
 		if (!passcode.isEmpty()) {

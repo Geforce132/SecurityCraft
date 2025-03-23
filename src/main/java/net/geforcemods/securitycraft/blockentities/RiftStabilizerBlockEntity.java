@@ -24,7 +24,6 @@ import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -143,20 +142,20 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		if (tag.contains("teleportationTypes", Tag.TAG_COMPOUND)) {
-			CompoundTag teleportationNBT = tag.getCompound("teleportationTypes");
+		if (tag.contains("teleportationTypes")) {
+			CompoundTag teleportationNBT = tag.getCompoundOrEmpty("teleportationTypes");
 			int i = 0;
 
 			for (TeleportationType teleportationType : teleportationFilter.keySet()) {
-				teleportationFilter.put(teleportationType, teleportationNBT.getBoolean("teleportationType" + i));
+				teleportationFilter.put(teleportationType, teleportationNBT.getBooleanOr("teleportationType" + i, false));
 				i++;
 			}
 		}
 
-		lastTeleportDistance = tag.getDouble("lastTeleportDistance");
+		lastTeleportDistance = tag.getDoubleOr("lastTeleportDistance", 0.0D);
 
 		if (tag.contains("lastTeleportationType"))
-			lastTeleportationType = TeleportationType.values()[tag.getInt("lastTeleportationType")];
+			lastTeleportationType = TeleportationType.values()[tag.getIntOr("lastTeleportationType", 0)];
 	}
 
 	@Override

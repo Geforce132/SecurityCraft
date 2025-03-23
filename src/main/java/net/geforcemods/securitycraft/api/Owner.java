@@ -66,14 +66,9 @@ public class Owner {
 	}
 
 	public void load(CompoundTag tag) {
-		if (tag.contains("owner"))
-			ownerName = tag.getString("owner");
-
-		if (tag.contains("ownerUUID"))
-			ownerUUID = tag.getString("ownerUUID");
-
-		if (tag.contains("ownerValidated"))
-			validated = tag.getBoolean("ownerValidated");
+		ownerName = tag.getStringOr("owner", ownerName);
+		ownerUUID = tag.getStringOr("ownerUUID", ownerName);
+		validated = tag.getBooleanOr("ownerValidated", validated);
 	}
 
 	public void save(CompoundTag tag, boolean saveValidationStatus) {

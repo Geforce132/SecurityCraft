@@ -28,6 +28,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
@@ -121,7 +122,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 			owner.save(tag, needsValidation());
 
 		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
+			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
@@ -135,12 +136,12 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
-		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 		owner.load(tag);
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
-		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+		if (!tag.getBooleanOr("sendMessage", true)) {
 			sendAllowlistMessage.setValue(false);
 			sendDenylistMessage.setValue(false);
 		}
@@ -362,10 +363,10 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	private void fixBurnTimeData(CompoundTag tag) {
 		if (tag.contains("CookTime")) {//Pre-1.12.4 furnace burn time data
-			int burnTime = tag.getInt("BurnTime");
+			int burnTime = tag.getIntOr("BurnTime", 0);
 
-			tag.putInt("cooking_time_spent", tag.getInt("CookTime"));
-			tag.putInt("cooking_total_time", tag.getInt("CookTimeTotal"));
+			tag.putInt("cooking_time_spent", tag.getIntOr("CookTime", 0));
+			tag.putInt("cooking_total_time", tag.getIntOr("CookTimeTotal", 0));
 			tag.putInt("lit_time_remaining", burnTime);
 			tag.putInt("lit_total_time", burnTime);
 		}

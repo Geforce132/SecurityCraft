@@ -30,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -111,7 +112,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
+			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
@@ -135,13 +136,13 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
-		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
 
 		if (tag.contains("previous_barrel")) {
-			String savedPreviousBarrel = tag.getString("previous_barrel");
+			String savedPreviousBarrel = tag.getStringOr("previous_barrel", "");
 
 			if (!savedPreviousBarrel.isBlank()) {
 				ResourceLocation parsedPreviousBarrel = ResourceLocation.parse(savedPreviousBarrel);
@@ -151,7 +152,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 			}
 		}
 
-		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+		if (!tag.getBooleanOr("sendMessage", true)) {
 			sendAllowlistMessage.setValue(false);
 			sendDenylistMessage.setValue(false);
 		}

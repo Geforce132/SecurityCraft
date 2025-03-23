@@ -172,10 +172,7 @@ public abstract class Option<T> {
 
 		@Override
 		public void load(CompoundTag tag) {
-			if (tag.contains(getName()))
-				value = tag.getBoolean(getName());
-			else
-				value = getDefaultValue();
+			tag.getBooleanOr(getName(), getDefaultValue());
 		}
 
 		@Override
@@ -270,10 +267,7 @@ public abstract class Option<T> {
 
 		@Override
 		public void load(CompoundTag tag) {
-			if (tag.contains(getName()))
-				value = tag.getInt(getName());
-			else
-				value = getDefaultValue();
+			value = tag.getIntOr(getName(), getDefaultValue());
 		}
 
 		@Override
@@ -322,10 +316,7 @@ public abstract class Option<T> {
 
 		@Override
 		public void load(CompoundTag tag) {
-			if (tag.contains(getName()))
-				value = tag.getDouble(getName());
-			else
-				value = getDefaultValue();
+			value = tag.getDoubleOr(getName(), getDefaultValue());
 		}
 
 		@Override
@@ -363,7 +354,7 @@ public abstract class Option<T> {
 		@Override
 		public void load(CompoundTag tag) {
 			T[] enumConstants = enumClass.getEnumConstants();
-			int ordinal = tag.getInt(getName());
+			int ordinal = tag.getIntOr(getName(), 0);
 
 			if (ordinal >= 0 && ordinal < enumConstants.length)
 				value = enumConstants[ordinal];

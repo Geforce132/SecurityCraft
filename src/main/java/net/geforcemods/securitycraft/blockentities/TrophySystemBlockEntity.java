@@ -31,7 +31,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -157,17 +156,17 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		if (tag.contains("projectiles", Tag.TAG_COMPOUND)) {
-			CompoundTag projectilesNBT = tag.getCompound("projectiles");
+		if (tag.contains("projectiles")) {
+			CompoundTag projectilesNBT = tag.getCompoundOrEmpty("projectiles");
 			int i = 0;
 
 			for (EntityType<?> projectileType : projectileFilter.keySet()) {
-				projectileFilter.put(projectileType, projectilesNBT.getBoolean("projectile" + i));
+				projectileFilter.put(projectileType, projectilesNBT.getBooleanOr("projectile" + i, false));
 				i++;
 			}
 		}
 
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
+		lens.fromTag(tag.getListOrEmpty("lens"), lookupProvider);
 	}
 
 	@Override

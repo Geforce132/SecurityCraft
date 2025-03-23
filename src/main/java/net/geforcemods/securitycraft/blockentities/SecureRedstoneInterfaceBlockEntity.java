@@ -181,14 +181,14 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		sender = tag.getBoolean("sender");
-		power = tag.getInt("power");
-		frequency = tag.getInt("frequency");
-		senderRange = tag.getInt("sender_range");
-		protectedSignal = tag.getBoolean("protected_signal");
-		sendExactPower = tag.getBoolean("send_exact_power");
-		receiveInvertedPower = tag.getBoolean("receive_inverted_power");
-		highlightConnections = tag.getBoolean("highlight_connections");
+		sender = tag.getBooleanOr("sender", true);
+		power = tag.getIntOr("power", 0);
+		frequency = tag.getIntOr("frequency", 0);
+		senderRange = tag.getIntOr("sender_range", 24);
+		protectedSignal = tag.getBooleanOr("protected_signal", false);
+		sendExactPower = tag.getBooleanOr("send_exact_power", true);
+		receiveInvertedPower = tag.getBooleanOr("receive_inverted_power", false);
+		highlightConnections = tag.getBooleanOr("highlight_connections", false);
 	}
 
 	@Override

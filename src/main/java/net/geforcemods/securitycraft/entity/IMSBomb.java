@@ -86,9 +86,9 @@ public class IMSBomb extends Fireball {
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		ticksFlying = tag.getInt("ticksFlying");
-		launching = tag.getBoolean("launching");
-		isFast = tag.getBoolean("isFast");
+		ticksFlying = tag.getIntOr("ticksFlying", 0);
+		launching = tag.getBooleanOr("launching", false);
+		isFast = tag.getBooleanOr("isFast", false);
 	}
 
 	/**

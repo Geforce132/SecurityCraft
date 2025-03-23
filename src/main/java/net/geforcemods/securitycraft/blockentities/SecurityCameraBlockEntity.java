@@ -21,7 +21,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -104,13 +103,13 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		shutDown = tag.getBoolean("shutDown");
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
-		initialXRotation = tag.getFloat("initial_x_rotation");
-		initialYRotation = tag.getFloat("initial_y_rotation");
+		shutDown = tag.getBooleanOr("shutDown", false);
+		lens.fromTag(tag.getListOrEmpty("lens"), lookupProvider);
+		initialXRotation = tag.getFloatOr("initial_x_rotation", 1.0F);
+		initialYRotation = tag.getFloatOr("initial_y_rotation", 1.0F);
 
 		if (tag.contains("initial_zoom"))
-			initialZoom = tag.getFloat("initial_zoom");
+			initialZoom = tag.getFloatOr("initial_zoom", 1.0F);
 	}
 
 	@Override

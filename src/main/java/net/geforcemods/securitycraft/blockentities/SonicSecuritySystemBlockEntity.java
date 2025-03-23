@@ -212,7 +212,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		linkedBlocks = new ArrayList<>();
 
 		if (tag.contains("linked_blocks")) {
-			ListTag list = tag.getList("linked_blocks", Tag.TAG_COMPOUND);
+			ListTag list = tag.getListOrEmpty("linked_blocks");
 
 			for (Tag entry : list) {
 				try {
@@ -224,10 +224,10 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 			}
 		}
 		else if (tag.contains("LinkedBlocks")) {
-			ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
+			ListTag list = tag.getListOrEmpty("LinkedBlocks");
 
 			for (int i = 0; i < list.size(); i++) {
-				CompoundTag linkedBlock = list.getCompound(i);
+				CompoundTag linkedBlock = list.getCompoundOrEmpty(i);
 				BlockPos linkedBlockPos = Utils.readBlockPos(linkedBlock);
 
 				linkedBlocks.add(new GlobalPos(level != null ? level.dimension() : ResourceKey.create(Registries.DIMENSION, SecurityCraft.mcResLoc("overworld")), linkedBlockPos));
@@ -237,25 +237,21 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		recordedNotes.clear();
 		loadNotes(tag);
 
-		if (tag.contains("emitsPings"))
-			emitsPings = tag.getBoolean("emitsPings");
-
-		if (tag.contains("isActive"))
-			isActive = tag.getBoolean("isActive");
-
-		isRecording = tag.getBoolean("isRecording");
-		isListening = tag.getBoolean("isListening");
-		listenPos = tag.getInt("listenPos");
-		wasCorrectTunePlayed = tag.getBoolean("correctTuneWasPlayed");
-		powerCooldown = tag.getInt("powerCooldown");
-		shutDown = tag.getBoolean("shutDown");
-		disableBlocksWhenTuneIsPlayed = tag.getBoolean("disableBlocksWhenTuneIsPlayed");
+		emitsPings = tag.getBooleanOr("emitsPings", emitsPings);
+		isActive = tag.getBooleanOr("isActive", isActive);
+		isRecording = tag.getBooleanOr("isRecording", false);
+		isListening = tag.getBooleanOr("isListening", false);
+		listenPos = tag.getIntOr("listenPos", 0);
+		wasCorrectTunePlayed = tag.getBooleanOr("correctTuneWasPlayed", false);
+		powerCooldown = tag.getIntOr("powerCooldown", 0);
+		shutDown = tag.getBooleanOr("shutDown", false);
+		disableBlocksWhenTuneIsPlayed = tag.getBooleanOr("disableBlocksWhenTuneIsPlayed", false);
 	}
 
 	/**
 	 * Saves this block entity's notes to a tag
 	 *
-	 * @param stack The tag to save the notes to
+	 * @param tag The tag to save the notes to
 	 * @param lookupProvider lookup for registry entries
 	 */
 	public void saveNotes(CompoundTag tag, HolderLookup.Provider lookupProvider) {
@@ -279,12 +275,12 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		if (tag.contains("notes"))
 			recordedNotes.addAll(Notes.CODEC.decode(NbtOps.INSTANCE, tag).result().get().getFirst().notes());
 		else if (tag.contains("Notes")) {
-			ListTag list = tag.getList("Notes", Tag.TAG_COMPOUND);
+			ListTag list = tag.getListOrEmpty("Notes");
 
 			for (int i = 0; i < list.size(); i++) {
-				CompoundTag note = list.getCompound(i);
+				CompoundTag note = list.getCompoundOrEmpty(i);
 
-				recordedNotes.add(new NoteWrapper(note.getInt("noteID"), note.getString("instrument"), note.getString("customSoundId")));
+				recordedNotes.add(new NoteWrapper(note.getIntOr("noteID", 0), note.getStringOr("instrument", ""), note.getStringOr("customSoundId", "")));
 			}
 		}
 	}
@@ -386,7 +382,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		resetListeningTimer();
 		listenPos = 0;
 		isListening = false;
-		level.blockUpdated(worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get());
+		level.updateNeighborsAt(worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get());
 
 		if (!level.isClientSide)
 			sync();

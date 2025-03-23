@@ -34,7 +34,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -90,7 +89,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			ItemStack lens = lenses.getItem(i);
 
 			if (!lens.isEmpty())
-				tag.put("lens" + i, lens.saveOptional(lookupProvider));
+				tag.put("lens" + i, lens.save(lookupProvider));
 		}
 	}
 
@@ -104,10 +103,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		sideConfig = loadSideConfig(tag.getCompound("sideConfig"));
+		sideConfig = loadSideConfig(tag.getCompoundOrEmpty("sideConfig"));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
-			lenses.setItemExclusively(i, Utils.parseOptional(lookupProvider, tag.getCompound("lens" + i)));
+			lenses.setItemExclusively(i, Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("lens" + i)));
 		}
 
 		lenses.setChanged();
@@ -117,8 +116,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		EnumMap<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
 
 		for (Direction dir : Direction.values()) {
-			if (sideConfigTag.contains(dir.getName(), Tag.TAG_BYTE))
-				sideConfig.put(dir, sideConfigTag.getBoolean(dir.getName()));
+			if (sideConfigTag.contains(dir.getName()))
+				sideConfig.put(dir, sideConfigTag.getBooleanOr(dir.getName(), false));
 			else
 				sideConfig.put(dir, true);
 		}
@@ -248,7 +247,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public void readOptions(CompoundTag tag) {
 		if (tag.contains("enabled"))
-			tag.putBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
+			tag.putBoolean("disabled", !tag.getBooleanOr("enabled", false)); //legacy support
 
 		for (Option<?> option : customOptions()) {
 			option.load(tag);

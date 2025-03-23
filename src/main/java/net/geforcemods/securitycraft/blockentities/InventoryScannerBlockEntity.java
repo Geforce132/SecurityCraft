@@ -31,7 +31,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
@@ -97,9 +96,9 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		super.loadAdditional(tag, lookupProvider);
 
 		ContainerHelper.loadAllItems(tag, inventoryContents, lookupProvider);
-		signalCooldown = tag.getInt("cooldown");
-		providePower = tag.getBoolean("is_providing_power");
-		lens.fromTag(tag.getList("lens", Tag.TAG_COMPOUND), lookupProvider);
+		signalCooldown = tag.getIntOr("cooldown", 0);
+		providePower = tag.getBooleanOr("is_providing_power", false);
+		lens.fromTag(tag.getListOrEmpty("lens"), lookupProvider);
 		lens.setChanged();
 	}
 

@@ -63,6 +63,6 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicki
 		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("ManagerPos"))
-			managerPos = BlockPos.of(tag.getLong("ManagerPos"));
+			managerPos = BlockPos.of(tag.getLongOr("ManagerPos", 0));
 	}
 }

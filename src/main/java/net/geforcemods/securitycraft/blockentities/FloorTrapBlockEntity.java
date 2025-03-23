@@ -107,10 +107,10 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		shouldDisappear = tag.getBoolean("should_disappear");
-		shouldReappear = tag.getBoolean("should_reappear");
-		ticksUntilDisappearing = tag.getInt("ticks_until_disappearing");
-		ticksUntilReappearing = tag.getInt("ticks_until_reappearing");
+		shouldDisappear = tag.getBooleanOr("should_disappear", false);
+		shouldReappear = tag.getBooleanOr("should_reappear", false);
+		ticksUntilDisappearing = tag.getIntOr("ticks_until_disappearing", -1);
+		ticksUntilReappearing = tag.getIntOr("ticks_until_reappearing", -1);
 	}
 
 	@Override

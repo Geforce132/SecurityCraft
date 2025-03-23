@@ -22,6 +22,7 @@ import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -47,7 +48,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 		super.saveAdditional(tag, lookupProvider);
 
 		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
+			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
@@ -63,9 +64,9 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 
 		loadSaltKey(tag);
 		loadPasscode(tag);
-		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 
-		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+		if (!tag.getBooleanOr("sendMessage", true)) {
 			sendAllowlistMessage.setValue(false);
 			sendDenylistMessage.setValue(false);
 		}

@@ -22,12 +22,12 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
@@ -109,7 +109,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		tag.put("entries", entryList);
 
 		if (!filter.isEmpty())
-			tag.put("filter", filter.saveOptional(lookupProvider));
+			tag.put("filter", filter.save(lookupProvider));
 
 		tag.putBoolean("ShowHighlights", showHighlights);
 		tag.putInt("Color", color);
@@ -119,17 +119,17 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		int modeOrdinal = tag.getInt("mode");
+		int modeOrdinal = tag.getIntOr("mode", 2);
 
 		if (modeOrdinal < 0 || modeOrdinal >= DetectionMode.values().length)
 			modeOrdinal = 0;
 
 		mode = DetectionMode.values()[modeOrdinal];
 		entries = new ArrayList<>();
-		tag.getList("entries", Tag.TAG_COMPOUND).stream().map(element -> ChangeEntry.load(level, (CompoundTag) element)).forEach(entries::add);
-		filter = Utils.parseOptional(lookupProvider, tag.getCompound("filter"));
-		showHighlights = tag.getBoolean("ShowHighlights");
-		setColor(tag.getInt("Color"));
+		tag.getListOrEmpty("entries").stream().map(element -> ChangeEntry.load(level, (CompoundTag) element)).forEach(entries::add);
+		filter = Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("filter"));
+		showHighlights = tag.getBooleanOr("ShowHighlights", false);
+		setColor(tag.getIntOr("Color", 0xFF0000FF));
 		updateFilteredEntries();
 	}
 
@@ -320,7 +320,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			CompoundTag tag = new CompoundTag();
 
 			tag.putString("player", player);
-			tag.putUUID("uuid", uuid);
+			tag.store("uuid", UUIDUtil.CODEC, uuid);
 			tag.putLong("timestamp", timestamp);
 			tag.putInt("action", action.ordinal());
 			tag.putLong("pos", pos.asLong());
@@ -330,19 +330,19 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 		public static ChangeEntry load(Level level, CompoundTag tag) {
 			HolderGetter<Block> holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK;
-			int actionOrdinal = tag.getInt("action");
+			int actionOrdinal = tag.getIntOr("action", 0);
 
 			if (actionOrdinal < 0 || actionOrdinal >= DetectionMode.values().length)
 				actionOrdinal = 0;
 
 			//@formatter:off
 			return new ChangeEntry(
-					tag.getString("player"),
-					tag.getUUID("uuid"),
-					tag.getLong("timestamp"),
+					tag.getStringOr("player", ""),
+					tag.read("uuid", UUIDUtil.CODEC).orElse(null),
+					tag.getLongOr("timestamp", 0),
 					DetectionMode.values()[actionOrdinal],
-					BlockPos.of(tag.getLong("pos")),
-					NbtUtils.readBlockState(holderGetter, tag.getCompound("state")));
+					BlockPos.of(tag.getLongOr("pos", 0)),
+					NbtUtils.readBlockState(holderGetter, tag.getCompoundOrEmpty("state")));
 			//@formatter:on
 		}
 	}

@@ -31,6 +31,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -75,7 +76,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
+			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
@@ -94,13 +95,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		modules = readModuleInventory(tag, lookupProvider);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
-		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 		loadSaltKey(tag);
 		loadPasscode(tag);
 		owner.load(tag);
 
 		if (tag.contains("previous_chest")) {
-			String savedPreviousChest = tag.getString("previous_chest");
+			String savedPreviousChest = tag.getStringOr("previous_chest", "");
 
 			if (!savedPreviousChest.isBlank()) {
 				ResourceLocation parsedPreviousChest = ResourceLocation.parse(savedPreviousChest);
@@ -110,7 +111,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 			}
 		}
 
-		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+		if (!tag.getBooleanOr("sendMessage", true)) {
 			sendAllowlistMessage.setValue(false);
 			sendDenylistMessage.setValue(false);
 		}

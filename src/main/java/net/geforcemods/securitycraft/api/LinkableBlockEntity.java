@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,11 +36,11 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 		if (tag.contains("linkedBlocks")) {
 			if (!hasLevel()) {
-				nbtTagStorage = tag.getList("linkedBlocks", Tag.TAG_COMPOUND);
+				nbtTagStorage = tag.getListOrEmpty("linkedBlocks");
 				return;
 			}
 
-			readLinkedBlocks(tag.getList("linkedBlocks", Tag.TAG_COMPOUND));
+			readLinkedBlocks(tag.getListOrEmpty("linkedBlocks"));
 		}
 	}
 
@@ -87,10 +86,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	private void readLinkedBlocks(ListTag list) {
 		for (int i = 0; i < list.size(); i++) {
-			String name = list.getCompound(i).getString("blockName");
-			int x = list.getCompound(i).getInt("blockX");
-			int y = list.getCompound(i).getInt("blockY");
-			int z = list.getCompound(i).getInt("blockZ");
+			CompoundTag tag = list.getCompoundOrEmpty(i);
+
+			String name = tag.getStringOr("blockName", "");
+			int x = tag.getIntOr("blockX", 0);
+			int y = tag.getIntOr("blockY", 0);
+			int z = tag.getIntOr("blockZ", 0);
 			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
 
 			if (hasLevel() && level.isLoaded(block.getPos()) && block.validate(level) && !linkedBlocks.contains(block))

@@ -62,7 +62,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		tag.putBoolean("overriding_blocks", overridingBlocks);
 
 		if (!projectedBlock.isEmpty())
-			tag.put("storedItem", projectedBlock.saveOptional(lookupProvider));
+			tag.put("storedItem", projectedBlock.save(lookupProvider));
 
 		tag.put("SavedState", NbtUtils.writeBlockState(projectedState));
 	}
@@ -71,20 +71,16 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		projectionWidth = tag.getInt("width");
-		projectionHeight = tag.getInt("height");
-		projectionRange = tag.getInt("range");
-		projectionOffset = tag.getInt("offset");
+		projectionWidth = tag.getIntOr("width", 1);
+		projectionHeight = tag.getIntOr("height", 1);
+		projectionRange = tag.getIntOr("range", 5);
+		projectionOffset = tag.getIntOr("offset", 0);
 		activatedByRedstone = isModuleEnabled(ModuleType.REDSTONE);
-		active = tag.getBoolean("active");
-		horizontal = tag.getBoolean("horizontal");
-		overridingBlocks = tag.getBoolean("overriding_blocks");
-		projectedBlock = Utils.parseOptional(lookupProvider, tag.getCompound("storedItem"));
-
-		if (!tag.contains("SavedState"))
-			resetSavedState();
-		else
-			setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK, tag.getCompound("SavedState")));
+		active = tag.getBooleanOr("active", false);
+		horizontal = tag.getBooleanOr("horizontal", false);
+		overridingBlocks = tag.getBooleanOr("overriding_blocks", false);
+		projectedBlock = Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("storedItem"));
+		tag.getCompound("SavedState").ifPresentOrElse(state -> setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK, state)), this::resetSavedState);
 	}
 
 	@Override

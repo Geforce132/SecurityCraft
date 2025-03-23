@@ -1,6 +1,8 @@
 package net.geforcemods.securitycraft.entity.sentry;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.google.common.collect.Sets;
 
@@ -8,7 +10,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -63,32 +65,18 @@ public class Bullet extends AbstractArrow {
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 
-		if (!potionEffects.isEmpty()) {
-			ListTag list = new ListTag();
-
-			for (MobEffectInstance effect : potionEffects) {
-				list.add(effect.save());
-			}
-
-			tag.put("PotionEffects", list);
-		}
+		if (!potionEffects.isEmpty())
+			tag.store("PotionEffects", MobEffectInstance.CODEC.listOf(), registryAccess().createSerializationContext(NbtOps.INSTANCE), new ArrayList<>(potionEffects));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 
-		if (tag.contains("PotionEffects", 9)) {
-			ListTag potionList = tag.getList("PotionEffects", 10);
+		if (tag.contains("PotionEffects")) {
+			List<MobEffectInstance> mobEffectList = tag.read("PotionEffects", MobEffectInstance.CODEC.listOf(), registryAccess().createSerializationContext(NbtOps.INSTANCE)).orElse(List.of());
 
-			if (!potionList.isEmpty()) {
-				for (int i = 0; i < potionList.size(); ++i) {
-					MobEffectInstance effect = MobEffectInstance.load(potionList.getCompound(i));
-
-					if (effect != null)
-						potionEffects.add(effect);
-				}
-			}
+			potionEffects = new ArrayList<>(mobEffectList);
 		}
 	}
 

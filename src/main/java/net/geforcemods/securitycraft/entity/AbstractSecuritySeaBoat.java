@@ -30,6 +30,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -312,7 +313,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		tag.put("owner", ownerTag);
 
 		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
+			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
@@ -324,8 +325,8 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		entityData.set(MODULES, readModuleInventory(tag, registryAccess()));
 		entityData.set(MODULE_STATES, readModuleStates(tag));
 		readOptions(tag);
-		entityData.set(COOLDOWN_END, System.currentTimeMillis() + tag.getLong("cooldownLeft"));
-		entityData.set(OWNER, Owner.fromCompound(tag.getCompound("owner")));
+		entityData.set(COOLDOWN_END, System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0));
+		entityData.set(OWNER, Owner.fromCompound(tag.getCompoundOrEmpty("owner")));
 		loadSaltKey(tag);
 		loadPasscode(tag);
 	}

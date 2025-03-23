@@ -102,9 +102,9 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		super.loadAdditional(tag, lookupProvider);
 
 		for (int i = 0; i < getPlayers().length; i++) {
-			getPlayers()[i] = tag.getString("player" + i);
-			getUuids()[i] = tag.getString("uuid" + i);
-			getTimestamps()[i] = tag.getLong("timestamp" + i);
+			getPlayers()[i] = tag.getStringOr("player" + i, "");
+			getUuids()[i] = tag.getStringOr("uuid" + i, "");
+			getTimestamps()[i] = tag.getLongOr("timestamp" + i, 0);
 		}
 	}
 

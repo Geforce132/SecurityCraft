@@ -399,7 +399,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		tag.put("TileEntityData", getOwnerTag());
 
 		if (!allowlistModule.isEmpty())
-			tag.put("InstalledWhitelist", allowlistModule.saveOptional(level().registryAccess()));
+			tag.put("InstalledWhitelist", allowlistModule.save(level().registryAccess()));
 
 		tag.putBoolean("HasSpeedModule", hasSpeedModule());
 		tag.putInt("SentryMode", entityData.get(MODE));
@@ -419,15 +419,15 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
-		CompoundTag teTag = tag.getCompound("TileEntityData");
+		CompoundTag teTag = tag.getCompoundOrEmpty("TileEntityData");
 		Owner owner = Owner.fromCompound(teTag);
-		float savedHeadRotation = tag.getFloat("HeadRotation");
+		float savedHeadRotation = tag.getFloatOr("HeadRotation", 0.0F);
 
 		entityData.set(OWNER, owner);
 		getSentryDisguiseBlockEntity().ifPresent(be -> {
 			//put the old module, if it exists, into the new disguise block
 			if (tag.contains("InstalledModule")) {
-				ItemStack module = Utils.parseOptional(level().registryAccess(), tag.getCompound("InstalledModule"));
+				ItemStack module = Utils.parseOptional(level().registryAccess(), tag.getCompoundOrEmpty("InstalledModule"));
 
 				if (!module.isEmpty() && module.getItem() instanceof ModuleItem && ModuleItem.getBlockAddon(module) != null) {
 					be.insertModule(module, false);
@@ -435,11 +435,11 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				}
 			}
 		});
-		entityData.set(ALLOWLIST, Utils.parseOptional(level().registryAccess(), tag.getCompound("InstalledWhitelist")));
-		entityData.set(HAS_SPEED_MODULE, tag.getBoolean("HasSpeedModule"));
-		entityData.set(MODE, tag.getInt("SentryMode"));
-		entityData.set(HAS_TARGET, tag.getBoolean("HasTarget"));
-		entityData.set(SHUT_DOWN, tag.getBoolean("ShutDown"));
+		entityData.set(ALLOWLIST, Utils.parseOptional(level().registryAccess(), tag.getCompoundOrEmpty("InstalledWhitelist")));
+		entityData.set(HAS_SPEED_MODULE, tag.getBooleanOr("HasSpeedModule", false));
+		entityData.set(MODE, tag.getIntOr("SentryMode", 0));
+		entityData.set(HAS_TARGET, tag.getBooleanOr("HasTarget", false));
+		entityData.set(SHUT_DOWN, tag.getBooleanOr("ShutDown", false));
 		entityData.set(HEAD_ROTATION, savedHeadRotation);
 		oHeadRotation = savedHeadRotation;
 		headRotation = savedHeadRotation;

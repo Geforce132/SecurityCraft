@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -106,14 +107,14 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		super.saveAdditional(tag, lookupProvider);
 
 		if (!displayedStack.isEmpty())
-			tag.put("DisplayedStack", displayedStack.saveOptional(lookupProvider));
+			tag.put("DisplayedStack", displayedStack.save(lookupProvider));
 
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 
 		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
+			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
 
 		if (passcode != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
@@ -122,9 +123,9 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		setDisplayedStack(Utils.parseOptional(lookupProvider, tag.getCompound("DisplayedStack")));
-		shouldBeOpen = tag.getBoolean("ShouldBeOpen");
-		cooldownEnd = System.currentTimeMillis() + tag.getLong("cooldownLeft");
+		setDisplayedStack(Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("DisplayedStack")));
+		shouldBeOpen = tag.getBooleanOr("ShouldBeOpen", false);
+		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 		loadSaltKey(tag);
 		loadPasscode(tag);
 
@@ -133,7 +134,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 			hasReceivedData = true;
 		}
 
-		if (tag.contains("sendMessage") && !tag.getBoolean("sendMessage")) {
+		if (!tag.getBooleanOr("sendMessage", true)) {
 			sendAllowlistMessage.setValue(false);
 			sendDenylistMessage.setValue(false);
 		}

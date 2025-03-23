@@ -101,7 +101,7 @@ public class KeycardLockBlockEntity extends KeycardReaderBlockEntity {
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		setUp = tag.getBoolean("set_up");
+		setUp = tag.getBooleanOr("set_up", false);
 	}
 
 	@Override

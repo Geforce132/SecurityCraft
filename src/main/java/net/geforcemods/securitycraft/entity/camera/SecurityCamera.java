@@ -167,7 +167,7 @@ public class SecurityCamera extends Entity {
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
-		entityData.set(ZOOM_AMOUNT, tag.getFloat("zoom_amount"));
+		entityData.set(ZOOM_AMOUNT, tag.getFloatOr("zoom_amount", 1.0F));
 	}
 
 	@Override

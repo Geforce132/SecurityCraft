@@ -23,7 +23,7 @@ public class ReinforcedIronBarsBlockEntity extends OwnableBlockEntity {
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		canDrop = tag.getBoolean("canDrop");
+		canDrop = tag.getBooleanOr("canDrop", true);
 	}
 
 	public boolean canDrop() {

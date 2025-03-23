@@ -17,7 +17,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -396,12 +395,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @return A NonNullList of ItemStacks that were read from the given tag
 	 */
 	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		ListTag list = tag.getList("Modules", Tag.TAG_COMPOUND);
+		ListTag list = tag.getListOrEmpty("Modules");
 		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
-			CompoundTag stackTag = list.getCompound(i);
-			byte slot = stackTag.getByte("ModuleSlot");
+			CompoundTag stackTag = list.getCompoundOrEmpty(i);
+			byte slot = stackTag.getByteOr("ModuleSlot", (byte) 0);
 
 			if (slot >= 0 && slot < modules.size())
 				modules.set(slot, Utils.parseOptional(lookupProvider, stackTag));
@@ -425,10 +424,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (acceptedModules.contains(module)) {
 				String key = module.name().toLowerCase() + "Enabled";
 
-				if (tag.contains(key))
-					moduleStates.put(module, tag.getBoolean(key));
-				else
-					moduleStates.put(module, hasModule(module)); //if the module is accepted, but no state was saved yet, revert to whether the module is installed
+				moduleStates.put(module, tag.getBoolean(key).orElseGet(() -> hasModule(module))); //if the module is accepted, but no state was saved yet, revert to whether the module is installed
 			}
 			else
 				moduleStates.put(module, false); //module is not accepted, so disable it right away
@@ -489,7 +485,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	/**
 	 * Checks whether the name of the entity is listed on the allowlist of this object, if an allowlist module exists
 	 *
-	 * @param entity The name of the to check
+	 * @param name The name of the entity to check
 	 * @return true if the name of the entity is listed on the allowlist module, false otherwise
 	 */
 	public default boolean isAllowed(String name) {

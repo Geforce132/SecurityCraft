@@ -41,6 +41,6 @@ public class TrackMineBlockEntity extends OwnableBlockEntity {
 	@Override
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
-		active = tag.getBoolean("TrackMineEnabled");
+		active = tag.getBooleanOr("TrackMineEnabled", true);
 	}
 }

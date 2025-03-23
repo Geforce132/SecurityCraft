@@ -85,7 +85,7 @@ public class BouncingBetty extends Entity {
 
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
-		setFuse(tag.getByte("Fuse"));
+		setFuse(tag.getByteOr("Fuse", (byte) 0));
 	}
 
 	@Override

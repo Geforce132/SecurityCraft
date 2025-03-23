@@ -79,7 +79,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 	@Override
 	public void readOptions(CompoundTag tag) {
 		if (tag.contains("isSecret")) {
-			tag.putBoolean(isFrontSecret.getName(), tag.getBoolean("isSecret"));
+			tag.putBoolean(isFrontSecret.getName(), tag.getBooleanOr("isSecret", true));
 			tag.remove("isSecret");
 		}
 

@@ -655,29 +655,29 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		int i = 0;
 
 		super.loadAdditional(tag, lookupProvider);
-		setEnabled(tag.getBoolean("BlockPocketEnabled"));
-		setShowOutline(tag.getBoolean("ShowOutline"));
-		setSize(tag.getInt("Size"));
-		setAutoBuildOffset(tag.getInt("AutoBuildOffset"));
-		setColor(tag.getInt("Color"));
+		setEnabled(tag.getBooleanOr("BlockPocketEnabled", false));
+		setShowOutline(tag.getBooleanOr("ShowOutline", false));
+		setSize(tag.getIntOr("Size", 5));
+		setAutoBuildOffset(tag.getIntOr("AutoBuildOffset", 0));
+		setColor(tag.getIntOr("Color", 0xFF0000FF));
 		ContainerHelper.loadAllItems(tag, storage, lookupProvider);
 
 		while (tag.contains("BlocksList" + i)) {
-			blocks.add(BlockPos.of(tag.getLong("BlocksList" + i)));
+			blocks.add(BlockPos.of(tag.getLongOr("BlocksList" + i, 0)));
 			i++;
 		}
 
 		i = 0;
 
 		while (tag.contains("WallsList" + i)) {
-			walls.add(BlockPos.of(tag.getLong("WallsList" + i)));
+			walls.add(BlockPos.of(tag.getLongOr("WallsList" + i, 0)));
 			i++;
 		}
 
 		i = 0;
 
 		while (tag.contains("FloorList" + i)) {
-			floor.add(BlockPos.of(tag.getLong("FloorList" + i)));
+			floor.add(BlockPos.of(tag.getLongOr("FloorList" + i, 0)));
 			i++;
 		}
 	}

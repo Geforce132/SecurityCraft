@@ -135,11 +135,11 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		bombsRemaining = tag.getInt("bombsRemaining");
-		updateBombCount = tag.getBoolean("updateBombCount");
+		bombsRemaining = tag.getIntOr("bombsRemaining", 4);
+		updateBombCount = tag.getBooleanOr("updateBombCount", false);
 
 		if (tag.contains("targetingOption"))
-			targetingMode.setValue(TargetingMode.values()[tag.getInt("targetingOption")]);
+			targetingMode.setValue(TargetingMode.values()[tag.getIntOr("targetingOption", 1)]);
 	}
 
 	public void setBombsRemaining(int bombsRemaining) {

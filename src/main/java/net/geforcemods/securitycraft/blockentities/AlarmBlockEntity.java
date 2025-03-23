@@ -18,7 +18,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -80,20 +79,11 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		cooldown = tag.getInt("cooldown");
-		isPowered = tag.getBoolean("isPowered");
-
-		if (tag.contains("sound", Tag.TAG_STRING))
-			setSound(ResourceLocation.parse(tag.getString("sound")));
-		else
-			setSound(SCSounds.ALARM.location);
-
-		if (tag.contains("pitch"))
-			pitch = tag.getFloat("pitch");
-		else
-			pitch = 1.0F;
-
-		soundLength = tag.getInt("delay");
+		cooldown = tag.getIntOr("cooldown", 0);
+		isPowered = tag.getBooleanOr("isPowered", false);
+		setSound(tag.getString("sound").map(ResourceLocation::parse).orElse(SCSounds.ALARM.location));
+		pitch = tag.getFloatOr("pitch", 1.0F);
+		soundLength = tag.getIntOr("delay", 2);
 	}
 
 	public void setSound(ResourceLocation soundEvent) {

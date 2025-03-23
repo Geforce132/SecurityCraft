@@ -37,9 +37,9 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("CustomName"))
-			customName = parseCustomNameSafe(tag.getString("CustomName"), lookupProvider);
+			customName = parseCustomNameSafe(tag.get("CustomName"), lookupProvider);
 		else if (tag.contains("customName")) //Conversion of old string literal names
-			customName = Component.literal(tag.getString("customName"));
+			customName = Component.literal(tag.getStringOr("customName", ""));
 	}
 
 	@Override

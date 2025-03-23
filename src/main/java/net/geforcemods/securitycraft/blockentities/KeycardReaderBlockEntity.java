@@ -27,7 +27,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -82,10 +81,10 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		//carry over old data
 		if (tag.contains("passLV")) {
 			boolean oldRequiresExactKeycard = false;
-			int oldPassLV = tag.getInt("passLV") - 1; //old data was 1-indexed, new one is 0-indexed
+			int oldPassLV = tag.getIntOr("passLV", 0) - 1; //old data was 1-indexed, new one is 0-indexed
 
 			if (tag.contains("requiresExactKeycard"))
-				oldRequiresExactKeycard = tag.getBoolean("requiresExactKeycard");
+				oldRequiresExactKeycard = tag.getBooleanOr("requiresExactKeycard", false);
 
 			for (int i = 0; i < 5; i++) {
 				acceptedLevels[i] = oldRequiresExactKeycard ? i == oldPassLV : i >= oldPassLV;
@@ -93,18 +92,16 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		//don't try to load this data if it doesn't exist, otherwise everything will be "false"
-		if (tag.contains("acceptedLevels", Tag.TAG_COMPOUND)) {
-			CompoundTag acceptedLevelsTag = tag.getCompound("acceptedLevels");
+		if (tag.contains("acceptedLevels")) {
+			CompoundTag acceptedLevelsTag = tag.getCompoundOrEmpty("acceptedLevels");
 
 			for (int i = 1; i <= 5; i++) {
-				acceptedLevels[i - 1] = acceptedLevelsTag.getBoolean("lvl" + i);
+				acceptedLevels[i - 1] = acceptedLevelsTag.getBooleanOr("lvl" + i, false);
 			}
 		}
 
-		signature = tag.getInt("signature");
-
-		if (tag.contains("sendMessage"))
-			sendDenylistMessage.setValue(tag.getBoolean("sendMessage"));
+		signature = tag.getIntOr("signature", 0);
+		tag.getBoolean("sendMessage").ifPresent(b -> sendDenylistMessage.setValue(b));
 	}
 
 	@Override

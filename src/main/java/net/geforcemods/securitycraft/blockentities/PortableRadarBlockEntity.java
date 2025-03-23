@@ -107,7 +107,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public void readOptions(CompoundTag tag) {
 		if (tag.contains("enabled"))
-			tag.putBoolean("disabled", !tag.getBoolean("enabled")); //legacy support
+			tag.putBoolean("disabled", !tag.getBooleanOr("enabled", false)); //legacy support
 
 		for (Option<?> option : customOptions()) {
 			option.load(tag);
