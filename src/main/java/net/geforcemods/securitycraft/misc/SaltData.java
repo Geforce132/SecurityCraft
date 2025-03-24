@@ -1,26 +1,55 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 public class SaltData extends SavedData {
+	//@formatter:off
+	private record SaltEntry(UUID key, byte[] salt) {
+		private static final Codec<UUID> UUID_AS_STRING_CODEC = Codec.STRING.xmap(UUID::fromString, UUID::toString);
+		private static final Codec<UUID> KEY_CODEC = Codec.withAlternative(UUIDUtil.CODEC, UUID_AS_STRING_CODEC);
+		private static final Codec<byte[]> VALUE_CODEC = Codec.BYTE_BUFFER.xmap(ByteBuffer::array, ByteBuffer::wrap);
+		public static final Codec<SaltEntry> CODEC = RecordCodecBuilder.create(i -> i.group(
+				KEY_CODEC.fieldOf("key").forGetter(SaltEntry::key),
+				VALUE_CODEC.fieldOf("salt").forGetter(SaltEntry::salt)
+				).apply(i, SaltEntry::new));
+	}
+
+	public static final Codec<SaltData> CODEC = RecordCodecBuilder.create(i -> i.group(
+			SaltEntry.CODEC.listOf().xmap(
+					entryList -> new ConcurrentHashMap<>(entryList.stream().collect(Collectors.toMap(SaltEntry::key, SaltEntry::salt))),
+					map -> map.entrySet().stream().map(entry -> new SaltEntry(entry.getKey(), entry.getValue())).toList())
+			.fieldOf("Salts").forGetter(SaltData::saltMap)
+			).apply(i, SaltData::new));
+	//@formatter:on
+	public static final SavedDataType<SaltData> TYPE = new SavedDataType<>("securitycraft-salts", SaltData::new, CODEC, DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 	private static final Object DUMMY = new Object();
 	private static SaltData instance;
-	private final Map<UUID, byte[]> saltMap = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<UUID, byte[]> saltMap;
 	private final Map<UUID, Object> saltKeysInUse = new ConcurrentHashMap<>();
 
-	private SaltData() {}
+	private SaltData() {
+		this(new ConcurrentHashMap<>());
+	}
+
+	private SaltData(ConcurrentHashMap<UUID, byte[]> saltMap) {
+		this.saltMap = saltMap;
+	}
 
 	public static void refreshLevel(ServerLevel level) {
-		instance = level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(SaltData::new, SaltData::load), "securitycraft-salts");
+		instance = level.getDataStorage().computeIfAbsent(TYPE);
 	}
 
 	public static void invalidate() {
@@ -79,38 +108,7 @@ public class SaltData extends SavedData {
 		return null;
 	}
 
-	public static SaltData load(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		SaltData saltData = new SaltData();
-		ListTag listtag = tag.getList("Salts", Tag.TAG_COMPOUND);
-
-		for (int i = 0; i < listtag.size(); ++i) {
-			CompoundTag saltTag = listtag.getCompound(i);
-			UUID uuid;
-
-			if (saltTag.contains("key", Tag.TAG_STRING))
-				uuid = UUID.fromString(saltTag.getString("key"));
-			else
-				uuid = saltTag.getUUID("key");
-
-			saltData.saltMap.put(uuid, saltTag.getByteArray("salt"));
-		}
-
-		return saltData;
-	}
-
-	@Override
-	public CompoundTag save(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		ListTag saltTable = new ListTag();
-
-		for (Map.Entry<UUID, byte[]> saltEntry : saltMap.entrySet()) {
-			CompoundTag saltTag = new CompoundTag();
-
-			saltTag.putUUID("key", saltEntry.getKey());
-			saltTag.putByteArray("salt", saltEntry.getValue());
-			saltTable.add(saltTag);
-		}
-
-		tag.put("Salts", saltTable);
-		return tag;
+	private ConcurrentHashMap<UUID, byte[]> saltMap() {
+		return saltMap;
 	}
 }
