@@ -35,7 +35,10 @@ public class DisguisableDynamicBakedModel implements BlockStateModel {
 				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
 
 				if (model != this) {
-					parts.addAll(model.collectParts(level, pos, state, random));
+					for (BlockModelPart disguisedPart : model.collectParts(level, pos, state, random)) {
+						parts.add(new DisguisableBlockModelPart(disguisedPart, disguisedState));
+					}
+
 					return;
 				}
 			}
