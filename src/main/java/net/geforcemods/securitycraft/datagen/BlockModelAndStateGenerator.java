@@ -478,7 +478,7 @@ public class BlockModelAndStateGenerator {
 	public static void createReinforcedGrassBlock() {
 		Block block = SCContent.REINFORCED_GRASS_BLOCK.get();
 		ResourceLocation model = ModelLocationUtils.getModelLocation(block);
-		MultiVariant nonSnowyModel = BlockModelGenerators.plainVariant(model);
+		MultiVariant nonSnowyModel = BlockModelGenerators.createRotatedVariants(BlockModelGenerators.plainModel(model));
 		MultiVariant snowyModel = BlockModelGenerators.plainVariant(model.withSuffix("_snow"));
 
 		blockModelGenerators.createGrassLikeBlock(block, nonSnowyModel, snowyModel);
@@ -660,7 +660,7 @@ public class BlockModelAndStateGenerator {
 	}
 
 	public static BlockModelDefinitionGenerator createMirroredColumnGenerator(Block columnBlock, Variant originalModel, TextureMapping textureMapping, BiConsumer<ResourceLocation, ModelInstance> modelOutput) {
-		Variant mirroredModel = BlockModelGenerators.plainModel(ModelTemplates.CUBE_COLUMN_MIRRORED.create(columnBlock, textureMapping, modelOutput));
+		Variant mirroredModel = BlockModelGenerators.plainModel(SCModelTemplates.REINFORCED_CUBE_COLUMN_MIRRORED.create(columnBlock, textureMapping, modelOutput));
 
 		return MultiVariantGenerator.dispatch(columnBlock, BlockModelGenerators.createRotatedVariants(originalModel, mirroredModel)).with(BlockModelGenerators.createRotatedPillar());
 	}

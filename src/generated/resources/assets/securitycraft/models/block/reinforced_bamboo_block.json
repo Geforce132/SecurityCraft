@@ -1,7 +1,0 @@
-{
-  "parent": "securitycraft:block/reinforced_cube_column",
-  "textures": {
-    "end": "minecraft:block/bamboo_block_top",
-    "side": "minecraft:block/bamboo_block"
-  }
-}

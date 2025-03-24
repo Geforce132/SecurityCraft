@@ -12,9 +12,7 @@
   ],
   "result": {
     "components": {
-      "minecraft:dyed_color": {
-        "rgb": 10329495
-      }
+      "minecraft:dyed_color": 10329495
     },
     "count": 1,
     "id": "securitycraft:lens"

@@ -61,6 +61,7 @@ public class ItemModelGenerator {
 				SCContent.KEYPAD_CHEST_ITEM.get(),
 				SCContent.LENS.get(),
 				SCContent.MINE_REMOTE_ACCESS_TOOL.get(),
+				SCContent.PROJECTOR_ITEM.get(),
 				SCContent.REDSTONE_MODULE.get(),
 				SCContent.REINFORCED_SCAFFOLDING_ITEM.get(),
 				SCContent.SENTRY_REMOTE_ACCESS_TOOL.get(),

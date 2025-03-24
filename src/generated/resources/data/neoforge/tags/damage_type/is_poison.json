@@ -1,5 +1,8 @@
 {
   "values": [
-    "securitycraft:fake_water"
+    {
+      "id": "securitycraft:fake_water",
+      "required": false
+    }
   ]
 }
