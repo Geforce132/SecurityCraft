@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.models.DisguisableBlockStateModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -148,6 +148,6 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	public static ModelData getModelData(BlockEntity be) {
 		BlockState disguisedState = IDisguisable.getDisguisedBlockState(be).orElse(Blocks.AIR.defaultBlockState());
 
-		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
+		return ModelData.builder().with(DisguisableBlockStateModel.DISGUISED_STATE, disguisedState).build();
 	}
 }

@@ -15,11 +15,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 
-public class DisguisableDynamicBakedModel implements BlockStateModel {
+public class DisguisableBlockStateModel implements BlockStateModel {
 	public static final ModelProperty<BlockState> DISGUISED_STATE = new ModelProperty<>();
 	private final BlockStateModel oldModel;
 
-	public DisguisableDynamicBakedModel(BlockStateModel oldModel) {
+	public DisguisableBlockStateModel(BlockStateModel oldModel) {
 		this.oldModel = oldModel;
 	}
 
@@ -75,42 +75,4 @@ public class DisguisableDynamicBakedModel implements BlockStateModel {
 	public TextureAtlasSprite particleIcon() {
 		return oldModel.particleIcon();
 	}
-
-	/*@Override //TODO figure out ingame how much of this is actually needed; if disguised models work well, remove
-	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData modelData) {
-		BlockState disguisedState = modelData.get(DISGUISED_STATE);
-
-		if (disguisedState != null) {
-			Block block = disguisedState.getBlock();
-
-			if (block != Blocks.AIR) {
-				BakedModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
-
-				if (model != null && model != this)
-					return model.getRenderTypes(disguisedState, rand, ModelData.EMPTY);
-			}
-		}
-
-		return oldModel.getRenderTypes(state, rand, modelData);
-	}
-
-	@Override
-	public boolean isGui3d() {
-		return false;
-	}
-
-	@Override
-	public boolean useAmbientOcclusion() {
-		return true;
-	}
-
-	@Override
-	public boolean usesBlockLight() {
-		return false;
-	}
-
-	@Override
-	public ItemTransforms getTransforms() {
-		return oldModel.getTransforms();
-	}*/
 }

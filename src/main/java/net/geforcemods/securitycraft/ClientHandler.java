@@ -34,7 +34,7 @@ import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
 import net.geforcemods.securitycraft.items.properties.SentryLinked;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
 import net.geforcemods.securitycraft.models.BulletModel;
-import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
+import net.geforcemods.securitycraft.models.DisguisableBlockStateModel;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
 import net.geforcemods.securitycraft.models.IMSBombModel;
 import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
@@ -236,7 +236,7 @@ public class ClientHandler {
 	}
 
 	private static void registerDisguisedModel(Map<BlockState, BlockStateModel> modelRegistry, BlockState state) {
-		modelRegistry.put(state, new DisguisableDynamicBakedModel(modelRegistry.get(state)));
+		modelRegistry.put(state, new DisguisableBlockStateModel(modelRegistry.get(state)));
 	}
 
 	@SubscribeEvent
