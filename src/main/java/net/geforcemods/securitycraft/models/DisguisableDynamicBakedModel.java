@@ -76,7 +76,7 @@ public class DisguisableDynamicBakedModel implements BlockStateModel {
 		return oldModel.particleIcon();
 	}
 
-	/*@Override //TODO figure out ingame how much of this is actually needed
+	/*@Override //TODO figure out ingame how much of this is actually needed; if disguised models work well, remove
 	public ChunkRenderTypeSet getRenderTypes(BlockState state, RandomSource rand, ModelData modelData) {
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 

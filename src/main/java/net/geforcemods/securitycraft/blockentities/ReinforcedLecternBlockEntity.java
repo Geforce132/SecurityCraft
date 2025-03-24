@@ -60,7 +60,7 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 	}
 
 	@Override
-	public void prePistonPushSideEffects(BlockPos pos, BlockState state) { //TODO Test whether dupe is still fixed
+	public void prePistonPushSideEffects(BlockPos pos, BlockState state) { //TODO Fix crash when pushing lectern
 		clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
 	}
 

@@ -67,7 +67,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	}
 
 	@Override
-	public void prePistonPushSideEffects(BlockPos pos, BlockState state) { //TODO Test whether dupe is still fixed
+	public void prePistonPushSideEffects(BlockPos pos, BlockState state) {
 		clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
 	}
 

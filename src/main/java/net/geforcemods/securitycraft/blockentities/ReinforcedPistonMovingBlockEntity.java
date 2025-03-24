@@ -282,11 +282,12 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 				else
 					pushedState = Block.updateFromNeighbourShapes(movedState, level, worldPosition);
 
-				if (movedBlockEntityTag != null) {
+				level.setBlock(worldPosition, pushedState, 3);
+
+				if (movedBlockEntityTag != null) { //Through Level#setBlock, any previously existing BE at the given position is cleared, so the actual BE with the necessary data needs to be set afterwards
 					BlockEntity be = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
 
 					if (be != null) {
-						be.blockState = getBlockState(); //fixes an error message being logged when the block entity is added to the world
 						be.loadWithComponents(movedBlockEntityTag, level.registryAccess());
 						level.setBlockEntity(be);
 
@@ -301,7 +302,6 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					}
 				}
 
-				level.setBlock(worldPosition, pushedState, 3);
 				level.neighborChanged(worldPosition, pushedState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, getPushDirection(), null));
 			}
 		}
@@ -338,11 +338,12 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 						if (pushedState.hasProperty(BlockStateProperties.WATERLOGGED) && pushedState.getValue(BlockStateProperties.WATERLOGGED))
 							pushedState = pushedState.setValue(BlockStateProperties.WATERLOGGED, false);
 
-						if (be.movedBlockEntityTag != null) {
+						level.setBlock(pos, pushedState, 67);
+
+						if (be.movedBlockEntityTag != null) { //Through Level#setBlock, any previously existing BE at the given position is cleared, so the actual BE with the necessary data needs to be set afterwards
 							BlockEntity storedBe = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(be.worldPosition, pushedState) : null;
 
 							if (storedBe != null) {
-								storedBe.blockState = be.getBlockState(); //fixes an error message being logged when the block entity is added to the world
 								storedBe.loadWithComponents(be.movedBlockEntityTag, level.registryAccess());
 								level.setBlockEntity(storedBe);
 
@@ -357,7 +358,6 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							}
 						}
 
-						level.setBlock(pos, pushedState, 67);
 						level.neighborChanged(pos, pushedState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, be.getPushDirection(), null));
 					}
 				}
