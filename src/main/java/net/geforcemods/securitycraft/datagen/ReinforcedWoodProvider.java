@@ -61,7 +61,7 @@ public class ReinforcedWoodProvider {
 
 	public ReinforcedWoodProvider logUVLocked(Block logBlock) {
 		BlockModelAndStateGenerator.generate(logBlock, BlockModelAndStateGenerator.createReinforcedPillarBlockUVLocked(logBlock, mapping, modelOutput));
-		BlockModelAndStateGenerator.registerReinforcedItemModel(logBlock);
+		BlockModelAndStateGenerator.registerReinforcedItemModel(logBlock, SCModelTemplates.REINFORCED_CUBE_COLUMN.create(logBlock, mapping, modelOutput));
 		return this;
 	}
 
