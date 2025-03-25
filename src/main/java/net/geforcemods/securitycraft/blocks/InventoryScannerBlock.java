@@ -142,7 +142,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) { //TODO removing an invscanner might be broken, test please
+	public void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean isMoving) {
 		InventoryScannerBlockEntity connectedScanner = getConnectedInventoryScanner(level, pos, state, null);
 
 		BlockUtils.removeInSequence((direction, stateToCheck) -> {

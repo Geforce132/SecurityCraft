@@ -50,7 +50,7 @@ public class IMSBomb extends Fireball {
 	@Override
 	public void tick() {
 		if (!launching)
- 			super.tick();
+			super.tick();
 		else {
 			//move up before homing onto target
 			if (ticksFlying < getLaunchTime()) {

@@ -24,7 +24,7 @@ public class ElectrifiedIronFenceGateBlock extends OwnableFenceGateBlock {
 	}
 
 	@Override
-	public void 	entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
 		if (state.getValue(OPEN))
 			return;
 
