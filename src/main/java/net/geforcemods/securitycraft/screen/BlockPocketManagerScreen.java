@@ -205,6 +205,14 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (colorChooser != null)
+			colorChooser.mouseReleased(mouseX, mouseY, button);
+
+		return super.mouseReleased(mouseX, mouseY, button);
+	}
+
+	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (colorChooser != null) {
 			colorChooser.keyPressed(keyCode, scanCode, modifiers);

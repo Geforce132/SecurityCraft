@@ -186,6 +186,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		if (changeEntryList != null)
 			changeEntryList.mouseReleased(mouseX, mouseY, button);
 
+		if (colorChooser != null)
+			colorChooser.mouseReleased(mouseX, mouseY, button);
+
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
