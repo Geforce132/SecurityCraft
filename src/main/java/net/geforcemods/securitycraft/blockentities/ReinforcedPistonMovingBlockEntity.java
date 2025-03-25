@@ -195,10 +195,11 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	private static void moveEntityByPiston(Direction direction, Entity entity, double progress, Direction moveDirection) {
+		Vec3 originalPos = entity.position();
+
 		NOCLIP.set(direction);
-		Vec3 vec3 = entity.position();
 		entity.move(MoverType.PISTON, new Vec3(progress * moveDirection.getStepX(), progress * moveDirection.getStepY(), progress * moveDirection.getStepZ()));
-		entity.applyEffectsFromBlocks(vec3, entity.position());
+		entity.applyEffectsFromBlocks(originalPos, entity.position());
 		entity.removeLatestMovementRecordingBatch();
 		NOCLIP.set(null);
 	}

@@ -60,7 +60,13 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 	}
 
 	@Override
-	public void prePistonPushSideEffects(BlockPos pos, BlockState state) { //TODO Fix crash when pushing lectern
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (state.is(SCContent.REINFORCED_LECTERN))
+			super.preRemoveSideEffects(pos, state); //super always assumes that the passed state is a lectern block state, which is not the case when the lectern is being moved by a piston
+	}
+
+	@Override
+	public void prePistonPushSideEffects(BlockPos pos, BlockState state) {
 		clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
 	}
 
