@@ -50,7 +50,7 @@ public class BriefcaseItem extends Item {
 		PasscodeUtils.setOnCooldown(player);
 		passcodeData.checkPasscode(briefcase, incomingCode, () -> {
 			if (!briefcase.has(SCContent.OWNER_DATA)) //If the briefcase doesn't have an owner (that usually gets set when assigning a new passcode), set the player that first enters the correct passcode as the owner
-				briefcase.set(SCContent.OWNER_DATA, OwnerData.fromPlayer(player, true));
+				briefcase.set(SCContent.OWNER_DATA, OwnerData.fromPlayer(player));
 
 			player.openMenu(new MenuProvider() {
 				@Override

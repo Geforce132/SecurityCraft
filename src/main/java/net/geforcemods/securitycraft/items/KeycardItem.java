@@ -4,8 +4,8 @@ import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.KeycardData;
-import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,14 +32,13 @@ public class KeycardItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
 		if (this != SCContent.LIMITED_USE_KEYCARD.get()) {
-			OwnerData ownerData = stack.getOrDefault(SCContent.OWNER_DATA, OwnerData.DEFAULT);
-			KeycardData keycardData = stack.get(SCContent.KEYCARD_DATA);
+			DataComponentType<KeycardData> type = SCContent.KEYCARD_DATA.get();
+			KeycardData keycardData = stack.get(type);
 
-			if (ownerData != null && !ownerData.showInTooltip())
-				tooltipAdder.accept(Component.translatable("tooltip.securitycraft:keycard.reader_owner", ownerData.name()).setStyle(Utils.GRAY_STYLE));
-
-			if (keycardData != null)
-				keycardData.addToTooltip(ctx, tooltipAdder, flag, stack.getComponents());
+			if (keycardData != null) {
+				if (display.shows(type))
+					keycardData.addToTooltip(ctx, tooltipAdder, flag, stack.getComponents());
+			}
 			else {
 				tooltipAdder.accept(LINK_INFO);
 				tooltipAdder.accept(LIMITED_INFO);

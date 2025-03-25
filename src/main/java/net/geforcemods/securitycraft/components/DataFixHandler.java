@@ -165,7 +165,7 @@ public class DataFixHandler {
 			//@formatter:on
 		}
 
-		fixOwner(itemStackData, dynamic, "owner", true);
+		fixOwner(itemStackData, dynamic, "owner");
 		fixItemInventory(itemStackData, dynamic);
 	}
 
@@ -195,19 +195,18 @@ public class DataFixHandler {
 					.set("limited", dynamic.createBoolean(limited))
 					.set("uses_left", dynamic.createInt(usesLeft)));
 			//@formatter:on
-			fixOwner(itemStackData, dynamic, "ownerName", false);
+			fixOwner(itemStackData, dynamic, "ownerName");
 		}
 	}
 
-	private static void fixOwner(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic, String ownerKey, boolean showInTooltip) {
+	private static void fixOwner(ItemStackComponentizationFix.ItemStackData itemStackData, Dynamic<?> dynamic, String ownerKey) {
 		String ownerName = itemStackData.removeTag(ownerKey).asString(OwnerData.DEFAULT.name());
 		String ownerUUID = itemStackData.removeTag("ownerUUID").asString(OwnerData.DEFAULT.uuid());
 
 		//@formatter:off
 		itemStackData.setComponent("securitycraft:owner", dynamic.emptyMap()
 				.set("name", dynamic.createString(ownerName))
-				.set("uuid", dynamic.createString(ownerUUID))
-				.set("show_in_tooltip", dynamic.createBoolean(showInTooltip)));
+				.set("uuid", dynamic.createString(ownerUUID)));
 		//@formatter:on
 	}
 

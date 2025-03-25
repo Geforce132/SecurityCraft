@@ -125,7 +125,7 @@ public class UniversalOwnerChangerItem extends Item {
 		if (BriefcaseItem.isOwnedBy(briefcase, player)) {
 			String newOwner = ownerChanger.getHoverName().getString();
 
-			briefcase.set(SCContent.OWNER_DATA, new OwnerData(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", true));
+			briefcase.set(SCContent.OWNER_DATA, new OwnerData(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID"));
 			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
 			return InteractionResult.SUCCESS_SERVER;
 		}

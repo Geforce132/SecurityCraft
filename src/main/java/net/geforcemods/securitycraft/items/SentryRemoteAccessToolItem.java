@@ -15,6 +15,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -93,9 +94,10 @@ public class SentryRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-		NamedPositions positions = stack.get(SCContent.BOUND_SENTRIES);
+		DataComponentType<NamedPositions> type = SCContent.BOUND_SENTRIES.get();
+		NamedPositions positions = stack.get(type);
 
-		if (positions != null && !positions.isEmpty()) {
+		if (positions != null && display.shows(type) && !positions.isEmpty()) {
 			List<NamedPositions.Entry> entries = positions.positions();
 
 			for (int i = 0; i < SentryRemoteAccessToolItem.MAX_SENTRIES; i++) {

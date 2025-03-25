@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -86,9 +87,10 @@ public class CameraMonitorItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-		NamedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
+		DataComponentType<NamedPositions> type = SCContent.BOUND_CAMERAS.get();
+		NamedPositions cameras = stack.get(type);
 
-		if (cameras != null)
+		if (cameras != null && display.shows(type))
 			tooltipAdder.accept(Utils.localize("tooltip.securitycraft:cameraMonitor", cameras.positions().stream().filter(Objects::nonNull).count() + "/" + MAX_CAMERAS).setStyle(Utils.GRAY_STYLE));
 	}
 

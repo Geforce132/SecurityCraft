@@ -36,7 +36,7 @@ public record SetBriefcasePasscodeAndOwner(String passcode) implements CustomPac
 
 		if (!stack.isEmpty()) {
 			if (!stack.has(SCContent.OWNER_DATA))
-				stack.set(SCContent.OWNER_DATA, OwnerData.fromPlayer(player, true));
+				stack.set(SCContent.OWNER_DATA, OwnerData.fromPlayer(player));
 
 			if (!passcode.isEmpty() && !stack.has(SCContent.PASSCODE_DATA)) {
 				PasscodeData.hashAndSetPasscode(stack, passcode, newPasscodeData -> {

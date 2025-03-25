@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.inventory.DisguiseModuleMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -118,14 +119,15 @@ public class ModuleItem extends Item {
 		if (canBeCustomized()) {
 			Block addon = getBlockAddon(stack);
 
-			if (addon != null)
+			if (addon != null && display.shows(DataComponents.CONTAINER))
 				tooltipAdder.accept(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(Utils.GRAY_STYLE));
 		}
 
 		if (containsCustomData) {
-			ListModuleData listModuleData = stack.get(SCContent.LIST_MODULE_DATA);
+			DataComponentType<ListModuleData> type = SCContent.LIST_MODULE_DATA.get();
+			ListModuleData listModuleData = stack.get(type);
 
-			if (listModuleData != null)
+			if (listModuleData != null && display.shows(type))
 				listModuleData.addToTooltip(ctx, tooltipAdder, flag, stack.getComponents());
 		}
 	}

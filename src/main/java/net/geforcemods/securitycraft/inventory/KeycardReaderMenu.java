@@ -68,7 +68,7 @@ public class KeycardReaderMenu extends AbstractContainerMenu {
 
 		if (!keycard.isEmpty()) {
 			keycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, oldData -> oldData.setSignatureAndUsableBy(be.getSignature(), usableBy));
-			keycard.set(SCContent.OWNER_DATA, OwnerData.fromOwner(be.getOwner(), false));
+			keycard.set(SCContent.OWNER_DATA, OwnerData.fromOwner(be.getOwner()));
 		}
 	}
 

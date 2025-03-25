@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -93,9 +94,10 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-		GlobalPositions sssLinkedBlocks = stack.get(SCContent.SSS_LINKED_BLOCKS);
+		DataComponentType<GlobalPositions> type = SCContent.SSS_LINKED_BLOCKS.get();
+		GlobalPositions sssLinkedBlocks = stack.get(type);
 
-		if (sssLinkedBlocks != null) {
+		if (sssLinkedBlocks != null && display.shows(type)) {
 			// If this item is storing block positions, show the number of them in the tooltip
 			long numOfLinkedBlocks = sssLinkedBlocks.positions().stream().filter(Objects::nonNull).count();
 

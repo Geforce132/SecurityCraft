@@ -87,12 +87,14 @@ public class CodebreakerItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-		double chance = getSuccessChance(stack) * 100;
+		if (display.shows(SCContent.SUCCESS_CHANCE.get())) {
+			double chance = getSuccessChance(stack) * 100;
 
-		if (chance < 0.0D)
-			tooltipAdder.accept(DISABLED);
-		else
-			tooltipAdder.accept(Component.translatable("tooltip.securitycraft.component.success_chance", chance + "%").withStyle(ChatFormatting.GRAY));
+			if (chance < 0.0D)
+				tooltipAdder.accept(DISABLED);
+			else
+				tooltipAdder.accept(Component.translatable("tooltip.securitycraft.component.success_chance", chance + "%").withStyle(ChatFormatting.GRAY));
+		}
 	}
 
 	@Override

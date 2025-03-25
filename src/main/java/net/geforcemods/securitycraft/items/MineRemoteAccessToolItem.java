@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -77,9 +78,10 @@ public class MineRemoteAccessToolItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, TooltipDisplay display, Consumer<Component> tooltipAdder, TooltipFlag flag) {
-		GlobalPositions positions = stack.get(SCContent.BOUND_MINES);
+		DataComponentType<GlobalPositions> type = SCContent.BOUND_MINES.get();
+		GlobalPositions positions = stack.get(type);
 
-		if (positions != null && !positions.isEmpty()) {
+		if (positions != null && display.shows(type) && !positions.isEmpty()) {
 			List<GlobalPos> globalPositions = positions.positions();
 
 			for (int i = 0; i < globalPositions.size(); i++) {

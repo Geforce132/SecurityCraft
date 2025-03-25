@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
@@ -37,6 +38,7 @@ import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -136,14 +138,16 @@ public class SCClientEventHandler {
 	public static void onItemTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
 		TooltipContext ctx = event.getContext();
+		TooltipDisplay display = stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT);
 		List<Component> tooltip = event.getToolTip();
 		TooltipFlag flag = event.getFlags();
 		int nextIndex = 0;
 
 		for (int i = 0; i < COMPONENTS_WITH_GLOBAL_TOOLTIP.size(); i++) {
-			TooltipProvider tooltipProvider = stack.get(COMPONENTS_WITH_GLOBAL_TOOLTIP.get(i));
+			DataComponentType<? extends TooltipProvider> type = COMPONENTS_WITH_GLOBAL_TOOLTIP.get(i).get();
+			TooltipProvider tooltipProvider = stack.get(type);
 
-			if (tooltipProvider != null) {
+			if (tooltipProvider != null && display.shows(type)) {
 				final int index = nextIndex++ + 1; //add in order of global tooltip components list, after item name
 
 				tooltipProvider.addToTooltip(ctx, line -> {
