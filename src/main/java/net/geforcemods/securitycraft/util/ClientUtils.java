@@ -36,23 +36,23 @@ public class ClientUtils {
 
 	public static void renderModuleInfo(GuiGraphics guiGraphics, Font font, ModuleType module, Component moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getInstance();
-		float alpha = isModuleInstalled ? 1.0F : 0.5F;
+		int color = isModuleInstalled ? 0xFFFFFFFF : 0x7FFFFFFF;
 		int moduleRight = moduleLeft + 16;
 		int moduleBottom = moduleTop + 16;
 
-		drawTexture(guiGraphics, MODULE_TEXTURES[module.ordinal()], moduleLeft, moduleTop, alpha);
+		drawTexture(guiGraphics, MODULE_TEXTURES[module.ordinal()], moduleLeft, moduleTop, color);
 
 		if (module == ModuleType.REDSTONE)
-			drawTexture(guiGraphics, REDSTONE_TEXTURE, moduleLeft, moduleTop, alpha);
+			drawTexture(guiGraphics, REDSTONE_TEXTURE, moduleLeft, moduleTop, color);
 		else if (module == ModuleType.SPEED)
-			drawTexture(guiGraphics, SUGAR_TEXTURE, moduleLeft, moduleTop, alpha);
+			drawTexture(guiGraphics, SUGAR_TEXTURE, moduleLeft, moduleTop, color);
 
 		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom && mc.screen != null)
 			guiGraphics.renderComponentTooltip(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
-	private static void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int moduleLeft, int moduleTop, float alpha) {
-		guiGraphics.blit(RenderType::guiTextured, texture, moduleLeft, moduleTop, 0.0F, 0.0F, 1, 1, 16, 16);
+	private static void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int moduleLeft, int moduleTop, int color) {
+		guiGraphics.blit(RenderType::guiTextured, texture, moduleLeft, moduleTop, 0.0F, 0.0F, 16, 16, 16, 16, color);
 	}
 
 	public static Quaternionf fromXYZDegrees(float x, float y, float z) {
