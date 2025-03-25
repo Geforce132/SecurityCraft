@@ -393,7 +393,15 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GOLD_BLOCK.get(),
 				SCContent.REINFORCED_IRON_BLOCK.get(),
 				SCContent.REINFORCED_NETHERITE_BLOCK.get());
-		tag(BlockTags.BIG_DRIPLEAF_PLACEABLE).addTag(SCTags.Blocks.REINFORCED_DIRT);
+		tag(BlockTags.BIG_DRIPLEAF_PLACEABLE).add(
+				SCContent.REINFORCED_DIRT.get(),
+				SCContent.REINFORCED_GRASS_BLOCK.get(),
+				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_COARSE_DIRT.get(),
+				SCContent.REINFORCED_MYCELIUM.get(),
+				SCContent.REINFORCED_ROOTED_DIRT.get(),
+				SCContent.REINFORCED_MOSS_BLOCK.get(),
+				SCContent.REINFORCED_MUD.get());
 		tag(BlockTags.BUTTONS).addTag(SCTags.Blocks.REINFORCED_BUTTONS);
 		tag(BlockTags.CAMEL_SAND_STEP_SOUND_BLOCKS).addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.CAULDRONS).add(
@@ -513,6 +521,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).addTags(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());
+		tag(BlockTags.PLAYS_AMBIENT_DESERT_BLOCK_SOUNDS).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_RED_SAND.get());
 		tag(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
