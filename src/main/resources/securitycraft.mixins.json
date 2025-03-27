@@ -21,6 +21,8 @@
 		"camera.TrackedEntityMixin",
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
+		"passcode.ServerGamePacketListenerImplMixin",
+		"passcode.StructureTemplateMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.PortalForcerMixin",
 		"reinforced.ShearsItemMixin",

@@ -14,6 +14,7 @@
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
 - API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
+- API: New methods IPasscodeProtected#setSaveSalt and IPasscodeProtected#shouldSaveSalt to control storing the object's salt into its data storage
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: Holding a camera monitor makes it possible to identify disguised cameras
 - Fix: Items that can have linked positions (e.g. Camera Monitor) show the idle animation even when they have positions and are either dropped, or held by a non-player entity
@@ -32,6 +33,7 @@
 - Fix: Reinforced grass blocks and water cauldrons are still tinted even if the reinforced tint is turned off
 - Fix: Fake water does not flow the same way as regular water
 - Fix: Laser and inventory scanner fields don't show up properly in the overlay of Jade/TOP/etc.
+- Fix: Loading a structure with passcode-protected objects onto itself using a structure block invalidates all passcodes
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
