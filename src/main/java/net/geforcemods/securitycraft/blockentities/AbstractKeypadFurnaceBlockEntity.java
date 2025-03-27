@@ -57,6 +57,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	private Owner owner = new Owner();
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
@@ -288,6 +289,16 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	public IIntArray getFurnaceData() {

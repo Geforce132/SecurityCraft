@@ -19,6 +19,8 @@
 		"camera.EntityTrackerMixin",
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerEntityMixin",
+		"passcode.ServerPlayNetHandlerMixin",
+		"passcode.TemplateMixin",
 		"potion.BrewingStandContainerMixin",
 		"reinforced.AbstractTrunkPlacerMixin",
 		"reinforced.BubbleColumnBlockMixin",
@@ -26,8 +28,8 @@
 		"reinforced.SwordAndShearsItemMixin",
 		"reinforced.TeleporterMixin",
 		"reinforced.TreeFeatureMixin",
-		"reinforced.WritableAndWrittenBookItemMixin",
-		"reinforced.WorldMixin"
+		"reinforced.WorldMixin",
+		"reinforced.WritableAndWrittenBookItemMixin"
 	],
 	"minVersion": "0.8"
 }

@@ -30,6 +30,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	private long cooldownEnd = 0;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 
 	public KeypadDoorBlockEntity() {
 		super(SCContent.KEYPAD_DOOR_BLOCK_ENTITY.get());
@@ -96,6 +97,16 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
 		setChanged();
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override
