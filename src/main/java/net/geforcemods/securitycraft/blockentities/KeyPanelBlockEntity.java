@@ -36,6 +36,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
+	private boolean saveSalt = false;
 
 	public KeyPanelBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEY_PANEL_BLOCK_ENTITY.get(), pos, state);
@@ -154,6 +155,16 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	public boolean sendsAllowlistMessage() {
