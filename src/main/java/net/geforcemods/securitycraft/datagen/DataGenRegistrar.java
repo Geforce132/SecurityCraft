@@ -28,7 +28,7 @@ public class DataGenRegistrar {
 	private DataGenRegistrar() {}
 
 	@SubscribeEvent
-	public static void onGatherDataServer(GatherDataEvent.Client event) {
+	public static void onGatherData(GatherDataEvent.Client event) {
 		SecurityCraft.collectSCContentData(false);
 		event.createProvider(DamageTypeTagGenerator::new);
 		event.createProvider(EntityTypeTagGenerator::new);
