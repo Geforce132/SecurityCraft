@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
  */
 @Mixin(StructureTemplate.class)
 public class StructureTemplateMixin {
-	@ModifyVariable(method = "fillFromWorld", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/level/Level;registryAccess()Lnet/minecraft/core/RegistryAccess;"))
+	@ModifyVariable(method = "fillFromWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BlockEntity;saveWithId(Lnet/minecraft/core/HolderLookup$Provider;)Lnet/minecraft/nbt/CompoundTag;"))
 	private BlockEntity securitycraft$markBlockEntityForSaltSaving(BlockEntity original) {
 		if (original instanceof IPasscodeProtected passcodeProtected)
 			passcodeProtected.setSaveSalt(true);
