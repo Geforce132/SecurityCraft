@@ -71,6 +71,7 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	private static final EntityDataAccessor<NonNullList<ItemStack>> MODULES = SynchedEntityData.<NonNullList<ItemStack>>defineId(SecuritySeaBoat.class, SCContent.ITEM_STACK_LIST_SERIALIZER.get());
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private EntityDataWrappedOption<Boolean> sendAllowlistMessage = new SendAllowlistMessageOption(false).wrapForEntityData(SEND_ALLOWLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Boolean> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Integer> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
@@ -411,6 +412,17 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
 	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
+	}
+
 
 	@Override
 	public void startCooldown() {

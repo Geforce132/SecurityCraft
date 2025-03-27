@@ -40,6 +40,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	private float oOpenness;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 
 	public DisplayCaseBlockEntity(BlockPos pos, BlockState state) {
 		this(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), pos, state);
@@ -94,6 +95,16 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override
