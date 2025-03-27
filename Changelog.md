@@ -18,6 +18,7 @@
 - API: IDisguisable has been simplified
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
+- API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
 - Fix: Module descriptions of security sea boats do not show up correctly
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: Holding a camera monitor makes it possible to identify disguised cameras
