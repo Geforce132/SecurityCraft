@@ -167,6 +167,19 @@ public interface IPasscodeProtected extends ICodebreakable {
 	public void setPasscode(byte[] passcode);
 
 	/**
+	 * Fills the given CompoundNBT with the salt key and passcode.
+	 *
+	 * @param tag The tag that the passcode and salt key should be stored in
+	 */
+	default void savePasscodeAndSalt(NBTTagCompound tag) {
+		if (getSaltKey() != null)
+			tag.setUniqueId("saltKey", getSaltKey());
+
+		if (getPasscode() != null)
+			tag.setString("passcode", PasscodeUtils.bytesToString(getPasscode()));
+	}
+
+	/**
 	 * Sets the salt key from the information stored in the given CompoundNBT.
 	 *
 	 * @param tag The tag that the salt key information is stored in

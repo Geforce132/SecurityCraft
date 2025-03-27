@@ -69,12 +69,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
-
-		if (saltKey != null)
-			tag.setUniqueId("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
+		savePasscodeAndSalt(tag);
 
 		if (owner != null)
 			owner.save(tag, needsValidation());

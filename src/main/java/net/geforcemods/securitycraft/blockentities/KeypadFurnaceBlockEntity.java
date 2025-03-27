@@ -205,13 +205,7 @@ public class KeypadFurnaceBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		tag.setTag("Items", list);
-
-		if (saltKey != null)
-			tag.setUniqueId("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
-
+		savePasscodeAndSalt(tag);
 		tag.setLong("cooldownLeft", getCooldownEnd() - System.currentTimeMillis());
 
 		if (hasCustomName())

@@ -9,6 +9,7 @@
 - Change: The block mine overlay now shows in the first person hand models as well
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
+- API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
 - Fix: The SC Manual shows incorrect info if the config setting "ableToCraftMines" is disabled
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
 - Fix: Several reinforced blocks can be broken by pistons

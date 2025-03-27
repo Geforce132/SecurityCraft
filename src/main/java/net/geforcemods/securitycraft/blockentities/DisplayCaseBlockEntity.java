@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -97,18 +96,13 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        long cooldownLeft;
+
 		super.writeToNBT(tag);
 		tag.setTag("DisplayedStack", getDisplayedStack().writeToNBT(new NBTTagCompound()));
 		tag.setBoolean("ShouldBeOpen", shouldBeOpen);
-
-		if (saltKey != null)
-			tag.setUniqueId("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.setString("passcode", PasscodeUtils.bytesToString(passcode));
-
-		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
-
+		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
+		savePasscodeAndSalt(tag);
 		tag.setLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		return tag;
 	}
