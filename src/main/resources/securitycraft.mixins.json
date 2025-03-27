@@ -23,6 +23,8 @@
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
 		"datafix.V4067Mixin",
+		"passcode.ServerGamePacketListenerImplMixin",
+		"passcode.StructureTemplateMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.PortalForcerMixin",
 		"reinforced.ShearsItemMixin",

@@ -173,8 +173,14 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param tag The tag that the passcode and salt key should be stored in
 	 */
 	default void savePasscodeAndSalt(CompoundTag tag) {
-		if (getSaltKey() != null)
+		if (getSaltKey() != null) {
 			tag.putUUID("saltKey", getSaltKey());
+
+			if (shouldSaveSalt()) { //This is only used for operator interactions, like using CTRL-pick-block or structure blocks
+				tag.putString("salt", PasscodeUtils.bytesToString(getSalt()));
+				setSaveSalt(false);
+			}
+		}
 
 		if (getPasscode() != null)
 			tag.putString("passcode", PasscodeUtils.bytesToString(getPasscode()));
@@ -190,9 +196,13 @@ public interface IPasscodeProtected extends ICodebreakable {
 		String passcode = tag.getString(tag.contains("Passcode", Tag.TAG_STRING) ? "Passcode" : "passcode"); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		if (passcode.length() == 32) {
-			if (!SaltData.containsKey(saltKey)) { //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found, a new passcode needs to be set
-				PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
-				return;
+			if (!SaltData.containsKey(saltKey)) { //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found:
+				if (tag.contains("salt")) //If the tag also has info on the salt that was used for hashing, register this salt under a new salt key
+					saltKey = SaltData.putSalt(PasscodeUtils.stringToBytes(tag.getString("salt")));
+				else { //If no info on the original salt is present, a new passcode needs to be set
+					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
+					return;
+				}
 			}
 			else if (SaltData.isKeyInUse(saltKey))
 				saltKey = SaltData.copySaltToNewKey(saltKey);
@@ -220,7 +230,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Returns the object'ss salt, which is used for hashing incoming passcodes.
+	 * Returns the object's salt, which is used for hashing incoming passcodes.
 	 *
 	 * @return The salt, null if the passcode and salt are not set yet
 	 */
@@ -242,6 +252,24 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param saltKey The new key associated with the salt
 	 */
 	public void setSaltKey(UUID saltKey);
+
+	/**
+	 * Sets whether the object should save the assigned salt, which is usually only stored in the level data, into its own data
+	 * storage. Use this when there is a possibility that something removes the salt from the level data while a reference to
+	 * this object is still accessible, to prevent needing to reset the passcode on the object due to lost salt information.
+	 *
+	 * @param saveSalt Whether the salt should be saved next time the block is saved to NBT
+	 */
+	public default void setSaveSalt(boolean saveSalt) {}
+
+	/**
+	 * Checks whether the object should save the assigned salt into its own data storage.
+	 *
+	 * @return true if the object should save the salt, false otherwise
+	 */
+	public default boolean shouldSaveSalt() {
+		return false;
+	}
 
 	/**
 	 * Sets this object to be on cooldown and starts the cooldown
