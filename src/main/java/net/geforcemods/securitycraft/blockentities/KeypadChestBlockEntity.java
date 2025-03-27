@@ -50,6 +50,7 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	private InsertOnlyDoubleChestHandler insertOnlyHandler;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
@@ -322,6 +323,16 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

@@ -17,6 +17,8 @@
 		"camera.PlayerListMixin",
 		"portal.TeleporterMixin",
 		"potion.ContainerBrewingStandMixin",
+		"passcode.NetHandlerPlayServerMixin",
+		"passcode.TemplateMixin",
 		"reinforced.ItemShearsMixin",
 		"reinforced.ItemSwordMixin",
 		"reinforced.TileEntityNoteMixin",

@@ -33,6 +33,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	private DisabledOption disabled = new DisabledOption(false);
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption(this::getPos);
 	private long cooldownEnd = 0;
+	private boolean saveSalt = false;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -143,6 +144,16 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	public boolean sendsAllowlistMessage() {

@@ -10,6 +10,7 @@
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
 - API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
+- API: New methods IPasscodeProtected#setSaveSalt and IPasscodeProtected#shouldSaveSalt to control storing the object's salt into its data storage
 - Fix: The SC Manual shows incorrect info if the config setting "ableToCraftMines" is disabled
 - Fix: The map color, instrument, and more properties of many reinforced blocks don't match their vanilla counterparts
 - Fix: Several reinforced blocks can be broken by pistons
@@ -17,6 +18,7 @@
 - Fix: Cage traps can be used to maliciously change ownership of blocks
 - Fix: Limited use keycards can be used indefinitely in a keycard holder
 - Fix: Reinforced grass blocks and water cauldrons are still tinted even if the reinforced tint is turned off
+- Fix: Loading a structure with passcode-protected objects onto itself using a structure block invalidates all passcodes
 - Removed: Configuration "ableToBreakMines"
 
 --------------------------Changelog for v1.9.12.1 of SecurityCraft--------------------------
