@@ -18,6 +18,7 @@
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
 - API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
+- API: New methods IPasscodeProtected#setSaveSalt and IPasscodeProtected#saveSalt to control storing the object's salt into its data storage
 - Fix: The mine remote access tool can identify block mines
 - Fix: The display of items in the SC Manual can change too fast in certain situations
 - Fix: Potential startup crash
@@ -35,6 +36,7 @@
 - Fix: Fake water does not flow the same way as regular water
 - Fix: Laser and inventory scanner fields don't show up properly in the overlay of Jade/TOP/etc.
 - Fix: The color chooser doesn't show color
+- Fix: Loading a structure with passcode-protected objects onto itself using a structure block invalidates all passcodes
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.

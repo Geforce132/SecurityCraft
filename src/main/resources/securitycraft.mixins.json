@@ -24,6 +24,8 @@
 		"datafix.V1460Mixin",
 		"datafix.V4067Mixin",
 		"datagen.BlockStateGeneratorCollectorMixin",
+		"passcode.ServerGamePacketListenerImplMixin",
+		"passcode.StructureTemplateMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.HopperBlockEntityMixin",
 		"reinforced.PortalForcerMixin",

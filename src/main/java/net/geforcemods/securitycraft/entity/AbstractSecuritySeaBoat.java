@@ -72,6 +72,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	private static final EntityDataAccessor<NonNullList<ItemStack>> MODULES = SynchedEntityData.<NonNullList<ItemStack>>defineId(AbstractSecuritySeaBoat.class, SCContent.ITEM_STACK_LIST_SERIALIZER.get());
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt;
 	private EntityDataWrappedOption<Boolean> sendAllowlistMessage = new SendAllowlistMessageOption(false).wrapForEntityData(SEND_ALLOWLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Boolean> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Integer> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
@@ -378,6 +379,16 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean setSaveSalt) {
+		saveSalt = setSaveSalt;
+	}
+
+	@Override
+	public boolean saveSalt() {
+		return saveSalt;
 	}
 
 	@Override
