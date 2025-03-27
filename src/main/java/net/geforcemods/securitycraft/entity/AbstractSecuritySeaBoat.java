@@ -280,15 +280,11 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	}
 
 	@Override
-	public void chestVehicleDestroyed(DamageSource damageSource, ServerLevel level, Entity entity) {
-		super.chestVehicleDestroyed(damageSource, level, entity);
-		SaltData.removeSalt(getSaltKey());
-	}
-
-	@Override
 	public void remove(RemovalReason reason) {
-		if (!level().isClientSide && reason.shouldDestroy())
+		if (!level().isClientSide && reason.shouldDestroy()) {
 			Containers.dropContents(level(), blockPosition(), getInventory());
+			SaltData.removeSalt(getSaltKey());
+		}
 
 		super.remove(reason);
 	}
