@@ -176,7 +176,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 		if (getSaltKey() != null) {
 			tag.putUUID("saltKey", getSaltKey());
 
-			if (saveSalt()) { //This is only used for operator interactions, like using CTRL-pick-block or structure blocks
+			if (shouldSaveSalt()) { //This is only used for operator interactions, like using CTRL-pick-block or structure blocks
 				tag.putString("salt", PasscodeUtils.bytesToString(getSalt()));
 				setSaveSalt(false);
 			}
@@ -258,16 +258,16 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * storage. Use this when there is a possibility that something removes the salt from the level data while a reference to
 	 * this object is still accessible, to prevent needing to reset the passcode on the object due to lost salt information.
 	 *
-	 * @param setSaveSalt Whether the salt should be saved next time the block is saved to NBT
+	 * @param saveSalt Whether the salt should be saved next time the block is saved to NBT
 	 */
-	public default void setSaveSalt(boolean setSaveSalt) {}
+	public default void setSaveSalt(boolean saveSalt) {}
 
 	/**
 	 * Checks whether the object should save the assigned salt into its own data storage.
 	 *
 	 * @return true if the object should save the salt, false otherwise
 	 */
-	public default boolean saveSalt() {
+	public default boolean shouldSaveSalt() {
 		return false;
 	}
 
