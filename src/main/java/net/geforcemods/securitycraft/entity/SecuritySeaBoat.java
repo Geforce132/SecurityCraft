@@ -292,12 +292,6 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 	}
 
 	@Override
-	public void chestVehicleDestroyed(DamageSource damageSource, Level level, Entity entity) {
-		super.chestVehicleDestroyed(damageSource, level, entity);
-		SaltData.removeSalt(getSaltKey());
-	}
-
-	@Override
 	public Item getDropItem() {
 		return (switch (getVariant()) {
 			case SPRUCE -> SCContent.SPRUCE_SECURITY_SEA_BOAT;
@@ -314,8 +308,10 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (!level().isClientSide && reason.shouldDestroy())
+		if (!level().isClientSide && reason.shouldDestroy()) {
 			Containers.dropContents(level(), blockPosition(), getInventory());
+			SaltData.removeSalt(getSaltKey());
+		}
 
 		super.remove(reason);
 	}
