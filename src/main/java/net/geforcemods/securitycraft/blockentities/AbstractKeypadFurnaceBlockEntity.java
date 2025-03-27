@@ -90,12 +90,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceTi
 		if (owner != null)
 			owner.save(tag, needsValidation());
 
-		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
-
+		savePasscodeAndSalt(tag);
 		return tag;
 	}
 

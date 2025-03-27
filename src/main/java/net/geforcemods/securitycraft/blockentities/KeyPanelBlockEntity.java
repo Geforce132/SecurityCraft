@@ -20,7 +20,6 @@ import net.geforcemods.securitycraft.blocks.KeyPanelBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -46,14 +45,9 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	public CompoundNBT save(CompoundNBT tag) {
 		super.save(tag);
 
-		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
-
 		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 
+		savePasscodeAndSalt(tag);
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		return tag;
 	}
