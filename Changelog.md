@@ -12,6 +12,7 @@
 - Change: Camera model animations are now synchronized between players
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
+- API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: The display of items in the SC Manual can change too fast in certain situations
 - Fix: Potential startup crash
