@@ -50,6 +50,7 @@ import net.neoforged.neoforge.model.data.ModelData;
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
@@ -309,6 +310,16 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean setSaveSalt) {
+		saveSalt = setSaveSalt;
+	}
+
+	@Override
+	public boolean saveSalt() {
+		return saveSalt;
 	}
 
 	@Override
