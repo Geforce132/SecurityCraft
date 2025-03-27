@@ -17,18 +17,19 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
 import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent.DataProviderFromOutputLookup;
 
-@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class DataGenRegistrar {
 	private DataGenRegistrar() {}
 
 	@SubscribeEvent
-	public static void onGatherDataServer(GatherDataEvent.Client event) {
+	public static void onGatherData(GatherDataEvent.Client event) {
 		SecurityCraft.collectSCContentData(false);
 		event.createProvider(DamageTypeTagGenerator::new);
 		event.createProvider(EntityTypeTagGenerator::new);
