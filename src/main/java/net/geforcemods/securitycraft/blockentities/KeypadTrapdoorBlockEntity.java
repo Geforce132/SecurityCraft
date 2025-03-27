@@ -30,6 +30,7 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 	private long cooldownEnd = 0;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 
 	public KeypadTrapdoorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_TRAPDOOR_BLOCK_ENTITY.get(), pos, state);
@@ -104,6 +105,16 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override
