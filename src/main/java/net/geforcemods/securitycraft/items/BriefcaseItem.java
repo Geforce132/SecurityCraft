@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.items;
 
+import it.unimi.dsi.fastutil.objects.ReferenceLinkedOpenHashSet;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
@@ -8,6 +9,7 @@ import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -18,11 +20,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class BriefcaseItem extends Item {
+	public static final TooltipDisplay DEFAULT_TOOLTIP_DISPLAY = new TooltipDisplay(false, new ReferenceLinkedOpenHashSet<>()).withHidden(DataComponents.CONTAINER, true);
+
 	public BriefcaseItem(Item.Properties properties) {
 		super(properties);
 	}
