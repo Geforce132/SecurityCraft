@@ -281,12 +281,12 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public void setSaveSalt(boolean setSaveSalt) {
-		saveSalt = setSaveSalt;
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
 	}
 
 	@Override
-	public boolean saveSalt() {
+	public boolean shouldSaveSalt() {
 		return saveSalt;
 	}
 
