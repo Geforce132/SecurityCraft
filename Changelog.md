@@ -13,6 +13,7 @@
 - Change: Camera model animations are now synchronized between players
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
+- API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
 - Fix: Reinforced Mud Bricks and Blackstone Slab/Stairs don't look 100% like their vanilla counterparts
 - Fix: Holding a camera monitor makes it possible to identify disguised cameras
 - Fix: Items that can have linked positions (e.g. Camera Monitor) show the idle animation even when they have positions and are either dropped, or held by a non-player entity
