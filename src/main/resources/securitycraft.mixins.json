@@ -21,6 +21,8 @@
 		"camera.PlayerListMixin",
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
+		"passcode.ServerGamePacketListenerImplMixin",
+		"passcode.StructureTemplateMixin",
 		"potion.BrewingStandMenuMixin",
 		"reinforced.BubbleColumnBlockMixin",
 		"reinforced.NoteBlockInstrumentMixin",
