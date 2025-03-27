@@ -33,7 +33,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
@@ -311,12 +310,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		getOwner().save(ownerTag, needsValidation());
 		tag.put("owner", ownerTag);
-
-		if (saltKey != null)
-			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
+		savePasscodeAndSalt(tag);
 	}
 
 	@Override

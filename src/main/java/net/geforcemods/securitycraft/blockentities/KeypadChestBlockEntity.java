@@ -31,7 +31,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -74,12 +73,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
-
-		if (saltKey != null)
-			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
+		savePasscodeAndSalt(tag);
 
 		if (owner != null)
 			owner.save(tag, needsValidation());

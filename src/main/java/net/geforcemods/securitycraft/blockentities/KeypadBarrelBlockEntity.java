@@ -30,7 +30,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -110,12 +109,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
-
-		if (saltKey != null)
-			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
+		savePasscodeAndSalt(tag);
 
 		if (owner != null)
 			owner.save(tag, needsValidation());

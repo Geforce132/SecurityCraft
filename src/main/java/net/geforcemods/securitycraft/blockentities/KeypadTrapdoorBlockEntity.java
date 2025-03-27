@@ -14,11 +14,9 @@ import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.TrapDoorBlock;
@@ -42,14 +40,9 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 
-		if (saltKey != null)
-			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
-
 		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 
+		savePasscodeAndSalt(tag);
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 	}
 
