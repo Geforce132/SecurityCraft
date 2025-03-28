@@ -25,6 +25,7 @@
 - Fix: A portable radar chat message is broken in German
 - Fix: Reinforced grass blocks and water cauldrons are still tinted even if the reinforced tint is turned off
 - Fix: Loading a structure with passcode-protected objects onto itself using a structure block invalidates all passcodes
+- Fix: A system of connected laser blocks does not emit redstone correctly when walking into two or more laser fields 
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.

@@ -165,13 +165,18 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements INamed
 			BlockState state = getBlockState();
 
 			if (((ILinkedAction.StateChanged<?>) action).property == LaserBlock.POWERED) {
-				int signalLength = getSignalLength();
+				if (timeSinceLastToggle() < 500)
+					setLastToggleTime(System.currentTimeMillis());
+				else {
+					int signalLength = getSignalLength();
 
-				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
+					setLastToggleTime(System.currentTimeMillis());
+					level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
+					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 
-				if (signalLength > 0)
-					level.getBlockTicks().scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+					if (signalLength > 0)
+						level.getBlockTicks().scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+				}
 			}
 		}
 
