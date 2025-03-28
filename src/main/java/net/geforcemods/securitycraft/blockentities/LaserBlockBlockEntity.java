@@ -157,13 +157,18 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 			IBlockState state = world.getBlockState(pos);
 
 			if (((ILinkedAction.StateChanged<?>) action).property == LaserBlock.POWERED) {
-				int signalLength = getSignalLength();
+				if (timeSinceLastToggle() < 500)
+					setLastToggleTime(System.currentTimeMillis());
+				else {
+					int signalLength = getSignalLength();
 
-				world.setBlockState(pos, state.cycleProperty(LaserBlock.POWERED));
-				BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
+					setLastToggleTime(System.currentTimeMillis());
+					world.setBlockState(pos, state.cycleProperty(LaserBlock.POWERED));
+					BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
 
-				if (signalLength > 0)
-					world.scheduleUpdate(pos, SCContent.laserBlock, signalLength);
+					if (signalLength > 0)
+						world.scheduleUpdate(pos, SCContent.laserBlock, signalLength);
+				}
 			}
 		}
 
