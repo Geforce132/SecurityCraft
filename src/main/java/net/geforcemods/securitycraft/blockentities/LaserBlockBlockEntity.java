@@ -151,13 +151,18 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			BlockState state = getBlockState();
 
 			if (stateChanged.property() == LaserBlock.POWERED) {
-				int signalLength = getSignalLength();
+				if (timeSinceLastToggle() < 500)
+					setLastToggleTime(System.currentTimeMillis());
+				else {
+					int signalLength = getSignalLength();
 
-				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
+					setLastToggleTime(System.currentTimeMillis());
+					level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
+					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 
-				if (signalLength > 0)
-					level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+					if (signalLength > 0)
+						level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+				}
 			}
 		}
 
