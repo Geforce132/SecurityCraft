@@ -153,14 +153,19 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			case ILinkedAction.ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) -> removeModule(moduleType, wasModuleToggled);
 			case ILinkedAction.OwnerChanged(Owner newOwner) -> setOwner(newOwner.getUUID(), newOwner.getName());
 			case ILinkedAction.StateChanged(BooleanProperty property, Boolean oldValue, Boolean newValue) when property == LaserBlock.POWERED -> {
-				BlockState state = getBlockState();
-				int signalLength = getSignalLength();
+				if (timeSinceLastToggle() < 500)
+					setLastToggleTime(System.currentTimeMillis());
+				else {
+					BlockState state = getBlockState();
+					int signalLength = getSignalLength();
 
-				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
+					setLastToggleTime(System.currentTimeMillis());
+					level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
+					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 
-				if (signalLength > 0)
-					level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+					if (signalLength > 0)
+						level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+				}
 			}
 			default -> {
 			}
