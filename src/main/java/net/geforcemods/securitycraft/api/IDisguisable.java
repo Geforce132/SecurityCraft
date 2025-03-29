@@ -35,7 +35,7 @@ public interface IDisguisable {
 		return new ItemStack((Block) this);
 	}
 
-	public static boolean shouldBeDisguisedFor(BlockGetter level, BlockPos pos, Player player) {
+	public static boolean shouldPickBlockDisguise(BlockGetter level, BlockPos pos, Player player) {
 		return !player.isCreative() && !(level != null && level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player));
 	}
 
