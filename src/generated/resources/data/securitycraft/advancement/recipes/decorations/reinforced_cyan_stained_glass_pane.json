@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_black_stained_glass_pane_from_glass"
+        "recipe": "securitycraft:reinforced_cyan_stained_glass_pane"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "securitycraft:reinforced_black_stained_glass_pane_from_glass"
+      "securitycraft:reinforced_cyan_stained_glass_pane"
     ]
   }
 }
