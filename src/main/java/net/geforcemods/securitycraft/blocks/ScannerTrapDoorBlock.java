@@ -109,7 +109,7 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisg
 
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
-		if (IDisguisable.shouldBeDisguisedFor(level, pos, player))
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
 			return getDisguisedStack(level, pos);
 
 		return super.getCloneItemStack(level, pos, state, includeData, player);
