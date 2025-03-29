@@ -11,7 +11,10 @@ import net.geforcemods.securitycraft.models.DisguisableBlockStateModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
@@ -99,6 +102,11 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, Provider lookupProvider) {
+		handleUpdateTag(packet.getTag(), lookupProvider);
+	}
+
+	@Override
 	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.handleUpdateTag(tag, lookupProvider);
 		onHandleUpdateTag(this);
@@ -114,6 +122,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 				ClientHandler.putDisguisedBeRenderer(be, stack);
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
+
+			ClientHandler.refreshModelData(be);
 		}
 	}
 
