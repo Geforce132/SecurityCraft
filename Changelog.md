@@ -39,7 +39,7 @@
 - Fix: The color chooser doesn't show color
 - Fix: Loading a structure with passcode-protected objects onto itself using a structure block invalidates all passcodes
 - Fix: A system of connected laser blocks does not emit redstone correctly when walking into two or more laser fields 
-- Fix: Reinforced Block recipes are grouped differently in the recipe book compared to vanilla block recipes
+- Fix: Reinforced Block recipes are grouped and categorized differently in the recipe book compared to vanilla block recipes
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.

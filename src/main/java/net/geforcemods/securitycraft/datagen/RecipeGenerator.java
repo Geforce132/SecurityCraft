@@ -1863,7 +1863,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern("GGG")
 		.define('G', stainedGlass)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
-		.save(output, scRecipeId(Utils.getRegistryName(result.asItem()).getPath() + "_from_glass"));
+		.save(output);
 		//@formatter:on
 	}
 
