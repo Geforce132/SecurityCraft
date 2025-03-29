@@ -1,6 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "building",
+  "category": "misc",
   "group": "securitycraft:reinforced_glass_panes",
   "key": {
     "G": "securitycraft:reinforced_orange_stained_glass"

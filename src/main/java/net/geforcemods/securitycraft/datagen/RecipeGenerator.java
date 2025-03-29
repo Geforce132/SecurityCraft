@@ -628,7 +628,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_mine", has(SCContent.MINE))
 		.save(output);
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_GLASS_PANE, 16)
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, SCContent.REINFORCED_GLASS_PANE, 16)
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS)
@@ -765,18 +765,6 @@ public class RecipeGenerator extends RecipeProvider {
 		addBlockMineRecipe(Blocks.SUSPICIOUS_SAND, SCContent.SUSPICIOUS_SAND_MINE);
 		addBlockMineRecipe(Blocks.SUSPICIOUS_GRAVEL, SCContent.SUSPICIOUS_GRAVEL_MINE);
 		addButtonRecipe(SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_BUTTON);
-		addButtonRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_BUTTON);
 		addButtonRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON);
 		addCarpetRecipe(SCContent.REINFORCED_MOSS_BLOCK, SCContent.REINFORCED_MOSS_CARPET, SCTags.Items.REINFORCED_MOSS);
 		addCarpetRecipe(SCContent.REINFORCED_PALE_MOSS_BLOCK, SCContent.REINFORCED_PALE_MOSS_CARPET, SCTags.Items.REINFORCED_PALE_MOSS);
@@ -913,19 +901,19 @@ public class RecipeGenerator extends RecipeProvider {
 		addPlanksRecipe(SCTags.Items.REINFORCED_SPRUCE_LOGS, SCContent.REINFORCED_SPRUCE_PLANKS);
 		addPlanksRecipe(SCTags.Items.REINFORCED_WARPED_STEMS, SCContent.REINFORCED_WARPED_PLANKS);
 		addPressurePlateRecipe(SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE);
-		addPressurePlateRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_PRESSURE_PLATE);
 		addPressurePlateRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE);
+		addSecretHangingSignRecipe(Items.ACACIA_HANGING_SIGN, SCContent.SECRET_ACACIA_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.BAMBOO_HANGING_SIGN, SCContent.SECRET_BAMBOO_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.BIRCH_HANGING_SIGN, SCContent.SECRET_BIRCH_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.CHERRY_HANGING_SIGN, SCContent.SECRET_CHERRY_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.CRIMSON_HANGING_SIGN, SCContent.SECRET_CRIMSON_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.DARK_OAK_HANGING_SIGN, SCContent.SECRET_DARK_OAK_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.JUNGLE_HANGING_SIGN, SCContent.SECRET_JUNGLE_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.MANGROVE_HANGING_SIGN, SCContent.SECRET_MANGROVE_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.OAK_HANGING_SIGN, SCContent.SECRET_OAK_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.PALE_OAK_HANGING_SIGN, SCContent.SECRET_PALE_OAK_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.SPRUCE_HANGING_SIGN, SCContent.SECRET_SPRUCE_HANGING_SIGN);
+		addSecretHangingSignRecipe(Items.WARPED_HANGING_SIGN, SCContent.SECRET_WARPED_HANGING_SIGN);
 		addSecretSignRecipe(Items.ACACIA_SIGN, SCContent.SECRET_ACACIA_SIGN);
 		addSecretSignRecipe(Items.BAMBOO_SIGN, SCContent.SECRET_BAMBOO_SIGN);
 		addSecretSignRecipe(Items.BIRCH_SIGN, SCContent.SECRET_BIRCH_SIGN);
@@ -938,18 +926,6 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecretSignRecipe(Items.PALE_OAK_SIGN, SCContent.SECRET_PALE_OAK_SIGN);
 		addSecretSignRecipe(Items.SPRUCE_SIGN, SCContent.SECRET_SPRUCE_SIGN);
 		addSecretSignRecipe(Items.WARPED_SIGN, SCContent.SECRET_WARPED_SIGN);
-		addSecretSignRecipe(Items.ACACIA_HANGING_SIGN, SCContent.SECRET_ACACIA_HANGING_SIGN);
-		addSecretSignRecipe(Items.BAMBOO_HANGING_SIGN, SCContent.SECRET_BAMBOO_HANGING_SIGN);
-		addSecretSignRecipe(Items.BIRCH_HANGING_SIGN, SCContent.SECRET_BIRCH_HANGING_SIGN);
-		addSecretSignRecipe(Items.CHERRY_HANGING_SIGN, SCContent.SECRET_CHERRY_HANGING_SIGN);
-		addSecretSignRecipe(Items.CRIMSON_HANGING_SIGN, SCContent.SECRET_CRIMSON_HANGING_SIGN);
-		addSecretSignRecipe(Items.DARK_OAK_HANGING_SIGN, SCContent.SECRET_DARK_OAK_HANGING_SIGN);
-		addSecretSignRecipe(Items.JUNGLE_HANGING_SIGN, SCContent.SECRET_JUNGLE_HANGING_SIGN);
-		addSecretSignRecipe(Items.MANGROVE_HANGING_SIGN, SCContent.SECRET_MANGROVE_HANGING_SIGN);
-		addSecretSignRecipe(Items.OAK_HANGING_SIGN, SCContent.SECRET_OAK_HANGING_SIGN);
-		addSecretSignRecipe(Items.PALE_OAK_HANGING_SIGN, SCContent.SECRET_PALE_OAK_HANGING_SIGN);
-		addSecretSignRecipe(Items.SPRUCE_HANGING_SIGN, SCContent.SECRET_SPRUCE_HANGING_SIGN);
-		addSecretSignRecipe(Items.WARPED_HANGING_SIGN, SCContent.SECRET_WARPED_HANGING_SIGN);
 		addSecuritySeaBoatRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.OAK_SECURITY_SEA_BOAT);
 		addSecuritySeaBoatRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.SPRUCE_SECURITY_SEA_BOAT);
 		addSecuritySeaBoatRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.BIRCH_SECURITY_SEA_BOAT);
@@ -961,22 +937,16 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecuritySeaBoatRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.PALE_OAK_SECURITY_SEA_BOAT);
 		addSecuritySeaBoatRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.BAMBOO_SECURITY_SEA_RAFT);
 		addSlabRecipe(Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK, SCContent.CRYSTAL_QUARTZ_PILLAR, SCContent.CHISELED_CRYSTAL_QUARTZ), SCContent.CRYSTAL_QUARTZ_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_ANDESITE, SCContent.REINFORCED_ANDESITE_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_BAMBOO_MOSAIC, SCContent.REINFORCED_BAMBOO_MOSAIC_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_BLACKSTONE, SCContent.REINFORCED_BLACKSTONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_BRICKS, SCContent.REINFORCED_BRICK_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_COBBLESTONE, SCContent.REINFORCED_COBBLESTONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_COBBLED_DEEPSLATE, SCContent.REINFORCED_COBBLED_DEEPSLATE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_CUT_COPPER, SCContent.REINFORCED_CUT_COPPER_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_SLAB);
 		addSlabRecipe(Ingredient.of(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR, SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ), SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_CUT_SANDSTONE, SCContent.REINFORCED_CUT_SANDSTONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_CUT_RED_SANDSTONE, SCContent.REINFORCED_CUT_RED_SANDSTONE_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_DARK_PRISMARINE, SCContent.REINFORCED_DARK_PRISMARINE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_DEEPSLATE_BRICKS, SCContent.REINFORCED_DEEPSLATE_BRICK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_DEEPSLATE_TILES, SCContent.REINFORCED_DEEPSLATE_TILE_SLAB);
@@ -984,15 +954,11 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(SCContent.REINFORCED_END_STONE_BRICKS, SCContent.REINFORCED_END_STONE_BRICK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_EXPOSED_CUT_COPPER, SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_GRANITE, SCContent.REINFORCED_GRANITE_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_MOSSY_COBBLESTONE, SCContent.REINFORCED_MOSSY_COBBLESTONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_MOSSY_STONE_BRICKS, SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_MUD_BRICKS, SCContent.REINFORCED_MUD_BRICK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_NETHER_BRICKS, SCContent.REINFORCED_NETHER_BRICK_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_OXIDIZED_CUT_COPPER, SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_POLISHED_ANDESITE, SCContent.REINFORCED_POLISHED_ANDESITE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_POLISHED_BLACKSTONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS, SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_SLAB);
@@ -1012,12 +978,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(SCContent.REINFORCED_SMOOTH_RED_SANDSTONE, SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_SMOOTH_SANDSTONE, SCContent.REINFORCED_SMOOTH_SANDSTONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_SMOOTH_STONE, SCContent.REINFORCED_SMOOTH_STONE_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_STONE, SCContent.REINFORCED_NORMAL_STONE_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_SLAB);
-		addSlabRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB);
 		addSlabRecipe(SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB);
 		addStainedGlassRecipe(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_STAINED_GLASS);
@@ -1069,20 +1033,14 @@ public class RecipeGenerator extends RecipeProvider {
 		addStainedTerracottaRecipe(Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_TERRACOTTA);
 		addStainedTerracottaRecipe(Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_TERRACOTTA);
 		addStairsRecipe(Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK, SCContent.CRYSTAL_QUARTZ_PILLAR, SCContent.CHISELED_CRYSTAL_QUARTZ), SCContent.CRYSTAL_QUARTZ_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_ANDESITE, SCContent.REINFORCED_ANDESITE_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_BAMBOO_MOSAIC, SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_BLACKSTONE, SCContent.REINFORCED_BLACKSTONE_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_BRICKS, SCContent.REINFORCED_BRICK_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_COBBLESTONE, SCContent.REINFORCED_COBBLESTONE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_COBBLED_DEEPSLATE, SCContent.REINFORCED_COBBLED_DEEPSLATE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_CUT_COPPER, SCContent.REINFORCED_CUT_COPPER_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_STAIRS);
 		addStairsRecipe(Ingredient.of(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR, SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ), SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_DARK_PRISMARINE, SCContent.REINFORCED_DARK_PRISMARINE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_DEEPSLATE_BRICKS, SCContent.REINFORCED_DEEPSLATE_BRICK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_DEEPSLATE_TILES, SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS);
@@ -1090,15 +1048,11 @@ public class RecipeGenerator extends RecipeProvider {
 		addStairsRecipe(SCContent.REINFORCED_END_STONE_BRICKS, SCContent.REINFORCED_END_STONE_BRICK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_EXPOSED_CUT_COPPER, SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_GRANITE, SCContent.REINFORCED_GRANITE_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_MOSSY_COBBLESTONE, SCContent.REINFORCED_MOSSY_COBBLESTONE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_MOSSY_STONE_BRICKS, SCContent.REINFORCED_MOSSY_STONE_BRICK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_MUD_BRICKS, SCContent.REINFORCED_MUD_BRICK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_NETHER_BRICKS, SCContent.REINFORCED_NETHER_BRICK_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_OXIDIZED_CUT_COPPER, SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_POLISHED_ANDESITE, SCContent.REINFORCED_POLISHED_ANDESITE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_POLISHED_BLACKSTONE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS, SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICK_STAIRS);
@@ -1118,12 +1072,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addStairsRecipe(SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ, SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_SMOOTH_RED_SANDSTONE, SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_SMOOTH_SANDSTONE, SCContent.REINFORCED_SMOOTH_SANDSTONE_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_STONE_BRICK_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_STAIRS);
-		addStairsRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS);
 		addStairsRecipe(SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS);
 		addTwoByTwoRecipe(SCContent.CRYSTAL_QUARTZ_BLOCK, SCContent.CRYSTAL_QUARTZ_BRICKS);
@@ -1177,6 +1129,54 @@ public class RecipeGenerator extends RecipeProvider {
 		addWallRecipes(SCContent.REINFORCED_POLISHED_TUFF, SCContent.REINFORCED_POLISHED_TUFF_WALL);
 		addWallRecipes(SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_WALL);
 		addWallRecipes(SCContent.REINFORCED_TUFF, SCContent.REINFORCED_TUFF_WALL);
+		addWoodenButtonRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_BUTTON);
+		addWoodenButtonRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_BUTTON);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE);
+		addWoodenPressurePlateRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_PRESSURE_PLATE);
+		addWoodenSlabRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_SLAB);
+		addWoodenSlabRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_SLAB);
+		addWoodenStairsRecipe(SCContent.REINFORCED_ACACIA_PLANKS, SCContent.REINFORCED_ACACIA_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_BAMBOO_PLANKS, SCContent.REINFORCED_BAMBOO_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_BIRCH_PLANKS, SCContent.REINFORCED_BIRCH_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_CHERRY_PLANKS, SCContent.REINFORCED_CHERRY_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_DARK_OAK_PLANKS, SCContent.REINFORCED_DARK_OAK_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_JUNGLE_PLANKS, SCContent.REINFORCED_JUNGLE_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_MANGROVE_PLANKS, SCContent.REINFORCED_MANGROVE_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_PALE_OAK_PLANKS, SCContent.REINFORCED_PALE_OAK_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_STAIRS);
+		addWoodenStairsRecipe(SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_STAIRS);
 
 		//furnace recipes
 		addSimpleCookingRecipe(SCContent.REINFORCED_BASALT, SCContent.REINFORCED_SMOOTH_BASALT);
@@ -1492,10 +1492,19 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addWoodenButtonRecipe(ItemLike input, ItemLike result) {
+		//@formatter:off
+		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.REDSTONE, result)
+				.group("securitycraft:wooden_buttons")
+				.requires(input)
+				.unlockedBy("has_block", has(input))
+				.save(output);
+		//@formatter:on
+	}
+
 	protected final void addButtonRecipe(ItemLike input, ItemLike result) {
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.REDSTONE, result)
-		.group("securitycraft:reinforced_buttons")
 		.requires(input)
 		.unlockedBy("has_block", has(input))
 		.save(output);
@@ -1504,7 +1513,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addCarpetRecipe(ItemLike carpetMaterial, ItemLike carpet, TagKey<Item> unlockedBy) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, carpet, 3)
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, carpet, 3)
 		.group("securitycraft:reinforced_carpets")
 		.pattern("MM")
 		.define('M', carpetMaterial)
@@ -1712,10 +1721,20 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addWoodenPressurePlateRecipe(ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, result)
+				.group("securitycraft:wooden_pressure_plates")
+				.pattern("SS")
+				.define('S', block)
+				.unlockedBy("has_block", has(block))
+				.save(output);
+		//@formatter:on
+	}
+
 	protected final void addPressurePlateRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, result)
-		.group("securitycraft:reinforced_pressure_plates")
 		.pattern("SS")
 		.define('S', block)
 		.unlockedBy("has_block", has(block))
@@ -1723,9 +1742,20 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addSecretHangingSignRecipe(ItemLike vanillaSign, ItemLike result) {
+		//@formatter:off
+		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.DECORATIONS, result, 3)
+				.group("securitycraft:secret_hanging_signs")
+				.requires(vanillaSign, 3)
+				.requires(SCContent.RETINAL_SCANNER)
+				.unlockedBy("has_sign", has(ItemTags.SIGNS))
+				.save(output);
+		//@formatter:on
+	}
+
 	protected final void addSecretSignRecipe(ItemLike vanillaSign, ItemLike result) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BUILDING_BLOCKS, result, 3)
+		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.DECORATIONS, result, 3)
 		.group("securitycraft:secret_signs")
 		.requires(vanillaSign, 3)
 		.requires(SCContent.RETINAL_SCANNER)
@@ -1771,10 +1801,20 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addWoodenSlabRecipe(ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 6)
+				.group("securitycraft:wooden_slab")
+				.pattern("BBB")
+				.define('B', block)
+				.unlockedBy("has_block", has(block))
+				.save(output);
+		//@formatter:on
+	}
+
 	protected final void addSlabRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 6)
-		.group("securitycraft:slabs")
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block))
@@ -1785,7 +1825,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addSlabRecipe(Ingredient block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 6)
-		.group("securitycraft:slabs")
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block.getValues().get(0).value()))
@@ -1809,7 +1848,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addStainedGlassPaneRecipes(TagKey<Item> dye, ItemLike stainedGlass, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 8)
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, result, 8)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GDG")
@@ -1818,7 +1857,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('D', dye)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
 		.save(output, scRecipeId(Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 16)
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, result, 16)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GGG")
@@ -1842,10 +1881,22 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addWoodenStairsRecipe(ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 4)
+				.group("securitycraft:wooden_stairs")
+				.pattern("B  ")
+				.pattern("BB ")
+				.pattern("BBB")
+				.define('B', block)
+				.unlockedBy("has_block", has(block))
+				.save(output);
+		//@formatter:on
+	}
+
 	protected final void addStairsRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 4)
-		.group("securitycraft:stairs")
 		.pattern("B  ")
 		.pattern("BB ")
 		.pattern("BBB")
@@ -1858,7 +1909,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addStairsRecipe(Ingredient block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 4)
-		.group("securitycraft:stairs")
 		.pattern("B  ")
 		.pattern("BB ")
 		.pattern("BBB")
@@ -1893,8 +1943,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addWallRecipes(ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 6)
-		.group("securitycraft:walls")
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, result, 6)
 		.pattern("BBB")
 		.pattern("BBB")
 		.define('B', block)

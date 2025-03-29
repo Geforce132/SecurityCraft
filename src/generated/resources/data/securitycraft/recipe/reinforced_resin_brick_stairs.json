@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "securitycraft:stairs",
   "key": {
     "B": "securitycraft:reinforced_resin_bricks"
   },
