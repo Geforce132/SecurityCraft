@@ -791,8 +791,9 @@ public class ClientHandler {
 	public static void refreshModelData(BlockEntity be) {
 		BlockPos pos = be.getBlockPos();
 
-		Minecraft.getInstance().level.getModelDataManager().requestRefresh(be);
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+		be.requestModelDataUpdate();
+		be.getLevel().getModelData(pos); //Actually calculates and applies the new model data that was requested before
+		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()); //Recompiles the render chunk at the changed position
 	}
 
 	public static boolean isPlayerMountedOnCamera() {

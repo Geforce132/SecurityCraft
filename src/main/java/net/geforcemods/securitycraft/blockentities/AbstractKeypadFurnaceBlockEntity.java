@@ -152,12 +152,13 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
-		handleUpdateTag(packet.getTag(), lookupProvider);
+		super.onDataPacket(net, packet, lookupProvider);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
+	public void onLoad() {
+		super.onLoad();
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
