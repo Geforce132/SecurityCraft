@@ -15,6 +15,7 @@
 - New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: Camera model animations are now synchronized between players
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
+- Change: Owners of disguised blocks and players in creative mode now receive the actual block instead of the disguise when using Pick Block  
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
 - API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT

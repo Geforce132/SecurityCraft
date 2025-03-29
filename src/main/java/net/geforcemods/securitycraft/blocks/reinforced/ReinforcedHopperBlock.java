@@ -160,7 +160,10 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
-		return getDisguisedStack(level, pos);
+		if (IDisguisable.shouldBeDisguisedFor(level, pos, player))
+			return getDisguisedStack(level, pos);
+
+		return super.getCloneItemStack(level, pos, state, includeData, player);
 	}
 
 	@Override
