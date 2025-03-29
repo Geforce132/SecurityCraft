@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
@@ -75,8 +76,14 @@ public class ReinforcedDispenserBlockEntity extends DispenserBlockEntity impleme
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
+		super.onDataPacket(net, packet, lookupProvider);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
