@@ -26,6 +26,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiVideoSettings;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal.ContainerLocalRenderInformation;
@@ -149,7 +150,7 @@ public class SCClientEventHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayerSP player = mc.player;
 
-		if (player == null || player.world == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.frameFeedViewingEnabled)
+		if (player == null || player.world == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.frameFeedViewingEnabled || mc.currentScreen instanceof GuiVideoSettings)
 			return;
 
 		Profiler profiler = mc.profiler;
