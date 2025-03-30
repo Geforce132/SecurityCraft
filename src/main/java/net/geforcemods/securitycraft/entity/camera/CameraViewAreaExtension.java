@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.chunk.ListedRenderChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.util.math.BlockPos;
@@ -12,13 +13,18 @@ public class CameraViewAreaExtension {
 	private CameraViewAreaExtension() {}
 
 	public static RenderChunk provideSection(long sectionPos) {
-		return SECTIONS.computeIfAbsent(sectionPos, CameraViewAreaExtension::createSection);
+		RenderChunk section = SECTIONS.get(sectionPos);
+
+		if (section == null || section instanceof ListedRenderChunk == OpenGlHelper.useVbo())
+			return SECTIONS.put(sectionPos, createSection(sectionPos)); //If the render chunk was initialized on a different VBO setting than the current VBO setting, the render chunk needs to be recreated to prevent crashes
+
+		return section;
 	}
 
 	private static RenderChunk createSection(long sectionPos) {
 		Minecraft mc = Minecraft.getMinecraft();
 		BlockPos sectionOrigin = sectionLongToBlockPos(sectionPos);
-		RenderChunk chunkRender = new ListedRenderChunk(mc.world, mc.renderGlobal, 0); //index is unused
+		RenderChunk chunkRender = OpenGlHelper.useVbo() ? new RenderChunk(mc.world, mc.renderGlobal, 0) : new ListedRenderChunk(mc.world, mc.renderGlobal, 0); //index is unused
 
 		chunkRender.setPosition(sectionOrigin.getX(), sectionOrigin.getY(), sectionOrigin.getZ());
 		return chunkRender;

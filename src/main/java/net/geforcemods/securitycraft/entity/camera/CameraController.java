@@ -37,6 +37,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal.ContainerLocalRenderInformation;
 import net.minecraft.client.renderer.chunk.CompiledChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
@@ -246,11 +247,11 @@ public class CameraController {
 		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::setUpCameraSections);
 	}
 
-	private static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
+	public static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
 		int resolution = ConfigHandler.frameFeedResolution;
 		BlockPos pos = cameraPos.pos();
 		ContainerLocalRenderInformation startingSection = Minecraft.getMinecraft().renderGlobal.new ContainerLocalRenderInformation(CameraViewAreaExtension.rawFetch(pos.getX() >> 4, MathHelper.clamp(pos.getY() >> 4, 0, 15), pos.getZ() >> 4, true), null, 0);
-		CameraFeed cameraFeed = new CameraFeed(new Framebuffer(resolution, resolution, true), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
+		CameraFeed cameraFeed = new CameraFeed(new Framebuffer(resolution, resolution, true), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>(), OpenGlHelper.useVbo());
 
 		cameraFeed.compilingSectionsQueue.add(Pair.of(startingSection.renderChunk, false));
 		cameraFeed.sectionsInRange.add(startingSection);
@@ -404,15 +405,17 @@ public class CameraController {
 		protected final Set<Long> sectionsInRangePositions;
 		protected final List<ContainerLocalRenderInformation> visibleSections;
 		protected final List<Pair<RenderChunk, Boolean>> compilingSectionsQueue;
+		protected final boolean createdUsingVbo;
 		protected Vector3f backgroundColor = new Vector3f(0, 0, 0);
 
-		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<ContainerLocalRenderInformation> sectionsInRange, Set<Long> sectionsInRangePositions, List<ContainerLocalRenderInformation> visibleSections, List<Pair<RenderChunk, Boolean>> compilingSectionsQueue) {
+		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<ContainerLocalRenderInformation> sectionsInRange, Set<Long> sectionsInRangePositions, List<ContainerLocalRenderInformation> visibleSections, List<Pair<RenderChunk, Boolean>> compilingSectionsQueue, boolean createdUsingVbo) {
 			this.renderTarget = renderTarget;
 			this.lastActiveTime = lastActiveTime;
 			this.sectionsInRange = sectionsInRange;
 			this.sectionsInRangePositions = sectionsInRangePositions;
 			this.visibleSections = visibleSections;
 			this.compilingSectionsQueue = compilingSectionsQueue;
+			this.createdUsingVbo = createdUsingVbo;
 		}
 
 		public Framebuffer renderTarget() {
@@ -445,6 +448,10 @@ public class CameraController {
 
 		public void setBackgroundColor(Vector3f newColor) {
 			backgroundColor = newColor;
+		}
+
+		public boolean usesVbo() {
+			return createdUsingVbo;
 		}
 	}
 }

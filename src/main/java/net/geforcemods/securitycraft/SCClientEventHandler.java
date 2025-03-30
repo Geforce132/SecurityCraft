@@ -27,6 +27,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal.ContainerLocalRenderInformation;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.shader.Framebuffer;
@@ -176,7 +177,7 @@ public class SCClientEventHandler {
 			}
 		}
 		else
-			activeFrameCameraFeeds = CameraController.FRAME_CAMERA_FEEDS;
+			activeFrameCameraFeeds = new HashMap<>(CameraController.FRAME_CAMERA_FEEDS);
 
 		if (activeFrameCameraFeeds.isEmpty())
 			return;
@@ -214,6 +215,12 @@ public class SCClientEventHandler {
 
 		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
 			GlobalPos cameraPos = cameraView.getKey();
+			CameraFeed feed = cameraView.getValue();
+
+			if (feed.usesVbo() != OpenGlHelper.useVbo()) { //If the player switches its VBO setting, update + recollect all render chunks in range, or else the game crashes
+				CameraController.FRAME_CAMERA_FEEDS.put(cameraPos, CameraController.setUpCameraSections(cameraPos));
+				continue;
+			}
 
 			if (cameraPos.dimension() == level.provider.getDimension()) {
 				BlockPos pos = cameraPos.pos();
@@ -224,7 +231,6 @@ public class SCClientEventHandler {
 						continue;
 
 					SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
-					CameraFeed feed = cameraView.getValue();
 					Framebuffer frameTarget = feed.renderTarget();
 					Vec3d cameraEntityPos = new Vec3d(pos.getX() + 0.5D, pos.getY() - player.getEyeHeight() + 0.5D, pos.getZ() + 0.5D);
 					float cameraXRot = be.getDefaultXRotation();
