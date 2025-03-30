@@ -144,6 +144,11 @@ public class CameraSelectScreen extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
+
+		for (GuiButton button : buttonList) {
+			if (button.isMouseOver())
+				button.drawButtonForegroundLayer(mouseX - guiLeft, mouseY - guiTop);
+		}
 	}
 
 	@Override

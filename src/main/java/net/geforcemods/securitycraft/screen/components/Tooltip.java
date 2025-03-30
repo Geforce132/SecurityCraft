@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen.components;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.text.ITextComponent;
 
 // TODO: Use this for more classes to be more in line with how tooltips work in 1.19.4+
@@ -19,6 +20,7 @@ public class Tooltip {
 
 	public void render(GuiButton button, int mouseX, int mouseY) {
 		screen.drawHoveringText(font.trimStringToWidth(text, 150), mouseX, mouseY);
+		GlStateManager.disableLighting();
 	}
 
 	public GuiScreen screen() {

@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.Consumer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class ClickButton extends GuiButtonExt {
@@ -15,8 +14,8 @@ public class ClickButton extends GuiButtonExt {
 	}
 
 	@Override
-	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partial) {
-		super.drawButton(mc, mouseX, mouseY, partial);
+	public void drawButtonForegroundLayer(int mouseX, int mouseY) {
+		super.drawButtonForegroundLayer(mouseX, mouseY);
 
 		if (visible && hovered && tooltip != null)
 			tooltip.render(this, mouseX, mouseY);
