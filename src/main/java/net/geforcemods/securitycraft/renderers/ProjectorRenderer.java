@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -51,7 +52,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 						BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 						BlockStateModel model = dispatcher.getBlockModel(state);
 
-						dispatcher.renderBatched(state, pos, level, pose, buffer::getBuffer, true, model.collectParts(be.getLevel(), pos, state, level.random));
+						dispatcher.renderBatched(state, pos, level, pose, buffer::getBuffer, true, model.collectParts(be.getLevel(), pos, state, RandomSource.create(state.getSeed(pos))));
 						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
 					}
 
