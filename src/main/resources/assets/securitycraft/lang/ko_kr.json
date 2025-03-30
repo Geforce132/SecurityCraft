@@ -1008,7 +1008,6 @@
 	"tooltip.securitycraft:keycard.signature": "서명: %s",
 	"tooltip.securitycraft:keycard.uses": "남은 사용량:",
 	"tooltip.securitycraft:mine": "지뢰",
-	"tooltip.securitycraft:module.itemAddons.added": "추가됨: %s",
 	"tooltip.securitycraft:module.modifiable": "모듈을 수정할 수 있습니다!",
 	"tooltip.securitycraft:module.notModifiable": "모듈을 수정할 수 없습니다!",
 	"tooltip.securitycraft:projector": "가짜 블록을 세상에 투사합니다.",

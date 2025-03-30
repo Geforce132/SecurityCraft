@@ -116,13 +116,6 @@ public class ModuleItem extends Item {
 		else
 			tooltipAdder.accept(NOT_MODIFIABLE);
 
-		if (canBeCustomized()) {
-			Block addon = getBlockAddon(stack);
-
-			if (addon != null && display.shows(DataComponents.CONTAINER))
-				tooltipAdder.accept(Utils.localize("tooltip.securitycraft:module.itemAddons.added", Utils.localize(addon.getDescriptionId())).setStyle(Utils.GRAY_STYLE));
-		}
-
 		if (containsCustomData) {
 			DataComponentType<ListModuleData> type = SCContent.LIST_MODULE_DATA.get();
 			ListModuleData listModuleData = stack.get(type);

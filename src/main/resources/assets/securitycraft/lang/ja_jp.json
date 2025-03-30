@@ -1482,7 +1482,6 @@
 	"tooltip.securitycraft:keycard.usable_by": "使用可能者: %s",
 	"tooltip.securitycraft:keycard.uses": "残り使用回数: %s",
 	"tooltip.securitycraft:mine": "地雷%s: %s",
-	"tooltip.securitycraft:module.itemAddons.added": "追加: %s",
 	"tooltip.securitycraft:module.modifiable": "モジュールは変更可能です！",
 	"tooltip.securitycraft:module.notModifiable": "モジュールは変更不可能です！",
 	"tooltip.securitycraft:projector": "偽のブロックをワールドに投影します。",

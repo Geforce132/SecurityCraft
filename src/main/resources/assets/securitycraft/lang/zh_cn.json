@@ -1481,7 +1481,6 @@
 	"tooltip.securitycraft:keycard.usable_by": "可使用：%s",
 	"tooltip.securitycraft:keycard.uses": "剩余使用次数：%s",
 	"tooltip.securitycraft:mine": "地雷",
-	"tooltip.securitycraft:module.itemAddons.added": "已添加：%s",
 	"tooltip.securitycraft:module.modifiable": "模块可自定义！",
 	"tooltip.securitycraft:module.notModifiable": "模块不可自定义！",
 	"tooltip.securitycraft:projector": "将假方块投影到世界中。",

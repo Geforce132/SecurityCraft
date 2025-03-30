@@ -1494,7 +1494,6 @@
 	"tooltip.securitycraft:keycard.usable_by": "Используется: %s",
 	"tooltip.securitycraft:keycard.uses": "Осталось использований: %s",
 	"tooltip.securitycraft:mine": "Мина %s: %s",
-	"tooltip.securitycraft:module.itemAddons.added": "Добавлено: %s",
 	"tooltip.securitycraft:module.modifiable": "Модуль можно изменить!",
 	"tooltip.securitycraft:module.notModifiable": "Модуль нельзя изменить!",
 	"tooltip.securitycraft:projector": "Проецирует фальшивые блоки в мир.",

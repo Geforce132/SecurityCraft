@@ -1483,7 +1483,6 @@
 	"tooltip.securitycraft:keycard.usable_by": "Usable by: %s",
 	"tooltip.securitycraft:keycard.uses": "Uses remaining: %s",
 	"tooltip.securitycraft:mine": "Mine %s: %s",
-	"tooltip.securitycraft:module.itemAddons.added": "Added: %s",
 	"tooltip.securitycraft:module.modifiable": "Module is modifiable!",
 	"tooltip.securitycraft:module.notModifiable": "Module is not modifiable!",
 	"tooltip.securitycraft:projector": "Projects fake blocks into the world.",
