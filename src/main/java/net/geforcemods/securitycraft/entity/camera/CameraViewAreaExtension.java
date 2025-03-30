@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.chunk.ListedRenderChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.util.math.BlockPos;
 
@@ -17,7 +18,7 @@ public class CameraViewAreaExtension {
 	private static RenderChunk createSection(long sectionPos) {
 		Minecraft mc = Minecraft.getMinecraft();
 		BlockPos sectionOrigin = sectionLongToBlockPos(sectionPos);
-		RenderChunk chunkRender = new RenderChunk(mc.world, mc.renderGlobal, 0); //index is unused
+		RenderChunk chunkRender = new ListedRenderChunk(mc.world, mc.renderGlobal, 0); //index is unused
 
 		chunkRender.setPosition(sectionOrigin.getX(), sectionOrigin.getY(), sectionOrigin.getZ());
 		return chunkRender;
