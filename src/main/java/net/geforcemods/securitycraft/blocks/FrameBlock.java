@@ -41,6 +41,7 @@ public class FrameBlock extends OwnableBlock {
 
 	public FrameBlock(Material material) {
 		super(material);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
 		setSoundType(SoundType.METAL);
 		setHardness(5.0F);
 		setHarvestLevel("pickaxe", 1);
@@ -119,12 +120,12 @@ public class FrameBlock extends OwnableBlock {
 		if (facing.getAxis() == EnumFacing.Axis.Y)
 			facing = EnumFacing.NORTH;
 
-		return getDefaultState().withProperty(FACING, facing).withProperty(POWERED, meta > 4);
+		return getDefaultState().withProperty(FACING, facing).withProperty(POWERED, meta > 6);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex() + (state.getValue(POWERED) ? 4 : 0);
+		return state.getValue(FACING).getIndex() + (state.getValue(POWERED) ? 6 : 0);
 	}
 
 	@Override
