@@ -19,7 +19,7 @@ public class Tooltip {
 	}
 
 	public void render(GuiButton button, int mouseX, int mouseY) {
-		screen.drawHoveringText(font.trimStringToWidth(text, 150), mouseX, mouseY);
+		screen.drawHoveringText(font.listFormattedStringToWidth(text, 150), mouseX, mouseY);
 		GlStateManager.disableLighting();
 	}
 
