@@ -109,6 +109,7 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 			BufferBuilder bufferBuilder = tessellator.getBuffer();
 			Vector3f backgroundColor = feed.getBackgroundColor();
 
+			GlStateManager.disableLighting();
 			renderOverlay(xStart, xEnd, zStart, zEnd, (int) (backgroundColor.x * 255.0F), (int) (backgroundColor.y * 255.0F), (int) (backgroundColor.z * 255.0F), 255, normal, margin);
 			target.bindFramebufferTexture();
 			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
@@ -121,6 +122,8 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 
 			if (lens.getItem() instanceof ColorableItem && ((ColorableItem) lens.getItem()).hasColor(lens))
 				renderOverlay(xStart, xEnd, zStart, zEnd, ((ColorableItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), normal, margin);
+
+			GlStateManager.enableLighting();
 		}
 
 		GlStateManager.popMatrix();
