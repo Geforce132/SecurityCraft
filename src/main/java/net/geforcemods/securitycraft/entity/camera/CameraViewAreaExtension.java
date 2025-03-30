@@ -15,8 +15,11 @@ public class CameraViewAreaExtension {
 	public static RenderChunk provideSection(long sectionPos) {
 		RenderChunk section = SECTIONS.get(sectionPos);
 
-		if (section == null || section instanceof ListedRenderChunk == OpenGlHelper.useVbo())
-			return SECTIONS.put(sectionPos, createSection(sectionPos)); //If the render chunk was initialized on a different VBO setting than the current VBO setting, the render chunk needs to be recreated to prevent crashes
+		//If the render chunk was initialized on a different VBO setting than the current VBO setting, the render chunk needs to be recreated to prevent crashes
+		if (section == null || section instanceof ListedRenderChunk == OpenGlHelper.useVbo()) {
+			section = createSection(sectionPos);
+			SECTIONS.put(sectionPos, section);
+		}
 
 		return section;
 	}

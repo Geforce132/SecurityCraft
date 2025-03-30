@@ -217,12 +217,9 @@ public class SCClientEventHandler {
 			GlobalPos cameraPos = cameraView.getKey();
 			CameraFeed feed = cameraView.getValue();
 
-			if (feed.usesVbo() != OpenGlHelper.useVbo()) { //If the player switches its VBO setting, update + recollect all render chunks in range, or else the game crashes
+			if (feed.usesVbo() != OpenGlHelper.useVbo()) //If the player switches their VBO setting, update + recollect all render chunks in range, or else the game crashes
 				CameraController.FRAME_CAMERA_FEEDS.put(cameraPos, CameraController.setUpCameraSections(cameraPos));
-				continue;
-			}
-
-			if (cameraPos.dimension() == level.provider.getDimension()) {
+			else if (cameraPos.dimension() == level.provider.getDimension()) {
 				BlockPos pos = cameraPos.pos();
 				TileEntity te = level.getTileEntity(pos);
 
