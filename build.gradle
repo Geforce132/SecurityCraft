@@ -8,7 +8,7 @@ plugins {
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.9.12-beta4'
+version = '1.9.12-beta5'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.4.86-beta"
+	version = "21.4.123"
 	validateAccessTransformers = true
 
 	runs {

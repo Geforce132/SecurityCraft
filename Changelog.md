@@ -3,6 +3,7 @@
 - Fix: The Reinforced Dropper does not work
 - Fix: Change entry buttons in the Block Change Detector UI cannot be clicked
 - Fix: The Color Chooser's cursor can be moved by dragging outside the color box
+- Fix: The mod doesn't load when installed on a server
 
 --------------------------Changelog for v1.9.12-beta4 of SecurityCraft--------------------------
 
