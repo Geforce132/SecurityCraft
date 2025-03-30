@@ -44,11 +44,10 @@ public class SecuritySeaBoatItem extends BoatItem {
 			Vec3 vec3 = hitResult.getLocation();
 
 			boat.setInitialPos(vec3.x, vec3.y, vec3.z);
+			boat.setOwner(player);
 
 			if (level instanceof ServerLevel serverLevel)
 				EntityType.<AbstractBoat>createDefaultStackConfig(serverLevel, stack, player).accept(boat);
-
-			boat.setOwner(player);
 		}
 
 		return boat;

@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blockentities.DisguisableBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisguisableBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.components.ListModuleData;
+import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
@@ -19,6 +20,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
@@ -474,6 +477,32 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	@Override
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {}
+
+	@Override
+	protected void applyImplicitComponents(DataComponentGetter getter) {
+		super.applyImplicitComponents(getter);
+		applyImplicitComponentIfPresent(getter, SCContent.OWNER_DATA.get());
+	}
+
+	@Override
+	protected <T> boolean applyImplicitComponent(DataComponentType<T> type, T value) {
+		if (type == SCContent.OWNER_DATA.get()) {
+			OwnerData ownerData = castComponentValue(SCContent.OWNER_DATA.get(), value);
+
+			setOwner(ownerData.uuid(), ownerData.name());
+			return true;
+		}
+
+		return super.applyImplicitComponent(type, value);
+	}
+
+	@Override
+	public <T> T get(DataComponentType<? extends T> type) {
+		if (type == SCContent.OWNER_DATA.get())
+			return (T) OwnerData.fromOwner(getOwner());
+		else
+			return super.get(type);
+	}
 
 	/**
 	 * Adds a disguise module to the sentry and places a block if possible

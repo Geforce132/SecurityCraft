@@ -16,6 +16,8 @@ import net.geforcemods.securitycraft.api.Option.SendAllowlistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.components.OwnerData;
+import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -31,6 +33,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -368,6 +372,42 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {}
+
+	@Override
+	protected void applyImplicitComponents(DataComponentGetter getter) {
+		super.applyImplicitComponents(getter);
+		applyImplicitComponentIfPresent(getter, SCContent.OWNER_DATA.get());
+		applyImplicitComponentIfPresent(getter, SCContent.PASSCODE_DATA.get());
+	}
+
+	@Override
+	protected <T> boolean applyImplicitComponent(DataComponentType<T> type, T value) {
+		if (type == SCContent.OWNER_DATA.get()) {
+			OwnerData ownerData = castComponentValue(SCContent.OWNER_DATA.get(), value);
+
+			setOwner(ownerData.uuid(), ownerData.name());
+			return true;
+		}
+		else if (type == SCContent.PASSCODE_DATA.get()) {
+			PasscodeData passcodeData = castComponentValue(SCContent.PASSCODE_DATA.get(), value);
+
+			setPasscode(PasscodeUtils.stringToBytes(passcodeData.passcode()));
+			setSaltKey(passcodeData.saltKey());
+			return true;
+		}
+
+		return super.applyImplicitComponent(type, value);
+	}
+
+	@Override
+	public <T> T get(DataComponentType<? extends T> type) {
+		if (type == SCContent.OWNER_DATA.get())
+			return (T) OwnerData.fromOwner(getOwner());
+		else if (type == SCContent.PASSCODE_DATA.get())
+			return (T) new PasscodeData(PasscodeUtils.bytesToString(getPasscode()), getSaltKey());
+		else
+			return super.get(type);
+	}
 
 	@Override
 	public void activate(Player player) {
