@@ -129,7 +129,7 @@ public class CheckPasscodeScreen extends GuiContainer {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (!be.isOnCooldown()) {
-			if (keyCode == Keyboard.KEY_BACK && keycodeTextbox.getText().length() > 0)
+			if (keyCode == Keyboard.KEY_BACK && !keycodeTextbox.getText().isEmpty())
 				Minecraft.getMinecraft().player.playSound(SoundEvents.UI_BUTTON_CLICK, 0.15F, 1.0F);
 
 			if (isValidChar(typedChar) && keycodeTextbox.textboxKeyTyped(typedChar, keyCode)) {
@@ -171,7 +171,7 @@ public class CheckPasscodeScreen extends GuiContainer {
 	}
 
 	private void removeLastCharacter() {
-		if (keycodeTextbox.getText().length() > 0)
+		if (!keycodeTextbox.getText().isEmpty())
 			keycodeTextbox.deleteFromCursor(-1);
 	}
 

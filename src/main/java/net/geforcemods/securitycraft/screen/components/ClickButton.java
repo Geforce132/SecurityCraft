@@ -6,11 +6,19 @@ import net.minecraftforge.fml.client.config.GuiButtonExt;
 
 public class ClickButton extends GuiButtonExt {
 	private Consumer<ClickButton> onClick;
+	public Tooltip tooltip;
 
 	public ClickButton(int id, int xPos, int yPos, int width, int height, String displayString, Consumer<ClickButton> onClick) {
 		super(id, xPos, yPos, width, height, displayString);
-
 		this.onClick = onClick;
+	}
+
+	@Override
+	public void drawButtonForegroundLayer(int mouseX, int mouseY) {
+		super.drawButtonForegroundLayer(mouseX, mouseY);
+
+		if (visible && hovered && tooltip != null)
+			tooltip.render(this, mouseX, mouseY);
 	}
 
 	public void onClick() {

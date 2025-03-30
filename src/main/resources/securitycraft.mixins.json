@@ -6,8 +6,9 @@
 	"client": [
 		"camera.EntityRendererMixin",
 		"camera.MinecraftMixin",
-		"camera.ViewFrustumMixin",
+		"camera.RenderGlobalMixin",
 		"camera.RenderPlayerMixin",
+		"camera.ViewFrustumMixin",
 		"f3.GuiOverlayDebugMixin",
 		"taser.ModelBipedMixin"
 	],

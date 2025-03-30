@@ -29,11 +29,15 @@ public class KeyPanelItem extends FloorCeilingWallBlockItem {
 
 		if (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player)) {
 			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
-				if (pc.isUnprotectedBlock(state) && pc.protect(player, world, pos)) {
-					if (!player.capabilities.isCreativeMode)
-						stack.shrink(1);
+				if (pc.isUnprotectedBlock(state)) {
+					if (pc.protect(player, world, pos)) {
+						if (!player.capabilities.isCreativeMode)
+							stack.shrink(1);
 
-					world.playSound(player, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						world.playSound(player, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
+						return EnumActionResult.SUCCESS;
+					}
+
 					return EnumActionResult.SUCCESS;
 				}
 			}

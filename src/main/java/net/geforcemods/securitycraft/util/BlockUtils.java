@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -146,15 +147,19 @@ public class BlockUtils {
 	}
 
 	public static float getDestroyProgress(DestroyProgress destroyProgress, IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return getDestroyProgress(destroyProgress, state, player, level, pos, false);
+	}
+
+	public static float getDestroyProgress(DestroyProgress destroyProgress, IBlockState state, EntityPlayer player, World level, BlockPos pos, boolean allowDefault) {
 		if (state.getBlock() instanceof IBlockMine)
 			return destroyProgress.get(state, player, level, pos);
 
 		if (ConfigHandler.vanillaToolBlockBreaking) {
-			TileEntity te = level.getTileEntity(pos);
+			TileEntity be = level.getTileEntity(pos);
 
-			if (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player))
+			if (be instanceof IOwnable && ((IOwnable) be).isOwnedBy(player))
 				return destroyProgress.get(state, player, level, pos);
-			else if (ConfigHandler.allowBreakingNonOwnedBlocks)
+			else if (ConfigHandler.allowBreakingNonOwnedBlocks || (allowDefault && be instanceof IOwnable && ((IOwnable) be).getOwner().equals(new Owner())))
 				return (float) (destroyProgress.get(state, player, level, pos) / ConfigHandler.nonOwnedBreakingSlowdown);
 		}
 

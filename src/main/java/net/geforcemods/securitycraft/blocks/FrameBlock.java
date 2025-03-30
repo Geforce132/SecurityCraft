@@ -1,17 +1,31 @@
 package net.geforcemods.securitycraft.blocks;
 
+import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.misc.GlobalPos;
+import net.geforcemods.securitycraft.network.client.InteractWithFrame;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.Mirror;
@@ -23,12 +37,19 @@ import net.minecraft.world.World;
 
 public class FrameBlock extends OwnableBlock {
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+	public static final PropertyBool POWERED = PropertyBool.create("powered");
 
 	public FrameBlock(Material material) {
 		super(material);
+		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
 		setSoundType(SoundType.METAL);
 		setHardness(5.0F);
 		setHarvestLevel("pickaxe", 1);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(this::defaultPlayerRelativeBlockHardness, state, player, level, pos, true);
 	}
 
 	@Override
@@ -44,9 +65,43 @@ public class FrameBlock extends OwnableBlock {
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		ItemStack stack = player.getHeldItem(hand);
+		TileEntity te = world.getTileEntity(pos);
 
-		if (stack.getItem() == SCContent.cameraMonitor) {
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize("tile.securitycraft:keypadFrame.name"), Utils.localize("messages.securitycraft:frame.rightclick"), TextFormatting.RED);
+		if (stack.getItem() == SCContent.cameraMonitor && te instanceof FrameBlockEntity) {
+			FrameBlockEntity be = (FrameBlockEntity) te;
+
+			if (!ConfigHandler.frameFeedViewingEnabled)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.disabled"), TextFormatting.RED);
+			else if (!be.isOwnedBy(player))
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), TextFormatting.RED);
+			else if (stack.hasTagCompound()) {
+				List<Pair<GlobalPos, String>> cameras = CameraMonitorItem.getCameraPositions(stack.getTagCompound());
+
+				if (!cameras.isEmpty()) {
+					if (be.applyCameraPositions(stack)) {
+						be.switchCameras(null, null, 0, false); //Disable current camera view if new cameras are registered to the frame
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.camerasSet"), TextFormatting.GREEN);
+					}
+				}
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.emptyMonitor"), TextFormatting.RED);
+			}
+
+			return true;
+		}
+		else if (stack.getItem() == SCContent.keyPanel) //Conversion takes priority
+			return false;
+		else if (te instanceof FrameBlockEntity) {
+			FrameBlockEntity be = (FrameBlockEntity) te;
+			boolean ownedByUser = be.isOwnedBy(player);
+
+			if (be.isDisabled())
+				player.sendStatusMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			else if (!ConfigHandler.frameFeedViewingEnabled)
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.disabled"), TextFormatting.RED);
+			else if (!world.isRemote && player instanceof EntityPlayerMP && (ownedByUser || be.isAllowed(player)) && !be.getCameraPositions().isEmpty())
+				SecurityCraft.network.sendTo(new InteractWithFrame(pos, ownedByUser), (EntityPlayerMP) player);
+
 			return true;
 		}
 
@@ -65,17 +120,22 @@ public class FrameBlock extends OwnableBlock {
 		if (facing.getAxis() == EnumFacing.Axis.Y)
 			facing = EnumFacing.NORTH;
 
-		return getDefaultState().withProperty(FACING, facing);
+		return getDefaultState().withProperty(FACING, facing).withProperty(POWERED, meta > 6);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).getIndex();
+		return state.getValue(FACING).getIndex() + (state.getValue(POWERED) ? 6 : 0);
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) { //Required to remove the dark tint on all textures rendered within the frame's bounding box
+		return false;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, FACING);
+		return new BlockStateContainer(this, FACING, POWERED);
 	}
 
 	@Override
@@ -86,5 +146,15 @@ public class FrameBlock extends OwnableBlock {
 	@Override
 	public IBlockState withMirror(IBlockState state, Mirror mirror) {
 		return state.withRotation(mirror.toRotation(state.getValue(FACING)));
+	}
+
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
+
+	@Override
+	public TileEntity createTileEntity(World level, IBlockState state) {
+		return new FrameBlockEntity();
 	}
 }

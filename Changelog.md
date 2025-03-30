@@ -1,5 +1,7 @@
 --------------------------Changelog for the upcoming version of SecurityCraft--------------------------
 
+- New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
+- New: Several server and client config settings to control chunk loading in camera feeds
 - New: All blocks can now be broken only by the owner with normal tools (axe, shovel, hoe, ...) and the Universal Block Remover has been disabled by default
 - New: Config to re-enable the Universal Block Remover and disable normal block breaking
 - New: Config to define tool requirement behavior (e.g. does Reinforced Stone always drop, or just when breaking it using a pickaxe?)
@@ -7,6 +9,7 @@
 - New: Config for defining how much longer it should take to break another player's block compared to breaking one's own
 - New: The cage trap iron bars now also break when breaking a cage trap in creative mode
 - Change: The block mine overlay now shows in the first person hand models as well
+- Change: Camera model animations are now synchronized between players
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - API: IDisguisable has been simplified
 - API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
@@ -21,6 +24,8 @@
 - Fix: Loading a structure with passcode-protected objects onto itself using a structure block invalidates all passcodes
 - Fix: A system of connected laser blocks does not emit redstone correctly when walking into two or more laser fields 
 - Removed: Configuration "ableToBreakMines"
+
+[1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
 
 --------------------------Changelog for v1.9.12.1 of SecurityCraft--------------------------
 

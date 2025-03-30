@@ -1,11 +1,30 @@
 package net.geforcemods.securitycraft.entity.camera;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
+import javax.vecmath.Vector3f;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.google.common.util.concurrent.AtomicDouble;
+
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -14,17 +33,28 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderGlobal.ContainerLocalRenderInformation;
+import net.minecraft.client.renderer.chunk.CompiledChunk;
+import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -44,6 +74,12 @@ public class CameraController {
 	};
 	//@formatter:on
 	private static int screenshotSoundCooldown = 0;
+	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
+	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
+	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
+	public static Pair<GlobalPos, CameraFeed> currentlyCapturedCamera;
+	public static ClippingHelper lastUsedClippingHelper;
+	public static double lastFrameRendered = 0.0D;
 
 	private CameraController() {}
 
@@ -200,6 +236,134 @@ public class CameraController {
 		SecurityCraft.network.sendToServer(new SetDefaultCameraViewingDirection(cam));
 	}
 
+	public static boolean isLinked(FrameBlockEntity be, GlobalPos cameraPos) {
+		return FRAME_LINKS.containsKey(cameraPos) && FRAME_LINKS.get(cameraPos).contains(be.getPos());
+	}
+
+	public static void addFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
+		Set<BlockPos> bes = FRAME_LINKS.computeIfAbsent(cameraPos, p -> new HashSet<>());
+
+		bes.add(be.getPos());
+		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::setUpCameraSections);
+	}
+
+	public static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
+		int resolution = ConfigHandler.frameFeedResolution;
+		BlockPos pos = cameraPos.pos();
+		ContainerLocalRenderInformation startingSection = Minecraft.getMinecraft().renderGlobal.new ContainerLocalRenderInformation(CameraViewAreaExtension.rawFetch(pos.getX() >> 4, MathHelper.clamp(pos.getY() >> 4, 0, 15), pos.getZ() >> 4, true), null, 0);
+		CameraFeed cameraFeed = new CameraFeed(new Framebuffer(resolution, resolution, true), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>(), OpenGlHelper.useVbo());
+
+		cameraFeed.compilingSectionsQueue.add(Pair.of(startingSection.renderChunk, false));
+		cameraFeed.sectionsInRange.add(startingSection);
+		cameraFeed.sectionsInRangePositions.add(startingSection.renderChunk.getPosition().toLong());
+		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(null), cameraFeed);
+		return cameraFeed;
+	}
+
+	public static void removeFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
+		if (FRAME_LINKS.containsKey(cameraPos)) {
+			Set<BlockPos> linkedFrames = FRAME_LINKS.get(cameraPos);
+
+			linkedFrames.remove(be.getPos());
+
+			if (linkedFrames.isEmpty())
+				removeAllFrameLinks(cameraPos);
+		}
+	}
+
+	public static void removeAllFrameLinks(GlobalPos cameraPos) {
+		if (FRAME_LINKS.containsKey(cameraPos)) {
+			FRAME_LINKS.remove(cameraPos);
+			FRAME_CAMERA_FEEDS.remove(cameraPos);
+		}
+	}
+
+	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
+		ChunkPos cameraSectionPos = new ChunkPos(cameraPos.pos());
+		List<ContainerLocalRenderInformation> visibleSections = feed.sectionsInRange;
+		List<Pair<RenderChunk, Boolean>> sectionQueue = feed.compilingSectionsQueue;
+		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
+		Deque<Pair<RenderChunk, Boolean>> queueToCheck = new ArrayDeque<>(sectionQueue);
+
+		sectionQueue.clear();
+
+		while (!queueToCheck.isEmpty()) {
+			RenderChunk currentSection = queueToCheck.poll().getLeft();
+			BlockPos origin = currentSection.getPosition();
+			CompiledChunk currentCompiledSection = currentSection.getCompiledChunk();
+
+			if (!hasAllNeighbors(currentSection)) {
+				sectionQueue.add(Pair.of(currentSection, false));
+				continue;
+			}
+			else if (currentCompiledSection == CompiledChunk.DUMMY) {
+				sectionQueue.add(Pair.of(currentSection, true));
+				continue;
+			}
+
+			//Once a section in the queue is compiled, it knows which neighbours it can and cannot see. This information is used to more cleverly determine which chunks the player can actually see
+			for (EnumFacing dir : EnumFacing.values()) {
+				int cx = (origin.getX() >> 4) + dir.getXOffset();
+				int cy = (origin.getY() >> 4) + dir.getYOffset();
+				int cz = (origin.getZ() >> 4) + dir.getZOffset();
+
+				if (Utils.isInViewDistance(cameraSectionPos.x, cameraSectionPos.z, viewDistance, cx, cz)) {
+					RenderChunk neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
+
+					if (neighbourSection != null) {
+						long neighbourPosAsLong = neighbourSection.getPosition().toLong();
+
+						if (!visibleSectionPositions.contains(neighbourPosAsLong) && canSeeNeighborFace(currentCompiledSection, dir)) {
+							ContainerLocalRenderInformation neighbourChunkInfo = Minecraft.getMinecraft().renderGlobal.new ContainerLocalRenderInformation(neighbourSection, null, 0);
+
+							visibleSections.add(neighbourChunkInfo); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
+							visibleSectionPositions.add(neighbourSection.getPosition().toLong());
+							sectionQueue.add(Pair.of(neighbourChunkInfo.renderChunk, false));
+							FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private static boolean hasAllNeighbors(RenderChunk renderChunk) {
+		World world = Minecraft.getMinecraft().world;
+		BlockPos chunkBlockPos = renderChunk.getPosition();
+		int chunkX = chunkBlockPos.getX() >> 4;
+		int chunkZ = chunkBlockPos.getZ() >> 4;
+
+		return !world.getChunk(chunkX + 1, chunkZ).isEmpty() && !world.getChunk(chunkX - 1, chunkZ).isEmpty() && !world.getChunk(chunkX, chunkZ + 1).isEmpty() && !world.getChunk(chunkX, chunkZ - 1).isEmpty();
+	}
+
+	private static boolean canSeeNeighborFace(CompiledChunk currentCompiledSection, EnumFacing dir) {
+		for (int j = 0; j < EnumFacing.values().length; j++) {
+			if (currentCompiledSection.isVisible(EnumFacing.values()[j].getOpposite(), dir))
+				return true;
+		}
+
+		return false;
+	}
+
+	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
+		int frameSpecificRenderDistance = be == null ? 32 : be.getChunkLoadingDistanceOption();
+
+		return Math.min(frameSpecificRenderDistance, Math.min(ConfigHandler.frameFeedRenderDistance, Math.min(ConfigHandler.frameFeedViewDistance, Minecraft.getMinecraft().gameSettings.renderDistanceChunks)));
+	}
+
+	public static List<RenderChunk> getDirtyRenderChunks(CameraFeed feed) {
+		List<RenderChunk> dirtyRenderChunks = new ArrayList<>();
+
+		for (ContainerLocalRenderInformation container : feed.sectionsInRange) {
+			RenderChunk renderChunk = container.renderChunk;
+
+			if (renderChunk.needsUpdate())
+				dirtyRenderChunks.add(renderChunk);
+		}
+
+		return dirtyRenderChunks;
+	}
+
 	public static float getMovementSpeed(SecurityCamera cam) {
 		SecurityCameraBlockEntity be = cam.getBlockEntity();
 
@@ -231,6 +395,63 @@ public class CameraController {
 				action.accept(cam);
 				KeyBinding.setKeyBindState(key.getKeyCode(), true);
 			}
+		}
+	}
+
+	public static class CameraFeed {
+		protected final Framebuffer renderTarget;
+		protected final AtomicDouble lastActiveTime;
+		protected final List<ContainerLocalRenderInformation> sectionsInRange;
+		protected final Set<Long> sectionsInRangePositions;
+		protected final List<ContainerLocalRenderInformation> visibleSections;
+		protected final List<Pair<RenderChunk, Boolean>> compilingSectionsQueue;
+		protected final boolean createdUsingVbo;
+		protected Vector3f backgroundColor = new Vector3f(0, 0, 0);
+
+		public CameraFeed(Framebuffer renderTarget, AtomicDouble lastActiveTime, List<ContainerLocalRenderInformation> sectionsInRange, Set<Long> sectionsInRangePositions, List<ContainerLocalRenderInformation> visibleSections, List<Pair<RenderChunk, Boolean>> compilingSectionsQueue, boolean createdUsingVbo) {
+			this.renderTarget = renderTarget;
+			this.lastActiveTime = lastActiveTime;
+			this.sectionsInRange = sectionsInRange;
+			this.sectionsInRangePositions = sectionsInRangePositions;
+			this.visibleSections = visibleSections;
+			this.compilingSectionsQueue = compilingSectionsQueue;
+			this.createdUsingVbo = createdUsingVbo;
+		}
+
+		public Framebuffer renderTarget() {
+			return renderTarget;
+		}
+
+		public AtomicDouble lastActiveTime() {
+			return lastActiveTime;
+		}
+
+		public List<ContainerLocalRenderInformation> sectionsInRange() {
+			return sectionsInRange;
+		}
+
+		public Set<Long> sectionsInRangePositions() {
+			return sectionsInRangePositions;
+		}
+
+		public List<ContainerLocalRenderInformation> visibleSections() {
+			return visibleSections;
+		}
+
+		public List<RenderChunk> getSectionsToCompile() {
+			return compilingSectionsQueue.stream().filter(p -> p.getRight() && (p.getLeft().compileTask == null || !p.getLeft().compileTask.isFinished())).map(Pair::getLeft).collect(Collectors.toList());
+		}
+
+		public Vector3f getBackgroundColor() {
+			return backgroundColor;
+		}
+
+		public void setBackgroundColor(Vector3f newColor) {
+			backgroundColor = newColor;
+		}
+
+		public boolean usesVbo() {
+			return createdUsingVbo;
 		}
 	}
 }

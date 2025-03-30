@@ -1,0 +1,79 @@
+package net.geforcemods.securitycraft.entity.camera;
+
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.chunk.ListedRenderChunk;
+import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.util.math.BlockPos;
+
+public class CameraViewAreaExtension {
+	private static final Long2ObjectOpenHashMap<RenderChunk> SECTIONS = new Long2ObjectOpenHashMap<>();
+
+	private CameraViewAreaExtension() {}
+
+	public static RenderChunk provideSection(long sectionPos) {
+		RenderChunk section = SECTIONS.get(sectionPos);
+
+		//If the render chunk was initialized on a different VBO setting than the current VBO setting, the render chunk needs to be recreated to prevent crashes
+		if (section == null || section instanceof ListedRenderChunk == OpenGlHelper.useVbo()) {
+			section = createSection(sectionPos);
+			SECTIONS.put(sectionPos, section);
+		}
+
+		return section;
+	}
+
+	private static RenderChunk createSection(long sectionPos) {
+		Minecraft mc = Minecraft.getMinecraft();
+		BlockPos sectionOrigin = sectionLongToBlockPos(sectionPos);
+		RenderChunk chunkRender = OpenGlHelper.useVbo() ? new RenderChunk(mc.world, mc.renderGlobal, 0) : new ListedRenderChunk(mc.world, mc.renderGlobal, 0); //index is unused
+
+		chunkRender.setPosition(sectionOrigin.getX(), sectionOrigin.getY(), sectionOrigin.getZ());
+		return chunkRender;
+	}
+
+	public static void setDirty(int cx, int cy, int cz, boolean playerChanged) {
+		RenderChunk section = rawFetch(cx, cy, cz, false);
+
+		if (section != null)
+			section.setNeedsUpdate(playerChanged);
+	}
+
+	public static void onChunkUnload(int sectionX, int sectionZ) {
+		for (int sectionY = 0; sectionY < 16; sectionY++) {
+			SECTIONS.remove(sectionPosToLong(sectionX, sectionY, sectionZ));
+		}
+	}
+
+	public static RenderChunk rawFetch(int cx, int cy, int cz, boolean generateNew) {
+		if (cy < 0 || cy >= 16)
+			return null;
+
+		long sectionPos = sectionPosToLong(cx, cy, cz);
+
+		return generateNew ? provideSection(sectionPos) : SECTIONS.get(sectionPos);
+	}
+
+	private static long sectionPosToLong(int sx, int sy, int sz) {
+		long sectionPosAsLong = 0L; //Filled with: 22 bits x position, 20 bits y position, 22 bits z position
+
+		sectionPosAsLong |= ((long) sx & 0x3FFFFF) << 42;
+		sectionPosAsLong |= ((long) sy & 0x0FFFFF);
+		sectionPosAsLong |= ((long) sz & 0x3FFFFF) << 20;
+
+		return sectionPosAsLong;
+	}
+
+	private static BlockPos sectionLongToBlockPos(long sectionPosAsLong) {
+		return new BlockPos((sectionPosAsLong >> 42) << 4, (sectionPosAsLong << 44 >> 44) << 4, (sectionPosAsLong << 22 >> 42) << 4);
+	}
+
+	public static void clear() {
+		for (RenderChunk section : SECTIONS.values()) {
+			section.deleteGlResources();
+		}
+
+		SECTIONS.clear();
+	}
+}

@@ -434,7 +434,6 @@ messages.securitycraft:cameraMonitor.unbound=Cámara en %s desvinculada del moni
 messages.securitycraft:codebreaker.failed=Error al intentar descifrar el código, inténtalo de nuevo.
 messages.securitycraft:codebreaker.owned=Estás intentando descifrar el código de uno de tus objetos. Si te olvidas de la contraseña de un bloque de tu propiedad, usa el modificador de contraseñas universal.
 messages.securitycraft:codebreakerDisabled=El descifrador de contraseñas se ha desactivado en el archivo de configuración.
-messages.securitycraft:frame.rightclick=Ver un monitor de cámara en un marco no es posible en este momento, ya que LookingGlass no se ha actualizado para versiones superiores a la 1.7.10. Puede que en futuras actualizaciones esta funcionalidad regrese sin depender de ningún mod como LookingGlass, pero no se sabe exactamente cuándo.
 messages.securitycraft:invScan.notConnected=¡No está conectado con otro bloque de escáner de inventario!
 messages.securitycraft:keycardReader.cantUse=No puedes utilizar esta tarjeta de acceso.
 messages.securitycraft:keycardReader.differentOwner=¡El lector de tarjetas al que se vinculó esta tarjeta pertenece a un jugador diferente del que estás intentando usar!

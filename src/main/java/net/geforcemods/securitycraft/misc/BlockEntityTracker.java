@@ -8,10 +8,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,6 +30,7 @@ public class BlockEntityTracker<TE extends TileEntity> {
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(te -> te.getRange());
 	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
 	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
+	public static final BlockEntityTracker<SecurityCameraBlockEntity> FRAME_VIEWED_SECURITY_CAMERAS = new BlockEntityTracker<>(be -> 0);
 	private final Map<Integer, Collection<BlockPos>> trackedTileEntities = new ConcurrentHashMap<>();
 	private final Function<TE, Integer> range;
 
@@ -54,6 +57,13 @@ public class BlockEntityTracker<TE extends TileEntity> {
 	}
 
 	/**
+	 * Removes all block entities from this tracker
+	 */
+	public void clear() {
+		trackedTileEntities.clear();
+	}
+
+	/**
 	 * Gets all tile entities that have the given block position in the given range in the world
 	 *
 	 * @param world The world
@@ -68,12 +78,7 @@ public class BlockEntityTracker<TE extends TileEntity> {
 	 * @see {@link #getTileEntitiesInRange(World, BlockPos)}
 	 */
 	public List<TE> getTileEntitiesInRange(World level, Vec3d pos) {
-		return iterate(level, (list, bePos) -> {
-			TE be = (TE) level.getTileEntity(bePos);
-
-			if (be != null && canReach(be, pos))
-				list.add(be);
-		});
+		return getTileEntitiesWithCondition(level, be -> canReach(be, pos));
 	}
 
 	/**
@@ -88,6 +93,22 @@ public class BlockEntityTracker<TE extends TileEntity> {
 		return iterate(level, (list, bePos) -> {
 			if (isInRange(pos, range, new Vec3d(bePos.getX(), bePos.getY(), bePos.getZ())))
 				list.add((TE) level.getTileEntity(bePos));
+		});
+	}
+
+	/**
+	 * Gets all block entities that are in the given level and satisfy the given condition
+	 *
+	 * @param level The level
+	 * @param condition The condition predicate block entities are checked against
+	 * @return A list of all block entities that are in given level and satisfy the given condition
+	 */
+	public List<TE> getTileEntitiesWithCondition(World level, Predicate<TE> condition) {
+		return iterate(level, (list, bePos) -> {
+			TE be = (TE) level.getTileEntity(bePos);
+
+			if (be != null && condition.test(be))
+				list.add(be);
 		});
 	}
 

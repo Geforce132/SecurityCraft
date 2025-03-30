@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 
 /**
- * Makes sure the server does not move the player viewing a camera to the camera's position
+ * Makes sure the server does not move the player mounting a camera to the camera's position
  */
 @Mixin(value = EntityPlayerMP.class, priority = 1100)
 public class EntityPlayerMPMixin {

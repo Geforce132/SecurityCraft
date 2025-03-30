@@ -24,14 +24,12 @@ public class IngredientDisplay {
 			return;
 
 		GuiUtils.drawItemStackToGui(stacks[currentRenderingStack], x, y, !(stacks[currentRenderingStack].getItem() instanceof ItemBlock));
+	}
 
-		if (!ClientUtils.hasShiftDown()) {
-			ticksToChange -= partialTick;
-
-			if (ticksToChange <= 0) {
-				changeRenderingStack(1);
-				ticksToChange = DISPLAY_LENGTH;
-			}
+	public void tick() {
+		if (!ClientUtils.hasShiftDown() && --ticksToChange <= 0) {
+			changeRenderingStack(1);
+			ticksToChange = DISPLAY_LENGTH;
 		}
 	}
 

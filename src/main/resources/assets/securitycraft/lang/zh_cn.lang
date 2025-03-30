@@ -449,7 +449,6 @@ messages.securitycraft:codebreaker.failed=尝试破解密码失败，请重试�
 messages.securitycraft:codebreaker.owned=你正在破解你拥有的物品的密码。如果你忘记了密码，请使用通用密钥变换器。
 messages.securitycraft:codebreakerDisabled=密码破解器已经被配置文件禁用。
 messages.securitycraft:formattedCoordinates=X: %1$s Y: %2$s Z: %3$s
-messages.securitycraft:frame.rightclick=由于 LookingGlass 尚未移植到 1.7.10 以上版本，目前无法在密码盘框架中查看摄像头监视器。在未来的更新中，此功能可能会在不依赖任何资源库模组（如 LookingGlass）的情况下恢复，但具体时间未知。
 messages.securitycraft:invScan.notConnected=此方块未连接到另一个物品栏扫描仪方块！
 messages.securitycraft:keycardReader.cantUse=你无法使用此安全卡。
 messages.securitycraft:keycardReader.differentOwner=此卡与其链接到的安全卡读取器属于不同的玩家！

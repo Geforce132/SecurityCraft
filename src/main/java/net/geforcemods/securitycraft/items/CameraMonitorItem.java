@@ -8,9 +8,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.misc.CameraView;
+import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.geforcemods.securitycraft.misc.LinkingStateItemPropertyHandler;
 import net.geforcemods.securitycraft.network.client.UpdateNBTTagOnClient;
+import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -51,7 +52,7 @@ public class CameraMonitorItem extends Item {
 			if (stack.getTagCompound() == null)
 				stack.setTagCompound(new NBTTagCompound());
 
-			CameraView view = new CameraView(pos, player.dimension);
+			GlobalPos view = GlobalPos.of(player.dimension, pos);
 
 			if (isCameraAdded(stack.getTagCompound(), view)) {
 				stack.getTagCompound().removeTag(getTagNameFromPosition(stack.getTagCompound(), view));
@@ -103,7 +104,7 @@ public class CameraMonitorItem extends Item {
 		tooltip.add(Utils.localize("tooltip.securitycraft:cameraMonitor", getNumberOfCamerasBound(stack.getTagCompound()) + "/30").setStyle(Utils.GRAY_STYLE).getFormattedText());
 	}
 
-	public static String getTagNameFromPosition(NBTTagCompound tag, CameraView view) {
+	public static String getTagNameFromPosition(NBTTagCompound tag, GlobalPos view) {
 		for (int i = 1; i <= 30; i++) {
 			if (tag.hasKey("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
@@ -128,7 +129,7 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public static boolean isCameraAdded(NBTTagCompound tag, CameraView view) {
+	public static boolean isCameraAdded(NBTTagCompound tag, GlobalPos view) {
 		for (int i = 1; i <= 30; i++) {
 			if (tag.hasKey("Camera" + i)) {
 				String[] coords = tag.getString("Camera" + i).split(" ");
@@ -141,8 +142,13 @@ public class CameraMonitorItem extends Item {
 		return false;
 	}
 
-	public static List<Pair<CameraView, String>> getCameraPositions(NBTTagCompound tag) {
-		List<Pair<CameraView, String>> list = new ArrayList<>();
+	public static void removeCameraOnClient(int camID, NBTTagCompound stackTag) {
+		stackTag.removeTag(CameraMonitorItem.getTagNameFromPosition(stackTag, CameraMonitorItem.getCameraPositions(stackTag).get(camID - 1).getLeft()));
+		SecurityCraft.network.sendToServer(new RemoveCameraTag(camID));
+	}
+
+	public static List<Pair<GlobalPos, String>> getCameraPositions(NBTTagCompound tag) {
+		List<Pair<GlobalPos, String>> list = new ArrayList<>();
 
 		for (int i = 1; i <= 30; i++) {
 			if (tag != null && tag.hasKey("Camera" + i)) {
@@ -153,7 +159,7 @@ public class CameraMonitorItem extends Item {
 				if (tag.hasKey(nameKey))
 					cameraName = tag.getString(nameKey);
 
-				list.add(Pair.of(new CameraView(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)), cameraName));
+				list.add(Pair.of(GlobalPos.of(Integer.parseInt(coords[0]), Integer.parseInt(coords[1]), Integer.parseInt(coords[2]), (coords.length == 4 ? Integer.parseInt(coords[3]) : 0)), cameraName));
 			}
 			else
 				list.add(Pair.of(null, null));
