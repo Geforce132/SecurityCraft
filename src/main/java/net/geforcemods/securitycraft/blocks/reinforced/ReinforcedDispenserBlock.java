@@ -207,7 +207,10 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-		return getDisguisedStack(level, pos);
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
+			return getDisguisedStack(level, pos);
+
+		return super.getCloneItemStack(state, target, level, pos, player);
 	}
 
 	@Override
