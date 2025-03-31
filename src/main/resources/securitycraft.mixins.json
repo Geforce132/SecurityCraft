@@ -10,6 +10,7 @@
 		"camera.MinecraftMixin",
 		"camera.RenderTargetMixin",
 		"camera.ViewAreaMixin",
+		"datagen.BlockStateGeneratorCollectorMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
 		"taser.ItemInHandRendererMixin"
@@ -25,7 +26,6 @@
 		"datafix.V3439Mixin",
 		"datafix.V4067Mixin",
 		"datafix.V99Mixin",
-		"datagen.BlockStateGeneratorCollectorMixin",
 		"passcode.ServerGamePacketListenerImplMixin",
 		"passcode.StructureTemplateMixin",
 		"potion.BrewingStandMenuMixin",
