@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.VanillaHopperInsertOnlyItemHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -78,13 +80,17 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	@Override
 	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
 		super.onDataPacket(net, packet);
-		handleUpdateTag(packet.getTag());
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		load(tag);
-		DisguisableBlockEntity.onHandleUpdateTag(this);
+	public void onLoad() {
+		super.onLoad();
+
+		if (level instanceof ClientLevel && level.getBlockEntity(worldPosition) != this) //On the client side, onLoad is usually only called without this BE being added to the level, which breaks model data update requests.
+			level.addFreshBlockEntities(List.of(this)); //By marking this BE as a fresh block entity in such cases, the client will call onLoad again on the first BE tick, on which it is registered properly.
+		else
+			DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override

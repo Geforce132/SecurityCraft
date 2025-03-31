@@ -167,6 +167,7 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.client.model.IDynamicBakedModel;
+import net.minecraftforge.client.model.data.ModelDataManager;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -842,9 +843,14 @@ public class ClientHandler {
 
 	public static void refreshModelData(BlockEntity be) {
 		BlockPos pos = be.getBlockPos();
+		ModelDataManager modelDataManager = be.getLevel().getModelDataManager();
 
-		Minecraft.getInstance().level.getModelDataManager().requestRefresh(be);
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+		be.requestModelDataUpdate();
+
+		if (modelDataManager != null)
+			modelDataManager.getAt(pos); //Actually calculates and applies the new model data that was requested before
+
+		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()); //Recompiles the render chunk at the changed position
 	}
 
 	public static boolean isPlayerMountedOnCamera() {
