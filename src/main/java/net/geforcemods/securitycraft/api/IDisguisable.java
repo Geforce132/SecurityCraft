@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -35,6 +36,10 @@ public interface IDisguisable {
 
 	public default ItemStack getDefaultStack() {
 		return new ItemStack((Block) this);
+	}
+
+	public static boolean shouldPickBlockDisguise(BlockGetter level, BlockPos pos, Player player) {
+		return !player.isCreative() && !(level != null && level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player));
 	}
 
 	public static BlockState getDisguisedStateOrDefault(BlockState state, BlockGetter level, BlockPos pos) {
