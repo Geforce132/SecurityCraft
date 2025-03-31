@@ -1717,11 +1717,11 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addSecretHangingSignRecipe(ItemLike vanillaSign, ItemLike result) {
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.DECORATIONS, result, 3)
-				.group("securitycraft:secret_hanging_signs")
-				.requires(vanillaSign, 3)
-				.requires(SCContent.RETINAL_SCANNER)
-				.unlockedBy("has_sign", has(ItemTags.SIGNS))
-				.save(output);
+		.group("securitycraft:secret_hanging_signs")
+		.requires(vanillaSign, 3)
+		.requires(SCContent.RETINAL_SCANNER)
+		.unlockedBy("has_sign", has(ItemTags.SIGNS))
+		.save(output);
 		//@formatter:on
 	}
 
