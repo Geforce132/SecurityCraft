@@ -615,7 +615,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', Tags.Items.INGOTS_IRON)
 		.unlockedBy("has_mine", has(SCContent.MINE.get()))
 		.save(consumer);
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, SCContent.REINFORCED_GLASS_PANE.get(), 16)
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, SCContent.REINFORCED_GLASS_PANE.get(), 16)
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', SCContent.REINFORCED_GLASS.get())
@@ -749,17 +749,6 @@ public class RecipeGenerator extends RecipeProvider {
 		addBlockMineRecipe(consumer, Blocks.SUSPICIOUS_SAND, SCContent.SUSPICIOUS_SAND_MINE.get());
 		addBlockMineRecipe(consumer, Blocks.SUSPICIOUS_GRAVEL, SCContent.SUSPICIOUS_GRAVEL_MINE.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_BUTTON.get());
-		addButtonRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_BUTTON.get());
 		addButtonRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get());
 		addCarpetRecipe(consumer, SCContent.REINFORCED_MOSS_BLOCK.get(), SCContent.REINFORCED_MOSS_CARPET.get(), SCTags.Items.REINFORCED_MOSS);
 		addColoredCarpetRecipes(consumer, Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL.get(), SCContent.REINFORCED_BLACK_CARPET.get());
@@ -865,17 +854,6 @@ public class RecipeGenerator extends RecipeProvider {
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_SPRUCE_LOGS, SCContent.REINFORCED_SPRUCE_PLANKS.get());
 		addPlanksRecipe(consumer, SCTags.Items.REINFORCED_WARPED_STEMS, SCContent.REINFORCED_WARPED_PLANKS.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get());
-		addPressurePlateRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
 		addPressurePlateRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_PRESSURE_PLATE.get());
 		addSecretSignRecipe(consumer, Items.ACACIA_SIGN, SCContent.SECRET_ACACIA_SIGN.get());
 		addSecretSignRecipe(consumer, Items.BAMBOO_SIGN, SCContent.SECRET_BAMBOO_SIGN.get());
@@ -909,22 +887,16 @@ public class RecipeGenerator extends RecipeProvider {
 		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.CHERRY_SECURITY_SEA_BOAT.get());
 		addSecuritySeaBoatRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.BAMBOO_SECURITY_SEA_RAFT.get());
 		addSlabRecipe(consumer, Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get()), SCContent.CRYSTAL_QUARTZ_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_ANDESITE_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_BAMBOO_MOSAIC.get(), SCContent.REINFORCED_BAMBOO_MOSAIC_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_BLACKSTONE.get(), SCContent.REINFORCED_BLACKSTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_BRICKS.get(), SCContent.REINFORCED_BRICK_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_COBBLESTONE.get(), SCContent.REINFORCED_COBBLESTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_COBBLED_DEEPSLATE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_CUT_COPPER.get(), SCContent.REINFORCED_CUT_COPPER_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_SLAB.get());
 		addSlabRecipe(consumer, Ingredient.of(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()), SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_CUT_SANDSTONE.get(), SCContent.REINFORCED_CUT_SANDSTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_CUT_RED_SANDSTONE.get(), SCContent.REINFORCED_CUT_RED_SANDSTONE_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_DARK_PRISMARINE.get(), SCContent.REINFORCED_DARK_PRISMARINE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_TILES.get(), SCContent.REINFORCED_DEEPSLATE_TILE_SLAB.get());
@@ -932,13 +904,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(consumer, SCContent.REINFORCED_END_STONE_BRICKS.get(), SCContent.REINFORCED_END_STONE_BRICK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_GRANITE_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_MOSSY_COBBLESTONE.get(), SCContent.REINFORCED_MOSSY_COBBLESTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_MUD_BRICKS.get(), SCContent.REINFORCED_MUD_BRICK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_POLISHED_ANDESITE.get(), SCContent.REINFORCED_POLISHED_ANDESITE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_SLAB.get());
@@ -958,10 +927,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(consumer, SCContent.REINFORCED_SMOOTH_RED_SANDSTONE.get(), SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_SMOOTH_SANDSTONE.get(), SCContent.REINFORCED_SMOOTH_SANDSTONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_SMOOTH_STONE.get(), SCContent.REINFORCED_SMOOTH_STONE_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_NORMAL_STONE_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_STONE_BRICK_SLAB.get());
-		addSlabRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_SLAB.get());
 		addSlabRecipe(consumer, SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB.get());
 		addSlabRecipe(consumer, SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
 		addStainedGlassRecipe(consumer, Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
@@ -1013,20 +980,14 @@ public class RecipeGenerator extends RecipeProvider {
 		addStainedTerracottaRecipe(consumer, Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_TERRACOTTA.get());
 		addStainedTerracottaRecipe(consumer, Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_TERRACOTTA.get());
 		addStairsRecipe(consumer, Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_PILLAR.get(), SCContent.CHISELED_CRYSTAL_QUARTZ.get()), SCContent.CRYSTAL_QUARTZ_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_ANDESITE.get(), SCContent.REINFORCED_ANDESITE_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_BAMBOO_MOSAIC.get(), SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_BLACKSTONE.get(), SCContent.REINFORCED_BLACKSTONE_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_BRICKS.get(), SCContent.REINFORCED_BRICK_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_COBBLESTONE.get(), SCContent.REINFORCED_COBBLESTONE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_COBBLED_DEEPSLATE.get(), SCContent.REINFORCED_COBBLED_DEEPSLATE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_CUT_COPPER.get(), SCContent.REINFORCED_CUT_COPPER_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_STAIRS.get());
 		addStairsRecipe(consumer, Ingredient.of(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.get(), SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get(), SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.get()), SCContent.REINFORCED_CRYSTAL_QUARTZ_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_DARK_PRISMARINE.get(), SCContent.REINFORCED_DARK_PRISMARINE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_BRICKS.get(), SCContent.REINFORCED_DEEPSLATE_BRICK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_DEEPSLATE_TILES.get(), SCContent.REINFORCED_DEEPSLATE_TILE_STAIRS.get());
@@ -1034,13 +995,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addStairsRecipe(consumer, SCContent.REINFORCED_END_STONE_BRICKS.get(), SCContent.REINFORCED_END_STONE_BRICK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_EXPOSED_CUT_COPPER.get(), SCContent.REINFORCED_EXPOSED_CUT_COPPER_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_GRANITE.get(), SCContent.REINFORCED_GRANITE_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_MOSSY_COBBLESTONE.get(), SCContent.REINFORCED_MOSSY_COBBLESTONE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(), SCContent.REINFORCED_MOSSY_STONE_BRICK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_MUD_BRICKS.get(), SCContent.REINFORCED_MUD_BRICK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_NETHER_BRICKS.get(), SCContent.REINFORCED_NETHER_BRICK_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_OXIDIZED_CUT_COPPER.get(), SCContent.REINFORCED_OXIDIZED_CUT_COPPER_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_POLISHED_ANDESITE.get(), SCContent.REINFORCED_POLISHED_ANDESITE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_POLISHED_BLACKSTONE.get(), SCContent.REINFORCED_POLISHED_BLACKSTONE_STAIRS.get());
@@ -1059,10 +1017,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addStairsRecipe(consumer, SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_SMOOTH_RED_SANDSTONE.get(), SCContent.REINFORCED_SMOOTH_RED_SANDSTONE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_SMOOTH_SANDSTONE.get(), SCContent.REINFORCED_SMOOTH_SANDSTONE_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_STONE.get(), SCContent.REINFORCED_STONE_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_STONE_BRICK_STAIRS.get());
-		addStairsRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.REINFORCED_WEATHERED_CUT_COPPER.get(), SCContent.REINFORCED_WEATHERED_CUT_COPPER_STAIRS.get());
 		addStairsRecipe(consumer, SCContent.SMOOTH_CRYSTAL_QUARTZ.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
 		addTwoByTwoRecipe(consumer, SCContent.CRYSTAL_QUARTZ_BLOCK.get(), SCContent.CRYSTAL_QUARTZ_BRICKS.get());
@@ -1110,6 +1066,50 @@ public class RecipeGenerator extends RecipeProvider {
 		addWallRecipes(consumer, SCContent.REINFORCED_RED_SANDSTONE.get(), SCContent.REINFORCED_RED_SANDSTONE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_SANDSTONE.get(), SCContent.REINFORCED_SANDSTONE_WALL.get());
 		addWallRecipes(consumer, SCContent.REINFORCED_STONE_BRICKS.get(), SCContent.REINFORCED_STONE_BRICK_WALL.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_BUTTON.get());
+		addWoodenButtonRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_BUTTON.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get());
+		addWoodenPressurePlateRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_SLAB.get());
+		addWoodenSlabRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_SLAB.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_ACACIA_PLANKS.get(), SCContent.REINFORCED_ACACIA_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_BAMBOO_PLANKS.get(), SCContent.REINFORCED_BAMBOO_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_BIRCH_PLANKS.get(), SCContent.REINFORCED_BIRCH_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_CHERRY_PLANKS.get(), SCContent.REINFORCED_CHERRY_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_CRIMSON_PLANKS.get(), SCContent.REINFORCED_CRIMSON_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_DARK_OAK_PLANKS.get(), SCContent.REINFORCED_DARK_OAK_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_JUNGLE_PLANKS.get(), SCContent.REINFORCED_JUNGLE_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_MANGROVE_PLANKS.get(), SCContent.REINFORCED_MANGROVE_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_OAK_PLANKS.get(), SCContent.REINFORCED_OAK_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_SPRUCE_PLANKS.get(), SCContent.REINFORCED_SPRUCE_STAIRS.get());
+		addWoodenStairsRecipe(consumer, SCContent.REINFORCED_WARPED_PLANKS.get(), SCContent.REINFORCED_WARPED_STAIRS.get());
 
 		//furnace recipes
 		addSimpleCookingRecipe(consumer, SCContent.REINFORCED_BASALT.get(), SCContent.REINFORCED_SMOOTH_BASALT.get());
@@ -1391,7 +1391,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addButtonRecipe(Consumer<FinishedRecipe> consumer, ItemLike input, ItemLike result) {
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, result)
-		.group("securitycraft:reinforced_buttons")
 		.requires(input)
 		.unlockedBy("has_block", has(input))
 		.save(consumer);
@@ -1400,7 +1399,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addCarpetRecipe(Consumer<FinishedRecipe> consumer, ItemLike carpetMaterial, ItemLike carpet, TagKey<Item> unlockedBy) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, carpet, 3)
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, carpet, 3)
 		.group("securitycraft:reinforced_carpets")
 		.pattern("MM")
 		.define('M', carpetMaterial)
@@ -1572,7 +1571,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addPressurePlateRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result)
-		.group("securitycraft:reinforced_pressure_plates")
 		.pattern("SS")
 		.define('S', block)
 		.unlockedBy("has_block", has(block))
@@ -1580,9 +1578,20 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addSecretHangingSignRecipe(Consumer<FinishedRecipe> consumer, ItemLike vanillaSign, ItemLike result) {
+		//@formatter:off
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, result, 3)
+		.group("securitycraft:secret_hanging_signs")
+		.requires(vanillaSign, 3)
+		.requires(SCContent.RETINAL_SCANNER.get())
+		.unlockedBy("has_sign", has(ItemTags.SIGNS))
+		.save(consumer);
+		//@formatter:on
+	}
+
 	protected final void addSecretSignRecipe(Consumer<FinishedRecipe> consumer, ItemLike vanillaSign, ItemLike result) {
 		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result, 3)
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, result, 3)
 		.group("securitycraft:secret_signs")
 		.requires(vanillaSign, 3)
 		.requires(SCContent.RETINAL_SCANNER.get())
@@ -1645,7 +1654,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addSlabRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6)
-		.group("securitycraft:slabs")
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block))
@@ -1656,7 +1664,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addSlabRecipe(Consumer<FinishedRecipe> consumer, Ingredient block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6)
-		.group("securitycraft:slabs")
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block.getItems()[0].getItem()))
@@ -1680,7 +1687,7 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addStainedGlassPaneRecipes(Consumer<FinishedRecipe> consumer, TagKey<Item> dye, ItemLike stainedGlass, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 8)
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 8)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GDG")
@@ -1689,13 +1696,13 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('D', dye)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS))
 		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 16)
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 16)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GGG")
 		.define('G', stainedGlass)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_glass"));
+		.save(consumer);
 		//@formatter:on
 	}
 
@@ -1716,7 +1723,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addStairsRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
-		.group("securitycraft:stairs")
 		.pattern("B  ")
 		.pattern("BB ")
 		.pattern("BBB")
@@ -1729,7 +1735,6 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addStairsRecipe(Consumer<FinishedRecipe> consumer, Ingredient block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
-		.group("securitycraft:stairs")
 		.pattern("B  ")
 		.pattern("BB ")
 		.pattern("BBB")
@@ -1764,14 +1769,58 @@ public class RecipeGenerator extends RecipeProvider {
 
 	protected final void addWallRecipes(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6)
-		.group("securitycraft:walls")
+		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 6)
 		.pattern("BBB")
 		.pattern("BBB")
 		.define('B', block)
 		.unlockedBy("has_block", has(block))
 		.save(consumer);
 		addStonecuttingRecipe(consumer, block, result, 1);
+		//@formatter:on
+	}
+
+	protected final void addWoodenButtonRecipe(Consumer<FinishedRecipe> consumer, ItemLike input, ItemLike result) {
+		//@formatter:off
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, result)
+		.group("securitycraft:wooden_buttons")
+		.requires(input)
+		.unlockedBy("has_block", has(input))
+		.save(consumer);
+		//@formatter:on
+	}
+
+	protected final void addWoodenPressurePlateRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, result)
+		.group("securitycraft:wooden_pressure_plates")
+		.pattern("SS")
+		.define('S', block)
+		.unlockedBy("has_block", has(block))
+		.save(consumer);
+		//@formatter:on
+	}
+
+	protected final void addWoodenSlabRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 6)
+		.group("securitycraft:wooden_slab")
+		.pattern("BBB")
+		.define('B', block)
+		.unlockedBy("has_block", has(block))
+		.save(consumer);
+		//@formatter:on
+	}
+
+	protected final void addWoodenStairsRecipe(Consumer<FinishedRecipe> consumer, ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result, 4)
+		.group("securitycraft:wooden_stairs")
+		.pattern("B  ")
+		.pattern("BB ")
+		.pattern("BBB")
+		.define('B', block)
+		.unlockedBy("has_block", has(block))
+		.save(consumer);
 		//@formatter:on
 	}
 }

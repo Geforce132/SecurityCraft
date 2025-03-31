@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
-  "group": "securitycraft:reinforced_pressure_plates",
+  "group": "securitycraft:wooden_pressure_plates",
   "key": {
     "S": {
       "item": "securitycraft:reinforced_warped_planks"

@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "securitycraft:stairs",
+  "group": "securitycraft:wooden_stairs",
   "key": {
     "B": {
       "item": "securitycraft:reinforced_acacia_planks"
