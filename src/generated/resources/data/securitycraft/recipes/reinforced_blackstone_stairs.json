@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "securitycraft:stairs",
   "key": {
     "B": {
       "item": "securitycraft:reinforced_blackstone"

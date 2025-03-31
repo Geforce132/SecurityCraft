@@ -1,7 +1,7 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "building",
-  "group": "securitycraft:slabs",
+  "group": "securitycraft:wooden_slab",
   "key": {
     "B": {
       "item": "securitycraft:reinforced_crimson_planks"

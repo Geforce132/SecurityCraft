@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
-  "group": "securitycraft:reinforced_pressure_plates",
   "key": {
     "S": {
       "item": "securitycraft:reinforced_polished_blackstone"
