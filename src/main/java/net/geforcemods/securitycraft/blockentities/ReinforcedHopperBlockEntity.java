@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.util.IPistonMoveListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -84,13 +83,14 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, Provider lookupProvider) {
-		handleUpdateTag(packet.getTag(), lookupProvider);
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
+		super.onDataPacket(net, packet, lookupProvider);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
+	public void onLoad() {
+		super.onLoad();
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
