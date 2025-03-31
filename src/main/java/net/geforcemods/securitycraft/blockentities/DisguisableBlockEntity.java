@@ -10,7 +10,8 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -96,8 +97,14 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag) {
-		super.handleUpdateTag(tag);
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
+		super.onDataPacket(net, packet);
+		onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 		onHandleUpdateTag(this);
 	}
 
@@ -111,6 +118,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 				ClientHandler.putDisguisedBeRenderer(be, stack);
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
+
+			ClientHandler.refreshModelData(be);
 		}
 	}
 

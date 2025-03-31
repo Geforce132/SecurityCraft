@@ -171,6 +171,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
 import net.neoforged.neoforge.client.model.IDynamicBakedModel;
+import net.neoforged.neoforge.client.model.data.ModelDataManager;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -847,9 +848,14 @@ public class ClientHandler {
 
 	public static void refreshModelData(BlockEntity be) {
 		BlockPos pos = be.getBlockPos();
+		ModelDataManager modelDataManager = be.getLevel().getModelDataManager();
 
-		Minecraft.getInstance().level.getModelDataManager().requestRefresh(be);
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+		be.requestModelDataUpdate();
+
+		if (modelDataManager != null)
+			modelDataManager.getAt(pos); //Actually calculates and applies the new model data that was requested before
+
+		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()); //Recompiles the render chunk at the changed position
 	}
 
 	public static boolean isPlayerMountedOnCamera() {
