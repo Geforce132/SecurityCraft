@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:reinforced_glass_panes",
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_pink_stained_glass"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "GGG"
+  ],
+  "result": {
+    "count": 16,
+    "id": "securitycraft:reinforced_pink_stained_glass_pane"
+  }
+}
