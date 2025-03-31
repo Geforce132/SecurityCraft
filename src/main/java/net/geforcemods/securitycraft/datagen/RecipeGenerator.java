@@ -1492,16 +1492,6 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addWoodenButtonRecipe(ItemLike input, ItemLike result) {
-		//@formatter:off
-		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.REDSTONE, result)
-				.group("securitycraft:wooden_buttons")
-				.requires(input)
-				.unlockedBy("has_block", has(input))
-				.save(output);
-		//@formatter:on
-	}
-
 	protected final void addButtonRecipe(ItemLike input, ItemLike result) {
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.REDSTONE, result)
@@ -1721,17 +1711,6 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addWoodenPressurePlateRecipe(ItemLike block, ItemLike result) {
-		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, result)
-				.group("securitycraft:wooden_pressure_plates")
-				.pattern("SS")
-				.define('S', block)
-				.unlockedBy("has_block", has(block))
-				.save(output);
-		//@formatter:on
-	}
-
 	protected final void addPressurePlateRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, result)
@@ -1798,17 +1777,6 @@ public class RecipeGenerator extends RecipeProvider {
 		SimpleCookingRecipeBuilder.smelting(tag(input), RecipeCategory.BUILDING_BLOCKS, output, xp, time)
 		.unlockedBy("has_item", has(input))
 		.save(this.output);
-		//@formatter:on
-	}
-
-	protected final void addWoodenSlabRecipe(ItemLike block, ItemLike result) {
-		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 6)
-				.group("securitycraft:wooden_slab")
-				.pattern("BBB")
-				.define('B', block)
-				.unlockedBy("has_block", has(block))
-				.save(output);
 		//@formatter:on
 	}
 
@@ -1881,19 +1849,6 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addWoodenStairsRecipe(ItemLike block, ItemLike result) {
-		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 4)
-				.group("securitycraft:wooden_stairs")
-				.pattern("B  ")
-				.pattern("BB ")
-				.pattern("BBB")
-				.define('B', block)
-				.unlockedBy("has_block", has(block))
-				.save(output);
-		//@formatter:on
-	}
-
 	protected final void addStairsRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 4)
@@ -1950,6 +1905,51 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_block", has(block))
 		.save(output);
 		addStonecuttingRecipe(block, result, 1);
+		//@formatter:on
+	}
+
+	protected final void addWoodenButtonRecipe(ItemLike input, ItemLike result) {
+		//@formatter:off
+		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.REDSTONE, result)
+				.group("securitycraft:wooden_buttons")
+				.requires(input)
+				.unlockedBy("has_block", has(input))
+				.save(output);
+		//@formatter:on
+	}
+
+	protected final void addWoodenPressurePlateRecipe(ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, result)
+				.group("securitycraft:wooden_pressure_plates")
+				.pattern("SS")
+				.define('S', block)
+				.unlockedBy("has_block", has(block))
+				.save(output);
+		//@formatter:on
+	}
+
+	protected final void addWoodenSlabRecipe(ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 6)
+				.group("securitycraft:wooden_slab")
+				.pattern("BBB")
+				.define('B', block)
+				.unlockedBy("has_block", has(block))
+				.save(output);
+		//@formatter:on
+	}
+
+	protected final void addWoodenStairsRecipe(ItemLike block, ItemLike result) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 4)
+				.group("securitycraft:wooden_stairs")
+				.pattern("B  ")
+				.pattern("BB ")
+				.pattern("BBB")
+				.define('B', block)
+				.unlockedBy("has_block", has(block))
+				.save(output);
 		//@formatter:on
 	}
 
