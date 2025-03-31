@@ -1911,45 +1911,45 @@ public class RecipeGenerator extends RecipeProvider {
 	protected final void addWoodenButtonRecipe(ItemLike input, ItemLike result) {
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.REDSTONE, result)
-				.group("securitycraft:wooden_buttons")
-				.requires(input)
-				.unlockedBy("has_block", has(input))
-				.save(output);
+		.group("securitycraft:wooden_buttons")
+		.requires(input)
+		.unlockedBy("has_block", has(input))
+		.save(output);
 		//@formatter:on
 	}
 
 	protected final void addWoodenPressurePlateRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, result)
-				.group("securitycraft:wooden_pressure_plates")
-				.pattern("SS")
-				.define('S', block)
-				.unlockedBy("has_block", has(block))
-				.save(output);
+		.group("securitycraft:wooden_pressure_plates")
+		.pattern("SS")
+		.define('S', block)
+		.unlockedBy("has_block", has(block))
+		.save(output);
 		//@formatter:on
 	}
 
 	protected final void addWoodenSlabRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 6)
-				.group("securitycraft:wooden_slab")
-				.pattern("BBB")
-				.define('B', block)
-				.unlockedBy("has_block", has(block))
-				.save(output);
+		.group("securitycraft:wooden_slab")
+		.pattern("BBB")
+		.define('B', block)
+		.unlockedBy("has_block", has(block))
+		.save(output);
 		//@formatter:on
 	}
 
 	protected final void addWoodenStairsRecipe(ItemLike block, ItemLike result) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, result, 4)
-				.group("securitycraft:wooden_stairs")
-				.pattern("B  ")
-				.pattern("BB ")
-				.pattern("BBB")
-				.define('B', block)
-				.unlockedBy("has_block", has(block))
-				.save(output);
+		.group("securitycraft:wooden_stairs")
+		.pattern("B  ")
+		.pattern("BB ")
+		.pattern("BBB")
+		.define('B', block)
+		.unlockedBy("has_block", has(block))
+		.save(output);
 		//@formatter:on
 	}
 
