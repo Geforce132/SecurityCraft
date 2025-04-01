@@ -138,8 +138,8 @@ public class ReinforcedDispenserBlockEntity extends TileEntityDispenser implemen
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
+	public void handleUpdateTag(NBTTagCompound tag) {
+		super.handleUpdateTag(tag);
 		DisguisableBlockEntity.onLoad(this);
 	}
 

@@ -282,8 +282,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements IInven
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
+	public void handleUpdateTag(NBTTagCompound tag) {
+		super.handleUpdateTag(tag);
 		DisguisableBlockEntity.onLoad(this);
 	}
 

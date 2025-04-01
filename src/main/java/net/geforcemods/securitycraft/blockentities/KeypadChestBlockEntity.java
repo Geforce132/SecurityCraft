@@ -131,8 +131,8 @@ public class KeypadChestBlockEntity extends TileEntityChest implements IPasscode
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
+	public void handleUpdateTag(NBTTagCompound tag) {
+		super.handleUpdateTag(tag);
 		DisguisableBlockEntity.onLoad(this);
 	}
 

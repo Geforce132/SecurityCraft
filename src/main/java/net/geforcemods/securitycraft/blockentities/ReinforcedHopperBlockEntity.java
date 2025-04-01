@@ -138,8 +138,8 @@ public class ReinforcedHopperBlockEntity extends TileEntityHopper implements IOw
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
+	public void handleUpdateTag(NBTTagCompound tag) {
+		super.handleUpdateTag(tag);
 		DisguisableBlockEntity.onLoad(this);
 	}
 

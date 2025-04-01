@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.network.client.RefreshDiguisedModel;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -69,14 +70,16 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void onLoad() {
-		super.onLoad();
+	public void handleUpdateTag(NBTTagCompound tag) {
+		super.handleUpdateTag(tag);
 		onLoad(this);
 	}
 
 	public static <T extends TileEntity & IModuleInventory> void onLoad(T te) {
-		if (te.hasWorld() && te.getWorld().isRemote)
+		if (te.hasWorld() && te.getWorld().isRemote) {
 			BlockEntityRenderDelegate.putDisguisedTeRenderer(te, te.getModule(ModuleType.DISGUISE));
+			te.getWorld().markBlockRangeForRenderUpdate(te.getPos(), te.getPos());
+		}
 	}
 
 	@Override
