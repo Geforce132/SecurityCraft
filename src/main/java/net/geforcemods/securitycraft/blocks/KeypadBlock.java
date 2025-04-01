@@ -21,7 +21,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -127,11 +126,6 @@ public class KeypadBlock extends DisguisableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()).setValue(POWERED, false);
-	}
-
-	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
-		return ItemStack.EMPTY;
 	}
 
 	@Override

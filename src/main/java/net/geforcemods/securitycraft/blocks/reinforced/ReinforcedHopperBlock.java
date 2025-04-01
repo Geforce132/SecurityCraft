@@ -169,7 +169,10 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
-		return getDisguisedStack(level, pos);
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
+			return getDisguisedStack(level, pos);
+
+		return super.getCloneItemStack(state, target, level, pos, player);
 	}
 
 	public static class ExtractionBlock implements IExtractionBlock {

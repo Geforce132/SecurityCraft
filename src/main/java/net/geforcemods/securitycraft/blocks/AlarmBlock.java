@@ -20,7 +20,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -201,11 +200,6 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 			inv.dropAllModules();
 
 		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
-		return new ItemStack(SCContent.ALARM.get().asItem());
 	}
 
 	@Override
