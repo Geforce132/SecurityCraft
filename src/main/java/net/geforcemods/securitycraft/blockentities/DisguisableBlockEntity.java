@@ -16,7 +16,8 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -98,8 +99,14 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		super.handleUpdateTag(state, tag);
+	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+		super.onDataPacket(net, packet);
+		onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 		onHandleUpdateTag(this);
 	}
 
@@ -113,6 +120,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 				ClientHandler.putDisguisedBeRenderer(be, stack);
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
+
+			ClientHandler.refreshModelData(be);
 		}
 	}
 

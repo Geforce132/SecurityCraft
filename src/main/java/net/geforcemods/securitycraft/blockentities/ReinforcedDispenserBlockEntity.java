@@ -81,12 +81,13 @@ public class ReinforcedDispenserBlockEntity extends DispenserTileEntity implemen
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
-		load(getBlockState(), packet.getTag());
+		super.onDataPacket(net, packet);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
 	@Override
-	public void handleUpdateTag(BlockState state, CompoundNBT tag) {
-		load(state, tag);
+	public void onLoad() {
+		super.onLoad();
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
