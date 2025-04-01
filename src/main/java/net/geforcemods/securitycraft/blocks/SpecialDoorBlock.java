@@ -179,7 +179,10 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
-		return getDisguisedStack(level, pos);
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
+			return getDisguisedStack(level, pos);
+
+		return super.getPickBlock(state, target, level, pos, player);
 	}
 
 	@Override

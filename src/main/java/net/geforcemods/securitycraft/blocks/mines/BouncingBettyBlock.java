@@ -133,11 +133,6 @@ public class BouncingBettyBlock extends ExplosiveBlock implements IWaterLoggable
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
-		return new ItemStack(asItem());
-	}
-
-	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(DEACTIVATED, WATERLOGGED);
 	}

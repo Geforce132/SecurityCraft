@@ -26,6 +26,7 @@ import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
@@ -189,8 +190,11 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
-		return getDisguisedStack(level, pos);
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
+			return getDisguisedStack(level, pos);
+
+		return super.getPickBlock(state, target, level, pos, player);
 	}
 
 	public static class ExtractionBlock implements IExtractionBlock {

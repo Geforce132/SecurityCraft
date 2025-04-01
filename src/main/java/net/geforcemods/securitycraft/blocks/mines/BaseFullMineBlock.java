@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -160,14 +161,10 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
-		if (level.getBlockEntity(pos) instanceof OwnableBlockEntity) {
-			OwnableBlockEntity te = (OwnableBlockEntity) level.getBlockEntity(pos);
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
+			return new ItemStack(blockDisguisedAs);
 
-			if (player.isCreative() || te.isOwnedBy(player))
-				return super.getPickBlock(state, target, level, pos, player);
-		}
-
-		return new ItemStack(blockDisguisedAs);
+		return super.getPickBlock(state, target, level, pos, player);
 	}
 
 	public Block getBlockDisguisedAs() {

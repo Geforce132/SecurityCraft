@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.state.properties.PistonType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -72,7 +73,7 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements IReinf
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
+	public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader level, BlockPos pos, PlayerEntity player) {
 		return new ItemStack(state.getValue(TYPE) == PistonType.STICKY ? SCContent.REINFORCED_STICKY_PISTON.get() : SCContent.REINFORCED_PISTON.get());
 	}
 

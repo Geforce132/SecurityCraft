@@ -140,11 +140,6 @@ public class MineBlock extends ExplosiveBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
-		return new ItemStack(SCContent.MINE.get().asItem());
-	}
-
-	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(DEACTIVATED, WATERLOGGED);
 	}

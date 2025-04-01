@@ -229,11 +229,6 @@ public class AlarmBlock extends OwnableBlock implements IWaterLoggable {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
-		return new ItemStack(SCContent.ALARM.get().asItem());
-	}
-
-	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, LIT, WATERLOGGED);
 	}

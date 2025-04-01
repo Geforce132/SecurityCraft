@@ -138,11 +138,6 @@ public class KeypadBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(IBlockReader level, BlockPos pos, BlockState state) {
-		return ItemStack.EMPTY;
-	}
-
-	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING, POWERED, WATERLOGGED);
 	}
