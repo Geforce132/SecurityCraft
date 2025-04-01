@@ -17,7 +17,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -133,11 +132,6 @@ public class MineBlock extends ExplosiveBlock {
 	@Override
 	public Item getItemDropped(IBlockState state, Random random, int fortune) {
 		return Item.getItemFromBlock(SCContent.mine);
-	}
-
-	@Override
-	public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-		return new ItemStack(Item.getItemFromBlock(SCContent.mine));
 	}
 
 	@Override

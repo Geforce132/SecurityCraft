@@ -189,6 +189,19 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	}
 
 	@Override
+	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+		return new ItemStack(getDoorItem());
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		if (IDisguisable.shouldPickBlockDisguise(world, pos, player))
+			return getDisguisedStack(world, pos);
+
+		return super.getPickBlock(state, target, world, pos, player);
+	}
+
+	@Override
 	public EnumPushReaction getPushReaction(IBlockState state) {
 		return EnumPushReaction.BLOCK;
 	}
@@ -266,11 +279,6 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 	@Override
 	public boolean shouldShowSCInfo(World world, IBlockState state, BlockPos pos) {
 		return getDisguisedStack(world, pos).getItem() == Item.getItemFromBlock(this);
-	}
-
-	@Override
-	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return getDisguisedStack(world, pos);
 	}
 
 	@Override

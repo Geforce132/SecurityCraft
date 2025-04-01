@@ -232,8 +232,11 @@ public class ReinforcedDispenserBlock extends BlockDispenser implements IReinfor
 		return getDisguisedStack(world, pos).getItem() == Item.getItemFromBlock(this);
 	}
 
-	@Override
+    @Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return getDisguisedStack(world, pos);
-	}
+		if (IDisguisable.shouldPickBlockDisguise(world, pos, player))
+			return getDisguisedStack(world, pos);
+
+		return super.getPickBlock(state, target, world, pos, player);
+    }
 }

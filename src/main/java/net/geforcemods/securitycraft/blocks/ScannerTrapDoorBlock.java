@@ -141,6 +141,9 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IOver
 
 	@Override
 	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
-		return getDisguisedStack(world, pos);
+		if (IDisguisable.shouldPickBlockDisguise(world, pos, player))
+			return getDisguisedStack(world, pos);
+
+		return super.getPickBlock(state, target, world, pos, player);
 	}
 }

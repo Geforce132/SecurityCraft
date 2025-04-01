@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,6 +36,19 @@ public interface IDisguisable {
 
 	public default ItemStack getDefaultStack() {
 		return new ItemStack((Block) this);
+	}
+
+	public static boolean shouldPickBlockDisguise(IBlockAccess level, BlockPos pos, EntityPlayer player) {
+		if (player.isCreative())
+			return false;
+		else if (level != null) {
+			TileEntity be = level.getTileEntity(pos);
+
+			if (be instanceof IOwnable)
+				return !((IOwnable) be).isOwnedBy(player);
+		}
+
+		return true;
 	}
 
 	public static IBlockState getDisguisedBlockStateUnknown(TileEntity tile) {
