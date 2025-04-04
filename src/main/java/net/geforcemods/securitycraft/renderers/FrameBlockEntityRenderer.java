@@ -1,11 +1,18 @@
 package net.geforcemods.securitycraft.renderers;
 
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
+
 import org.joml.Matrix4f;
 
+import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
+import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.shaders.UniformType;
+import com.mojang.blaze3d.systems.RenderPass;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
@@ -44,7 +51,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	//@formatter:off
 	public static final RenderPipeline FRAME_PIPELINE = RenderPipeline.builder()
-			.withLocation(SecurityCraft.resLoc("pieline/frame_draw_fb_in_area"))
+			.withLocation(SecurityCraft.resLoc("pipeline/frame_draw_fb_in_area"))
 			.withVertexShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
 			.withFragmentShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
 			.withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
@@ -52,12 +59,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			.withUniform("ModelViewMat", UniformType.MATRIX4X4)
 			.withUniform("ProjMat", UniformType.MATRIX4X4)
 			.withBlend(BlendFunction.TRANSLUCENT)
+			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
 			.build();
-	private static final RenderType CAMERA_IN_FRAME_RENDER_TYPE = RenderType.create(
-			"securitycraft:frame",
-			1536,
-			FRAME_PIPELINE,
-			RenderType.CompositeState.builder().createCompositeState(RenderType.OutlineProperty.NONE));
 	//@formatter:on
 
 	public FrameBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
@@ -125,18 +128,18 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			}
 
 			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			VertexConsumer bufferBuilder;
-			Matrix4f lastPose;
+			RenderSystem.AutoStorageIndexBuffer indices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
+			GpuBuffer indexBuffer = indices.getBuffer(6);
 
-			lastPose = pose.last().pose();
-			bufferBuilder = buffer.getBuffer(CAMERA_IN_FRAME_RENDER_TYPE);
-			bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setUv(1, 0).setColor(0xFF0000);
-			bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setUv(1, 1).setColor(0xFFFFFF);
-			bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setUv(0, 1).setColor(0xFFFFFF);
-			bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setUv(0, 0).setColor(0xFFFFFF);
-
-			if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
-				bufferSource.endBatch();
+			try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(target.getColorTexture(), OptionalInt.of(0xFFFFFFFF), target.getDepthTexture(), OptionalDouble.empty())) {
+				pass.setPipeline(FRAME_PIPELINE);
+				pass.setVertexBuffer(0, RenderSystem.getQuadVertexBuffer());
+				pass.setIndexBuffer(indexBuffer, indices.type());
+				pass.setUniform("ModelViewMat", pose.last().pose());
+				pass.setUniform("ProjMat", RenderSystem.getProjectionMatrix());
+				pass.bindSampler("InSampler", RenderSystem.getShaderTexture(0));
+				pass.drawIndexed(0, 6);
+			}
 
 			if (lens.has(DataComponents.DYED_COLOR))
 				renderOverlay(pose, buffer, lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
