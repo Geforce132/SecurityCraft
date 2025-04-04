@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -17,7 +18,6 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.minecraft.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -45,22 +45,14 @@ public class CameraController {
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
 	private static ClientChunkCache.Storage cameraStorage;
-	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = Util.make(() -> {
-		Minecraft mc = Minecraft.getInstance();
-
-		if (mc != null) {
-			return new ViewMovementKeyHandler[] {
-				//@formatter:off
-				new ViewMovementKeyHandler(mc.options.keyUp, CameraController::moveViewUp),
-				new ViewMovementKeyHandler(mc.options.keyDown, CameraController::moveViewDown),
-				new ViewMovementKeyHandler(mc.options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - getMovementSpeed(cam) * cam.getZoomAmount())),
-				new ViewMovementKeyHandler(mc.options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + getMovementSpeed(cam) * cam.getZoomAmount()))
-				//@formatter:on
-			};
-		}
-		else
-			return new ViewMovementKeyHandler[0];
-	});
+	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = new ViewMovementKeyHandler[] {
+		//@formatter:off
+		new ViewMovementKeyHandler(options -> options.keyUp, CameraController::moveViewUp),
+		new ViewMovementKeyHandler(options -> options.keyDown, CameraController::moveViewDown),
+		new ViewMovementKeyHandler(options -> options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - getMovementSpeed(cam) * cam.getZoomAmount())),
+		new ViewMovementKeyHandler(options -> options.keyRight, cam -> moveViewHorizontally(cam, cam.getYRot() + getMovementSpeed(cam) * cam.getZoomAmount()))
+		//@formatter:on
+	};
 	private static int screenshotSoundCooldown = 0;
 
 	private CameraController() {}
@@ -74,7 +66,7 @@ public class CameraController {
 			Options options = Minecraft.getInstance().options;
 
 			for (ViewMovementKeyHandler handler : MOVE_KEY_HANDLERS) {
-				handler.tickStart();
+				handler.tickStart(options);
 			}
 
 			if (options.keyShift.isDown()) {
@@ -89,8 +81,10 @@ public class CameraController {
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
 
 		if (cameraEntity instanceof SecurityCamera cam) {
+			Options options = Minecraft.getInstance().options;
+
 			for (ViewMovementKeyHandler handler : MOVE_KEY_HANDLERS) {
-				handler.tickEnd(cam);
+				handler.tickEnd(cam, options);
 			}
 
 			if (KeyBindings.cameraZoomIn.isDown())
@@ -242,23 +236,27 @@ public class CameraController {
 	}
 
 	public static class ViewMovementKeyHandler {
-		private final KeyMapping key;
+		private final Function<Options, KeyMapping> key;
 		private final Consumer<SecurityCamera> action;
 		private boolean wasPressed;
 
-		public ViewMovementKeyHandler(KeyMapping key, Consumer<SecurityCamera> action) {
+		public ViewMovementKeyHandler(Function<Options, KeyMapping> key, Consumer<SecurityCamera> action) {
 			this.key = key;
 			this.action = action;
 		}
 
-		public void tickStart() {
+		public void tickStart(Options options) {
+			KeyMapping key = this.key.apply(options);
+
 			wasPressed = key.isDown();
 
 			if (wasPressed)
 				key.setDown(false);
 		}
 
-		public void tickEnd(SecurityCamera cam) {
+		public void tickEnd(SecurityCamera cam, Options options) {
+			KeyMapping key = this.key.apply(options);
+
 			if (wasPressed) {
 				action.accept(cam);
 				key.setDown(true);
