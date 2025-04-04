@@ -216,6 +216,16 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
+	public void tick() {
+		super.tick();
+		pageIcon.tick();
+
+		for (ItemStacksDisplay display : displays) {
+			display.tick();
+		}
+	}
+
+	@Override
 	public void removed() {
 		super.removed();
 		SCManualItem.lastOpenPage = currentPage;
