@@ -7,6 +7,7 @@ import java.util.OptionalDouble;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -26,6 +27,7 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
@@ -39,6 +41,7 @@ import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableBlockStateModel;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
 import net.geforcemods.securitycraft.models.IMSBombModel;
+import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceBlockStateModel;
 import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
@@ -157,6 +160,9 @@ import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelLoader.BakedModels;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
@@ -201,12 +207,16 @@ public class ClientHandler {
 			SCContent.SCANNER_DOOR.get(),
 			SCContent.SCANNER_TRAPDOOR.get(),
 			SCContent.SECURITY_CAMERA.get(),
-			SCContent.SECURE_REDSTONE_INTERFACE.get(),
+			//Excluded because it has its own custom block state model
+			//SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
 	});
+	private static final ResourceLocation SRI_BASE_MODEL_LOCATION = SecurityCraft.resLoc("block/secure_redstone_interface");
+	private static final StandaloneModelKey<BlockStateModel> SRI_SENDER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_BASE_MODEL_LOCATION.withSuffix("_sender_on"));
+	private static final StandaloneModelKey<BlockStateModel> SRI_RECEIVER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_BASE_MODEL_LOCATION.withSuffix("_receiver_on"));
     public static final RenderType.CompositeRenderType OVERLAY_LINES = RenderType.create(
 			"overlay_lines",
 			1536,
@@ -229,18 +239,35 @@ public class ClientHandler {
 	private ClientHandler() {}
 
 	@SubscribeEvent
+	public static void onModelRegisterAdditional(ModelEvent.RegisterStandalone event) {
+		event.register(SRI_SENDER_ON_MODEL_KEY, StandaloneModelBaker.blockStateModel());
+		event.register(SRI_RECEIVER_ON_MODEL_KEY, StandaloneModelBaker.blockStateModel());
+	}
+
+	@SubscribeEvent
 	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
 		Map<BlockState, BlockStateModel> modelRegistry = event.getBakingResult().blockStateModels();
+		BakedModels standaloneModels = event.getBakingResult().standaloneModels();
+		Block sri = SCContent.SECURE_REDSTONE_INTERFACE.get();
+		BlockStateModel poweredSriSender = standaloneModels.get(SRI_SENDER_ON_MODEL_KEY);
+		BlockStateModel poweredSriReceiver = standaloneModels.get(SRI_RECEIVER_ON_MODEL_KEY);
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
-				registerDisguisedModel(modelRegistry, state);
+				registerDisguisedModel(modelRegistry, state, DisguisableBlockStateModel::new);
 			}
+		}
+
+		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
+			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBlockStateModel(poweredSriSender, oldModel));
+			else
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBlockStateModel(poweredSriReceiver, oldModel));
 		}
 	}
 
-	private static void registerDisguisedModel(Map<BlockState, BlockStateModel> modelRegistry, BlockState state) {
-		modelRegistry.put(state, new DisguisableBlockStateModel(modelRegistry.get(state)));
+	private static void registerDisguisedModel(Map<BlockState, BlockStateModel> modelRegistry, BlockState state, UnaryOperator<BlockStateModel> modelFunction) {
+		modelRegistry.put(state, modelFunction.apply(modelRegistry.get(state)));
 	}
 
 	@SubscribeEvent

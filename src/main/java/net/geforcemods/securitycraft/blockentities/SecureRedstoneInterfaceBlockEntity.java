@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joml.Vector3f;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -12,6 +13,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceBlockStateModel;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleOptions;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
@@ -19,12 +21,15 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.model.data.ModelData;
 
 public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
 	public static final Vector3f SENDER_PARTICLE_COLOR = new Vector3f(0.0F, 1.0F, 0.0F);
@@ -216,6 +221,12 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		}
 
 		super.preRemoveSideEffects(pos, state);
+	}
+
+	@Override
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+		super.onDataPacket(net, pkt, lookupProvider);
+		ClientHandler.refreshModelData(this);
 	}
 
 	public boolean isSender() {
@@ -520,5 +531,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 	public void setChanged() {
 		changed = true;
 		super.setChanged();
+	}
+
+	@Override
+	public ModelData getModelData() {
+		return getModelDataBuilder(this).with(SecureRedstoneInterfaceBlockStateModel.POWERED, power > 0).build();
 	}
 }

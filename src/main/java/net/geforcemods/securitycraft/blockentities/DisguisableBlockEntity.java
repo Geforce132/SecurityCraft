@@ -146,8 +146,12 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public static ModelData getModelData(BlockEntity be) {
+		return getModelDataBuilder(be).build();
+	}
+
+	public static ModelData.Builder getModelDataBuilder(BlockEntity be) {
 		BlockState disguisedState = IDisguisable.getDisguisedBlockState(be).orElse(Blocks.AIR.defaultBlockState());
 
-		return ModelData.builder().with(DisguisableBlockStateModel.DISGUISED_STATE, disguisedState).build();
+		return ModelData.builder().with(DisguisableBlockStateModel.DISGUISED_STATE, disguisedState);
 	}
 }
