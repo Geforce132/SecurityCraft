@@ -1382,8 +1382,6 @@
 	"option.securitycraft.username_logger.repeatedLogInterval.description": "Cuántos segundos tienen que pasar hasta que se vuelva a registrar al mismo usuario.",
 	"option.securitycraft.username_logger.searchRadius": "Radio de búsqueda: %s",
 	"option.securitycraft.username_logger.searchRadius.description": "El rango en bloques en el que el registrador de nombre de usuario busca jugadores.",
-	"securitycraft.configuration.ableToBreakMines": "Se pueden romper las minas",
-	"securitycraft.configuration.ableToBreakMines.tooltip": "¿Pueden los jugadores romper una mina sin explotarla?",
 	"securitycraft.configuration.allowAdminTool": "Permitir herramienta de administrador",
 	"securitycraft.configuration.allowAdminTool.tooltip": "¿Se puede usar la herramienta de administrador?",
 	"securitycraft.configuration.allowBlockClaim": "Permitir que se reclamen bloques ",

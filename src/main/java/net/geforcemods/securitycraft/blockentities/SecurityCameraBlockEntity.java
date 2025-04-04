@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
@@ -194,7 +195,9 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
 		if (level != null) {
-			dropAllModules();
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+				dropAllModules();
+
 			Containers.dropContents(level, pos, getLensContainer());
 		}
 

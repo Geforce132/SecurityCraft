@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -172,7 +173,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 				return InteractionResult.SUCCESS;
 			}
-			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && !level.isClientSide) {
+			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && !level.isClientSide) {
 				if (isOwnedBy(player) || player.isCreative())
 					destroy((ServerLevel) level, damageSources().playerAttack(player));
 				else
@@ -276,12 +277,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-		Entity entity = source.getEntity();
-
-		if (!(entity instanceof Player player) || isOwnedBy(player) || player.isCreative())
-			return super.hurtServer(level, source, amount);
-		else
-			return false;
+		return source.getEntity() instanceof Player player && isOwnedBy(player) && super.hurtServer(level, source, amount);
 	}
 
 	@Override

@@ -1382,8 +1382,6 @@
 	"option.securitycraft.username_logger.repeatedLogInterval.description": "Quanti secondi devono passare prima che lo stesso giocatore possa accedere nuovamente.",
 	"option.securitycraft.username_logger.searchRadius": "Raggio di ricerca: %s",
 	"option.securitycraft.username_logger.searchRadius.description": "Il raggio in blocchi nel quale l'Autenticatore per nome utente cerca i giocatori.",
-	"securitycraft.configuration.ableToBreakMines": "In grado di rompere le Mine",
-	"securitycraft.configuration.ableToBreakMines.tooltip": "I giocatori devono essere in grado di rompere una Mina senza che esploda?",
 	"securitycraft.configuration.allowAdminTool": "Consenti Dispositivo dell'amministratore",
 	"securitycraft.configuration.allowAdminTool.tooltip": "Il Dispositivo dell'amministratore può essere utilizzato?",
 	"securitycraft.configuration.allowBlockClaim": "Consenti richiesta del blocco",

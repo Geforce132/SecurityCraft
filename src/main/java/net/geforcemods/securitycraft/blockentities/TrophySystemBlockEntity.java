@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -172,8 +173,10 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
 		if (level != null) {
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+				dropAllModules();
+
 			Containers.dropContents(level, pos, getLensContainer());
-			dropAllModules();
 		}
 
 		super.preRemoveSideEffects(pos, state);

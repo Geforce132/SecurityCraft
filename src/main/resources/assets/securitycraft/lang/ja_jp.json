@@ -1381,8 +1381,6 @@
 	"option.securitycraft.username_logger.repeatedLogInterval.description": "同じプレイヤーを記録できるようになるまで何秒経過する必要があるか。",
 	"option.securitycraft.username_logger.searchRadius": "検索範囲: %s",
 	"option.securitycraft.username_logger.searchRadius.description": "ユーザー名記録装置がプレイヤーを検索するブロックの範囲です。",
-	"securitycraft.configuration.ableToBreakMines": "地雷の破壊許可",
-	"securitycraft.configuration.ableToBreakMines.tooltip": "プレイヤーは地雷を爆発させずに破壊できる必要があるか？",
 	"securitycraft.configuration.allowAdminTool": "管理ツールの許可",
 	"securitycraft.configuration.allowAdminTool.tooltip": "管理ツールを使用できるようにするか？",
 	"securitycraft.configuration.allowBlockClaim": "ブロック要求の許可",

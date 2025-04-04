@@ -77,7 +77,6 @@ public class ConfigHandler {
 	public static class Server {
 		public final BooleanValue allowAdminTool;
 		public final BooleanValue shouldSpawnFire;
-		public final BooleanValue ableToBreakMines;
 		public final BooleanValue smallerMineExplosion;
 		public final BooleanValue mineExplodesWhenInCreative;
 		public final BooleanValue mineExplosionsBreakBlocks;
@@ -106,6 +105,10 @@ public class ConfigHandler {
 		public final BooleanValue inWorldUnReinforcing;
 		public final BooleanValue frameFeedViewingEnabled;
 		public final IntValue frameFeedViewDistance;
+		public final BooleanValue vanillaToolBlockBreaking;
+		public final BooleanValue alwaysDrop;
+		public final BooleanValue allowBreakingNonOwnedBlocks;
+		public final DoubleValue nonOwnedBreakingSlowdown;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
@@ -118,10 +121,6 @@ public class ConfigHandler {
 			shouldSpawnFire = builder
 					.comment("Should mines spawn fire after exploding?")
 					.define("shouldSpawnFire", true);
-
-			ableToBreakMines = builder
-					.comment("Should players be able to break a mine without it exploding?")
-					.define("ableToBreakMines", true);
 
 			smallerMineExplosion = builder
 					.comment("Should mines' explosions be smaller than usual?")
@@ -239,6 +238,26 @@ public class ConfigHandler {
 			frameFeedViewDistance = builder
 					.comment("Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.")
 					.defineInRange("frame_feed_view_distance", 16, 2, 32);
+
+			vanillaToolBlockBreaking = builder
+					.comment("Whether SecurityCraft's blocks should be broken using vanilla tools (axe, shovel, hoe, ...), instead of the Universal Block Remover. If set to true, this will disable the Universal Block Remover.")
+					.define("vanilla_tool_block_breaking", true);
+
+			alwaysDrop = builder
+					.comment("Whether SecurityCraft's blocks always drop themselves no matter which tool is used. If this is set to false, the correct tool must be used for the block to drop (e.g. pickaxe for reinforced stone, or anything for reinforced dirt).",
+							"This only applies when \"vanilla_tool_block_breaking\" is set to true.")
+					.define("always_drop", true);
+
+			allowBreakingNonOwnedBlocks = builder
+					.comment("Whether players who are not the owner of a block can still destroy it.",
+							"This applies regardless of what \"vanilla_tool_block_breaking\" is set to.")
+					.define("allow_breaking_non_owned_blocks", false);
+
+			nonOwnedBreakingSlowdown = builder
+					.comment("How much slower it should be to break a block that is not owned by the player breaking it.",
+							"The value is calculated as the normal block breaking speed divided by the non-owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
+							"This only applies when \"allow_breaking_non_owned_blocks\" and \"vanilla_tool_block_breaking\" are set to true.")
+					.defineInRange("non_owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")

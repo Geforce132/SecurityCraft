@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blockentities;
 import java.util.EnumMap;
 import java.util.Map;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -88,7 +89,7 @@ public class SecretSignBlockEntity extends SignBlockEntity implements IOwnable, 
 
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-		if (level != null)
+		if (level != null && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
 			dropAllModules();
 
 		super.preRemoveSideEffects(pos, state);
