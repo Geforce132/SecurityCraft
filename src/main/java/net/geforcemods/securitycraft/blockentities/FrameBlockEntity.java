@@ -229,10 +229,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 					previousCamera.unlinkFrameForPlayer(player.getUUID(), worldPosition);
 			}
 
-			if (player instanceof ServerPlayer serverPlayer && newCameraPos != null) {
+			if (player instanceof ServerPlayer serverPlayer && !disableNewCamera && newCameraPos != null) {
 				if (level.dimension() != newCameraPos.dimension() || !(level.getBlockEntity(newCameraPos.pos()) instanceof SecurityCameraBlockEntity newCamera))
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", newCameraPos.pos()), ChatFormatting.RED);
-				else if (!disableNewCamera && (!newCameraPos.equals(previousCameraPos) || !newCamera.isFrameLinked(player, worldPosition))) {
+				else if (!newCameraPos.equals(previousCameraPos) || !newCamera.isFrameLinked(player, worldPosition)) {
 					if (redstoneSignalDisabled())
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.noRedstoneSignal", newCameraPos.pos()), ChatFormatting.RED);
 					else
@@ -311,7 +311,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (module == ModuleType.ALLOWLIST)
 			switchCameras(null, null, 0, false); //Disable the frame feed for all players if the allowlist module is removed, because frames on the server side don't know which players are currently viewing them
-		if (module == ModuleType.REDSTONE) {
+		else if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = false;
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FrameBlock.POWERED, false));
 			setChanged();
