@@ -245,7 +245,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 				}
 			}
 
-			if (player instanceof EntityPlayerMP && newCameraPos != null) {
+			if (player instanceof EntityPlayerMP && !disableNewCamera && newCameraPos != null) {
 				TileEntity te = world.getTileEntity(newCameraPos.pos());
 
 				if (world.provider.getDimension() != newCameraPos.dimension() || !(te instanceof SecurityCameraBlockEntity))
@@ -253,7 +253,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 				else {
 					SecurityCameraBlockEntity newCamera = (SecurityCameraBlockEntity) te;
 
-					if (!disableNewCamera && (!newCameraPos.equals(previousCameraPos) || !newCamera.isFrameLinked(player, pos))) {
+					if ((!newCameraPos.equals(previousCameraPos) || !newCamera.isFrameLinked(player, pos))) {
 						if (redstoneSignalDisabled())
 							PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.noRedstoneSignal", newCameraPos.pos()), TextFormatting.RED);
 						else
@@ -333,7 +333,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 
 		if (module == ModuleType.ALLOWLIST)
 			switchCameras(null, null, 0, false); //Disable the frame feed for all players if the allowlist module is removed, because frames on the server side don't know which players are currently viewing them
-		if (module == ModuleType.REDSTONE) {
+		else if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = false;
 			world.setBlockState(pos, getBlockState().withProperty(FrameBlock.POWERED, false));
 			markDirty();
