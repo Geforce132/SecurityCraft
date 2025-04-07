@@ -8,7 +8,6 @@
 		"camera.GameRendererMixin",
 		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
-		"camera.RenderTargetMixin",
 		"camera.ViewAreaMixin",
 		"datagen.BlockStateGeneratorCollectorMixin",
 		"f3.BetterF3TargetModuleMixin",
