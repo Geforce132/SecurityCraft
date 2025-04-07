@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
+import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.client.Minecraft;
@@ -50,7 +51,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.neoforged.neoforge.client.RenderTypeHelper;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class StateSelector extends Screen implements GuiEventListener, NarratableEntry, ContainerListener {
@@ -66,6 +66,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private final int previewXTranslation, previewYTranslation;
 	private final HoverChecker dragHoverChecker;
 	private final List<Rect2i> extraAreas = new ArrayList<>();
+	private FullbrightBlockAndTintGetter fullbrightBlockAndTintGetter;
 	private Item blockItem = Items.AIR;
 	private BlockState state = Blocks.AIR.defaultBlockState();
 	private List<Property<?>> properties = List.of();
@@ -119,6 +120,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		nextPageButton = Button.builder(Component.literal(">"), button -> turnPage(1)).bounds(xStart + 126, yStart + 125, 20, 20).build();
 		updateButtons(true, false);
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
+		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
 	}
 
 	@Override
@@ -262,13 +264,9 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		if (state.getRenderShape() == RenderShape.MODEL) {
 			BlockRenderDispatcher blockRenderer = minecraft.getBlockRenderer();
 			BakedModel blockModel = blockRenderer.getBlockModel(state);
-			int color = minecraft.getBlockColors().getColor(state, null, null, 0);
-			float r = (color >> 16 & 255) / 255.0F;
-			float g = (color >> 8 & 255) / 255.0F;
-			float b = (color & 255) / 255.0F;
 
 			for (RenderType renderType : blockModel.getRenderTypes(state, minecraft.level.random, ModelData.EMPTY)) {
-				blockRenderer.getModelRenderer().renderModel(pose.last(), bufferSource.getBuffer(RenderTypeHelper.getEntityRenderType(renderType, false)), state, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, ModelData.EMPTY, renderType);
+				blockRenderer.getModelRenderer().tesselateWithoutAO(fullbrightBlockAndTintGetter, blockModel, state, BlockPos.ZERO, pose, bufferSource.getBuffer(renderType), false, minecraft.level.random, 42L, OverlayTexture.NO_OVERLAY);
 			}
 		}
 	}
