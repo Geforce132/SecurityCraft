@@ -5,19 +5,26 @@ import java.util.OptionalInt;
 
 import org.joml.Matrix4f;
 
+import com.mojang.blaze3d.buffers.BufferType;
+import com.mojang.blaze3d.buffers.BufferUsage;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.DepthTestFunction;
 import com.mojang.blaze3d.shaders.UniformType;
+import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.VertexSorting;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
@@ -128,17 +135,34 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			}
 
 			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			RenderSystem.AutoStorageIndexBuffer indices = RenderSystem.getSequentialBuffer(VertexFormat.Mode.QUADS);
-			GpuBuffer indexBuffer = indices.getBuffer(6);
 
-			try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(target.getColorTexture(), OptionalInt.of(0xFFFFFFFF), target.getDepthTexture(), OptionalDouble.empty())) {
-				pass.setPipeline(FRAME_PIPELINE);
-				pass.setVertexBuffer(0, RenderSystem.getQuadVertexBuffer());
-				pass.setIndexBuffer(indexBuffer, indices.type());
-				pass.setUniform("ModelViewMat", pose.last().pose());
-				pass.setUniform("ProjMat", RenderSystem.getProjectionMatrix());
-				pass.bindSampler("InSampler", RenderSystem.getShaderTexture(0));
-				pass.drawIndexed(0, 6);
+			try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
+				BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+
+				bufferBuilder.addVertex(pose.last().pose(), xStart, margin, zStart).setUv(1, 0);
+				bufferBuilder.addVertex(pose.last().pose(), xStart, 1 - margin, zStart).setUv(1, 1);
+				bufferBuilder.addVertex(pose.last().pose(), xEnd, 1 - margin, zEnd).setUv(0, 1);
+				bufferBuilder.addVertex(pose.last().pose(), xEnd, margin, zEnd).setUv(0, 0);
+
+				try (MeshData meshData = bufferBuilder.buildOrThrow()) {
+					meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
+
+					GpuDevice device = RenderSystem.getDevice();
+					GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", BufferType.VERTICES, BufferUsage.STATIC_WRITE, meshData.vertexBuffer());
+					GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", BufferType.INDICES, BufferUsage.STATIC_WRITE, meshData.indexBuffer());
+
+					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(target.getColorTexture(), OptionalInt.of(0xFFFFFFFF), target.getDepthTexture(), OptionalDouble.empty())) {
+						pass.setPipeline(FRAME_PIPELINE);
+						pass.setVertexBuffer(0, vertexBuffer);
+						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
+						pass.setUniform("ModelViewMat", pose.last().pose());
+						pass.setUniform("ProjMat", Minecraft.getInstance().gameRenderer.getProjectionMatrix(90.0F));
+						pass.bindSampler("InSampler", RenderSystem.getShaderTexture(0));
+						pass.drawIndexed(0, 6);
+					}
+
+					vertexBuffer.close();
+				}
 			}
 
 			if (lens.has(DataComponents.DYED_COLOR))

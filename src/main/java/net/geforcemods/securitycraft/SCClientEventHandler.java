@@ -259,7 +259,6 @@ public class SCClientEventHandler {
 						continue;
 
 					CameraFeed feed = cameraView.getValue();
-					RenderTarget frameTarget = feed.renderTarget();
 					Vec3 cameraEntityPos = new Vec3(pos.getX() + 0.5D, pos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, pos.getZ() + 0.5D);
 					float cameraXRot = be.getDefaultXRotation();
 					float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(partialTick.getGameTimeDeltaPartialTick(false), be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
@@ -273,12 +272,13 @@ public class SCClientEventHandler {
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 					profiler.push("securitycraft:discover_frame_sections");
 					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
-					profiler.popPush("securitycraft:bind_frame_target");
-					RenderSystem.getDevice().createCommandEncoder().clearColorAndDepthTextures(frameTarget.getColorTexture(), 0, frameTarget.getDepthTexture(), 1.0);
-					profiler.pop();
 
 					try {
+						RenderTarget frameTarget = feed.renderTarget();
+
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
+						RenderSystem.getDevice().createCommandEncoder().clearColorAndDepthTextures(frameTarget.getColorTexture(), 0, frameTarget.getDepthTexture(), 1.0);
+						mc.getMainRenderTarget().blitAndBlendToTexture(frameTarget.getColorTexture());
 					}
 					catch (Exception e) {
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
