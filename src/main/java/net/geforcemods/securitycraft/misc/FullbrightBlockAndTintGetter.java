@@ -30,32 +30,32 @@ public class FullbrightBlockAndTintGetter implements BlockAndTintGetter {
 	}
 
 	@Override
-	public int getBlockTint(BlockPos blockPos, ColorResolver colorResolver) {
-		return original.getBlockTint(blockPos, colorResolver);
+	public int getBlockTint(BlockPos pos, ColorResolver colorResolver) {
+		return original.getBlockTint(pos, colorResolver);
 	}
 
 	@Override
-	public int getBrightness(LightLayer lightType, BlockPos blockPos) {
+	public int getBrightness(LightLayer lightType, BlockPos pos) {
 		return 15;
 	}
 
 	@Override
-	public int getRawBrightness(BlockPos blockPos, int amount) {
+	public int getRawBrightness(BlockPos pos, int amount) {
 		return 15;
 	}
 
 	@Override
-	public BlockEntity getBlockEntity(BlockPos p_363675_) {
+	public BlockEntity getBlockEntity(BlockPos pos) {
 		return null;
 	}
 
 	@Override
-	public BlockState getBlockState(BlockPos p_364801_) {
+	public BlockState getBlockState(BlockPos pos) {
 		return Blocks.AIR.defaultBlockState();
 	}
 
 	@Override
-	public FluidState getFluidState(BlockPos p_364619_) {
+	public FluidState getFluidState(BlockPos pos) {
 		return Fluids.EMPTY.defaultFluidState();
 	}
 
