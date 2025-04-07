@@ -8,6 +8,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
+import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.block.Block;
@@ -40,12 +41,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
 
 public class StateSelector extends Screen implements IGuiEventListener, IContainerListener {
@@ -60,6 +61,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 	private final float previewXTranslation, previewYTranslation;
 	private final HoverChecker dragHoverChecker;
 	private final List<Rectangle2d> extraAreas = new ArrayList<>();
+	private FullbrightBlockAndTintGetter fullbrightBlockAndTintGetter;
 	private Item blockItem = Items.AIR;
 	private BlockState state = Blocks.AIR.defaultBlockState();
 	private List<Property<?>> properties = new ArrayList<>();
@@ -111,6 +113,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 		nextPageButton = new ExtendedButton(xStart + 126, yStart + 125, 20, 20, new StringTextComponent(">"), button -> turnPage(1));
 		updateButtons(true, false);
 		extraAreas.add(new Rectangle2d(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
+		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
 	}
 
 	@Override
@@ -238,12 +241,8 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 		if (state.getRenderShape() == BlockRenderType.MODEL) {
 			BlockRendererDispatcher blockRenderer = minecraft.getBlockRenderer();
 			IBakedModel blockModel = blockRenderer.getBlockModel(state);
-			int color = minecraft.getBlockColors().getColor(state, null, null, 0);
-			float r = (color >> 16 & 255) / 255.0F;
-			float g = (color >> 8 & 255) / 255.0F;
-			float b = (color & 255) / 255.0F;
 
-			blockRenderer.getModelRenderer().renderModel(pose.last(), bufferSource.getBuffer(RenderTypeLookup.getRenderType(state, false)), state, blockModel, r, g, b, 0xF000F0, OverlayTexture.NO_OVERLAY, EmptyModelData.INSTANCE);
+			blockRenderer.getModelRenderer().tesselateWithoutAO(fullbrightBlockAndTintGetter, blockModel, state, BlockPos.ZERO, pose, bufferSource.getBuffer(RenderTypeLookup.getRenderType(state, false)), false, minecraft.level.random, 42L, OverlayTexture.NO_OVERLAY);
 		}
 	}
 
