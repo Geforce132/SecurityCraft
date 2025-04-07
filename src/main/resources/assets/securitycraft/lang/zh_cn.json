@@ -1522,6 +1522,7 @@
 	"tooltip.securitycraft:projector": "将假方块投影到世界中。",
 	"tooltip.securitycraft:sentry": "战斗哨石%s",
 	"tooltip.securitycraft:sonicSecuritySystem.linkedTo": "已连接到%s个方块。",
+	"tooltip.securitycraft:universal_block_remover.disabled": "已禁用。可使用原版工具破坏强化方块。",
 	"waila.securitycraft:customName": "自定义名称：%s",
 	"waila.securitycraft:equipped": "装备有：",
 	"waila.securitycraft:owner": "所属玩家：%s"
