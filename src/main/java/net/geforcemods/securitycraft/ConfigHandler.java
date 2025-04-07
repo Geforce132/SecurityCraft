@@ -44,7 +44,6 @@ public class ConfigHandler {
 	@LangKey("config.securitycraft:shouldSpawnFire")
 	public static boolean shouldSpawnFire = true;
 
-
 	@Name("Craftable level 1 keycard?")
 	@LangKey("config.securitycraft:ableToCraftKeycard1")
 	@RequiresMcRestart
