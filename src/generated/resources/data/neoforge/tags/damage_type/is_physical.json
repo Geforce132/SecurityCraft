@@ -1,5 +1,8 @@
 {
   "values": [
-    "securitycraft:in_reinforced_wall"
+    {
+      "id": "securitycraft:in_reinforced_wall",
+      "required": false
+    }
   ]
 }

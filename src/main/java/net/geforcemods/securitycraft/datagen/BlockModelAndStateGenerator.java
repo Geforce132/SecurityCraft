@@ -14,9 +14,9 @@ import com.google.common.collect.ImmutableMap;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCCreativeModeTabs;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCModelTemplates;
 import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
@@ -118,13 +118,14 @@ public class BlockModelAndStateGenerator {
 	protected static void run(BlockModelGenerators blockModelGenerators) {
 		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
 		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
-		List<BlockFamily> excludedFamilies = List.of(BlockFamilies.RESIN_BRICKS, BlockFamilies.PALE_OAK_PLANKS);
+		List<BlockFamily> excludedFamilies = List.of();
 
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
 		blockStateOutput = blockModelGenerators.blockStateOutput;
 		modelOutput = blockModelGenerators.modelOutput;
 		itemInfo = blockModelGenerators.itemModelOutput;
 		createBlockMine(SCContent.ANCIENT_DEBRIS_MINE.get(), Blocks.ANCIENT_DEBRIS);
+		createCreakingHeartMine();
 		generateBlockMineInfo(SCContent.DEEPSLATE_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.DEEPSLATE));
 		generateBlockMineInfo(SCContent.SUSPICIOUS_GRAVEL_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.SUSPICIOUS_GRAVEL, "_0"));
 		generateBlockMineInfo(SCContent.SUSPICIOUS_SAND_MINE.get(), ModelLocationUtils.getModelLocation(Blocks.SUSPICIOUS_SAND, "_0"));
@@ -220,6 +221,8 @@ public class BlockModelAndStateGenerator {
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_MANGROVE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_MANGROVE_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_OAK_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_PALE_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_PALE_OAK_WOOD.get());
+		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_PALE_OAK_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_PALE_OAK_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_SPRUCE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_SPRUCE_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_WARPED_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_WARPED_HYPHAE.get());
@@ -234,6 +237,7 @@ public class BlockModelAndStateGenerator {
 		createSecretSign(SCContent.SECRET_JUNGLE_SIGN_ITEM.get(), Blocks.JUNGLE_SIGN);
 		createSecretSign(SCContent.SECRET_MANGROVE_SIGN_ITEM.get(), Blocks.MANGROVE_SIGN);
 		createSecretSign(SCContent.SECRET_OAK_SIGN_ITEM.get(), Blocks.OAK_SIGN);
+		createSecretSign(SCContent.SECRET_PALE_OAK_SIGN_ITEM.get(), Blocks.PALE_OAK_SIGN);
 		createSecretSign(SCContent.SECRET_SPRUCE_SIGN_ITEM.get(), Blocks.SPRUCE_SIGN);
 		createSecretSign(SCContent.SECRET_WARPED_SIGN_ITEM.get(), Blocks.WARPED_SIGN);
 		createSecretSign(SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get(), Blocks.ACACIA_HANGING_SIGN);
@@ -245,6 +249,7 @@ public class BlockModelAndStateGenerator {
 		createSecretSign(SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get(), Blocks.JUNGLE_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get(), Blocks.MANGROVE_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get(), Blocks.OAK_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.get(), Blocks.PALE_OAK_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get(), Blocks.SPRUCE_HANGING_SIGN);
 		createSecretSign(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get(), Blocks.WARPED_HANGING_SIGN);
 
@@ -281,7 +286,7 @@ public class BlockModelAndStateGenerator {
 					}
 				}
 			}
-			else if (mineTabItems.contains(item) && block instanceof BaseFullMineBlock mine)
+			else if (mineTabItems.contains(item) && block instanceof IBlockMine mine)
 				createBlockMine(block, mine.getBlockDisguisedAs());
 		});
 	}
@@ -291,6 +296,14 @@ public class BlockModelAndStateGenerator {
 
 		generate(block, BlockModelGenerators.createSimpleBlock(block, vanillaModel));
 		generateBlockMineInfo(block, vanillaModel);
+	}
+
+	public static void createCreakingHeartMine() {
+		Block creakingHeartMine = SCContent.CREAKING_HEART_MINE.get();
+		ResourceLocation vanillaModel = ModelLocationUtils.getModelLocation(Blocks.CREAKING_HEART);
+
+		generateBlockMineInfo(creakingHeartMine, vanillaModel);
+		generatedBlocks.add(creakingHeartMine);
 	}
 
 	public static void generateBlockMineInfo(Block block, ResourceLocation vanillaModel) {

@@ -14,7 +14,6 @@ import net.geforcemods.securitycraft.api.Option.SendDenylistMessageOption;
 import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.blocks.KeypadTrapDoorBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -32,6 +31,7 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 	private long cooldownEnd = 0;
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 
 	public KeypadTrapdoorBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_TRAPDOOR_BLOCK_ENTITY.get(), pos, state);
@@ -41,14 +41,9 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 
-		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
-
 		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 
+		savePasscodeAndSalt(tag);
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 	}
 
@@ -111,6 +106,16 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

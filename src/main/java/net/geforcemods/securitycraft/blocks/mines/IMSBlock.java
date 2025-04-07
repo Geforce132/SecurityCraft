@@ -56,11 +56,6 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return !ConfigHandler.SERVER.ableToBreakMines.get() ? -1F : super.getDestroyProgress(state, player, level, pos);
-	}
-
-	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		return switch (state.getValue(MINES)) {
 			case 4 -> SHAPE_4_MINES;
@@ -88,7 +83,7 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+		if (!state.is(newState.getBlock()) && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
 			inv.dropAllModules();
 
 		super.onRemove(state, level, pos, newState, isMoving);

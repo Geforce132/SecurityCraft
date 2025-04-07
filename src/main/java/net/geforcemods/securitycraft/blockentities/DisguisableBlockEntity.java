@@ -11,7 +11,8 @@ import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
@@ -99,8 +100,14 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
+		super.onDataPacket(net, packet, lookupProvider);
+		onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 		onHandleUpdateTag(this);
 	}
 
@@ -114,6 +121,8 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 				ClientHandler.putDisguisedBeRenderer(be, stack);
 			else
 				ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
+
+			ClientHandler.refreshModelData(be);
 		}
 	}
 
@@ -146,8 +155,12 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public static ModelData getModelData(BlockEntity be) {
+		return getModelDataBuilder(be).build();
+	}
+
+	public static ModelData.Builder getModelDataBuilder(BlockEntity be) {
 		BlockState disguisedState = IDisguisable.getDisguisedBlockState(be).orElse(Blocks.AIR.defaultBlockState());
 
-		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState).build();
+		return ModelData.builder().with(DisguisableDynamicBakedModel.DISGUISED_STATE, disguisedState);
 	}
 }

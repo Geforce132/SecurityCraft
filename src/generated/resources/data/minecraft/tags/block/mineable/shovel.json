@@ -4,6 +4,21 @@
     "securitycraft:gravel_mine",
     "securitycraft:sand_mine",
     "securitycraft:suspicious_gravel_mine",
-    "securitycraft:suspicious_sand_mine"
+    "securitycraft:suspicious_sand_mine",
+    "securitycraft:reinforced_clay",
+    "securitycraft:reinforced_dirt",
+    "securitycraft:reinforced_coarse_dirt",
+    "securitycraft:reinforced_podzol",
+    "securitycraft:reinforced_grass_block",
+    "securitycraft:reinforced_gravel",
+    "securitycraft:reinforced_mycelium",
+    "securitycraft:reinforced_sand",
+    "securitycraft:reinforced_red_sand",
+    "securitycraft:reinforced_snow_block",
+    "securitycraft:reinforced_soul_sand",
+    "securitycraft:reinforced_grass_path",
+    "securitycraft:reinforced_soul_soil",
+    "securitycraft:reinforced_rooted_dirt",
+    "securitycraft:reinforced_mud"
   ]
 }

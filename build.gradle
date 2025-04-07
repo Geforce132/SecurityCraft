@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.71'
+	id 'net.neoforged.moddev' version '2.0.76'
 }
 
 import groovy.json.JsonOutput
@@ -40,21 +40,27 @@ neoForge {
 
 	runs {
 		configureEach {
-			systemProperty 'forge.logging.console.level', 'debug'
+			logLevel = org.slf4j.event.Level.DEBUG
 			ideName = "SC ${project.mc_version} " + ideName.get()
 		}
-	
+
 		client {
 			client()
 			gameDirectory = project.file('run/client')
 		}
-	
+
+		client2 {
+			client()
+			gameDirectory = project.file('run/client')
+			programArguments.addAll('--username', 'Dev2')
+		}
+
 		server {
 			server()
 			gameDirectory = project.file('run/server')
 			programArgument('-nogui')
 		}
-	
+
 		data {
 			clientData()
 			gameDirectory = project.file('run/data')
@@ -101,8 +107,8 @@ dependencies {
 //	implementation "curse.maven:wthit-forge-455982:5977924"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
-//	implementation "curse.maven:embeddium-908741:6116910"
-//	implementation "maven.modrinth:sodium:mc1.21.4-0.6.6-neoforge" //incompatible with embeddium
+	implementation "curse.maven:embeddium-908741:6116910"
+//	implementation "maven.modrinth:sodium:mc1.21.4-0.6.13-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {

@@ -41,6 +41,10 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			}
 		}
 
+		return getOldQuads(state, side, rand, modelData, renderType);
+	}
+
+	public List<BakedQuad> getOldQuads(BlockState state, Direction side, RandomSource rand, ModelData modelData, RenderType renderType) {
 		return oldModel.getQuads(state, side, rand, modelData, renderType);
 	}
 
@@ -59,6 +63,10 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			}
 		}
 
+		return getOldParticleIcon(modelData);
+	}
+
+	public TextureAtlasSprite getOldParticleIcon(ModelData modelData) {
 		return oldModel.getParticleIcon(modelData);
 	}
 
@@ -82,6 +90,10 @@ public class DisguisableDynamicBakedModel implements IDynamicBakedModel {
 			}
 		}
 
+		return getOldRenderTypes(state, rand, modelData);
+	}
+
+	public ChunkRenderTypeSet getOldRenderTypes(BlockState state, RandomSource rand, ModelData modelData) {
 		return oldModel.getRenderTypes(state, rand, modelData);
 	}
 

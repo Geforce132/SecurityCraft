@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadBarrelBlockEntity;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
@@ -18,6 +19,7 @@ import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
+import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
@@ -51,6 +53,7 @@ import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.network.server.SyncBlockChangeDetector;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
+import net.geforcemods.securitycraft.network.server.SyncFrame;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.network.server.SyncLaserSideConfig;
 import net.geforcemods.securitycraft.network.server.SyncProjector;
@@ -160,6 +163,7 @@ public class RegistrationHandler {
 		PayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
 
 		registrar.playToClient(BlockPocketManagerFailedActivation.TYPE, BlockPocketManagerFailedActivation.STREAM_CODEC, BlockPocketManagerFailedActivation::handle);
+		registrar.playToClient(InteractWithFrame.TYPE, InteractWithFrame.STREAM_CODEC, InteractWithFrame::handle);
 		registrar.playToClient(OpenScreen.TYPE, OpenScreen.STREAM_CODEC, OpenScreen::handle);
 		registrar.playToClient(PlayAlarmSound.TYPE, PlayAlarmSound.STREAM_CODEC, PlayAlarmSound::handle);
 		registrar.playToClient(RefreshDisguisableModel.TYPE, RefreshDisguisableModel.STREAM_CODEC, RefreshDisguisableModel::handle);
@@ -169,41 +173,42 @@ public class RegistrationHandler {
 		registrar.playToClient(UpdateLaserColors.TYPE, UpdateLaserColors.STREAM_CODEC, UpdateLaserColors::handle);
 		registrar.playToClient(UpdateLogger.TYPE, UpdateLogger.STREAM_CODEC, UpdateLogger::handle);
 		registrar.playToServer(AssembleBlockPocket.TYPE, AssembleBlockPocket.STREAM_CODEC, AssembleBlockPocket::handle);
+		registrar.playToServer(CheckBriefcasePasscode.TYPE, CheckBriefcasePasscode.STREAM_CODEC, CheckBriefcasePasscode::handle);
 		registrar.playToServer(CheckPasscode.TYPE, CheckPasscode.STREAM_CODEC, CheckPasscode::handle);
 		registrar.playToServer(ClearChangeDetectorServer.TYPE, ClearChangeDetectorServer.STREAM_CODEC, ClearChangeDetectorServer::handle);
 		registrar.playToServer(ClearLoggerServer.TYPE, ClearLoggerServer.STREAM_CODEC, ClearLoggerServer::handle);
 		registrar.playToServer(DismountCamera.TYPE, DismountCamera.STREAM_CODEC, DismountCamera::handle);
 		registrar.playToServer(MountCamera.TYPE, MountCamera.STREAM_CODEC, MountCamera::handle);
-		registrar.playToServer(CheckBriefcasePasscode.TYPE, CheckBriefcasePasscode.STREAM_CODEC, CheckBriefcasePasscode::handle);
 		registrar.playToServer(RemoteControlMine.TYPE, RemoteControlMine.STREAM_CODEC, RemoteControlMine::handle);
 		registrar.playToServer(RemoveCameraTag.TYPE, RemoveCameraTag.STREAM_CODEC, RemoveCameraTag::handle);
 		registrar.playToServer(RemoveMineFromMRAT.TYPE, RemoveMineFromMRAT.STREAM_CODEC, RemoveMineFromMRAT::handle);
 		registrar.playToServer(RemovePositionFromSSS.TYPE, RemovePositionFromSSS.STREAM_CODEC, RemovePositionFromSSS::handle);
 		registrar.playToServer(RemoveSentryFromSRAT.TYPE, RemoveSentryFromSRAT.STREAM_CODEC, RemoveSentryFromSRAT::handle);
-		registrar.playToServer(SyncAlarmSettings.TYPE, SyncAlarmSettings.STREAM_CODEC, SyncAlarmSettings::handle);
 		registrar.playToServer(SetBriefcasePasscodeAndOwner.TYPE, SetBriefcasePasscodeAndOwner.STREAM_CODEC, SetBriefcasePasscodeAndOwner::handle);
 		registrar.playToServer(SetCameraPowered.TYPE, SetCameraPowered.STREAM_CODEC, SetCameraPowered::handle);
+		registrar.playToServer(SetDefaultCameraViewingDirection.TYPE, SetDefaultCameraViewingDirection.STREAM_CODEC, SetDefaultCameraViewingDirection::handle);
 		registrar.playToServer(SetGhostSlot.TYPE, SetGhostSlot.STREAM_CODEC, SetGhostSlot::handle);
 		registrar.playToServer(SetKeycardUses.TYPE, SetKeycardUses.STREAM_CODEC, SetKeycardUses::handle);
 		registrar.playToServer(SetListModuleData.TYPE, SetListModuleData.STREAM_CODEC, SetListModuleData::handle);
 		registrar.playToServer(SetPasscode.TYPE, SetPasscode.STREAM_CODEC, SetPasscode::handle);
 		registrar.playToServer(SetSentryMode.TYPE, SetSentryMode.STREAM_CODEC, SetSentryMode::handle);
 		registrar.playToServer(SetStateOnDisguiseModule.TYPE, SetStateOnDisguiseModule.STREAM_CODEC, SetStateOnDisguiseModule::handle);
+		registrar.playToServer(SyncAlarmSettings.TYPE, SyncAlarmSettings.STREAM_CODEC, SyncAlarmSettings::handle);
 		registrar.playToServer(SyncBlockChangeDetector.TYPE, SyncBlockChangeDetector.STREAM_CODEC, SyncBlockChangeDetector::handle);
-		registrar.playToServer(SyncBlockReinforcer.TYPE, SyncBlockReinforcer.STREAM_CODEC, SyncBlockReinforcer::handle);
 		registrar.playToServer(SyncBlockPocketManager.TYPE, SyncBlockPocketManager.STREAM_CODEC, SyncBlockPocketManager::handle);
+		registrar.playToServer(SyncBlockReinforcer.TYPE, SyncBlockReinforcer.STREAM_CODEC, SyncBlockReinforcer::handle);
+		registrar.playToServer(SyncFrame.TYPE, SyncFrame.STREAM_CODEC, SyncFrame::handle);
 		registrar.playToServer(SyncKeycardSettings.TYPE, SyncKeycardSettings.STREAM_CODEC, SyncKeycardSettings::handle);
 		registrar.playToServer(SyncLaserSideConfig.TYPE, SyncLaserSideConfig.STREAM_CODEC, SyncLaserSideConfig::handle);
 		registrar.playToServer(SyncProjector.TYPE, SyncProjector.STREAM_CODEC, SyncProjector::handle);
 		registrar.playToServer(SyncRiftStabilizer.TYPE, SyncRiftStabilizer.STREAM_CODEC, SyncRiftStabilizer::handle);
-		registrar.playToServer(SyncSecureRedstoneInterface.TYPE, SyncSecureRedstoneInterface.STREAM_CODEC, SyncSecureRedstoneInterface::handle);
 		registrar.playToServer(SyncSSSSettingsOnServer.TYPE, SyncSSSSettingsOnServer.STREAM_CODEC, SyncSSSSettingsOnServer::handle);
+		registrar.playToServer(SyncSecureRedstoneInterface.TYPE, SyncSecureRedstoneInterface.STREAM_CODEC, SyncSecureRedstoneInterface::handle);
 		registrar.playToServer(SyncTrophySystem.TYPE, SyncTrophySystem.STREAM_CODEC, SyncTrophySystem::handle);
 		registrar.playToServer(ToggleBlockPocketManager.TYPE, ToggleBlockPocketManager.STREAM_CODEC, ToggleBlockPocketManager::handle);
 		registrar.playToServer(ToggleModule.TYPE, ToggleModule.STREAM_CODEC, ToggleModule::handle);
 		registrar.playToServer(ToggleNightVision.TYPE, ToggleNightVision.STREAM_CODEC, ToggleNightVision::handle);
 		registrar.playToServer(ToggleOption.TYPE, ToggleOption.STREAM_CODEC, ToggleOption::handle);
-		registrar.playToServer(SetDefaultCameraViewingDirection.TYPE, SetDefaultCameraViewingDirection.STREAM_CODEC, SetDefaultCameraViewingDirection::handle);
 		registrar.playToServer(UpdateSliderValue.TYPE, UpdateSliderValue.STREAM_CODEC, UpdateSliderValue::handle);
 	}
 
@@ -220,6 +225,7 @@ public class RegistrationHandler {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), LaserBlockBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get(), ReinforcedHopperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), TrophySystemBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY.get(), ReinforcedChiseledBookshelfBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), ReinforcedDispenserBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
@@ -231,6 +237,7 @@ public class RegistrationHandler {
 		registerSecuritySeaBoatCapabilities(event, SCContent.DARK_OAK_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.MANGROVE_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.CHERRY_SECURITY_SEA_BOAT_ENTITY.get());
+		registerSecuritySeaBoatCapabilities(event, SCContent.PALE_OAK_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.BAMBOO_SECURITY_SEA_RAFT_ENTITY.get());
 		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_WATER_BUCKET);
 		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_LAVA_BUCKET);
@@ -406,7 +413,9 @@ public class RegistrationHandler {
 			event.insertAfter(new ItemStack(SCContent.SECRET_MANGROVE_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_CHERRY_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(SCContent.SECRET_CHERRY_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.insertAfter(new ItemStack(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_BAMBOO_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_PALE_OAK_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(SCContent.SECRET_PALE_OAK_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_BAMBOO_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(SCContent.SECRET_BAMBOO_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_CRIMSON_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(SCContent.SECRET_CRIMSON_SIGN_ITEM.get()), new ItemStack(SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
@@ -428,6 +437,7 @@ public class RegistrationHandler {
 			event.insertAfter(new ItemStack(Items.DARK_OAK_CHEST_BOAT), new ItemStack(SCContent.DARK_OAK_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.MANGROVE_CHEST_BOAT), new ItemStack(SCContent.MANGROVE_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.CHERRY_CHEST_BOAT), new ItemStack(SCContent.CHERRY_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
+			event.insertAfter(new ItemStack(Items.PALE_OAK_CHEST_BOAT), new ItemStack(SCContent.PALE_OAK_SECURITY_SEA_BOAT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 			event.insertAfter(new ItemStack(Items.BAMBOO_CHEST_RAFT), new ItemStack(SCContent.BAMBOO_SECURITY_SEA_RAFT.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 		}
 	}

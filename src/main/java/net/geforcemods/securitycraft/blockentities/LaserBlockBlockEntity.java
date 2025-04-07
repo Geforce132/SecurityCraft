@@ -35,7 +35,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
@@ -143,14 +145,19 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			case ILinkedAction.ModuleRemoved(ModuleType moduleType, boolean wasModuleToggled) -> removeModule(moduleType, wasModuleToggled);
 			case ILinkedAction.OwnerChanged(Owner newOwner) -> setOwner(newOwner.getUUID(), newOwner.getName());
 			case ILinkedAction.StateChanged(BooleanProperty property, Boolean oldValue, Boolean newValue) when property == LaserBlock.POWERED -> {
-				BlockState state = getBlockState();
-				int signalLength = getSignalLength();
+				if (timeSinceLastToggle() < 500)
+					setLastToggleTime(System.currentTimeMillis());
+				else {
+					BlockState state = getBlockState();
+					int signalLength = getSignalLength();
 
-				level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
-				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
+					setLastToggleTime(System.currentTimeMillis());
+					level.setBlockAndUpdate(worldPosition, state.cycle(LaserBlock.POWERED));
+					BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.LASER_BLOCK.get());
 
-				if (signalLength > 0)
-					level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+					if (signalLength > 0)
+						level.scheduleTick(worldPosition, SCContent.LASER_BLOCK.get(), signalLength);
+				}
 			}
 			default -> {
 			}
@@ -229,8 +236,14 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
+		super.onDataPacket(net, packet, lookupProvider);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 

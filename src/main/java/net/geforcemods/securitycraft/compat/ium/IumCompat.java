@@ -24,15 +24,15 @@ public enum IumCompat {
 	NONE(null, null);
 
 	private static final int FLAG_HAS_BLOCK_DATA = 1; //from the ChunkStatus class
-	private final Supplier<Class<?>> chunkTrackerHolder;
-	private final Supplier<Class<?>> chunkTracker;
-	private Method getChunkTracker;
-	private Method onChunkStatusAdded;
-	private Method onChunkStatusRemoved;
+	private final Supplier<Class<?>> chunkTrackerHolderClass;
+	private final Supplier<Class<?>> chunkTrackerClass;
+	private Method chunkTrackerHolder$get;
+	private Method chunkTracker$onChunkStatusAdded;
+	private Method chunkTracker$onChunkStatusRemoved;
 
 	private IumCompat(Supplier<Class<?>> chunkTrackerHolder, Supplier<Class<?>> chunkTracker) {
-		this.chunkTrackerHolder = chunkTrackerHolder;
-		this.chunkTracker = chunkTracker;
+		this.chunkTrackerHolderClass = chunkTrackerHolder;
+		this.chunkTrackerClass = chunkTracker;
 	}
 
 	public void onChunkStatusAdded(ClientLevel level, int x, int z) {
@@ -40,7 +40,7 @@ public enum IumCompat {
 			return;
 
 		try {
-			onChunkStatusAdded.invoke(getChunkTracker.invoke(null, level), x, z, FLAG_HAS_BLOCK_DATA);
+			chunkTracker$onChunkStatusAdded.invoke(chunkTrackerHolder$get.invoke(null, level), x, z, FLAG_HAS_BLOCK_DATA);
 		}
 		catch (IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
@@ -52,7 +52,7 @@ public enum IumCompat {
 			return;
 
 		try {
-			onChunkStatusRemoved.invoke(getChunkTracker.invoke(null, level), x, z, FLAG_HAS_BLOCK_DATA);
+			chunkTracker$onChunkStatusRemoved.invoke(chunkTrackerHolder$get.invoke(null, level), x, z, FLAG_HAS_BLOCK_DATA);
 		}
 		catch (IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
@@ -64,11 +64,10 @@ public enum IumCompat {
 			return;
 
 		try {
-			Class<?> chunkTrackerClass = chunkTracker.get();
-
-			getChunkTracker = chunkTrackerHolder.get().getDeclaredMethod("get", ClientLevel.class);
-			onChunkStatusAdded = chunkTrackerClass.getDeclaredMethod("onChunkStatusAdded", int.class, int.class, int.class);
-			onChunkStatusRemoved = chunkTrackerClass.getDeclaredMethod("onChunkStatusRemoved", int.class, int.class, int.class);
+			Class<?> chunkTracker = chunkTrackerClass.get();
+			chunkTrackerHolder$get = chunkTrackerHolderClass.get().getDeclaredMethod("get", ClientLevel.class);
+			chunkTracker$onChunkStatusAdded = chunkTracker.getDeclaredMethod("onChunkStatusAdded", int.class, int.class, int.class);
+			chunkTracker$onChunkStatusRemoved = chunkTracker.getDeclaredMethod("onChunkStatusRemoved", int.class, int.class, int.class);
 		}
 		catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();

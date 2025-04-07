@@ -6,7 +6,11 @@
 	"client": [
 		"camera.ClientChunkCacheMixin",
 		"camera.GameRendererMixin",
+		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",
+		"camera.RenderTargetMixin",
+		"camera.ViewAreaMixin",
+		"datagen.BlockStateGeneratorCollectorMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
 		"taser.ItemInHandRendererMixin"
@@ -20,11 +24,14 @@
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",
 		"datafix.V4067Mixin",
-		"datagen.BlockStateGeneratorCollectorMixin",
-		"hopper.HopperBlockEntityMixin",
-		"hopper.VanillaInventoryCodeHooksMixin",
-		"portal.PortalForcerMixin",
+		"passcode.ServerGamePacketListenerImplMixin",
+		"passcode.StructureTemplateMixin",
 		"potion.BrewingStandMenuMixin",
+		"reinforced.HopperBlockEntityMixin",
+		"reinforced.PortalForcerMixin",
+		"reinforced.ShearsItemMixin",
+		"reinforced.ToolMaterialMixin",
+		"reinforced.VanillaInventoryCodeHooksMixin",
 		"suspiciousmines.BrushItemMixin"
 	],
 	"minVersion": "0.8"

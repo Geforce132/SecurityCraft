@@ -28,14 +28,12 @@ public class ItemStacksDisplay implements Renderable {
 
 		if (currentRenderingStack >= 0 && currentRenderingStack < stacks.size())
 			guiGraphics.renderItem(stacks.get(currentRenderingStack), x, y);
+	}
 
-		if (!Screen.hasShiftDown()) {
-			ticksToChange -= partialTick;
-
-			if (ticksToChange <= 0) {
-				changeRenderingStack(1);
-				ticksToChange = DISPLAY_LENGTH;
-			}
+	public void tick() {
+		if (!Screen.hasShiftDown() && --ticksToChange <= 0) {
+			changeRenderingStack(1);
+			ticksToChange = DISPLAY_LENGTH;
 		}
 	}
 

@@ -5,15 +5,17 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.Window;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
+import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -31,14 +33,14 @@ public class GameRendererMixin {
 	Minecraft minecraft;
 
 	/**
-	 * Makes sure the camera zooming works, because the fov is only updated when the camera entity is the player itself
+	 * Makes sure camera zooming works, because the fov is only updated when the camera entity is the player itself
 	 */
-	@ModifyConstant(method = "tickFov", constant = @Constant(floatValue = 1.0F))
-	private float securitycraft$modifyInitialFValue(float f) {
+	@ModifyExpressionValue(method = "tickFov", at = @At(value = "CONSTANT", args = "floatValue=1.0F"))
+	private float securitycraft$modifyInitialFValue(float original) {
 		if (minecraft.cameraEntity instanceof SecurityCamera cam)
 			return cam.getZoomAmount();
 		else
-			return f;
+			return original;
 	}
 
 	/**
@@ -60,5 +62,16 @@ public class GameRendererMixin {
 			if (lens.has(DataComponents.DYED_COLOR))
 				guiGraphics.fill(0, 0, window.getGuiScaledWidth(), window.getGuiScaledHeight(), lens.get(DataComponents.DYED_COLOR).rgb() + (be.getOpacity() << 24));
 		}
+	}
+
+	/**
+	 * Makes sure distortion effects are not rendered in camera feeds
+	 */
+	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
+	private float securitycraft$disableFeedDistortion(float delta, float start, float end, Operation<Float> original) {
+		if (CameraController.currentlyCapturedCamera != null)
+			return 0.0F;
+		else
+			return original.call(delta, start, end);
 	}
 }

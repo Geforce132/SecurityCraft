@@ -1,7 +1,6 @@
 {
   "type": "minecraft:crafting_shapeless",
   "category": "redstone",
-  "group": "securitycraft:reinforced_buttons",
   "ingredients": [
     "securitycraft:reinforced_stone"
   ],

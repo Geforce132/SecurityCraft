@@ -31,6 +31,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +50,7 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private Owner owner = new Owner();
 	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
@@ -72,12 +74,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
-
-		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
+		savePasscodeAndSalt(tag);
 
 		if (owner != null)
 			owner.save(tag, needsValidation());
@@ -126,8 +123,14 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.handleUpdateTag(tag, lookupProvider);
+	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
+		super.onDataPacket(net, packet, lookupProvider);
+		DisguisableBlockEntity.onHandleUpdateTag(this);
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
@@ -307,6 +310,16 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

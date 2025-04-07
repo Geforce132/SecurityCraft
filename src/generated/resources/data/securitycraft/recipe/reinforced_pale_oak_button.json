@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "group": "securitycraft:wooden_buttons",
+  "ingredients": [
+    "securitycraft:reinforced_pale_oak_planks"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_pale_oak_button"
+  }
+}

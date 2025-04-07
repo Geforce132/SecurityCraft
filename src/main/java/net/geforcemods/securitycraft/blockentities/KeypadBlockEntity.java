@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.blocks.KeypadBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -31,6 +30,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 public class KeypadBlockEntity extends DisguisableBlockEntity implements IPasscodeProtected, ILockable {
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt = false;
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
 	private BooleanOption sendDenylistMessage = new SendDenylistMessageOption(true);
 	private IntOption signalLength = new SignalLengthOption(60);
@@ -46,14 +46,9 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
 
-		if (saltKey != null)
-			tag.putUUID("saltKey", saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
-
 		long cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 
+		savePasscodeAndSalt(tag);
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 	}
 
@@ -116,6 +111,16 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

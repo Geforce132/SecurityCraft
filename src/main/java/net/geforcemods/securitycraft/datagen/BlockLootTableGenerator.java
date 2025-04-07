@@ -56,7 +56,6 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 			}
 		}
 
-		dropSelf(SCContent.ANCIENT_DEBRIS_MINE);
 		add(SCContent.CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 		add(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 
@@ -91,6 +90,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 						.when(ExplosionCondition.survivesExplosion())));
 		//@formatter:on
 		add(SCContent.REINFORCED_LAVA_CAULDRON, createNameableBlockEntityTable(SCContent.REINFORCED_CAULDRON.get()));
+		add(SCContent.REINFORCED_PALE_MOSS_CARPET, createMossyCarpetBlockDrops(SCContent.REINFORCED_PALE_MOSS_CARPET.get()));
 		add(SCContent.REINFORCED_POWDER_SNOW_CAULDRON, createNameableBlockEntityTable(SCContent.REINFORCED_CAULDRON.get()));
 		add(SCContent.REINFORCED_WATER_CAULDRON, createNameableBlockEntityTable(SCContent.REINFORCED_CAULDRON.get()));
 		add(SCContent.RIFT_STABILIZER, this::createTwoHighBlockLootTable);
@@ -111,6 +111,8 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		dropSelf(SCContent.SECRET_MANGROVE_WALL_SIGN);
 		dropSelf(SCContent.SECRET_OAK_SIGN);
 		dropSelf(SCContent.SECRET_OAK_WALL_SIGN);
+		dropSelf(SCContent.SECRET_PALE_OAK_SIGN);
+		dropSelf(SCContent.SECRET_PALE_OAK_WALL_SIGN);
 		dropSelf(SCContent.SECRET_SPRUCE_SIGN);
 		dropSelf(SCContent.SECRET_SPRUCE_WALL_SIGN);
 		dropSelf(SCContent.SECRET_WARPED_SIGN);

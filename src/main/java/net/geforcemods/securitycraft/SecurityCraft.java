@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
@@ -15,6 +16,7 @@ import com.mojang.logging.LogUtils;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
@@ -30,6 +32,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.commands.SCCommand;
 import net.geforcemods.securitycraft.compat.hudmods.TOPDataProvider;
 import net.geforcemods.securitycraft.items.SCManualItem;
+import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.ConfigAttackTargetCheck;
 import net.geforcemods.securitycraft.misc.PageGroup;
@@ -55,6 +58,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -72,14 +76,18 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 public class SecurityCraft {
 	public static final Logger LOGGER = LogUtils.getLogger();
 	public static final String MODID = "securitycraft";
-	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_WATER_SOURCE_CONVERSION = GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true));
-	public static final GameRules.Key<GameRules.BooleanValue> RULE_FAKE_LAVA_SOURCE_CONVERSION = GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false));
+	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_WATER_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)));
+	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_LAVA_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false)));
 	public static final Random RANDOM = new Random();
 	public static final TicketController CAMERA_TICKET_CONTROLLER = new TicketController(resLoc("camera_chunks"), (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
 		ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {
 			if (level.getEntity(uuid) == null)
 				ticketHelper.removeAllTickets(uuid);
 		}));
+		ticketHelper.getBlockTickets().forEach((pos, chunk) -> {
+			if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getTrackedBlockEntities(level).contains(pos))
+				ticketHelper.removeAllTickets(pos);
+		});
 	});
 
 	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
@@ -104,7 +112,15 @@ public class SecurityCraft {
 	}
 
 	@SubscribeEvent
-	public static void onInterModEnqueue(InterModEnqueueEvent event) { //stage 3
+	public static void onFMLCommonSetup(FMLCommonSetupEvent event) {
+		event.enqueueWork(() -> {
+			RULE_FAKE_WATER_SOURCE_CONVERSION.get();
+			RULE_FAKE_LAVA_SOURCE_CONVERSION.get();
+		});
+	}
+
+	@SubscribeEvent
+	public static void onInterModEnqueue(InterModEnqueueEvent event) {
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, ReinforcedHopperBlock.ExtractionBlock::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_EXTRACTION_BLOCK_MSG, IMSBlock.ExtractionBlock::new);
 		InterModComms.sendTo(SecurityCraft.MODID, SecurityCraftAPI.IMC_PASSCODE_CONVERTIBLE_MSG, KeypadBlock.Convertible::new);
@@ -126,7 +142,7 @@ public class SecurityCraft {
 	}
 
 	@SubscribeEvent
-	public static void onInterModProcess(InterModProcessEvent event) { //stage 4
+	public static void onInterModProcess(InterModProcessEvent event) {
 		IReinforcedCauldronInteraction.bootStrap();
 	}
 

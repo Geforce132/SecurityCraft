@@ -7,8 +7,11 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChiseledBookShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
 public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlockEntity implements IOwnable, IModuleInventory {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
@@ -26,6 +31,13 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 
 	public ReinforcedChiseledBookshelfBlockEntity(BlockPos pos, BlockState state) {
 		super(pos, state);
+	}
+
+	public static IItemHandler getCapability(ReinforcedChiseledBookshelfBlockEntity be, Direction side) {
+		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
+			return new InvWrapper(be);
+		else
+			return new InsertOnlyInvWrapper(be);
 	}
 
 	@Override
