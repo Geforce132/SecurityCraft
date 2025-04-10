@@ -74,7 +74,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 	@Override
 	public void render(FrameBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 viewPos) {
-		Player player = Minecraft.getInstance().player;
+		Minecraft mc = Minecraft.getInstance();
+		Player player = mc.player;
 
 		if (be.isDisabled() || (!be.isOwnedBy(player) && !be.isAllowed(player)) || be.getCameraPositions().isEmpty())
 			return;
@@ -151,13 +152,13 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 					GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", BufferType.VERTICES, BufferUsage.STATIC_WRITE, meshData.vertexBuffer());
 					GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", BufferType.INDICES, BufferUsage.STATIC_WRITE, meshData.indexBuffer());
 
-					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(target.getColorTexture(), OptionalInt.of(0xFFFFFFFF), target.getDepthTexture(), OptionalDouble.empty())) {
+					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(mc.getMainRenderTarget().getColorTexture(), OptionalInt.empty(), target.getDepthTexture(), OptionalDouble.empty())) { //TODO We might need to pass the fog color as the optional int here for correct background rendering; use 1.12.2 as inspiration!
 						pass.setPipeline(FRAME_PIPELINE);
 						pass.setVertexBuffer(0, vertexBuffer);
 						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
 						pass.setUniform("ModelViewMat", pose.last().pose());
-						pass.setUniform("ProjMat", Minecraft.getInstance().gameRenderer.getProjectionMatrix(90.0F));
-						pass.bindSampler("InSampler", RenderSystem.getShaderTexture(0));
+						pass.setUniform("ProjMat", mc.gameRenderer.getProjectionMatrix(90.0F));
+						pass.bindSampler("InSampler", target.getColorTexture());
 						pass.drawIndexed(0, 6);
 					}
 
