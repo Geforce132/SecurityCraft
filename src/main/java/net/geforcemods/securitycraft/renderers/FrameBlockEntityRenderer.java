@@ -66,7 +66,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			.withUniform("ModelViewMat", UniformType.MATRIX4X4)
 			.withUniform("ProjMat", UniformType.MATRIX4X4)
 			.withBlend(BlendFunction.TRANSLUCENT)
-			.withDepthTestFunction(DepthTestFunction.NO_DEPTH_TEST)
+			.withDepthTestFunction(DepthTestFunction.LEQUAL_DEPTH_TEST)
 			.build();
 	//@formatter:on
 
