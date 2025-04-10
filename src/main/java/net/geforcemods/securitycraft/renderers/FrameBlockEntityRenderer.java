@@ -4,6 +4,7 @@ import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import com.mojang.blaze3d.buffers.BufferType;
 import com.mojang.blaze3d.buffers.BufferUsage;
@@ -136,6 +137,9 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			}
 
 			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+			Vector3f backgroundColor = CameraController.getBackgroundColor(target);
+
+			renderOverlay(pose, buffer, (int) (backgroundColor.x * 255.0F), (int) (backgroundColor.y * 255.0F), (int) (backgroundColor.z * 255.0F), 255, xStart, xEnd, zStart, zEnd, margin);
 
 			try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
 				BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -202,13 +206,17 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	private void renderOverlay(PoseStack pose, MultiBufferSource buffer, int color, float xStart, float xEnd, float zStart, float zEnd, float margin) {
+		renderOverlay(pose, buffer, color >> 16 & 255, color >> 8 & 255, color & 255, color >> 24, xStart, xEnd, zStart, zEnd, margin);
+	}
+
+	private void renderOverlay(PoseStack pose, MultiBufferSource buffer, int r, int g, int b, int a, float xStart, float xEnd, float zStart, float zEnd, float margin) {
 		VertexConsumer bufferBuilder = buffer.getBuffer(RenderType.gui());
 		Matrix4f lastPose = pose.last().pose();
 
-		bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setColor(color);
-		bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setColor(color);
-		bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setColor(color);
-		bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setColor(color);
+		bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setColor(r, g, b, a);
+		bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setColor(r, g, b, a);
+		bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setColor(r, g, b, a);
+		bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setColor(r, g, b, a);
 
 		if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 			bufferSource.endBatch();

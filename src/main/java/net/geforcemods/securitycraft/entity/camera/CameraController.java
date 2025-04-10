@@ -11,6 +11,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+import org.apache.commons.lang3.tuple.Pair;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
@@ -82,8 +86,9 @@ public class CameraController {
 	private static int screenshotSoundCooldown = 0;
 	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
+	public static final Map<RenderTarget, Vector3f> FEED_BACKGROUNDS = new ConcurrentHashMap<>();
 	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
-	public static GlobalPos currentlyCapturedCamera;
+	public static Pair<GlobalPos, CameraFeed> currentlyCapturedCamera;
 	public static double lastFrameRendered = 0.0D;
 
 	private CameraController() {}
@@ -283,6 +288,15 @@ public class CameraController {
 
 	public static RenderTarget getViewForFrame(GlobalPos cameraPos) {
 		return FRAME_CAMERA_FEEDS.containsKey(cameraPos) ? FRAME_CAMERA_FEEDS.get(cameraPos).renderTarget : null;
+	}
+
+	public static void storeBackgroundColor(Vector4f backgroundColor) {
+		if (currentlyCapturedCamera != null)
+			FEED_BACKGROUNDS.put(currentlyCapturedCamera.getRight().renderTarget, new Vector3f(backgroundColor.x, backgroundColor.y, backgroundColor.z));
+	}
+
+	public static Vector3f getBackgroundColor(RenderTarget feed) {
+		return FEED_BACKGROUNDS.computeIfAbsent(feed, f -> new Vector3f(0.0F, 0.0F, 0.0F));
 	}
 
 	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {

@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.mixin.camera;
 import java.util.List;
 
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,6 +14,8 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 
@@ -132,5 +135,21 @@ public abstract class LevelRendererMixin {
 			return CameraController.getFrameFeedViewDistance(null) * 16;
 
 		return original;
+	}
+
+	/**
+	 * Minecraft does not specifically render a fog on the entire sky, but only renders it where e.g. a color gradient is
+	 * required and uses the GL background color instead. Since this background (which is controlled by the fog color
+	 * calculations) cannot be captured by the frame feed itself for some reason, the necessary background color is stored here
+	 * to make it accessible to the frame feed renderer, which manually renders the background behind the frame feed.
+	 */
+	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;computeFogColor(Lnet/minecraft/client/Camera;FLnet/minecraft/client/multiplayer/ClientLevel;IF)Lorg/joml/Vector4f;"))
+	private Vector4f setFrameFeedBackgroundColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenAmount, Operation<Vector4f> original) {
+		Vector4f fogColor = original.call(camera, partialTick, level, renderDistance, darkenAmount);
+
+		if (CameraController.currentlyCapturedCamera != null)
+			CameraController.storeBackgroundColor(fogColor);
+
+		return fogColor;
 	}
 }

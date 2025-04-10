@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -265,7 +266,7 @@ public class SCClientEventHandler {
 					mc.setCameraEntity(securityCamera);
 					securityCamera.setXRot(cameraXRot);
 					securityCamera.setYRot(cameraYRot);
-					CameraController.currentlyCapturedCamera = cameraPos;
+					CameraController.currentlyCapturedCamera = Pair.of(cameraPos, feed);
 					mc.levelRenderer.visibleSections.clear();
 					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
 					profiler.push("securitycraft:discover_frame_sections");
