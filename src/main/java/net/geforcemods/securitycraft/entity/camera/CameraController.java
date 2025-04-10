@@ -1,23 +1,8 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-
-import org.apache.commons.lang3.tuple.Pair;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
-import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.pipeline.TextureTarget;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -41,14 +26,11 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.CompiledSection;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
-import net.minecraft.server.level.ChunkTrackingView;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -84,11 +66,8 @@ public class CameraController {
 			return new ViewMovementKeyHandler[0];
 	});
 	private static int screenshotSoundCooldown = 0;
-	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
-	public static final Map<RenderTarget, Vector3f> FEED_BACKGROUNDS = new ConcurrentHashMap<>();
-	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
-	public static Pair<GlobalPos, CameraFeed> currentlyCapturedCamera;
+	public static GlobalPos currentlyCapturedCamera;
 	public static double lastFrameRendered = 0.0D;
 
 	private CameraController() {}
@@ -141,6 +120,8 @@ public class CameraController {
 			if (yRotChange != 0.0D || xRotChange != 0.0D)
 				player.connection.send(new ServerboundMovePlayerPacket.Rot(player.getYRot(), player.getXRot(), player.onGround(), player.horizontalCollision));
 		}
+
+		FRAME_CAMERA_FEEDS.entrySet().removeIf(e -> e.getValue().shouldBeRemoved());
 
 		if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
@@ -243,112 +224,31 @@ public class CameraController {
 		PacketDistributor.sendToServer(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot(), cam.getZoomAmount()));
 	}
 
-	public static boolean isLinked(FrameBlockEntity be, GlobalPos cameraPos) {
-		return FRAME_LINKS.containsKey(cameraPos) && FRAME_LINKS.get(cameraPos).contains(be.getBlockPos());
-	}
-
 	public static void addFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
-		Set<BlockPos> bes = FRAME_LINKS.computeIfAbsent(cameraPos, p -> new HashSet<>());
+		CameraFeed feed = FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::setUpCameraSections);
 
-		bes.add(be.getBlockPos());
-		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::setUpCameraSections);
+		feed.linkFrame(be);
 	}
 
 	private static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
-		int resolution = ConfigHandler.CLIENT.frameFeedResolution.get();
-		BlockPos pos = cameraPos.pos();
-		SectionPos cameraSectionPos = SectionPos.of(pos);
+		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
 		RenderSection startingSection = CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY(), CameraViewAreaExtension.maxSectionY() - 1), cameraSectionPos.z(), true);
-		CameraFeed cameraFeed = new CameraFeed(new TextureTarget("securitycraft:frame", resolution, resolution, true), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 
-		cameraFeed.compilingSectionsQueue.add(startingSection);
-		cameraFeed.sectionsInRange.add(startingSection);
-		cameraFeed.sectionsInRangePositions.add(startingSection.getRenderOrigin().asLong());
-		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(null), cameraFeed);
-		return cameraFeed;
+		return new CameraFeed(cameraPos, startingSection);
 	}
 
 	public static void removeFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
-		if (FRAME_LINKS.containsKey(cameraPos)) {
-			Set<BlockPos> linkedFrames = FRAME_LINKS.get(cameraPos);
-
-			linkedFrames.remove(be.getBlockPos());
-
-			if (linkedFrames.isEmpty())
-				removeAllFrameLinks(cameraPos);
-		}
+		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
+			FRAME_CAMERA_FEEDS.get(cameraPos).unlinkFrame(be);
 	}
 
 	public static void removeAllFrameLinks(GlobalPos cameraPos) {
-		if (FRAME_LINKS.containsKey(cameraPos)) {
-			FRAME_LINKS.remove(cameraPos);
+		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
 			FRAME_CAMERA_FEEDS.remove(cameraPos);
-		}
 	}
 
-	public static RenderTarget getViewForFrame(GlobalPos cameraPos) {
-		return FRAME_CAMERA_FEEDS.containsKey(cameraPos) ? FRAME_CAMERA_FEEDS.get(cameraPos).renderTarget : null;
-	}
-
-	public static void storeBackgroundColor(Vector4f backgroundColor) {
-		if (currentlyCapturedCamera != null)
-			FEED_BACKGROUNDS.put(currentlyCapturedCamera.getRight().renderTarget, new Vector3f(backgroundColor.x, backgroundColor.y, backgroundColor.z));
-	}
-
-	public static Vector3f getBackgroundColor(RenderTarget feed) {
-		return FEED_BACKGROUNDS.computeIfAbsent(feed, f -> new Vector3f(0.0F, 0.0F, 0.0F));
-	}
-
-	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
-		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
-		List<RenderSection> visibleSections = feed.sectionsInRange;
-		List<RenderSection> sectionQueue = feed.compilingSectionsQueue;
-		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
-		Deque<RenderSection> queueToCheck = new ArrayDeque<>(sectionQueue);
-
-		sectionQueue.clear();
-
-		while (!queueToCheck.isEmpty()) {
-			RenderSection currentSection = queueToCheck.poll();
-			BlockPos origin = currentSection.getRenderOrigin();
-			CompiledSection currentCompiledSection = currentSection.getCompiled();
-
-			if (currentCompiledSection == CompiledSection.UNCOMPILED) {
-				sectionQueue.add(currentSection);
-				continue;
-			}
-
-			//Once a section in the queue is compiled, it knows which neighbours it can and cannot see. This information is used to more cleverly determine which chunks the player can actually see
-			for (Direction dir : Direction.values()) {
-				int cx = SectionPos.blockToSectionCoord(origin.getX()) + dir.getStepX();
-				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
-				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getStepZ();
-
-				if (ChunkTrackingView.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz)) {
-					RenderSection neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
-
-					if (neighbourSection != null) {
-						long neighbourPosAsLong = neighbourSection.getRenderOrigin().asLong();
-
-						if (!visibleSectionPositions.contains(neighbourPosAsLong) && canSeeNeighborFace(currentCompiledSection, dir)) {
-							visibleSections.add(neighbourSection); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
-							visibleSectionPositions.add(neighbourSection.getRenderOrigin().asLong());
-							sectionQueue.add(neighbourSection);
-							FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private static boolean canSeeNeighborFace(CompiledSection currentCompiledSection, Direction dir) {
-		for (int j = 0; j < Direction.values().length; j++) {
-			if (currentCompiledSection.facesCanSeeEachother(Direction.values()[j].getOpposite(), dir))
-				return true;
-		}
-
-		return false;
+	public static CameraFeed getCurrentFeed() {
+		return FRAME_CAMERA_FEEDS.get(currentlyCapturedCamera);
 	}
 
 	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
@@ -390,6 +290,4 @@ public class CameraController {
 			}
 		}
 	}
-
-	public record CameraFeed(RenderTarget renderTarget, AtomicDouble lastActiveTime, List<RenderSection> sectionsInRange, Set<Long> sectionsInRangePositions, List<RenderSection> visibleSections, List<RenderSection> compilingSectionsQueue) {}
 }

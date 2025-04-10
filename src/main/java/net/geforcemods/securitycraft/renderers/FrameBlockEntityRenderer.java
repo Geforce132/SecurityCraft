@@ -32,6 +32,7 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -45,6 +46,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -126,54 +128,54 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		}
-		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
-			renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
-			RenderTarget target = CameraController.getViewForFrame(cameraPos);
+		else {
+			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
 
-			if (target == null) {
+			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-				return;
-			}
+			else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+				RenderTarget target = feed.renderTarget();
+				Vector3f backgroundColor = feed.backgroundColor();
 
-			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			Vector3f backgroundColor = CameraController.getBackgroundColor(target);
+				//fog
+				renderOverlay(pose, buffer, ARGB.as8BitChannel(backgroundColor.x), ARGB.as8BitChannel(backgroundColor.y), ARGB.as8BitChannel(backgroundColor.z), 255, xStart, xEnd, zStart, zEnd, margin);
 
-			renderOverlay(pose, buffer, (int) (backgroundColor.x * 255.0F), (int) (backgroundColor.y * 255.0F), (int) (backgroundColor.z * 255.0F), 255, xStart, xEnd, zStart, zEnd, margin);
+				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
+					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-			try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
-				BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+					bufferBuilder.addVertex(pose.last().pose(), xStart, margin, zStart).setUv(1, 0);
+					bufferBuilder.addVertex(pose.last().pose(), xStart, 1 - margin, zStart).setUv(1, 1);
+					bufferBuilder.addVertex(pose.last().pose(), xEnd, 1 - margin, zEnd).setUv(0, 1);
+					bufferBuilder.addVertex(pose.last().pose(), xEnd, margin, zEnd).setUv(0, 0);
 
-				bufferBuilder.addVertex(pose.last().pose(), xStart, margin, zStart).setUv(1, 0);
-				bufferBuilder.addVertex(pose.last().pose(), xStart, 1 - margin, zStart).setUv(1, 1);
-				bufferBuilder.addVertex(pose.last().pose(), xEnd, 1 - margin, zEnd).setUv(0, 1);
-				bufferBuilder.addVertex(pose.last().pose(), xEnd, margin, zEnd).setUv(0, 0);
+					try (MeshData meshData = bufferBuilder.buildOrThrow()) {
+						meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
 
-				try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-					meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
+						GpuDevice device = RenderSystem.getDevice();
+						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", BufferType.VERTICES, BufferUsage.STATIC_WRITE, meshData.vertexBuffer());
+						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", BufferType.INDICES, BufferUsage.STATIC_WRITE, meshData.indexBuffer());
+						RenderTarget mainRenderTarget = mc.getMainRenderTarget();
 
-					GpuDevice device = RenderSystem.getDevice();
-					GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", BufferType.VERTICES, BufferUsage.STATIC_WRITE, meshData.vertexBuffer());
-					GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", BufferType.INDICES, BufferUsage.STATIC_WRITE, meshData.indexBuffer());
-					RenderTarget mainRenderTarget = mc.getMainRenderTarget();
+						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(mainRenderTarget.getColorTexture(), OptionalInt.empty(), mainRenderTarget.getDepthTexture(), OptionalDouble.empty())) {
+							pass.setPipeline(FRAME_PIPELINE);
+							pass.setVertexBuffer(0, vertexBuffer);
+							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
+							pass.setUniform("ModelViewMat", pose.last().pose());
+							pass.setUniform("ProjMat", mc.gameRenderer.getProjectionMatrix(90.0F));
+							pass.bindSampler("InSampler", target.getColorTexture());
+							pass.drawIndexed(0, 6);
+						}
 
-					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(mainRenderTarget.getColorTexture(), OptionalInt.empty(), mainRenderTarget.getDepthTexture(), OptionalDouble.empty())) { //TODO We might need to pass the fog color as the optional int here for correct background rendering; use 1.12.2 as inspiration!
-						pass.setPipeline(FRAME_PIPELINE);
-						pass.setVertexBuffer(0, vertexBuffer);
-						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
-						pass.setUniform("ModelViewMat", pose.last().pose());
-						pass.setUniform("ProjMat", mc.gameRenderer.getProjectionMatrix(90.0F));
-						pass.bindSampler("InSampler", target.getColorTexture());
-						pass.drawIndexed(0, 6);
+						vertexBuffer.close();
+						indexBuffer.close();
 					}
-
-					vertexBuffer.close();
-					indexBuffer.close();
 				}
-			}
 
-			if (lens.has(DataComponents.DYED_COLOR))
-				renderOverlay(pose, buffer, lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
+				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+
+				if (lens.has(DataComponents.DYED_COLOR))
+					renderOverlay(pose, buffer, lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
+			}
 		}
 	}
 
@@ -206,7 +208,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	private void renderOverlay(PoseStack pose, MultiBufferSource buffer, int color, float xStart, float xEnd, float zStart, float zEnd, float margin) {
-		renderOverlay(pose, buffer, color >> 16 & 255, color >> 8 & 255, color & 255, color >> 24, xStart, xEnd, zStart, zEnd, margin);
+		renderOverlay(pose, buffer, ARGB.red(color), ARGB.green(color), ARGB.blue(color), ARGB.alpha(color), xStart, xEnd, zStart, zEnd, margin);
 	}
 
 	private void renderOverlay(PoseStack pose, MultiBufferSource buffer, int r, int g, int b, int a, float xStart, float xEnd, float zStart, float zEnd, float margin) {

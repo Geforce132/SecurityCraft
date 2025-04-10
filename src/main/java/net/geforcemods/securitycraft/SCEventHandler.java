@@ -224,7 +224,6 @@ public class SCEventHandler {
 			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
 		}
 		else if (level.isClientSide()) {
-			CameraController.FRAME_LINKS.clear();
 			CameraController.FRAME_CAMERA_FEEDS.clear();
 			CameraClientChunkCacheExtension.clear();
 			CameraViewAreaExtension.clear();

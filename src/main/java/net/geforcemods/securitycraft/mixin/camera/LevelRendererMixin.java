@@ -148,7 +148,7 @@ public abstract class LevelRendererMixin {
 		Vector4f fogColor = original.call(camera, partialTick, level, renderDistance, darkenAmount);
 
 		if (CameraController.currentlyCapturedCamera != null)
-			CameraController.storeBackgroundColor(fogColor);
+			CameraController.getCurrentFeed().setBackgroundColor(fogColor);
 
 		return fogColor;
 	}
