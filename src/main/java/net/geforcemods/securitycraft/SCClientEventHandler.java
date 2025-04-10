@@ -242,8 +242,6 @@ public class SCClientEventHandler {
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setRenderHand(false);
 		mc.gameRenderer.setPanoramicMode(true);
-		window.setWidth(100);
-		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
 		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
 		mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done

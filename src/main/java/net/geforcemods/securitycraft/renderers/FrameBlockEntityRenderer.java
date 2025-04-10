@@ -151,8 +151,9 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 					GpuDevice device = RenderSystem.getDevice();
 					GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", BufferType.VERTICES, BufferUsage.STATIC_WRITE, meshData.vertexBuffer());
 					GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", BufferType.INDICES, BufferUsage.STATIC_WRITE, meshData.indexBuffer());
+					RenderTarget mainRenderTarget = mc.getMainRenderTarget();
 
-					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(mc.getMainRenderTarget().getColorTexture(), OptionalInt.empty(), target.getDepthTexture(), OptionalDouble.empty())) { //TODO We might need to pass the fog color as the optional int here for correct background rendering; use 1.12.2 as inspiration!
+					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(mainRenderTarget.getColorTexture(), OptionalInt.empty(), mainRenderTarget.getDepthTexture(), OptionalDouble.empty())) { //TODO We might need to pass the fog color as the optional int here for correct background rendering; use 1.12.2 as inspiration!
 						pass.setPipeline(FRAME_PIPELINE);
 						pass.setVertexBuffer(0, vertexBuffer);
 						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
@@ -163,6 +164,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 					}
 
 					vertexBuffer.close();
+					indexBuffer.close();
 				}
 			}
 
