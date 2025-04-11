@@ -63,7 +63,7 @@ public abstract class LevelRendererMixin {
 	 */
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"))
 	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local Frustum frustum) {
-		if (SecurityCraftClient.INSTALLED_IUM_MOD != IumCompat.NONE && !CameraController.FRAME_CAMERA_FEEDS.isEmpty()) {
+		if (SecurityCraftClient.INSTALLED_IUM_MOD != IumCompat.NONE && CameraController.hasFeeds()) {
 			ProfilerFiller profiler = Profiler.get();
 
 			profiler.popPush("cullEntities");
@@ -97,7 +97,7 @@ public abstract class LevelRendererMixin {
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
-		if (CameraController.currentlyCapturedCamera != null && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
+		if (CameraController.isCapturingCamera() && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
 			ci.cancel();
 	}
 
@@ -115,7 +115,7 @@ public abstract class LevelRendererMixin {
 	 */
 	@Inject(method = "isSectionCompiled", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		if (CameraController.currentlyCapturedCamera != null) {
+		if (CameraController.isCapturingCamera()) {
 			SectionPos sectionPos = SectionPos.of(pos);
 			SectionRenderDispatcher.RenderSection renderSection = CameraViewAreaExtension.rawFetch(sectionPos.x(), sectionPos.y(), sectionPos.z(), false);
 
@@ -131,7 +131,7 @@ public abstract class LevelRendererMixin {
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;computeFogColor(Lnet/minecraft/client/Camera;FLnet/minecraft/client/multiplayer/ClientLevel;IF)Lorg/joml/Vector4f;"), ordinal = 1)
 	private float securitycraft$modifyFogRenderDistance(float original) {
-		if (CameraController.currentlyCapturedCamera != null)
+		if (CameraController.isCapturingCamera())
 			return CameraController.getFrameFeedViewDistance(null) * 16;
 
 		return original;
@@ -147,8 +147,8 @@ public abstract class LevelRendererMixin {
 	private Vector4f setFrameFeedBackgroundColor(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenAmount, Operation<Vector4f> original) {
 		Vector4f fogColor = original.call(camera, partialTick, level, renderDistance, darkenAmount);
 
-		if (CameraController.currentlyCapturedCamera != null)
-			CameraController.getCurrentFeed().setBackgroundColor(fogColor);
+		if (CameraController.isCapturingCamera())
+			CameraController.getCurrentlyCapturedFeed().setBackgroundColor(fogColor);
 
 		return fogColor;
 	}

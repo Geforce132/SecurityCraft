@@ -129,11 +129,11 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		}
 		else {
-			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
+			CameraFeed feed = CameraController.getFeed(cameraPos);
 
 			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+			else if (!CameraController.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				RenderTarget target = feed.renderTarget();
 				Vector3f backgroundColor = feed.backgroundColor();
 
