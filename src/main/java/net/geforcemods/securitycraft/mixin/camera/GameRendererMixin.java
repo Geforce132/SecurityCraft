@@ -15,7 +15,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.Window;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -69,7 +69,7 @@ public class GameRendererMixin {
 	 */
 	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
 	private float securitycraft$disableFeedDistortion(float delta, float start, float end, Operation<Float> original) {
-		if (CameraController.isCapturingCamera())
+		if (FrameFeedHandler.isCapturingCamera())
 			return 0.0F;
 		else
 			return original.call(delta, start, end);
