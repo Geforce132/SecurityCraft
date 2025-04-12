@@ -36,7 +36,6 @@ import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.KeycardHolderMenu;
@@ -235,6 +234,7 @@ public class ClientHandler {
 		leftArm.xRot = rightArm.xRot = -1.5F;
 	});
 	public static final ResourceLocation LINKING_STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "linking_state");
+	private static ShaderInstance frameFeedShader;
 
 	private ClientHandler() {}
 
@@ -538,6 +538,20 @@ public class ClientHandler {
 		event.registerSpriteSet(SCContent.INTERFACE_HIGHLIGHT.get(), InterfaceHighlightParticle.Provider::new);
 	}
 
+	@SubscribeEvent
+	public static void onRegisterShaders(RegisterShadersEvent event) {
+		ShaderInstance shader;
+
+		try {
+			shader = new ShaderInstance(event.getResourceProvider(), new ResourceLocation(SecurityCraft.MODID, "frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX);
+		}
+		catch (IOException e) {
+			throw new IllegalStateException("Camera feed shader does not exist", e);
+		}
+
+		event.registerShader(shader, loadedShader -> frameFeedShader = loadedShader);
+	}
+
 	private static void initTint() {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Reinforced.class)) {
@@ -732,20 +746,6 @@ public class ClientHandler {
 		return tintReinforcedBlocks ? FastColor.ARGB32.multiply(tint, ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
 	}
 
-	@SubscribeEvent
-	public static void onRegisterShaders(RegisterShadersEvent event) {
-		ShaderInstance shader;
-
-		try {
-			shader = new ShaderInstance(event.getResourceProvider(), new ResourceLocation(SecurityCraft.MODID, "frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX);
-		}
-		catch (IOException e) {
-			throw new IllegalStateException("Camera feed shader does not exist", e);
-		}
-
-		event.registerShader(shader, loadedShader -> CameraController.cameraMonitorShader = loadedShader);
-	}
-
 	public static Player getClientPlayer() {
 		return Minecraft.getInstance().player;
 	}
@@ -902,5 +902,9 @@ public class ClientHandler {
 		}
 
 		return NOT_LINKED_STATE;
+	}
+
+	public static ShaderInstance getFrameFeedShader() {
+		return frameFeedShader;
 	}
 }
