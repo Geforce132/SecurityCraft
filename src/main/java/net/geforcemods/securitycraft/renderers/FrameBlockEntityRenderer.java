@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -107,43 +108,42 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		}
-		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
-			renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
-			RenderTarget target = CameraController.getViewForFrame(cameraPos);
+		else {
+			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
 
-			if (target == null) {
+			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-				return;
+			else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+				RenderTarget target = feed.renderTarget();
+				ShaderInstance shader = CameraController.cameraMonitorShader;
+				VertexConsumer bufferBuilder;
+				Matrix4f lastPose;
+
+				shader.setSampler("DiffuseSampler", target.getColorTextureId());
+
+				if (shader.MODEL_VIEW_MATRIX != null)
+					shader.MODEL_VIEW_MATRIX.set(pose.last().pose());
+
+				if (shader.PROJECTION_MATRIX != null)
+					shader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
+
+				shader.apply();
+				lastPose = pose.last().pose();
+				bufferBuilder = buffer.getBuffer(CAMERA_IN_FRAME_RENDER_TYPE);
+				bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setUv(1, 0).setColor(0xFFFFFF);
+				bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setUv(1, 1).setColor(0xFFFFFF);
+				bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setUv(0, 1).setColor(0xFFFFFF);
+				bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setUv(0, 0).setColor(0xFFFFFF);
+				shader.clear();
+
+				if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
+					bufferSource.endBatch();
+
+				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+
+				if (lens.has(DataComponents.DYED_COLOR))
+					renderOverlay(pose, buffer, lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
 			}
-
-			ShaderInstance shader = CameraController.cameraMonitorShader;
-			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			VertexConsumer bufferBuilder;
-			Matrix4f lastPose;
-
-			shader.setSampler("DiffuseSampler", target.getColorTextureId());
-
-			if (shader.MODEL_VIEW_MATRIX != null)
-				shader.MODEL_VIEW_MATRIX.set(pose.last().pose());
-
-			if (shader.PROJECTION_MATRIX != null)
-				shader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
-
-			shader.apply();
-			lastPose = pose.last().pose();
-			bufferBuilder = buffer.getBuffer(CAMERA_IN_FRAME_RENDER_TYPE);
-			bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setUv(1, 0).setColor(0xFFFFFF);
-			bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setUv(1, 1).setColor(0xFFFFFF);
-			bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setUv(0, 1).setColor(0xFFFFFF);
-			bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setUv(0, 0).setColor(0xFFFFFF);
-			shader.clear();
-
-			if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
-				bufferSource.endBatch();
-
-			if (lens.has(DataComponents.DYED_COLOR))
-				renderOverlay(pose, buffer, lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
 		}
 	}
 
