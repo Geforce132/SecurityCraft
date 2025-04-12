@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
 
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Minecraft;
 
 /**
@@ -19,7 +19,7 @@ public class RenderTargetMixin {
 	@SuppressWarnings("unlikely-arg-type")
 	@Inject(method = "bindWrite", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$cancelUnwantedBinding(boolean setViewport, CallbackInfo ci) {
-		if (CameraController.isCapturingCamera() && equals(Minecraft.getInstance().getMainRenderTarget()))
+		if (FrameFeedHandler.isCapturingCamera() && equals(Minecraft.getInstance().getMainRenderTarget()))
 			ci.cancel();
 	}
 }
