@@ -469,6 +469,14 @@ public class ClientHandler {
 	}
 
 	@SubscribeEvent
+	public static void onRegisterShaders(RegisterShadersEvent event) {
+		ShaderProgram shader = new ShaderProgram(SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX, ShaderDefines.EMPTY);
+
+		CameraController.cameraMonitorShader = shader;
+		event.registerShader(shader);
+	}
+
+	@SubscribeEvent
 	public static void onRegisterClientExtensions(RegisterClientExtensionsEvent event) {
 		BlockEntityWithoutLevelRenderer displayCaseItemRenderer = new DisplayCaseItemRenderer(false);
 		BlockEntityWithoutLevelRenderer glowDisplayCaseItemRenderer = new DisplayCaseItemRenderer(true);
@@ -684,14 +692,6 @@ public class ClientHandler {
 			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
 
 		return tintReinforcedBlocks ? ARGB.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
-	}
-
-	@SubscribeEvent
-	public static void onRegisterShaders(RegisterShadersEvent event) {
-		ShaderProgram shader = new ShaderProgram(SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX, ShaderDefines.EMPTY);
-
-		CameraController.cameraMonitorShader = shader;
-		event.registerShader(shader);
 	}
 
 	public static Player getClientPlayer() {
