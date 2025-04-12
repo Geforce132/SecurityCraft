@@ -17,7 +17,6 @@ import net.geforcemods.securitycraft.misc.IChunkStorageProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
@@ -47,13 +46,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
 
-		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1))
+		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1) || CameraController.shouldAddChunk(pos, renderDistance))
 			return;
-
-		for (GlobalPos cameraPos : CameraController.FRAME_CAMERA_FEEDS.keySet()) {
-			if (pos.getChessboardDistance(new ChunkPos(cameraPos.pos())) <= (renderDistance + 1))
-				return;
-		}
 
 		CameraClientChunkCacheExtension.drop(level, pos);
 	}
@@ -72,14 +66,8 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 
 		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1))
 			shouldAddChunk = true;
-		else {
-			for (GlobalPos cameraPos : CameraController.FRAME_CAMERA_FEEDS.keySet()) {
-				if (pos.getChessboardDistance(new ChunkPos(cameraPos.pos())) <= (renderDistance + 1)) {
-					shouldAddChunk = true;
-					break;
-				}
-			}
-		}
+		else
+			shouldAddChunk = CameraController.shouldAddChunk(pos, renderDistance);
 
 		if (shouldAddChunk) {
 			LevelChunk newChunk = CameraClientChunkCacheExtension.replaceWithPacketData(level, x, z, new FriendlyByteBuf(buffer.copy()), chunkTag, tagOutputConsumer);

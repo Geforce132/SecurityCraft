@@ -69,7 +69,7 @@ public class GameRendererMixin {
 	 */
 	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
 	private float securitycraft$disableFeedDistortion(float delta, float start, float end, Operation<Float> original) {
-		if (CameraController.currentlyCapturedCamera != null)
+		if (CameraController.isCapturingCamera())
 			return 0.0F;
 		else
 			return original.call(delta, start, end);
