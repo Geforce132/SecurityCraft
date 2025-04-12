@@ -19,7 +19,7 @@ public class RenderTargetMixin {
 	@SuppressWarnings("unlikely-arg-type")
 	@Inject(method = "bindWrite", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$cancelUnwantedBinding(boolean setViewport, CallbackInfo ci) {
-		if (CameraController.currentlyCapturedCamera != null && equals(Minecraft.getInstance().getMainRenderTarget()))
+		if (CameraController.isCapturingCamera() && equals(Minecraft.getInstance().getMainRenderTarget()))
 			ci.cancel();
 	}
 }

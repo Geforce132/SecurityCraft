@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -173,40 +171,17 @@ public class SCClientEventHandler {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 
-		if (player == null || player.connection.getLevel() == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+		if (player == null || player.connection.getLevel() == null || !CameraController.hasFeeds() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
 		ProfilerFiller profiler = Profiler.get();
-		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
-		List<GlobalPos> erroringFrameCameraFeeds = new ArrayList<>();
-		//+1 helps to reduce stuttering when many frames are active at once
-		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1;
-		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
 		double currentTime = GLFW.glfwGetTime();
-		double frameInterval = 1.0D / fpsCap;
-		double activeFramesPerMcFrame = Mth.ceil((fpsCap * feedsToRender) / mc.getFps());
-
-		if (fpsCap < 260.0D) {
-			activeFrameCameraFeeds = new HashMap<>();
-
-			for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
-				double timeBetweenFrames = frameInterval / feedsToRender;
-				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
-
-				if (currentTime < lastActiveTime + frameInterval || currentTime < CameraController.lastFrameRendered + timeBetweenFrames || activeFramesPerMcFrame-- <= 0)
-					continue;
-
-				cameraView.getValue().lastActiveTime().set(currentTime);
-				activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
-			}
-		}
-		else
-			activeFrameCameraFeeds = CameraController.FRAME_CAMERA_FEEDS;
+		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = CameraController.getFeedsToRender(mc, currentTime);
 
 		if (activeFrameCameraFeeds.isEmpty())
 			return;
 
-		CameraController.lastFrameRendered = currentTime;
+		CameraController.setLastFrameRendered(currentTime);
 		profiler.push("gameRenderer");
 		profiler.push("securitycraft:frame_level");
 
@@ -265,7 +240,7 @@ public class SCClientEventHandler {
 					mc.setCameraEntity(securityCamera);
 					securityCamera.setXRot(cameraXRot);
 					securityCamera.setYRot(cameraYRot);
-					CameraController.currentlyCapturedCamera = cameraPos;
+					CameraController.markAsCapturedCamera(cameraPos);
 					feed.applyVisibleSections(mc.levelRenderer.visibleSections);
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
@@ -280,7 +255,7 @@ public class SCClientEventHandler {
 					catch (Exception e) {
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
 						e.printStackTrace();
-						erroringFrameCameraFeeds.add(cameraPos);
+						feed.markForRemoval();
 					}
 
 					frameTarget.unbindWrite();
@@ -318,14 +293,10 @@ public class SCClientEventHandler {
 		mc.gameRenderer.setRenderHand(true);
 		mc.gameRenderer.setPanoramicMode(false);
 		mc.getMainRenderTarget().bindWrite(true);
-		CameraController.currentlyCapturedCamera = null;
+		CameraController.markAsCapturedCamera(null);
 
 		profiler.pop();
 		profiler.pop();
-
-		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
-			CameraController.removeAllFrameLinks(erroringFeed);
-		}
 	}
 
 	@SubscribeEvent

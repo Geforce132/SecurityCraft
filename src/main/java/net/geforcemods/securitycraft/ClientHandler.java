@@ -31,7 +31,6 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.components.SavedBlockState;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.properties.BlockLinked;
@@ -244,6 +243,7 @@ public class ClientHandler {
 		rightArm.yRot = -0.5F;
 		leftArm.xRot = rightArm.xRot = -1.5F;
 	});
+	public static ShaderProgram cameraMonitorShader;
 
 	private ClientHandler() {}
 
@@ -462,10 +462,8 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onRegisterShaders(RegisterShadersEvent event) {
-		ShaderProgram shader = new ShaderProgram(SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX, ShaderDefines.EMPTY);
-
-		CameraController.cameraMonitorShader = shader;
-		event.registerShader(shader);
+		cameraMonitorShader = new ShaderProgram(SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX, ShaderDefines.EMPTY);
+		event.registerShader(cameraMonitorShader);
 	}
 
 	@SubscribeEvent
@@ -753,5 +751,9 @@ public class ClientHandler {
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
+	}
+
+	public static ShaderProgram getCameraMonitorShader() {
+		return cameraMonitorShader;
 	}
 }
