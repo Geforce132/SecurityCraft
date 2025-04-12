@@ -10,6 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
@@ -50,7 +51,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			1536,
 			RenderType.CompositeState
 				.builder()
-				.setShaderState(new RenderStateShard.ShaderStateShard(() -> CameraController.cameraMonitorShader))
+				.setShaderState(new RenderStateShard.ShaderStateShard(ClientHandler::getFrameFeedShader))
 				.createCompositeState(false));
 	//@formatter:on
 
@@ -109,13 +110,13 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		}
 		else {
-			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
+			CameraFeed feed = CameraController.getFeed(cameraPos);
 
 			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+			else if (!CameraController.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				RenderTarget target = feed.renderTarget();
-				ShaderInstance shader = CameraController.cameraMonitorShader;
+				ShaderInstance shader = ClientHandler.getFrameFeedShader();
 				VertexConsumer bufferBuilder;
 				Matrix4f lastPose;
 

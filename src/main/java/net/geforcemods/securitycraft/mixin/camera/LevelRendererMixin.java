@@ -53,7 +53,7 @@ public class LevelRendererMixin {
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
-		if (CameraController.currentlyCapturedCamera != null && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
+		if (CameraController.isCapturingCamera() && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
 			ci.cancel();
 	}
 
@@ -71,7 +71,7 @@ public class LevelRendererMixin {
 	 */
 	@Inject(method = "isSectionCompiled", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		if (CameraController.currentlyCapturedCamera != null) {
+		if (CameraController.isCapturingCamera()) {
 			SectionPos sectionPos = SectionPos.of(pos);
 			SectionRenderDispatcher.RenderSection renderSection = CameraViewAreaExtension.rawFetch(sectionPos.x(), sectionPos.y(), sectionPos.z(), false);
 
@@ -87,7 +87,7 @@ public class LevelRendererMixin {
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;setupColor(Lnet/minecraft/client/Camera;FLnet/minecraft/client/multiplayer/ClientLevel;IF)V"), ordinal = 1)
 	private float securitycraft$modifyFogRenderDistance(float original) {
-		if (CameraController.currentlyCapturedCamera != null)
+		if (CameraController.isCapturingCamera())
 			return CameraController.getFrameFeedViewDistance(null) * 16;
 
 		return original;

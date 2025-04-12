@@ -141,6 +141,10 @@ public class CameraFeed {
 		return linkedFrames.contains(be.getBlockPos());
 	}
 
+	public void markForRemoval() {
+		linkedFrames.clear();
+	}
+
 	public boolean shouldBeRemoved() {
 		return linkedFrames.isEmpty();
 	}
