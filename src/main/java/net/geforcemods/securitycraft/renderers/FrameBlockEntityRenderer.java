@@ -52,7 +52,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			1536,
 			RenderType.CompositeState
 				.builder()
-				.setShaderState(new RenderStateShard.ShaderStateShard(ClientHandler.getCameraMonitorShader()))
+				.setShaderState(new RenderStateShard.ShaderStateShard(ClientHandler.getFrameFeedShader()))
 				.createCompositeState(false));
 	//@formatter:on
 
@@ -117,7 +117,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				RenderTarget target = feed.renderTarget();
-				ShaderProgram shader = ClientHandler.getCameraMonitorShader();
+				ShaderProgram shader = ClientHandler.getFrameFeedShader();
 				VertexConsumer bufferBuilder;
 				Matrix4f lastPose;
 				CompiledShaderProgram compiledShader = RenderSystem.setShader(shader);
