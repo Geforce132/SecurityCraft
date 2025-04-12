@@ -22,7 +22,7 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.entity.camera.CameraController.CameraFeed;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
@@ -41,7 +41,6 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
-import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -67,7 +66,6 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -253,10 +251,11 @@ public class SCClientEventHandler {
 				BlockPos pos = cameraPos.pos();
 
 				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
-					if (!isFrameInFrustum(cameraPos, playerFrustum))
+					CameraFeed feed = cameraView.getValue();
+
+					if (!feed.hasFrameInFrustum(playerFrustum))
 						continue;
 
-					CameraFeed feed = cameraView.getValue();
 					RenderTarget frameTarget = feed.renderTarget();
 					Vec3 cameraEntityPos = new Vec3(pos.getX() + 0.5D, pos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, pos.getZ() + 0.5D);
 					float cameraXRot = be.getDefaultXRotation();
@@ -267,10 +266,9 @@ public class SCClientEventHandler {
 					securityCamera.setXRot(cameraXRot);
 					securityCamera.setYRot(cameraYRot);
 					CameraController.currentlyCapturedCamera = cameraPos;
-					mc.levelRenderer.visibleSections.clear();
-					mc.levelRenderer.visibleSections.addAll(feed.visibleSections());
+					feed.applyVisibleSections(mc.levelRenderer.visibleSections);
 					profiler.push("securitycraft:discover_frame_sections");
-					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
+					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
 					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear();
 					frameTarget.bindWrite(true);
@@ -290,15 +288,8 @@ public class SCClientEventHandler {
 
 					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
 
-					if (be.shouldRotate() || feed.visibleSections().isEmpty() || CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.contains(cameraPos)) {
-						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.remove(cameraPos);
-						feed.visibleSections().clear();
-
-						for (RenderSection section : feed.sectionsInRange()) {
-							if (frustum.isVisible(section.getBoundingBox()))
-								feed.visibleSections().add(section);
-						}
-					}
+					if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
+						feed.updateVisibleSections(frustum);
 
 					profiler.pop();
 				}
@@ -335,15 +326,6 @@ public class SCClientEventHandler {
 		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
 			CameraController.removeAllFrameLinks(erroringFeed);
 		}
-	}
-
-	private static boolean isFrameInFrustum(GlobalPos cameraPos, Frustum beFrustum) {
-		for (BlockPos framePos : CameraController.FRAME_LINKS.get(cameraPos)) {
-			if (beFrustum.isVisible(new AABB(framePos)))
-				return true;
-		}
-
-		return false;
 	}
 
 	@SubscribeEvent
