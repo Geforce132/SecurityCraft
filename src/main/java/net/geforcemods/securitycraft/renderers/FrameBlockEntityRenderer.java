@@ -15,8 +15,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraFeed;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -112,11 +112,11 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		}
 		else {
-			CameraFeed feed = CameraController.getFeed(cameraPos);
+			CameraFeed feed = FrameFeedHandler.getFeed(cameraPos);
 
 			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			else if (!CameraController.isCapturingCamera()) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+			else if (!FrameFeedHandler.isCapturingCamera()) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
 				RenderTarget target = feed.renderTarget();
 				ShaderInstance shader = ClientHandler.getFrameFeedShader();
 				VertexConsumer bufferBuilder;
