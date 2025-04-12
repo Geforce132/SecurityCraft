@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.IChunkStorageProvider;
 import net.minecraft.client.Minecraft;
@@ -26,7 +26,7 @@ import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.chunk.LevelChunk;
 
 /**
- * These mixins aim at implementing the camera chunk storage from CameraController into all the places
+ * These mixins aim at implementing the camera chunk storage from FrameFeedHandler into all the places
  * ClientChunkCache#storage is used
  */
 @Mixin(value = ClientChunkCache.class, priority = 1100)
@@ -46,7 +46,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
 
-		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1) || CameraController.shouldAddChunk(pos, renderDistance))
+		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1) || FrameFeedHandler.shouldAddChunk(pos, renderDistance))
 			return;
 
 		CameraClientChunkCacheExtension.drop(level, pos);
@@ -67,7 +67,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1))
 			shouldAddChunk = true;
 		else
-			shouldAddChunk = CameraController.shouldAddChunk(pos, renderDistance);
+			shouldAddChunk = FrameFeedHandler.shouldAddChunk(pos, renderDistance);
 
 		if (shouldAddChunk) {
 			LevelChunk newChunk = CameraClientChunkCacheExtension.replaceWithPacketData(level, x, z, new FriendlyByteBuf(buffer.copy()), chunkTag, tagOutputConsumer);

@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.SyncFrame;
@@ -81,7 +81,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			if (!level.isClientSide)
 				switchCameras(null, null, 0, false);
 			else if (clientInteracted)
-				PacketDistributor.SERVER.noArg().send(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
+				PacketDistributor.SERVER.noArg().send(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
 		}
 	}
 
@@ -182,11 +182,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 				removeCamera(cameraPos);
 
 				if (cameraPos == currentCameraPosition) {
-					CameraController.removeFrameLink(currentCameraPosition, this);
+					FrameFeedHandler.removeFrameLink(currentCameraPosition, this);
 					currentCameraPosition = null;
 				}
 
-				PacketDistributor.SERVER.noArg().send(new SyncFrame(getBlockPos(), CameraController.getFrameFeedViewDistance(this), Optional.of(cameraPos), Optional.ofNullable(currentCameraPosition), false));
+				PacketDistributor.SERVER.noArg().send(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.of(cameraPos), Optional.ofNullable(currentCameraPosition), false));
 			}
 		}
 	}
@@ -210,7 +210,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	public void setCurrentCameraAndUpdate(GlobalPos camera) {
-		int requestedRenderDistance = CameraController.getFrameFeedViewDistance(this);
+		int requestedRenderDistance = FrameFeedHandler.getFrameFeedViewDistance(this);
 
 		switchCameras(camera, null, requestedRenderDistance, false);
 		PacketDistributor.SERVER.noArg().send(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
@@ -245,10 +245,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		}
 		else {
 			if (previousCameraPos != null)
-				CameraController.removeFrameLink(previousCameraPos, this);
+				FrameFeedHandler.removeFrameLink(previousCameraPos, this);
 
 			if (newCameraPos != null && !disableNewCamera) {
-				CameraController.addFrameLink(this, newCameraPos);
+				FrameFeedHandler.addFrameLink(this, newCameraPos);
 				clientInteracted = true;
 			}
 			else if (disableNewCamera)
