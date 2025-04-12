@@ -249,7 +249,7 @@ public class ClientHandler {
 		leftArm.xRot = rightArm.xRot = -1.5F;
 	});
 	public static final ResourceLocation LINKING_STATE_PROPERTY = SecurityCraft.resLoc("linking_state");
-	public static ShaderProgram cameraMonitorShader;
+	private static ShaderProgram frameFeedShader;
 
 	private ClientHandler() {}
 
@@ -470,8 +470,8 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onRegisterShaders(RegisterShadersEvent event) {
-		cameraMonitorShader = new ShaderProgram(SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX, ShaderDefines.EMPTY);
-		event.registerShader(cameraMonitorShader);
+		frameFeedShader = new ShaderProgram(SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX, ShaderDefines.EMPTY);
+		event.registerShader(frameFeedShader);
 	}
 
 	@SubscribeEvent
@@ -812,7 +812,7 @@ public class ClientHandler {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
 	}
 
-	public static ShaderProgram getCameraMonitorShader() {
-		return cameraMonitorShader;
+	public static ShaderProgram getFrameFeedShader() {
+		return frameFeedShader;
 	}
 }
