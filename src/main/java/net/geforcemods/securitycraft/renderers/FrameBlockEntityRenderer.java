@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -109,43 +110,42 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		}
-		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
-			renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
-			RenderTarget target = CameraController.getViewForFrame(cameraPos);
+		else {
+			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
 
-			if (target == null) {
+			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-				return;
+			else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+				RenderTarget target = feed.renderTarget();
+				ShaderInstance shader = CameraController.cameraMonitorShader;
+				VertexConsumer bufferBuilder;
+				Matrix4f lastPose;
+
+				shader.setSampler("DiffuseSampler", target.getColorTextureId());
+
+				if (shader.MODEL_VIEW_MATRIX != null)
+					shader.MODEL_VIEW_MATRIX.set(pose.last().pose());
+
+				if (shader.PROJECTION_MATRIX != null)
+					shader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
+
+				shader.apply();
+				lastPose = pose.last().pose();
+				bufferBuilder = buffer.getBuffer(CAMERA_IN_FRAME_RENDER_TYPE);
+				bufferBuilder.vertex(lastPose, xStart, margin, zStart).uv(1, 0).color(0xFFFFFF).endVertex();
+				bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).uv(1, 1).color(0xFFFFFF).endVertex();
+				bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).uv(0, 1).color(0xFFFFFF).endVertex();
+				bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).uv(0, 0).color(0xFFFFFF).endVertex();
+				shader.clear();
+
+				if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
+					bufferSource.endBatch();
+
+				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+
+				if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens))
+					renderOverlay(pose, buffer, item.getColor(lens) + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
 			}
-
-			ShaderInstance shader = CameraController.cameraMonitorShader;
-			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			VertexConsumer bufferBuilder;
-			Matrix4f lastPose;
-
-			shader.setSampler("DiffuseSampler", target.getColorTextureId());
-
-			if (shader.MODEL_VIEW_MATRIX != null)
-				shader.MODEL_VIEW_MATRIX.set(pose.last().pose());
-
-			if (shader.PROJECTION_MATRIX != null)
-				shader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
-
-			shader.apply();
-			lastPose = pose.last().pose();
-			bufferBuilder = buffer.getBuffer(CAMERA_IN_FRAME_RENDER_TYPE);
-			bufferBuilder.vertex(lastPose, xStart, margin, zStart).uv(1, 0).color(0xFFFFFF).endVertex();
-			bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).uv(1, 1).color(0xFFFFFF).endVertex();
-			bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).uv(0, 1).color(0xFFFFFF).endVertex();
-			bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).uv(0, 0).color(0xFFFFFF).endVertex();
-			shader.clear();
-
-			if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
-				bufferSource.endBatch();
-
-			if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens))
-				renderOverlay(pose, buffer, item.getColor(lens) + (cameraBlockEntity.getOpacity() << 24), xStart, xEnd, zStart, zEnd, margin);
 		}
 	}
 
