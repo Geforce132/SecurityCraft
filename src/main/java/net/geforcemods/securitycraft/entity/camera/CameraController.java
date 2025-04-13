@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -204,12 +203,6 @@ public class CameraController {
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
 		SecurityCraft.CHANNEL.sendToServer(new SetDefaultCameraViewingDirection(cam));
-	}
-
-	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
-		int frameSpecificRenderDistance = be == null ? 32 : be.getChunkLoadingDistanceOption();
-
-		return Math.min(frameSpecificRenderDistance, Math.min(ConfigHandler.CLIENT.frameFeedRenderDistance.get(), Math.min(ConfigHandler.SERVER.frameFeedViewDistance.get(), Minecraft.getInstance().options.getEffectiveRenderDistance())));
 	}
 
 	public static float getMovementSpeed(SecurityCamera cam) {
