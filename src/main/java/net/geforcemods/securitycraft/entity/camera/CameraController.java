@@ -1,9 +1,5 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -28,16 +24,11 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer.RenderChunkInfo;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.GlobalPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ScreenshotEvent;
@@ -68,9 +59,6 @@ public class CameraController {
 			return new ViewMovementKeyHandler[0];
 	});
 	private static int screenshotSoundCooldown = 0;
-	private static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
-	private static GlobalPos currentlyCapturedCamera;
-	private static double lastFrameRendered = 0.0D;
 
 	private CameraController() {}
 
@@ -125,9 +113,6 @@ public class CameraController {
 			OverlayToggleHandler.enable(VanillaGuiOverlay.EXPERIENCE_BAR);
 			OverlayToggleHandler.enable(VanillaGuiOverlay.POTION_ICONS);
 		}
-
-		if (event.phase == Phase.END)
-			FRAME_CAMERA_FEEDS.entrySet().removeIf(e -> e.getValue().shouldBeRemoved());
 	}
 
 	@SubscribeEvent
@@ -219,101 +204,6 @@ public class CameraController {
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
 		SecurityCraft.CHANNEL.sendToServer(new SetDefaultCameraViewingDirection(cam));
-	}
-
-	public static void markAsCapturedCamera(GlobalPos cameraPos) {
-		currentlyCapturedCamera = cameraPos;
-	}
-
-	public static Map<GlobalPos, CameraFeed> getFeedsToRender(Minecraft mc, double currentTime) {
-		//+1 helps to reduce stuttering when many frames are active at once
-		double feedsToRender = FRAME_CAMERA_FEEDS.size() + 1;
-		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
-		double frameInterval = 1.0D / fpsCap;
-		double activeFramesPerMcFrame = Mth.ceil((fpsCap * feedsToRender) / mc.getFps());
-
-		if (fpsCap < 260.0D) {
-			Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = new HashMap<>();
-
-			for (Entry<GlobalPos, CameraFeed> cameraView : FRAME_CAMERA_FEEDS.entrySet()) {
-				double timeBetweenFrames = frameInterval / feedsToRender;
-				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
-
-				if (currentTime < lastActiveTime + frameInterval || currentTime < lastFrameRendered + timeBetweenFrames || activeFramesPerMcFrame-- <= 0)
-					continue;
-
-				cameraView.getValue().lastActiveTime().set(currentTime);
-				activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
-			}
-
-			return activeFrameCameraFeeds;
-		}
-		else
-			return FRAME_CAMERA_FEEDS;
-	}
-
-	public static void addFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
-		CameraFeed feed = FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::createFeedForCamera);
-
-		feed.linkFrame(be);
-	}
-
-	private static CameraFeed createFeedForCamera(GlobalPos cameraPos) {
-		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
-		RenderChunkInfo startingSection = new RenderChunkInfo(CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY(), CameraViewAreaExtension.maxSectionY() - 1), cameraSectionPos.z(), true), null, 0);
-
-		return new CameraFeed(cameraPos, startingSection);
-	}
-
-	public static void removeFrameLink(GlobalPos cameraPos, FrameBlockEntity be) {
-		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
-			FRAME_CAMERA_FEEDS.get(cameraPos).unlinkFrame(be);
-	}
-
-	public static void removeAllFrameLinks(GlobalPos cameraPos) {
-		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
-			FRAME_CAMERA_FEEDS.remove(cameraPos);
-	}
-
-	public static boolean isCapturingCamera() {
-		return currentlyCapturedCamera != null;
-	}
-
-	public static boolean amIBeingCaptured(SecurityCameraBlockEntity be) {
-		return isCapturingCamera() && currentlyCapturedCamera.pos().equals(be.getBlockPos());
-	}
-
-	public static boolean shouldAddChunk(ChunkPos pos, int renderDistance) {
-		for (GlobalPos cameraPos : CameraController.FRAME_CAMERA_FEEDS.keySet()) {
-			if (pos.getChessboardDistance(new ChunkPos(cameraPos.pos())) <= (renderDistance + 1))
-				return true;
-		}
-
-		return false;
-	}
-
-	public static boolean hasFeeds() {
-		return !FRAME_CAMERA_FEEDS.isEmpty();
-	}
-
-	public static boolean hasFeed(GlobalPos cameraPos) {
-		return FRAME_CAMERA_FEEDS.containsKey(cameraPos);
-	}
-
-	public static CameraFeed getFeed(GlobalPos cameraPos) {
-		return FRAME_CAMERA_FEEDS.get(cameraPos);
-	}
-
-	public static void removeAllFeeds() {
-		FRAME_CAMERA_FEEDS.clear();
-	}
-
-	public static CameraFeed getCurrentlyCapturedFeed() {
-		return getFeed(currentlyCapturedCamera);
-	}
-
-	public static void setLastFrameRendered(double lastFrameRendered) {
-		CameraController.lastFrameRendered = lastFrameRendered;
 	}
 
 	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
