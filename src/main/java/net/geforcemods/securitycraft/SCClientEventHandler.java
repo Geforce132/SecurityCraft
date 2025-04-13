@@ -1,25 +1,17 @@
 package net.geforcemods.securitycraft;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -32,27 +24,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.culling.ClippingHelper;
-import net.minecraft.client.settings.GraphicsFanciness;
-import net.minecraft.client.settings.PointOfView;
 import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.client.shader.ShaderGroup;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.Pose;
-import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Effects;
-import net.minecraft.profiler.IProfiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ColorHelper;
 import net.minecraft.util.Hand;
@@ -60,8 +41,6 @@ import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.GlobalPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -72,8 +51,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.RenderTickEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -180,178 +157,6 @@ public class SCClientEventHandler {
 
 			CameraViewAreaExtension.onChunkUnload(pos.x, pos.z);
 		}
-	}
-
-	@SubscribeEvent
-	public static void onRenderFramePost(RenderTickEvent event) {
-		if (event.phase == Phase.END)
-			return;
-
-		Minecraft mc = Minecraft.getInstance();
-		ClientPlayerEntity player = mc.player;
-
-		if (player == null || player.connection.getLevel() == null || !CameraController.hasFeeds() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
-			return;
-
-		IProfiler profiler = mc.getProfiler();
-		double currentTime = GLFW.glfwGetTime();
-		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = CameraController.getFeedsToRender(currentTime);
-
-		if (activeFrameCameraFeeds.isEmpty())
-			return;
-
-		CameraController.setLastFrameRendered(currentTime);
-		profiler.pop(); //out of "render"
-		profiler.push("gameRenderer");
-		profiler.push("securitycraft:frame_level");
-
-		World level = player.level;
-		float partialTick = event.renderTickTime;
-		ActiveRenderInfo camera = mc.gameRenderer.getMainCamera();
-		Entity oldCamEntity = mc.cameraEntity;
-		MainWindow window = mc.getWindow();
-		int oldWidth = window.getWidth();
-		int oldHeight = window.getHeight();
-		List<WorldRenderer.LocalRenderInformationContainer> oldVisibleSections = new ObjectArrayList<>(mc.levelRenderer.renderChunks);
-		GraphicsFanciness oldGraphicsMode = mc.options.graphicsMode;
-		Framebuffer oldItemEntityTarget = mc.levelRenderer.getItemEntityTarget();
-		Framebuffer oldWeatherTarget = mc.levelRenderer.getWeatherTarget();
-		ShaderGroup oldTransparencyChain = mc.levelRenderer.transparencyChain;
-		int newFrameFeedViewDistance = CameraController.getFrameFeedViewDistance(null);
-		double oldX = player.getX();
-		double oldXO = player.xOld;
-		double oldY = player.getY();
-		double oldYO = player.yOld;
-		double oldZ = player.getZ();
-		double oldZO = player.zOld;
-		float oldXRot = player.xRot;
-		float oldXRotO = player.xRotO;
-		float oldYRot = player.yRot;
-		float oldYRotO = player.yRotO;
-		float oldEyeHeight = camera.eyeHeight;
-		float oldEyeHeightO = camera.eyeHeightOld;
-		boolean oldRenderHand = mc.gameRenderer.renderHand;
-		boolean oldRenderBlockOutline = mc.gameRenderer.renderBlockOutline;
-		boolean oldPanoramicMode = mc.gameRenderer.panoramicMode;
-		PointOfView oldCameraType = mc.options.getCameraType();
-		ArmorStandEntity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
-		ClippingHelper playerFrustum = getCurrentFrustum(camera); //Saved once before the loop, because the frustum changes depending on which camera is viewed
-
-		mc.gameRenderer.renderBlockOutline = false;
-		mc.gameRenderer.renderHand = false;
-		mc.gameRenderer.panoramicMode = true;
-
-		if (mc.options.graphicsMode.getId() > GraphicsFanciness.FANCY.getId())
-			mc.options.graphicsMode = GraphicsFanciness.FANCY;
-
-		mc.levelRenderer.itemEntityTarget = null;
-		mc.levelRenderer.weatherTarget = null;
-		mc.levelRenderer.transparencyChain = null;
-		window.framebufferWidth = 100;
-		window.framebufferHeight = 100; //Different width/height values seem to have no effect, although the ratio needs to be 1:1
-		mc.options.setCameraType(PointOfView.FIRST_PERSON);
-		camera.eyeHeight = camera.eyeHeightOld = player.getEyeHeight(Pose.STANDING);
-		mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
-
-		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
-			GlobalPos cameraPos = cameraView.getKey();
-
-			if (cameraPos.dimension().equals(level.dimension())) {
-				BlockPos pos = cameraPos.pos();
-				TileEntity te = level.getBlockEntity(pos);
-
-				if (te instanceof SecurityCameraBlockEntity) {
-					CameraFeed feed = cameraView.getValue();
-
-					if (playerFrustum != null && !feed.hasFrameInFrustum(playerFrustum))
-						continue;
-
-					SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
-					Framebuffer frameTarget = feed.renderTarget();
-					Vector3d cameraEntityPos = new Vector3d(pos.getX() + 0.5D, pos.getY() - player.getEyeHeight(Pose.STANDING) + 0.5D, pos.getZ() + 0.5D);
-					float cameraXRot = be.getDefaultXRotation();
-					float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) MathHelper.lerp(partialTick, be.getOriginalCameraRotation(), be.getCameraRotation()) * (180F / (float) Math.PI);
-
-					securityCamera.setPos(cameraEntityPos.x, cameraEntityPos.y, cameraEntityPos.z);
-					mc.setCameraEntity(securityCamera);
-					securityCamera.xRot = cameraXRot;
-					securityCamera.yHeadRot = cameraYRot;
-					CameraController.markAsCapturedCamera(cameraPos);
-					feed.applyVisibleSections(mc.levelRenderer.renderChunks, mc.levelRenderer.chunksToCompile);
-					profiler.push("securitycraft:discover_frame_sections");
-					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
-					mc.levelRenderer.chunksToCompile.addAll(feed.getDirtyRenderChunks());
-					profiler.popPush("securitycraft:bind_frame_target");
-					frameTarget.clear(true);
-					frameTarget.bindWrite(true);
-					profiler.pop();
-
-					try {
-						mc.gameRenderer.renderLevel(1.0F, 0L, new MatrixStack());
-					}
-					catch (Exception e) {
-						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
-						e.printStackTrace();
-						feed.markForRemoval();
-					}
-
-					frameTarget.unbindWrite();
-					profiler.push("securitycraft:apply_frame_frustum");
-
-					ClippingHelper frustum = getCurrentFrustum(camera);
-
-					if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
-						feed.updateVisibleSections(frustum);
-
-					profiler.pop();
-				}
-			}
-		}
-
-		securityCamera.kill();
-		mc.setCameraEntity(oldCamEntity);
-		player.setPosRaw(oldX, oldY, oldZ);
-		player.xOld = player.xo = oldXO;
-		player.yOld = player.yo = oldYO;
-		player.zOld = player.zo = oldZO;
-		player.xRot = oldXRot;
-		player.xRotO = oldXRotO;
-		player.yRot = oldYRot;
-		player.yRotO = oldYRotO;
-		camera.setup(level, oldCamEntity == null ? player : oldCamEntity, !mc.options.getCameraType().isFirstPerson(), mc.options.getCameraType().isMirrored(), partialTick);
-		camera.eyeHeight = oldEyeHeight;
-		camera.eyeHeightOld = oldEyeHeightO;
-		mc.options.setCameraType(oldCameraType);
-		mc.options.graphicsMode = oldGraphicsMode;
-		mc.gameRenderer.renderBlockOutline = oldRenderBlockOutline;
-		mc.levelRenderer.renderChunks.clear();
-		mc.levelRenderer.renderChunks.addAll(oldVisibleSections);
-		mc.levelRenderer.itemEntityTarget = oldItemEntityTarget;
-		mc.levelRenderer.weatherTarget = oldWeatherTarget;
-		mc.levelRenderer.transparencyChain = oldTransparencyChain;
-		window.framebufferWidth = oldWidth;
-		window.framebufferHeight = oldHeight;
-		mc.gameRenderer.renderHand = oldRenderHand;
-		mc.gameRenderer.panoramicMode = oldPanoramicMode;
-		mc.getMainRenderTarget().bindWrite(true);
-		CameraController.markAsCapturedCamera(null);
-
-		profiler.pop();
-		profiler.pop();
-		profiler.push("render");
-	}
-
-	private static ClippingHelper getCurrentFrustum(ActiveRenderInfo camera) {
-		ClippingHelper frustum = null;
-
-		if (CameraController.getLastUsedRenderMatrix() != null && CameraController.getLastUsedProjectionMatrix() != null) {
-			Vector3d activeRenderInfoPos = camera.getPosition();
-
-			frustum = new ClippingHelper(CameraController.getLastUsedRenderMatrix(), CameraController.getLastUsedProjectionMatrix());
-			frustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
-		}
-
-		return frustum;
 	}
 
 	@SubscribeEvent

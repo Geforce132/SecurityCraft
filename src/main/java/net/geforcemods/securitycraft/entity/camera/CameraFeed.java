@@ -44,7 +44,7 @@ public class CameraFeed {
 		compilingSectionsQueue.add(Pair.of(startingSection.chunk, false));
 		sectionsInRange.add(startingSection);
 		sectionsInRangePositions.add(startingSection.chunk.getOrigin().asLong());
-		discoverVisibleSections(globalPos, CameraController.getFrameFeedViewDistance(null));
+		discoverVisibleSections(globalPos, FrameFeedHandler.getFrameFeedViewDistance(null));
 	}
 
 	public void requestFrustumUpdate() {

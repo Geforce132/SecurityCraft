@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -74,6 +74,6 @@ public class GameRendererMixin {
 	 */
 	@Redirect(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/MathHelper;lerp(FFF)F"))
 	private float securitycraft$disableFeedDistortion(float delta, float start, float end) {
-		return CameraController.isCapturingCamera() ? 0.0F : MathHelper.lerp(delta, start, end);
+		return FrameFeedHandler.isCapturingCamera() ? 0.0F : MathHelper.lerp(delta, start, end);
 	}
 }

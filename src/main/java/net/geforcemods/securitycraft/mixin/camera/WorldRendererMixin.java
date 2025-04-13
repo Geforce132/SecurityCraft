@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
@@ -37,7 +37,7 @@ public class WorldRendererMixin {
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	public void securitycraft$onSetupRender(ActiveRenderInfo camera, ClippingHelper frustum, boolean hasCapturedFrustum, int frameCount, boolean isSpectator, CallbackInfo ci) {
-		if (CameraController.isCapturingCamera() && !SecurityCraft.isASodiumModInstalled)
+		if (FrameFeedHandler.isCapturingCamera() && !SecurityCraft.isASodiumModInstalled)
 			ci.cancel();
 	}
 
@@ -55,8 +55,7 @@ public class WorldRendererMixin {
 	 */
 	@Inject(method = "renderLevel", at = @At("HEAD"))
 	private void securitycraft$captureMainLevelRenderMatrix(MatrixStack renderMatrix, float partialTick, long nanos, boolean renderBlockOutline, ActiveRenderInfo renderInfo, GameRenderer gameRenderer, LightTexture lightTexture, Matrix4f projectionMatrix, CallbackInfo ci) {
-		CameraController.setLastUsedRenderMatrix(new Matrix4f(renderMatrix.last().pose()));
-		CameraController.setLastUsedProjectionMatrix(projectionMatrix);
+		FrameFeedHandler.updateLastUsedFrustum(new Matrix4f(renderMatrix.last().pose()), projectionMatrix);
 	}
 
 	/**
@@ -66,8 +65,8 @@ public class WorldRendererMixin {
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;setupColor(Lnet/minecraft/client/renderer/ActiveRenderInfo;FLnet/minecraft/client/world/ClientWorld;IF)V"), ordinal = 1)
 	private float securitycraft$modifyFogRenderDistance(float original) {
-		if (CameraController.isCapturingCamera())
-			return CameraController.getFrameFeedViewDistance(null) * 16;
+		if (FrameFeedHandler.isCapturingCamera())
+			return FrameFeedHandler.getFrameFeedViewDistance(null) * 16;
 
 		return original;
 	}
@@ -78,7 +77,7 @@ public class WorldRendererMixin {
 	 */
 	@Inject(method = "shouldShowEntityOutlines", at = @At("HEAD"), cancellable = true)
 	private void preventEntityOutlines(CallbackInfoReturnable<Boolean> cir) {
-		if (CameraController.isCapturingCamera())
+		if (FrameFeedHandler.isCapturingCamera())
 			cir.setReturnValue(false);
 	}
 }

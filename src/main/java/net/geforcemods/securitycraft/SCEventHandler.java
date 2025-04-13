@@ -34,9 +34,9 @@ import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -206,7 +206,7 @@ public class SCEventHandler {
 			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
 		}
 		else if (level.isClientSide()) {
-			CameraController.removeAllFeeds();
+			FrameFeedHandler.removeAllFeeds();
 			CameraClientChunkCacheExtension.clear();
 			CameraViewAreaExtension.clear();
 		}
