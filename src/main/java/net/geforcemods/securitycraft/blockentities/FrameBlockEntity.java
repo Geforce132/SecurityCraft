@@ -192,7 +192,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 				removeCamera(cameraPos);
 
 				if (cameraPos == currentCameraPosition) {
-					CameraController.removeFrameLink(this, currentCameraPosition);
+					CameraController.removeFrameLink(currentCameraPosition, this);
 					currentCameraPosition = null;
 				}
 
@@ -267,7 +267,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 		}
 		else {
 			if (previousCameraPos != null)
-				CameraController.removeFrameLink(this, previousCameraPos);
+				CameraController.removeFrameLink(previousCameraPos, this);
 
 			if (newCameraPos != null && !disableNewCamera) {
 				CameraController.addFrameLink(this, newCameraPos);

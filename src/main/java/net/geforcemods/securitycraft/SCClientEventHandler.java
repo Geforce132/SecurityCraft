@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -192,40 +190,17 @@ public class SCClientEventHandler {
 		Minecraft mc = Minecraft.getInstance();
 		ClientPlayerEntity player = mc.player;
 
-		if (player == null || player.connection.getLevel() == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+		if (player == null || player.connection.getLevel() == null || !CameraController.hasFeeds() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 			return;
 
 		IProfiler profiler = mc.getProfiler();
-		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
-		List<GlobalPos> erroringFrameCameraFeeds = new ArrayList<>();
-		//+1 helps to reduce stuttering when many frames are active at once
-		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1;
-		double fpsCap = ConfigHandler.CLIENT.frameFeedFpsLimit.get();
 		double currentTime = GLFW.glfwGetTime();
-		double frameInterval = 1.0D / fpsCap;
-		double activeFramesPerMcFrame = MathHelper.ceil((fpsCap * feedsToRender) / Minecraft.fps);
-
-		if (fpsCap < 260.0D) {
-			activeFrameCameraFeeds = new HashMap<>();
-
-			for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
-				double timeBetweenFrames = frameInterval / feedsToRender;
-				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
-
-				if (currentTime < lastActiveTime + frameInterval || currentTime < CameraController.lastFrameRendered + timeBetweenFrames || activeFramesPerMcFrame-- <= 0)
-					continue;
-
-				cameraView.getValue().lastActiveTime().set(currentTime);
-				activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
-			}
-		}
-		else
-			activeFrameCameraFeeds = CameraController.FRAME_CAMERA_FEEDS;
+		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = CameraController.getFeedsToRender(currentTime);
 
 		if (activeFrameCameraFeeds.isEmpty())
 			return;
 
-		CameraController.lastFrameRendered = currentTime;
+		CameraController.setLastFrameRendered(currentTime);
 		profiler.pop(); //out of "render"
 		profiler.push("gameRenderer");
 		profiler.push("securitycraft:frame_level");
@@ -301,7 +276,7 @@ public class SCClientEventHandler {
 					mc.setCameraEntity(securityCamera);
 					securityCamera.xRot = cameraXRot;
 					securityCamera.yHeadRot = cameraYRot;
-					CameraController.currentlyCapturedCamera = cameraPos;
+					CameraController.markAsCapturedCamera(cameraPos);
 					feed.applyVisibleSections(mc.levelRenderer.renderChunks, mc.levelRenderer.chunksToCompile);
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
@@ -317,7 +292,7 @@ public class SCClientEventHandler {
 					catch (Exception e) {
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
 						e.printStackTrace();
-						erroringFrameCameraFeeds.add(cameraPos);
+						feed.markForRemoval();
 					}
 
 					frameTarget.unbindWrite();
@@ -359,24 +334,20 @@ public class SCClientEventHandler {
 		mc.gameRenderer.renderHand = oldRenderHand;
 		mc.gameRenderer.panoramicMode = oldPanoramicMode;
 		mc.getMainRenderTarget().bindWrite(true);
-		CameraController.currentlyCapturedCamera = null;
+		CameraController.markAsCapturedCamera(null);
 
 		profiler.pop();
 		profiler.pop();
 		profiler.push("render");
-
-		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
-			CameraController.removeAllFrameLinks(erroringFeed);
-		}
 	}
 
 	private static ClippingHelper getCurrentFrustum(ActiveRenderInfo camera) {
 		ClippingHelper frustum = null;
 
-		if (CameraController.lastUsedRenderMatrix != null && CameraController.lastUsedProjectionMatrix != null) {
+		if (CameraController.getLastUsedRenderMatrix() != null && CameraController.getLastUsedProjectionMatrix() != null) {
 			Vector3d activeRenderInfoPos = camera.getPosition();
 
-			frustum = new ClippingHelper(CameraController.lastUsedRenderMatrix, CameraController.lastUsedProjectionMatrix);
+			frustum = new ClippingHelper(CameraController.getLastUsedRenderMatrix(), CameraController.getLastUsedProjectionMatrix());
 			frustum.prepare(activeRenderInfoPos.x, activeRenderInfoPos.y, activeRenderInfoPos.z);
 		}
 

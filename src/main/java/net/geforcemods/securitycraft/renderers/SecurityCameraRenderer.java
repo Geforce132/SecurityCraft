@@ -44,9 +44,7 @@ public class SecurityCameraRenderer extends TileEntityRenderer<SecurityCameraBlo
 
 	@Override
 	public void render(SecurityCameraBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int packedLight, int packedOverlay) {
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
-			return;
-		else if (CameraController.currentlyCapturedCamera != null && be.getBlockPos().equals(CameraController.currentlyCapturedCamera.pos()))
+		if (CameraController.amIBeingCaptured(be) || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
 			return;
 
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay);
