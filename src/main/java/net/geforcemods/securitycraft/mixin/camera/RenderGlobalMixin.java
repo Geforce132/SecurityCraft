@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ChunkRenderContainer;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -27,7 +27,7 @@ public class RenderGlobalMixin {
 	 */
 	@Inject(method = "setupTerrain", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator, CallbackInfo ci) {
-		if (CameraController.isCapturingCamera()) {
+		if (FrameFeedHandler.isCapturingCamera()) {
 			renderContainer.initialize(viewEntity.posX, viewEntity.posY, viewEntity.posZ);
 			ci.cancel();
 		}
@@ -40,7 +40,7 @@ public class RenderGlobalMixin {
 	 */
 	@ModifyVariable(method = "renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", at = @At("HEAD"), argsOnly = true)
 	private Entity securitycraft$preventTranslucencyRebuild(Entity originalViewEntity) {
-		if (CameraController.isCapturingCamera())
+		if (FrameFeedHandler.isCapturingCamera())
 			return Minecraft.getMinecraft().player;
 
 		return originalViewEntity;

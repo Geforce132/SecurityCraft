@@ -1,18 +1,11 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
-import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
@@ -24,9 +17,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.renderer.RenderGlobal.ContainerLocalRenderInformation;
-import net.minecraft.client.renderer.culling.ClippingHelper;
-import net.minecraft.client.renderer.culling.ClippingHelperImpl;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -35,7 +25,6 @@ import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.ScreenshotEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -55,10 +44,6 @@ public class CameraController {
 	};
 	//@formatter:on
 	private static int screenshotSoundCooldown = 0;
-	private static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
-	private static GlobalPos currentlyCapturedCamera;
-	private static ClippingHelper lastUsedClippingHelper;
-	private static double lastFrameRendered = 0.0D;
 
 	private CameraController() {}
 
@@ -95,9 +80,6 @@ public class CameraController {
 					player.connection.sendPacket(new CPacketPlayer.Rotation(player.rotationYaw, player.rotationPitch, player.onGround));
 			}
 		}
-
-		if (event.phase == Phase.END)
-			FRAME_CAMERA_FEEDS.entrySet().removeIf(e -> e.getValue().shouldBeRemoved());
 	}
 
 	public static void handleKeybinds() {
@@ -216,120 +198,6 @@ public class CameraController {
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
 		SecurityCraft.network.sendToServer(new SetDefaultCameraViewingDirection(cam));
-	}
-
-	public static void markAsCapturedCamera(GlobalPos cameraPos) {
-		currentlyCapturedCamera = cameraPos;
-	}
-
-	public static Map<GlobalPos, CameraFeed> getFeedsToRender(double currentTime) {
-		//+1 helps to reduce stuttering when many frames are active at once
-		double feedsToRender = FRAME_CAMERA_FEEDS.size() + 1;
-		double fpsCap = ConfigHandler.frameFeedFpsLimit;
-		double frameInterval = 1.0D / fpsCap;
-		double activeFramesPerMcFrame = MathHelper.ceil((fpsCap * feedsToRender) / Minecraft.getDebugFPS());
-
-		if (fpsCap < 260.0D) {
-			Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = new HashMap<>();
-
-			for (Entry<GlobalPos, CameraFeed> cameraView : FRAME_CAMERA_FEEDS.entrySet()) {
-				double timeBetweenFrames = frameInterval / feedsToRender;
-				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
-
-				if (currentTime < lastActiveTime + frameInterval || currentTime < lastFrameRendered + timeBetweenFrames || activeFramesPerMcFrame-- <= 0)
-					continue;
-
-				cameraView.getValue().lastActiveTime().set(currentTime);
-				activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
-			}
-
-			return activeFrameCameraFeeds;
-		}
-		else
-			return FRAME_CAMERA_FEEDS;
-	}
-
-	public static void addFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
-		CameraFeed feed = FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::createFeedForCamera);
-
-		feed.linkFrame(be);
-	}
-
-	public static void refreshCameraFeed(GlobalPos cameraPos) {
-		FRAME_CAMERA_FEEDS.put(cameraPos, createFeedForCamera(cameraPos));
-	}
-
-	private static CameraFeed createFeedForCamera(GlobalPos cameraPos) {
-		BlockPos pos = cameraPos.pos();
-		ContainerLocalRenderInformation startingSection = Minecraft.getMinecraft().renderGlobal.new ContainerLocalRenderInformation(CameraViewAreaExtension.rawFetch(pos.getX() >> 4, MathHelper.clamp(pos.getY() >> 4, 0, 15), pos.getZ() >> 4, true), null, 0);
-
-		return new CameraFeed(cameraPos, startingSection);
-	}
-
-	public static void removeFrameLink(GlobalPos cameraPos, FrameBlockEntity be) {
-		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
-			FRAME_CAMERA_FEEDS.get(cameraPos).unlinkFrame(be);
-	}
-
-	public static void removeAllFrameLinks(GlobalPos cameraPos) {
-		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
-			FRAME_CAMERA_FEEDS.remove(cameraPos);
-	}
-
-	public static boolean isCapturingCamera() {
-		return currentlyCapturedCamera != null;
-	}
-
-	public static boolean amIBeingCaptured(SecurityCameraBlockEntity be) {
-		return isCapturingCamera() && currentlyCapturedCamera.pos().equals(be.getPos());
-	}
-
-	public static boolean hasFeeds() {
-		return !FRAME_CAMERA_FEEDS.isEmpty();
-	}
-
-	public static boolean hasFeed(GlobalPos cameraPos) {
-		return FRAME_CAMERA_FEEDS.containsKey(cameraPos);
-	}
-
-	public static CameraFeed getFeed(GlobalPos cameraPos) {
-		return FRAME_CAMERA_FEEDS.get(cameraPos);
-	}
-
-	public static void removeAllFeeds() {
-		FRAME_CAMERA_FEEDS.clear();
-	}
-
-	public static CameraFeed getCurrentlyCapturedFeed() {
-		return getFeed(currentlyCapturedCamera);
-	}
-
-	public static void setLastFrameRendered(double lastFrameRendered) {
-		CameraController.lastFrameRendered = lastFrameRendered;
-	}
-
-	public static void copyClippingHelper() {
-		ClippingHelper currentClippingHelper = ClippingHelperImpl.getInstance();
-
-		lastUsedClippingHelper = new ClippingHelper();
-		lastUsedClippingHelper.frustum = currentClippingHelper.frustum.clone();
-		lastUsedClippingHelper.projectionMatrix = currentClippingHelper.projectionMatrix.clone();
-		lastUsedClippingHelper.modelviewMatrix = currentClippingHelper.modelviewMatrix.clone();
-		lastUsedClippingHelper.clippingMatrix = currentClippingHelper.clippingMatrix.clone();
-	}
-
-	public static ClippingHelper getLastUsedClippingHelper() {
-		return lastUsedClippingHelper;
-	}
-
-	public static CameraFeed getCurrentFeed() {
-		return FRAME_CAMERA_FEEDS.get(currentlyCapturedCamera);
-	}
-
-	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
-		int frameSpecificRenderDistance = be == null ? 32 : be.getChunkLoadingDistanceOption();
-
-		return Math.min(frameSpecificRenderDistance, Math.min(ConfigHandler.frameFeedRenderDistance, Math.min(ConfigHandler.frameFeedViewDistance, Minecraft.getMinecraft().gameSettings.renderDistanceChunks)));
 	}
 
 	public static float getMovementSpeed(SecurityCamera cam) {

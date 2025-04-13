@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.Option.DoubleOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
 import net.geforcemods.securitycraft.inventory.LensContainer;
@@ -116,8 +116,8 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				if (world.isRemote && cameraRotation != oCameraRotation) {
 					GlobalPos cameraPos = GlobalPos.of(world.provider.getDimension(), pos);
 
-					if (CameraController.hasFeed(cameraPos))
-						CameraController.getFeed(cameraPos).requestFrustumUpdate();
+					if (FrameFeedHandler.hasFeed(cameraPos))
+						FrameFeedHandler.getFeed(cameraPos).requestFrustumUpdate();
 				}
 
 				return;
@@ -454,7 +454,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		if (world.isRemote)
-			CameraController.removeAllFrameLinks(GlobalPos.of(world.provider.getDimension(), pos));
+			FrameFeedHandler.removeAllFrameLinks(GlobalPos.of(world.provider.getDimension(), pos));
 	}
 
 	public boolean hasPlayerFrameLink(EntityPlayer player) {

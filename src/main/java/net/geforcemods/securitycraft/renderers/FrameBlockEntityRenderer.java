@@ -8,8 +8,8 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraFeed;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.items.ColorableItem;
 import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.minecraft.block.state.IBlockState;
@@ -93,11 +93,11 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 			renderCutoutTexture(INACTIVE, xStart, xEnd, zStart, zEnd, normal, margin);
 		}
 		else {
-			CameraFeed feed = CameraController.getFeed(cameraPos);
+			CameraFeed feed = FrameFeedHandler.getFeed(cameraPos);
 
 			if (feed == null || !feed.isFrameLinked(be) || !level.isBlockLoaded(cameraPos.pos()) || !(level.getTileEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity))
 				renderSolidTexture(CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, normal, margin);
-			else if (!CameraController.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
+			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				SecurityCameraBlockEntity cameraBlockEntity = (SecurityCameraBlockEntity) level.getTileEntity(cameraPos.pos());
 				Framebuffer target = feed.renderTarget();
 				Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)

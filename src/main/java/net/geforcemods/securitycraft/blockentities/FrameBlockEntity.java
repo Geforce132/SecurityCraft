@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -86,7 +86,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 			if (!world.isRemote)
 				switchCameras(null, null, 0, false);
 			else if (clientInteracted)
-				SecurityCraft.network.sendToServer(new SyncFrame(pos, CameraController.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
+				SecurityCraft.network.sendToServer(new SyncFrame(pos, FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
 		}
 	}
 
@@ -192,11 +192,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 				removeCamera(cameraPos);
 
 				if (cameraPos == currentCameraPosition) {
-					CameraController.removeFrameLink(currentCameraPosition, this);
+					FrameFeedHandler.removeFrameLink(currentCameraPosition, this);
 					currentCameraPosition = null;
 				}
 
-				SecurityCraft.network.sendToServer(new SyncFrame(getPos(), CameraController.getFrameFeedViewDistance(this), Optional.of(cameraPos), Optional.ofNullable(currentCameraPosition), false));
+				SecurityCraft.network.sendToServer(new SyncFrame(getPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.of(cameraPos), Optional.ofNullable(currentCameraPosition), false));
 			}
 		}
 	}
@@ -220,14 +220,14 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 	}
 
 	public void setCurrentCameraAndUpdate(GlobalPos camera) {
-		int requestedRenderDistance = CameraController.getFrameFeedViewDistance(this);
+		int requestedRenderDistance = FrameFeedHandler.getFrameFeedViewDistance(this);
 
 		switchCameras(camera, null, requestedRenderDistance, false);
 		SecurityCraft.network.sendToServer(new SyncFrame(pos, requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
 	}
 
 	public void switchCameras(GlobalPos newCameraPos, EntityPlayer player, int requestedRenderDistance, boolean disableNewCamera) {
- 		GlobalPos previousCameraPos = getCurrentCamera();
+		GlobalPos previousCameraPos = getCurrentCamera();
 
 		setCurrentCamera(newCameraPos);
 
@@ -267,10 +267,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 		}
 		else {
 			if (previousCameraPos != null)
-				CameraController.removeFrameLink(previousCameraPos, this);
+				FrameFeedHandler.removeFrameLink(previousCameraPos, this);
 
 			if (newCameraPos != null && !disableNewCamera) {
-				CameraController.addFrameLink(this, newCameraPos);
+				FrameFeedHandler.addFrameLink(this, newCameraPos);
 				clientInteracted = true;
 			}
 			else if (disableNewCamera)

@@ -35,8 +35,8 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -207,7 +207,7 @@ public class SCEventHandler {
 			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
 		}
 		else if (world.isRemote) {
-			CameraController.removeAllFeeds();
+			FrameFeedHandler.removeAllFeeds();
 			CameraViewAreaExtension.clear();
 		}
 	}

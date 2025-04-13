@@ -51,7 +51,7 @@ public class CameraFeed {
 		sectionsInRange.add(startingSection);
 		sectionsInRangePositions.add(startingSection.renderChunk.getPosition().toLong());
 		createdUsingVbo = OpenGlHelper.useVbo();
-		discoverVisibleSections(globalPos, CameraController.getFrameFeedViewDistance(null));
+		discoverVisibleSections(globalPos, FrameFeedHandler.getFrameFeedViewDistance(null));
 	}
 
 	public void requestFrustumUpdate() {

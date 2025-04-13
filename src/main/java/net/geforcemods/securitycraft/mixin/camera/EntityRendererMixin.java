@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.items.LensItem;
 import net.minecraft.client.Minecraft;
@@ -61,7 +61,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/culling/ICamera;setPosition(DDD)V"))
 	private void securitycraft$captureMainLevelClippingHelper(int pass, float partialTicks, long finishTimeNano, CallbackInfo ci) {
-		CameraController.copyClippingHelper();
+		FrameFeedHandler.updateLastUsedFrustum();
 	}
 
 	/**
@@ -70,7 +70,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "getFOVModifier", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$modifyFOVForCameraRendering(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> cir) {
-		if (CameraController.isCapturingCamera())
+		if (FrameFeedHandler.isCapturingCamera())
 			cir.setReturnValue(90.0F);
 	}
 
@@ -107,7 +107,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V", ordinal = 0), cancellable = true)
 	private void securitycraft$disableFeedDistortion(float partialTicks, int pass, CallbackInfo ci) {
-		if (CameraController.isCapturingCamera()) {
+		if (FrameFeedHandler.isCapturingCamera()) {
 			orientCamera(partialTicks);
 			ci.cancel();
 		}
@@ -121,7 +121,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;clearColor(FFFF)V"))
 	private void setFrameFeedBackgroundColor(float partialTicks, CallbackInfo ci) {
-		if (CameraController.isCapturingCamera())
-			CameraController.getCurrentFeed().setBackgroundColor(new Vector3f(fogColorRed, fogColorGreen, fogColorBlue));
+		if (FrameFeedHandler.isCapturingCamera())
+			FrameFeedHandler.getCurrentlyCapturedFeed().setBackgroundColor(new Vector3f(fogColorRed, fogColorGreen, fogColorBlue));
 	}
 }
