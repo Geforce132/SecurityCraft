@@ -17,7 +17,7 @@ import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -69,6 +69,6 @@ public class GameRendererMixin {
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"), ordinal = 1)
 	private float securitycraft$disableFeedDistortion(float original) {
-		return CameraController.isCapturingCamera() ? 0.0F : original;
+		return FrameFeedHandler.isCapturingCamera() ? 0.0F : original;
 	}
 }
