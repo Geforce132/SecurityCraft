@@ -1,19 +1,8 @@
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-
-import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.pipeline.TextureTarget;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
@@ -31,7 +20,6 @@ import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.util.PlayerUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
@@ -40,10 +28,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer.RenderChunkInfo;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher.CompiledChunk;
-import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher.RenderChunk;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
@@ -81,9 +66,7 @@ public class CameraController {
 			return new ViewMovementKeyHandler[0];
 	});
 	private static int screenshotSoundCooldown = 0;
-	public static final Map<GlobalPos, Set<BlockPos>> FRAME_LINKS = new HashMap<>();
 	public static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
-	public static final Set<GlobalPos> FEED_FRUSTUM_UPDATE_REQUIRED = new HashSet<>();
 	public static GlobalPos currentlyCapturedCamera;
 	public static ShaderInstance cameraMonitorShader;
 	public static double lastFrameRendered = 0.0D;
@@ -141,6 +124,9 @@ public class CameraController {
 			OverlayToggleHandler.enable(VanillaGuiOverlay.EXPERIENCE_BAR);
 			OverlayToggleHandler.enable(VanillaGuiOverlay.POTION_ICONS);
 		}
+
+		if (event.phase == Phase.END)
+			FRAME_CAMERA_FEEDS.entrySet().removeIf(e -> e.getValue().shouldBeRemoved());
 	}
 
 	@SubscribeEvent
@@ -234,106 +220,27 @@ public class CameraController {
 		SecurityCraft.CHANNEL.sendToServer(new SetDefaultCameraViewingDirection(cam));
 	}
 
-	public static boolean isLinked(FrameBlockEntity be, GlobalPos cameraPos) {
-		return FRAME_LINKS.containsKey(cameraPos) && FRAME_LINKS.get(cameraPos).contains(be.getBlockPos());
-	}
-
 	public static void addFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
-		Set<BlockPos> bes = FRAME_LINKS.computeIfAbsent(cameraPos, p -> new HashSet<>());
+		CameraFeed feed = FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::setUpCameraSections);
 
-		bes.add(be.getBlockPos());
-		FRAME_CAMERA_FEEDS.computeIfAbsent(cameraPos, CameraController::setUpCameraSections);
+		feed.linkFrame(be);
 	}
 
 	private static CameraFeed setUpCameraSections(GlobalPos cameraPos) {
-		int resolution = ConfigHandler.CLIENT.frameFeedResolution.get();
-		BlockPos pos = cameraPos.pos();
-		SectionPos cameraSectionPos = SectionPos.of(pos);
+		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
 		RenderChunkInfo startingSection = new RenderChunkInfo(CameraViewAreaExtension.rawFetch(cameraSectionPos.x(), Mth.clamp(cameraSectionPos.y(), CameraViewAreaExtension.minSectionY(), CameraViewAreaExtension.maxSectionY() - 1), cameraSectionPos.z(), true), null, 0);
-		CameraFeed cameraFeed = new CameraFeed(new TextureTarget(resolution, resolution, true, Minecraft.ON_OSX), new AtomicDouble(), new ArrayList<>(), new HashSet<>(), new ArrayList<>(), new ArrayList<>());
 
-		cameraFeed.compilingSectionsQueue.add(startingSection);
-		cameraFeed.sectionsInRange.add(startingSection);
-		cameraFeed.sectionsInRangePositions.add(startingSection.chunk.getOrigin().asLong());
-		CameraController.discoverVisibleSections(cameraPos, getFrameFeedViewDistance(null), cameraFeed);
-		return cameraFeed;
+		return new CameraFeed(cameraPos, startingSection);
 	}
 
 	public static void removeFrameLink(FrameBlockEntity be, GlobalPos cameraPos) {
-		if (FRAME_LINKS.containsKey(cameraPos)) {
-			Set<BlockPos> linkedFrames = FRAME_LINKS.get(cameraPos);
-
-			linkedFrames.remove(be.getBlockPos());
-
-			if (linkedFrames.isEmpty())
-				removeAllFrameLinks(cameraPos);
-		}
+		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
+			FRAME_CAMERA_FEEDS.get(cameraPos).unlinkFrame(be);
 	}
 
 	public static void removeAllFrameLinks(GlobalPos cameraPos) {
-		if (FRAME_LINKS.containsKey(cameraPos)) {
-			FRAME_LINKS.remove(cameraPos);
+		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
 			FRAME_CAMERA_FEEDS.remove(cameraPos);
-		}
-	}
-
-	public static RenderTarget getViewForFrame(GlobalPos cameraPos) {
-		return FRAME_CAMERA_FEEDS.containsKey(cameraPos) ? FRAME_CAMERA_FEEDS.get(cameraPos).renderTarget : null;
-	}
-
-	public static void discoverVisibleSections(GlobalPos cameraPos, int viewDistance, CameraFeed feed) {
-		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
-		List<RenderChunkInfo> visibleSections = feed.sectionsInRange;
-		List<RenderChunkInfo> sectionQueue = feed.compilingSectionsQueue;
-		Set<Long> visibleSectionPositions = feed.sectionsInRangePositions;
-		Deque<RenderChunkInfo> queueToCheck = new ArrayDeque<>(sectionQueue);
-
-		sectionQueue.clear();
-
-		while (!queueToCheck.isEmpty()) {
-			RenderChunkInfo currentSectionInfo = queueToCheck.poll();
-			RenderChunk currentSection = currentSectionInfo.chunk;
-			BlockPos origin = currentSection.getOrigin();
-			CompiledChunk currentCompiledSection = currentSection.getCompiledChunk();
-
-			if (currentCompiledSection == CompiledChunk.UNCOMPILED) {
-				sectionQueue.add(currentSectionInfo);
-				continue;
-			}
-
-			//Once a section in the queue is compiled, it knows which neighbours it can and cannot see. This information is used to more cleverly determine which chunks the player can actually see
-			for (Direction dir : Direction.values()) {
-				int cx = SectionPos.blockToSectionCoord(origin.getX()) + dir.getStepX();
-				int cy = SectionPos.blockToSectionCoord(origin.getY()) + dir.getStepY();
-				int cz = SectionPos.blockToSectionCoord(origin.getZ()) + dir.getStepZ();
-
-				if (Utils.isInViewDistance(cameraSectionPos.x(), cameraSectionPos.z(), viewDistance, cx, cz)) {
-					RenderChunk neighbourSection = CameraViewAreaExtension.rawFetch(cx, cy, cz, true);
-
-					if (neighbourSection != null) {
-						long neighbourPosAsLong = neighbourSection.getOrigin().asLong();
-
-						if (!visibleSectionPositions.contains(neighbourPosAsLong) && canSeeNeighborFace(currentCompiledSection, dir)) {
-							RenderChunkInfo neighbourChunkInfo = new RenderChunkInfo(neighbourSection, null, 0);
-
-							visibleSections.add(neighbourChunkInfo); //Yet uncompiled render sections are added to the sections-in-range list, so Minecraft will schedule to compile them
-							visibleSectionPositions.add(neighbourSection.getOrigin().asLong());
-							sectionQueue.add(neighbourChunkInfo);
-							FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	private static boolean canSeeNeighborFace(CompiledChunk currentCompiledSection, Direction dir) {
-		for (int j = 0; j < Direction.values().length; j++) {
-			if (currentCompiledSection.facesCanSeeEachother(Direction.values()[j].getOpposite(), dir))
-				return true;
-		}
-
-		return false;
 	}
 
 	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
@@ -375,6 +282,4 @@ public class CameraController {
 			}
 		}
 	}
-
-	public record CameraFeed(RenderTarget renderTarget, AtomicDouble lastActiveTime, List<RenderChunkInfo> sectionsInRange, Set<Long> sectionsInRangePositions, List<RenderChunkInfo> visibleSections, List<RenderChunkInfo> compilingSectionsQueue) {}
 }
