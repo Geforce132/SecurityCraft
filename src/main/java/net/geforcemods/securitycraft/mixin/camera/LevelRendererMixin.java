@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -36,7 +36,7 @@ public class LevelRendererMixin {
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
-		if (CameraController.isCapturingCamera() && !SecurityCraft.IS_A_SODIUM_MOD_INSTALLED)
+		if (FrameFeedHandler.isCapturingCamera() && !SecurityCraft.IS_A_SODIUM_MOD_INSTALLED)
 			ci.cancel();
 	}
 
@@ -54,7 +54,7 @@ public class LevelRendererMixin {
 	 */
 	@Inject(method = "isChunkCompiled", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> ci) {
-		if (CameraController.isCapturingCamera()) {
+		if (FrameFeedHandler.isCapturingCamera()) {
 			SectionPos sectionPos = SectionPos.of(pos);
 			RenderChunk renderSection = CameraViewAreaExtension.rawFetch(sectionPos.x(), sectionPos.y(), sectionPos.z(), false);
 
@@ -70,8 +70,8 @@ public class LevelRendererMixin {
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/FogRenderer;setupColor(Lnet/minecraft/client/Camera;FLnet/minecraft/client/multiplayer/ClientLevel;IF)V"), ordinal = 1)
 	private float securitycraft$modifyFogRenderDistance(float original) {
-		if (CameraController.isCapturingCamera())
-			return CameraController.getFrameFeedViewDistance(null) * 16;
+		if (FrameFeedHandler.isCapturingCamera())
+			return FrameFeedHandler.getFrameFeedViewDistance(null) * 16;
 
 		return original;
 	}
