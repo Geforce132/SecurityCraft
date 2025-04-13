@@ -21,7 +21,7 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.entity.camera.CameraController.CameraFeed;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -41,7 +41,6 @@ import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.WorldRenderer.LocalRenderInformationContainer;
 import net.minecraft.client.renderer.culling.ClippingHelper;
 import net.minecraft.client.settings.GraphicsFanciness;
 import net.minecraft.client.settings.PointOfView;
@@ -61,7 +60,6 @@ import net.minecraft.util.ColorHelper;
 import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.GlobalPos;
@@ -288,11 +286,12 @@ public class SCClientEventHandler {
 				TileEntity te = level.getBlockEntity(pos);
 
 				if (te instanceof SecurityCameraBlockEntity) {
-					if (playerFrustum != null && !isFrameInFrustum(cameraPos, playerFrustum))
+					CameraFeed feed = cameraView.getValue();
+
+					if (playerFrustum != null && !feed.hasFrameInFrustum(playerFrustum))
 						continue;
 
 					SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
-					CameraFeed feed = cameraView.getValue();
 					Framebuffer frameTarget = feed.renderTarget();
 					Vector3d cameraEntityPos = new Vector3d(pos.getX() + 0.5D, pos.getY() - player.getEyeHeight(Pose.STANDING) + 0.5D, pos.getZ() + 0.5D);
 					float cameraXRot = be.getDefaultXRotation();
@@ -303,13 +302,10 @@ public class SCClientEventHandler {
 					securityCamera.xRot = cameraXRot;
 					securityCamera.yHeadRot = cameraYRot;
 					CameraController.currentlyCapturedCamera = cameraPos;
-					mc.levelRenderer.renderChunks.clear();
-					mc.levelRenderer.renderChunks.addAll(feed.visibleSections());
-					mc.levelRenderer.chunksToCompile.clear();
-					mc.levelRenderer.chunksToCompile.addAll(feed.getSectionsToCompile());
+					feed.applyVisibleSections(mc.levelRenderer.renderChunks, mc.levelRenderer.chunksToCompile);
 					profiler.push("securitycraft:discover_frame_sections");
-					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
-					mc.levelRenderer.chunksToCompile.addAll(CameraController.getDirtyRenderChunks(feed));
+					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
+					mc.levelRenderer.chunksToCompile.addAll(feed.getDirtyRenderChunks());
 					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear(true);
 					frameTarget.bindWrite(true);
@@ -329,15 +325,8 @@ public class SCClientEventHandler {
 
 					ClippingHelper frustum = getCurrentFrustum(camera);
 
-					if (be.shouldRotate() || feed.visibleSections().isEmpty() || CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.contains(cameraPos)) {
-						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.remove(cameraPos);
-						feed.visibleSections().clear();
-
-						for (LocalRenderInformationContainer section : feed.sectionsInRange()) {
-							if (frustum == null || frustum.isVisible(section.chunk.bb))
-								feed.visibleSections().add(section);
-						}
-					}
+					if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
+						feed.updateVisibleSections(frustum);
 
 					profiler.pop();
 				}
@@ -392,15 +381,6 @@ public class SCClientEventHandler {
 		}
 
 		return frustum;
-	}
-
-	private static boolean isFrameInFrustum(GlobalPos cameraPos, ClippingHelper beFrustum) {
-		for (BlockPos framePos : CameraController.FRAME_LINKS.get(cameraPos)) {
-			if (beFrustum.isVisible(new AxisAlignedBB(framePos)))
-				return true;
-		}
-
-		return false;
 	}
 
 	@SubscribeEvent

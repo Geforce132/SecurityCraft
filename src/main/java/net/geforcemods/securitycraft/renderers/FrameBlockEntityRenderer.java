@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
@@ -101,35 +102,34 @@ public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntit
 			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
 		}
-		else if (!CameraController.isLinked(be, cameraPos) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity))
-			renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
-			SecurityCameraBlockEntity cameraBlockEntity = (SecurityCameraBlockEntity) level.getBlockEntity(cameraPos.pos());
-			Framebuffer target = CameraController.getViewForFrame(cameraPos);
+		else {
+			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
 
-			if (target == null) {
+			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-				return;
+			else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+				SecurityCameraBlockEntity cameraBlockEntity = (SecurityCameraBlockEntity) level.getBlockEntity(cameraPos.pos());
+				Framebuffer target = feed.renderTarget();
+				Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
+				BufferBuilder bufferBuilder = tessellator.getBuilder();
+				Matrix4f lastPose = pose.last().pose();
+
+				target.bindRead();
+				GlStateManager._enableDepthTest();
+				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
+				bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 0).endVertex();
+				bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 1).endVertex();
+				bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 1).endVertex();
+				bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 0).endVertex();
+				tessellator.end();
+				target.unbindRead();
+				GlStateManager._disableDepthTest();
+
+				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+
+				if (lens.getItem() instanceof IDyeableArmorItem && ((IDyeableArmorItem) lens.getItem()).hasCustomColor(lens))
+					renderOverlay(pose, buffer, xStart, xEnd, zStart, zEnd, ((IDyeableArmorItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), packedLight, normal, margin);
 			}
-
-			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
-			Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
-			BufferBuilder bufferBuilder = tessellator.getBuilder();
-			Matrix4f lastPose = pose.last().pose();
-
-			target.bindRead();
-			GlStateManager._enableDepthTest();
-			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR_TEX);
-			bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 0).endVertex();
-			bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).color(0xFF, 0xFF, 0xFF, 0xFF).uv(1, 1).endVertex();
-			bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 1).endVertex();
-			bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFF, 0xFF, 0xFF, 0xFF).uv(0, 0).endVertex();
-			tessellator.end();
-			target.unbindRead();
-			GlStateManager._disableDepthTest();
-
-			if (lens.getItem() instanceof IDyeableArmorItem && ((IDyeableArmorItem) lens.getItem()).hasCustomColor(lens))
-				renderOverlay(pose, buffer, xStart, xEnd, zStart, zEnd, ((IDyeableArmorItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), packedLight, normal, margin);
 		}
 	}
 

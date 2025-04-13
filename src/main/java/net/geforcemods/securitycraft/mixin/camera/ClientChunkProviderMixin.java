@@ -49,7 +49,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.xChunk, cameraEntity.zChunk)) <= (renderDistance + 1))
 			return;
 
-		for (GlobalPos cameraPos : CameraController.FRAME_LINKS.keySet()) {
+		for (GlobalPos cameraPos : CameraController.FRAME_CAMERA_FEEDS.keySet()) {
 			if (pos.getChessboardDistance(new ChunkPos(cameraPos.pos())) <= (renderDistance + 1))
 				return;
 		}
@@ -72,7 +72,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.blockPosition())) <= (renderDistance + 1))
 			shouldAddChunk = true;
 		else {
-			for (GlobalPos cameraPos : CameraController.FRAME_LINKS.keySet()) {
+			for (GlobalPos cameraPos : CameraController.FRAME_CAMERA_FEEDS.keySet()) {
 				if (pos.getChessboardDistance(new ChunkPos(cameraPos.pos())) <= (renderDistance + 1)) {
 					shouldAddChunk = true;
 					break;
