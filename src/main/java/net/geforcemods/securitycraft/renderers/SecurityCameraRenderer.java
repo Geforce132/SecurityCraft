@@ -29,9 +29,7 @@ public class SecurityCameraRenderer extends TileEntitySpecialRenderer<SecurityCa
 	@Override
 	public void render(SecurityCameraBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		//calling down() on the render view entity's position because the camera entity sits at y+0.5 by default and getPosition increases y by 0.5 again
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().down().equals(te.getPos()))
-			return;
-		else if (CameraController.currentlyCapturedCamera != null && te.getPos().equals(CameraController.currentlyCapturedCamera.pos()))
+		if (CameraController.amIBeingCaptured(te) || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getMinecraft().player) && Minecraft.getMinecraft().getRenderViewEntity().getPosition().down().equals(te.getPos()))
 			return;
 
 		BlockEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);

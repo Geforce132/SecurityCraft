@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,7 +38,6 @@ import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.MouseEvent;
@@ -147,40 +144,17 @@ public class SCClientEventHandler {
 		Minecraft mc = Minecraft.getMinecraft();
 		EntityPlayerSP player = mc.player;
 
-		if (player == null || player.world == null || CameraController.FRAME_CAMERA_FEEDS.isEmpty() || !ConfigHandler.frameFeedViewingEnabled || mc.currentScreen instanceof GuiVideoSettings)
+		if (player == null || player.world == null || !CameraController.hasFeeds() || !ConfigHandler.frameFeedViewingEnabled || mc.currentScreen instanceof GuiVideoSettings)
 			return;
 
 		Profiler profiler = mc.profiler;
-		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds;
-		List<GlobalPos> erroringFrameCameraFeeds = new ArrayList<>();
-		//+1 helps to reduce stuttering when many frames are active at once
-		double feedsToRender = CameraController.FRAME_CAMERA_FEEDS.size() + 1;
-		double fpsCap = ConfigHandler.frameFeedFpsLimit;
 		double currentTime = System.nanoTime() / 1E9D;
-		double frameInterval = 1.0D / fpsCap; //A fps cap of 30 means that one thirtieth of a second needs to pass before the same frame may be rendered again
-		double timeBetweenFrames = frameInterval / feedsToRender; //A fps cap of 30 with three feeds to render means that 1/90 of a second needs to pass between two different frame feed captures
-		double activeFramesPerMcFrame = MathHelper.ceil((fpsCap * feedsToRender) / Minecraft.getDebugFPS());
-
-		if (fpsCap < 260.0D) {
-			activeFrameCameraFeeds = new HashMap<>();
-
-			for (Entry<GlobalPos, CameraFeed> cameraView : CameraController.FRAME_CAMERA_FEEDS.entrySet()) {
-				double lastActiveTime = cameraView.getValue().lastActiveTime().get();
-
-				if (currentTime < lastActiveTime + frameInterval || currentTime < CameraController.lastFrameRendered + timeBetweenFrames || activeFramesPerMcFrame-- <= 0)
-					continue;
-
-				cameraView.getValue().lastActiveTime().set(currentTime);
-				activeFrameCameraFeeds.put(cameraView.getKey(), cameraView.getValue());
-			}
-		}
-		else
-			activeFrameCameraFeeds = new HashMap<>(CameraController.FRAME_CAMERA_FEEDS);
+		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = CameraController.getFeedsToRender(currentTime);
 
 		if (activeFrameCameraFeeds.isEmpty())
 			return;
 
-		CameraController.lastFrameRendered = currentTime;
+		CameraController.setLastFrameRendered(currentTime);
 		profiler.endSection(); //out of "render"
 		profiler.startSection("gameRenderer");
 		profiler.startSection("securitycraft:frame_level");
@@ -216,7 +190,7 @@ public class SCClientEventHandler {
 			CameraFeed feed = cameraView.getValue();
 
 			if (feed.usesVbo() != OpenGlHelper.useVbo()) //If the player switches their VBO setting, update + recollect all render chunks in range, or else the game crashes
-				CameraController.FRAME_CAMERA_FEEDS.put(cameraPos, CameraController.setUpCameraSections(cameraPos));
+				CameraController.refreshCameraFeed(cameraPos);
 			else if (cameraPos.dimension() == level.provider.getDimension()) {
 				BlockPos pos = cameraPos.pos();
 				TileEntity te = level.getTileEntity(pos);
@@ -237,7 +211,7 @@ public class SCClientEventHandler {
 					securityCamera.rotationYaw = cameraYRot;
 					securityCamera.prevRotationPitch = cameraXRot;
 					securityCamera.prevRotationYaw = cameraYRot;
-					CameraController.currentlyCapturedCamera = cameraPos;
+					CameraController.markAsCapturedCamera(cameraPos);
 					feed.applyVisibleSections(mc.renderGlobal.renderInfos, mc.renderGlobal.chunksToUpdate);
 					profiler.startSection("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
@@ -253,7 +227,7 @@ public class SCClientEventHandler {
 					catch (Exception e) {
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getPos());
 						e.printStackTrace();
-						erroringFrameCameraFeeds.add(cameraPos);
+						feed.markForRemoval();
 					}
 
 					frameTarget.unbindFramebuffer();
@@ -284,22 +258,18 @@ public class SCClientEventHandler {
 		mc.displayWidth = oldWidth;
 		mc.displayHeight = oldHeight;
 		mc.getFramebuffer().bindFramebuffer(true);
-		CameraController.currentlyCapturedCamera = null;
+		CameraController.markAsCapturedCamera(null);
 
 		profiler.endSection();
 		profiler.endSection();
 		profiler.startSection("render");
-
-		for (GlobalPos erroringFeed : erroringFrameCameraFeeds) {
-			CameraController.removeAllFrameLinks(erroringFeed);
-		}
 	}
 
 	private static Frustum getCurrentFrustum(Entity entity) {
 		Frustum frustum = null;
 
-		if (CameraController.lastUsedClippingHelper != null) {
-			frustum = new Frustum(CameraController.lastUsedClippingHelper);
+		if (CameraController.getLastUsedClippingHelper() != null) {
+			frustum = new Frustum(CameraController.getLastUsedClippingHelper());
 			frustum.setPosition(entity.posX, entity.posY, entity.posZ);
 		}
 

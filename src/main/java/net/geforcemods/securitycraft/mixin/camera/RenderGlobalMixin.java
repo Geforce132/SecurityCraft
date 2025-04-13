@@ -27,7 +27,7 @@ public class RenderGlobalMixin {
 	 */
 	@Inject(method = "setupTerrain", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Entity viewEntity, double partialTicks, ICamera camera, int frameCount, boolean playerSpectator, CallbackInfo ci) {
-		if (CameraController.currentlyCapturedCamera != null) {
+		if (CameraController.isCapturingCamera()) {
 			renderContainer.initialize(viewEntity.posX, viewEntity.posY, viewEntity.posZ);
 			ci.cancel();
 		}
@@ -40,7 +40,7 @@ public class RenderGlobalMixin {
 	 */
 	@ModifyVariable(method = "renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", at = @At("HEAD"), argsOnly = true)
 	private Entity securitycraft$preventTranslucencyRebuild(Entity originalViewEntity) {
-		if (CameraController.currentlyCapturedCamera != null)
+		if (CameraController.isCapturingCamera())
 			return Minecraft.getMinecraft().player;
 
 		return originalViewEntity;

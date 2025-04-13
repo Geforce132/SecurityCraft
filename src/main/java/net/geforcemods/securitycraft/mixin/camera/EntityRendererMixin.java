@@ -23,8 +23,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.culling.ClippingHelper;
-import net.minecraft.client.renderer.culling.ClippingHelperImpl;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -63,15 +61,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/culling/ICamera;setPosition(DDD)V"))
 	private void securitycraft$captureMainLevelClippingHelper(int pass, float partialTicks, long finishTimeNano, CallbackInfo ci) {
-		ClippingHelper cameraClippingHelper = new ClippingHelper();
-		ClippingHelper currentClippingHelper = ClippingHelperImpl.getInstance();
-
-		cameraClippingHelper.frustum = currentClippingHelper.frustum.clone();
-		cameraClippingHelper.projectionMatrix = currentClippingHelper.projectionMatrix.clone();
-		cameraClippingHelper.modelviewMatrix = currentClippingHelper.modelviewMatrix.clone();
-		cameraClippingHelper.clippingMatrix = currentClippingHelper.clippingMatrix.clone();
-
-		CameraController.lastUsedClippingHelper = cameraClippingHelper;
+		CameraController.copyClippingHelper();
 	}
 
 	/**
@@ -80,7 +70,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "getFOVModifier", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$modifyFOVForCameraRendering(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> cir) {
-		if (CameraController.currentlyCapturedCamera != null)
+		if (CameraController.isCapturingCamera())
 			cir.setReturnValue(90.0F);
 	}
 
@@ -117,7 +107,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "setupCameraTransform", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V", ordinal = 0), cancellable = true)
 	private void securitycraft$disableFeedDistortion(float partialTicks, int pass, CallbackInfo ci) {
-		if (CameraController.currentlyCapturedCamera != null) {
+		if (CameraController.isCapturingCamera()) {
 			orientCamera(partialTicks);
 			ci.cancel();
 		}
@@ -131,7 +121,7 @@ public abstract class EntityRendererMixin {
 	 */
 	@Inject(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;clearColor(FFFF)V"))
 	private void setFrameFeedBackgroundColor(float partialTicks, CallbackInfo ci) {
-		if (CameraController.currentlyCapturedCamera != null)
+		if (CameraController.isCapturingCamera())
 			CameraController.getCurrentFeed().setBackgroundColor(new Vector3f(fogColorRed, fogColorGreen, fogColorBlue));
 	}
 }
