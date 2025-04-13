@@ -40,9 +40,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 	@Override
 	public void render(SecurityCameraBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
-			return;
-		else if (CameraController.currentlyCapturedCamera != null && be.getBlockPos().equals(CameraController.currentlyCapturedCamera.pos()))
+		if (CameraController.amIBeingCaptured(be) || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
 			return;
 
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay);
@@ -79,8 +77,8 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 			ItemStack lens = be.getLensContainer().getItem(0);
 			float r = 0.4392156862745098F, g = 1.0F, b = 1.0F;
 
-		if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {
-			int color = item.getColor(lens);
+			if (lens.getItem() instanceof DyeableLeatherItem item && item.hasCustomColor(lens)) {
+				int color = item.getColor(lens);
 
 				r = ((color >> 0x10) & 0xFF) / 255.0F;
 				g = ((color >> 0x8) & 0xFF) / 255.0F;
