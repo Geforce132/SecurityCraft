@@ -132,6 +132,6 @@ public abstract class EntityRendererMixin {
 	@Inject(method = "updateFogColor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;clearColor(FFFF)V"))
 	private void setFrameFeedBackgroundColor(float partialTicks, CallbackInfo ci) {
 		if (CameraController.currentlyCapturedCamera != null)
-			CameraController.currentlyCapturedCamera.getRight().setBackgroundColor(new Vector3f(fogColorRed, fogColorGreen, fogColorBlue));
+			CameraController.getCurrentFeed().setBackgroundColor(new Vector3f(fogColorRed, fogColorGreen, fogColorBlue));
 	}
 }

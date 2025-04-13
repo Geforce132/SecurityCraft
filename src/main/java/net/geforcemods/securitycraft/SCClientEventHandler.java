@@ -6,15 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.entity.camera.CameraController.CameraFeed;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.items.TaserItem;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -40,7 +38,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
@@ -225,7 +222,7 @@ public class SCClientEventHandler {
 				TileEntity te = level.getTileEntity(pos);
 
 				if (te instanceof SecurityCameraBlockEntity) {
-					if (playerFrustum != null && !isFrameInFrustum(cameraPos, playerFrustum))
+					if (playerFrustum != null && !feed.hasFrameInFrustum(playerFrustum))
 						continue;
 
 					SecurityCameraBlockEntity be = (SecurityCameraBlockEntity) te;
@@ -240,14 +237,11 @@ public class SCClientEventHandler {
 					securityCamera.rotationYaw = cameraYRot;
 					securityCamera.prevRotationPitch = cameraXRot;
 					securityCamera.prevRotationYaw = cameraYRot;
-					CameraController.currentlyCapturedCamera = Pair.of(cameraPos, feed);
-					mc.renderGlobal.renderInfos.clear();
-					mc.renderGlobal.renderInfos.addAll(feed.visibleSections());
-					mc.renderGlobal.chunksToUpdate.clear();
-					mc.renderGlobal.chunksToUpdate.addAll(feed.getSectionsToCompile());
+					CameraController.currentlyCapturedCamera = cameraPos;
+					feed.applyVisibleSections(mc.renderGlobal.renderInfos, mc.renderGlobal.chunksToUpdate);
 					profiler.startSection("securitycraft:discover_frame_sections");
-					CameraController.discoverVisibleSections(cameraPos, newFrameFeedViewDistance, feed);
-					mc.renderGlobal.chunksToUpdate.addAll(CameraController.getDirtyRenderChunks(feed));
+					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
+					mc.renderGlobal.chunksToUpdate.addAll(feed.getDirtyRenderChunks());
 					profiler.endStartSection("securitycraft:bind_frame_target");
 					frameTarget.framebufferClear();
 					frameTarget.bindFramebuffer(true);
@@ -267,17 +261,8 @@ public class SCClientEventHandler {
 
 					Frustum frustum = getCurrentFrustum(securityCamera);
 
-					if (be.shouldRotate() || feed.visibleSections().isEmpty() || CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.contains(cameraPos)) {
-						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.remove(cameraPos);
-						feed.visibleSections().clear();
-
-						for (ContainerLocalRenderInformation section : feed.sectionsInRange()) {
-							AxisAlignedBB bb = section.renderChunk.boundingBox;
-
-							if (frustum == null || frustum.isBoxInFrustum(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ))
-								feed.visibleSections().add(section);
-						}
-					}
+					if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
+						feed.updateVisibleSections(frustum);
 
 					profiler.endSection();
 				}
@@ -319,17 +304,6 @@ public class SCClientEventHandler {
 		}
 
 		return frustum;
-	}
-
-	private static boolean isFrameInFrustum(GlobalPos cameraPos, Frustum beFrustum) {
-		for (BlockPos framePos : CameraController.FRAME_LINKS.get(cameraPos)) {
-			AxisAlignedBB bb = new AxisAlignedBB(framePos);
-
-			if (beFrustum.isBoxInFrustum(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ))
-				return true;
-		}
-
-		return false;
 	}
 
 	@SubscribeEvent

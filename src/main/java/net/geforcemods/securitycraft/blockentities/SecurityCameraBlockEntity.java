@@ -116,8 +116,8 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				if (world.isRemote && cameraRotation != oCameraRotation) {
 					GlobalPos cameraPos = GlobalPos.of(world.provider.getDimension(), pos);
 
-					if (CameraController.FRAME_LINKS.containsKey(cameraPos))
-						CameraController.FEED_FRUSTUM_UPDATE_REQUIRED.add(cameraPos);
+					if (CameraController.FRAME_CAMERA_FEEDS.containsKey(cameraPos))
+						CameraController.FRAME_CAMERA_FEEDS.get(cameraPos).requestFrustumUpdate();
 				}
 
 				return;
@@ -395,7 +395,6 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 			}
 
 			if (linkedFrames.isEmpty()) {
-
 				addRecentlyUnviewedCamera(this);
 				BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.stopTracking(this);
 

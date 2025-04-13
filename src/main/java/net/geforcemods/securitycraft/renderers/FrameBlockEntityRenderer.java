@@ -9,7 +9,7 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
-import net.geforcemods.securitycraft.entity.camera.CameraController.CameraFeed;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.items.ColorableItem;
 import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.minecraft.block.state.IBlockState;
@@ -92,38 +92,36 @@ public class FrameBlockEntityRenderer extends TileEntitySpecialRenderer<FrameBlo
 			renderNoise(xStart, xEnd, zStart, zEnd, normal, margin);
 			renderCutoutTexture(INACTIVE, xStart, xEnd, zStart, zEnd, normal, margin);
 		}
-		else if (!CameraController.isLinked(be, cameraPos) || !level.isBlockLoaded(cameraPos.pos()) || !(level.getTileEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity))
-			renderSolidTexture(CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, normal, margin);
-		else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
-			SecurityCameraBlockEntity cameraBlockEntity = (SecurityCameraBlockEntity) level.getTileEntity(cameraPos.pos());
+		else {
 			CameraFeed feed = CameraController.FRAME_CAMERA_FEEDS.get(cameraPos);
-			Framebuffer target = feed != null ? feed.renderTarget() : null;
 
-			if (target == null) {
+			if (feed == null || !feed.isFrameLinked(be) || !level.isBlockLoaded(cameraPos.pos()) || !(level.getTileEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity))
 				renderSolidTexture(CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, normal, margin);
-				return;
+			else if (CameraController.currentlyCapturedCamera == null) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+				SecurityCameraBlockEntity cameraBlockEntity = (SecurityCameraBlockEntity) level.getTileEntity(cameraPos.pos());
+				Framebuffer target = feed.renderTarget();
+				Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
+				BufferBuilder bufferBuilder = tessellator.getBuffer();
+				Vector3f backgroundColor = feed.backgroundColor();
+
+				GlStateManager.disableLighting();
+				renderOverlay(xStart, xEnd, zStart, zEnd, (int) (backgroundColor.x * 255.0F), (int) (backgroundColor.y * 255.0F), (int) (backgroundColor.z * 255.0F), 255, normal, margin);
+				target.bindFramebufferTexture();
+				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+				bufferBuilder.pos(xStart, margin, zStart).tex(1, 0).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
+				bufferBuilder.pos(xStart, 1 - margin, zStart).tex(1, 1).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
+				bufferBuilder.pos(xEnd, 1 - margin, zEnd).tex(0, 1).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
+				bufferBuilder.pos(xEnd, margin, zEnd).tex(0, 0).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
+				tessellator.draw();
+				target.unbindFramebufferTexture();
+
+				ItemStack lens = cameraBlockEntity.getLensContainer().getStackInSlot(0);
+
+				if (lens.getItem() instanceof ColorableItem && ((ColorableItem) lens.getItem()).hasColor(lens))
+					renderOverlay(xStart, xEnd, zStart, zEnd, ((ColorableItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), normal, margin);
+
+				GlStateManager.enableLighting();
 			}
-
-			ItemStack lens = cameraBlockEntity.getLensContainer().getStackInSlot(0);
-			Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
-			BufferBuilder bufferBuilder = tessellator.getBuffer();
-			Vector3f backgroundColor = feed.getBackgroundColor();
-
-			GlStateManager.disableLighting();
-			renderOverlay(xStart, xEnd, zStart, zEnd, (int) (backgroundColor.x * 255.0F), (int) (backgroundColor.y * 255.0F), (int) (backgroundColor.z * 255.0F), 255, normal, margin);
-			target.bindFramebufferTexture();
-			bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
-			bufferBuilder.pos(xStart, margin, zStart).tex(1, 0).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
-			bufferBuilder.pos(xStart, 1 - margin, zStart).tex(1, 1).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
-			bufferBuilder.pos(xEnd, 1 - margin, zEnd).tex(0, 1).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
-			bufferBuilder.pos(xEnd, margin, zEnd).tex(0, 0).color(0xFF, 0xFF, 0xFF, 0xFF).endVertex();
-			tessellator.draw();
-			target.unbindFramebufferTexture();
-
-			if (lens.getItem() instanceof ColorableItem && ((ColorableItem) lens.getItem()).hasColor(lens))
-				renderOverlay(xStart, xEnd, zStart, zEnd, ((ColorableItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), normal, margin);
-
-			GlStateManager.enableLighting();
 		}
 
 		GlStateManager.popMatrix();
