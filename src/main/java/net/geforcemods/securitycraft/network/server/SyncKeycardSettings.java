@@ -62,7 +62,7 @@ public class SyncKeycardSettings implements CustomPacketPayload {
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
 
-		if (player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
 			boolean isOwner = be.isOwnedBy(player);
 
 			if (isOwner || be.isAllowed(player)) {

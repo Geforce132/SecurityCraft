@@ -39,7 +39,7 @@ public class RemoveSentryFromSRAT implements CustomPacketPayload {
 		Player player = ctx.player().orElseThrow();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			CompoundTag tag = stack.getOrCreateTag();
 
 			if (tag.contains("sentry" + sentryIndex))

@@ -49,7 +49,7 @@ public class SyncRiftStabilizer implements CustomPacketPayload {
 			Player player = ctx.player().orElseThrow();
 			Level level = player.level();
 
-			if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(player)) {
+			if (!player.isSpectator() && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(player)) {
 				BlockState state = level.getBlockState(pos);
 
 				be.setFilter(teleportationType, allowed);

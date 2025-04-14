@@ -41,7 +41,7 @@ public class SetKeycardUses implements CustomPacketPayload {
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
 
-		if (player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)) && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)) && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
 			keycardReaderContainer.setKeycardUses(uses);
 	}
 }

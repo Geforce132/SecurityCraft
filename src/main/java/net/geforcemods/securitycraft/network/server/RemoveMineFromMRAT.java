@@ -39,7 +39,7 @@ public class RemoveMineFromMRAT implements CustomPacketPayload {
 		Player player = ctx.player().orElseThrow();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			CompoundTag tag = stack.getOrCreateTag();
 
 			if (tag.contains("mine" + mineIndex))

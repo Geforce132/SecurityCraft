@@ -58,7 +58,7 @@ public class SyncFrame implements CustomPacketPayload {
 		Level level = player.level();
 		GlobalPos currentCamera = this.currentCamera.orElse(null);
 
-		if (level.getBlockEntity(pos) instanceof FrameBlockEntity be) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof FrameBlockEntity be) {
 			if (be.isDisabled())
 				return;
 

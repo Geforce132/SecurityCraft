@@ -40,7 +40,7 @@ public class SetGhostSlot implements CustomPacketPayload {
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
 
-		if (player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
+		if (!player.isSpectator() && player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
 			menu.be.getContents().set(slotIndex, stack);
 	}
 }

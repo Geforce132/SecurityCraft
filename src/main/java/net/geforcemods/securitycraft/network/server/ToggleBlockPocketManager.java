@@ -13,6 +13,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public class ToggleBlockPocketManager implements CustomPacketPayload {
@@ -49,8 +51,10 @@ public class ToggleBlockPocketManager implements CustomPacketPayload {
 
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
+        Level level = player.level();
 
-		if (player.level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
+			BlockState state = be.getBlockState();
 			MutableComponent feedback;
 
 			be.setSize(size);
@@ -68,6 +72,7 @@ public class ToggleBlockPocketManager implements CustomPacketPayload {
 			}
 
 			be.setChanged();
+			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
 }

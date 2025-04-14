@@ -54,7 +54,7 @@ public class SyncSSSSettingsOnServer implements CustomPacketPayload {
 		Player player = ctx.player().orElseThrow();
 		Level level = player.level();
 
-		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(player)) {
 			switch (dataType) {
 				case POWER_ON:
 					sss.setActive(true);

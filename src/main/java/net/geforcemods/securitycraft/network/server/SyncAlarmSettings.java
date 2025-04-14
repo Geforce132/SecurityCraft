@@ -48,7 +48,7 @@ public class SyncAlarmSettings implements CustomPacketPayload {
 	public void handle(PlayPayloadContext ctx) {
 		Player player = ctx.player().orElseThrow();
 
-		if (player.level().getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
 			if (!soundEvent.equals(be.getSound().getLocation()))
 				be.setSound(soundEvent);
 

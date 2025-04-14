@@ -68,7 +68,7 @@ public class ToggleModule implements CustomPacketPayload {
 		Level level = player.level();
 		IModuleInventory moduleInv = getModuleInventory(level);
 
-		if (moduleInv != null && (!(moduleInv instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (!player.isSpectator() && moduleInv != null && (!(moduleInv instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			if (moduleInv.isModuleEnabled(moduleType)) {
 				moduleInv.removeModule(moduleType, true);
 
