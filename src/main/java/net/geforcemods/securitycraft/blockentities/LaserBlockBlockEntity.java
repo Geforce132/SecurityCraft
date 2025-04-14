@@ -35,6 +35,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -135,6 +136,13 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 
 		super.preRemoveSideEffects(pos, state);
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
+		buffer.writeNbt(LaserBlockBlockEntity.saveSideConfig(sideConfig));
 	}
 
 	@Override

@@ -11,6 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -52,7 +53,13 @@ public class UniversalBlockReinforcerItem extends Item {
 				public Component getDisplayName() {
 					return heldItem.getHoverName();
 				}
-			}, data -> data.writeBoolean(this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()));
+
+				@Override
+				public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+					MenuProvider.super.writeClientSideData(menu, buffer);
+					buffer.writeBoolean(UniversalBlockReinforcerItem.this == SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
+				}
+			});
 		}
 
 		return InteractionResult.CONSUME;

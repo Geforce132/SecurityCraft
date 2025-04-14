@@ -44,6 +44,7 @@
 - Fix: Reinforced Block recipes are grouped and categorized differently in the recipe book compared to vanilla block recipes
 - Fix: Text above the Sonic Security System does not render correctly
 - Fix: Some blocks are not tinted correctly when rendered in the disguise module or projector screen's state selector
+- Fix: Crash when interacting with certain SecurityCraft blocks in spectator mode
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.

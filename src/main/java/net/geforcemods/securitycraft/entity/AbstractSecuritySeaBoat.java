@@ -36,6 +36,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -162,9 +163,12 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 							public Component getDisplayName() {
 								return AbstractSecuritySeaBoat.super.getDisplayName();
 							}
-						}, data -> {
-							data.writeBlockPos(pos);
-							data.writeVarInt(AbstractSecuritySeaBoat.super.getId());
+
+							@Override
+							public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+								buffer.writeBlockPos(pos);
+								buffer.writeVarInt(AbstractSecuritySeaBoat.super.getId());
+							}
 						});
 					}
 				}
