@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 
 public class MineRemoteAccessToolItem extends Item {
 	public static final int MAX_MINES = 6;
+	public static final GlobalPositions DEFAULT_POSITIONS = GlobalPositions.sized(MAX_MINES);
 
 	public MineRemoteAccessToolItem(Item.Properties properties) {
 		super(properties);
