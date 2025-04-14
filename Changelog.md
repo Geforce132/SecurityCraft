@@ -13,6 +13,7 @@
 - New: Pale Oak Security Sea Boat
 - New: Creaking Heart Mine
 - New: The cage trap iron bars now also break when breaking a cage trap in creative mode
+- New: Camera monitors can now be copied in the crafting table, by combining an empty monitor with another that has cameras bound to it
 - Change: Camera model animations are now synchronized between players
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - Change: Owners of disguised blocks and players in creative mode now receive the actual block instead of the disguise when using Pick Block  
