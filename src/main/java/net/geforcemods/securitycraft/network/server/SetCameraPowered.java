@@ -34,7 +34,7 @@ public record SetCameraPowered(BlockPos pos, boolean powered) implements CustomP
 		Level level = player.level();
 		BlockEntity be = level.getBlockEntity(pos);
 
-		if ((be instanceof IOwnable ownable && ownable.isOwnedBy(player)) || (be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(player))) {
+		if (!player.isSpectator() && (be instanceof IOwnable ownable && ownable.isOwnedBy(player)) || (be instanceof IModuleInventory moduleInv && moduleInv.isAllowed(player))) {
 			BlockState state = level.getBlockState(pos);
 
 			level.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, powered));
