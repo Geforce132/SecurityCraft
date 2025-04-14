@@ -33,7 +33,7 @@ public record ClearChangeDetectorServer(BlockPos pos) implements CustomPacketPay
 		Player player = ctx.player();
 		Level level = player.level();
 
-		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
 			BlockState state = be.getBlockState();
 
 			be.getEntries().clear();

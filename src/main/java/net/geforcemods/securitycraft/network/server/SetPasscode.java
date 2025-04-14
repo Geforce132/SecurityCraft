@@ -68,7 +68,7 @@ public class SetPasscode implements CustomPacketPayload {
 		Level level = player.level();
 		IPasscodeProtected passcodeProtected = getPasscodeProtected(level);
 
-		if (passcodeProtected != null && (!(passcodeProtected instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (!player.isSpectator() && passcodeProtected != null && (!(passcodeProtected instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			passcodeProtected.hashAndSetPasscode(passcode, b -> passcodeProtected.openPasscodeGUI(level, pos, player));
 			passcodeProtected.setPasscodeInAdjacentBlock(passcode);
 		}

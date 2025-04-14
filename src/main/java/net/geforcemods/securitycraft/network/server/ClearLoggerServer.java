@@ -26,7 +26,7 @@ public record ClearLoggerServer(BlockPos pos) implements CustomPacketPayload {
 	public void handle(IPayloadContext ctx) {
 		Player player = ctx.player();
 
-		if (player.level().getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
 			be.setPlayers(new String[100]);
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
 		}

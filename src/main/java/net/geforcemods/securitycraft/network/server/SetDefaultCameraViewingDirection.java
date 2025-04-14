@@ -32,7 +32,7 @@ public record SetDefaultCameraViewingDirection(int id, float initialXRotation, f
 	public void handle(IPayloadContext ctx) {
 		ServerPlayer player = (ServerPlayer) ctx.player();
 
-		if (player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
+		if (!player.isSpectator() && player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
 			if (!be.isOwnedBy(player)) {
 				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.no_permission"), true);
 				return;

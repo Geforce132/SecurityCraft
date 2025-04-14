@@ -34,7 +34,7 @@ public record SetStateOnDisguiseModule(BlockState state, StandingOrWallType stan
 		Player player = ctx.player();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DISGUISE_MODULE.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			if (state.isAir())
 				stack.set(SCContent.SAVED_BLOCK_STATE, SavedBlockState.EMPTY);
 			else

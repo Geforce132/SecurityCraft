@@ -9,6 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
@@ -26,9 +27,10 @@ public record RemoveCameraTag(GlobalPos globalPos) implements CustomPacketPayloa
 	}
 
 	public void handle(IPayloadContext ctx) {
-		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(ctx.player(), SCContent.CAMERA_MONITOR.get());
+		Player player = ctx.player();
+		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.CAMERA_MONITOR.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			NamedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 			if (cameras != null)
