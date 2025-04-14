@@ -123,6 +123,14 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	}
 
 	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (minecraft.player.isSpectator())
+			return false;
+
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (stateSelector != null && stateSelector.mouseDragged(mouseX, mouseY, button, dragX, dragY))
 			return true;
