@@ -29,7 +29,7 @@ public record RemoveSentryFromSRAT(GlobalPos globalPos) implements CustomPacketP
 		Player player = ctx.player();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SENTRY_REMOTE_ACCESS_TOOL.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			NamedPositions sentries = stack.get(SCContent.BOUND_SENTRIES);
 
 			if (sentries != null)

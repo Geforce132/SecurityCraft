@@ -31,7 +31,7 @@ public record SetListModuleData(ListModuleData listModuleData) implements Custom
 		if (stack.isEmpty())
 			stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DENYLIST_MODULE.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			//@formatter:off
 			stack.set(SCContent.LIST_MODULE_DATA, new ListModuleData(
 					listModuleData.players().stream().distinct().toList(),
