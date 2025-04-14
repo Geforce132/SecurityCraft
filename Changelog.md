@@ -12,6 +12,7 @@
 - New: Pale Oak Security Sea Boat
 - New: Creaking Heart Mine
 - New: The cage trap iron bars now also break when breaking a cage trap in creative mode
+- New: The Camera Monitor, Mine/Sentry Remote Access Tool, and Sonic Security System can now be copied in the crafting table, by combining two of the same item (one empty, another one with things bound to it) in a crafting table
 - Change: The block mine overlay now shows in the first person hand models as well
 - Change: Camera model animations are now synchronized between players
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
