@@ -34,7 +34,7 @@ public record SyncBlockChangeDetector(BlockPos pos, DetectionMode mode, boolean 
 		Player player = ctx.player();
 		Level level = player.level();
 
-		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);
 
 			be.setMode(mode);

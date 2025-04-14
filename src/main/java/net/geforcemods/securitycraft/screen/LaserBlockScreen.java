@@ -73,6 +73,14 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);
 	}
 
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (minecraft.player.isSpectator())
+			return false;
+
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+
 	public void onChangeValue(Direction dir, boolean newValue) {
 		sideConfig.put(dir, newValue);
 		PacketDistributor.sendToServer(new SyncLaserSideConfig(be.getBlockPos(), LaserBlockBlockEntity.saveSideConfig(sideConfig)));

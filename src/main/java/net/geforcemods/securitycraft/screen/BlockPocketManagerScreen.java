@@ -197,6 +197,14 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (minecraft.player.isSpectator())
+			return false;
+
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (colorChooser != null)
 			colorChooser.mouseDragged(mouseX, mouseY, button, dragX, dragY);
@@ -290,9 +298,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	public void toggleButtonClicked(Button button) {
-		be.setSize(size);
-		be.setEnabled(!be.isEnabled());
-		PacketDistributor.sendToServer(new ToggleBlockPocketManager(be.getBlockPos(), be.getSize(), be.isEnabled()));
+		PacketDistributor.sendToServer(new ToggleBlockPocketManager(be.getBlockPos(), be.getSize(), !be.isEnabled()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
