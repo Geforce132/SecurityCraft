@@ -77,7 +77,7 @@ public class UpdateSliderValue implements CustomPacketPayload {
 		Level level = player.level();
 		ICustomizable customizable = getCustomizable(level);
 
-		if (customizable != null && (!(customizable instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (!player.isSpectator() && customizable != null && (!(customizable instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			Option<?> option = null;
 
 			for (Option<?> o : customizable.customOptions()) {

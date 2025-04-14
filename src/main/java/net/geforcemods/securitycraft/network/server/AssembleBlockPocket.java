@@ -32,7 +32,7 @@ public record AssembleBlockPocket(BlockPos pos, int size) implements CustomPacke
 	public void handle(IPayloadContext ctx) {
 		Player player = ctx.player();
 
-		if (player.level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
 			MutableComponent feedback;
 
 			be.setSize(size);

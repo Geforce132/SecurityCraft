@@ -27,7 +27,7 @@ public record SetGhostSlot(int slotIndex, ItemStack stack) implements CustomPack
 	public void handle(IPayloadContext ctx) {
 		Player player = ctx.player();
 
-		if (player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
+		if (!player.isSpectator() && player.containerMenu instanceof InventoryScannerMenu menu && menu.be.isOwnedBy(player))
 			menu.be.getContents().set(slotIndex, stack);
 	}
 }
