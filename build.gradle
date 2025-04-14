@@ -112,6 +112,7 @@ dependencies {
 }
 
 tasks.named('jar', Jar).configure {
+	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
 	archiveFileName = "[${project.mc_version}] SecurityCraft v${version}.jar"
 	manifest {
 		attributes(["Specification-Title": "SecurityCraft",
@@ -124,7 +125,6 @@ tasks.named('jar', Jar).configure {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
 	options.encoding = 'UTF-8'
 	options.release = 21
 }
