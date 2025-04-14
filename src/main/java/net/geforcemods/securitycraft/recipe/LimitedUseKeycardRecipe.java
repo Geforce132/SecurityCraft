@@ -25,9 +25,11 @@ public class LimitedUseKeycardRecipe extends CombineRecipe {
 
 	@Override
 	public ItemStack combine(ItemStack keycardToCopy, ItemStack limitedUseKeycard) {
-		keycardToCopy.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, data -> data.setLimitedAndUsesLeft(true, 0));
-		keycardToCopy.setCount(2);
-		return keycardToCopy;
+		ItemStack outputKeycard = keycardToCopy.copy();
+
+		outputKeycard.update(SCContent.KEYCARD_DATA, KeycardData.DEFAULT, data -> data.setLimitedAndUsesLeft(true, 0));
+		outputKeycard.setCount(2);
+		return outputKeycard;
 	}
 
 	@Override
