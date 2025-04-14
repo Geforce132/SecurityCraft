@@ -21,7 +21,6 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.item.ItemStack;
 
 public record NamedPositions(List<Entry> positions) implements GlobalPositionComponent<NamedPositions, Entry, Optional<String>> {
-
 	public static final Codec<NamedPositions> codec(int size) {
 		//@formatter:off
 		return Codec.withAlternative(
@@ -63,8 +62,8 @@ public record NamedPositions(List<Entry> positions) implements GlobalPositionCom
 	}
 
 	@Override
-	public Entry createEntry(GlobalPos globalPos, Optional<String> sentryName) {
-		return new Entry(globalPos, sentryName);
+	public Entry createEntry(GlobalPos globalPos, Optional<String> name) {
+		return new Entry(globalPos, name);
 	}
 
 	@Override
@@ -106,6 +105,7 @@ public record NamedPositions(List<Entry> positions) implements GlobalPositionCom
 				stack.set(dataComponentType, new NamedPositions(newEntries));
 		}
 	}
+
 	public record Entry(GlobalPos globalPos, Optional<String> name) {
 		//@formatter:off
 		public static final Codec<Entry> CODEC = RecordCodecBuilder.create(

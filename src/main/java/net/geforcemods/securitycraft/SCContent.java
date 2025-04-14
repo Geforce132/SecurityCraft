@@ -259,6 +259,7 @@ import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
 import net.geforcemods.securitycraft.recipe.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
+import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
 import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableBE;
@@ -367,6 +368,10 @@ public class SCContent {
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<BlockReinforcingRecipe>> BLOCK_REINFORCING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("block_reinforcing_recipe", () -> new SimpleCraftingRecipeSerializer<>(BlockReinforcingRecipe::new));
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<BlockUnreinforcingRecipe>> BLOCK_UNREINFORCING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("block_unreinforcing_recipe", () -> new SimpleCraftingRecipeSerializer<>(BlockUnreinforcingRecipe::new));
+	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<CopyPositionComponentItemRecipe<NamedPositions>>> COPY_CAMERA_MONITOR_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_camera_monitor_recipe", () -> new SimpleCraftingRecipeSerializer<>(CopyPositionComponentItemRecipe::cameraMonitor));
+	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<CopyPositionComponentItemRecipe<GlobalPositions>>> COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_mine_remote_access_tool_recipe", () -> new SimpleCraftingRecipeSerializer<>(CopyPositionComponentItemRecipe::mineRemoteAccessTool));
+	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<CopyPositionComponentItemRecipe<NamedPositions>>> COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_sentry_remote_access_tool_recipe", () -> new SimpleCraftingRecipeSerializer<>(CopyPositionComponentItemRecipe::sentryRemoteAccessTool));
+	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<CopyPositionComponentItemRecipe<GlobalPositions>>> COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_sonic_security_system_recipe", () -> new SimpleCraftingRecipeSerializer<>(CopyPositionComponentItemRecipe::sonicSecuritySystem));
 	public static final DeferredHolder<RecipeSerializer<?>, SimpleCraftingRecipeSerializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new SimpleCraftingRecipeSerializer<>(LimitedUseKeycardRecipe::new));
 
 	//data serializer entries
@@ -2753,7 +2758,7 @@ public class SCContent {
 	@HasManualPage
 	public static final DeferredItem<DoubleHighBlockItem> REINFORCED_DOOR_ITEM = ITEMS.register("door_indestructible_iron_item", () -> new DoubleHighBlockItem(REINFORCED_DOOR.get(), itemProp()));
 	@HasManualPage
-	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(BOUND_MINES, GlobalPositions.sized(MineRemoteAccessToolItem.MAX_MINES))));
+	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_mine", () -> new MineRemoteAccessToolItem(itemProp(1).component(BOUND_MINES, MineRemoteAccessToolItem.DEFAULT_POSITIONS)));
 	@HasManualPage
 	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.register("remote_access_sentry", () -> new SentryRemoteAccessToolItem(itemProp(1).component(BOUND_SENTRIES, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS)));
 	@HasManualPage
@@ -2828,7 +2833,7 @@ public class SCContent {
 	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.register("bamboo_security_sea_raft", () -> new SecuritySeaBoatItem(Boat.Type.BAMBOO, itemProp(1).fireResistant()));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
-	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(SSS_LINKED_BLOCKS, GlobalPositions.sized(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS))));
+	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(SSS_LINKED_BLOCKS, SonicSecuritySystemItem.DEFAULT_POSITIONS)));
 	@HasManualPage
 	public static final DeferredItem<TaserItem> TASER = ITEMS.register("taser", () -> new TaserItem(itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultEffects()), false));
 	public static final DeferredItem<TaserItem> TASER_POWERED = ITEMS.register("taser_powered", () -> new TaserItem(itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultPoweredEffects()), true));
