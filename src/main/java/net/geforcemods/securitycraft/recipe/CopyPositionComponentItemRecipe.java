@@ -6,8 +6,12 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.GlobalPositionComponent;
+import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
+import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
+import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
+import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.item.Item;
@@ -35,6 +39,18 @@ public class CopyPositionComponentItemRecipe<T extends GlobalPositionComponent> 
 
 	public static CopyPositionComponentItemRecipe<NamedPositions> cameraMonitor(CraftingBookCategory craftingBookCategory) {
 		return new CopyPositionComponentItemRecipe<>(craftingBookCategory, SCContent.CAMERA_MONITOR, SCContent.BOUND_CAMERAS, NamedPositions::new, CameraMonitorItem.DEFAULT_NAMED_POSITIONS, SCContent.COPY_CAMERA_MONITOR_RECIPE_SERIALIZER.get());
+	}
+
+	public static CopyPositionComponentItemRecipe<GlobalPositions> mineRemoteAccessTool(CraftingBookCategory craftingBookCategory) {
+		return new CopyPositionComponentItemRecipe<>(craftingBookCategory, SCContent.MINE_REMOTE_ACCESS_TOOL, SCContent.BOUND_MINES, GlobalPositions::new, MineRemoteAccessToolItem.DEFAULT_POSITIONS, SCContent.COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get());
+	}
+
+	public static CopyPositionComponentItemRecipe<NamedPositions> sentryRemoteAccessTool(CraftingBookCategory craftingBookCategory) {
+		return new CopyPositionComponentItemRecipe<>(craftingBookCategory, SCContent.SENTRY_REMOTE_ACCESS_TOOL, SCContent.BOUND_SENTRIES, NamedPositions::new, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS, SCContent.COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get());
+	}
+
+	public static CopyPositionComponentItemRecipe<GlobalPositions> sonicSecuritySystem(CraftingBookCategory craftingBookCategory) {
+		return new CopyPositionComponentItemRecipe<>(craftingBookCategory, SCContent.SONIC_SECURITY_SYSTEM_ITEM, SCContent.SSS_LINKED_BLOCKS, GlobalPositions::new, SonicSecuritySystemItem.DEFAULT_POSITIONS, SCContent.COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER.get());
 	}
 
 	@Override
