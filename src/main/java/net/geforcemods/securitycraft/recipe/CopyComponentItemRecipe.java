@@ -19,7 +19,6 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-@SuppressWarnings("rawtypes")
 public class CopyComponentItemRecipe<T> extends CombineRecipe {
 	private final Holder<Item> item;
 	private final Supplier<DataComponentType<T>> component;
