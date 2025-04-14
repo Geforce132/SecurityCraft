@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.recipe.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
-import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
+import net.geforcemods.securitycraft.recipe.CopyComponentItemRecipe;
 import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.HolderGetter;
@@ -54,10 +54,12 @@ public class RecipeGenerator extends RecipeProvider {
 		SpecialRecipeBuilder.special(BlockReinforcingRecipe::new).save(output, scRecipeId("block_reinforcing"));
 		SpecialRecipeBuilder.special(BlockUnreinforcingRecipe::new).save(output, scRecipeId("block_unreinforcing"));
 		//tool copying
-		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::cameraMonitor).save(output, scRecipeId("copy_camera_monitor"));
-		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::mineRemoteAccessTool).save(output, scRecipeId("copy_mine_remote_access_tool"));
-		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::sentryRemoteAccessTool).save(output, scRecipeId("copy_sentry_remote_access_tool"));
-		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::sonicSecuritySystem).save(output, scRecipeId("copy_sonic_security_system"));
+		SpecialRecipeBuilder.special(CopyComponentItemRecipe::allowlistModule).save(output, scRecipeId("copy_allowlist_module"));
+		SpecialRecipeBuilder.special(CopyComponentItemRecipe::cameraMonitor).save(output, scRecipeId("copy_camera_monitor"));
+		SpecialRecipeBuilder.special(CopyComponentItemRecipe::denylistModule).save(output, scRecipeId("copy_denylist_module"));
+		SpecialRecipeBuilder.special(CopyComponentItemRecipe::mineRemoteAccessTool).save(output, scRecipeId("copy_mine_remote_access_tool"));
+		SpecialRecipeBuilder.special(CopyComponentItemRecipe::sentryRemoteAccessTool).save(output, scRecipeId("copy_sentry_remote_access_tool"));
+		SpecialRecipeBuilder.special(CopyComponentItemRecipe::sonicSecuritySystem).save(output, scRecipeId("copy_sonic_security_system"));
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
 		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe::new).save(output, scRecipeId("limited_use_keycards"));
 
