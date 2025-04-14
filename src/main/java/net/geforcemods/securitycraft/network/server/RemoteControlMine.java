@@ -34,7 +34,7 @@ public record RemoteControlMine(BlockPos pos, Action action) implements CustomPa
 		Level level = player.level();
 		BlockState state = level.getBlockState(pos);
 
-		if (state.getBlock() instanceof IExplosive explosive && level.getBlockEntity(pos) instanceof IOwnable be && be.isOwnedBy(player))
+		if (!player.isSpectator() && state.getBlock() instanceof IExplosive explosive && level.getBlockEntity(pos) instanceof IOwnable be && be.isOwnedBy(player))
 			action.act(explosive, level, pos);
 	}
 	public enum Action {

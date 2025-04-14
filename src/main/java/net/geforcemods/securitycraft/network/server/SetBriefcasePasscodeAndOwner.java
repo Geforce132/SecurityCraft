@@ -34,7 +34,7 @@ public record SetBriefcasePasscodeAndOwner(String passcode) implements CustomPac
 		Player player = ctx.player();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			if (!stack.has(SCContent.OWNER_DATA))
 				stack.set(SCContent.OWNER_DATA, OwnerData.fromPlayer(player, true));
 

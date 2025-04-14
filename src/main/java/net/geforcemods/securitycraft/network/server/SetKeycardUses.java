@@ -28,7 +28,7 @@ public record SetKeycardUses(BlockPos pos, int uses) implements CustomPacketPayl
 	public void handle(IPayloadContext ctx) {
 		Player player = ctx.player();
 
-		if (player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)) && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)) && player.containerMenu instanceof KeycardReaderMenu keycardReaderContainer)
 			keycardReaderContainer.setKeycardUsesLeft(uses);
 	}
 }
