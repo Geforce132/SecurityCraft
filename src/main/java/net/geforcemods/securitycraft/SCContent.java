@@ -266,7 +266,7 @@ import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
 import net.geforcemods.securitycraft.recipe.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
-import net.geforcemods.securitycraft.recipe.CopyComponentItemRecipe;
+import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
 import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableBE;
@@ -375,12 +375,10 @@ public class SCContent {
 	//recipe serializers
 	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<BlockReinforcingRecipe>> BLOCK_REINFORCING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("block_reinforcing_recipe", () -> new CustomRecipe.Serializer<>(BlockReinforcingRecipe::new));
 	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<BlockUnreinforcingRecipe>> BLOCK_UNREINFORCING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("block_unreinforcing_recipe", () -> new CustomRecipe.Serializer<>(BlockUnreinforcingRecipe::new));
-	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyComponentItemRecipe<ListModuleData>>> COPY_ALLOWLIST_MODULE_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_allowlist_module_recipe", () -> new CustomRecipe.Serializer<>(CopyComponentItemRecipe::allowlistModule));
-	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyComponentItemRecipe<NamedPositions>>> COPY_CAMERA_MONITOR_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_camera_monitor_recipe", () -> new CustomRecipe.Serializer<>(CopyComponentItemRecipe::cameraMonitor));
-	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyComponentItemRecipe<ListModuleData>>> COPY_DENYLIST_MODULE_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_denylist_module_recipe", () -> new CustomRecipe.Serializer<>(CopyComponentItemRecipe::denylistModule));
-	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyComponentItemRecipe<GlobalPositions>>> COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_mine_remote_access_tool_recipe", () -> new CustomRecipe.Serializer<>(CopyComponentItemRecipe::mineRemoteAccessTool));
-	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyComponentItemRecipe<NamedPositions>>> COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_sentry_remote_access_tool_recipe", () -> new CustomRecipe.Serializer<>(CopyComponentItemRecipe::sentryRemoteAccessTool));
-	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyComponentItemRecipe<GlobalPositions>>> COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_sonic_security_system_recipe", () -> new CustomRecipe.Serializer<>(CopyComponentItemRecipe::sonicSecuritySystem));
+	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyPositionComponentItemRecipe<NamedPositions>>> COPY_CAMERA_MONITOR_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_camera_monitor_recipe", () -> new CustomRecipe.Serializer<>(CopyPositionComponentItemRecipe::cameraMonitor));
+	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyPositionComponentItemRecipe<GlobalPositions>>> COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_mine_remote_access_tool_recipe", () -> new CustomRecipe.Serializer<>(CopyPositionComponentItemRecipe::mineRemoteAccessTool));
+	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyPositionComponentItemRecipe<NamedPositions>>> COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_sentry_remote_access_tool_recipe", () -> new CustomRecipe.Serializer<>(CopyPositionComponentItemRecipe::sentryRemoteAccessTool));
+	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<CopyPositionComponentItemRecipe<GlobalPositions>>> COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_sonic_security_system_recipe", () -> new CustomRecipe.Serializer<>(CopyPositionComponentItemRecipe::sonicSecuritySystem));
 	public static final DeferredHolder<RecipeSerializer<?>, CustomRecipe.Serializer<LimitedUseKeycardRecipe>> LIMITED_USE_KEYCARD_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("limited_use_keycard_recipe", () -> new CustomRecipe.Serializer<>(LimitedUseKeycardRecipe::new));
 
 	//data serializer entries
