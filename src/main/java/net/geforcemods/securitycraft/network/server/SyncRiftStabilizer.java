@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity.TeleportationType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -43,12 +44,13 @@ public class SyncRiftStabilizer implements IMessage {
 		public IMessage onMessage(SyncRiftStabilizer message, MessageContext ctx) {
 			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				if (message.teleportationType != null) {
-					World world = ctx.getServerHandler().player.world;
+					EntityPlayer player = ctx.getServerHandler().player;
+					World world = player.world;
 
-					if (world.getTileEntity(message.pos) instanceof RiftStabilizerBlockEntity) {
+					if (!player.isSpectator() && world.getTileEntity(message.pos) instanceof RiftStabilizerBlockEntity) {
 						RiftStabilizerBlockEntity te = ((RiftStabilizerBlockEntity) world.getTileEntity(message.pos));
 
-						if (te.isOwnedBy(ctx.getServerHandler().player)) {
+						if (te.isOwnedBy(player)) {
 							IBlockState state = world.getBlockState(message.pos);
 
 							te.setFilter(message.teleportationType, message.allowed);

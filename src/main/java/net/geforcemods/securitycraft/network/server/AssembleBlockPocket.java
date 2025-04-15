@@ -48,7 +48,7 @@ public class AssembleBlockPocket implements IMessage {
 				TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension).getTileEntity(message.pos);
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+				if (!player.isSpectator() && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
 					TextComponentTranslation feedback;
 
 					((BlockPocketManagerBlockEntity) te).setSize(message.size);

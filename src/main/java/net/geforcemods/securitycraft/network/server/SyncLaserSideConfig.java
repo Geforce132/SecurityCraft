@@ -51,7 +51,7 @@ public class SyncLaserSideConfig implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);
 
-				if (te instanceof LaserBlockBlockEntity) {
+				if (!player.isSpectator() && te instanceof LaserBlockBlockEntity) {
 					LaserBlockBlockEntity laser = (LaserBlockBlockEntity) te;
 
 					if (laser.isOwnedBy(player)) {

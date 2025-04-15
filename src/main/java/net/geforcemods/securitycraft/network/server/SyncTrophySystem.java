@@ -54,7 +54,7 @@ public class SyncTrophySystem implements IMessage {
 					World world = player.world;
 					TileEntity te = world.getTileEntity(message.pos);
 
-					if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(player)) {
+					if (!player.isSpectator() && te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(player)) {
 						IBlockState state = world.getBlockState(message.pos);
 
 						((TrophySystemBlockEntity) te).setFilter(projectileType, message.allowed);

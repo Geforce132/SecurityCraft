@@ -53,7 +53,7 @@ public class SyncBlockChangeDetector implements IMessage {
 				World level = player.world;
 				TileEntity tile = level.getTileEntity(message.pos);
 
-				if (tile instanceof BlockChangeDetectorBlockEntity) {
+				if (!player.isSpectator() && tile instanceof BlockChangeDetectorBlockEntity) {
 					BlockChangeDetectorBlockEntity te = (BlockChangeDetectorBlockEntity) tile;
 
 					if (te.isOwnedBy(player)) {

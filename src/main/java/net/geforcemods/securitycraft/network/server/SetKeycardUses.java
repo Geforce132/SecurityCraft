@@ -43,7 +43,7 @@ public class SetKeycardUses implements IMessage {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity tile = player.world.getTileEntity(message.pos);
 
-				if (tile instanceof KeycardReaderBlockEntity) {
+				if (!player.isSpectator() && tile instanceof KeycardReaderBlockEntity) {
 					KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 
 					if (te.isOwnedBy(player) || te.isAllowed(player)) {

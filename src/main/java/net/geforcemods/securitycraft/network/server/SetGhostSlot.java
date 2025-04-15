@@ -39,7 +39,7 @@ public class SetGhostSlot implements IMessage {
 			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
 				EntityPlayer player = ctx.getServerHandler().player;
 
-				if (player.openContainer instanceof InventoryScannerMenu) {
+				if (!player.isSpectator() && player.openContainer instanceof InventoryScannerMenu) {
 					InventoryScannerMenu menu = (InventoryScannerMenu) player.openContainer;
 
 					if (menu.te.isOwnedBy(player))

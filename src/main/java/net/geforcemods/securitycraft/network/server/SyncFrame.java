@@ -90,7 +90,7 @@ public class SyncFrame implements IMessage {
 				GlobalPos currentCamera = message.currentCamera.orElse(null);
 				TileEntity te = level.getTileEntity(message.pos);
 
-				if (te instanceof FrameBlockEntity) {
+				if (!player.isSpectator() && te instanceof FrameBlockEntity) {
 					FrameBlockEntity be = (FrameBlockEntity) te;
 
 					if (be.isDisabled())

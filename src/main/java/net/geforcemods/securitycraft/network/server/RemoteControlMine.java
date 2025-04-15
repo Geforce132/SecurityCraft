@@ -52,7 +52,7 @@ public class RemoteControlMine implements IMessage {
 				BlockPos pos = new BlockPos(message.x, message.y, message.z);
 				IBlockState state = world.getBlockState(pos);
 
-				if (state.getBlock() instanceof IExplosive) {
+				if (!player.isSpectator() && state.getBlock() instanceof IExplosive) {
 					IExplosive explosive = ((IExplosive) state.getBlock());
 					TileEntity te = world.getTileEntity(pos);
 

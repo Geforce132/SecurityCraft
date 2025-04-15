@@ -41,7 +41,7 @@ public class SetStateOnDisguiseModule implements IMessage {
 				EntityPlayer player = context.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.disguiseModule);
 
-				if (!stack.isEmpty()) {
+				if (!player.isSpectator() && !stack.isEmpty()) {
 					if (!stack.hasTagCompound())
 						stack.setTagCompound(new NBTTagCompound());
 

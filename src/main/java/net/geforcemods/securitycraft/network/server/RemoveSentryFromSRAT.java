@@ -37,7 +37,7 @@ public class RemoveSentryFromSRAT implements IMessage {
 				EntityPlayer player = context.getServerHandler().player;
 				ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.mineRemoteAccessTool);
 
-				if (!stack.isEmpty()) {
+				if (!player.isSpectator() && !stack.isEmpty()) {
 					if (!stack.hasTagCompound())
 						stack.setTagCompound(new NBTTagCompound());
 

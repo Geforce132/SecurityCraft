@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import io.netty.buffer.ByteBuf;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -49,10 +50,11 @@ public class SyncSSSSettingsOnServer implements IMessage {
 		@Override
 		public IMessage onMessage(SyncSSSSettingsOnServer message, MessageContext ctx) {
 			Utils.addScheduledTask(ctx.getServerHandler().player.world, () -> {
-				World world = ctx.getServerHandler().player.world;
+				EntityPlayer player = ctx.getServerHandler().player;
+				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);
 
-				if (te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).isOwnedBy(ctx.getServerHandler().player)) {
+				if (!player.isSpectator() && te instanceof SonicSecuritySystemBlockEntity && ((SonicSecuritySystemBlockEntity) te).isOwnedBy(player)) {
 					SonicSecuritySystemBlockEntity sss = (SonicSecuritySystemBlockEntity) te;
 
 					switch (message.dataType) {

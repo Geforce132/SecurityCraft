@@ -67,7 +67,7 @@ public class SyncSecureRedstoneInterface implements IMessage {
 				World level = player.world;
 				TileEntity te = level.getTileEntity(message.pos);
 
-				if (te instanceof SecureRedstoneInterfaceBlockEntity) {
+				if (!player.isSpectator() && te instanceof SecureRedstoneInterfaceBlockEntity) {
 					SecureRedstoneInterfaceBlockEntity be = (SecureRedstoneInterfaceBlockEntity) te;
 
 					if (!be.isOwnedBy(player))

@@ -49,7 +49,7 @@ public class SetDefaultCameraViewingDirection implements IMessage {
 				EntityPlayerMP player = ctx.getServerHandler().player;
 				Entity playerCamera = player.getSpectatingEntity();
 
-				if (playerCamera.getEntityId() == message.id && playerCamera instanceof SecurityCamera) {
+				if (!player.isSpectator() && playerCamera.getEntityId() == message.id && playerCamera instanceof SecurityCamera) {
 					TileEntity te = playerCamera.world.getTileEntity(new BlockPos(playerCamera.posX, playerCamera.posY, playerCamera.posZ));
 
 					if (te instanceof SecurityCameraBlockEntity) {

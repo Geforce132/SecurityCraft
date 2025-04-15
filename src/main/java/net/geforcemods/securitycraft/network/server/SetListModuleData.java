@@ -45,7 +45,7 @@ public class SetListModuleData implements IMessage {
 				if (stack.isEmpty())
 					stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.denylistModule);
 
-				if (!stack.isEmpty()) {
+				if (!player.isSpectator() && !stack.isEmpty()) {
 					if (!stack.hasTagCompound())
 						stack.setTagCompound(new NBTTagCompound());
 

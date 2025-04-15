@@ -52,7 +52,7 @@ public class SetPasscode implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(pos);
 
-				if (te instanceof IPasscodeProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
+				if (!player.isSpectator() && te instanceof IPasscodeProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 					IPasscodeProtected passcodeProtected = (IPasscodeProtected) te;
 
 					passcodeProtected.hashAndSetPasscode(message.passcode, b -> passcodeProtected.openPasscodeGUI(player.world, pos, player));

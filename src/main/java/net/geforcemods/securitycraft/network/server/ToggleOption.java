@@ -48,7 +48,7 @@ public class ToggleOption implements IMessage {
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity te = player.world.getTileEntity(pos);
 
-				if (te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
+				if (!player.isSpectator() && te instanceof ICustomizable && !(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player)) {
 					((ICustomizable) te).customOptions()[message.id].toggle();
 					((ICustomizable) te).onOptionChanged(((ICustomizable) te).customOptions()[message.id]);
 

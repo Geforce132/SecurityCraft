@@ -42,7 +42,7 @@ public class ClearChangeDetectorServer implements IMessage {
 				BlockPos pos = message.pos;
 				TileEntity tile = level.getTileEntity(pos);
 
-				if (tile instanceof BlockChangeDetectorBlockEntity) {
+				if (!player.isSpectator() && tile instanceof BlockChangeDetectorBlockEntity) {
 					BlockChangeDetectorBlockEntity te = (BlockChangeDetectorBlockEntity) tile;
 
 					if (te.isOwnedBy(player)) {

@@ -50,7 +50,7 @@ public class SyncAlarmSettings implements IMessage {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity tile = player.world.getTileEntity(message.pos);
 
-				if (tile instanceof AlarmBlockEntity) {
+				if (!player.isSpectator() && tile instanceof AlarmBlockEntity) {
 					AlarmBlockEntity be = (AlarmBlockEntity) tile;
 
 					if (be.isOwnedBy(player)) {

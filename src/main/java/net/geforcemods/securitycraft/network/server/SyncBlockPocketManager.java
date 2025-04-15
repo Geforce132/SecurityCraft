@@ -56,7 +56,7 @@ public class SyncBlockPocketManager implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);
 
-				if (world.isBlockLoaded(message.pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+				if (!player.isSpectator() && world.isBlockLoaded(message.pos) && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
 					BlockPocketManagerBlockEntity bpm = (BlockPocketManagerBlockEntity) te;
 					IBlockState state = world.getBlockState(message.pos);
 

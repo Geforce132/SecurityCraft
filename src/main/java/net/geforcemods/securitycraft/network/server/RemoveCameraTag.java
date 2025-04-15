@@ -5,6 +5,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -33,9 +34,10 @@ public class RemoveCameraTag implements IMessage {
 		@Override
 		public IMessage onMessage(RemoveCameraTag message, MessageContext context) {
 			Utils.addScheduledTask(context.getServerHandler().player.world, () -> {
-				ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(context.getServerHandler().player, SCContent.cameraMonitor);
+				EntityPlayer player = context.getServerHandler().player;
+				ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor);
 
-				if (!monitor.isEmpty())
+				if (!player.isSpectator() && !monitor.isEmpty())
 					monitor.getTagCompound().removeTag(CameraMonitorItem.getTagNameFromPosition(monitor.getTagCompound(), CameraMonitorItem.getCameraPositions(monitor.getTagCompound()).get(message.camID - 1).getLeft()));
 			});
 

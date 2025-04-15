@@ -48,7 +48,7 @@ public class ToggleModule implements IMessage {
 				EntityPlayer player = ctx.getServerHandler().player;
 				TileEntity be = player.world.getTileEntity(message.pos);
 
-				if (be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
+				if (!player.isSpectator() && be instanceof IModuleInventory && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
 					IModuleInventory moduleInv = (IModuleInventory) be;
 
 					if (moduleInv.isModuleEnabled(message.moduleType)) {

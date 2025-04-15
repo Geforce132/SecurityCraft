@@ -45,7 +45,7 @@ public class SetCameraPowered implements IMessage {
 				World world = player.world;
 				TileEntity te = world.getTileEntity(message.pos);
 
-				if ((te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) || (te instanceof IModuleInventory && ((IModuleInventory) te).isAllowed(player))) {
+				if (!player.isSpectator() && (te instanceof IOwnable && ((IOwnable) te).isOwnedBy(player)) || (te instanceof IModuleInventory && ((IModuleInventory) te).isAllowed(player))) {
 					IBlockState state = world.getBlockState(message.pos);
 
 					world.setBlockState(message.pos, state.withProperty(SecurityCameraBlock.POWERED, message.powered));

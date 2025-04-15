@@ -64,7 +64,7 @@ public class SyncKeycardSettings implements IMessage {
 				EntityPlayer player = context.getServerHandler().player;
 				TileEntity tile = player.world.getTileEntity(message.pos);
 
-				if (tile instanceof KeycardReaderBlockEntity) {
+				if (!player.isSpectator() && tile instanceof KeycardReaderBlockEntity) {
 					KeycardReaderBlockEntity te = (KeycardReaderBlockEntity) tile;
 					boolean isOwner = te.isOwnedBy(player);
 
