@@ -194,10 +194,6 @@ public class FrameFeedHandler {
 			FRAME_CAMERA_FEEDS.entrySet().removeIf(e -> e.getValue().shouldBeRemoved());
 	}
 
-	public static boolean amIBeingCaptured(SecurityCameraBlockEntity be) {
-		return isCapturingCamera() && currentlyCapturedCamera.pos().equals(be.getBlockPos());
-	}
-
 	public static Map<GlobalPos, CameraFeed> getFeedsToRender(Minecraft mc, double currentTime) {
 		//+1 helps to reduce stuttering when many frames are active at once
 		double feedsToRender = FRAME_CAMERA_FEEDS.size() + 1;
@@ -252,6 +248,10 @@ public class FrameFeedHandler {
 		return currentlyCapturedCamera != null;
 	}
 
+	public static boolean amIBeingCaptured(SecurityCameraBlockEntity be) {
+		return isCapturingCamera() && currentlyCapturedCamera.pos().equals(be.getBlockPos());
+	}
+
 	public static boolean shouldAddChunk(ChunkPos pos, int renderDistance) {
 		for (GlobalPos cameraPos : FRAME_CAMERA_FEEDS.keySet()) {
 			if (pos.getChessboardDistance(new ChunkPos(cameraPos.pos())) <= (renderDistance + 1))
@@ -275,10 +275,6 @@ public class FrameFeedHandler {
 
 	public static void removeAllFeeds() {
 		FRAME_CAMERA_FEEDS.clear();
-	}
-
-	public static CameraFeed getCurrentlyCapturedFeed() {
-		return getFeed(currentlyCapturedCamera);
 	}
 
 	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
