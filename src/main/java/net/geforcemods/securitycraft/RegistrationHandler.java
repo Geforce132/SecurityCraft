@@ -86,7 +86,6 @@ import net.geforcemods.securitycraft.itemblocks.ItemBlockReinforcedWoodSlabs;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.misc.DyeItemRecipe;
 import net.geforcemods.securitycraft.misc.IngredientBrewingRecipe;
-import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.PartialNBTIngredient;
 import net.geforcemods.securitycraft.misc.SCManualPage;
@@ -142,6 +141,8 @@ import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
+import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -666,6 +667,10 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
 		event.getRegistry().register(new DyeItemRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "dye_briefcase")));
+		event.getRegistry().register(CopyPositionComponentItemRecipe.cameraMonitor().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_camera_monitor")));
+		event.getRegistry().register(CopyPositionComponentItemRecipe.mineRemoteAccessTool().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_mine_remote_access_tool")));
+		event.getRegistry().register(CopyPositionComponentItemRecipe.sentryRemoteAccessTool().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_sentry_remote_access_tool")));
+		event.getRegistry().register(CopyPositionComponentItemRecipe.sonicSecuritySystem().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_sonic_security_system")));
 		event.getRegistry().register(new LimitedUseKeycardRecipe().setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_conversion")));
 		registerFakeLiquidRecipes(new ItemStack(Items.WATER_BUCKET), PotionTypes.HARMING, PotionTypes.STRONG_HARMING, new ItemStack(SCContent.fWaterBucket));
 		registerFakeLiquidRecipes(new ItemStack(Items.LAVA_BUCKET), PotionTypes.HEALING, PotionTypes.STRONG_HEALING, new ItemStack(SCContent.fLavaBucket));
