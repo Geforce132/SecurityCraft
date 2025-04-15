@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
 public class SyncAlarmSettings {
@@ -38,7 +39,9 @@ public class SyncAlarmSettings {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		if (ctx.get().getSender().level.getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+		Player player = ctx.get().getSender();
+
+		if (!player.isSpectator() && player.level.getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
 			if (!soundEvent.equals(be.getSound().getLocation()))
 				be.setSound(soundEvent);
 

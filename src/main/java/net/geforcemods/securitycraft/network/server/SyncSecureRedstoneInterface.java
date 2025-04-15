@@ -56,7 +56,7 @@ public class SyncSecureRedstoneInterface {
 		Player player = ctx.get().getSender();
 		Level level = player.level;
 
-		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isOwnedBy(player)) {
 			if (sender != be.isSender())
 				be.setSender(sender);
 

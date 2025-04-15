@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -42,9 +43,10 @@ public class SyncSSSSettingsOnServer {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		Level level = ctx.get().getSender().level;
+		Player player = ctx.get().getSender();
+		Level level = player.level;
 
-		if (level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(ctx.get().getSender())) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof SonicSecuritySystemBlockEntity sss && sss.isOwnedBy(player)) {
 			switch (dataType) {
 				case POWER_ON:
 					sss.setActive(true);
