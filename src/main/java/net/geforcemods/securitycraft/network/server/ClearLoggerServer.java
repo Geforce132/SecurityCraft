@@ -30,7 +30,7 @@ public class ClearLoggerServer {
 		PlayerEntity player = ctx.get().getSender();
 		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (te instanceof UsernameLoggerBlockEntity) {
+		if (!player.isSpectator() && te instanceof UsernameLoggerBlockEntity) {
 			UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) te;
 
 			if (be.isOwnedBy(player)) {

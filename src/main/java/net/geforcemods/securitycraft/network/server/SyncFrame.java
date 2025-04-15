@@ -82,7 +82,7 @@ public class SyncFrame {
 		GlobalPos currentCamera = this.currentCamera.orElse(null);
 		TileEntity te = level.getBlockEntity(pos);
 
-		if (te instanceof FrameBlockEntity) {
+		if (!player.isSpectator() && te instanceof FrameBlockEntity) {
 			FrameBlockEntity be = (FrameBlockEntity) te;
 
 			if (be.isDisabled())

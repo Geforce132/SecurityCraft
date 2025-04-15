@@ -41,10 +41,9 @@ public class SetDefaultCameraViewingDirection {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayerEntity player = ctx.get().getSender();
-
 		Entity playerCamera = player.getCamera();
 
-		if (playerCamera.getId() == id && playerCamera instanceof SecurityCamera) {
+		if (!player.isSpectator() && playerCamera.getId() == id && playerCamera instanceof SecurityCamera) {
 			TileEntity te = playerCamera.level.getBlockEntity(playerCamera.blockPosition());
 
 			if (te instanceof SecurityCameraBlockEntity) {

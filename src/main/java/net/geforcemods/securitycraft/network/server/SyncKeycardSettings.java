@@ -56,7 +56,7 @@ public class SyncKeycardSettings {
 		PlayerEntity player = ctx.get().getSender();
 		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (te instanceof KeycardReaderBlockEntity) {
+		if (!player.isSpectator() && te instanceof KeycardReaderBlockEntity) {
 			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) te;
 			boolean isOwner = be.isOwnedBy(player);
 

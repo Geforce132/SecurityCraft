@@ -38,7 +38,7 @@ public class SetListModuleData {
 		if (stack.isEmpty())
 			stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DENYLIST_MODULE.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			CompoundNBT clientTag = tag;
 			CompoundNBT serverTag = stack.getOrCreateTag();
 

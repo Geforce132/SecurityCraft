@@ -40,7 +40,7 @@ public class SyncLaserSideConfig {
 		World level = player.level;
 		TileEntity te = level.getBlockEntity(pos);
 
-		if (te instanceof LaserBlockBlockEntity) {
+		if (!player.isSpectator() && te instanceof LaserBlockBlockEntity) {
 			LaserBlockBlockEntity be = (LaserBlockBlockEntity) te;
 
 			if (be.isOwnedBy(player)) {

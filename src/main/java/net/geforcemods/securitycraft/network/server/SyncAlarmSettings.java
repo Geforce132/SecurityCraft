@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.server;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -39,12 +40,13 @@ public class SyncAlarmSettings {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		TileEntity te = ctx.get().getSender().level.getBlockEntity(pos);
+		PlayerEntity player = ctx.get().getSender();
+		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (te instanceof AlarmBlockEntity) {
+		if (!player.isSpectator() && te instanceof AlarmBlockEntity) {
 			AlarmBlockEntity be = (AlarmBlockEntity) te;
 
-			if (be.isOwnedBy(ctx.get().getSender())) {
+			if (be.isOwnedBy(player)) {
 				if (!soundEvent.equals(be.getSound().location))
 					be.setSound(soundEvent);
 

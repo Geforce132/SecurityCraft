@@ -32,7 +32,7 @@ public class RemovePositionFromSSS {
 		PlayerEntity player = ctx.get().getSender();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.SONIC_SECURITY_SYSTEM_ITEM.get());
 
-		if (!stack.isEmpty())
+		if (!player.isSpectator() && !stack.isEmpty())
 			SonicSecuritySystemItem.removeLinkedBlock(stack.getOrCreateTag(), pos);
 	}
 }

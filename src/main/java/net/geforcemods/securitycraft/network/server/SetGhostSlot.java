@@ -32,7 +32,7 @@ public class SetGhostSlot {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		PlayerEntity player = ctx.get().getSender();
 
-		if (player.containerMenu instanceof InventoryScannerMenu) {
+		if (!player.isSpectator() && player.containerMenu instanceof InventoryScannerMenu) {
 			InventoryScannerMenu menu = (InventoryScannerMenu) player.containerMenu;
 
 			if (menu.be.isOwnedBy(player))

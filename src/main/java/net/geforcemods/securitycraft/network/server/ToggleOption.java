@@ -41,7 +41,7 @@ public class ToggleOption {
 		PlayerEntity player = ctx.get().getSender();
 		TileEntity be = player.level.getBlockEntity(pos);
 
-		if (be instanceof ICustomizable && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
+		if (!player.isSpectator() && be instanceof ICustomizable && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player))) {
 			((ICustomizable) be).customOptions()[id].toggle();
 			((ICustomizable) be).onOptionChanged(((ICustomizable) be).customOptions()[id]);
 			player.level.sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), 3);

@@ -36,7 +36,7 @@ public class SetKeycardUses {
 		PlayerEntity player = ctx.get().getSender();
 		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (te instanceof KeycardReaderBlockEntity) {
+		if (!player.isSpectator() && te instanceof KeycardReaderBlockEntity) {
 			KeycardReaderBlockEntity be = (KeycardReaderBlockEntity) te;
 
 			if (be.isOwnedBy(player) || be.isAllowed(player)) {

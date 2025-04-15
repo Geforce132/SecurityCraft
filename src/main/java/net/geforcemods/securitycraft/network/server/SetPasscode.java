@@ -45,7 +45,7 @@ public class SetPasscode {
 		World level = player.level;
 		TileEntity te = level.getBlockEntity(pos);
 
-		if (te instanceof IPasscodeProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
+		if (!player.isSpectator() && te instanceof IPasscodeProtected && (!(te instanceof IOwnable) || ((IOwnable) te).isOwnedBy(player))) {
 			IPasscodeProtected passcodeProtected = (IPasscodeProtected) te;
 
 			passcodeProtected.hashAndSetPasscode(passcode, b -> passcodeProtected.openPasscodeGUI(level, pos, player));

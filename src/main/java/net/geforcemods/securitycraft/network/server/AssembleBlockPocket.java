@@ -36,9 +36,10 @@ public class AssembleBlockPocket {
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		TileEntity be = ctx.get().getSender().level.getBlockEntity(pos);
 		PlayerEntity player = ctx.get().getSender();
-		if (be instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) be).isOwnedBy(player)) {
+		TileEntity be = player.level.getBlockEntity(pos);
+
+		if (!player.isSpectator() && be instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) be).isOwnedBy(player)) {
 			TranslationTextComponent feedback;
 
 			((BlockPocketManagerBlockEntity) be).setSize(size);

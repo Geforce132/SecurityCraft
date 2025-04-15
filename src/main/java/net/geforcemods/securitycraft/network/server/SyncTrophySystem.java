@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -42,10 +43,11 @@ public class SyncTrophySystem {
 		EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(projectileTypeLocation);
 
 		if (projectileType != null) {
-			World world = ctx.get().getSender().level;
+			PlayerEntity player = ctx.get().getSender();
+			World world = player.level;
 			TileEntity te = world.getBlockEntity(pos);
 
-			if (te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(ctx.get().getSender())) {
+			if (!player.isSpectator() && te instanceof TrophySystemBlockEntity && ((TrophySystemBlockEntity) te).isOwnedBy(player)) {
 				BlockState state = world.getBlockState(pos);
 
 				((TrophySystemBlockEntity) te).setFilter(projectileType, allowed);

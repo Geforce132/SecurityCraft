@@ -37,7 +37,7 @@ public class SetBriefcasePasscodeAndOwner {
 		PlayerEntity player = ctx.get().getSender();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			CompoundNBT tag = stack.getOrCreateTag();
 
 			if (!tag.contains("owner")) {

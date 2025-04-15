@@ -31,7 +31,7 @@ public class RemoveMineFromMRAT {
 		PlayerEntity player = ctx.get().getSender();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			CompoundNBT tag = stack.getOrCreateTag();
 			String key = "mine" + mineIndex;
 

@@ -58,7 +58,7 @@ public class SyncSecureRedstoneInterface {
 		World level = player.level;
 		TileEntity te = level.getBlockEntity(pos);
 
-		if (te instanceof SecureRedstoneInterfaceBlockEntity) {
+		if (!player.isSpectator() && te instanceof SecureRedstoneInterfaceBlockEntity) {
 			SecureRedstoneInterfaceBlockEntity be = (SecureRedstoneInterfaceBlockEntity) te;
 
 			if (!be.isOwnedBy(player))

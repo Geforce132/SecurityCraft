@@ -46,7 +46,7 @@ public class SyncBlockChangeDetector {
 		World level = player.level;
 		TileEntity te = level.getBlockEntity(pos);
 
-		if (te instanceof BlockChangeDetectorBlockEntity) {
+		if (!player.isSpectator() && te instanceof BlockChangeDetectorBlockEntity) {
 			BlockChangeDetectorBlockEntity be = (BlockChangeDetectorBlockEntity) te;
 
 			if (be.isOwnedBy(player)) {

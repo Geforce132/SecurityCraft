@@ -45,7 +45,7 @@ public class ToggleBlockPocketManager {
 		PlayerEntity player = ctx.get().getSender();
 		TileEntity te = player.level.getBlockEntity(pos);
 
-		if (te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
+		if (!player.isSpectator() && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
 			TranslationTextComponent feedback;
 
 			((BlockPocketManagerBlockEntity) te).setSize(size);

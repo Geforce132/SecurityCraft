@@ -39,7 +39,7 @@ public class SetCameraPowered {
 		World level = player.level;
 		TileEntity be = level.getBlockEntity(pos);
 
-		if ((be instanceof IOwnable && ((IOwnable) be).isOwnedBy(player)) || (be instanceof IModuleInventory && ((IModuleInventory) be).isAllowed(player))) {
+		if (!player.isSpectator() && (be instanceof IOwnable && ((IOwnable) be).isOwnedBy(player)) || (be instanceof IModuleInventory && ((IModuleInventory) be).isAllowed(player))) {
 			BlockState state = level.getBlockState(pos);
 
 			level.setBlockAndUpdate(pos, state.setValue(SecurityCameraBlock.POWERED, powered));

@@ -47,7 +47,7 @@ public class RemoteControlMine {
 		BlockPos pos = new BlockPos(x, y, z);
 		BlockState state = level.getBlockState(pos);
 
-		if (state.getBlock() instanceof IExplosive) {
+		if (!player.isSpectator() && state.getBlock() instanceof IExplosive) {
 			IExplosive explosive = ((IExplosive) state.getBlock());
 			TileEntity te = level.getBlockEntity(pos);
 
