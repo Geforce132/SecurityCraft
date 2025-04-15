@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.commands.LowercasedEnumArgument;
 import net.geforcemods.securitycraft.commands.SingleGameProfileArgument;
-import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.misc.PartialNBTIngredient;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
@@ -62,6 +61,8 @@ import net.geforcemods.securitycraft.network.server.ToggleModule;
 import net.geforcemods.securitycraft.network.server.ToggleNightVision;
 import net.geforcemods.securitycraft.network.server.ToggleOption;
 import net.geforcemods.securitycraft.network.server.UpdateSliderValue;
+import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
+import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.RegisterItemBlock;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.block.Block;
@@ -145,6 +146,10 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void registerRecipeSerializer(RegistryEvent.Register<IRecipeSerializer<?>> event) {
+		event.getRegistry().register(new SpecialRecipeSerializer<>(CopyPositionComponentItemRecipe::cameraMonitor).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_camera_monitor_recipe")));
+		event.getRegistry().register(new SpecialRecipeSerializer<>(CopyPositionComponentItemRecipe::mineRemoteAccessTool).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_mine_remote_access_tool_recipe")));
+		event.getRegistry().register(new SpecialRecipeSerializer<>(CopyPositionComponentItemRecipe::sentryRemoteAccessTool).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_sentry_remote_access_tool_recipe")));
+		event.getRegistry().register(new SpecialRecipeSerializer<>(CopyPositionComponentItemRecipe::sonicSecuritySystem).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "copy_sonic_security_system_recipe")));
 		event.getRegistry().register(new SpecialRecipeSerializer<>(LimitedUseKeycardRecipe::new).setRegistryName(new ResourceLocation(SecurityCraft.MODID, "limited_use_keycard_recipe")));
 		CraftingHelper.register(new ResourceLocation(SecurityCraft.MODID, "partial_nbt"), PartialNBTIngredient.Serializer.INSTANCE);
 	}

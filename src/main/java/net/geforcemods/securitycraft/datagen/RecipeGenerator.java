@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.misc.LimitedUseKeycardRecipe;
+import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
+import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.criterion.CriterionInstance;
 import net.minecraft.block.Blocks;
@@ -37,6 +38,11 @@ public class RecipeGenerator extends RecipeProvider {
 
 	@Override
 	protected final void buildShapelessRecipes(Consumer<IFinishedRecipe> consumer) {
+		//tool copying
+		CustomRecipeBuilder.special(CopyPositionComponentItemRecipe.COPY_CAMERA_MONITOR_RECIPE_SERIALIZER).save(consumer, "copy_camera_monitor");
+		CustomRecipeBuilder.special(CopyPositionComponentItemRecipe.COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER).save(consumer, "copy_mine_remote_access_tool");
+		CustomRecipeBuilder.special(CopyPositionComponentItemRecipe.COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER).save(consumer, "copy_sentry_remote_access_tool");
+		CustomRecipeBuilder.special(CopyPositionComponentItemRecipe.COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER).save(consumer, "copy_sonic_security_system");
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
 		CustomRecipeBuilder.special(LimitedUseKeycardRecipe.SERIALIZER).save(consumer, "limited_use_keycards");
 
