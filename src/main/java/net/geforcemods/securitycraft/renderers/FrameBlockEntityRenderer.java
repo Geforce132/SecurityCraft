@@ -116,7 +116,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
 				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			else if (!FrameFeedHandler.isCapturingCamera()) { //Only when no camera is being captured, the frame may render, to prevent screen-in-screen rendering
+			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				RenderTarget target = feed.renderTarget();
 				ShaderInstance shader = ClientHandler.getFrameFeedShader();
 				VertexConsumer bufferBuilder;
