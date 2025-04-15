@@ -36,6 +36,11 @@ public class RecipeGenerator extends RecipeProvider {
 
 	@Override
 	protected final void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+		//tool copying
+		SpecialRecipeBuilder.special(SCContent.COPY_CAMERA_MONITOR_RECIPE_SERIALIZER.get()).save(consumer, "copy_camera_monitor");
+		SpecialRecipeBuilder.special(SCContent.COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get()).save(consumer, "copy_mine_remote_access_tool");
+		SpecialRecipeBuilder.special(SCContent.COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get()).save(consumer, "copy_sentry_remote_access_tool");
+		SpecialRecipeBuilder.special(SCContent.COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER.get()).save(consumer, "copy_sonic_security_system");
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
 		SpecialRecipeBuilder.special(SCContent.LIMITED_USE_KEYCARD_RECIPE_SERIALIZER.get()).save(consumer, "limited_use_keycards");
 
