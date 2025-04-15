@@ -57,7 +57,7 @@ public class CopyPositionComponentItemRecipe extends CombineRecipe {
 	public ItemStack combine(ItemStack itemWithPositions, ItemStack emptyItem) {
 		ItemStack result = new ItemStack(item, 2);
 
-		result.setTag(itemWithPositions.getOrCreateTag());
+		result.getOrCreateTag().merge(itemWithPositions.getOrCreateTag());
 		return result;
 	}
 
