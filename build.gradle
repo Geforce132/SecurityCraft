@@ -111,7 +111,7 @@ dependencies {
     implementation fg.deobf("curse.maven:cloth-config-forge-348521:3972422") //betterf3 dependency
 	compileOnly fg.deobf("curse.maven:lycanites-mobs-224770:3516607") //compileOnly still adds the dep to runtime for some reason, and this mod does not work in dev. to fix this, remove the mods.toml file from this gradle dependency's jar file so the mod does not get loaded ingame
     implementation fg.deobf("curse.maven:projecte-226410:3736621")
-	//implementation fg.deobf("curse.maven:embeddium-908741:5322311")
+	implementation fg.deobf("curse.maven:embeddium-908741:5322311")
 }
 
 mixin {
