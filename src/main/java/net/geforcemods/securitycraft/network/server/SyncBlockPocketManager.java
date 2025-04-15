@@ -47,7 +47,7 @@ public class SyncBlockPocketManager {
 		Player player = ctx.get().getSender();
 		Level level = player.level();
 
-		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.isLoaded(pos) && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity bpm && bpm.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);
 
 			bpm.setSize(size);

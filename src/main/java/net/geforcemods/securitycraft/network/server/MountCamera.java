@@ -37,13 +37,15 @@ public class MountCamera {
 		Level level = player.level();
 		BlockState state = level.getBlockState(pos);
 
-		if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be && !be.isDisabled() && !be.isShutDown()) {
-			if (be.isOwnedBy(player) || be.isAllowed(player))
-				((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
+		if (!player.isSpectator()) {
+			if (level.isLoaded(pos) && state.getBlock() == SCContent.SECURITY_CAMERA.get() && level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be && !be.isDisabled() && !be.isShutDown()) {
+				if (be.isOwnedBy(player) || be.isAllowed(player))
+					((SecurityCameraBlock) state.getBlock()).mountCamera(level, pos, player);
+				else
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);
+			}
 			else
-				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", be.getOwner().getName()), ChatFormatting.RED);
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);
 		}
-		else
-			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.CAMERA_MONITOR.get().getDescriptionId()), Utils.localize("messages.securitycraft:cameraMonitor.cameraNotAvailable", pos), ChatFormatting.RED);
 	}
 }

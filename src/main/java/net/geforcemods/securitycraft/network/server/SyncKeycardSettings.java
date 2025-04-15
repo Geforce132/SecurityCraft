@@ -54,7 +54,7 @@ public class SyncKeycardSettings {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
 
-		if (player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
+		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof KeycardReaderBlockEntity be) {
 			boolean isOwner = be.isOwnedBy(player);
 
 			if (isOwner || be.isAllowed(player)) {

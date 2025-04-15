@@ -13,6 +13,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkEvent;
 
 public class ToggleBlockPocketManager {
@@ -42,8 +44,10 @@ public class ToggleBlockPocketManager {
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		Player player = ctx.get().getSender();
+		Level level = player.level();
 
-		if (player.level().getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && be.isOwnedBy(player)) {
+			BlockState state = be.getBlockState();
 			MutableComponent feedback;
 
 			be.setSize(size);
@@ -61,6 +65,7 @@ public class ToggleBlockPocketManager {
 			}
 
 			be.setChanged();
+			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
 }

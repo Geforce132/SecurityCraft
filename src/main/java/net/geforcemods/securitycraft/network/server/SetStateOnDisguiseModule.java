@@ -39,7 +39,7 @@ public class SetStateOnDisguiseModule {
 		Player player = ctx.get().getSender();
 		ItemStack stack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.DISGUISE_MODULE.get());
 
-		if (!stack.isEmpty()) {
+		if (!player.isSpectator() && !stack.isEmpty()) {
 			CompoundTag tag = stack.getOrCreateTag();
 
 			if (state.isAir()) {

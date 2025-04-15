@@ -54,7 +54,7 @@ public class SyncProjector {
 		Player player = ctx.get().getSender();
 		Level level = player.level();
 
-		if (level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);
 
 			switch (dataType) {

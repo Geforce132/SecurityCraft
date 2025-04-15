@@ -40,7 +40,7 @@ public class SetDefaultCameraViewingDirection {
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
 		ServerPlayer player = ctx.get().getSender();
 
-		if (player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
+		if (!player.isSpectator() && player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
 			if (!be.isOwnedBy(player)) {
 				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.no_permission"), true);
 				return;

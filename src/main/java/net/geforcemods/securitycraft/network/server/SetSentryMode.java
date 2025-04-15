@@ -42,12 +42,14 @@ public class SetSentryMode {
 		Player player = ctx.get().getSender();
 		Level level = player.level();
 
-		for (Info info : sentriesToUpdate) {
-			if (level.isLoaded(info.pos)) {
-				List<Sentry> sentries = level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(info.pos));
+		if (!player.isSpectator()) {
+			for (Info info : sentriesToUpdate) {
+				if (level.isLoaded(info.pos)) {
+					List<Sentry> sentries = level.<Sentry>getEntitiesOfClass(Sentry.class, new AABB(info.pos));
 
-				if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
-					sentries.get(0).toggleMode(player, info.mode, false);
+					if (!sentries.isEmpty() && sentries.get(0).isOwnedBy(player))
+						sentries.get(0).toggleMode(player, info.mode, false);
+				}
 			}
 		}
 	}

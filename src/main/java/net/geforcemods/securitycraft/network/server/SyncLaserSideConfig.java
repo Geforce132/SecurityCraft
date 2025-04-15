@@ -38,7 +38,7 @@ public class SyncLaserSideConfig {
 		Player player = ctx.get().getSender();
 		Level level = player.level();
 
-		if (level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);
 
 			be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(sideConfig), player);
