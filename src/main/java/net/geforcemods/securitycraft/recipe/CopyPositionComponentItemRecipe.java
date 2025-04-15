@@ -20,27 +20,27 @@ public class CopyPositionComponentItemRecipe extends CombineRecipe {
 	private final Predicate<CompoundTag> isDataEmpty;
 	private final RecipeSerializer<? extends CustomRecipe> serializer;
 
-	public CopyPositionComponentItemRecipe(CraftingBookCategory craftingBookCategory, Holder<Item> item, Predicate<CompoundTag> isDataEmpty, RecipeSerializer<? extends CustomRecipe> serializer) {
+	public CopyPositionComponentItemRecipe(CraftingBookCategory craftingBookCategory, Holder<Item> item, Predicate<CompoundTag> hasData, RecipeSerializer<? extends CustomRecipe> serializer) {
 		super(craftingBookCategory);
 		this.item = item;
-		this.isDataEmpty = isDataEmpty;
+		this.isDataEmpty = Predicate.not(hasData);
 		this.serializer = serializer;
 	}
 
 	public static CopyPositionComponentItemRecipe cameraMonitor(CraftingBookCategory craftingBookCategory) {
-		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.CAMERA_MONITOR, tag -> !CameraMonitorItem.hasCameraAdded(tag), SCContent.COPY_CAMERA_MONITOR_RECIPE_SERIALIZER.get());
+		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.CAMERA_MONITOR, CameraMonitorItem::hasCameraAdded, SCContent.COPY_CAMERA_MONITOR_RECIPE_SERIALIZER.get());
 	}
 
 	public static CopyPositionComponentItemRecipe mineRemoteAccessTool(CraftingBookCategory craftingBookCategory) {
-		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.MINE_REMOTE_ACCESS_TOOL, tag -> !MineRemoteAccessToolItem.hasMineAdded(tag), SCContent.COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get());
+		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.MINE_REMOTE_ACCESS_TOOL, MineRemoteAccessToolItem::hasMineAdded, SCContent.COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get());
 	}
 
 	public static CopyPositionComponentItemRecipe sentryRemoteAccessTool(CraftingBookCategory craftingBookCategory) {
-		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.SENTRY_REMOTE_ACCESS_TOOL, tag -> !SentryRemoteAccessToolItem.hasSentryAdded(tag), SCContent.COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get());
+		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.SENTRY_REMOTE_ACCESS_TOOL, SentryRemoteAccessToolItem::hasSentryAdded, SCContent.COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get());
 	}
 
 	public static CopyPositionComponentItemRecipe sonicSecuritySystem(CraftingBookCategory craftingBookCategory) {
-		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.SONIC_SECURITY_SYSTEM_ITEM, tag -> !SonicSecuritySystemItem.hasLinkedBlock(tag), SCContent.COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER.get());
+		return new CopyPositionComponentItemRecipe(craftingBookCategory, SCContent.SONIC_SECURITY_SYSTEM_ITEM, SonicSecuritySystemItem::hasLinkedBlock, SCContent.COPY_SONIC_SECURITY_SYSTEM_RECIPE_SERIALIZER.get());
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class CopyPositionComponentItemRecipe extends CombineRecipe {
 	public ItemStack combine(ItemStack itemWithPositions, ItemStack emptyItem) {
 		ItemStack result = new ItemStack(item, 2);
 
-		result.getOrCreateTag().merge(itemWithPositions.getOrCreateTag());
+		result.setTag(itemWithPositions.getOrCreateTag());
 		return result;
 	}
 
