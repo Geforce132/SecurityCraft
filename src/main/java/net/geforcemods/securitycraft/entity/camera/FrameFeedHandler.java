@@ -276,10 +276,6 @@ public class FrameFeedHandler {
 		FRAME_CAMERA_FEEDS.clear();
 	}
 
-	public static CameraFeed getCurrentlyCapturedFeed() {
-		return getFeed(currentlyCapturedCamera);
-	}
-
 	public static int getFrameFeedViewDistance(FrameBlockEntity be) {
 		int frameSpecificRenderDistance = be == null ? 32 : be.getChunkLoadingDistanceOption();
 
