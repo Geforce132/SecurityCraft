@@ -35,7 +35,7 @@ public class ClearChangeDetectorServer {
 		ServerPlayer player = ctx.get().getSender();
 		Level level = player.level;
 
-		if (level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && be.isOwnedBy(player)) {
 			BlockState state = be.getBlockState();
 
 			be.getEntries().clear();

@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkEvent;
@@ -41,9 +42,10 @@ public class SyncTrophySystem {
 		EntityType<?> projectileType = ForgeRegistries.ENTITIES.getValue(projectileTypeLocation);
 
 		if (projectileType != null) {
-			Level level = ctx.get().getSender().level;
+			Player player = ctx.get().getSender();
+			Level level = player.level;
 
-			if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(ctx.get().getSender())) {
+			if (!player.isSpectator() && level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(player)) {
 				BlockState state = level.getBlockState(pos);
 
 				be.setFilter(projectileType, allowed);

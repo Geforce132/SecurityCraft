@@ -41,7 +41,7 @@ public class ToggleModule {
 		Player player = ctx.get().getSender();
 		BlockEntity be = player.level.getBlockEntity(pos);
 
-		if (be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (!player.isSpectator() && be instanceof IModuleInventory moduleInv && (!(be instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			if (moduleInv.isModuleEnabled(moduleType)) {
 				moduleInv.removeModule(moduleType, true);
 

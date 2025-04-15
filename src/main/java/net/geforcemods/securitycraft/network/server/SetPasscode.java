@@ -36,7 +36,7 @@ public class SetPasscode {
 		Player player = ctx.get().getSender();
 		Level level = player.level;
 
-		if (level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected && (!(passcodeProtected instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
+		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof IPasscodeProtected passcodeProtected && (!(passcodeProtected instanceof IOwnable ownable) || ownable.isOwnedBy(player))) {
 			passcodeProtected.hashAndSetPasscode(passcode, b -> passcodeProtected.openPasscodeGUI(level, pos, player));
 			passcodeProtected.setPasscodeInAdjacentBlock(passcode);
 		}
