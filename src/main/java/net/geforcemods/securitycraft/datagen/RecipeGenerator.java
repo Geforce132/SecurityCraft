@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.recipe.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
-import net.geforcemods.securitycraft.recipe.CopyComponentItemRecipe;
+import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
 import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.data.PackOutput;
@@ -38,12 +38,10 @@ public class RecipeGenerator extends RecipeProvider {
 		SpecialRecipeBuilder.special(BlockReinforcingRecipe::new).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "block_reinforcing"));
 		SpecialRecipeBuilder.special(BlockUnreinforcingRecipe::new).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "block_unreinforcing"));
 		//tool copying
-		SpecialRecipeBuilder.special(CopyComponentItemRecipe::allowlistModule).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_allowlist_module"));
-		SpecialRecipeBuilder.special(CopyComponentItemRecipe::cameraMonitor).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_camera_monitor"));
-		SpecialRecipeBuilder.special(CopyComponentItemRecipe::denylistModule).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_denylist_module"));
-		SpecialRecipeBuilder.special(CopyComponentItemRecipe::mineRemoteAccessTool).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_mine_remote_access_tool"));
-		SpecialRecipeBuilder.special(CopyComponentItemRecipe::sentryRemoteAccessTool).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_sentry_remote_access_tool"));
-		SpecialRecipeBuilder.special(CopyComponentItemRecipe::sonicSecuritySystem).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_sonic_security_system"));
+		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::cameraMonitor).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_camera_monitor"));
+		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::mineRemoteAccessTool).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_mine_remote_access_tool"));
+		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::sentryRemoteAccessTool).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_sentry_remote_access_tool"));
+		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::sonicSecuritySystem).save(recipeOutput, new ResourceLocation(SecurityCraft.MODID, "copy_sonic_security_system"));
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
 		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe::new).save(recipeOutput, "limited_use_keycards");
 

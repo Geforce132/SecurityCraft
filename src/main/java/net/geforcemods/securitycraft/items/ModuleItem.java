@@ -194,19 +194,4 @@ public class ModuleItem extends Item {
 
 		return list;
 	}
-
-	public static boolean isListModuleEmpty(CompoundTag tag) {
-		if (tag == null)
-			return true;
-
-		for (int i = 1; i <= 30; i++) {
-			if (tag.contains("Player" + i) && !tag.getString("Player" + i).isEmpty())
-				return false;
-		}
-
-		if (tag.contains("ListedTeams") && !tag.getList("ListedTeams", Tag.TAG_STRING).isEmpty())
-			return false;
-
-		return !tag.getBoolean("affectEveryone");
-	}
 }
