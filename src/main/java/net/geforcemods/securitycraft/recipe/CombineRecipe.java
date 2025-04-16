@@ -57,6 +57,11 @@ public abstract class CombineRecipe extends CustomRecipe {
 		return combine(firstItem, secondItem);
 	}
 
+	@Override
+	public boolean canCraftInDimensions(int width, int height) {
+		return width * height >= 2;
+	}
+
 	public abstract boolean matchesFirstItem(ItemStack stack);
 
 	public abstract boolean matchesSecondItem(ItemStack stack);
@@ -66,9 +71,4 @@ public abstract class CombineRecipe extends CustomRecipe {
 	}
 
 	public abstract ItemStack combine(ItemStack firstItem, ItemStack secondItem);
-
-	@Override
-	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= 2;
-	}
 }
