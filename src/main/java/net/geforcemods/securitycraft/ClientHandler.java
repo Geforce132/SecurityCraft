@@ -725,7 +725,7 @@ public class ClientHandler {
 	}
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
-		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, stack.get(SCContent.SAVED_BLOCK_STATE).state());
+		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, stack.get(SCContent.SAVED_BLOCK_STATE).state(), stack.get(DataComponents.CONTAINER).copyOne());
 	}
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {

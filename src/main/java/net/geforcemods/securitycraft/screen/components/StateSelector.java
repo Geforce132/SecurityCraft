@@ -85,7 +85,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	public StateSelector(StateSelectorAccessMenu menu, Component title, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY, int previewXTranslation, int previewYTranslation) {
 		super(title);
-		menu.addSlotListener(this);
 		this.menu = menu;
 		this.xStart = xStart;
 		this.yStart = yStart;
@@ -95,6 +94,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		dragStartX += xStart;
 		dragStartY += yStart;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
+		menu.addSlotListener(this);
 	}
 
 	@Override
@@ -250,6 +250,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 				if (be != null) {
 					be.setLevel(mc.level);
+					be.applyComponentsFromItemStack(menu.getStateStack());
 					beRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(be);
 				}
 				else
