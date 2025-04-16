@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -32,7 +31,6 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 			boolean hanging = be.getBlockState().getValue(ProjectorBlock.HANGING);
 			BlockPos pos;
 
-			RenderSystem.disableCull();
 			ModelBlockRenderer.enableCaching();
 
 			for (int x = 0; x < be.getProjectionWidth(); x++) {
@@ -58,7 +56,6 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 			}
 
 			ModelBlockRenderer.clearCache();
-			RenderSystem.enableCull();
 		}
 	}
 
