@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,7 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BlockEntityRenderDelegate {
 	private final Map<BlockEntity, DelegateRendererInfo> renderDelegates = new HashMap<>();
 
-	public void putDelegateFor(BlockEntity originalBlockEntity, BlockState delegateState) {
+	public void putDelegateFor(BlockEntity originalBlockEntity, BlockState delegateState, ItemStack stack) {
 		if (renderDelegates.containsKey(originalBlockEntity)) {
 			DelegateRendererInfo delegateInfo = renderDelegates.get(originalBlockEntity);
 
@@ -37,6 +38,7 @@ public class BlockEntityRenderDelegate {
 				BlockEntityRenderer<?> delegateBeRenderer;
 
 				delegateBe.setLevel(mc.level);
+				Utils.updateBlockEntityWithItemTag(delegateBe, stack);
 				delegateBeRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(delegateBe);
 
 				if (delegateBeRenderer != null)

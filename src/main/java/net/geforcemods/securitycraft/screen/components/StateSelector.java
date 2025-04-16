@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
 import net.minecraft.client.gui.components.Button;
@@ -82,7 +83,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	public StateSelector(StateSelectorAccessMenu menu, Component title, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY, float previewXTranslation, float previewYTranslation) {
 		super(title);
-		menu.addSlotListener(this);
 		this.menu = menu;
 		this.xStart = xStart;
 		this.yStart = yStart;
@@ -92,6 +92,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		dragStartX += xStart;
 		dragStartY += yStart;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
+		menu.addSlotListener(this);
 	}
 
 	@Override
@@ -240,6 +241,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 				if (be != null) {
 					be.setLevel(mc.level);
+					Utils.updateBlockEntityWithItemTag(be, menu.getStateStack());
 					beRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(be);
 				}
 				else
