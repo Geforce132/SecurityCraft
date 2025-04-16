@@ -184,7 +184,7 @@ public class SCClientEventHandler {
 	}
 
 	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World level, BlockPos pos, float partialTicks) {
-		if (mc.options.hideGui || mc.options.renderDebug)
+		if (mc.options.renderDebug)
 			return;
 
 		TileEntity te = level.getBlockEntity(pos);
