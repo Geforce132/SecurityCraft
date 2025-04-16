@@ -16,7 +16,8 @@
 - New: The Camera Monitor, Mine/Sentry Remote Access Tool, and Sonic Security System can now be copied in the crafting table, by combining two of the same item (one empty, another one with things bound to it) in a crafting table
 - Change: Camera model animations are now synchronized between players
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
-- Change: Owners of disguised blocks and players in creative mode now receive the actual block instead of the disguise when using Pick Block  
+- Change: Owners of disguised blocks and players in creative mode now receive the actual block instead of the disguise when using Pick Block
+- Change: The text in the bottom-right corner of the camera overlay now fades out after 10 seconds
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
 - API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
