@@ -154,7 +154,7 @@ public class SCClientEventHandler {
 		int scaledWidth = window.getGuiScaledWidth();
 		int scaledHeight = window.getGuiScaledHeight();
 
-		if (mc.options.hideGui || mc.getDebugOverlay().showDebugScreen())
+		if (mc.getDebugOverlay().showDebugScreen())
 			return;
 
 		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be))

@@ -37,7 +37,6 @@
 - Fix: Brushing suspicious sand mines can be done from farther away than brushing regular suspicious sand in survival mode
 - Fix: Reinforced Block recipes are grouped and categorized differently in the recipe book compared to vanilla block recipes
 - Fix: Some blocks are not tinted correctly when rendered in the disguise module or projector screen's state selector
-- Fix: The camera overlay renders even if HUD rendering is turned off through the use of F1 
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
