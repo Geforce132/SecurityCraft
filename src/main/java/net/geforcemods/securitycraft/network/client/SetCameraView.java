@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.network.client;
 
 import io.netty.buffer.ByteBuf;
+import net.geforcemods.securitycraft.SCClientEventHandler;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.Utils;
@@ -47,6 +48,7 @@ public class SetCameraView implements IMessage {
 						CameraController.previousCameraType = mc.gameSettings.thirdPersonView;
 						mc.gameSettings.thirdPersonView = 0;
 						mc.ingameGUI.setOverlayMessage(Utils.localize("mount.onboard", mc.gameSettings.keyBindSneak.getDisplayName()), false);
+						SCClientEventHandler.resetCameraInfoMessageTime();
 					}
 					else {
 						if (CameraController.previousCameraType >= 0 && CameraController.previousCameraType < 3)
