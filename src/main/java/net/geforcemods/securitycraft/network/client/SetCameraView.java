@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.network.client;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCClientEventHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -47,6 +48,7 @@ public record SetCameraView(int id) implements CustomPacketPayload {
 				LayerToggleHandler.disable(VanillaGuiLayers.EXPERIENCE_BAR);
 				LayerToggleHandler.disable(VanillaGuiLayers.EFFECTS);
 				LayerToggleHandler.enable(ClientHandler.CAMERA_LAYER);
+				SCClientEventHandler.resetCameraInfoMessageTime();
 			}
 			else {
 				if (CameraController.previousCameraType != null)
