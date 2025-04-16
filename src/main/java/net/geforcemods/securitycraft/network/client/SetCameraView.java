@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCClientEventHandler;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.misc.OverlayToggleHandler;
@@ -48,6 +49,7 @@ public class SetCameraView {
 				OverlayToggleHandler.disable(VanillaGuiOverlay.JUMP_BAR);
 				OverlayToggleHandler.disable(VanillaGuiOverlay.POTION_ICONS);
 				OverlayToggleHandler.enable(ClientHandler.cameraOverlay);
+				SCClientEventHandler.resetCameraInfoMessageTime();
 			}
 			else {
 				if (CameraController.previousCameraType != null)
