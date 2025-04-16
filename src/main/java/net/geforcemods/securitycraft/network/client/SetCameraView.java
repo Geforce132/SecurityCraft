@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.SCClientEventHandler;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.Utils;
@@ -41,6 +42,7 @@ public class SetCameraView {
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(PointOfView.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
+				SCClientEventHandler.resetCameraInfoMessageTime();
 			}
 			else if (CameraController.previousCameraType != null)
 				mc.options.setCameraType(CameraController.previousCameraType);

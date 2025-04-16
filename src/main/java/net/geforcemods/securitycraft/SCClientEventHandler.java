@@ -51,6 +51,8 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.TickEvent.ClientTickEvent;
+import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -75,8 +77,15 @@ public class SCClientEventHandler {
 			new CameraKeyInfoEntry(() -> true, $ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
 	};
 	//@formatter:on
+	private static float cameraInfoMessageTime;
 
 	private SCClientEventHandler() {}
+
+	@SubscribeEvent
+	public static void onClientTickPost(ClientTickEvent event) {
+		if (event.phase == Phase.END && cameraInfoMessageTime >= 0)
+			cameraInfoMessageTime--;
+	}
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderWorldLastEvent event) {
@@ -170,11 +179,11 @@ public class SCClientEventHandler {
 		if (event.getType() == ElementType.ALL && ClientHandler.isPlayerMountedOnCamera()) {
 			Minecraft mc = Minecraft.getInstance();
 
-			drawCameraOverlay(event.getMatrixStack(), mc, mc.gui, mc.getWindow(), mc.player, mc.level, mc.cameraEntity.blockPosition());
+			drawCameraOverlay(event.getMatrixStack(), mc, mc.gui, mc.getWindow(), mc.player, mc.level, mc.cameraEntity.blockPosition(), event.getPartialTicks());
 		}
 	}
 
-	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World level, BlockPos pos) {
+	private static void drawCameraOverlay(MatrixStack matrix, Minecraft mc, AbstractGui gui, MainWindow resolution, PlayerEntity player, World level, BlockPos pos, float partialTicks) {
 		if (mc.options.hideGui || mc.options.renderDebug)
 			return;
 
@@ -205,14 +214,18 @@ public class SCClientEventHandler {
 
 		font.drawShadow(matrix, time, scaledWidth - font.width(time) - 4, timeY, 0xFFFFFF);
 
-		int heightOffset = 10;
+		if (cameraInfoMessageTime >= 0) {
+			float fadeOutPartialTick = Math.max(cameraInfoMessageTime + 1.0F - partialTicks, 1.0F);
+			int alpha = (int) Math.ceil(255.0F * Math.min(20.0F, fadeOutPartialTick) / 20.0F);
+			int heightOffset = 10;
 
-		for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
-			CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
+			for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
+				CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
 
-			if (entry.enabled().get()) {
-				entry.drawString(settings, matrix, font, scaledWidth, scaledHeight, heightOffset, be);
-				heightOffset += 10;
+				if (entry.enabled().get()) {
+					entry.drawString(settings, matrix, font, scaledWidth, scaledHeight, heightOffset, be, alpha);
+					heightOffset += 10;
+				}
 			}
 		}
 
@@ -236,6 +249,10 @@ public class SCClientEventHandler {
 		}
 		else
 			CameraRedstoneModuleState.ACTIVATED.render(gui, matrix, 12, 2);
+	}
+
+	public static void resetCameraInfoMessageTime() {
+		cameraInfoMessageTime = 200;
 	}
 
 	private enum BCDBuffer implements IRenderTypeBuffer {
@@ -285,11 +302,11 @@ public class SCClientEventHandler {
 			this.whiteText = whiteText;
 		}
 
-		public void drawString(GameSettings options, MatrixStack matrix, FontRenderer font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be) {
+		public void drawString(GameSettings options, MatrixStack matrix, FontRenderer font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be, int alpha) {
 			ITextComponent text = text().apply(options);
-			boolean whiteText = whiteText().test(be);
+			int textColor = whiteText().test(be) ? 0xFFFFFF : 0xFF3377;
 
-			font.drawShadow(matrix, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, whiteText ? 0xFFFFFF : 0xFF3377);
+			font.drawShadow(matrix, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, textColor + (alpha << 24));
 		}
 
 		public Supplier<Boolean> enabled() {
