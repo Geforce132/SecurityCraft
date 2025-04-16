@@ -82,7 +82,7 @@ public class SCClientEventHandler {
 	};
 	//@formatter:on
 	private static final List<DeferredHolder<DataComponentType<?>, ? extends DataComponentType<? extends TooltipProvider>>> COMPONENTS_WITH_GLOBAL_TOOLTIP = List.of(SCContent.OWNER_DATA, SCContent.NOTES);
-	public static float cameraInfoMessageTime = 200;
+	private static float cameraInfoMessageTime;
 
 	private SCClientEventHandler() {}
 
@@ -247,12 +247,16 @@ public class SCClientEventHandler {
 			CameraRedstoneModuleState.ACTIVATED.render(guiGraphics, 12, 2);
 	}
 
+	public static void resetCameraInfoMessageTime() {
+		cameraInfoMessageTime = 200;
+	}
+
 	public record CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {
 		public void drawString(Options options, GuiGraphics guiGraphics, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be, int alpha) {
 			Component text = text().apply(options);
-			boolean whiteText = whiteText().test(be);
+			int textColor = whiteText().test(be) ? 0xFFFFFF : 0xFF3377;
 
-			guiGraphics.drawString(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, (whiteText ? 0xFFFFFF : 0xFF3377) + (alpha << 24), true);
+			guiGraphics.drawString(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, textColor + (alpha << 24), true);
 		}
 	}
 }

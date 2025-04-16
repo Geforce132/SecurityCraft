@@ -47,7 +47,7 @@ public record SetCameraView(int id) implements CustomPacketPayload {
 				LayerToggleHandler.disable(VanillaGuiLayers.EXPERIENCE_BAR);
 				LayerToggleHandler.disable(VanillaGuiLayers.EFFECTS);
 				LayerToggleHandler.enable(ClientHandler.CAMERA_LAYER);
-				SCClientEventHandler.cameraInfoMessageTime = 200;
+				SCClientEventHandler.resetCameraInfoMessageTime();
 			}
 			else {
 				if (CameraController.previousCameraType != null)
