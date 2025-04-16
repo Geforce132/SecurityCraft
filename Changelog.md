@@ -52,6 +52,7 @@
 - Fix: Some blocks are not tinted correctly when rendered in the disguise module or projector screen's state selector
 - Fix: The camera overlay renders even if HUD rendering is turned off through the use of F1
 - Fix: The Projector, projected blocks, Disguise Module, and block disguises do not properly show banner patterns, decorated pot sherds, etc.
+- Fix: A Projector projecting something can cause some block models to have incorrect rendering (e.g. decorated pot)
 - Removed: Configuration "ableToBreakMines"
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
