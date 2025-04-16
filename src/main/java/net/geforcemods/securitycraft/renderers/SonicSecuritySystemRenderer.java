@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
@@ -55,10 +54,8 @@ public class SonicSecuritySystemRenderer extends TileEntityRenderer<SonicSecurit
 			pose.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
 			pose.scale(-0.025F, -0.025F, 0.025F);
 			positionMatrix = pose.last().pose();
-			RenderSystem.disableCull();
 			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, true, j, packedLight);
 			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, false, 0, packedLight);
-			RenderSystem.enableCull();
 			pose.popPose();
 		}
 
