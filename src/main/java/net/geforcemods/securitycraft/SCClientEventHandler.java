@@ -48,6 +48,8 @@ import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
+import net.neoforged.neoforge.event.TickEvent.ClientTickEvent;
+import net.neoforged.neoforge.event.TickEvent.Phase;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
@@ -73,8 +75,15 @@ public class SCClientEventHandler {
 			new CameraKeyInfoEntry(() -> true, $ -> SMART_MODULE_NOTE, be -> be.isModuleEnabled(ModuleType.SMART))
 	};
 	//@formatter:on
+	private static float cameraInfoMessageTime;
 
 	private SCClientEventHandler() {}
+
+	@SubscribeEvent
+	public static void onClientTickPost(ClientTickEvent event) {
+		if (event.phase == Phase.END && cameraInfoMessageTime >= 0)
+			cameraInfoMessageTime--;
+	}
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent event) {
@@ -170,14 +179,18 @@ public class SCClientEventHandler {
 
 		guiGraphics.drawString(font, time, scaledWidth - font.width(time) - 4, timeY, 0xFFFFFF, true);
 
-		int heightOffset = 10;
+		if (cameraInfoMessageTime >= 0) {
+			float fadeOutPartialTick = Math.max(cameraInfoMessageTime + 1.0F - partialTicks, 1.0F);
+			int alpha = (int) Math.ceil(255.0F * Math.min(20.0F, fadeOutPartialTick) / 20.0F);
+			int heightOffset = 10;
 
-		for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
-			CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
+			for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
+				CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
 
-			if (entry.enabled().get()) {
-				entry.drawString(options, guiGraphics, font, scaledWidth, scaledHeight, heightOffset, be);
-				heightOffset += 10;
+				if (entry.enabled().get()) {
+					entry.drawString(options, guiGraphics, font, scaledWidth, scaledHeight, heightOffset, be, alpha);
+					heightOffset += 10;
+				}
 			}
 		}
 
@@ -198,6 +211,10 @@ public class SCClientEventHandler {
 		}
 		else
 			CameraRedstoneModuleState.ACTIVATED.render(guiGraphics, 12, 2);
+	}
+
+	public static void resetCameraInfoMessageTime() {
+		cameraInfoMessageTime = 200;
 	}
 
 	private enum BCDBuffer implements MultiBufferSource {
@@ -237,11 +254,11 @@ public class SCClientEventHandler {
 	}
 
 	public record CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {
-		public void drawString(Options options, GuiGraphics guiGraphics, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be) {
+		public void drawString(Options options, GuiGraphics guiGraphics, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be, int alpha) {
 			Component text = text().apply(options);
-			boolean whiteText = whiteText().test(be);
+			int textColor = whiteText().test(be) ? 0xFFFFFF : 0xFF3377;
 
-			guiGraphics.drawString(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, whiteText ? 0xFFFFFF : 0xFF3377, true);
+			guiGraphics.drawString(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, textColor + (alpha << 24), true);
 		}
 	}
 }
