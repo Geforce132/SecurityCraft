@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.network.client;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCClientEventHandler;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.Utils;
@@ -49,6 +50,7 @@ public class SetCameraView {
 				OverlayRegistry.enableOverlay(ForgeIngameGui.JUMP_BAR_ELEMENT, false);
 				OverlayRegistry.enableOverlay(ForgeIngameGui.POTION_ICONS_ELEMENT, false);
 				OverlayRegistry.enableOverlay(ClientHandler.cameraOverlay, true);
+				SCClientEventHandler.resetCameraInfoMessageTime();
 			}
 			else {
 				if (CameraController.previousCameraType != null)
