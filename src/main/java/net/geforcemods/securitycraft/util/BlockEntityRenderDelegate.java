@@ -11,12 +11,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 public class BlockEntityRenderDelegate {
 	private final Map<TileEntity, DelegateRendererInfo> renderDelegates = new HashMap<>();
 
-	public void putDelegateFor(TileEntity originalBlockEntity, BlockState delegateState) {
+	public void putDelegateFor(TileEntity originalBlockEntity, BlockState delegateState, ItemStack stack) {
 		if (renderDelegates.containsKey(originalBlockEntity)) {
 			DelegateRendererInfo delegateInfo = renderDelegates.get(originalBlockEntity);
 
@@ -34,6 +35,7 @@ public class BlockEntityRenderDelegate {
 
 			delegateBe.blockState = delegateState;
 			delegateBe.level = mc.level;
+			Utils.updateBlockEntityWithItemTag(delegateBe, stack);
 			delegateBeRenderer = TileEntityRendererDispatcher.instance.getRenderer(delegateBe);
 
 			if (delegateBeRenderer != null)

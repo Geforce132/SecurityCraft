@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -77,7 +78,6 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 
 	public StateSelector(StateSelectorAccessMenu menu, ITextComponent title, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY, float previewXTranslation, float previewYTranslation) {
 		super(title);
-		menu.addSlotListener(this);
 		this.menu = menu;
 		this.xStart = xStart;
 		this.yStart = yStart;
@@ -87,6 +87,7 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 		dragStartX += xStart;
 		dragStartY += yStart;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
+		menu.addSlotListener(this);
 	}
 
 	@Override
@@ -230,6 +231,8 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 
 				be = state.createTileEntity(mc.level);
 				be.level = mc.level;
+				be.blockState = state; //Prevents crash from incorrectly set block state
+				Utils.updateBlockEntityWithItemTag(be, menu.getStateStack());
 				beRenderer = TileEntityRendererDispatcher.instance.getRenderer(be);
 			}
 

@@ -4,6 +4,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -78,5 +80,19 @@ public class Utils {
 		int squareViewDistance = viewDistance * viewDistance;
 
 		return squareDistance < squareViewDistance;
+	}
+
+	public static void updateBlockEntityWithItemTag(TileEntity be, ItemStack stack) {
+		CompoundNBT tag = stack.getTagElement("BlockEntityTag");
+
+		if (tag != null) {
+			CompoundNBT beData = be.save(new CompoundNBT());
+			CompoundNBT dataCopy = beData.copy();
+
+			beData.merge(tag);
+
+			if (!beData.equals(dataCopy))
+				be.load(be.getBlockState(), beData);
+		}
 	}
 }
