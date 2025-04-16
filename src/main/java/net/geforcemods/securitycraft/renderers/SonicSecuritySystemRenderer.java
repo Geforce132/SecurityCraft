@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.renderers;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -53,10 +52,8 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 			pose.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
 			pose.scale(-0.025F, -0.025F, 0.025F);
 			positionMatrix = pose.last().pose();
-			RenderSystem.disableCull();
 			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, Font.DisplayMode.SEE_THROUGH, j, packedLight);
 			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, Font.DisplayMode.NORMAL, 0, packedLight);
-			RenderSystem.enableCull();
 			pose.popPose();
 		}
 
