@@ -258,7 +258,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		super.onLoad();
 
 		if (level.isClientSide)
-			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState);
+			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState, projectedBlock);
 	}
 
 	@Override
@@ -274,7 +274,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 			if (this.projectedState.getBlock() != projectedState.getBlock())
 				ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
 
-			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState);
+			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState, projectedBlock);
 		}
 
 		this.projectedState = projectedState;
