@@ -164,7 +164,7 @@ public class SCCreativeModeTabs {
 							return blockMine;
 						else
 							return null;
-					}, blockMine -> vanillaOrderedItems.indexOf(blockMine.getBlockDisguisedAs().asItem())));
+					}, blockMine -> vanillaOrderedItems.indexOf(blockMine.getBlockDisguisedAs().asItem()), false));
 					output.accept(SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 					output.accept(SCContent.WIRE_CUTTERS.get());
 					output.accept(Items.FLINT_AND_STEEL);
@@ -189,7 +189,7 @@ public class SCCreativeModeTabs {
 							return reinforcedBlock;
 						else
 							return null;
-					}, reinforcedBlock -> vanillaOrderedItems.indexOf(reinforcedBlock.getVanillaBlock().asItem())));
+					}, reinforcedBlock -> vanillaOrderedItems.indexOf(reinforcedBlock.getVanillaBlock().asItem()), true));
 					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
 					output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
@@ -227,7 +227,7 @@ public class SCCreativeModeTabs {
 				}));
 	}
 
-	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, ToIntFunction<T> indexGetter) {
+	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, ToIntFunction<T> indexGetter, boolean sortNonVanillaLast) {
 		return (a, b) -> {
 			T blockA = blockInstanceGetter.apply(a.getItem());
 			T blockB = blockInstanceGetter.apply(b.getItem());
@@ -237,7 +237,7 @@ public class SCCreativeModeTabs {
 			if (!blockAExists && !blockBExists)
 				return 0;
 			else if (blockAExists ^ blockBExists)
-				return blockAExists ? -1 : 1;
+				return blockAExists == sortNonVanillaLast ? -1 : 1;
 			else if (blockA == blockB)
 				return 0;
 
