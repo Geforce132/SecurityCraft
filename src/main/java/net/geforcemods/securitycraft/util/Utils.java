@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -157,5 +158,22 @@ public class Utils {
 		return new int[] {
 				(int) (mostSignificantBits >> 32), (int) mostSignificantBits, (int) (leastSignificantBits >> 32), (int) leastSignificantBits
 		};
+	}
+
+	public static void updateBlockEntityWithItemTag(TileEntity be, ItemStack stack) {
+		NBTTagCompound tag = stack.getSubCompound("BlockEntityTag");
+
+		if (tag != null) {
+			NBTTagCompound beData = be.writeToNBT(new NBTTagCompound());
+			NBTTagCompound dataCopy = beData.copy();
+
+			beData.merge(tag);
+
+			if (!beData.equals(dataCopy))
+				be.readFromNBT(beData);
+		}
+
+		if (be.blockMetadata == 0)
+			be.blockMetadata = stack.getMetadata();
 	}
 }

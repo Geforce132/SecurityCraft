@@ -278,7 +278,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 		super.onLoad();
 
 		if (world.isRemote)
-			BlockEntityRenderDelegate.PROJECTOR.putDelegateFor(this, projectedState);
+			BlockEntityRenderDelegate.PROJECTOR.putDelegateFor(this, projectedState, projectedBlock);
 	}
 
 	@Override
@@ -294,7 +294,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IInv
 			if (this.projectedState.getBlock() != projectedState.getBlock())
 				BlockEntityRenderDelegate.PROJECTOR.removeDelegateOf(this);
 
-			BlockEntityRenderDelegate.PROJECTOR.putDelegateFor(this, projectedState);
+			BlockEntityRenderDelegate.PROJECTOR.putDelegateFor(this, projectedState, projectedBlock);
 		}
 
 		this.projectedState = projectedState;

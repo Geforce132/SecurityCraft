@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBanner;
 
 public class BlockEntityRenderDelegate {
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK = new BlockEntityRenderDelegate();
@@ -21,10 +22,10 @@ public class BlockEntityRenderDelegate {
 		if (!stack.hasTagCompound())
 			stack.setTagCompound(new NBTTagCompound());
 
-		DISGUISED_BLOCK.putDelegateFor(disguisableTileEntity, NBTUtil.readBlockState(stack.getTagCompound().getCompoundTag("SavedState")));
+		DISGUISED_BLOCK.putDelegateFor(disguisableTileEntity, NBTUtil.readBlockState(stack.getTagCompound().getCompoundTag("SavedState")), stack);
 	}
 
-	public void putDelegateFor(TileEntity originalTileEntity, IBlockState delegateState) {
+	public void putDelegateFor(TileEntity originalTileEntity, IBlockState delegateState, ItemStack stack) {
 		if (renderDelegates.containsKey(originalTileEntity)) {
 			DelegateRendererInfo delegateInfo = renderDelegates.get(originalTileEntity);
 
@@ -43,6 +44,12 @@ public class BlockEntityRenderDelegate {
 			delegateTe.blockType = delegateState.getBlock();
 			delegateTe.blockMetadata = delegateState.getBlock().getMetaFromState(delegateState);
 			delegateTe.setWorld(mc.world);
+
+			if (delegateTe instanceof TileEntityBanner)
+				((TileEntityBanner) delegateTe).setItemValues(stack, false);
+			else
+				Utils.updateBlockEntityWithItemTag(delegateTe, stack);
+
 			delegateTeRenderer = TileEntityRendererDispatcher.instance.getRenderer(delegateTe);
 
 			if (delegateTeRenderer != null)

@@ -9,6 +9,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
@@ -33,6 +34,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBanner;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -65,7 +67,6 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 	private float dragY = -135.0F;
 
 	public StateSelector(StateSelectorAccessMenu menu, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY) {
-		menu.addListener(this);
 		this.menu = menu;
 		this.xStart = xStart;
 		this.yStart = yStart;
@@ -75,6 +76,7 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 		this.previewXTranslation = dragStartX + 34;
 		this.previewYTranslation = dragStartY + 36;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
+		menu.addListener(this);
 	}
 
 	@Override
@@ -214,7 +216,14 @@ public class StateSelector extends GuiScreen implements IContainerListener {
 
 				te = state.getBlock().createTileEntity(mc.world, state);
 				te.blockType = state.getBlock();
+				te.blockMetadata = state.getBlock().getMetaFromState(state);
 				te.setWorld(mc.world);
+
+				if (te instanceof TileEntityBanner)
+					((TileEntityBanner) te).setItemValues(menu.getStateStack(), false);
+				else
+					Utils.updateBlockEntityWithItemTag(te, menu.getStateStack());
+
 				teRenderer = TileEntityRendererDispatcher.instance.getRenderer(te);
 			}
 
