@@ -60,7 +60,7 @@ public class ClaymoreBlock extends ExplosiveBlock implements SimpleWaterloggedBl
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof ClaymoreBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide)
-				player.openMenu(be, pos);
+				player.openMenu(be);
 
 			return InteractionResult.SUCCESS;
 		}

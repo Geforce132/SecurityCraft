@@ -51,7 +51,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 		return use(state, level, pos, player, hand, (stack, be) -> {
 			//only allow the owner and players on the allowlist to open the gui
 			if (be.isOwnedBy(player) || be.isAllowed(player))
-				player.openMenu(be, pos);
+				player.openMenu(be);
 		});
 	}
 

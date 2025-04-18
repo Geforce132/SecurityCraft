@@ -30,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
@@ -166,6 +167,12 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	public static IItemHandler getCapability(TrophySystemBlockEntity be, Direction side) {
 		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be.lens) : new InsertOnlyInvWrapper(be.lens);
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, FriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
 	}
 
 	public SimpleContainer getLensContainer() {

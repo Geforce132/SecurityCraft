@@ -25,6 +25,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -228,6 +229,12 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 		if (signalLength > 0)
 			level.scheduleTick(worldPosition, block, signalLength);
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, FriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
 	}
 
 	@Override

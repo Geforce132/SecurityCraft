@@ -31,6 +31,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
@@ -161,6 +162,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 		else
 			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, FriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
 	}
 
 	@Override

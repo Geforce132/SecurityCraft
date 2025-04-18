@@ -91,7 +91,7 @@ public class BlockChangeDetectorBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockChangeDetectorBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player)))
-			player.openMenu(be, pos);
+			player.openMenu(be);
 
 		return InteractionResult.SUCCESS;
 	}

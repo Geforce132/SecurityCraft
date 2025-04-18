@@ -108,7 +108,7 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 					public Component getDisplayName() {
 						return briefcase.getHoverName();
 					}
-				}, player.blockPosition());
+				});
 			}
 		});
 	}

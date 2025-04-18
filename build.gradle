@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "20.4.239"
+	version = "20.4.241"
 	//validateAccessTransformers = true //Can't use, since NeoForge itself ships invalid ATs
 
 	runs {
