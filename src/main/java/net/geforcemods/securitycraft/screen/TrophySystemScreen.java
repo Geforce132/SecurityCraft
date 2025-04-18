@@ -44,6 +44,14 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	}
 
 	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (minecraft.player.isSpectator())
+			return false;
+
+		return super.mouseClicked(mouseX, mouseY, button);
+	}
+
+	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
 		if (scrollList != null && scrollList.mouseDragged(mouseX, mouseY, button, dragX, dragY))
 			return true;

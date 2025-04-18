@@ -116,7 +116,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 	@Override
 	public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
 		if (slotId >= 0 && slotId < 10 && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot()) {
-			if (be.isOwnedBy(player)) {
+			if (!player.isSpectator() && be.isOwnedBy(player)) {
 				ItemStack pickedUpStack = getCarried().copy();
 
 				pickedUpStack.setCount(1);

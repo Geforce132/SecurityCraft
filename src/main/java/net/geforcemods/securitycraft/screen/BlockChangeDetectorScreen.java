@@ -75,8 +75,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			changeEntryList.allEntries.forEach(this::removeWidget);
 			changeEntryList.allEntries.clear();
 			changeEntryList.filteredEntries.clear();
-			be.getEntries().clear();
-			be.setChanged();
 			PacketDistributor.SERVER.noArg().send(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
@@ -175,7 +173,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (changeEntryList != null)
+		if (minecraft.player.isSpectator())
+			return false;
+		else if (changeEntryList != null)
 			changeEntryList.mouseClicked(mouseX, mouseY, button);
 
 		return super.mouseClicked(mouseX, mouseY, button);
