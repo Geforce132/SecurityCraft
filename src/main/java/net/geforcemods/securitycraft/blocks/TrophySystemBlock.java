@@ -71,7 +71,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else
-					player.openMenu(be, pos);
+					player.openMenu(be);
 			}
 
 			return InteractionResult.SUCCESS;
