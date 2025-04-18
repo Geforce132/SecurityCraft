@@ -40,11 +40,13 @@
 - Fix: Brushing suspicious sand mines does not respect the player's block_interaction_range attribute
 - Fix: Reinforced Block recipes are grouped and categorized differently in the recipe book compared to vanilla block recipes
 - Fix: Some blocks are not tinted correctly when rendered in the disguise module or projector screen's state selector
+- Fix: Crash when interacting with certain SecurityCraft blocks in spectator mode
 - Fix: The camera overlay renders even if HUD rendering is turned off through the use of F1
 - Fix: The Projector, projected blocks, Disguise Module, and block disguises do not properly show banner patterns, decorated pot sherds, etc.
 - Fix: A Projector projecting something can cause some block models to have incorrect rendering (e.g. decorated pot displays z-fighting)
 - Fix: Block mines are not grouped together in the creative inventory
 - Removed: Configuration "ableToBreakMines"
+- Misc.: The minimum required NeoForge version is now 20.6.127
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
 

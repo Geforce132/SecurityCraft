@@ -30,6 +30,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -164,9 +165,12 @@ public class SecuritySeaBoat extends ChestBoat implements IOwnable, IPasscodePro
 							public Component getDisplayName() {
 								return SecuritySeaBoat.super.getDisplayName();
 							}
-						}, data -> {
-							data.writeBlockPos(pos);
-							data.writeVarInt(SecuritySeaBoat.super.getId());
+
+							@Override
+							public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+								buffer.writeBlockPos(pos);
+								buffer.writeVarInt(SecuritySeaBoat.super.getId());
+							}
 						});
 					}
 				}

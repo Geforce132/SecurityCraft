@@ -152,7 +152,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 	public void activate(AbstractKeypadFurnaceBlockEntity be, Level level, BlockPos pos, Player player) {
 		if (player instanceof ServerPlayer serverPlayer) {
 			level.gameEvent(player, GameEvent.CONTAINER_OPEN, pos);
-			serverPlayer.openMenu(be, pos);
+			serverPlayer.openMenu(be);
 		}
 	}
 

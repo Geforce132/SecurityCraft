@@ -27,6 +27,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
@@ -277,6 +278,12 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 			filter = stack;
 			setChanged();
 		}
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
 	}
 
 	@Override

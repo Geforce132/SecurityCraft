@@ -79,7 +79,7 @@ public class SecurityCameraBlock extends DisguisableBlock implements SimpleWater
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide)
-				player.openMenu(be, pos);
+				player.openMenu(be);
 
 			return InteractionResult.SUCCESS;
 		}
