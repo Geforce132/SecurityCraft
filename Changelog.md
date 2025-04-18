@@ -50,7 +50,7 @@
 - Fix: The Projector, projected blocks, Disguise Module, and block disguises do not properly show banner patterns, decorated pot sherds, etc.
 - Fix: Block mines are not grouped together in the creative inventory
 - Removed: Configuration "ableToBreakMines"
-- Misc.: The minimum required NeoForge version is now 21.4.126-beta
+- Misc.: The minimum required NeoForge version is now 21.4.126
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
 
