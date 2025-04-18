@@ -71,7 +71,7 @@ public class CodebreakerItem extends Item {
 									public Component getDisplayName() {
 										return briefcase.getHoverName();
 									}
-								}, player.blockPosition());
+								});
 							}
 							else
 								PlayerUtils.sendMessageToPlayer(player, Component.translatable(getDescriptionId()), Utils.localize("messages.securitycraft:codebreaker.failed"), ChatFormatting.RED);

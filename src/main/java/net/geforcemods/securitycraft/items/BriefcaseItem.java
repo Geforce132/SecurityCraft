@@ -63,7 +63,7 @@ public class BriefcaseItem extends Item {
 				public Component getDisplayName() {
 					return briefcase.getHoverName();
 				}
-			}, player.blockPosition());
+			});
 		});
 	}
 
