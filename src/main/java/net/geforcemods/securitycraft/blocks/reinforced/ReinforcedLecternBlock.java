@@ -73,7 +73,7 @@ public class ReinforcedLecternBlock extends LecternBlock implements IReinforcedB
 	@Override
 	public void openScreen(Level level, BlockPos pos, Player player) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedLecternBlockEntity be) {
-			player.openMenu(be, pos);
+			player.openMenu(be);
 			player.awardStat(Stats.INTERACT_WITH_LECTERN);
 		}
 	}
