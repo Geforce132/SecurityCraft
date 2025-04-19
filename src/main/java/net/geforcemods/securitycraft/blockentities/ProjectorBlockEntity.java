@@ -15,6 +15,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -167,6 +168,12 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	}
 
 	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
+	}
+
+	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleInserted(stack, module, toggled);
 
@@ -263,7 +270,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		super.onLoad();
 
 		if (level.isClientSide)
-			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState);
+			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState, projectedBlock);
 	}
 
 	@Override
@@ -279,7 +286,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 			if (this.projectedState.getBlock() != projectedState.getBlock())
 				ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
 
-			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState);
+			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState, projectedBlock);
 		}
 
 		this.projectedState = projectedState;

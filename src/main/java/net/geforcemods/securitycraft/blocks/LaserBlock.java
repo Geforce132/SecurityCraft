@@ -60,12 +60,8 @@ public class LaserBlock extends DisguisableBlock {
 			if (!level.isClientSide) {
 				if (!be.isEnabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
-				else {
-					player.openMenu(be, buf -> {
-						buf.writeBlockPos(pos);
-						buf.writeNbt(LaserBlockBlockEntity.saveSideConfig(be.getSideConfig()));
-					});
-				}
+				else
+					player.openMenu(be);
 			}
 
 			return InteractionResult.SUCCESS;

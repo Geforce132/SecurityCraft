@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -31,6 +32,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
@@ -172,8 +174,10 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
 		if (level != null) {
+			if (!ConfigHandler.SERVER.vanillaToolBlockBreaking.get())
+				dropAllModules();
+
 			Containers.dropContents(level, pos, getLensContainer());
-			dropAllModules();
 		}
 
 		super.preRemoveSideEffects(pos, state);
@@ -181,6 +185,12 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	public static IItemHandler getCapability(TrophySystemBlockEntity be, Direction side) {
 		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be.lens) : new InsertOnlyInvWrapper(be.lens);
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
 	}
 
 	public SimpleContainer getLensContainer() {

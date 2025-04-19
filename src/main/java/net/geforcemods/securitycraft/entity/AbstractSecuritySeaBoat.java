@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
@@ -32,10 +33,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -77,6 +78,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	private static final EntityDataAccessor<NonNullList<ItemStack>> MODULES = SynchedEntityData.<NonNullList<ItemStack>>defineId(AbstractSecuritySeaBoat.class, SCContent.ITEM_STACK_LIST_SERIALIZER.get());
 	private byte[] passcode;
 	private UUID saltKey;
+	private boolean saveSalt;
 	private EntityDataWrappedOption<Boolean> sendAllowlistMessage = new SendAllowlistMessageOption(false).wrapForEntityData(SEND_ALLOWLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Boolean> sendDenylistMessage = new SendDenylistMessageOption(true).wrapForEntityData(SEND_DENYLIST_MESSAGE, () -> entityData);
 	private EntityDataWrappedOption<Integer> smartModuleCooldown = new SmartModuleCooldownOption().wrapForEntityData(SMART_MODULE_COOLDOWN, () -> entityData);
@@ -161,9 +163,12 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 							public Component getDisplayName() {
 								return AbstractSecuritySeaBoat.super.getDisplayName();
 							}
-						}, data -> {
-							data.writeBlockPos(pos);
-							data.writeVarInt(AbstractSecuritySeaBoat.super.getId());
+
+							@Override
+							public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+								buffer.writeBlockPos(pos);
+								buffer.writeVarInt(AbstractSecuritySeaBoat.super.getId());
+							}
 						});
 					}
 				}
@@ -172,7 +177,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 				return InteractionResult.SUCCESS;
 			}
-			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && !level.isClientSide) {
+			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && !level.isClientSide) {
 				if (isOwnedBy(player) || player.isCreative())
 					destroy((ServerLevel) level, damageSources().playerAttack(player));
 				else
@@ -276,24 +281,15 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-		Entity entity = source.getEntity();
-
-		if (!(entity instanceof Player player) || isOwnedBy(player) || player.isCreative())
-			return super.hurtServer(level, source, amount);
-		else
-			return false;
-	}
-
-	@Override
-	public void chestVehicleDestroyed(DamageSource damageSource, ServerLevel level, Entity entity) {
-		super.chestVehicleDestroyed(damageSource, level, entity);
-		SaltData.removeSalt(getSaltKey());
+		return source.getEntity() instanceof Player player && isOwnedBy(player) && super.hurtServer(level, source, amount);
 	}
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (!level().isClientSide && reason.shouldDestroy())
+		if (!level().isClientSide && reason.shouldDestroy()) {
 			Containers.dropContents(level(), blockPosition(), getInventory());
+			SaltData.removeSalt(getSaltKey());
+		}
 
 		super.remove(reason);
 	}
@@ -315,12 +311,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
 		getOwner().save(ownerTag, needsValidation());
 		tag.put("owner", ownerTag);
-
-		if (saltKey != null)
-			tag.store("saltKey", UUIDUtil.CODEC, saltKey);
-
-		if (passcode != null)
-			tag.putString("passcode", PasscodeUtils.bytesToString(passcode));
+		savePasscodeAndSalt(tag);
 	}
 
 	@Override
@@ -433,6 +424,16 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	@Override
 	public void setSaltKey(UUID saltKey) {
 		this.saltKey = saltKey;
+	}
+
+	@Override
+	public void setSaveSalt(boolean saveSalt) {
+		this.saveSalt = saveSalt;
+	}
+
+	@Override
+	public boolean shouldSaveSalt() {
+		return saveSalt;
 	}
 
 	@Override

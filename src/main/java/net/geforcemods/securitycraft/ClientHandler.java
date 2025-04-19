@@ -7,6 +7,7 @@ import java.util.OptionalDouble;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,6 +16,7 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
+import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -25,8 +27,10 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
+import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
+import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.properties.BlockLinked;
 import net.geforcemods.securitycraft.items.properties.CodebreakerState;
 import net.geforcemods.securitycraft.items.properties.KeycardCount;
@@ -37,10 +41,12 @@ import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableBlockStateModel;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
 import net.geforcemods.securitycraft.models.IMSBombModel;
+import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceBlockStateModel;
 import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
+import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticle;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
@@ -50,6 +56,7 @@ import net.geforcemods.securitycraft.renderers.ClaymoreRenderer;
 import net.geforcemods.securitycraft.renderers.DisguisableBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseRenderer;
 import net.geforcemods.securitycraft.renderers.DisplayCaseSpecialRenderer;
+import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer;
 import net.geforcemods.securitycraft.renderers.IMSBombRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestRenderer;
 import net.geforcemods.securitycraft.renderers.OwnableBlockEntityRenderer;
@@ -60,6 +67,7 @@ import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.SecurityCameraSpecialRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaRaftRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
@@ -70,7 +78,7 @@ import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
-import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
+import net.geforcemods.securitycraft.screen.CameraSelectScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
@@ -99,6 +107,7 @@ import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.screens.inventory.HangingSignEditScreen;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
@@ -126,9 +135,9 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
@@ -150,10 +159,15 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
+import net.neoforged.neoforge.client.model.standalone.StandaloneModelLoader.BakedModels;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -197,12 +211,16 @@ public class ClientHandler {
 			SCContent.SCANNER_DOOR.get(),
 			SCContent.SCANNER_TRAPDOOR.get(),
 			SCContent.SECURITY_CAMERA.get(),
-			SCContent.SECURE_REDSTONE_INTERFACE.get(),
+			//Excluded because it has its own custom block state model
+			//SCContent.SECURE_REDSTONE_INTERFACE.get(),
 			SCContent.SENTRY_DISGUISE.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get(),
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
 	});
+	private static final ResourceLocation SRI_BASE_MODEL_LOCATION = SecurityCraft.resLoc("block/secure_redstone_interface");
+	private static final StandaloneModelKey<BlockStateModel> SRI_SENDER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_BASE_MODEL_LOCATION.withSuffix("_sender_on"));
+	private static final StandaloneModelKey<BlockStateModel> SRI_RECEIVER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_BASE_MODEL_LOCATION.withSuffix("_receiver_on"));
     public static final RenderType.CompositeRenderType OVERLAY_LINES = RenderType.create(
 			"overlay_lines",
 			1536,
@@ -225,18 +243,35 @@ public class ClientHandler {
 	private ClientHandler() {}
 
 	@SubscribeEvent
+	public static void onModelRegisterAdditional(ModelEvent.RegisterStandalone event) {
+		event.register(SRI_SENDER_ON_MODEL_KEY, StandaloneModelBaker.blockStateModel());
+		event.register(SRI_RECEIVER_ON_MODEL_KEY, StandaloneModelBaker.blockStateModel());
+	}
+
+	@SubscribeEvent
 	public static void onModelBakingCompleted(ModelEvent.ModifyBakingResult event) {
 		Map<BlockState, BlockStateModel> modelRegistry = event.getBakingResult().blockStateModels();
+		BakedModels standaloneModels = event.getBakingResult().standaloneModels();
+		Block sri = SCContent.SECURE_REDSTONE_INTERFACE.get();
+		BlockStateModel poweredSriSender = standaloneModels.get(SRI_SENDER_ON_MODEL_KEY);
+		BlockStateModel poweredSriReceiver = standaloneModels.get(SRI_RECEIVER_ON_MODEL_KEY);
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
-				registerDisguisedModel(modelRegistry, state);
+				registerDisguisedModel(modelRegistry, state, DisguisableBlockStateModel::new);
 			}
+		}
+
+		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
+			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBlockStateModel(poweredSriSender, oldModel));
+			else
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBlockStateModel(poweredSriReceiver, oldModel));
 		}
 	}
 
-	private static void registerDisguisedModel(Map<BlockState, BlockStateModel> modelRegistry, BlockState state) {
-		modelRegistry.put(state, new DisguisableBlockStateModel(modelRegistry.get(state)));
+	private static void registerDisguisedModel(Map<BlockState, BlockStateModel> modelRegistry, BlockState state, UnaryOperator<BlockStateModel> modelFunction) {
+		modelRegistry.put(state, modelFunction.apply(modelRegistry.get(state)));
 	}
 
 	@SubscribeEvent
@@ -254,6 +289,7 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
 		event.register(SecurityCraft.resLoc("display_case"), DisplayCaseSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(SecurityCraft.resLoc("security_camera"), SecurityCameraSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	@SubscribeEvent
@@ -303,6 +339,7 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PALE_MOSS_CARPET.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
 	}
 
@@ -349,6 +386,7 @@ public class ClientHandler {
 		event.registerEntityRenderer(SCContent.DARK_OAK_SECURITY_SEA_BOAT_ENTITY.get(), ctx -> new SecuritySeaBoatRenderer(ctx, ModelLayers.DARK_OAK_CHEST_BOAT));
 		event.registerEntityRenderer(SCContent.MANGROVE_SECURITY_SEA_BOAT_ENTITY.get(), ctx -> new SecuritySeaBoatRenderer(ctx, ModelLayers.MANGROVE_CHEST_BOAT));
 		event.registerEntityRenderer(SCContent.CHERRY_SECURITY_SEA_BOAT_ENTITY.get(), ctx -> new SecuritySeaBoatRenderer(ctx, ModelLayers.CHERRY_CHEST_BOAT));
+		event.registerEntityRenderer(SCContent.PALE_OAK_SECURITY_SEA_BOAT_ENTITY.get(), ctx -> new SecuritySeaBoatRenderer(ctx, ModelLayers.PALE_OAK_CHEST_BOAT));
 		event.registerEntityRenderer(SCContent.BAMBOO_SECURITY_SEA_RAFT_ENTITY.get(), ctx -> new SecuritySeaRaftRenderer(ctx, ModelLayers.BAMBOO_CHEST_RAFT));
 		//normal renderers
 		event.registerBlockEntityRenderer(SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerRenderer::new);
@@ -356,6 +394,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, false));
 		event.registerBlockEntityRenderer(SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), ctx -> new DisplayCaseRenderer(ctx, true));
+		event.registerBlockEntityRenderer(SCContent.FRAME_BLOCK_ENTITY.get(), FrameBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.OWNABLE_BLOCK_ENTITY.get(), OwnableBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
@@ -407,6 +446,11 @@ public class ClientHandler {
 	public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(SCContent.FLOOR_TRAP_CLOUD.get(), FloorTrapCloudParticle.Provider::new);
 		event.registerSpriteSet(SCContent.INTERFACE_HIGHLIGHT.get(), InterfaceHighlightParticle.Provider::new);
+	}
+
+	@SubscribeEvent
+	public static void onRegisterRenderPipelines(RegisterRenderPipelinesEvent event) {
+		event.registerPipeline(FrameBlockEntityRenderer.FRAME_PIPELINE);
 	}
 
 	@SubscribeEvent
@@ -479,7 +523,8 @@ public class ClientHandler {
 			else
 				return 0xFFFFFFFF;
 		}, block));
-		event.register((state, level, pos, tintIndex) -> {
+
+		BlockColor disguisableBlockColor = (state, level, pos, tintIndex) -> {
 			Block block = state.getBlock();
 
 			if (block instanceof IDisguisable disguisedBlock) {
@@ -494,7 +539,10 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
 			else
 				return 0xFFFFFFFF;
-		}, disguisableBlocks.get());
+		};
+
+		event.register(disguisableBlockColor, disguisableBlocks.get());
+		event.register(disguisableBlockColor, SCContent.SECURE_REDSTONE_INTERFACE.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
@@ -502,13 +550,13 @@ public class ClientHandler {
 				return mixWithReinforcedTintIfEnabled(grassTint);
 			}
 
-			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1)
 				return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
 
-			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);
@@ -592,8 +640,12 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
-	public static void displayCameraMonitorScreen(Inventory inv, ItemStack stack) {
-		Minecraft.getInstance().setScreen(new CameraMonitorScreen(inv, stack));
+	public static void displayCameraMonitorScreen(ItemStack stack) {
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(stack.getOrDefault(SCContent.BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS).positions(), pos -> CameraMonitorItem.removeCameraOnClient(pos, stack), pos -> PacketDistributor.sendToServer(new MountCamera(pos.pos())), false, false));
+	}
+
+	public static void displayFrameScreen(FrameBlockEntity be, boolean readOnly) {
+		Minecraft.getInstance().setScreen(new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null));
 	}
 
 	public static void displaySCManualScreen() {
@@ -671,8 +723,9 @@ public class ClientHandler {
 	public static void refreshModelData(BlockEntity be) {
 		BlockPos pos = be.getBlockPos();
 
-		Minecraft.getInstance().level.getModelDataManager().requestRefresh(be);
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+		be.requestModelDataUpdate();
+		be.getLevel().getModelData(pos); //Actually calculates and applies the new model data that was requested before
+		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()); //Recompiles the render chunk at the changed position
 	}
 
 	public static boolean isPlayerMountedOnCamera() {
@@ -680,7 +733,7 @@ public class ClientHandler {
 	}
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {
-		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, stack.getOrDefault(SCContent.SAVED_BLOCK_STATE, SavedBlockState.EMPTY).state());
+		DISGUISED_BLOCK_RENDER_DELEGATE.putDelegateFor(disguisableBlockEntity, stack.getOrDefault(SCContent.SAVED_BLOCK_STATE, SavedBlockState.EMPTY).state(), stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyOne());
 	}
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {

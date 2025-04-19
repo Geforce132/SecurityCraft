@@ -43,19 +43,19 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		pose.translate(0.5D, 1.5D, 0.5D);
 
 		if (recording || be.isListening() && !be.isShutDown()) {
+			Minecraft mc = Minecraft.getInstance();
 			Component text = recording ? RECORDING_TEXT : LISTENING_TEXT;
-			float f1 = Minecraft.getInstance().options.getBackgroundOpacity(0.25F);
-			int j = (int) (f1 * 255.0F) << 24;
-			Font fontRenderer = Minecraft.getInstance().font;
-			float halfWidth = -fontRenderer.width(text) / 2;
+			float opacity = mc.options.getBackgroundOpacity(0.25F);
+			int backgroundColor = (int) (opacity * 255.0F) << 24;
+			float halfWidth = -mc.font.width(text) / 2;
 			Matrix4f positionMatrix;
 
 			pose.pushPose();
-			pose.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
-			pose.scale(-0.025F, -0.025F, 0.025F);
+			pose.mulPose(mc.getEntityRenderDispatcher().cameraOrientation());
+			pose.scale(0.025F, -0.025F, 0.025F);
 			positionMatrix = pose.last().pose();
-			fontRenderer.drawInBatch(text, halfWidth, 0, 16777215, false, positionMatrix, buffer, Font.DisplayMode.SEE_THROUGH, j, packedLight);
-			fontRenderer.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, Font.DisplayMode.NORMAL, 0, packedLight);
+			mc.font.drawInBatch(text, halfWidth, 0, 0x20FFFFFF, false, positionMatrix, buffer, Font.DisplayMode.SEE_THROUGH, backgroundColor, packedLight);
+			mc.font.drawInBatch(text, halfWidth, 0, -1, false, positionMatrix, buffer, Font.DisplayMode.NORMAL, 0, packedLight);
 			pose.popPose();
 		}
 

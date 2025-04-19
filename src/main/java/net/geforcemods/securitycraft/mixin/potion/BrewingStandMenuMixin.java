@@ -12,7 +12,7 @@ import net.minecraft.world.item.PotionItem;
 
 /**
  * SecurityCraft's recipes for fake water/lava require potions in the ingredient slot. This causes any potion to be
- * shift-clicked into the ingredient slot, which is not the vanilla behavior. This mixin prevents any potion from being
+ * shift-clickable into the ingredient slot, which is not the vanilla behavior. This mixin prevents any potion from being
  * shift-clicked into the ingredient slot, making them always end up in the potion slots
  */
 @Mixin(value = BrewingStandMenu.class, priority = 1100)

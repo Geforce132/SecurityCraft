@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -58,7 +59,13 @@ public class UniversalBlockModifierItem extends Item {
 						else
 							return Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 					}
-				}, pos);
+
+					@Override
+					public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+						MenuProvider.super.writeClientSideData(menu, buffer);
+						buffer.writeBlockPos(pos);
+					}
+				});
 			}
 
 			return InteractionResult.SUCCESS;

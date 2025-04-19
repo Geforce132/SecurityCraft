@@ -79,7 +79,7 @@ public class ProjectorBlock extends DisguisableBlock {
 		boolean isOwner = be.isOwnedBy(player);
 
 		if (!level.isClientSide && isOwner)
-			player.openMenu(be, pos);
+			player.openMenu(be);
 
 		return isOwner ? InteractionResult.SUCCESS : InteractionResult.FAIL;
 	}

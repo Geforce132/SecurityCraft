@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
+import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.geforcemods.securitycraft.blocks.mines.BaseFullMineBlock;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -159,11 +159,11 @@ public class SCCreativeModeTabs {
 				List<ItemStack> mineGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES));
 
 				mineGroupItems.sort(stackComparator(item -> {
-					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof BaseFullMineBlock blockMine)
+					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IBlockMine blockMine)
 						return blockMine;
 					else
 						return null;
-				}, blockMine -> vanillaOrderedItems.indexOf(blockMine.getBlockDisguisedAs().asItem())));
+				}, blockMine -> vanillaOrderedItems.indexOf(blockMine.getBlockDisguisedAs().asItem()), false));
 				output.accept(SCContent.MINE_REMOTE_ACCESS_TOOL.get());
 				output.accept(SCContent.WIRE_CUTTERS.get());
 				output.accept(Items.FLINT_AND_STEEL);
@@ -189,7 +189,7 @@ public class SCCreativeModeTabs {
 						return reinforcedBlock;
 					else
 						return null;
-				}, reinforcedBlock -> vanillaOrderedItems.indexOf(reinforcedBlock.getVanillaBlock().asItem())));
+				}, reinforcedBlock -> vanillaOrderedItems.indexOf(reinforcedBlock.getVanillaBlock().asItem()), true));
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
 				output.accept(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
@@ -226,7 +226,7 @@ public class SCCreativeModeTabs {
 				output.accept(SCContent.GLOW_DISPLAY_CASE.get());
 			}).build());
 
-	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, ToIntFunction<T> indexGetter) {
+	private static <T> Comparator<ItemStack> stackComparator(Function<Item, T> blockInstanceGetter, ToIntFunction<T> indexGetter, boolean sortNonVanillaLast) {
 		return (a, b) -> {
 			T blockA = blockInstanceGetter.apply(a.getItem());
 			T blockB = blockInstanceGetter.apply(b.getItem());
@@ -236,7 +236,7 @@ public class SCCreativeModeTabs {
 			if (!blockAExists && !blockBExists)
 				return 0;
 			else if (blockAExists ^ blockBExists)
-				return blockAExists ? -1 : 1;
+				return blockAExists == sortNonVanillaLast ? -1 : 1;
 			else if (blockA == blockB)
 				return 0;
 

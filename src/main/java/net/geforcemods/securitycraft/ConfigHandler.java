@@ -37,9 +37,12 @@ public class ConfigHandler {
 	private ConfigHandler() {}
 
 	public static class Client {
-		public BooleanValue sayThanksMessage;
-		public BooleanValue reinforcedBlockTint;
-		public IntValue reinforcedBlockTintColor;
+		public final BooleanValue sayThanksMessage;
+		public final BooleanValue reinforcedBlockTint;
+		public final IntValue reinforcedBlockTintColor;
+		public final IntValue frameFeedRenderDistance;
+		public final IntValue frameFeedResolution;
+		public final IntValue frameFeedFpsLimit;
 
 		Client(ModConfigSpec.Builder builder) {
 			//@formatter:off
@@ -55,42 +58,59 @@ public class ConfigHandler {
 					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
 							"Format: 0xRRGGBB")
 					.defineInRange("reinforced_block_tint_color", 0x999999, 0x000000, 0xFFFFFF);
+
+			frameFeedRenderDistance = builder
+					.comment("Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.")
+					.defineInRange("frame_feed_render_distance", 16, 2, 32);
+
+			frameFeedResolution = builder
+					.comment("Set the resolution of the Frame camera feed. This is always a square resolution. Smaller values will be less detailed, higher values may lead to diminishing returns.")
+					.defineInRange("frame_feed_resolution", 512, 1, 16384);
+
+			frameFeedFpsLimit = builder
+					.comment("The maximum amount of frames per second the Frame camera feed renders at. Higher values will lead to worse performance.")
+					.defineInRange("frame_feed_fps_limit", 30, 10, 260);
 			//@formatter:on
 		}
 	}
 
 	public static class Server {
-		public BooleanValue allowAdminTool;
-		public BooleanValue shouldSpawnFire;
-		public BooleanValue ableToBreakMines;
-		public BooleanValue smallerMineExplosion;
-		public BooleanValue mineExplodesWhenInCreative;
-		public BooleanValue mineExplosionsBreakBlocks;
-		public IntValue laserBlockRange;
-		public IntValue inventoryScannerRange;
-		public IntValue maxAlarmRange;
-		public BooleanValue allowBlockClaim;
-		public BooleanValue reinforcedBlockTint;
-		public BooleanValue forceReinforcedBlockTint;
-		public BooleanValue retinalScannerFace;
-		public BooleanValue enableTeamOwnership;
-		public ConfigValue<List<? extends String>> teamOwnershipPrecedence;
-		public BooleanValue disableThanksMessage;
-		public BooleanValue trickScannersWithPlayerHeads;
-		public BooleanValue preventReinforcedFloorGlitching;
-		public DoubleValue taserDamage;
-		public DoubleValue poweredTaserDamage;
-		public DoubleValue laserDamage;
-		public IntValue incorrectPasscodeDamage;
-		public IntValue sentryBulletDamage;
-		public IntValue reinforcedSuffocationDamage;
-		public BooleanValue allowCameraNightVision;
-		public IntValue passcodeCheckCooldown;
-		public BooleanValue passcodeSpamLogWarningEnabled;
-		public ConfigValue<String> passcodeSpamLogWarning;
-		public BooleanValue inWorldUnReinforcing;
-		public ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
-		public ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
+		public final BooleanValue allowAdminTool;
+		public final BooleanValue shouldSpawnFire;
+		public final BooleanValue smallerMineExplosion;
+		public final BooleanValue mineExplodesWhenInCreative;
+		public final BooleanValue mineExplosionsBreakBlocks;
+		public final IntValue laserBlockRange;
+		public final IntValue inventoryScannerRange;
+		public final IntValue maxAlarmRange;
+		public final BooleanValue allowBlockClaim;
+		public final BooleanValue reinforcedBlockTint;
+		public final BooleanValue forceReinforcedBlockTint;
+		public final BooleanValue retinalScannerFace;
+		public final BooleanValue enableTeamOwnership;
+		public final ConfigValue<List<? extends String>> teamOwnershipPrecedence;
+		public final BooleanValue disableThanksMessage;
+		public final BooleanValue trickScannersWithPlayerHeads;
+		public final BooleanValue preventReinforcedFloorGlitching;
+		public final DoubleValue taserDamage;
+		public final DoubleValue poweredTaserDamage;
+		public final DoubleValue laserDamage;
+		public final IntValue incorrectPasscodeDamage;
+		public final IntValue sentryBulletDamage;
+		public final IntValue reinforcedSuffocationDamage;
+		public final BooleanValue allowCameraNightVision;
+		public final IntValue passcodeCheckCooldown;
+		public final BooleanValue passcodeSpamLogWarningEnabled;
+		public final ConfigValue<String> passcodeSpamLogWarning;
+		public final BooleanValue inWorldUnReinforcing;
+		public final BooleanValue frameFeedViewingEnabled;
+		public final IntValue frameFeedViewDistance;
+		public final BooleanValue vanillaToolBlockBreaking;
+		public final BooleanValue alwaysDrop;
+		public final BooleanValue allowBreakingNonOwnedBlocks;
+		public final DoubleValue nonOwnedBreakingSlowdown;
+		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
+		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
 		Server(ModConfigSpec.Builder builder) {
 			//@formatter:off
@@ -101,10 +121,6 @@ public class ConfigHandler {
 			shouldSpawnFire = builder
 					.comment("Should mines spawn fire after exploding?")
 					.define("shouldSpawnFire", true);
-
-			ableToBreakMines = builder
-					.comment("Should players be able to break a mine without it exploding?")
-					.define("ableToBreakMines", true);
 
 			smallerMineExplosion = builder
 					.comment("Should mines' explosions be smaller than usual?")
@@ -214,6 +230,34 @@ public class ConfigHandler {
 			inWorldUnReinforcing = builder
 					.comment("Setting this to false disables the ability of the Universal Block Reinforcer to (un-)reinforce blocks that are placed in the world.")
 					.define("in_world_un_reinforcing", true);
+
+			frameFeedViewingEnabled = builder
+					.comment("Set this to false to disable the feature that camera feeds can be viewed in frames. While this feature is generally stable, it may also impact server performance due to loading chunks within all active frame cameras' views.")
+					.define("frame_feed_viewing_enabled", true);
+
+			frameFeedViewDistance = builder
+					.comment("Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.")
+					.defineInRange("frame_feed_view_distance", 16, 2, 32);
+
+			vanillaToolBlockBreaking = builder
+					.comment("Whether SecurityCraft's blocks should be broken using vanilla tools (axe, shovel, hoe, ...), instead of the Universal Block Remover. If set to true, this will disable the Universal Block Remover.")
+					.define("vanilla_tool_block_breaking", true);
+
+			alwaysDrop = builder
+					.comment("Whether SecurityCraft's blocks always drop themselves no matter which tool is used. If this is set to false, the correct tool must be used for the block to drop (e.g. pickaxe for reinforced stone, or anything for reinforced dirt).",
+							"This only applies when \"vanilla_tool_block_breaking\" is set to true.")
+					.define("always_drop", true);
+
+			allowBreakingNonOwnedBlocks = builder
+					.comment("Whether players who are not the owner of a block can still destroy it.",
+							"This applies regardless of what \"vanilla_tool_block_breaking\" is set to.")
+					.define("allow_breaking_non_owned_blocks", false);
+
+			nonOwnedBreakingSlowdown = builder
+					.comment("How much slower it should be to break a block that is not owned by the player breaking it.",
+							"The value is calculated as the normal block breaking speed divided by the non-owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
+							"This only applies when \"allow_breaking_non_owned_blocks\" and \"vanilla_tool_block_breaking\" are set to true.")
+					.defineInRange("non_owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")

@@ -13,6 +13,7 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
+import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.client.Minecraft;
@@ -29,13 +30,13 @@ import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.BlockItem;
@@ -43,7 +44,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.world.level.EmptyBlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
@@ -67,6 +67,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private final int previewXTranslation, previewYTranslation;
 	private final HoverChecker dragHoverChecker;
 	private final List<Rect2i> extraAreas = new ArrayList<>();
+	private FullbrightBlockAndTintGetter fullbrightBlockAndTintGetter;
 	private Item blockItem = Items.AIR;
 	private BlockState state = Blocks.AIR.defaultBlockState();
 	private List<Property<?>> properties = List.of();
@@ -85,7 +86,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	public StateSelector(StateSelectorAccessMenu menu, Component title, int xStart, int yStart, int slotToCheck, int dragStartX, int dragStartY, int previewXTranslation, int previewYTranslation) {
 		super(title);
-		menu.addSlotListener(this);
 		this.menu = menu;
 		this.xStart = xStart;
 		this.yStart = yStart;
@@ -95,6 +95,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		dragStartX += xStart;
 		dragStartY += yStart;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
+		menu.addSlotListener(this);
 	}
 
 	@Override
@@ -120,6 +121,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		nextPageButton = Button.builder(Component.literal(">"), button -> turnPage(1)).bounds(xStart + 126, yStart + 125, 20, 20).build();
 		updateButtons(true, false);
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
+		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
 	}
 
 	@Override
@@ -249,6 +251,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 				if (be != null) {
 					be.setLevel(mc.level);
+					be.applyComponentsFromItemStack(menu.getStateStack());
 					beRenderer = mc.getBlockEntityRenderDispatcher().getRenderer(be);
 				}
 				else
@@ -263,12 +266,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		if (state.getRenderShape() == RenderShape.MODEL) {
 			BlockRenderDispatcher blockRenderer = minecraft.getBlockRenderer();
 			BlockStateModel blockModel = blockRenderer.getBlockModel(state);
-			int color = minecraft.getBlockColors().getColor(state, null, null, 0);
-			float r = (color >> 16 & 255) / 255.0F;
-			float g = (color >> 8 & 255) / 255.0F;
-			float b = (color & 255) / 255.0F;
 
-			ModelBlockRenderer.renderModel(pose.last(), bufferSource, blockModel, r, g, b, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, EmptyBlockAndTintGetter.INSTANCE, BlockPos.ZERO, state);
+			blockRenderer.getModelRenderer().tesselateWithoutAO(fullbrightBlockAndTintGetter, blockModel.collectParts(minecraft.level, BlockPos.ZERO, state, RandomSource.create(42L)), state, BlockPos.ZERO, pose, bufferSource::getBuffer, false, OverlayTexture.NO_OVERLAY);
 		}
 	}
 

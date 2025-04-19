@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -33,8 +34,8 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	private static final Quaternionf POSITIVE_Y_90 = Axis.YP.rotationDegrees(90.0F);
 	private static final Quaternionf NEGATIVE_Y_90 = Axis.YN.rotationDegrees(90.0F);
 	private static final Quaternionf POSITIVE_X_180 = Axis.XP.rotationDegrees(180.0F);
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/security_camera.png");
-	private static final ResourceLocation BEING_VIEWED_TEXTURE = SecurityCraft.resLoc("textures/block/security_camera_viewing.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/security_camera/security_camera.png");
+	private static final ResourceLocation BEING_VIEWED_TEXTURE = SecurityCraft.resLoc("textures/entity/security_camera/security_camera_viewing.png");
 	private final SecurityCameraModel model;
 
 	public SecurityCameraRenderer(BlockEntityRendererProvider.Context ctx) {
@@ -43,7 +44,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 	@Override
 	public void render(SecurityCameraBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 cameraPos) {
-		if (PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
+		if (FrameFeedHandler.amIBeingCaptured(be) || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
 			return;
 
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay, cameraPos);

@@ -1,0 +1,8 @@
+{
+    "sources": [
+        {
+            "type": "single",
+			"resource": "securitycraft:entity/frame/noise_background"
+        }
+    ]
+}

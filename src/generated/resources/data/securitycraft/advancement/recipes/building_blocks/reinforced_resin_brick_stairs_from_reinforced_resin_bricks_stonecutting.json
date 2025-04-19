@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_resin_bricks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:reinforced_resin_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_resin_brick_stairs_from_reinforced_resin_bricks_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_resin_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_resin_brick_stairs_from_reinforced_resin_bricks_stonecutting"
+    ]
+  }
+}

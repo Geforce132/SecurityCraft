@@ -22,10 +22,8 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.network.protocol.game.ServerboundMovePlayerPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +42,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class CameraController {
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
-	private static ClientChunkCache.Storage cameraStorage;
 	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = new ViewMovementKeyHandler[] {
 		//@formatter:off
 		new ViewMovementKeyHandler(options -> options.keyUp, CameraController::moveViewUp),
@@ -207,23 +204,6 @@ public class CameraController {
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
 		PacketDistributor.sendToServer(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot(), cam.getZoomAmount()));
-	}
-
-	public static ClientChunkCache.Storage getCameraStorage() {
-		return cameraStorage;
-	}
-
-	public static void setCameraStorage(ClientChunkCache.Storage newStorage) {
-		cameraStorage = newStorage;
-	}
-
-	public static void setRenderPosition(Entity entity) {
-		if (entity instanceof SecurityCamera) {
-			SectionPos cameraPos = SectionPos.of(entity);
-
-			cameraStorage.viewCenterX = cameraPos.x();
-			cameraStorage.viewCenterZ = cameraPos.z();
-		}
 	}
 
 	public static float getMovementSpeed(SecurityCamera cam) {

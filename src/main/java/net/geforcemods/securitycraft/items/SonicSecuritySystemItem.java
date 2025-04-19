@@ -29,6 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SonicSecuritySystemItem extends BlockItem {
+	public static final GlobalPositions DEFAULT_POSITIONS = GlobalPositions.sized(SonicSecuritySystemBlockEntity.MAX_LINKED_BLOCKS);
+
 	public SonicSecuritySystemItem(Properties properties) {
 		super(SCContent.SONIC_SECURITY_SYSTEM.get(), properties);
 	}

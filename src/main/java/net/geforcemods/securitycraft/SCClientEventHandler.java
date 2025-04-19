@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -40,6 +41,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.component.TooltipProvider;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,11 +49,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
+import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
@@ -78,8 +82,15 @@ public class SCClientEventHandler {
 	};
 	//@formatter:on
 	private static final List<DeferredHolder<DataComponentType<?>, ? extends DataComponentType<? extends TooltipProvider>>> COMPONENTS_WITH_GLOBAL_TOOLTIP = List.of(SCContent.OWNER_DATA, SCContent.NOTES);
+	private static float cameraInfoMessageTime;
 
 	private SCClientEventHandler() {}
+
+	@SubscribeEvent
+	public static void onClientTickPost(ClientTickEvent.Post event) {
+		if (cameraInfoMessageTime >= 0)
+			cameraInfoMessageTime--;
+	}
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent event) {
@@ -135,6 +146,15 @@ public class SCClientEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onChunkUnload(ChunkEvent.Unload event) {
+		if (event.getLevel().isClientSide()) {
+			ChunkPos pos = event.getChunk().getPos();
+
+			CameraViewAreaExtension.onChunkUnload(pos.x, pos.z);
+		}
+	}
+
+	@SubscribeEvent
 	public static void onItemTooltip(ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
 		TooltipContext ctx = event.getContext();
@@ -168,7 +188,7 @@ public class SCClientEventHandler {
 		int scaledWidth = window.getGuiScaledWidth();
 		int scaledHeight = window.getGuiScaledHeight();
 
-		if (mc.getDebugOverlay().showDebugScreen())
+		if (mc.options.hideGui || mc.getDebugOverlay().showDebugScreen())
 			return;
 
 		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be))
@@ -193,14 +213,18 @@ public class SCClientEventHandler {
 
 		guiGraphics.drawString(font, time, scaledWidth - font.width(time) - 4, timeY, 0xFFFFFF, true);
 
-		int heightOffset = 10;
+		if (cameraInfoMessageTime >= 0) {
+			float fadeOutPartialTick = Math.max(cameraInfoMessageTime + 1.0F - deltaTracker.getGameTimeDeltaPartialTick(false), 1.0F);
+			int alpha = (int) Math.ceil(255.0F * Math.min(20.0F, fadeOutPartialTick) / 20.0F);
+			int heightOffset = 10;
 
-		for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
-			CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
+			for (int i = CAMERA_KEY_INFO_LIST.length - 1; i >= 0; i--) {
+				CameraKeyInfoEntry entry = CAMERA_KEY_INFO_LIST[i];
 
-			if (entry.enabled().get()) {
-				entry.drawString(options, guiGraphics, font, scaledWidth, scaledHeight, heightOffset, be);
-				heightOffset += 10;
+				if (entry.enabled().get()) {
+					entry.drawString(options, guiGraphics, font, scaledWidth, scaledHeight, heightOffset, be, alpha);
+					heightOffset += 10;
+				}
 			}
 		}
 
@@ -223,12 +247,16 @@ public class SCClientEventHandler {
 			CameraRedstoneModuleState.ACTIVATED.render(guiGraphics, 12, 2);
 	}
 
-	public record CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {
-		public void drawString(Options options, GuiGraphics guiGraphics, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be) {
-			Component text = text().apply(options);
-			boolean whiteText = whiteText().test(be);
+	public static void resetCameraInfoMessageTime() {
+		cameraInfoMessageTime = 200;
+	}
 
-			guiGraphics.drawString(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, whiteText ? 0xFFFFFF : 0xFF3377, true);
+	public record CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {
+		public void drawString(Options options, GuiGraphics guiGraphics, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be, int alpha) {
+			Component text = text().apply(options);
+			int textColor = whiteText().test(be) ? 0xFFFFFF : 0xFF3377;
+
+			guiGraphics.drawString(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, textColor + (alpha << 24), true);
 		}
 	}
 }

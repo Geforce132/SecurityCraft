@@ -44,6 +44,10 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 			}
 		}
 
+		collectOldParts(modelData, level, pos, state, random, parts);
+	}
+
+	public void collectOldParts(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockModelPart> parts) {
 		parts.addAll(oldModel.collectParts(level, pos, state, random));
 	}
 
@@ -68,6 +72,10 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 			}
 		}
 
+		return oldParticleIcon(modelData, level, pos, state);
+	}
+
+	public TextureAtlasSprite oldParticleIcon(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
 		return oldModel.particleIcon(level, pos, state);
 	}
 

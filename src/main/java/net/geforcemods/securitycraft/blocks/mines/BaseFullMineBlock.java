@@ -2,11 +2,12 @@ package net.geforcemods.securitycraft.blocks.mines;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IBlockMine;
+import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.IBlockMine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -136,10 +137,10 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
-		if (player.isCreative() || (level.getBlockEntity(pos) instanceof OwnableBlockEntity be && be.isOwnedBy(player)))
-			return super.getCloneItemStack(level, pos, state, includeData, player);
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
+			return new ItemStack(blockDisguisedAs);
 
-		return new ItemStack(blockDisguisedAs);
+		return super.getCloneItemStack(level, pos, state, includeData, player);
 	}
 
 	@Override
@@ -147,6 +148,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 		return getBlockDisguisedAs().defaultBlockState();
 	}
 
+	@Override
 	public Block getBlockDisguisedAs() {
 		return blockDisguisedAs;
 	}

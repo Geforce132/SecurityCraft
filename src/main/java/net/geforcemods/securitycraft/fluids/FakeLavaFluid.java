@@ -136,7 +136,7 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 
 	@Override
 	protected boolean canConvertToSource(ServerLevel level) {
-		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_LAVA_SOURCE_CONVERSION);
+		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_LAVA_SOURCE_CONVERSION.get());
 	}
 
 	@Override

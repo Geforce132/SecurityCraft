@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.71'
+	id 'net.neoforged.moddev' version '2.0.76'
 }
 
 import groovy.json.JsonOutput
@@ -35,26 +35,32 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.5.14-beta"
+	version = "21.5.46-beta"
 	validateAccessTransformers = true
 
 	runs {
 		configureEach {
-			systemProperty 'forge.logging.console.level', 'debug'
+			logLevel = org.slf4j.event.Level.DEBUG
 			ideName = "SC ${project.mc_version} " + ideName.get()
 		}
-	
+
 		client {
 			client()
 			gameDirectory = project.file('run/client')
 		}
-	
+
+		client2 {
+			client()
+			gameDirectory = project.file('run/client')
+			programArguments.addAll('--username', 'Dev2')
+		}
+
 		server {
 			server()
 			gameDirectory = project.file('run/server')
 			programArgument('-nogui')
 		}
-	
+
 		data {
 			clientData()
 			gameDirectory = project.file('run/data')
@@ -98,14 +104,15 @@ dependencies {
 	implementation "curse.maven:jade-324717:6353729"
 	implementation "curse.maven:betterf3-401648:6364907"
 	implementation "curse.maven:cloth-config-348521:6351757" //betterf3 dependency
-//	implementation "curse.maven:wthit-forge-455982:5977924"
-//	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
+	implementation "curse.maven:wthit-forge-455982:6417716"
+	implementation "curse.maven:badpackets-615134:6067146" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 //	implementation "curse.maven:embeddium-908741:6116910"
 	implementation "maven.modrinth:sodium:mc1.21.5-0.6.12-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {
+	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
 	archiveFileName = "[${project.mc_version}] SecurityCraft v${version}.jar"
 	manifest {
 		attributes(["Specification-Title": "SecurityCraft",
@@ -118,7 +125,6 @@ tasks.named('jar', Jar).configure {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
 	options.encoding = 'UTF-8'
 	options.release = 21
 }

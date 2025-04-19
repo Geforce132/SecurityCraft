@@ -44,6 +44,16 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 	}
 
 	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
+
+		if (disguisedState.getBlock() != state.getBlock())
+			return disguisedState.getDestroyProgress(player, level, pos);
+		else
+			return super.getDestroyProgress(state, player, level, pos);
+	}
+
+	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
@@ -126,7 +136,10 @@ public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisgu
 
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData, Player player) {
-		return getDisguisedStack(level, pos);
+		if (IDisguisable.shouldPickBlockDisguise(level, pos, player))
+			return getDisguisedStack(level, pos);
+
+		return super.getCloneItemStack(level, pos, state, includeData, player);
 	}
 
 	@Override

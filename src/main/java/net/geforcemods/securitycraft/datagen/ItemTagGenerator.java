@@ -47,6 +47,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SPEED_MODULE.get(),
 				SCContent.STORAGE_MODULE.get());
 		tag(SCTags.Items.REINFORCED_MOSS).add(SCContent.REINFORCED_MOSS_BLOCK.get().asItem());
+		tag(SCTags.Items.REINFORCED_PALE_MOSS).add(SCContent.REINFORCED_PALE_MOSS_BLOCK.get().asItem());
 		tag(SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS).add(
 				SCContent.REINFORCED_COBBLESTONE.get().asItem(),
 				SCContent.REINFORCED_BLACKSTONE.get().asItem(),
@@ -61,6 +62,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get(),
 				SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get(),
 				SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get(),
+				SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.get(),
 				SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get(),
 				SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get());
 		tag(SCTags.Items.SECRET_SIGNS).add(
@@ -73,6 +75,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.SECRET_JUNGLE_SIGN_ITEM.get(),
 				SCContent.SECRET_MANGROVE_SIGN_ITEM.get(),
 				SCContent.SECRET_OAK_SIGN_ITEM.get(),
+				SCContent.SECRET_PALE_OAK_SIGN_ITEM.get(),
 				SCContent.SECRET_SPRUCE_SIGN_ITEM.get(),
 				SCContent.SECRET_WARPED_SIGN_ITEM.get());
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
@@ -95,6 +98,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 		copy(SCTags.Blocks.REINFORCED_MANGROVE_LOGS, SCTags.Items.REINFORCED_MANGROVE_LOGS);
 		copy(SCTags.Blocks.REINFORCED_NYLIUM, SCTags.Items.REINFORCED_NYLIUM);
 		copy(SCTags.Blocks.REINFORCED_OAK_LOGS, SCTags.Items.REINFORCED_OAK_LOGS);
+		copy(SCTags.Blocks.REINFORCED_PALE_OAK_LOGS, SCTags.Items.REINFORCED_PALE_OAK_LOGS);
 		copy(SCTags.Blocks.REINFORCED_PLANKS, SCTags.Items.REINFORCED_PLANKS);
 		copy(SCTags.Blocks.REINFORCED_PRESSURE_PLATES, SCTags.Items.REINFORCED_PRESSURE_PLATES);
 		copy(SCTags.Blocks.REINFORCED_SAND, SCTags.Items.REINFORCED_SAND);

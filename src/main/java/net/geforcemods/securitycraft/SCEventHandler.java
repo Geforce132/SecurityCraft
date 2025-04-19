@@ -33,7 +33,10 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
+import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
+import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -78,6 +81,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -92,13 +96,14 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
+import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
@@ -121,6 +126,8 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerTickPre(ServerTickEvent.Pre event) {
+		SecurityCameraBlockEntity.resetForceLoadingCounter();
+
 		if (!event.getServer().tickRateManager().isFrozen() || event.getServer().tickRateManager().isSteppingForward()) {
 			PLAYING_TUNES.forEach((player, pair) -> {
 				int ticksRemaining = pair.getLeft();
@@ -176,17 +183,24 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onPlayerLoggedOut(PlayerLoggedOutEvent event) {
-		ServerPlayer player = (ServerPlayer) event.getEntity();
+	public static void onEntityLeaveLevel(EntityLeaveLevelEvent event) {
+		if (event.getEntity() instanceof ServerPlayer player) {
+			Level level = event.getLevel();
 
-		if (player.getCamera() instanceof SecurityCamera cam) {
-			if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
-				player.removeEffect(MobEffects.NIGHT_VISION);
+			if (player.getCamera() instanceof SecurityCamera cam) {
+				if (player.getEffect(MobEffects.NIGHT_VISION) instanceof CameraNightVisionEffectInstance)
+					player.removeEffect(MobEffects.NIGHT_VISION);
 
-			if (player.level().getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
-				camBe.stopViewing();
+				if (level.getBlockEntity(cam.blockPosition()) instanceof SecurityCameraBlockEntity camBe)
+					camBe.stopViewing();
 
-			cam.discard();
+				cam.discard();
+			}
+
+			for (SecurityCameraBlockEntity viewedCamera : BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(level, be -> be.getCameraFeedChunks(player) != null || be.hasPlayerFrameLink(player))) {
+				viewedCamera.unlinkFrameForPlayer(player.getUUID(), null);
+				viewedCamera.clearCameraFeedChunks(player);
+			}
 		}
 	}
 
@@ -203,8 +217,17 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onLevelUnload(LevelEvent.Unload event) {
-		if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
+		LevelAccessor level = event.getLevel();
+
+		if (level instanceof ServerLevel serverLevel && serverLevel.dimension() == Level.OVERWORLD) {
 			SaltData.invalidate();
+			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
+		}
+		else if (level.isClientSide()) {
+			FrameFeedHandler.removeAllFeeds();
+			CameraClientChunkCacheExtension.clear();
+			CameraViewAreaExtension.clear();
+		}
 	}
 
 	@SubscribeEvent
@@ -215,7 +238,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onEntityInvulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
 		if (event.getEntity() instanceof AbstractSecuritySeaBoat && event.getSource().is(SCTags.DamageTypes.SECURITY_SEA_BOAT_VULNERABLE_TO))
-			event.setInvulnerable(true);
+			event.setInvulnerable(false);
 	}
 
 	@SubscribeEvent
@@ -478,6 +501,12 @@ public class SCEventHandler {
 
 			BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getBlockEntitiesInRange(level, pos).forEach(detector -> detector.log(player, DetectionMode.PLACE, pos, state));
 		}
+	}
+
+	@SubscribeEvent
+	public static void onPlayerHarvestCheck(PlayerEvent.HarvestCheck event) {
+		if (ConfigHandler.SERVER.alwaysDrop.get() && event.getLevel().getBlockEntity(event.getPos()) instanceof IOwnable)
+			event.setCanHarvest(true);
 	}
 
 	@SubscribeEvent

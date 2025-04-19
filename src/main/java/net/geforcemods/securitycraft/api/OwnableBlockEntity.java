@@ -1,13 +1,14 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blocks.SpecialDoorBlock;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +42,7 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
-		if (level != null && this instanceof IModuleInventory inv && (!state.hasProperty(SpecialDoorBlock.HALF) || state.getValue(SpecialDoorBlock.HALF) == DoubleBlockHalf.LOWER))
+		if (level != null && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && this instanceof IModuleInventory inv && (!state.hasProperty(DoorBlock.HALF) || state.getValue(DoorBlock.HALF) == DoubleBlockHalf.LOWER))
 			inv.dropAllModules();
 
 		if (this instanceof IPasscodeProtected passcodeProtected)

@@ -27,6 +27,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -152,8 +153,10 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 					if (keycardStack.getItem() instanceof KeycardItem && keycardStack.has(SCContent.KEYCARD_DATA)) {
 						feedback = insertCard(keycardStack, player);
 
-						if (feedback == null)
+						if (feedback == null) {
+							holderInventory.save();
 							return InteractionResult.SUCCESS;
+						}
 					}
 				}
 
@@ -225,6 +228,12 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 		if (signalLength > 0)
 			level.scheduleTick(worldPosition, block, signalLength);
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
 	}
 
 	@Override
