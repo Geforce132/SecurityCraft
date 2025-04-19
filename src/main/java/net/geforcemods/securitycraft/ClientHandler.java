@@ -72,6 +72,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
+import net.geforcemods.securitycraft.renderers.SecurityCameraItemRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaRaftRenderer;
@@ -480,6 +481,7 @@ public class ClientHandler {
 		BlockEntityWithoutLevelRenderer displayCaseItemRenderer = new DisplayCaseItemRenderer(false);
 		BlockEntityWithoutLevelRenderer glowDisplayCaseItemRenderer = new DisplayCaseItemRenderer(true);
 		BlockEntityWithoutLevelRenderer keypadChestItemRenderer = new KeypadChestItemRenderer();
+		BlockEntityWithoutLevelRenderer securityCameraItemRenderer = new SecurityCameraItemRenderer();
 
 		event.registerItem(new IClientItemExtensions() {
 			@Override
@@ -499,6 +501,12 @@ public class ClientHandler {
 				return keypadChestItemRenderer;
 			}
 		}, SCContent.KEYPAD_CHEST_ITEM.get());
+		event.registerItem(new IClientItemExtensions() {
+			@Override
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+				return securityCameraItemRenderer;
+			}
+		}, SCContent.SECURITY_CAMERA.get().asItem());
 		event.registerItem(new IClientItemExtensions() {
 			private static final ArmPose TASER_ARM_POSE = ClientHandler.TASER_ARM_POSE_PARAMS.getValue();
 

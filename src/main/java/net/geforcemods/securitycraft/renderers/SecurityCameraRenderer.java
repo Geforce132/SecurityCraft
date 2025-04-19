@@ -33,8 +33,8 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	private static final Quaternionf POSITIVE_Y_90 = Axis.YP.rotationDegrees(90.0F);
 	private static final Quaternionf NEGATIVE_Y_90 = Axis.YN.rotationDegrees(90.0F);
 	private static final Quaternionf POSITIVE_X_180 = Axis.XP.rotationDegrees(180.0F);
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/security_camera.png");
-	private static final ResourceLocation BEING_VIEWED_TEXTURE = SecurityCraft.resLoc("textures/block/security_camera_viewing.png");
+	public static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/security_camera/security_camera.png");
+	private static final ResourceLocation BEING_VIEWED_TEXTURE = SecurityCraft.resLoc("textures/entity/security_camera/security_camera_viewing.png");
 	private final SecurityCameraModel model;
 
 	public SecurityCameraRenderer(BlockEntityRendererProvider.Context ctx) {

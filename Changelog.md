@@ -18,6 +18,7 @@
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - Change: Owners of disguised blocks and players in creative mode now receive the actual block instead of the disguise when using Pick Block
 - Change: The text in the bottom-right corner of the camera overlay now fades out after 10 seconds
+- Change: The Security Camera item model has been changed to match the one used when the camera is placed in the world
 - API: IDisguisable has been simplified
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
@@ -56,6 +57,7 @@
 - Fix: A Projector projecting something can cause some block models to have incorrect rendering (e.g. decorated pot displays z-fighting)
 - Fix: Block mines are not grouped together in the creative inventory
 - Removed: Configuration "ableToBreakMines"
+- Misc.: The "security_camera.png" and "security_camera_viewing.png" textures have been moved from the "block" to the "entity/security_camera" folder
 - Misc.: The minimum required NeoForge version is now 21.3.68
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
