@@ -217,6 +217,7 @@ import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
 import net.geforcemods.securitycraft.renderers.DisplayCaseItemRenderer;
 import net.geforcemods.securitycraft.renderers.KeypadChestItemRenderer;
+import net.geforcemods.securitycraft.renderers.SecurityCameraItemRenderer;
 import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.OwnableBE;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -266,8 +267,9 @@ public class SCContent {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SecurityCraft.MODID);
 	public static final DeferredRegister<ContainerType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, SecurityCraft.MODID);
 	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, SecurityCraft.MODID);
-	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
+	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
+	public static final String SECURITY_CAMERA_PATH = "security_camera";
 
 	//particle types
 	public static final RegistryObject<BasicParticleType> FLOOR_TRAP_CLOUD = PARTICLE_TYPES.register("floor_trap_cloud", () -> new BasicParticleType(false));
@@ -402,8 +404,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final RegistryObject<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F).harvestTool(ToolType.PICKAXE));
 	@HasManualPage
-	@RegisterItemBlock
-	public static final RegistryObject<SecurityCameraBlock> SECURITY_CAMERA = registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(Material.METAL, 5.0F).noCollission().harvestTool(ToolType.PICKAXE).harvestLevel(ItemTier.STONE.getLevel()));
+	public static final RegistryObject<SecurityCameraBlock> SECURITY_CAMERA = registerBlock(SECURITY_CAMERA_PATH, SecurityCameraBlock::new, propDisguisable(Material.METAL, 5.0F).noCollission().harvestTool(ToolType.PICKAXE).harvestLevel(ItemTier.STONE.getLevel()));
 	@HasManualPage
 	public static final RegistryObject<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL).noCollission().harvestTool(ToolType.PICKAXE).harvestLevel(ItemTier.STONE.getLevel()));
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -2137,6 +2138,7 @@ public class SCContent {
 	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB, 16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), "item.securitycraft.secret_crimson_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB, 16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), "item.securitycraft.secret_warped_sign_item"));
+	public static final RegistryObject<Item> SECURITY_CAMERA_ITEM = ITEMS.register(SECURITY_CAMERA_PATH, () -> new BlockItem(SCContent.SECURITY_CAMERA.get(), itemProp(SecurityCraft.TECHNICAL_TAB).setISTER(() -> SecurityCameraItemRenderer::new))); //keep this as a method reference or else the server will crash
 	@HasManualPage(designedBy = "Henzoid")
 	public static final RegistryObject<Item> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
 	public static final RegistryObject<Item> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
