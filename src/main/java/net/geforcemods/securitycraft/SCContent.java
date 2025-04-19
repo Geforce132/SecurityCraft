@@ -241,6 +241,7 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.ReinforcedScaffoldingBlockItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
+import net.geforcemods.securitycraft.items.SecurityCameraItem;
 import net.geforcemods.securitycraft.items.SecuritySeaBoatItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
@@ -339,9 +340,10 @@ public class SCContent {
 	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, SecurityCraft.MODID);
 	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(Registries.PARTICLE_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, SecurityCraft.MODID);
-	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
+	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
+	public static final String SECURITY_CAMERA_PATH = "security_camera";
 	public static final int CRYSTAL_QUARTZ_TINT = 0xFF15B3A2;
 
 	//command argument types
@@ -518,8 +520,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
 	@HasManualPage
-	@RegisterItemBlock
-	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollission());
+	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock(SECURITY_CAMERA_PATH, SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollission());
 	@HasManualPage
 	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL).noCollission());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -2833,6 +2834,7 @@ public class SCContent {
 	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.register("cherry_security_sea_boat", () -> new SecuritySeaBoatItem(Boat.Type.CHERRY, itemProp(1).fireResistant()));
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
 	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.register("bamboo_security_sea_raft", () -> new SecuritySeaBoatItem(Boat.Type.BAMBOO, itemProp(1).fireResistant()));
+	public static final DeferredItem<SecurityCameraItem> SECURITY_CAMERA_ITEM = ITEMS.register(SECURITY_CAMERA_PATH, () -> new SecurityCameraItem(SCContent.SECURITY_CAMERA.get(), itemProp()));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final DeferredItem<SentryItem> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp()));
 	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(1).component(SSS_LINKED_BLOCKS, SonicSecuritySystemItem.DEFAULT_POSITIONS)));
