@@ -219,6 +219,7 @@ import net.geforcemods.securitycraft.items.PortableTunePlayerItem;
 import net.geforcemods.securitycraft.items.ReinforcedScaffoldingBlockItem;
 import net.geforcemods.securitycraft.items.SCManualItem;
 import net.geforcemods.securitycraft.items.SecretSignItem;
+import net.geforcemods.securitycraft.items.SecurityCameraItem;
 import net.geforcemods.securitycraft.items.SentryItem;
 import net.geforcemods.securitycraft.items.SentryRemoteAccessToolItem;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
@@ -294,9 +295,10 @@ public class SCContent {
 	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.CONTAINERS, SecurityCraft.MODID);
 	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, SecurityCraft.MODID);
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registry.RECIPE_SERIALIZER_REGISTRY, SecurityCraft.MODID);
-	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
 	public static final String DISPLAY_CASE_PATH = "display_case";
 	public static final String GLOW_DISPLAY_CASE_PATH = "glow_display_case";
+	public static final String KEYPAD_CHEST_PATH = "keypad_chest";
+	public static final String SECURITY_CAMERA_PATH = "security_camera";
 
 	//loot item condition types
 	public static final RegistryObject<LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(new BlockEntityNBTCondition.ConditionSerializer()));
@@ -446,8 +448,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final RegistryObject<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
 	@HasManualPage
-	@RegisterItemBlock
-	public static final RegistryObject<SecurityCameraBlock> SECURITY_CAMERA = registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(Material.METAL, 5.0F).noCollission());
+	public static final RegistryObject<SecurityCameraBlock> SECURITY_CAMERA = registerBlock(SECURITY_CAMERA_PATH, SecurityCameraBlock::new, propDisguisable(Material.METAL, 5.0F).noCollission());
 	@HasManualPage
 	public static final RegistryObject<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(Material.METAL, 5.0F).sound(SoundType.METAL).noCollission());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
@@ -2412,6 +2413,7 @@ public class SCContent {
 	public static final RegistryObject<Item> SECRET_CRIMSON_SIGN_ITEM = ITEMS.register("secret_crimson_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB, 16), SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), "item.securitycraft.secret_crimson_sign_item"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
 	public static final RegistryObject<Item> SECRET_WARPED_SIGN_ITEM = ITEMS.register("secret_warped_sign_item", () -> new SecretSignItem(itemProp(SecurityCraft.DECORATION_TAB, 16), SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), "item.securitycraft.secret_warped_sign_item"));
+	public static final RegistryObject<Item> SECURITY_CAMERA_ITEM = ITEMS.register(SECURITY_CAMERA_PATH, () -> new SecurityCameraItem(SCContent.SECURITY_CAMERA.get(), itemProp(SecurityCraft.TECHNICAL_TAB)));
 	@HasManualPage(designedBy = "Henzoid")
 	public static final RegistryObject<Item> SENTRY = ITEMS.register("sentry", () -> new SentryItem(itemProp(SecurityCraft.TECHNICAL_TAB)));
 	public static final RegistryObject<Item> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.register("sonic_security_system", () -> new SonicSecuritySystemItem(itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
