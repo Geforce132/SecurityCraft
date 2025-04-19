@@ -67,6 +67,7 @@ import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
+import net.geforcemods.securitycraft.renderers.SecurityCameraSpecialRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaRaftRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
@@ -288,6 +289,7 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void onRegisterSpecialModelRenderer(RegisterSpecialModelRendererEvent event) {
 		event.register(SecurityCraft.resLoc("display_case"), DisplayCaseSpecialRenderer.Unbaked.MAP_CODEC);
+		event.register(SecurityCraft.resLoc("security_camera"), SecurityCameraSpecialRenderer.Unbaked.MAP_CODEC);
 	}
 
 	@SubscribeEvent

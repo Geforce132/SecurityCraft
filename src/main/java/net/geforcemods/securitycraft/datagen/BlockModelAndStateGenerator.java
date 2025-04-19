@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.datagen.DataGenConstants.SCTexturedModels;
 import net.geforcemods.securitycraft.datagen.ReinforcedWoodProvider.LogGenerator;
 import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
 import net.geforcemods.securitycraft.renderers.DisplayCaseSpecialRenderer;
+import net.geforcemods.securitycraft.renderers.SecurityCameraSpecialRenderer;
 import net.geforcemods.securitycraft.util.SCItemGroup;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.color.item.GrassColorSource;
@@ -181,7 +182,7 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModelFromItem(SCContent.RETINAL_SCANNER.get());
 		registerSimpleItemModel(SCContent.SCANNER_TRAPDOOR.get(), "_bottom");
 		createSecureRedstoneInterface();
-		registerSimpleItemModelFromItem(SCContent.SECURITY_CAMERA.get());
+		createSecurityCamera();
 		registerSimpleItemModel(SCContent.TROPHY_SYSTEM.get());
 		registerSimpleItemModel(SCContent.USERNAME_LOGGER.get());
 
@@ -593,6 +594,21 @@ public class BlockModelAndStateGenerator {
 	public static void generateReinforcedStairs(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ItemTintSource baseTint) {
 		createTintedStairs(block, side, bottom, top);
 		registerReinforcedItemModel(block, baseTint);
+	}
+
+	public static void createSecurityCamera() {
+		Block cam = SCContent.SECURITY_CAMERA.get();
+		ResourceLocation baseModel = ModelLocationUtils.getModelLocation(cam.asItem());
+
+		//@formatter:off
+		itemInfo.accept(cam.asItem(),
+				ItemModelUtils.specialModel(baseModel,
+						new SecurityCameraSpecialRenderer.Unbaked(
+								SecurityCraft.resLoc("security_camera"),
+								0.0F,
+								Optional.empty(),
+								Optional.empty())));
+		//@formatter:on
 	}
 
 	public static void generateTintedStairs(Block block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, ItemTintSource tint) {
