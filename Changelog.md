@@ -28,6 +28,7 @@
 - Fix: A system of connected laser blocks does not emit redstone correctly when walking into two or more laser fields
 - Fix: The Projector, projected blocks, Disguise Module, and block disguises do not properly show banner patterns, decorated pot sherds, etc.
 - Removed: Configuration "ableToBreakMines"
+- Misc.: The taser model and textures have been improved and optimized. Resource packs need to update
 
 [1] Note: Frame blocks that already existed in the world prior to this update will lose their owner. These frames can be broken by anyone so they can be placed down with the proper owner again.
 
