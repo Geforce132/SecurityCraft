@@ -1,227 +1,113 @@
 {
-    "ambientocclusion": false,
-    "textures": {
-        "taser": "securitycraft:item/taser",
+	"ambientocclusion": false,
+	"textures": {
+		"taser": "securitycraft:item/taser",
 		"particle": "securitycraft:item/taser"
-    },
-    "display": {
-    	"gui": {
-            "rotation": [ 30, 45, 0 ],
-            "translation": [ 0, 0, 0],
-            "scale":[ 0.625, 0.625, 0.625 ]
-        },
-        "ground": {
-            "rotation": [ 0, 0, 0 ],
-            "translation": [ 0, 3, 0],
-            "scale":[ 0.5, 0.5, 0.5 ]
-        },
-        "thirdperson_righthand": {
-            "rotation": [ 0, 150, 0 ],
-            "translation": [ 0, 1.5, -1 ],
-            "scale": [ 0.55, 0.55, 0.55 ]
-        },
-        "thirdperson_lefthand": {
-            "rotation": [ 0, 150, 0 ],
-            "translation": [ -0.75, 1.5, -1 ],
-            "scale": [ 0.55, 0.55, 0.55 ]
-        },
-        "firstperson_righthand": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ 0, 2, 0],
-            "scale": [ 0.68, 0.68, 0.68 ]
-        },
-        "firstperson_lefthand": {
-            "rotation": [ 0, 180, 0 ],
-            "translation": [ 0, 2, 0],
-            "scale": [ 0.68, 0.68, 0.68 ]
-        }
-    },
-    "elements": [
-        {
-            "from": [7,6,4],
-            "to": [10,10,11],
-            "faces": {
-                "up": {
-                    "uv": [1.1666663,0,1.6666666,1.1666666],
-                    "texture": "#taser"
-                },
-                "down": {
-                    "uv": [1.6666683,0,2.1666667,1.1666666],
-                    "texture": "#taser"
-                },
-                "west": {
-                    "uv": [1.6666665,1.1666666,2.8333333,1.8333334],
-                    "texture": "#taser"
-                },
-                "east": {
-                    "uv": [0,1.1666666,1.1666666,1.8333334],
-                    "texture": "#taser"
-                },
-                "north": {
-                    "uv": [1.1666669,1.1666666,1.6666666,1.8333334],
-                    "texture": "#taser"
-                },
-                "south": {
-                    "uv": [2.833333,1.1666666,3.3333333,1.8333334],
-                    "texture": "#taser"
-                }
-            }
-        },
-        {
-            "from": [7.8599997,2,4.6400003],
-            "to": [9.36,9,6.6400003],
-            "faces": {
-                "down": {
-                    "uv": [1.9999995,2.3333333,2.3333333,2.6666672],
-                    "texture": "#taser"
-                },
-                "west": {
-                    "uv": [2.666668,2.6666672,3,3.8333333],
-                    "texture": "#taser"
-                },
-                "east": {
-                    "uv": [1.9999986,2.6666653,2.3333333,3.8333333],
-                    "texture": "#taser"
-                },
-                "north": {
-                    "uv": [1.6666656,2.6666672,2,3.8333333],
-                    "texture": "#taser"
-                },
-                "south": {
-                    "uv": [2.333331,2.6666672,2.6666667,3.8333333],
-                    "texture": "#taser"
-                }
-            }
-        },
-        {
-            "from": [7,9,11],
-            "to": [10,10,12],
-            "faces": {
-                "up": {
-                    "uv": [0.1666667,3.3333302,0.6666667,3.5],
-                    "texture": "#taser"
-                },
-                "down": {
-                    "uv": [0.66666627,3.333335,1.1666666,3.5],
-                    "texture": "#taser"
-                },
-                "west": {
-                    "uv": [0.3333334,3.3333359,0.5,3.5],
-                    "texture": "#taser"
-                },
-                "east": {
-                    "uv": [0.33333334,3.3333333,0.5,3.5],
-                    "texture": "#taser"
-                },
-                "south": {
-                    "uv": [0.8333332,3.5000007,1.3333334,3.6666667],
-                    "texture": "#taser"
-                }
-            }
-        },
-        {
-            "from": [7,6,11],
-            "to": [10,7,12],
-            "faces": {
-                "up": {
-                    "uv": [0.8333337,3.4999964,1.333333,3.6666663],
-                    "texture": "#taser"
-                },
-                "down": {
-                    "uv": [0.16666669,3.333334,0.6666673,3.499999],
-                    "texture": "#taser"
-                },
-                "west": {
-                    "uv": [0.16666667,3.3333333,0.33333334,3.5],
-                    "texture": "#taser"
-                },
-                "east": {
-                    "uv": [0.5,3.3333333,0.6666667,3.5],
-                    "texture": "#taser"
-                },
-                "south": {
-                    "uv": [0.8333332,3.5000007,1.3333334,3.6666667],
-                    "texture": "#taser"
-                }
-            }
-        },
-        {
-            "from": [9,6.75,11],
-            "to": [10,9.25,12],
-            "faces": {
-                "up": {
-                    "uv": [0.8333337,3.4999964,1.333333,3.6666663],
-                    "texture": "#taser"
-                },
-                "down": {
-                    "uv": [0.16666669,3.333334,0.6666673,3.499999],
-                    "texture": "#taser"
-                },
-                "west": {
-                    "uv": [0.33333334,5.1666665,0.5,5.5],
-                    "texture": "#taser"
-                },
-                "east": {
-                    "uv": [0,5.166664,0.16666666,5.499998],
-                    "texture": "#taser"
-                },
-                "south": {
-                    "uv": [0.8333332,3.5000007,1.3333334,3.6666667],
-                    "texture": "#taser"
-                }
-            }
-        },
-        {
-            "from": [7,6.75,11],
-            "to": [8,9.25,12],
-            "faces": {
-                "up": {
-                    "uv": [0.8333337,3.4999964,1.333333,3.6666663],
-                    "texture": "#taser"
-                },
-                "down": {
-                    "uv": [0.16666669,3.333334,0.6666673,3.499999],
-                    "texture": "#taser"
-                },
-                "west": {
-                    "uv": [0,5.1666675,0.16666663,5.5000014],
-                    "texture": "#taser"
-                },
-                "east": {
-                    "uv": [0.33333334,5.1666665,0.5,5.499998],
-                    "texture": "#taser"
-                },
-                "south": {
-                    "uv": [0.8333332,3.5000007,1.3333334,3.6666667],
-                    "texture": "#taser"
-                }
-            }
-        },
-        {
-            "from": [7.2799993,6.5,3.75],
-            "to": [9.78,9.5,4],
-            "faces": {
-                "up": {
-                    "uv": [1.1666666,1.1666665,1.6666666,1.8333334],
-                    "texture": "#taser"
-                },
-                "down": {
-                    "uv": [0.16666669,7.4999957,0.5,7.5833335],
-                    "texture": "#taser"
-                },
-                "west": {
-                    "uv": [0.5,7.6666665,0.5833333,8.166667],
-                    "texture": "#taser"
-                },
-                "east": {
-                    "uv": [0,7.6666665,0.16666667,8.166664],
-                    "texture": "#taser"
-                },
-                "north": {
-                    "uv": [0.16666667,7.6666665,0.5,8.166667],
-                    "texture": "#taser"
-                }
-            }
-        }
-    ]
+	},
+	"display": {
+		"gui": {
+			"rotation": [30, 45, 0],
+			"scale": [0.625, 0.625, 0.625]
+		},
+		"ground": {
+			"translation": [0, 3, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_righthand": {
+			"rotation": [0, 150, 0],
+			"translation": [0, 1.5, -1],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 150, 0],
+			"translation": [-0.75, 1.5, -1],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 180, 0],
+			"translation": [0, 2, 0],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 180, 0],
+			"translation": [0, 2, 0],
+			"scale": [0.68, 0.68, 0.68]
+		}
+	},
+	"elements": [
+		{
+			"from": [7, 6, 4],
+			"to": [10, 10, 11],
+			"faces": {
+				"north": {"uv": [13, 0, 16, 4], "texture": "#taser"},
+				"east": {"uv": [0, 0, 7, 4], "texture": "#taser"},
+				"south": {"uv": [13, 4, 16, 8], "texture": "#taser"},
+				"west": {"uv": [7, 0, 0, 4], "texture": "#taser"},
+				"up": {"uv": [10, 7, 7, 0], "texture": "#taser"},
+				"down": {"uv": [13, 0, 10, 7], "texture": "#taser"}
+			}
+		},
+		{
+			"from": [7.5, 2, 4.5],
+			"to": [9.5, 6, 6.5],
+			"faces": {
+				"north": {"uv": [0, 4, 2, 8], "texture": "#taser"},
+				"east": {"uv": [2, 8, 4, 12], "texture": "#taser"},
+				"south": {"uv": [2, 4, 4, 8], "texture": "#taser"},
+				"west": {"uv": [0, 8, 2, 12], "texture": "#taser"},
+				"down": {"uv": [6, 4, 4, 6], "texture": "#taser"}
+			}
+		},
+		{
+			"from": [7, 9, 11],
+			"to": [10, 10, 12],
+			"faces": {
+				"east": {"uv": [8, 8, 9, 9], "texture": "#taser"},
+				"south": {"uv": [13, 4, 16, 5], "texture": "#taser"},
+				"west": {"uv": [4, 8, 5, 9], "texture": "#taser"},
+				"up": {"uv": [8, 8, 5, 7], "texture": "#taser"},
+				"down": {"uv": [16, 9, 13, 10], "texture": "#taser"}
+			}
+		},
+		{
+			"from": [7, 6, 11],
+			"to": [10, 7, 12],
+			"faces": {
+				"east": {"uv": [8, 11, 9, 12], "texture": "#taser"},
+				"south": {"uv": [13, 7, 16, 8], "texture": "#taser"},
+				"west": {"uv": [4, 11, 5, 12], "texture": "#taser"},
+				"up": {"uv": [16, 13, 13, 12], "texture": "#taser"},
+				"down": {"uv": [8, 12, 5, 13], "texture": "#taser"}
+			}
+		},
+		{
+			"from": [9, 7, 11],
+			"to": [10, 9, 12],
+			"faces": {
+				"east": {"uv": [8, 9, 9, 11], "texture": "#taser"},
+				"south": {"uv": [15, 5, 16, 7], "texture": "#taser"},
+				"west": {"uv": [15, 10, 16, 12], "texture": "#taser"}
+			}
+		},
+		{
+			"from": [7, 7, 11],
+			"to": [8, 9, 12],
+			"faces": {
+				"east": {"uv": [13, 10, 14, 12], "texture": "#taser"},
+				"south": {"uv": [13, 5, 14, 7], "texture": "#taser"},
+				"west": {"uv": [4, 9, 5, 11], "texture": "#taser"}
+			}
+		},
+		{
+			"from": [7.5, 6.5, 3.75],
+			"to": [9.5, 9.5, 4.75],
+			"faces": {
+				"north": {"uv": [10, 9, 12, 12], "texture": "#taser"},
+				"east": {"uv": [12, 9, 13, 12], "texture": "#taser"},
+				"west": {"uv": [9, 9, 10, 12], "texture": "#taser"},
+				"up": {"uv": [12, 9, 10, 8], "texture": "#taser"},
+				"down": {"uv": [12, 12, 10, 13], "texture": "#taser"}
+			}
+		}
+	]
 }
