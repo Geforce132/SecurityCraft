@@ -154,7 +154,7 @@ public class ConfigHandler {
 
 			inventoryScannerRange = builder
 					.comment("At most from how many blocks away can an inventory scanner connect to another inventory scanner?")
-					.defineInRange("inventoryScannerRange", 2, 0, Integer.MAX_VALUE);
+					.defineInRange("inventoryScannerRange", 3, 0, Integer.MAX_VALUE);
 
 			maxAlarmRange = builder
 					.comment("What is the maximum value that can be set for an alarm's range option? Do note, that this may be limited by chunk loading distance. Higher values may also lead to the setting being less finetuneable.")
