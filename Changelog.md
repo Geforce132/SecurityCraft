@@ -14,6 +14,7 @@
 - Change: The Secure Redstone Interface has new visuals for when it receives/outputs a redstone signal
 - Change: Owners of disguised blocks and players in creative mode now receive the actual block instead of the disguise when using Pick Block
 - Change: The text in the bottom-right corner of the camera overlay now fades out after 10 seconds
+- Change: The default value for the "inventoryScannerRange" config setting has been increased from 2 to 3
 - API: IDisguisable has been simplified
 - API: New method IPasscodeProtected#savePasscodeAndSalt for more conveniently saving passcode and salt key to NBT
 - API: New methods IPasscodeProtected#setSaveSalt and IPasscodeProtected#shouldSaveSalt to control storing the object's salt into its data storage

@@ -100,7 +100,7 @@ public class ConfigHandler {
 
 	@Name("Inventory Scanner range:")
 	@LangKey("config.securitycraft:inventoryScannerRange")
-	public static int inventoryScannerRange = 2;
+	public static int inventoryScannerRange = 3;
 
 	@Name("Maximum Alarm range:")
 	@LangKey("config.securitycraft:maxAlarmRange")
