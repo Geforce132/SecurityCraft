@@ -108,7 +108,7 @@ dependencies {
 	implementation "curse.maven:badpackets-615134:6067146" //wthit dependency
 //	implementation "curse.maven:projecte-226410:3955047"
 //	implementation "curse.maven:embeddium-908741:6116910"
-	implementation "maven.modrinth:sodium:mc1.21.5-0.6.12-neoforge" //incompatible with embeddium
+	implementation "maven.modrinth:sodium:mc1.21.5-0.6.13-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {

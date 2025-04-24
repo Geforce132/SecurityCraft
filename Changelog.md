@@ -19,7 +19,7 @@
 - Change: Owners of disguised blocks and players in creative mode now receive the actual block instead of the disguise when using Pick Block
 - Change: The text in the bottom-right corner of the camera overlay now fades out after 10 seconds
 - Change: The Security Camera item model has been changed to match the one used when the camera is placed in the world
-- Change: The Block Change Detector, Projector, Security Camera, and Username Logger textures have been tweaked
+- Change: The Block Change Detector, Inventory Scanner Field, Projector, Protecto, Security Camera, Taser, and Username Logger textures have been tweaked
 - Change: The default value for the "inventoryScannerRange" config setting has been increased from 2 to 3
 - API: New IBlockMine interface for blocks that are block mines
 - API: New method IExplosive#explodesWhenInteractedWith as well as two utility methods
@@ -54,6 +54,7 @@
 - Fix: Block mines are not grouped together in the creative inventory
 - Removed: Configuration "ableToBreakMines"
 - Misc.: The "security_camera.png" and "security_camera_viewing.png" textures have been moved from the "block" to the "entity/security_camera" folder
+- Misc.: The protecto textures have been split up in a base texture and two emissive layers
 - Misc.: The taser model and textures have been improved and optimized. Resource packs need to update
 - Misc.: The minimum required NeoForge version is now 21.5.46-beta
 
