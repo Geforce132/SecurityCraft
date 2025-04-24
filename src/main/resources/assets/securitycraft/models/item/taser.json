@@ -5,8 +5,10 @@
 	},
 	"display": {
 		"gui": {
-			"rotation": [30, 45, 0],
-			"scale": [0.625, 0.625, 0.625]
+			"rotation": [30, 45, 0]
+		},
+		"fixed": {
+			"rotation": [0, -90, 0]
 		},
 		"ground": {
 			"translation": [0, 3, 0],
