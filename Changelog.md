@@ -54,7 +54,7 @@
 - Fix: Block mines are not grouped together in the creative inventory
 - Removed: Configuration "ableToBreakMines"
 - Misc.: The "security_camera.png" and "security_camera_viewing.png" textures have been moved from the "block" to the "entity/security_camera" folder
-- Misc.: The protecto textures have been split up in a base texture and two emissive layers
+- Misc.: The protecto textures have been split up into a base texture and two emissive layers
 - Misc.: The taser model and textures have been improved and optimized. Resource packs need to update
 - Misc.: The minimum required NeoForge version is now 21.5.46-beta
 
