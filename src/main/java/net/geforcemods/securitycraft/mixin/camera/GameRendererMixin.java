@@ -72,4 +72,14 @@ public class GameRendererMixin {
 	private float securitycraft$disableFeedDistortion(float delta, float start, float end) {
 		return FrameFeedHandler.isCapturingCamera() ? 0.0F : Mth.lerp(delta, start, end);
 	}
+
+	/**
+	 * Prevents {@link Minecraft#hitResult} from being modified while the mod is capturing a Frame feed. This resolves issues
+	 * like the wrong teleport position sometimes being suggested when using /tp
+	 */
+	@Inject(method = "pick", at = @At("HEAD"), cancellable = true)
+	private void securitycraft$preventFramePick(float partialTicks, CallbackInfo ci) {
+		if (FrameFeedHandler.isCapturingCamera())
+			ci.cancel();
+	}
 }
