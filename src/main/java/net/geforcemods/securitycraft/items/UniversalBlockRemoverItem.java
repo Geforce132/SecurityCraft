@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.IBlockMine;
-import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.Block;
@@ -97,8 +96,6 @@ public class UniversalBlockRemoverItem extends Item {
 						if (te != null)
 							te.getInventory().clear();
 					}
-					else if (block instanceof IBlockWithNoDrops)
-						Block.spawnAsEntity(world, pos, ((IBlockWithNoDrops) block).getUniversalBlockRemoverDrop());
 
 					if (!world.isRemote) {
 						world.destroyBlock(pos, true); //this also removes the BlockEntity

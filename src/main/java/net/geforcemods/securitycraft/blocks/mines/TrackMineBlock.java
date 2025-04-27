@@ -1,15 +1,11 @@
 package net.geforcemods.securitycraft.blocks.mines;
 
-import java.util.Collections;
-import java.util.List;
-
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.IBlockWithNoDrops;
 import net.minecraft.block.BlockRail;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -32,7 +28,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
-public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntityProvider, IBlockWithNoDrops {
+public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntityProvider {
 	public TrackMineBlock() {
 		setSoundType(SoundType.METAL);
 		setHarvestLevel("pickaxe", 0);
@@ -60,9 +56,8 @@ public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntity
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		if (placer instanceof EntityPlayer) {
+		if (placer instanceof EntityPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
-		}
 	}
 
 	@Override
@@ -158,10 +153,5 @@ public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntity
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TrackMineBlockEntity();
-	}
-
-	@Override
-	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-		return Collections.emptyList();
 	}
 }

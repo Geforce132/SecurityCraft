@@ -423,7 +423,7 @@ public class SCEventHandler {
 			}
 		}
 
-		if (block instanceof DisplayCaseBlock && event.getEntity().isSneaking() && player.getHeldItemMainhand().isEmpty() && !player.getHeldItemOffhand().isEmpty()) {
+		if (block instanceof DisplayCaseBlock && player.isSneaking() && player.getHeldItemMainhand().isEmpty() && !player.getHeldItemOffhand().isEmpty()) {
 			event.setUseBlock(Result.ALLOW);
 			event.setUseItem(Result.DENY);
 			return;
