@@ -2,6 +2,6 @@
 	"parent": "securitycraft:block/base_protecto",
 	"textures": {
 		"protecto": "securitycraft:block/protecto_active",
-		"particle": "securitycraft:block/protecto_active"
+		"particle": "securitycraft:block/protecto_active_particle"
 	}
 }
