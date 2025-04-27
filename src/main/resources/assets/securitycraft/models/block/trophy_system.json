@@ -3,7 +3,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "securitycraft:block/trophy_system",
-		"particle": "securitycraft:block/trophy_system"
+		"particle": "securitycraft:block/trophy_system_particle"
 	},
 	"elements": [
 		{
