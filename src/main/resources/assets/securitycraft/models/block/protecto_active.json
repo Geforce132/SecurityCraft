@@ -1,6 +1,7 @@
 {
 	"parent": "securitycraft:block/base_protecto",
 	"textures": {
-		"emissive": "securitycraft:block/protecto_active_emissive"
+		"emissive": "securitycraft:block/protecto_active_emissive",
+		"particle": "securitycraft:block/protecto_active_particle"
 	}
 }

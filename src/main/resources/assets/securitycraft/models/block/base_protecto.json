@@ -2,8 +2,7 @@
 	"parent": "block/block",
 	"render_type": "cutout",
 	"textures": {
-		"protecto": "securitycraft:block/protecto",
-		"particle": "securitycraft:block/protecto"
+		"protecto": "securitycraft:block/protecto"
 	},
 	"elements": [
 		{
