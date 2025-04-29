@@ -41,12 +41,12 @@ neoForge {
 	runs {
 		configureEach {
 			logLevel = org.slf4j.event.Level.DEBUG
+			gameDirectory = project.file('run/' + name)
 			ideName = "SC ${project.mc_version} " + ideName.get()
 		}
 
 		client {
 			client()
-			gameDirectory = project.file('run/client')
 		}
 
 		client2 {
@@ -57,13 +57,11 @@ neoForge {
 
 		server {
 			server()
-			gameDirectory = project.file('run/server')
 			programArgument('-nogui')
 		}
 
 		data {
 			data()
-			gameDirectory = project.file('run/data')
 			programArguments.addAll('--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath())
 		}
 	}
