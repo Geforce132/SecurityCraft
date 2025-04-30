@@ -57,7 +57,6 @@ import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
-import net.geforcemods.securitycraft.network.server.MountCamera;
 import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticle;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
@@ -86,11 +85,12 @@ import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
 import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
 import net.geforcemods.securitycraft.screen.BlockReinforcerScreen;
 import net.geforcemods.securitycraft.screen.BriefcasePasscodeScreen;
-import net.geforcemods.securitycraft.screen.CameraSelectScreen;
+import net.geforcemods.securitycraft.screen.CameraMonitorScreen;
 import net.geforcemods.securitycraft.screen.CheckPasscodeScreen;
 import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
 import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
 import net.geforcemods.securitycraft.screen.EditModuleScreen;
+import net.geforcemods.securitycraft.screen.FrameScreen;
 import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
 import net.geforcemods.securitycraft.screen.ItemInventoryScreen;
 import net.geforcemods.securitycraft.screen.KeyChangerScreen;
@@ -762,12 +762,12 @@ public class ClientHandler {
 		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
 	}
 
-	public static void displayCameraMonitorScreen(CompoundTag stackTag) {
-		Minecraft.getInstance().setScreen(new CameraSelectScreen(CameraMonitorItem.getCameraPositions(stackTag), camID -> CameraMonitorItem.removeCameraOnClient(camID, stackTag), pos -> SecurityCraft.CHANNEL.sendToServer(new MountCamera(pos.pos())), false, false));
+	public static void displayCameraMonitorScreen(ItemStack stack) {
+		Minecraft.getInstance().setScreen(new CameraMonitorScreen(stack));
 	}
 
 	public static void displayFrameScreen(FrameBlockEntity be, boolean readOnly) {
-		Minecraft.getInstance().setScreen(new CameraSelectScreen(be.getCameraPositions(), readOnly ? null : be::removeCameraOnClient, be::setCurrentCameraAndUpdate, true, be.getCurrentCamera() != null));
+		Minecraft.getInstance().setScreen(new FrameScreen(readOnly, be));
 	}
 
 	public static void displaySCManualScreen() {
