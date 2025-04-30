@@ -6,10 +6,14 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
@@ -25,6 +29,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,6 +38,31 @@ import net.minecraftforge.network.NetworkHooks;
 public class UniversalBlockReinforcerItem extends Item {
 	public UniversalBlockReinforcerItem(Item.Properties properties) {
 		super(properties);
+
+		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
+			private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
+
+			@Override
+			public ItemStack execute(BlockSource source, ItemStack stack) {
+				BlockState state = source.getBlockState();
+
+				if (state.is(SCContent.REINFORCED_DISPENSER.get())) {
+					ServerLevel level = source.getLevel();
+					BlockPos modifyPos = source.getPos().relative(state.getValue(DispenserBlock.FACING));
+					BlockState modifyState = level.getBlockState(modifyPos);
+
+					if (convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.getEntity()).getOwner())) {
+						if (stack.hurt(1, level.getRandom(), null))
+							stack.setCount(0);
+					}
+
+					if (!modifyState.isAir())
+						return stack;
+				}
+
+				return defaultDispenseItemBehavior.dispense(source, stack);
+			}
+		});
 	}
 
 	@Override
@@ -57,54 +87,63 @@ public class UniversalBlockReinforcerItem extends Item {
 		return InteractionResultHolder.consume(heldItem);
 	}
 
-	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player) { //gets rid of the stuttering experienced with onBlockStartBreak
-		if (!player.isCreative()) {
-			boolean isReinforcing = isReinforcing(stack);
-			Block block = state.getBlock();
-			Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
-			BlockState convertedState = null;
+	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player) {
+		if (!player.isCreative() && level.mayInteract(player, pos)) {
+			boolean result = convertBlock(state, level, stack, pos, new Owner(player));
 
-			if (isReinforcing && convertedBlock instanceof IReinforcedBlock rb)
-				convertedState = rb.convertToReinforced(level, pos, state);
-			else if (!isReinforcing && block instanceof IReinforcedBlock rb)
-				convertedState = rb.convertToVanilla(level, pos, state);
+			if (result && !level.isClientSide)
+				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
 
-			if (convertedState != null) {
-				BlockEntity be = level.getBlockEntity(pos);
-				CompoundTag tag = null;
+			return result;
+		}
+		else
+			return false;
+	}
 
-				if ((be instanceof IOwnable ownable && !ownable.isOwnedBy(player)) || !level.mayInteract(player, pos))
-					return false;
+	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Owner owner) {
+		boolean isReinforcing = isReinforcing(stack);
+		Block block = state.getBlock();
+		Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
+		BlockState convertedState = null;
 
-				if (!level.isClientSide) {
-					if (be != null) {
-						tag = be.saveWithoutMetadata();
+		if (isReinforcing && convertedBlock instanceof IReinforcedBlock rb)
+			convertedState = rb.convertToReinforced(level, pos, state);
+		else if (!isReinforcing && block instanceof IReinforcedBlock rb)
+			convertedState = rb.convertToVanilla(level, pos, state);
 
-						if (be instanceof IModuleInventory inv)
-							inv.dropAllModules();
+		if (convertedState != null) {
+			BlockEntity be = level.getBlockEntity(pos);
+			CompoundTag tag = null;
 
-						if (be instanceof Container container)
-							container.clearContent();
-						else if (be instanceof LecternBlockEntity lectern)
-							lectern.clearContent();
-					}
+			if (be instanceof IOwnable ownable && !ownable.isOwnedBy(owner))
+				return false;
 
-					level.setBlockAndUpdate(pos, convertedState);
-					be = level.getBlockEntity(pos);
+			if (!level.isClientSide) {
+				if (be != null) {
+					tag = be.saveWithoutMetadata();
 
-					if (be != null) { //in case the converted block gets removed immediately after it's set
-						if (tag != null)
-							be.load(tag);
+					if (be instanceof IModuleInventory inv)
+						inv.dropAllModules();
 
-						if (isReinforcing)
-							((IOwnable) be).setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-					}
-
-					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
+					if (be instanceof Container container)
+						container.clearContent();
+					else if (be instanceof LecternBlockEntity lectern)
+						lectern.clearContent();
 				}
 
-				return true;
+				level.setBlockAndUpdate(pos, convertedState);
+				be = level.getBlockEntity(pos);
+
+				if (be != null) { //in case the converted block gets removed immediately after it's set
+					if (tag != null)
+						be.load(tag);
+
+					if (isReinforcing)
+						((IOwnable) be).setOwner(owner.getUUID(), owner.getName());
+				}
 			}
+
+			return true;
 		}
 
 		return false;
