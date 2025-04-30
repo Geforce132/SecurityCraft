@@ -121,7 +121,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			BlockEntity be = level.getBlockEntity(pos);
 			CompoundTag tag = null;
 
-			if ((be instanceof IOwnable ownable && !ownable.isOwnedBy(owner)))
+			if (be instanceof IOwnable ownable && !ownable.isOwnedBy(owner))
 				return false;
 
 			if (!level.isClientSide) {
