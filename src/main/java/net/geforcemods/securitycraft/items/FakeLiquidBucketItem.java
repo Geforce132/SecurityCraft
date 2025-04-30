@@ -21,6 +21,8 @@ public class FakeLiquidBucketItem extends BucketItem {
 		super(supplier, builder);
 
 		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
+			private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
+
 			@Override
 			public ItemStack execute(BlockSource source, ItemStack stack) {
 				DispensibleContainerItem bucket = (DispensibleContainerItem) stack.getItem();
@@ -32,7 +34,7 @@ public class FakeLiquidBucketItem extends BucketItem {
 					return new ItemStack(Items.BUCKET);
 				}
 				else
-					return dispense(source, stack);
+					return defaultDispenseItemBehavior.dispense(source, stack);
 			}
 		});
 	}
