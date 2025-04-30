@@ -77,6 +77,7 @@ public class CameraSelectScreen extends Screen {
 
 			cameraButtons[i] = cameraButton;
 			cameraButton.setMessage(cameraButton.getMessage().plainCopy().append(Component.literal("" + camID)));
+			redstoneModuleStates[i] = null;
 
 			if (view != null) {
 				GlobalPos globalPos = view.globalPos();
