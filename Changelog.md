@@ -44,6 +44,7 @@
 - Fix: The Projector, projected blocks, Disguise Module, and block disguises do not properly show banner patterns, decorated pot sherds, etc.
 - Fix: A Projector projecting something can cause some block models to have incorrect rendering (e.g. decorated pot displays z-fighting)
 - Fix: Block mines are not grouped together in the creative inventory
+- Fix: Crash when dispensing a fake liquid bucket item into a block
 - Removed: Configuration "ableToBreakMines"
 - Misc.: The "security_camera.png" and "security_camera_viewing.png" textures have been moved from the "block" to the "entity/security_camera" folder
 - Misc.: The taser model and textures have been improved and optimized. Resource packs need to update
