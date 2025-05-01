@@ -100,7 +100,7 @@ public class CameraMonitorItem extends Item {
 			updateTagWithNames(stack, level);
 
 		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
-			ClientHandler.displayCameraMonitorScreen(stack.getTag());
+			ClientHandler.displayCameraMonitorScreen(stack);
 
 		return ActionResult.consume(stack);
 	}
