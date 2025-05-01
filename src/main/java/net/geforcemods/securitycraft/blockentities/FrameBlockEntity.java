@@ -6,8 +6,6 @@ import java.util.Optional;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.feed_the_beast.ftblib.lib.util.BlockUtils;
-
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -169,9 +167,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 		List<Pair<GlobalPos, String>> newCameraPositions = CameraMonitorItem.getCameraPositions(cameraMonitor.getTagCompound());
 
 		if (!cameraPositions.equals(newCameraPositions)) {
+			IBlockState state = getBlockState();
+
 			cameraPositions = new ArrayList<>(newCameraPositions);
 			markDirty();
-			BlockUtils.notifyBlockUpdate(world, pos, getBlockState());
+			world.notifyBlockUpdate(pos, state, state, 3);
 			return true;
 		}
 
@@ -215,8 +215,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 		if (cameraPositions.stream().allMatch(pair -> pair == null || pair.getLeft() == null))
 			cameraPositions = new ArrayList<>();
 
+		IBlockState state = getBlockState();
+
 		markDirty();
-		BlockUtils.notifyBlockUpdate(world, pos, getBlockState());
+		world.notifyBlockUpdate(pos, state, state, 3);
 	}
 
 	public void setCurrentCameraAndUpdate(GlobalPos camera) {
@@ -262,8 +264,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 				}
 			}
 
+			IBlockState state = getBlockState();
+
 			markDirty();
-			BlockUtils.notifyBlockUpdate(world, pos, getBlockState());
+			world.notifyBlockUpdate(pos, state, state, 3);
 		}
 		else {
 			if (previousCameraPos != null)
