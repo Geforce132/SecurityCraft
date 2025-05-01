@@ -306,6 +306,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					}
 				}
 
+				level.markAndNotifyBlock(worldPosition, level.getChunkAt(worldPosition), pushedState, level.getBlockState(worldPosition), 3, 512);
 				level.neighborChanged(worldPosition, pushedState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, getPushDirection(), null));
 			}
 		}
@@ -362,6 +363,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							}
 						}
 
+						level.markAndNotifyBlock(pos, level.getChunkAt(pos), pushedState, level.getBlockState(pos), 67, 512);
 						level.neighborChanged(pos, pushedState.getBlock(), ExperimentalRedstoneUtils.initialOrientation(level, be.getPushDirection(), null));
 					}
 				}
