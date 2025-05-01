@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -36,7 +37,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	public UniversalBlockReinforcerItem(Item.Properties properties) {
 		super(properties);
 
-		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
+		DispenserBlock.registerBehavior(this, new OptionalDispenseItemBehavior() {
 			private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
 			@Override
@@ -48,11 +49,12 @@ public class UniversalBlockReinforcerItem extends Item {
 					BlockPos modifyPos = source.pos().relative(state.getValue(DispenserBlock.FACING));
 					BlockState modifyState = level.getBlockState(modifyPos);
 
-					if (convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.blockEntity()).getOwner()) && !level.isClientSide)
+					setSuccess(convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.blockEntity()).getOwner()));
+
+					if (isSuccess() && !level.isClientSide)
 						stack.hurtAndBreak(1, level.getRandom(), null, () -> stack.setCount(0));
 
-					if (!modifyState.isAir())
-						return stack;
+					return stack;
 				}
 
 				return defaultDispenseItemBehavior.dispense(source, stack);
