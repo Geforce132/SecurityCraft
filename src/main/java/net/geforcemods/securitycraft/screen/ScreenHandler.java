@@ -33,6 +33,7 @@ import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -86,10 +87,10 @@ public class ScreenHandler implements IGuiHandler {
 			}),
 		FRAME(
 			(player, te) -> new GenericMenu(te),
-			(player, te) -> frame(player, (FrameBlockEntity) te, false)),
+			(player, te) -> ClientProxy.frameScreen(player, (FrameBlockEntity) te, false)),
 		FRAME_READ_ONLY(
 			(player, te) -> new GenericMenu(te),
-			(player, te) -> frame(player, (FrameBlockEntity) te, true)),
+			(player, te) -> ClientProxy.frameScreen(player, (FrameBlockEntity) te, true)),
 		BRIEFCASE_CODE_SETUP(
 			(player, te) -> PlayerUtils.getItemStackFromAnyHand(player, SCContent.briefcase).isEmpty() ? null : new GenericMenu(te),
 			(player, te) -> {
@@ -219,12 +220,6 @@ public class ScreenHandler implements IGuiHandler {
 		public BiFunction<EntityPlayer, TileEntity, Object> getClient() {
 			return client;
 		}
-	}
-
-	private static CameraSelectScreen frame(EntityPlayer player, FrameBlockEntity be, boolean readOnly) {
-		ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor);
-
-		return heldStack.isEmpty() ? new FrameScreen(readOnly, be) : null;
 	}
 
 	@Override

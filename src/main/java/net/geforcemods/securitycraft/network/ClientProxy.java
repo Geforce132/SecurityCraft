@@ -65,6 +65,9 @@ import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SentryRenderer;
 import net.geforcemods.securitycraft.renderers.SonicSecuritySystemRenderer;
 import net.geforcemods.securitycraft.renderers.TrophySystemRenderer;
+import net.geforcemods.securitycraft.screen.CameraSelectScreen;
+import net.geforcemods.securitycraft.screen.FrameScreen;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Tinted;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
@@ -430,5 +433,11 @@ public class ClientProxy implements IProxy {
 
 	public static boolean isPlayerMountedOnCamera() {
 		return Minecraft.getMinecraft().getRenderViewEntity() instanceof SecurityCamera;
+	}
+
+	public static CameraSelectScreen frameScreen(EntityPlayer player, FrameBlockEntity be, boolean readOnly) {
+		ItemStack heldStack = PlayerUtils.getItemStackFromAnyHand(player, SCContent.cameraMonitor);
+
+		return heldStack.isEmpty() ? new FrameScreen(readOnly, be) : null;
 	}
 }
