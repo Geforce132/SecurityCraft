@@ -1,4 +1,4 @@
---------------------------Changelog for the upcoming version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
 - New: Several server and client config settings to control chunk loading in camera feeds
