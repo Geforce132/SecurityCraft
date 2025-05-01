@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -29,25 +28,19 @@ public class CameraSelectScreen extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final String title = Utils.localize("gui.securitycraft:monitor.selectCameras").getFormattedText();
 	private final List<Pair<GlobalPos, String>> cameras;
-	private final Consumer<Integer> onUnbindCamera;
-	private final Consumer<GlobalPos> onViewCamera;
-	private final boolean hasStopButton;
-	private final boolean initialStopButtonState;
+	protected final boolean readOnly;
 	private final ClickButton[] cameraButtons = new ClickButton[10];
 	private final CameraRedstoneModuleState[] redstoneModuleStates = new CameraRedstoneModuleState[10];
 	private int page;
 
-	public CameraSelectScreen(List<Pair<GlobalPos, String>> cameras, Consumer<Integer> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton, boolean initialStopButtonState) {
-		this(cameras, onUnbindCamera, onViewCamera, hasStopButton, initialStopButtonState, 1);
+	public CameraSelectScreen(List<Pair<GlobalPos, String>> cameras, boolean readOnly) {
+		this(cameras, readOnly, 1);
 	}
 
-	public CameraSelectScreen(List<Pair<GlobalPos, String>> cameras, Consumer<Integer> onUnbindCamera, Consumer<GlobalPos> onViewCamera, boolean hasStopButton, boolean initialStopButtonState, int page) {
+	public CameraSelectScreen(List<Pair<GlobalPos, String>> cameras, boolean readOnly, int page) {
 		super(new GenericMenu(null));
 		this.cameras = cameras;
-		this.onUnbindCamera = onUnbindCamera;
-		this.onViewCamera = onViewCamera;
-		this.hasStopButton = hasStopButton;
-		this.initialStopButtonState = initialStopButtonState;
+		this.readOnly = readOnly;
 		this.page = page;
 	}
 
@@ -55,8 +48,14 @@ public class CameraSelectScreen extends GuiContainer {
 	public void initGui() {
 		super.initGui();
 
-		ClickButton prevPageButton = addButton(new ClickButton(-1, width / 2 - 25, height / 2 + 57, 20, 20, "<", b -> mc.displayGuiScreen(new CameraSelectScreen(cameras, onUnbindCamera, onViewCamera, hasStopButton, initialStopButtonState, page - 1))));
-		ClickButton nextPageButton = addButton(new ClickButton(0, width / 2 + 5, height / 2 + 57, 20, 20, ">", b -> mc.displayGuiScreen(new CameraSelectScreen(cameras, onUnbindCamera, onViewCamera, hasStopButton, initialStopButtonState, page + 1))));
+		ClickButton prevPageButton = addButton(new ClickButton(-1, width / 2 - 25, height / 2 + 57, 20, 20, "<", b -> {
+			page--;
+			setWorldAndResolution(mc, width, height);
+		}));
+		ClickButton nextPageButton = addButton(new ClickButton(0, width / 2 + 5, height / 2 + 57, 20, 20, ">", b -> {
+			page++;
+			setWorldAndResolution(mc, width, height);
+		}));
 		World world = Minecraft.getMinecraft().world;
 		EntityPlayerSP player = Minecraft.getMinecraft().player;
 
@@ -73,8 +72,10 @@ public class CameraSelectScreen extends GuiContainer {
 			cameraButtons[i] = cameraButton;
 			addButton(cameraButton);
 
-			if (onUnbindCamera != null)
+			if (!readOnly)
 				addButton(new ClickButton(buttonId + 10, x + 19, aboveCameraButton, 8, 8, "x", button -> unbindButtonClicked(button, camID))).enabled = view != null;
+
+			redstoneModuleStates[i] = null;
 
 			if (view != null) {
 				BlockPos pos = view.pos();
@@ -120,15 +121,6 @@ public class CameraSelectScreen extends GuiContainer {
 			}
 			else
 				cameraButton.enabled = false;
-		}
-
-		if (hasStopButton) {
-			ClickButton stopViewingButton = addButton(new ClickButton(-2, width / 2 - 55, height / 2 + 57, 20, 20, "x", b -> viewCamera(null)));
-
-			stopViewingButton.enabled = initialStopButtonState;
-
-			if (initialStopButtonState)
-				stopViewingButton.tooltip = new Tooltip(this, fontRenderer, Utils.localize("gui.securitycraft:monitor.stopViewing"));
 		}
 
 		prevPageButton.enabled = page != 1;
@@ -192,8 +184,7 @@ public class CameraSelectScreen extends GuiContainer {
 		}
 	}
 
-	private void viewCamera(GlobalPos camera) {
-		onViewCamera.accept(camera);
+	protected void viewCamera(GlobalPos cameraPos) {
 		mc.player.closeScreen();
 	}
 
@@ -204,11 +195,13 @@ public class CameraSelectScreen extends GuiContainer {
 			int i = (camID - 1) % 10;
 			ClickButton cameraButton = cameraButtons[i];
 
-			onUnbindCamera.accept(camID);
+			unbindCamera(camID);
 			button.enabled = false;
 			cameraButton.enabled = false;
 			cameraButton.tooltip = null;
 			redstoneModuleStates[i] = null;
 		}
 	}
+
+	protected void unbindCamera(int camID) {}
 }
