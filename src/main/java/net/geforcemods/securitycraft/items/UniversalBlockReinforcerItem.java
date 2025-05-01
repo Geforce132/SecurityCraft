@@ -17,6 +17,7 @@ import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Bootstrap.BehaviorDispenseOptional;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -32,7 +33,7 @@ import net.minecraft.world.World;
 public class UniversalBlockReinforcerItem extends Item {
 	public UniversalBlockReinforcerItem(int damage) {
 		setMaxDamage(damage);
-		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorDefaultDispenseItem() {
+		BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new BehaviorDispenseOptional() {
 			private final BehaviorDefaultDispenseItem defaultDispenseItemBehavior = new BehaviorDefaultDispenseItem();
 
 			@Override
@@ -44,13 +45,12 @@ public class UniversalBlockReinforcerItem extends Item {
 					BlockPos modifyPos = source.getBlockPos().offset(state.getValue(BlockDispenser.FACING));
 					IBlockState modifyState = level.getBlockState(modifyPos);
 
-					if (convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.getBlockTileEntity()).getOwner())) {
-						if (!level.isRemote && stack.attemptDamageItem(1, level.rand, null))
-							stack.setCount(0);
-					}
+					successful = convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.getBlockTileEntity()).getOwner());
 
-					if (!level.isAirBlock(modifyPos))
-						return stack;
+					if (successful && !level.isRemote && stack.attemptDamageItem(1, level.rand, null))
+						stack.setCount(0);
+
+					return stack;
 				}
 
 				return defaultDispenseItemBehavior.dispense(source, stack);
