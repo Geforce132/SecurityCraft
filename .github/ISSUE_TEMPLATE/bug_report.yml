@@ -24,6 +24,7 @@ body:
       label: Minecraft version
       description: What version of Minecraft are you using?
       options:
+        - 1.21.5
         - 1.21.4
         - 1.21.3
         - 1.21.1
@@ -49,12 +50,8 @@ body:
       label: SecurityCraft version
       description: What version of SecurityCraft are you using?
       options:
-        - v1.9.12-beta4
-        - v1.9.12-beta3
-        - v1.9.12-beta2
-        - v1.9.12-beta1
+        - v1.10
         - v1.9.12
-        - v1.9.11
         - Older (update the mod and try again with the new version before continuing.)
     validations:
       required: true
