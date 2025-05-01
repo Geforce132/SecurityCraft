@@ -14,6 +14,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -40,7 +41,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	public UniversalBlockReinforcerItem(Item.Properties properties) {
 		super(properties);
 
-		DispenserBlock.registerBehavior(this, new DefaultDispenseItemBehavior() {
+		DispenserBlock.registerBehavior(this, new OptionalDispenseBehavior() {
 			private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
 
 			@Override
@@ -52,13 +53,14 @@ public class UniversalBlockReinforcerItem extends Item {
 					BlockPos modifyPos = source.getPos().relative(state.getValue(DispenserBlock.FACING));
 					BlockState modifyState = level.getBlockState(modifyPos);
 
-					if (convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.getEntity()).getOwner())) {
+					setSuccess(convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.getEntity()).getOwner()));
+
+					if (isSuccess() && !level.isClientSide) {
 						if (stack.hurt(1, level.getRandom(), null))
 							stack.setCount(0);
 					}
 
-					if (!modifyState.isAir())
-						return stack;
+					return stack;
 				}
 
 				return defaultDispenseItemBehavior.dispense(source, stack);
