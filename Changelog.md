@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.10.0.1SecurityCraft--------------------------
+
+- Fix: Crash on servers
+
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
