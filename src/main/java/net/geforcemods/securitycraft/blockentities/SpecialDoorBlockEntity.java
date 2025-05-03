@@ -89,11 +89,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	@Override
 	public void onLoad() {
 		super.onLoad();
-
-		if (level != null && level.isClientSide && level.getBlockEntity(worldPosition) != this) //On the client side, onLoad is usually only called without this BE being added to the level, which breaks model data update requests.
-			level.addFreshBlockEntities(List.of(this)); //By marking this BE as a fresh block entity in such cases, the client will call onLoad again on the first BE tick, on which it is registered properly.
-		else
-			DisguisableBlockEntity.onHandleUpdateTag(this);
+		DisguisableBlockEntity.onOnLoad(this);
 	}
 
 	@Override

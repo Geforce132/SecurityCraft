@@ -108,11 +108,14 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	@Override
 	public void onLoad() {
 		super.onLoad();
+		onOnLoad(this);
+	}
 
-		if (level != null && level.isClientSide && level.getBlockEntity(worldPosition) != this) //On the client side, onLoad is usually only called without this BE being added to the level, which breaks model data update requests.
-			level.addFreshBlockEntities(List.of(this)); //By marking this BE as a fresh block entity in such cases, the client will call onLoad again on the first BE tick, on which it is registered properly.
+	public static <T extends BlockEntity & IModuleInventory> void onOnLoad(T be) {
+		if (be.getLevel() != null && be.getLevel().isClientSide && be.getLevel().getBlockEntity(be.getBlockPos()) != be) //On the client side, onLoad is usually only called without this BE being added to the level, which breaks model data update requests.
+			be.getLevel().addFreshBlockEntities(List.of(be)); //By marking this BE as a fresh block entity in such cases, the client will call onLoad again on the first BE tick, on which it is registered properly.
 		else
-			onHandleUpdateTag(this);
+			onHandleUpdateTag(be);
 	}
 
 	public static <T extends BlockEntity & IModuleInventory> void onHandleUpdateTag(T be) {
