@@ -6,7 +6,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,13 +31,13 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 	}
 
 	@Override
-	public RecipeType<ReinforcerRecipe> getRecipeType() {
+	public IRecipeType<ReinforcerRecipe> getRecipeType() {
 		return SCJEIPlugin.VTS;
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, ReinforcerRecipe recipe, IFocusGroup focuses) {
-		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(recipe.vanillaBlock()));
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 91, 1).addIngredient(VanillaTypes.ITEM_STACK, new ItemStack(recipe.securityCraftBlock()));
+		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.vanillaBlock()));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 91, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.securityCraftBlock()));
 	}
 }
