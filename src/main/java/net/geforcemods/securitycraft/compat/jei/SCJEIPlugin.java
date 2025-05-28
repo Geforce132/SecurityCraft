@@ -4,7 +4,8 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.types.IRecipeType;
+import mezz.jei.api.recipe.types.IRecipeType.JeiRecipeType;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
@@ -25,8 +26,8 @@ import net.minecraft.world.item.Items;
 
 @JeiPlugin
 public class SCJEIPlugin implements IModPlugin {
-	public static final RecipeType<ReinforcerRecipe> VTS = RecipeType.create(SecurityCraft.MODID, "vanilla_to_securitycraft", ReinforcerRecipe.class);
-	public static final RecipeType<ReinforcerRecipe> STV = RecipeType.create(SecurityCraft.MODID, "securitycraft_to_vanilla", ReinforcerRecipe.class);
+	public static final IRecipeType<ReinforcerRecipe> VTS = new JeiRecipeType<>(SecurityCraft.resLoc("vanilla_to_securitycraft"), ReinforcerRecipe.class);
+	public static final IRecipeType<ReinforcerRecipe> STV = new JeiRecipeType<>(SecurityCraft.resLoc("securitycraft_to_vanilla"), ReinforcerRecipe.class);
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
@@ -57,12 +58,14 @@ public class SCJEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-		registration.addRecipeCatalyst(new ItemStack(SCContent.KEYPAD_FURNACE.get()), RecipeTypes.SMELTING);
-		registration.addRecipeCatalyst(new ItemStack(SCContent.KEYPAD_SMOKER.get()), RecipeTypes.SMOKING);
-		registration.addRecipeCatalyst(new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()), RecipeTypes.BLASTING);
-		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()), VTS);
-		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get()), VTS, STV);
-		registration.addRecipeCatalyst(new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()), VTS, STV);
+		ItemStack reinforcer2 = new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get());
+		ItemStack reinforcer3 = new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get());
+
+		registration.addCraftingStation(RecipeTypes.SMELTING, new ItemStack(SCContent.KEYPAD_FURNACE.get()));
+		registration.addCraftingStation(RecipeTypes.SMOKING, new ItemStack(SCContent.KEYPAD_SMOKER.get()));
+		registration.addCraftingStation(RecipeTypes.BLASTING, new ItemStack(SCContent.KEYPAD_BLAST_FURNACE.get()));
+		registration.addCraftingStation(VTS, new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.get()), reinforcer2, reinforcer3);
+		registration.addCraftingStation(STV, reinforcer2, reinforcer3);
 	}
 
 	@Override
