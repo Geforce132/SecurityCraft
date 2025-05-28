@@ -97,7 +97,6 @@ dependencies {
 //	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 //	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
 //	implementation "curse.maven:ftb-teams-forge-404468:5448371"
-//	implementation "curse.maven:jei-238222:5567933"
 //	implementation "curse.maven:the-one-probe-245211:5502323"
 	implementation "curse.maven:jade-324717:5846076"
 	implementation "curse.maven:betterf3-401648:5873289"
