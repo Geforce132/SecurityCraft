@@ -172,9 +172,4 @@ public class UniversalBlockReinforcerItem extends Item {
 			stack.set(DataComponents.ENCHANTMENTS, mutable.toImmutable());
 		}
 	}
-
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book) {
-		return book.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).keySet().stream().noneMatch(e -> e.is(Enchantments.MENDING));
-	}
 }

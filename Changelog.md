@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.10-beta2 of SecurityCraft--------------------------
+
+- Fix.: Incompatibility with NeoForge version 21.5.73-beta and above
+- Misc.: The minimum required NeoForge version is now 21.5.73-beta
+
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
