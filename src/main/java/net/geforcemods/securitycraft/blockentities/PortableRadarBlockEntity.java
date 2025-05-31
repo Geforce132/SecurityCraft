@@ -25,7 +25,6 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,6 +32,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 
 public class PortableRadarBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
@@ -105,10 +105,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	}
 
 	@Override
-	public void readOptions(CompoundTag tag) {
-		if (tag.contains("enabled"))
-			tag.putBoolean("disabled", !tag.getBooleanOr("enabled", false)); //legacy support
-
+	public void readOptions(ValueInput tag) {
 		for (Option<?> option : customOptions()) {
 			option.load(tag);
 		}

@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
@@ -36,6 +35,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderEntity;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderPearl;
@@ -120,8 +121,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 
 		CompoundTag teleportationNBT = new CompoundTag();
 		int i = 0;
@@ -139,8 +140,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
 		if (tag.contains("teleportationTypes")) {
 			CompoundTag teleportationNBT = tag.getCompoundOrEmpty("teleportationTypes");
@@ -153,9 +154,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		lastTeleportDistance = tag.getDoubleOr("lastTeleportDistance", 0.0D);
-
-		if (tag.contains("lastTeleportationType"))
-			lastTeleportationType = TeleportationType.values()[tag.getIntOr("lastTeleportationType", 0)];
+		lastTeleportationType = TeleportationType.values()[tag.getIntOr("lastTeleportationType", 0)];
 	}
 
 	@Override
@@ -250,7 +249,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 				case IntOption io when option == range -> connectedBlockEntity.setRange(io.get());
 				case BooleanOption bo when option == disabled -> connectedBlockEntity.setDisabled(bo.get());
 				case BooleanOption bo when option == ignoreOwner -> connectedBlockEntity.setIgnoresOwner(bo.get());
-				default -> throw new UnsupportedOperationException("Unhandled option synchronization in rift stabilizer! " + option.getName());
+				default ->
+						throw new UnsupportedOperationException("Unhandled option synchronization in rift stabilizer! " + option.getName());
 			}
 		}
 

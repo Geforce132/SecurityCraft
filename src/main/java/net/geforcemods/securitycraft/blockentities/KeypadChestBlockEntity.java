@@ -44,6 +44,8 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.model.data.ModelData;
@@ -66,11 +68,11 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void saveAdditional(ValueOutput tag) {
 		long cooldownLeft;
 
-		super.saveAdditional(tag, lookupProvider);
-		writeModuleInventory(tag, lookupProvider);
+		super.saveAdditional(tag);
+		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
@@ -85,10 +87,10 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
-		modules = readModuleInventory(tag, lookupProvider);
+		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
@@ -96,15 +98,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		loadPasscode(tag);
 		owner.load(tag);
 
-		if (tag.contains("previous_chest")) {
-			String savedPreviousChest = tag.getStringOr("previous_chest", "");
+		String savedPreviousChest = tag.getStringOr("previous_chest", "");
 
-			if (!savedPreviousChest.isBlank()) {
-				ResourceLocation parsedPreviousChest = ResourceLocation.parse(savedPreviousChest);
+		if (!savedPreviousChest.isBlank()) {
+			ResourceLocation parsedPreviousChest = ResourceLocation.parse(savedPreviousChest);
 
-				if (parsedPreviousChest.getPath() != null && !parsedPreviousChest.getPath().isBlank())
-					previousChest = parsedPreviousChest;
-			}
+			if (parsedPreviousChest.getPath() != null && !parsedPreviousChest.getPath().isBlank())
+				previousChest = parsedPreviousChest;
 		}
 
 		if (!tag.getBooleanOr("sendMessage", true)) {
@@ -130,8 +130,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
-		super.onDataPacket(net, packet, lookupProvider);
+	public void onDataPacket(Connection net, ValueInput tag) {
+		super.onDataPacket(net, tag);
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 
@@ -222,7 +222,8 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 				case BooleanOption bo when option == sendAllowlistMessage -> otherBe.setSendsAllowlistMessage(bo.get());
 				case BooleanOption bo when option == sendDenylistMessage -> otherBe.setSendsAllowlistMessage(bo.get());
 				case IntOption io when option == smartModuleCooldown -> otherBe.smartModuleCooldown.copy(option);
-				default -> throw new UnsupportedOperationException("Unhandled option synchronization in keypad chest! " + option.getName());
+				default ->
+						throw new UnsupportedOperationException("Unhandled option synchronization in keypad chest! " + option.getName());
 			}
 		}
 

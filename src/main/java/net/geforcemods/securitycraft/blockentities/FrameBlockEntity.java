@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
@@ -32,6 +31,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class FrameBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
@@ -85,8 +86,8 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
 		ListTag cameras = tag.getListOrEmpty("cameras");
 
@@ -98,12 +99,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			cameraPositions.add(cameraTag.isEmpty() ? null : NamedPositions.Entry.CODEC.parse(NbtOps.INSTANCE, cameraTag).getOrThrow());
 		}
 
-		GlobalPos newCameraPos;
-
-		if (tag.contains("current_camera"))
-			newCameraPos = GlobalPos.CODEC.parse(NbtOps.INSTANCE, tag.get("current_camera")).getOrThrow();
-		else
-			newCameraPos = null;
+		GlobalPos newCameraPos = tag.read("current_camera", GlobalPos.CODEC).orElse(null);
 
 		if ((currentCameraPosition == null && newCameraPos != null) || (currentCameraPosition != null && !currentCameraPosition.equals(newCameraPos))) {
 			switchCamera = true;
@@ -114,8 +110,8 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 
 		ListTag camerasTag = new ListTag();
 
@@ -126,7 +122,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		tag.put("cameras", camerasTag);
 
 		if (currentCameraPosition != null)
-			tag.put("current_camera", GlobalPos.CODEC.encodeStart(NbtOps.INSTANCE, currentCameraPosition).getOrThrow());
+			tag.store("current_camera", GlobalPos.CODEC, currentCameraPosition);
 	}
 
 	public boolean applyCameraPositions(ItemStack cameraMonitor) {

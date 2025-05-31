@@ -28,9 +28,7 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
@@ -47,6 +45,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.EmptyItemHandler;
 
@@ -93,24 +93,24 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
-		ContainerHelper.loadAllItems(tag, inventoryContents, lookupProvider);
+		ContainerHelper.loadAllItems(tag, inventoryContents);
 		signalCooldown = tag.getIntOr("cooldown", 0);
 		providePower = tag.getBooleanOr("is_providing_power", false);
-		lens.fromTag(tag.getListOrEmpty("lens"), lookupProvider);
+		lens.fromItemList(tag.listOrEmpty("lens", ItemStack.CODEC));
 		lens.setChanged();
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 
-		ContainerHelper.saveAllItems(tag, inventoryContents, lookupProvider);
+		ContainerHelper.saveAllItems(tag, inventoryContents);
 		tag.putInt("cooldown", signalCooldown);
 		tag.putBoolean("is_providing_power", providePower);
-		tag.put("lens", lens.createTag(lookupProvider));
+		lens.storeAsItemList(tag.list("lens", ItemStack.CODEC));
 	}
 
 	@Override
@@ -423,7 +423,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				if (connectedScanner != null)
 					connectedScanner.setSignalLength(io.get());
 			}
-			default -> throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
+			default ->
+					throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
 		}
 
 		super.onOptionChanged(option);

@@ -8,13 +8,7 @@ import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
@@ -27,6 +21,8 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class ProjectorBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ILockable {
 	public static final int MIN_WIDTH = 1; //also for height
@@ -51,8 +47,8 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 
 		tag.putInt("width", projectionWidth);
 		tag.putInt("height", projectionHeight);
@@ -63,14 +59,15 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		tag.putBoolean("overriding_blocks", overridingBlocks);
 
 		if (!projectedBlock.isEmpty())
-			tag.put("storedItem", projectedBlock.save(lookupProvider));
+			tag.store("storedItem", ItemStack.CODEC, projectedBlock);
 
-		tag.put("SavedState", NbtUtils.writeBlockState(projectedState));
+		//TODO: is this the same as before?
+		tag.store("SavedState", BlockState.CODEC, projectedState);
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
 		projectionWidth = tag.getIntOr("width", 1);
 		projectionHeight = tag.getIntOr("height", 1);
@@ -80,8 +77,9 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		active = tag.getBooleanOr("active", false);
 		horizontal = tag.getBooleanOr("horizontal", false);
 		overridingBlocks = tag.getBooleanOr("overriding_blocks", false);
-		projectedBlock = Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("storedItem"));
-		tag.getCompound("SavedState").ifPresentOrElse(state -> setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK, state)), this::resetSavedState);
+		projectedBlock = tag.read("storedItem", ItemStack.CODEC).orElse(ItemStack.EMPTY);
+		//TODO: is this the same as before?
+		tag.read("SavedState", BlockState.CODEC).ifPresentOrElse(this::setProjectedState, this::resetSavedState);
 	}
 
 	@Override

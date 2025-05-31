@@ -2,13 +2,13 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.76'
+	id 'net.neoforged.moddev' version '2.0.89'
 }
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.10-beta2'
+version = '1.10-beta1'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.5.73-beta"
+	version = "21.5.0-alpha.1.21.6-pre1.20250531.180410"
 	validateAccessTransformers = true
 
 	runs {
@@ -74,6 +74,14 @@ neoForge {
 }
 
 repositories {
+    maven {
+        name 'Maven for PR #2297' // https://github.com/neoforged/NeoForge/pull/2297
+        url 'https://prmaven.neoforged.net/NeoForge/pr2297'
+        content {
+            includeModule('net.neoforged', 'neoforge')
+            includeModule('net.neoforged', 'testframework')
+        }
+    }
 	maven {
 		url = "https://cursemaven.com/"
 		content {
@@ -94,19 +102,19 @@ repositories {
 }
 
 dependencies {
-//	implementation "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
-//	implementation "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
-//	implementation "curse.maven:ftb-teams-forge-404468:5448371"
-	implementation "curse.maven:jei-238222:6586778"
-//	implementation "curse.maven:the-one-probe-245211:5502323"
-	implementation "curse.maven:jade-324717:6353729"
-	implementation "curse.maven:betterf3-401648:6364907"
-	implementation "curse.maven:cloth-config-348521:6351757" //betterf3 dependency
-	implementation "curse.maven:wthit-forge-455982:6417716"
-	implementation "curse.maven:badpackets-615134:6067146" //wthit dependency
-//	implementation "curse.maven:projecte-226410:3955047"
-//	implementation "curse.maven:embeddium-908741:6116910"
-	implementation "maven.modrinth:sodium:mc1.21.5-0.6.13-neoforge" //incompatible with embeddium
+	compileOnly "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
+	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
+	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
+	compileOnly "curse.maven:jei-238222:6586778"
+	compileOnly "curse.maven:the-one-probe-245211:5502323"
+	compileOnly "curse.maven:jade-324717:6353729"
+	compileOnly "curse.maven:betterf3-401648:6364907"
+	compileOnly "curse.maven:cloth-config-348521:6351757" //betterf3 dependency
+	compileOnly "curse.maven:wthit-forge-455982:6417716"
+	compileOnly "curse.maven:badpackets-615134:6067146" //wthit dependency
+	compileOnly "curse.maven:projecte-226410:3955047"
+	compileOnly "curse.maven:embeddium-908741:6116910"
+	compileOnly "maven.modrinth:sodium:mc1.21.5-0.6.13-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {

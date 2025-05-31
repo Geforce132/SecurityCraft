@@ -18,8 +18,6 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity, IPasscodeProtected, ILockable {
 	private BooleanOption sendAllowlistMessage = new SendAllowlistMessageOption(false);
@@ -110,13 +110,13 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void saveAdditional(ValueOutput tag) {
 		long cooldownLeft;
 
-		super.saveAdditional(tag, lookupProvider);
+		super.saveAdditional(tag);
 
 		if (!displayedStack.isEmpty())
-			tag.put("DisplayedStack", displayedStack.save(lookupProvider));
+			tag.store("DisplayedStack", ItemStack.CODEC, displayedStack);
 
 		tag.putBoolean("ShouldBeOpen", shouldBeOpen);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
@@ -125,9 +125,9 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
-		setDisplayedStack(Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("DisplayedStack")));
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
+		setDisplayedStack(tag.read("DisplayedStack", ItemStack.CODEC).orElse(ItemStack.EMPTY));
 		shouldBeOpen = tag.getBooleanOr("ShouldBeOpen", false);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 		loadSaltKey(tag);

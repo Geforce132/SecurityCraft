@@ -30,9 +30,7 @@ import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.SectionPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ChunkTrackingView;
@@ -50,6 +48,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 
@@ -167,32 +167,30 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 		tag.putDouble("camera_rotation", cameraRotation);
 		tag.putBoolean("add_to_rotation", addToRotation);
 		tag.putBoolean("shutDown", shutDown);
-		tag.put("lens", lens.createTag(lookupProvider));
+		lens.storeAsItemList(tag.list("lens", ItemStack.CODEC));
 		tag.putFloat("initial_x_rotation", initialXRotation);
 		tag.putFloat("initial_y_rotation", initialYRotation);
 		tag.putFloat("initial_zoom", initialZoom);
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 		double newCamRotation = tag.getDoubleOr("camera_rotation", 0.0D);
 
 		cameraRotation = newCamRotation;
 		oCameraRotation = newCamRotation;
 		addToRotation = tag.getBooleanOr("add_to_rotation", false);
 		shutDown = tag.getBooleanOr("shutDown", false);
-		lens.fromTag(tag.getListOrEmpty("lens"), lookupProvider);
+		lens.fromItemList(tag.listOrEmpty("lens", ItemStack.CODEC));
 		initialXRotation = tag.getFloatOr("initial_x_rotation", 1.0F);
 		initialYRotation = tag.getFloatOr("initial_y_rotation", 1.0F);
-
-		if (tag.contains("initial_zoom"))
-			initialZoom = tag.getFloatOr("initial_zoom", 1.0F);
+		initialZoom = tag.getFloatOr("initial_zoom", 1.0F);
 	}
 
 	@Override

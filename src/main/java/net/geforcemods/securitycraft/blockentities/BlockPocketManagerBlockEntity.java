@@ -27,9 +27,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -50,6 +48,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
@@ -480,7 +480,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 						//placing the corner edges
 						else if (yi != lowest && yi != highest && ((xi == lowest && zi == lowest) || (xi == lowest && zi == highest) || (xi == highest && zi == lowest) || (xi == highest && zi == highest)))
 							placeQueue.add(Pair.of(currentPos, SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.get().defaultBlockState().setValue(ReinforcedRotatedPillarBlock.AXIS, Axis.Y)));
-						//placing the walls parallel and orthogonal to the block pocket manager
+							//placing the walls parallel and orthogonal to the block pocket manager
 						else if (yi > lowest && yi < highest && (((zi == lowest || zi == highest) && xi > lowest && xi < highest) || ((xi == lowest || xi == highest) && zi > lowest && zi < highest)))
 							placeQueue.add(Pair.of(currentPos, SCContent.BLOCK_POCKET_WALL.get().defaultBlockState()));
 
@@ -628,13 +628,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void saveAdditional(ValueOutput tag) {
 		tag.putBoolean("BlockPocketEnabled", isEnabled());
 		tag.putBoolean("ShowOutline", showsOutline());
 		tag.putInt("Size", getSize());
 		tag.putInt("AutoBuildOffset", getAutoBuildOffset());
 		tag.putInt("Color", color);
-		ContainerHelper.saveAllItems(tag, storage, lookupProvider);
+		ContainerHelper.saveAllItems(tag, storage);
 
 		for (int i = 0; i < blocks.size(); i++) {
 			tag.putLong("BlocksList" + i, blocks.get(i).asLong());
@@ -648,36 +648,36 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			tag.putLong("FloorList" + i, floor.get(i).asLong());
 		}
 
-		super.saveAdditional(tag, lookupProvider);
+		super.saveAdditional(tag);
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void loadAdditional(ValueInput tag) {
 		int i = 0;
 
-		super.loadAdditional(tag, lookupProvider);
+		super.loadAdditional(tag);
 		setEnabled(tag.getBooleanOr("BlockPocketEnabled", false));
 		setShowOutline(tag.getBooleanOr("ShowOutline", false));
 		setSize(tag.getIntOr("Size", 5));
 		setAutoBuildOffset(tag.getIntOr("AutoBuildOffset", 0));
 		setColor(tag.getIntOr("Color", 0xFF0000FF));
-		ContainerHelper.loadAllItems(tag, storage, lookupProvider);
+		ContainerHelper.loadAllItems(tag, storage);
 
-		while (tag.contains("BlocksList" + i)) {
+		while (tag.getLong("BlocksList" + i).isPresent()) {
 			blocks.add(BlockPos.of(tag.getLongOr("BlocksList" + i, 0)));
 			i++;
 		}
 
 		i = 0;
 
-		while (tag.contains("WallsList" + i)) {
+		while (tag.getLong("WallsList" + i).isPresent()) {
 			walls.add(BlockPos.of(tag.getLongOr("WallsList" + i, 0)));
 			i++;
 		}
 
 		i = 0;
 
-		while (tag.contains("FloorList" + i)) {
+		while (tag.getLong("FloorList" + i).isPresent()) {
 			floor.add(BlockPos.of(tag.getLongOr("FloorList" + i, 0)));
 			i++;
 		}

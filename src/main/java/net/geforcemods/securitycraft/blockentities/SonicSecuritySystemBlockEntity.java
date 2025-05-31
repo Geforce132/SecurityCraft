@@ -39,6 +39,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
@@ -180,8 +182,8 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 
 		ListTag list = new ListTag();
 
@@ -193,7 +195,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		}
 
 		tag.put("linked_blocks", list);
-		saveNotes(tag, lookupProvider);
+		saveNotes(tag);
 		tag.putBoolean("emitsPings", emitsPings);
 		tag.putBoolean("isActive", isActive);
 		tag.putBoolean("isRecording", isRecording);
@@ -206,8 +208,8 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
 		linkedBlocks = new ArrayList<>();
 

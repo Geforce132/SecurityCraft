@@ -7,23 +7,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
+import com.mojang.serialization.Codec;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
+
+import static com.mojang.serialization.codecs.RecordCodecBuilder.create;
 
 /**
  * Let your object implement this to be able to add modules to it
@@ -31,6 +35,11 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
  * @author bl4ckscor3
  */
 public interface IModuleInventory extends IItemHandlerModifiable {
+	Codec<ItemStackWithSlot> MODULE_SLOT_CODEC = create(i -> i.group(
+					ExtraCodecs.UNSIGNED_BYTE.fieldOf("ModuleSlot").orElse(0).forGetter(ItemStackWithSlot::slot),
+					ItemStack.MAP_CODEC.forGetter(ItemStackWithSlot::stack))
+			.apply(i, ItemStackWithSlot::new));
+
 	/**
 	 * @return The list that holds the contents of this inventory
 	 */
@@ -391,19 +400,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * Used for reading the module inventory from a tag. Use in conjunction with writeModuleInventory.
 	 *
 	 * @param tag The tag to read the inventory from
-	 * @param lookupProvider lookup for registry entries
 	 * @return A NonNullList of ItemStacks that were read from the given tag
 	 */
-	public default NonNullList<ItemStack> readModuleInventory(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		ListTag list = tag.getListOrEmpty("Modules");
+	public default NonNullList<ItemStack> readModuleInventory(ValueInput tag) {
 		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 
-		for (int i = 0; i < list.size(); ++i) {
-			CompoundTag stackTag = list.getCompoundOrEmpty(i);
-			byte slot = stackTag.getByteOr("ModuleSlot", (byte) 0);
-
-			if (slot >= 0 && slot < modules.size())
-				modules.set(slot, Utils.parseOptional(lookupProvider, stackTag));
+		for (ItemStackWithSlot itemstackwithslot : tag.listOrEmpty("Modules", MODULE_SLOT_CODEC)) {
+			if (itemstackwithslot.isValidInContainer(modules.size()))
+				modules.set(itemstackwithslot.slot(), itemstackwithslot.stack());
 		}
 
 		return modules;
@@ -416,7 +420,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @param tag The tag to read the states from
 	 * @return An EnumMap of all module types with the enabled flag set as read from the tag
 	 */
-	public default Map<ModuleType, Boolean> readModuleStates(CompoundTag tag) {
+	public default Map<ModuleType, Boolean> readModuleStates(ValueInput tag) {
 		EnumMap<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 		List<ModuleType> acceptedModules = Arrays.asList(acceptedModules());
 
@@ -424,7 +428,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			if (acceptedModules.contains(module)) {
 				String key = module.name().toLowerCase() + "Enabled";
 
-				moduleStates.put(module, tag.getBoolean(key).orElseGet(() -> hasModule(module))); //if the module is accepted, but no state was saved yet, revert to whether the module is installed
+				moduleStates.put(module, tag.getBooleanOr(key, hasModule(module))); //if the module is accepted, but no state was saved yet, revert to whether the module is installed
 			}
 			else
 				moduleStates.put(module, false); //module is not accepted, so disable it right away
@@ -437,24 +441,17 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * Used for writing the module inventory to a tag. Use in conjunction with readModuleInventory.
 	 *
 	 * @param tag The tag to write the inventory to
-	 * @param lookupProvider lookup for registry entries
-	 * @return The modified tag
 	 */
-	public default CompoundTag writeModuleInventory(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		ListTag list = new ListTag();
+	public default void writeModuleInventory(ValueOutput tag) {
+		ValueOutput.TypedOutputList<ItemStackWithSlot> list = tag.list("Modules", MODULE_SLOT_CODEC);
 		NonNullList<ItemStack> modules = getInventory();
 
 		for (int i = 0; i < modules.size(); i++) {
-			if (!modules.get(i).isEmpty()) {
-				CompoundTag stackTag = new CompoundTag();
+			ItemStack stack = modules.get(i);
 
-				stackTag.putByte("ModuleSlot", (byte) i);
-				list.add(modules.get(i).save(lookupProvider, stackTag));
-			}
+			if (!stack.isEmpty())
+				list.add(new ItemStackWithSlot(i, stack));
 		}
-
-		tag.put("Modules", list);
-		return tag;
 	}
 
 	/**
@@ -462,14 +459,11 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * writeModuleInventory.
 	 *
 	 * @param tag The tag to save the module enabled states to
-	 * @return The modified tag
 	 */
-	public default CompoundTag writeModuleStates(CompoundTag tag) {
+	public default void writeModuleStates(ValueOutput tag) {
 		for (ModuleType module : acceptedModules()) {
 			tag.putBoolean(module.name().toLowerCase() + "Enabled", isModuleEnabled(module));
 		}
-
-		return tag;
 	}
 
 	/**

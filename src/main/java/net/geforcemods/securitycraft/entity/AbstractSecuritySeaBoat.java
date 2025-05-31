@@ -60,6 +60,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForgeMod;
@@ -299,12 +301,12 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	}
 
 	@Override
-	protected void addAdditionalSaveData(CompoundTag tag) {
+	protected void addAdditionalSaveData(ValueOutput tag) {
 		CompoundTag ownerTag = new CompoundTag();
 		long cooldownLeft;
 
 		super.addAdditionalSaveData(tag);
-		writeModuleInventory(tag, registryAccess());
+		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
@@ -315,9 +317,9 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	}
 
 	@Override
-	protected void readAdditionalSaveData(CompoundTag tag) {
+	protected void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
-		entityData.set(MODULES, readModuleInventory(tag, registryAccess()));
+		entityData.set(MODULES, readModuleInventory(tag));
 		entityData.set(MODULE_STATES, readModuleStates(tag));
 		readOptions(tag);
 		entityData.set(COOLDOWN_END, System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0));

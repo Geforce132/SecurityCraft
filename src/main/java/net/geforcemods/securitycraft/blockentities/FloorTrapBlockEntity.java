@@ -11,8 +11,6 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.TargetingMode;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,6 +18,8 @@ import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
 public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity {
@@ -96,8 +96,8 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 		tag.putBoolean("should_disappear", shouldDisappear);
 		tag.putBoolean("should_reappear", shouldReappear);
 		tag.putInt("ticks_until_disappearing", ticksUntilDisappearing);
@@ -105,8 +105,8 @@ public class FloorTrapBlockEntity extends DisguisableBlockEntity implements ITic
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 		shouldDisappear = tag.getBooleanOr("should_disappear", false);
 		shouldReappear = tag.getBooleanOr("should_reappear", false);
 		ticksUntilDisappearing = tag.getIntOr("ticks_until_disappearing", -1);

@@ -18,12 +18,13 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
@@ -172,7 +173,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 *
 	 * @param tag The tag that the passcode and salt key should be stored in
 	 */
-	default void savePasscodeAndSalt(CompoundTag tag) {
+	default void savePasscodeAndSalt(ValueOutput tag) {
 		if (getSaltKey() != null) {
 			tag.store("saltKey", UUIDUtil.CODEC, getSaltKey());
 
@@ -191,9 +192,9 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 *
 	 * @param tag The tag that the salt key information is stored in
 	 */
-	default void loadSaltKey(CompoundTag tag) {
+	default void loadSaltKey(ValueInput tag) {
 		UUID saltKey = tag.read("saltKey", UUIDUtil.CODEC).orElse(null);
-		String passcode = tag.getStringOr(tag.contains("Passcode") ? "Passcode" : "passcode", ""); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
+		String passcode = tag.getStringOr("Passcode", tag.getStringOr("passcode", "")); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		if (passcode.length() == 32) {
 			if (!SaltData.containsKey(saltKey)) { //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found:
@@ -217,8 +218,8 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 *
 	 * @param tag The tag that the passcode information is stored in
 	 */
-	default void loadPasscode(CompoundTag tag) {
-		String passcode = tag.getStringOr(tag.contains("Passcode") ? "Passcode" : "passcode", ""); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
+	default void loadPasscode(ValueInput tag) {
+		String passcode = tag.getStringOr("Passcode", tag.getStringOr("passcode", "")); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		//SecurityCraft's passcode-protected blocks did not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
 		if (!passcode.isEmpty()) {

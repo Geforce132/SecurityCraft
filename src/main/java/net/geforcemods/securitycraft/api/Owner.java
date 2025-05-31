@@ -11,6 +11,8 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * This class is used with {@link IOwnable} to get the player of the block. Allows for easy access to the player's IGN and
@@ -59,19 +61,22 @@ public class Owner {
 	public static Owner fromCompound(CompoundTag tag) {
 		Owner owner = new Owner();
 
-		if (tag != null)
-			owner.load(tag);
+		if (tag != null) {
+			owner.ownerName = tag.getStringOr("owner", owner.ownerName);
+			owner.ownerUUID = tag.getStringOr("ownerUUID", owner.ownerUUID);
+			owner.validated = tag.getBooleanOr("ownerValidated", owner.validated);
+		}
 
 		return owner;
 	}
 
-	public void load(CompoundTag tag) {
+	public void load(ValueInput tag) {
 		ownerName = tag.getStringOr("owner", ownerName);
-		ownerUUID = tag.getStringOr("ownerUUID", ownerName);
+		ownerUUID = tag.getStringOr("ownerUUID", ownerUUID);
 		validated = tag.getBooleanOr("ownerValidated", validated);
 	}
 
-	public void save(CompoundTag tag, boolean saveValidationStatus) {
+	public void save(ValueOutput tag, boolean saveValidationStatus) {
 		tag.putString("owner", ownerName);
 		tag.putString("ownerUUID", ownerUUID);
 

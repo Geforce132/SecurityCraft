@@ -186,7 +186,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 		level.setBlockAndUpdate(pos, newState);
 
 		if (tag != null)
-			level.getBlockEntity(pos).loadCustomOnly(tag, lookupProvider);
+			level.getBlockEntity(pos).loadCustomOnly(tag);
 	}
 
 	public interface IReinforcedCauldronInteraction extends CauldronInteraction {

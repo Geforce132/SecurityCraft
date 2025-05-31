@@ -50,6 +50,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.model.data.ModelData;
@@ -97,15 +99,15 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void saveAdditional(ValueOutput tag) {
 		long cooldownLeft;
 
-		super.saveAdditional(tag, lookupProvider);
+		super.saveAdditional(tag);
 
 		if (!trySaveLootTable(tag))
-			ContainerHelper.saveAllItems(tag, items, lookupProvider);
+			ContainerHelper.saveAllItems(tag, items);
 
-		writeModuleInventory(tag, lookupProvider);
+		writeModuleInventory(tag);
 		writeModuleStates(tag);
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
@@ -120,15 +122,15 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
 		items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
 
 		if (!tryLoadLootTable(tag))
-			ContainerHelper.loadAllItems(tag, items, lookupProvider);
+			ContainerHelper.loadAllItems(tag, items);
 
-		modules = readModuleInventory(tag, lookupProvider);
+		modules = readModuleInventory(tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
@@ -136,15 +138,13 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		loadPasscode(tag);
 		owner.load(tag);
 
-		if (tag.contains("previous_barrel")) {
-			String savedPreviousBarrel = tag.getStringOr("previous_barrel", "");
+		String savedPreviousBarrel = tag.getStringOr("previous_barrel", "");
 
-			if (!savedPreviousBarrel.isBlank()) {
-				ResourceLocation parsedPreviousBarrel = ResourceLocation.parse(savedPreviousBarrel);
+		if (!savedPreviousBarrel.isBlank()) {
+			ResourceLocation parsedPreviousBarrel = ResourceLocation.parse(savedPreviousBarrel);
 
-				if (parsedPreviousBarrel.getPath() != null && !parsedPreviousBarrel.getPath().isBlank())
-					previousBarrel = parsedPreviousBarrel;
-			}
+			if (parsedPreviousBarrel.getPath() != null && !parsedPreviousBarrel.getPath().isBlank())
+				previousBarrel = parsedPreviousBarrel;
 		}
 
 		if (!tag.getBooleanOr("sendMessage", true)) {
@@ -186,8 +186,8 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider lookupProvider) {
-		super.onDataPacket(net, packet, lookupProvider);
+	public void onDataPacket(Connection net, ValueInput tag) {
+		super.onDataPacket(net, tag);
 		DisguisableBlockEntity.onHandleUpdateTag(this);
 	}
 

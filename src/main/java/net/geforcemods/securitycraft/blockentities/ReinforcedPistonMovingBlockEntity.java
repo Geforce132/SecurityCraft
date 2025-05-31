@@ -37,6 +37,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -382,10 +384,10 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void loadAdditional(ValueInput tag) {
 		RegistryOps<Tag> registryOps;
 
-		super.loadAdditional(tag, lookupProvider);
+		super.loadAdditional(tag);
 		registryOps = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
 		movedState = tag.read("blockState", BlockState.CODEC, registryOps).orElse(DEFAULT_BLOCK_STATE);
 		direction = tag.read("facing", Direction.LEGACY_ID_CODEC).orElse(Direction.DOWN);
@@ -398,10 +400,10 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void saveAdditional(ValueOutput tag) {
 		RegistryOps<Tag> registryOps;
 
-		super.saveAdditional(tag, lookupProvider);
+		super.saveAdditional(tag);
 		registryOps = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
 		tag.store("blockState", BlockState.CODEC, registryOps, movedState);
 		tag.store("facing", Direction.LEGACY_ID_CODEC, direction);

@@ -30,7 +30,6 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -56,6 +55,8 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
@@ -139,8 +140,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.saveAdditional(tag, lookupProvider);
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
 
 		CompoundTag projectilesNBT = new CompoundTag();
 		int i = 0;
@@ -151,12 +152,12 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		}
 
 		tag.put("projectiles", projectilesNBT);
-		tag.put("lens", lens.createTag(lookupProvider));
+		lens.storeAsItemList(tag.list("lens", ItemStack.CODEC));
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
 		if (tag.contains("projectiles")) {
 			CompoundTag projectilesNBT = tag.getCompoundOrEmpty("projectiles");
@@ -168,7 +169,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			}
 		}
 
-		lens.fromTag(tag.getListOrEmpty("lens"), lookupProvider);
+		lens.fromItemList(tag.listOrEmpty("lens", ItemStack.CODEC));
 	}
 
 	@Override

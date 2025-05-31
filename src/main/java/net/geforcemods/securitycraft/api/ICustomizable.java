@@ -1,7 +1,8 @@
 package net.geforcemods.securitycraft.api;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * Implement this to be able to add options to the object
@@ -30,7 +31,7 @@ public interface ICustomizable {
 	 *
 	 * @param tag The tag to read the options from
 	 */
-	public default void readOptions(CompoundTag tag) {
+	public default void readOptions(ValueInput tag) {
 		Option<?>[] customOptions = customOptions();
 
 		if (customOptions.length > 0) {
@@ -44,9 +45,8 @@ public interface ICustomizable {
 	 * Used for writing the options to a tag. Use in conjunction with readOptions.
 	 *
 	 * @param tag The tag to write the options to
-	 * @return The modified CompoundTag
 	 */
-	public default CompoundTag writeOptions(CompoundTag tag) {
+	public default void writeOptions(ValueOutput tag) {
 		Option<?>[] customOptions = customOptions();
 
 		if (customOptions.length > 0) {
@@ -54,7 +54,5 @@ public interface ICustomizable {
 				option.save(tag);
 			}
 		}
-
-		return tag;
 	}
 }
