@@ -67,7 +67,7 @@ public class Owner {
 
 	public void load(CompoundTag tag) {
 		ownerName = tag.getStringOr("owner", ownerName);
-		ownerUUID = tag.getStringOr("ownerUUID", ownerName);
+		ownerUUID = tag.getStringOr("ownerUUID", ownerUUID);
 		validated = tag.getBooleanOr("ownerValidated", validated);
 	}
 

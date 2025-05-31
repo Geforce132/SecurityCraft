@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
+
+- Fix: Incorrect owner UUID being set when loading an owner without a UUID
+
 --------------------------Changelog for v1.10-beta2 of SecurityCraft--------------------------
 
 - Fix.: Incompatibility with NeoForge version 21.5.73-beta and above
