@@ -121,6 +121,7 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
+import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -297,9 +298,9 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event) {
-		RenderType cutout = RenderType.cutout();
-		RenderType cutoutMipped = RenderType.cutoutMipped();
-		RenderType translucent = RenderType.translucent();
+		ChunkSectionLayer cutout = ChunkSectionLayer.CUTOUT;
+		ChunkSectionLayer cutoutMipped = ChunkSectionLayer.CUTOUT_MIPPED;
+		ChunkSectionLayer translucent = ChunkSectionLayer.TRANSLUCENT;
 
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);

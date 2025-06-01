@@ -12,12 +12,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -202,7 +199,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		NOCLIP.set(direction);
 		entity.move(MoverType.PISTON, new Vec3(progress * moveDirection.getStepX(), progress * moveDirection.getStepY(), progress * moveDirection.getStepZ()));
 		entity.applyEffectsFromBlocks(originalPos, entity.position());
-		entity.removeLatestMovementRecordingBatch();
+		entity.removeLatestMovementRecording();
 		NOCLIP.set(null);
 	}
 
@@ -385,11 +382,8 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 	@Override
 	public void loadAdditional(ValueInput tag) {
-		RegistryOps<Tag> registryOps;
-
 		super.loadAdditional(tag);
-		registryOps = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
-		movedState = tag.read("blockState", BlockState.CODEC, registryOps).orElse(DEFAULT_BLOCK_STATE);
+		movedState = tag.read("blockState", BlockState.CODEC).orElse(DEFAULT_BLOCK_STATE);
 		direction = tag.read("facing", Direction.LEGACY_ID_CODEC).orElse(Direction.DOWN);
 		progress = tag.getFloatOr("progress", 0.0F);
 		lastProgress = progress;
@@ -401,11 +395,9 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 	@Override
 	public void saveAdditional(ValueOutput tag) {
-		RegistryOps<Tag> registryOps;
 
 		super.saveAdditional(tag);
-		registryOps = lookupProvider.createSerializationContext(NbtOps.INSTANCE);
-		tag.store("blockState", BlockState.CODEC, registryOps, movedState);
+		tag.store("blockState", BlockState.CODEC, movedState);
 		tag.store("facing", Direction.LEGACY_ID_CODEC, direction);
 		tag.putFloat("progress", lastProgress);
 		tag.putBoolean("extending", extending);

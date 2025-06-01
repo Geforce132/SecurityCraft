@@ -25,7 +25,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap.Builder;
 import net.minecraft.core.registries.Registries;
@@ -254,9 +253,8 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	 * Saves this block entity's notes to a tag
 	 *
 	 * @param tag The tag to save the notes to
-	 * @param lookupProvider lookup for registry entries
 	 */
-	public void saveNotes(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void saveNotes(ValueOutput tag) {
 		ListTag list = new ListTag();
 
 		for (NoteWrapper note : recordedNotes) {
@@ -271,7 +269,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	 *
 	 * @param tag The tag containing the notes
 	 */
-	public void loadNotes(CompoundTag tag) {
+	public void loadNotes(ValueInput tag) {
 		recordedNotes = new ArrayList<>();
 
 		if (tag.contains("notes"))

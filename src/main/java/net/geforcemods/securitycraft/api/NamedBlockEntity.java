@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.world.Nameable;
@@ -78,8 +77,8 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 	}
 
 	@Override
-	public void removeComponentsFromTag(CompoundTag tag) {
-		tag.remove("CustomName");
-		tag.remove("customName");
+	public void removeComponentsFromTag(ValueOutput tag) {
+		tag.discard("CustomName");
+		tag.discard("customName");
 	}
 }

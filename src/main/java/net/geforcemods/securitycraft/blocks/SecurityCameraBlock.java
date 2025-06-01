@@ -151,7 +151,7 @@ public class SecurityCameraBlock extends DisguisableBlock implements SimpleWater
 			ServerPlayer serverPlayer = (ServerPlayer) player;
 			SecurityCamera dummyEntity;
 			SectionPos chunkPos = SectionPos.of(pos);
-			int viewDistance = Mth.clamp(serverPlayer.requestedViewDistance(), 2, serverPlayer.server.getPlayerList().getViewDistance());
+			int viewDistance = Mth.clamp(serverPlayer.requestedViewDistance(), 2, serverPlayer.getServer().getPlayerList().getViewDistance());
 
 			if (serverPlayer.getCamera() instanceof SecurityCamera cam)
 				cam.discard();

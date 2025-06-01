@@ -62,7 +62,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 			return Shapes.empty();
 
 		Entity entity = ctx.getEntity();
-		Level level = entity.getCommandSenderWorld();
+		Level level = entity.level();
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
 
 		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
