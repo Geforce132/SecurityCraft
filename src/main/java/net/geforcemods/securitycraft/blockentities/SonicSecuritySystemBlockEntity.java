@@ -544,10 +544,10 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public void removeComponentsFromTag(CompoundTag tag) {
+	public void removeComponentsFromTag(ValueOutput tag) {
 		super.removeComponentsFromTag(tag);
-		tag.remove("linked_blocks");
-		tag.remove("notes");
+		tag.discard("linked_blocks");
+		tag.discard("notes");
 	}
 
 	public boolean wasCorrectTunePlayed() {
