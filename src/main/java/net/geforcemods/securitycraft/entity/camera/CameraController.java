@@ -43,7 +43,7 @@ public class CameraController {
 	public static CameraType previousCameraType;
 	public static boolean resetOverlaysAfterDismount = false;
 	private static final ViewMovementKeyHandler[] MOVE_KEY_HANDLERS = new ViewMovementKeyHandler[] {
-		//@formatter:off
+			//@formatter:off
 		new ViewMovementKeyHandler(options -> options.keyUp, CameraController::moveViewUp),
 		new ViewMovementKeyHandler(options -> options.keyDown, CameraController::moveViewDown),
 		new ViewMovementKeyHandler(options -> options.keyLeft, cam -> moveViewHorizontally(cam, cam.getYRot() - getMovementSpeed(cam) * cam.getZoomAmount())),
@@ -108,8 +108,7 @@ public class CameraController {
 		if (resetOverlaysAfterDismount) {
 			resetOverlaysAfterDismount = false;
 			LayerToggleHandler.disable(ClientHandler.CAMERA_LAYER);
-			LayerToggleHandler.enable(VanillaGuiLayers.JUMP_METER);
-			LayerToggleHandler.enable(VanillaGuiLayers.EXPERIENCE_BAR);
+			LayerToggleHandler.enable(VanillaGuiLayers.CONTEXTUAL_INFO_BAR);
 			LayerToggleHandler.enable(VanillaGuiLayers.EFFECTS);
 		}
 	}

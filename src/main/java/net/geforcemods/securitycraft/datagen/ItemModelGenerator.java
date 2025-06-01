@@ -133,7 +133,7 @@ public class ItemModelGenerator {
 						5,
 						ItemModelUtils.plainModel(normalModel),
 						ItemModelUtils.override(ItemModelUtils.plainModel(fullModel), 1)),
-				new ClientItem.Properties(false)));
+				new ClientItem.Properties(false, false)));
 		//@formatter:on
 	}
 

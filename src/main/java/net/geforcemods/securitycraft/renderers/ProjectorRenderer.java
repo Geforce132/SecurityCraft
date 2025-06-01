@@ -104,7 +104,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(ProjectorBlockEntity be) {
+	public boolean shouldRenderOffScreen() {
 		return true;
 	}
 

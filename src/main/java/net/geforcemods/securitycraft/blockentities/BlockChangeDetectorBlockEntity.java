@@ -18,7 +18,6 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.UUIDUtil;
@@ -111,7 +110,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		tag.put("entries", entryList);
 
 		if (!filter.isEmpty())
-			tag.put("filter", filter.save(lookupProvider));
+			tag.store("filter", ItemStack.CODEC, filter);
 
 		tag.putBoolean("ShowHighlights", showHighlights);
 		tag.putInt("Color", color);
@@ -129,7 +128,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		mode = DetectionMode.values()[modeOrdinal];
 		entries = new ArrayList<>();
 		tag.getListOrEmpty("entries").stream().map(element -> ChangeEntry.load(level, (CompoundTag) element)).forEach(entries::add);
-		filter = Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("filter"));
+		tag.read("filter", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 		showHighlights = tag.getBooleanOr("ShowHighlights", false);
 		setColor(tag.getIntOr("Color", 0xFF0000FF));
 		updateFilteredEntries();

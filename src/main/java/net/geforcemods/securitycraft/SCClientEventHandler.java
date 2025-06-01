@@ -6,7 +6,6 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -25,7 +24,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
@@ -228,14 +227,14 @@ public class SCClientEventHandler {
 			}
 		}
 
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		guiGraphics.blitSprite(RenderType::guiTextured, BACKGROUND_SPRITE, 5, 0, 90, 20);
-		guiGraphics.blitSprite(RenderType::guiTextured, LIVE_SPRITE, window.getGuiScaledWidth() - 70, 5, 65, 16);
+		//TODO: test because of removal from setShaderColor
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, 5, 0, 90, 20);
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, LIVE_SPRITE, window.getGuiScaledWidth() - 70, 5, 65, 16);
 
 		if (!mc.player.hasEffect(MobEffects.NIGHT_VISION))
-			guiGraphics.blitSprite(RenderType::guiTextured, NIGHT_VISION_INACTIVE_SPRITE, 28, 4, 16, 9);
+			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, NIGHT_VISION_INACTIVE_SPRITE, 28, 4, 16, 9);
 		else
-			guiGraphics.blit(RenderType::guiTextured, NIGHT_VISION, 27, -1, 0, 0, 18, 18, 18, 18);
+			guiGraphics.blit(RenderPipelines.GUI_TEXTURED, NIGHT_VISION, 27, -1, 0, 0, 18, 18, 18, 18);
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!be.isModuleEnabled(ModuleType.REDSTONE))

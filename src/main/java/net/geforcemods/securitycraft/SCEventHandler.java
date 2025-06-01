@@ -248,7 +248,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onLivingAttacked(LivingIncomingDamageEvent event) {
 		if (event.getEntity() instanceof ServerPlayer player) {
-			ServerLevel level = player.serverLevel();
+			ServerLevel level = player.level();
 			DamageSource damageSource = event.getSource();
 
 			if (!player.isCreative() && damageSource.equals(level.damageSources().inWall()) && !player.isInvulnerableTo(level, damageSource) && BlockUtils.isInsideUnownedReinforcedBlocks(level, player, player.getEyePosition(), player.getBbWidth())) {

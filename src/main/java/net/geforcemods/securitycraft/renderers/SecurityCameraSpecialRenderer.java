@@ -1,6 +1,9 @@
 package net.geforcemods.securitycraft.renderers;
 
 import java.util.Optional;
+import java.util.Set;
+
+import org.joml.Vector3f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
@@ -30,6 +33,14 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceL
 		model.rotateCameraY(rotation);
 		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(texture)), light.orElse(packedLight), packedOverlay, ARGB.color(255, color));
 		model.cameraRotationPoint2.visible = true;
+	}
+
+	@Override
+	public void getExtents(Set<Vector3f> extents) {
+		PoseStack poseStack = new PoseStack();
+
+		model.rotateCameraY(rotation);
+		model.root().getExtentsForGui(poseStack, extents);
 	}
 
 	public static record Unbaked(ResourceLocation texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {

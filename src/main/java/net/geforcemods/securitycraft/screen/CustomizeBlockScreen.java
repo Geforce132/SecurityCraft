@@ -28,7 +28,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -156,7 +156,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 				ModuleType type = ((ModuleItem) slot.getItem().getItem()).getModuleType();
 
 				if (indicators.containsKey(type))
-					guiGraphics.blitSprite(RenderType::guiTextured, indicators.get(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, leftPos + slot.x, topPos + slot.y + 16, 18, 18);
+					guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, indicators.get(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, leftPos + slot.x, topPos + slot.y + 16, 18, 18);
 			}
 		}
 
@@ -171,7 +171,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
-		guiGraphics.blit(RenderType::guiTextured, texture, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
 	@Override

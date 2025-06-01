@@ -57,7 +57,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 				for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
 					float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-					PacketDistributor.sendToPlayer(player, new PlayAlarmSound(worldPosition, soundEventHolder, volume, getPitch(), player.getCommandSenderWorld().random.nextLong()));
+					PacketDistributor.sendToPlayer(player, new PlayAlarmSound(worldPosition, soundEventHolder, volume, getPitch(), player.level().random.nextLong()));
 				}
 			}
 

@@ -28,7 +28,6 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -92,7 +91,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			ItemStack lens = lenses.getItem(i);
 
 			if (!lens.isEmpty())
-				tag.put("lens" + i, lens.save(lookupProvider));
+				tag.store("lens" + i, ItemStack.CODEC, lens);
 		}
 	}
 
@@ -109,7 +108,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		sideConfig = loadSideConfig(tag.getCompoundOrEmpty("sideConfig"));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
-			lenses.setItemExclusively(i, Utils.parseOptional(lookupProvider, tag.getCompoundOrEmpty("lens" + i)));
+			lenses.setItemExclusively(i, tag.read("lens" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY)); //TODO: test if 1.21.5 lenses stay in 1.21.6 laser blocks
 		}
 
 		lenses.setChanged();

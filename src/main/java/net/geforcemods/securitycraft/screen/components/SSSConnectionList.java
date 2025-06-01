@@ -12,7 +12,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
@@ -90,7 +90,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 
 			guiGraphics.fill(min, slotTop - 2, max, slotTop + slotBuffer + 2, 0xFF808080);
 			guiGraphics.fill(min + 1, slotTop - 1, max - 1, slotTop + slotBuffer + 1, 0xFF000000);
-			guiGraphics.blitSprite(RenderType::guiTextured, CANCEL_SPRITE, left + 2, slotTop - 2, 11, 11);
+			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, CANCEL_SPRITE, left + 2, slotTop - 2, 11, 11);
 		}
 
 		int i = 0;

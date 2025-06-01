@@ -52,8 +52,8 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(BlockPocketManagerBlockEntity be) {
-		return be.showsOutline();
+	public boolean shouldRenderOffScreen() {
+		return true;
 	}
 
 	@Override

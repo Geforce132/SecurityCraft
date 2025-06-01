@@ -33,7 +33,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -151,7 +151,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		guiGraphics.blit(RenderType::guiTextured, TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
 	@Override
@@ -434,7 +434,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			else if (currentIndex == DetectionMode.PLACE.ordinal())
 				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.BOTH.ordinal()) {
-				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2, 0, -100);
+				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2); //TODO: layered correctly?
 				guiGraphics.renderItem(ironPickaxe, getX() + 2, getY() + 2);
 			}
 		}

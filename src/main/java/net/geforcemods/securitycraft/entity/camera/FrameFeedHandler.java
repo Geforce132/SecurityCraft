@@ -95,7 +95,6 @@ public class FrameFeedHandler {
 		Frustum playerFrustum = mc.levelRenderer.getFrustum(); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
 		mc.gameRenderer.setRenderBlockOutline(false);
-		mc.gameRenderer.setRenderHand(false);
 		mc.gameRenderer.setPanoramicMode(true);
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
 		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
@@ -171,7 +170,6 @@ public class FrameFeedHandler {
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
-		mc.gameRenderer.setRenderHand(true);
 		mc.gameRenderer.setPanoramicMode(false);
 		currentlyCapturedCamera = null;
 

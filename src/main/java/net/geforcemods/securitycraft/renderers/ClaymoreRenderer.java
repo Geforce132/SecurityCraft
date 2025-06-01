@@ -62,7 +62,7 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(ClaymoreBlockEntity be) {
+	public boolean shouldRenderOffScreen() {
 		return true;
 	}
 }

@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -52,7 +53,7 @@ public class ClientUtils {
 	}
 
 	private static void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int moduleLeft, int moduleTop, int color) {
-		guiGraphics.blit(RenderType::guiTextured, texture, moduleLeft, moduleTop, 0.0F, 0.0F, 16, 16, 16, 16, color);
+		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, moduleLeft, moduleTop, 0.0F, 0.0F, 16, 16, 16, 16, color);
 	}
 
 	public static Quaternionf fromXYZDegrees(float x, float y, float z) {

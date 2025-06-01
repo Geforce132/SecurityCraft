@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.util;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,8 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,10 +43,6 @@ public class Utils {
 		}
 
 		return Component.translatable(key, params);
-	}
-
-	public static ItemStack parseOptional(HolderLookup.Provider provider, CompoundTag tag) {
-		return !tag.contains("id") || tag.getStringOr("id", "minecraft:air").equals(Items.AIR.toString()) ? ItemStack.EMPTY : ItemStack.parse(provider, tag).orElse(ItemStack.EMPTY);
 	}
 
 	public static BlockPos readBlockPos(CompoundTag tag) {

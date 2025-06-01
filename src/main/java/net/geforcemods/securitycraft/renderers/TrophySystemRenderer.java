@@ -57,7 +57,7 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 	}
 
 	@Override
-	public boolean shouldRenderOffScreen(TrophySystemBlockEntity be) {
+	public boolean shouldRenderOffScreen() {
 		return true;
 	}
 

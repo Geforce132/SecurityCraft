@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedWallBlock;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.TagAppender;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
@@ -500,7 +501,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
 		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).addTags(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());
-		tag(BlockTags.PLAYS_AMBIENT_DESERT_BLOCK_SOUNDS).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_RED_SAND.get());
+		tag(BlockTags.TRIGGERS_AMBIENT_DESERT_SAND_BLOCK_SOUNDS).add(SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_RED_SAND.get());
+		tag(BlockTags.TRIGGERS_AMBIENT_DESERT_DRY_VEGETATION_BLOCK_SOUNDS).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_RED_SAND.get());
 		tag(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
@@ -562,22 +564,24 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(Tags.Blocks.GLAZED_TERRACOTTAS).addTag(SCTags.Blocks.REINFORCED_GLAZED_TERRACOTTA);
 
 		//automatic
-		TagAppender<Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
-		TagAppender<Block> noRelocation = tag(Tags.Blocks.RELOCATION_NOT_SUPPORTED);
-		TagAppender<Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
+		TagAppender<Block, Block> dragonImmune = tag(BlockTags.DRAGON_IMMUNE);
+		TagAppender<Block, Block> noRelocation = tag(Tags.Blocks.RELOCATION_NOT_SUPPORTED);
+		TagAppender<Block, Block> witherImmune = tag(BlockTags.WITHER_IMMUNE);
 
 		for (DeferredHolder<Block, ? extends Block> ro : SCContent.BLOCKS.getEntries()) {
 			Block block = ro.get();
 
 			if (block != SCContent.CHISELED_CRYSTAL_QUARTZ.get() && block != SCContent.CRYSTAL_QUARTZ_BLOCK.get() && block != SCContent.CRYSTAL_QUARTZ_PILLAR.get() && block != SCContent.CRYSTAL_QUARTZ_SLAB.get() && block != SCContent.CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.CRYSTAL_QUARTZ_BRICKS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get() && block != SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get()) {
-				dragonImmune.add(ro.getKey());
-				witherImmune.add(ro.getKey());
-				noRelocation.add(ro.getKey());
+				dragonImmune.add(block);
+				witherImmune.add(block);
+				noRelocation.add(block);
 			}
 
 			switch (block) {
-				case ReinforcedSlabBlock slab when !woodenSlabs.contains(block) -> tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
-				case ReinforcedStairsBlock stairs when !woodenStairs.contains(block) -> tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
+				case ReinforcedSlabBlock slab when !woodenSlabs.contains(block) ->
+						tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
+				case ReinforcedStairsBlock stairs when !woodenStairs.contains(block) ->
+						tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
 				case ReinforcedWallBlock wall -> tag(SCTags.Blocks.REINFORCED_WALLS).add(block);
 				default -> {
 				}
