@@ -103,7 +103,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		signature = tag.getIntOr("signature", 0);
-		sendDenylistMessage.setValue(tag.getBooleanOr("sendMessage", true));
+		sendDenylistMessage.setValue(tag.getBooleanOr("sendMessage", sendsDenylistMessage()));
 	}
 
 	@Override

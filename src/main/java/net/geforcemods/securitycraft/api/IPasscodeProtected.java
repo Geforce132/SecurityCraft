@@ -188,38 +188,29 @@ public interface IPasscodeProtected extends ICodebreakable {
 	}
 
 	/**
-	 * Sets the salt key from the information stored in the given CompoundTag.
+	 * Sets the passcode and salt key from the information stored in the given ValueInput.
 	 *
-	 * @param tag The tag that the salt key information is stored in
+	 * @param tag The tag that the passcode and salt key information is stored in
 	 */
-	default void loadSaltKey(ValueInput tag) {
+	default void loadPasscodeAndSaltKey(ValueInput tag) {
 		UUID saltKey = tag.read("saltKey", UUIDUtil.CODEC).orElse(null);
 		String passcode = tag.getStringOr("Passcode", tag.getStringOr("passcode", "")); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		if (passcode.length() == 32) {
 			if (!SaltData.containsKey(saltKey)) { //If the passcode hash is set correctly, but no salt key or no salt associated with the given key can be found:
-				if (tag.contains("salt")) //If the tag also has info on the salt that was used for hashing, register this salt under a new salt key
+				if (tag.getString("salt").isPresent()) //If the tag also has info on the salt that was used for hashing, register this salt under a new salt key
 					saltKey = SaltData.putSalt(PasscodeUtils.stringToBytes(tag.getStringOr("salt", "")));
-				else { //If no info on the original salt is present, a new passcode needs to be set
-					PasscodeUtils.filterPasscodeAndSaltFromTag(tag);
-					return;
-				}
+				else //If no info on the original salt is present, a new passcode needs to be set
+					passcode = "";
 			}
 			else if (SaltData.isKeyInUse(saltKey))
 				saltKey = SaltData.copySaltToNewKey(saltKey);
 
-			setSaltKey(saltKey);
-			SaltData.setKeyInUse(saltKey);
+			if (saltKey != null) {
+				setSaltKey(saltKey);
+				SaltData.setKeyInUse(saltKey);
+			}
 		}
-	}
-
-	/**
-	 * Sets the passcode from the information stored in the given CompoundTag.
-	 *
-	 * @param tag The tag that the passcode information is stored in
-	 */
-	default void loadPasscode(ValueInput tag) {
-		String passcode = tag.getStringOr("Passcode", tag.getStringOr("passcode", "")); //"Passcode" is also checked in order to support old versions where both spellings were used to store passcode information
 
 		//SecurityCraft's passcode-protected blocks did not support passcodes longer than 20 characters, so if such a short passcode is encountered instead of a hash, store the properly hashed version inside the block
 		if (!passcode.isEmpty()) {

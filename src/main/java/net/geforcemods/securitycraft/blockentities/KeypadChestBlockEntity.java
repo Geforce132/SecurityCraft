@@ -94,8 +94,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
-		loadSaltKey(tag);
-		loadPasscode(tag);
+		loadPasscodeAndSaltKey(tag);
 		owner.load(tag);
 
 		String savedPreviousChest = tag.getStringOr("previous_chest", "");

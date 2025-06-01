@@ -324,8 +324,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		readOptions(tag);
 		entityData.set(COOLDOWN_END, System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0));
 		entityData.set(OWNER, Owner.fromCompound(tag.getCompoundOrEmpty("owner")));
-		loadSaltKey(tag);
-		loadPasscode(tag);
+		loadPasscodeAndSaltKey(tag);
 	}
 
 	@Override

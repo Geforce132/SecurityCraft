@@ -57,8 +57,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		loadSaltKey(tag);
-		loadPasscode(tag);
+		loadPasscodeAndSaltKey(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 
 		if (!tag.getBooleanOr("sendMessage", true)) {

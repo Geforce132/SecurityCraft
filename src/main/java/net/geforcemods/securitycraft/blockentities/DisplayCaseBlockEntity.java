@@ -130,8 +130,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		setDisplayedStack(tag.read("DisplayedStack", ItemStack.CODEC).orElse(ItemStack.EMPTY));
 		shouldBeOpen = tag.getBooleanOr("ShouldBeOpen", false);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
-		loadSaltKey(tag);
-		loadPasscode(tag);
+		loadPasscodeAndSaltKey(tag);
 
 		if (level != null && level.isClientSide && !hasReceivedData) { //Skip opening animation when the display case is first loaded on the client
 			forceOpen(shouldBeOpen);

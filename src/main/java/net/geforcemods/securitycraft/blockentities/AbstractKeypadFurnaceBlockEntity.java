@@ -138,8 +138,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 		owner.load(tag);
-		loadSaltKey(tag);
-		loadPasscode(tag);
+		loadPasscodeAndSaltKey(tag);
 
 		if (!tag.getBooleanOr("sendMessage", true)) {
 			sendAllowlistMessage.setValue(false);
