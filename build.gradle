@@ -131,6 +131,7 @@ tasks.named('jar', Jar).configure {
 }
 
 tasks.withType(JavaCompile).configureEach {
+	options.compilerArgs << "-Xmaxerrs" << "10000"
 	options.encoding = 'UTF-8'
 	options.release = 21
 }
