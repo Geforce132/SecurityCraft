@@ -49,7 +49,7 @@ public class ClientUtils {
 			drawTexture(guiGraphics, SUGAR_TEXTURE, moduleLeft, moduleTop, color);
 
 		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom && mc.screen != null)
-			guiGraphics.renderComponentTooltip(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
+			guiGraphics.setComponentTooltipForNextFrame(font, Arrays.asList(moduleTooltip), mouseX, mouseY); //TODO: works?
 	}
 
 	private static void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int moduleLeft, int moduleTop, int color) {

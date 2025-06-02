@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
@@ -119,7 +118,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			int baseY = top + border - (int) scrollDistance;
 
 			if (length + 13 >= width - 6) //6 = barWidth
-				guiGraphics.renderTooltip(font, List.of(blockName), Optional.empty(), left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
+				guiGraphics.setTooltipForNextFrame(font, blockName, left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: does this look the same as before? one parameter was removed
 
 			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).globalPos.pos()), left + 13, top + height + 5, 4210752, false);
 		}

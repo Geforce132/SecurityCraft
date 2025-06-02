@@ -30,7 +30,6 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -143,7 +142,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		CompoundTag projectilesNBT = new CompoundTag();
+		//TODO: does projectile saving and loading work with and the same as old data?
+		ValueOutput projectilesNBT = tag.child("projectiles");
 		int i = 0;
 
 		for (boolean b : projectileFilter.values()) {
@@ -151,7 +151,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			i++;
 		}
 
-		tag.put("projectiles", projectilesNBT);
 		lens.storeAsItemList(tag.list("lens", ItemStack.CODEC));
 	}
 
@@ -159,14 +158,12 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		if (tag.contains("projectiles")) {
-			CompoundTag projectilesNBT = tag.getCompoundOrEmpty("projectiles");
-			int i = 0;
+		ValueInput projectilesNBT = tag.childOrEmpty("projectiles");
+		int i = 0;
 
-			for (EntityType<?> projectileType : projectileFilter.keySet()) {
-				projectileFilter.put(projectileType, projectilesNBT.getBooleanOr("projectile" + i, false));
-				i++;
-			}
+		for (EntityType<?> projectileType : projectileFilter.keySet()) {
+			projectileFilter.put(projectileType, projectilesNBT.getBooleanOr("projectile" + i, false));
+			i++;
 		}
 
 		lens.fromItemList(tag.listOrEmpty("lens", ItemStack.CODEC));

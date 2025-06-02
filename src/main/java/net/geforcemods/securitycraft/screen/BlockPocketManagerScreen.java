@@ -178,7 +178,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		if (!be.isEnabled() && isOwner) {
 			for (StackHoverChecker shc : hoverCheckers) {
 				if (shc.checkHover(mouseX, mouseY)) {
-					guiGraphics.renderTooltip(font, shc.getStack(), mouseX, mouseY);
+					guiGraphics.renderItem(shc.getStack(), mouseX, mouseY); //TODO: works?
 					break;
 				}
 			}

@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -274,11 +273,11 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, WARNING_HIGHLIGHTED_SPRITE, left, top, 24, 24);
 
 			if (mouseX >= left && mouseX <= left + 12 && mouseY >= top && mouseY <= top + 22)
-				guiGraphics.renderComponentTooltip(font, Arrays.asList(levelMismatchInfo), mouseX, mouseY);
+				guiGraphics.setTooltipForNextFrame(font, levelMismatchInfo, mouseX, mouseY); //TODO: works?
 		}
 
 		if (!usesTextField.active && !stack.isEmpty() && usesHoverChecker.checkHover(mouseX, mouseY))
-			guiGraphics.renderComponentTooltip(font, usesHoverChecker.getLines(), mouseX, mouseY);
+			guiGraphics.setComponentTooltipForNextFrame(font, usesHoverChecker.getLines(), mouseX, mouseY); //TODO: works?
 
 		renderTooltip(guiGraphics, mouseX, mouseY);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);

@@ -2,6 +2,9 @@ package net.geforcemods.securitycraft.api;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +25,11 @@ import net.minecraft.world.level.storage.ValueOutput;
  */
 public class Owner {
 	//@formatter:off
+	public static final Codec<Owner> CODEC = RecordCodecBuilder.create(i -> i.group(
+					Codec.STRING.fieldOf("owner").forGetter(Owner::getName),
+					Codec.STRING.fieldOf("ownerUUID").forGetter(Owner::getUUID),
+					Codec.BOOL.optionalFieldOf("ownerValidated", true).forGetter(Owner::isValidated))
+			.apply(i, Owner::new));
 	public static final StreamCodec<RegistryFriendlyByteBuf, Owner> STREAM_CODEC = StreamCodec.composite(
 			ByteBufCodecs.STRING_UTF8, Owner::getName,
 			ByteBufCodecs.STRING_UTF8, Owner::getUUID,

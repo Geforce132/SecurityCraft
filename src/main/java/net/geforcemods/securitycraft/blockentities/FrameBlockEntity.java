@@ -22,9 +22,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +29,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueInput.TypedInputList;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class FrameBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
@@ -89,15 +88,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		ListTag cameras = tag.getListOrEmpty("cameras");
+		//TODO: does list saving and loading work with and the same as old data?
+		TypedInputList<NamedPositions.Entry> cameras = tag.listOrEmpty("cameras", NamedPositions.Entry.CODEC);
 
 		cameraPositions.clear();
-
-		for (int i = 0; i < cameras.size(); i++) {
-			CompoundTag cameraTag = cameras.getCompoundOrEmpty(i);
-
-			cameraPositions.add(cameraTag.isEmpty() ? null : NamedPositions.Entry.CODEC.parse(NbtOps.INSTANCE, cameraTag).getOrThrow());
-		}
+		cameras.forEach(cameraPositions::add);
 
 		GlobalPos newCameraPos = tag.read("current_camera", GlobalPos.CODEC).orElse(null);
 
@@ -113,13 +108,9 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		ListTag camerasTag = new ListTag();
+		TypedOutputList<NamedPositions.Entry> cameras = tag.list("cameras", NamedPositions.Entry.CODEC);
 
-		for (NamedPositions.Entry camera : cameraPositions) {
-			camerasTag.add(camera == null ? new CompoundTag() : NamedPositions.Entry.CODEC.encodeStart(NbtOps.INSTANCE, camera).getOrThrow());
-		}
-
-		tag.put("cameras", camerasTag);
+		cameraPositions.forEach(cameras::add);
 
 		if (currentCameraPosition != null)
 			tag.store("current_camera", GlobalPos.CODEC, currentCameraPosition);

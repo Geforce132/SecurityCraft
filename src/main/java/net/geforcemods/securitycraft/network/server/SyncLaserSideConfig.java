@@ -34,7 +34,7 @@ public record SyncLaserSideConfig(BlockPos pos, CompoundTag sideConfig) implemen
 		if (!player.isSpectator() && level.getBlockEntity(pos) instanceof LaserBlockBlockEntity be && be.isOwnedBy(player)) {
 			BlockState state = level.getBlockState(pos);
 
-			be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfig(sideConfig), player);
+			be.applyNewSideConfig(LaserBlockBlockEntity.loadSideConfigFromTag(sideConfig), player);
 			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}

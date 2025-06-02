@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
+import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -157,6 +158,9 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 		}
 	}
 
+	@SuppressWarnings({
+			"rawtypes", "unchecked"
+	})
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, entity, stack);
@@ -173,7 +177,14 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 						thisBe.insertModule(be.getModule(type), false);
 					}
 
-					thisBe.readOptions(be.writeOptions(new CompoundTag()));
+					//safe, because both blocks are the same and thus have the same options
+					//TODO: test anyway
+					Option[] options = be.customOptions();
+					Option[] thisOptions = thisBe.customOptions();
+
+					for (int i = 0; i < options.length; i++) {
+						thisOptions[i].setValue(options[i].get());
+					}
 
 					if (be.getSaltKey() != null)
 						thisBe.setSaltKey(SaltData.copySaltToNewKey(be.getSaltKey()));

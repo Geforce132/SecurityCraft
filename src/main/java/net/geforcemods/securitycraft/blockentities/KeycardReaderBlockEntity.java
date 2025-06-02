@@ -25,7 +25,6 @@ import net.geforcemods.securitycraft.util.TeamUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -66,13 +65,13 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		CompoundTag acceptedLevelsTag = new CompoundTag();
+		//TODO: does level saving and loading work with and the same as old data?
+		ValueOutput acceptedLevelsTag = tag.child("acceptedLevels");
 
 		for (int i = 1; i <= 5; i++) {
 			acceptedLevelsTag.putBoolean("lvl" + i, acceptedLevels[i - 1]);
 		}
 
-		tag.put("acceptedLevels", acceptedLevelsTag);
 		tag.putInt("signature", signature);
 	}
 
@@ -81,12 +80,11 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		super.loadAdditional(tag);
 
 		//carry over old data
-		if (tag.contains("passLV")) {
+		if (tag.getInt("passLV").isPresent()) {
 			boolean oldRequiresExactKeycard = false;
 			int oldPassLV = tag.getIntOr("passLV", 0) - 1; //old data was 1-indexed, new one is 0-indexed
 
-			if (tag.contains("requiresExactKeycard"))
-				oldRequiresExactKeycard = tag.getBooleanOr("requiresExactKeycard", false);
+			oldRequiresExactKeycard = tag.getBooleanOr("requiresExactKeycard", false);
 
 			for (int i = 0; i < 5; i++) {
 				acceptedLevels[i] = oldRequiresExactKeycard ? i == oldPassLV : i >= oldPassLV;
@@ -94,8 +92,8 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		}
 
 		//don't try to load this data if it doesn't exist, otherwise everything will be "false"
-		if (tag.contains("acceptedLevels")) {
-			CompoundTag acceptedLevelsTag = tag.getCompoundOrEmpty("acceptedLevels");
+		if (tag.child("acceptedLevels").isPresent()) {
+			ValueInput acceptedLevelsTag = tag.childOrEmpty("acceptedLevels");
 
 			for (int i = 1; i <= 5; i++) {
 				acceptedLevels[i - 1] = acceptedLevelsTag.getBooleanOr("lvl" + i, false);

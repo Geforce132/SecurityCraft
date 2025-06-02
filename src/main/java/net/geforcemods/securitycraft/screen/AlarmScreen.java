@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -212,7 +211,7 @@ public class AlarmScreen extends Screen {
 				int length = font.width(soundEventKey);
 
 				if (length >= width - 6 - TEXT_OFFSET)
-					guiGraphics.renderTooltip(font, List.of(soundEventKey), Optional.empty(), left + TEXT_OFFSET - 12, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
+					guiGraphics.setTooltipForNextFrame(font, soundEventKey, left + TEXT_OFFSET - 12, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: does this look the same as before? one parameter was removed
 			}
 		}
 

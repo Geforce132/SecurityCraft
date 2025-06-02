@@ -6,17 +6,17 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueInput.TypedInputList;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
 
 public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	protected List<LinkedBlock> linkedBlocks = new ArrayList<>();
-	private ListTag nbtTagStorage = null;
+	private TypedInputList<LinkedBlock> nbtTagStorage = null;
 
 	protected LinkableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -35,14 +35,13 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		if (tag.contains("linkedBlocks")) {
-			if (!hasLevel()) {
-				nbtTagStorage = tag.getListOrEmpty("linkedBlocks");
-				return;
-			}
-
-			readLinkedBlocks(tag.getListOrEmpty("linkedBlocks"));
+		//TODO: does linked block saving and loading (with and without level) work with and the same as old data?
+		if (!hasLevel()) {
+			nbtTagStorage = tag.listOrEmpty("linkedBlocks", LinkedBlock.CODEC);
+			return;
 		}
+
+		readLinkedBlocks(tag.listOrEmpty("linkedBlocks", LinkedBlock.CODEC));
 	}
 
 	@Override
@@ -50,22 +49,9 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		super.saveAdditional(tag);
 
 		if (!linkedBlocks.isEmpty()) {
-			ListTag tagList = new ListTag();
+			TypedOutputList<LinkedBlock> tagList = tag.list("linkedBlocks", LinkedBlock.CODEC);
 
-			for (LinkedBlock block : linkedBlocks) {
-				CompoundTag toAppend = new CompoundTag();
-
-				if (block != null) {
-					toAppend.putString("blockName", block.getBlockName());
-					toAppend.putInt("blockX", block.getX());
-					toAppend.putInt("blockY", block.getY());
-					toAppend.putInt("blockZ", block.getZ());
-				}
-
-				tagList.add(toAppend);
-			}
-
-			tag.put("linkedBlocks", tagList);
+			linkedBlocks.forEach(tagList::add);
 		}
 	}
 
@@ -85,16 +71,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		super.onOptionChanged(option);
 	}
 
-	private void readLinkedBlocks(ListTag list) {
-		for (int i = 0; i < list.size(); i++) {
-			CompoundTag tag = list.getCompoundOrEmpty(i);
-
-			String name = tag.getStringOr("blockName", "");
-			int x = tag.getIntOr("blockX", 0);
-			int y = tag.getIntOr("blockY", 0);
-			int z = tag.getIntOr("blockZ", 0);
-			LinkedBlock block = new LinkedBlock(name, new BlockPos(x, y, z));
-
+	private void readLinkedBlocks(TypedInputList<LinkedBlock> list) {
+		for (LinkedBlock block : list) {
 			if (hasLevel() && level.isLoaded(block.getPos()) && block.validate(level) && !linkedBlocks.contains(block))
 				link(this, block.asBlockEntity(level));
 		}

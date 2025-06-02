@@ -85,7 +85,9 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
-		tag.put("sideConfig", saveSideConfig(sideConfig));
+
+		//TODO: does side config saving and loading work with and the same as old data?
+		saveSideConfig(tag.child("sideConfig"), sideConfig);
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
 			ItemStack lens = lenses.getItem(i);
@@ -95,7 +97,11 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 	}
 
-	public static CompoundTag saveSideConfig(Map<Direction, Boolean> sideConfig) {
+	public static void saveSideConfig(ValueOutput sideConfigTag, Map<Direction, Boolean> sideConfig) {
+		sideConfig.forEach((dir, enabled) -> sideConfigTag.putBoolean(dir.getName(), enabled));
+	}
+
+	public static CompoundTag saveSideConfigToTag(Map<Direction, Boolean> sideConfig) {
 		CompoundTag sideConfigTag = new CompoundTag();
 
 		sideConfig.forEach((dir, enabled) -> sideConfigTag.putBoolean(dir.getName(), enabled));
@@ -105,7 +111,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
-		sideConfig = loadSideConfig(tag.getCompoundOrEmpty("sideConfig"));
+		sideConfig = loadSideConfig(tag.childOrEmpty("sideConfig"));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
 			lenses.setItemExclusively(i, tag.read("lens" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY)); //TODO: test if 1.21.5 lenses stay in 1.21.6 laser blocks
@@ -114,7 +120,17 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		lenses.setChanged();
 	}
 
-	public static Map<Direction, Boolean> loadSideConfig(CompoundTag sideConfigTag) {
+	public static Map<Direction, Boolean> loadSideConfig(ValueInput sideConfigTag) {
+		EnumMap<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
+
+		for (Direction dir : Direction.values()) {
+			sideConfig.put(dir, sideConfigTag.getBooleanOr(dir.getName(), true));
+		}
+
+		return sideConfig;
+	}
+
+	public static Map<Direction, Boolean> loadSideConfigFromTag(CompoundTag sideConfigTag) {
 		EnumMap<Direction, Boolean> sideConfig = new EnumMap<>(Direction.class);
 
 		for (Direction dir : Direction.values()) {
@@ -141,7 +157,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
 		MenuProvider.super.writeClientSideData(menu, buffer);
 		buffer.writeBlockPos(worldPosition);
-		buffer.writeNbt(LaserBlockBlockEntity.saveSideConfig(sideConfig));
+		buffer.writeNbt(saveSideConfigToTag(sideConfig));
 	}
 
 	@Override
@@ -271,9 +287,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 	@Override
 	public void readOptions(ValueInput tag) {
-		if (tag.contains("enabled"))
-			tag.putBoolean("disabled", !tag.getBooleanOr("enabled", false)); //legacy support
-
 		for (Option<?> option : customOptions()) {
 			option.load(tag);
 		}
@@ -406,6 +419,9 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			LaserBlock.destroyAdjacentLasers(level, worldPosition);
 	}
 
+	@SuppressWarnings({
+			"rawtypes", "unchecked"
+	})
 	public ModuleType synchronizeWith(LaserBlockBlockEntity that) {
 		if (!LinkableBlockEntity.isLinkedWith(this, that)) {
 			Map<ItemStack, Boolean> bothInsertedModules = new Object2BooleanArrayMap<>();
@@ -428,7 +444,15 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 				propagate(new ILinkedAction.ModuleRemoved(type, false), that);
 			}
 
-			readOptions(that.writeOptions(new CompoundTag()));
+			//safe, because both blocks are the same and thus have the same options
+			//TODO: test anyway
+			Option[] options = that.customOptions();
+			Option[] thisOptions = customOptions();
+
+			for (int i = 0; i < options.length; i++) {
+				thisOptions[i].setValue(options[i].get());
+			}
+
 			LinkableBlockEntity.link(this, that);
 
 			for (Entry<ItemStack, Boolean> entry : bothInsertedModules.entrySet()) {

@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -183,11 +182,11 @@ public class SCManualScreen extends Screen {
 
 				if (chc != null && chc.checkHover(mouseX, mouseY)) {
 					if (chc instanceof TextHoverChecker thc && thc.getName() != null) {
-						guiGraphics.renderComponentTooltip(font, thc.getLines(), mouseX, mouseY);
+						guiGraphics.setComponentTooltipForNextFrame(font, thc.getLines(), mouseX, mouseY); //TODO: works?
 						break;
 					}
 					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty()) {
-						guiGraphics.renderTooltip(font, displays[i].getCurrentStack(), mouseX, mouseY);
+						guiGraphics.renderItem(displays[i].getCurrentStack(), mouseX, mouseY); //TODO: works?
 						break;
 					}
 				}
@@ -619,7 +618,7 @@ public class SCManualScreen extends Screen {
 						int baseY = top + border - (int) scrollDistance;
 
 						if (length >= width - 6) //6 = barWidth
-							guiGraphics.renderTooltip(font, List.of(Component.literal(patron)), Optional.empty(), left - 10, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
+							guiGraphics.setTooltipForNextFrame(font, Component.literal(patron), left - 10, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: does this look the same as before? one parameter was removed
 					}
 
 					if (patrons.isEmpty()) {

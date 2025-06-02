@@ -6,7 +6,6 @@ import com.mojang.authlib.properties.PropertyMap;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IViewActivated;
 import net.geforcemods.securitycraft.api.Option;
@@ -25,8 +24,6 @@ import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -180,20 +177,13 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 		super.saveAdditional(tag);
 
 		if (!StringUtil.isNullOrEmpty(getOwner().getName()) && !(getOwner().getName().equals("owner")) && ownerProfile != null)
-			tag.put("ownerProfile", ResolvableProfile.CODEC.encodeStart(NbtOps.INSTANCE, ownerProfile).getOrThrow());
+			tag.store("ownerProfile", ResolvableProfile.CODEC, ownerProfile);
 	}
 
 	@Override
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
-
-		if (tag.contains("ownerProfile")) {
-			CompoundTag ownerProfileTag = tag.getCompoundOrEmpty("ownerProfile");
-
-			//for upgrading pre-1.20.5 scanners
-			ownerProfileTag.getString("Name").ifPresent(name -> ownerProfileTag.putString("name", name));
-			ResolvableProfile.CODEC.parse(NbtOps.INSTANCE, ownerProfileTag).resultOrPartial(name -> SecurityCraft.LOGGER.error("Failed to load profile from player head: {}", name)).ifPresent(this::setOwnerProfile);
-		}
+		setOwnerProfile(tag.read("ownerProfile", ResolvableProfile.CODEC).orElse(null));
 	}
 
 	@Override

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.IModuleInventoryWithContainer;
@@ -19,13 +22,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -41,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
@@ -103,11 +101,11 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		ListTag entryList = new ListTag();
+		//TODO: does list saving and loading work with and the same as old data?
+		TypedOutputList<ChangeEntry> entryList = tag.list("entries", ChangeEntry.CODEC);
 
-		entries.stream().map(ChangeEntry::save).forEach(entryList::add);
+		entries.forEach(entryList::add);
 		tag.putInt("mode", mode.ordinal());
-		tag.put("entries", entryList);
 
 		if (!filter.isEmpty())
 			tag.store("filter", ItemStack.CODEC, filter);
@@ -127,7 +125,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 		mode = DetectionMode.values()[modeOrdinal];
 		entries = new ArrayList<>();
-		tag.getListOrEmpty("entries").stream().map(element -> ChangeEntry.load(level, (CompoundTag) element)).forEach(entries::add);
+		tag.listOrEmpty("entries", ChangeEntry.CODEC).forEach(entries::add);
 		tag.read("filter", ItemStack.CODEC).orElse(ItemStack.EMPTY);
 		showHighlights = tag.getBooleanOr("ShowHighlights", false);
 		setColor(tag.getIntOr("Color", 0xFF0000FF));
@@ -323,35 +321,16 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	public static record ChangeEntry(String player, UUID uuid, long timestamp, DetectionMode action, BlockPos pos, BlockState state) {
-		public CompoundTag save() {
-			CompoundTag tag = new CompoundTag();
-
-			tag.putString("player", player);
-			tag.store("uuid", UUIDUtil.CODEC, uuid);
-			tag.putLong("timestamp", timestamp);
-			tag.putInt("action", action.ordinal());
-			tag.putLong("pos", pos.asLong());
-			tag.put("state", NbtUtils.writeBlockState(state));
-			return tag;
-		}
-
-		public static ChangeEntry load(Level level, CompoundTag tag) {
-			HolderGetter<Block> holderGetter = level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK;
-			int actionOrdinal = tag.getIntOr("action", 0);
-
-			if (actionOrdinal < 0 || actionOrdinal >= DetectionMode.values().length)
-				actionOrdinal = 0;
-
-			//@formatter:off
-			return new ChangeEntry(
-					tag.getStringOr("player", ""),
-					tag.read("uuid", UUIDUtil.CODEC).orElse(null),
-					tag.getLongOr("timestamp", 0),
-					DetectionMode.values()[actionOrdinal],
-					BlockPos.of(tag.getLongOr("pos", 0)),
-					NbtUtils.readBlockState(holderGetter, tag.getCompoundOrEmpty("state")));
-			//@formatter:on
-		}
+		//@formatter:off
+		public static final Codec<ChangeEntry> CODEC = RecordCodecBuilder.create(i -> i.group(
+						Codec.STRING.fieldOf("player").forGetter(ChangeEntry::player),
+						UUIDUtil.CODEC.fieldOf("uuid").forGetter(ChangeEntry::uuid),
+						Codec.LONG.fieldOf("timestamp").forGetter(ChangeEntry::timestamp),
+						Codec.INT.fieldOf("action").xmap(ordinal -> DetectionMode.values()[ordinal], DetectionMode::ordinal).forGetter(ChangeEntry::action),
+						Codec.LONG.fieldOf("pos").xmap(BlockPos::of, BlockPos::asLong).forGetter(ChangeEntry::pos),
+						BlockState.CODEC.fieldOf("state").forGetter(ChangeEntry::state)) //TODO: is it correct to use the codec instead of NbtUtils#write/readBlockState?
+			.apply(i, ChangeEntry::new));
+		//@formatter:on
 	}
 
 	@Override

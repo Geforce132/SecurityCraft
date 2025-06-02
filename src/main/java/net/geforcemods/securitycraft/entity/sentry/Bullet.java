@@ -9,7 +9,6 @@ import com.google.common.collect.Sets;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -67,18 +66,16 @@ public class Bullet extends AbstractArrow {
 		super.addAdditionalSaveData(tag);
 
 		if (!potionEffects.isEmpty())
-			tag.store("PotionEffects", MobEffectInstance.CODEC.listOf(), registryAccess().createSerializationContext(NbtOps.INSTANCE), new ArrayList<>(potionEffects));
+			tag.store("PotionEffects", MobEffectInstance.CODEC.listOf(), new ArrayList<>(potionEffects));
 	}
 
 	@Override
 	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
 
-		if (tag.contains("PotionEffects")) {
-			List<MobEffectInstance> mobEffectList = tag.read("PotionEffects", MobEffectInstance.CODEC.listOf(), registryAccess().createSerializationContext(NbtOps.INSTANCE)).orElse(List.of());
+		List<MobEffectInstance> mobEffectList = tag.read("PotionEffects", MobEffectInstance.CODEC.listOf()).orElse(List.of());
 
-			potionEffects = new ArrayList<>(mobEffectList);
-		}
+		potionEffects = new ArrayList<>(mobEffectList);
 	}
 
 	@Override

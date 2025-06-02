@@ -27,7 +27,6 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -402,7 +401,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void addAdditionalSaveData(ValueOutput tag) {
 		ItemStack allowlistModule = getAllowlistModule();
 
-		tag.put("TileEntityData", getOwnerTag());
+		tag.store("TileEntityData", Owner.CODEC, getOwner());
 
 		if (!allowlistModule.isEmpty())
 			tag.store("InstalledWhitelist", ItemStack.CODEC, allowlistModule);
@@ -415,18 +414,9 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		super.addAdditionalSaveData(tag);
 	}
 
-	private CompoundTag getOwnerTag() {
-		CompoundTag tag = new CompoundTag();
-		Owner owner = entityData.get(OWNER);
-
-		owner.save(tag, needsValidation());
-		return tag;
-	}
-
 	@Override
 	public void readAdditionalSaveData(ValueInput tag) {
-		CompoundTag teTag = tag.getCompoundOrEmpty("TileEntityData");
-		Owner owner = Owner.fromCompound(teTag);
+		Owner owner = tag.read("TileEntityData", Owner.CODEC).orElseGet(Owner::new);
 		float savedHeadRotation = tag.getFloatOr("HeadRotation", 0.0F);
 
 		entityData.set(OWNER, owner);

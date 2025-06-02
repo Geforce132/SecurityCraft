@@ -22,7 +22,6 @@ import net.geforcemods.securitycraft.network.server.SyncRiftStabilizer;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -124,7 +123,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		CompoundTag teleportationNBT = new CompoundTag();
+		//TODO: does type saving and loading work with and the same as old data?
+		ValueOutput teleportationNBT = tag.child("teleportationTypes");
 		int i = 0;
 
 		for (boolean b : teleportationFilter.values()) {
@@ -132,7 +132,6 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			i++;
 		}
 
-		tag.put("teleportationTypes", teleportationNBT);
 		tag.putDouble("lastTeleportDistance", lastTeleportDistance);
 
 		if (lastTeleportationType != null)
@@ -143,14 +142,12 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		if (tag.contains("teleportationTypes")) {
-			CompoundTag teleportationNBT = tag.getCompoundOrEmpty("teleportationTypes");
-			int i = 0;
+		ValueInput teleportationNBT = tag.childOrEmpty("teleportationTypes");
+		int i = 0;
 
-			for (TeleportationType teleportationType : teleportationFilter.keySet()) {
-				teleportationFilter.put(teleportationType, teleportationNBT.getBooleanOr("teleportationType" + i, false));
-				i++;
-			}
+		for (TeleportationType teleportationType : teleportationFilter.keySet()) {
+			teleportationFilter.put(teleportationType, teleportationNBT.getBooleanOr("teleportationType" + i, false));
+			i++;
 		}
 
 		lastTeleportDistance = tag.getDoubleOr("lastTeleportDistance", 0.0D);

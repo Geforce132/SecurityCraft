@@ -35,7 +35,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -302,7 +301,6 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	protected void addAdditionalSaveData(ValueOutput tag) {
-		CompoundTag ownerTag = new CompoundTag();
 		long cooldownLeft;
 
 		super.addAdditionalSaveData(tag);
@@ -311,8 +309,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		writeOptions(tag);
 		cooldownLeft = getCooldownEnd() - System.currentTimeMillis();
 		tag.putLong("cooldownLeft", cooldownLeft <= 0 ? -1 : cooldownLeft);
-		getOwner().save(ownerTag, needsValidation());
-		tag.put("owner", ownerTag);
+		tag.store("owner", Owner.CODEC, getOwner());
 		savePasscodeAndSalt(tag);
 	}
 
@@ -323,7 +320,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		entityData.set(MODULE_STATES, readModuleStates(tag));
 		readOptions(tag);
 		entityData.set(COOLDOWN_END, System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0));
-		entityData.set(OWNER, Owner.fromCompound(tag.getCompoundOrEmpty("owner")));
+		entityData.set(OWNER, tag.read("owner", Owner.CODEC).orElseGet(Owner::new));
 		loadPasscodeAndSaltKey(tag);
 	}
 
