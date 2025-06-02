@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -37,6 +39,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueInput;
 
 public class UniversalBlockReinforcerItem extends Item {
 	public UniversalBlockReinforcerItem(Item.Properties properties) {
@@ -143,8 +146,11 @@ public class UniversalBlockReinforcerItem extends Item {
 				be = level.getBlockEntity(pos);
 
 				if (be != null) { //in case the converted block gets removed immediately after it's set
-					if (tag != null)
-						be.loadWithComponents(tag, level.registryAccess());
+					if (tag != null) {
+						try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(be.problemPath(), SecurityCraft.LOGGER)) {
+							be.loadWithComponents(TagValueInput.create(problemReporter, level.registryAccess(), tag));
+						}
+					}
 
 					if (isReinforcing)
 						((IOwnable) be).setOwner(owner.getUUID(), owner.getName());

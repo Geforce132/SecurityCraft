@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks;
 import java.util.Optional;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
@@ -24,6 +25,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionResult;
@@ -54,6 +56,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -376,7 +379,10 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 			chest.clearContent();
 			level.setBlockAndUpdate(pos, convertedBlock.defaultBlockState().setValue(FACING, facing).setValue(TYPE, type));
 			chest = (ChestBlockEntity) level.getBlockEntity(pos);
-			chest.loadWithComponents(tag, level.registryAccess());
+
+			try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(chest.problemPath(), SecurityCraft.LOGGER)) {
+				chest.loadWithComponents(TagValueInput.create(problemReporter, level.registryAccess(), tag));
+			}
 
 			if (protect) {
 				if (player != null)
