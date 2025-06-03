@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
@@ -21,25 +19,20 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap.Builder;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueInput.TypedInputList;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
 
 public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, IEMPAffectedBE {
 	/** The delay between each ping sound in ticks */
@@ -184,17 +177,11 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		ListTag list = new ListTag();
+		TypedOutputList<GlobalPos> linkedBlocksList = tag.list("linked_blocks", GlobalPos.CODEC);
+		TypedOutputList<NoteWrapper> notesList = tag.list("notes", NoteWrapper.CODEC);
 
-		for (GlobalPos blockToSave : linkedBlocks) {
-			if (blockToSave == null)
-				list.add(new CompoundTag());
-			else
-				list.add(GlobalPos.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), blockToSave).getOrThrow());
-		}
-
-		tag.put("linked_blocks", list);
-		saveNotes(tag);
+		linkedBlocks.forEach(linkedBlocksList::add);
+		recordedNotes.forEach(notesList::add);
 		tag.putBoolean("emitsPings", emitsPings);
 		tag.putBoolean("isActive", isActive);
 		tag.putBoolean("isRecording", isRecording);
@@ -210,34 +197,15 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
+		//TODO: does linked block saving and loading work with and the same as old data? test loading data from the old version with multiple bound blocks, and missing ones inbetween
+		//what happens when this tries to load old BE data that has an empty compound tag?
+		TypedInputList<GlobalPos> linkedBlocksList = tag.listOrEmpty("linked_blocks", GlobalPos.CODEC);
+		TypedInputList<NoteWrapper> notesList = tag.listOrEmpty("notes", NoteWrapper.CODEC);
+
 		linkedBlocks = new ArrayList<>();
-
-		if (tag.contains("linked_blocks")) {
-			ListTag list = tag.getListOrEmpty("linked_blocks");
-
-			for (Tag entry : list) {
-				try {
-					GlobalPos.CODEC.decode(NbtOps.INSTANCE, entry).result().ifPresentOrElse(pair -> linkedBlocks.add(pair.getFirst()), () -> linkedBlocks.add(null));
-				}
-				catch (Exception exception) {
-					SecurityCraft.LOGGER.error("Failed to load global pos in Sonic Security System at position {}: {}", worldPosition, entry, exception);
-				}
-			}
-		}
-		else if (tag.contains("LinkedBlocks")) {
-			ListTag list = tag.getListOrEmpty("LinkedBlocks");
-
-			for (int i = 0; i < list.size(); i++) {
-				CompoundTag linkedBlock = list.getCompoundOrEmpty(i);
-				BlockPos linkedBlockPos = Utils.readBlockPos(linkedBlock);
-
-				linkedBlocks.add(new GlobalPos(level != null ? level.dimension() : ResourceKey.create(Registries.DIMENSION, SecurityCraft.mcResLoc("overworld")), linkedBlockPos));
-			}
-		}
-
 		recordedNotes.clear();
-		loadNotes(tag);
-
+		linkedBlocksList.forEach(linkedBlocks::add);
+		notesList.forEach(recordedNotes::add);
 		emitsPings = tag.getBooleanOr("emitsPings", emitsPings);
 		isActive = tag.getBooleanOr("isActive", isActive);
 		isRecording = tag.getBooleanOr("isRecording", false);
@@ -247,42 +215,6 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		powerCooldown = tag.getIntOr("powerCooldown", 0);
 		shutDown = tag.getBooleanOr("shutDown", false);
 		disableBlocksWhenTuneIsPlayed = tag.getBooleanOr("disableBlocksWhenTuneIsPlayed", false);
-	}
-
-	/**
-	 * Saves this block entity's notes to a tag
-	 *
-	 * @param tag The tag to save the notes to
-	 */
-	public void saveNotes(ValueOutput tag) {
-		ListTag list = new ListTag();
-
-		for (NoteWrapper note : recordedNotes) {
-			list.add(NoteWrapper.CODEC.encodeStart(lookupProvider.createSerializationContext(NbtOps.INSTANCE), note).getOrThrow());
-		}
-
-		tag.put("notes", list);
-	}
-
-	/**
-	 * Loads notes saved on tag to a collection
-	 *
-	 * @param tag The tag containing the notes
-	 */
-	public void loadNotes(ValueInput tag) {
-		recordedNotes = new ArrayList<>();
-
-		if (tag.contains("notes"))
-			recordedNotes.addAll(Notes.CODEC.decode(NbtOps.INSTANCE, tag).result().get().getFirst().notes());
-		else if (tag.contains("Notes")) {
-			ListTag list = tag.getListOrEmpty("Notes");
-
-			for (int i = 0; i < list.size(); i++) {
-				CompoundTag note = list.getCompoundOrEmpty(i);
-
-				recordedNotes.add(new NoteWrapper(note.getIntOr("noteID", 0), note.getStringOr("instrument", ""), note.getStringOr("customSoundId", "")));
-			}
-		}
 	}
 
 	/**
@@ -517,10 +449,11 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		GlobalPositions sssLinkedBlocks = input.get(SCContent.SSS_LINKED_BLOCKS);
 
 		if (sssLinkedBlocks != null)
-			linkedBlocks = sssLinkedBlocks.positions().stream().collect(Collectors.toList()); //needs to be modifiable
+			linkedBlocks = new ArrayList<>(sssLinkedBlocks.positions()); //needs to be modifiable
 		else
 			linkedBlocks = new ArrayList<>();
 
+		linkedBlocks.removeIf(Objects::isNull);
 		recordedNotes = new ArrayList<>(input.getOrDefault(SCContent.NOTES, Notes.EMPTY).notes());
 	}
 
