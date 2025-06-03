@@ -37,11 +37,11 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 		//TODO: does linked block saving and loading (with and without level) work with and the same as old data?
 		if (!hasLevel()) {
-			nbtTagStorage = tag.listOrEmpty("linkedBlocks", LinkedBlock.CODEC);
+			nbtTagStorage = tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC);
 			return;
 		}
 
-		readLinkedBlocks(tag.listOrEmpty("linkedBlocks", LinkedBlock.CODEC));
+		readLinkedBlocks(tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC));
 	}
 
 	@Override
@@ -58,7 +58,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	@Override
 	public void setRemoved() {
 		for (LinkedBlock block : linkedBlocks) {
-			if (level.isLoaded(block.getPos()))
+			if (level.isLoaded(block.pos()))
 				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
 		}
 
@@ -73,7 +73,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 	private void readLinkedBlocks(TypedInputList<LinkedBlock> list) {
 		for (LinkedBlock block : list) {
-			if (hasLevel() && level.isLoaded(block.getPos()) && block.validate(level) && !linkedBlocks.contains(block))
+			if (hasLevel() && level.isLoaded(block.pos()) && block.validate(level) && !linkedBlocks.contains(block))
 				link(this, block.asBlockEntity(level));
 		}
 	}
@@ -152,12 +152,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		while (linkedBlockIterator.hasNext()) {
 			LinkedBlock block = linkedBlockIterator.next();
 
-			if (level.isLoaded(block.getPos()) && !excludedBEs.contains(block.asBlockEntity(level))) {
+			if (level.isLoaded(block.pos()) && !excludedBEs.contains(block.asBlockEntity(level))) {
 				if (block.validate(level)) {
-					BlockState state = level.getBlockState(block.getPos());
+					BlockState state = level.getBlockState(block.pos());
 
 					block.asBlockEntity(level).onLinkedBlockAction(action, excludedBEs);
-					level.sendBlockUpdated(block.getPos(), state, state, 3);
+					level.sendBlockUpdated(block.pos(), state, state, 3);
 				}
 				else
 					linkedBlockIterator.remove();
