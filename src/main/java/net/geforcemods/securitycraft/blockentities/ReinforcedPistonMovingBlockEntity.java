@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
 import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
@@ -47,7 +48,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IOwnable { //this class doesn't extend PistonBlockEntity because almost all of that class' content is private
 	private static final BlockState DEFAULT_BLOCK_STATE = Blocks.AIR.defaultBlockState();
 	private BlockState movedState = DEFAULT_BLOCK_STATE;
-	private CompoundTag movedBlockEntityTag;
+	private BlockEntity beToMove;
+	private ValueInput movedBlockEntityTag;
 	private Direction direction;
 	private boolean extending = false;
 	private boolean isSourcePiston = false;
@@ -63,14 +65,32 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		super(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state, BlockState movedState, CompoundTag tag, Direction direction, boolean extending, boolean shouldHeadBeRendered) {
+	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state, BlockState movedState, BlockEntity beToMove, Direction direction, boolean extending, boolean shouldHeadBeRendered) {
 		this(pos, state);
 		this.movedState = movedState;
-		this.movedBlockEntityTag = tag;
 		this.direction = direction;
 		this.extending = extending;
 		this.isSourcePiston = shouldHeadBeRendered;
-		this.owner = Owner.fromCompound(tag);
+		this.beToMove = beToMove;
+
+		try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(beToMove.problemPath(), SecurityCraft.LOGGER)) {
+			HolderLookup.Provider registryAccess = beToMove.getLevel().registryAccess();
+			TagValueOutput valueOutput = (TagValueOutput) saveBeToMove(TagValueOutput.createWithContext(problemReporter, registryAccess));
+			ValueInput valueInput;
+			CompoundTag tag;
+
+			tag = valueOutput.buildResult();
+			this.owner = Owner.fromCompound(tag);
+			valueInput = TagValueInput.create(problemReporter, registryAccess, tag);
+		}
+	}
+
+	private ValueOutput saveBeToMove(ValueOutput tag) {
+		beToMove.saveWithoutMetadata(tag);
+		tag.putInt("x", getBlockPos().getX());
+		tag.putInt("y", getBlockPos().getY());
+		tag.putInt("z", getBlockPos().getZ());
+		return tag;
 	}
 
 	@Override
@@ -294,10 +314,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					BlockEntity be = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
 
 					if (be != null) {
-						try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(be.problemPath(), SecurityCraft.LOGGER)) {
-							be.loadWithComponents(TagValueInput.create(problemReporter, level.registryAccess(), movedBlockEntityTag));
-						}
-
+						be.loadWithComponents(movedBlockEntityTag);
 						level.setBlockEntity(be);
 
 						if (be instanceof IModuleInventory moduleInv) {
@@ -354,10 +371,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							BlockEntity storedBe = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(be.worldPosition, pushedState) : null;
 
 							if (storedBe != null) {
-								try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(storedBe.problemPath(), SecurityCraft.LOGGER)) {
-									storedBe.loadWithComponents(TagValueInput.create(problemReporter, level.registryAccess(), be.movedBlockEntityTag));
-								}
-
+								storedBe.loadWithComponents(be.movedBlockEntityTag);
 								level.setBlockEntity(storedBe);
 
 								if (storedBe instanceof IModuleInventory moduleInv) {
@@ -398,13 +412,12 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		lastProgress = progress;
 		extending = tag.getBooleanOr("extending", false);
 		isSourcePiston = tag.getBooleanOr("source", false);
-		movedBlockEntityTag = (CompoundTag) tag.get("movedBlockEntityTag");
+		movedBlockEntityTag = tag.childOrEmpty("movedBlockEntityTag");
 		owner.load(tag);
 	}
 
 	@Override
 	public void saveAdditional(ValueOutput tag) {
-
 		super.saveAdditional(tag);
 		tag.store("blockState", BlockState.CODEC, movedState);
 		tag.store("facing", Direction.LEGACY_ID_CODEC, direction);
@@ -412,11 +425,14 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		tag.putBoolean("extending", extending);
 		tag.putBoolean("source", isSourcePiston);
 
-		if (movedBlockEntityTag != null)
-			tag.put("movedBlockEntityTag", movedBlockEntityTag);
+		if (beToMove != null) {
+			ValueOutput child = tag.child("movedBlockEntityTag");
 
-		if (owner != null && movedBlockEntityTag != null)
-			owner.save(movedBlockEntityTag, needsValidation());
+			saveBeToMove(child);
+
+			if (owner != null)
+				owner.save(child, needsValidation());
+		}
 	}
 
 	public VoxelShape getCollisionShape(BlockGetter level, BlockPos pos) {

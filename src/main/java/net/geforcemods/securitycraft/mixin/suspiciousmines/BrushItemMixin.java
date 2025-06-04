@@ -47,7 +47,7 @@ public class BrushItemMixin {
 		if (hitResult.getType() != Type.MISS)
 			direction = hitResult.getLocation();
 
-		HitResult hitResult1 = ProjectileUtil.getEntityHitResult(level, player, eyePosition, direction, player.getBoundingBox().expandTowards(viewVector).inflate(1.0D), entitySelector);
+		HitResult hitResult1 = ProjectileUtil.getEntityHitResult(level, player, eyePosition, direction, player.getBoundingBox().expandTowards(viewVector).inflate(1.0D), entitySelector, 0.0F);
 
 		if (hitResult1 != null)
 			hitResult = hitResult1;
