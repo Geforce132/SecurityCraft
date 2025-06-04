@@ -99,13 +99,10 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 
 			guiGraphics.drawString(font, info.blockName, left + 13, yStart, 0xC6C6C6, false);
 		}
-
-		guiGraphics.flush();
 	}
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		guiGraphics.flush();
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		//draw tooltip for long block names

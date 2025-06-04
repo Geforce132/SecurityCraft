@@ -123,7 +123,6 @@ public class UsernameLoggerScreen extends Screen {
 
 		@Override
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-			guiGraphics.flush();
 			super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 			if (be.isOwnedBy(minecraft.player)) {
@@ -172,8 +171,6 @@ public class UsernameLoggerScreen extends Screen {
 				if (be.getPlayers()[i] != null && !be.getPlayers()[i].equals(""))
 					guiGraphics.drawString(font, be.getPlayers()[i], left + width / 2 - font.width(be.getPlayers()[i]) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
 			}
-
-			guiGraphics.flush();
 		}
 
 		@Override

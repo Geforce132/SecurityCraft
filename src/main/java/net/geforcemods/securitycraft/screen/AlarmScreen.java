@@ -199,7 +199,6 @@ public class AlarmScreen extends Screen {
 
 		@Override
 		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-			guiGraphics.flush();
 			super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 			int baseY = top + border - (int) scrollDistance;
@@ -246,8 +245,6 @@ public class AlarmScreen extends Screen {
 				guiGraphics.drawString(font, name, left + TEXT_OFFSET, yStart, 0xC6C6C6, false);
 				guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? PLAY_SOUND_HIGHLIGHTED_SPRITE : PLAY_SOUND_SPRITE, left, yStart - 1, 10, 10);
 			}
-
-			guiGraphics.flush();
 		}
 
 		private Component getSoundEventComponent(ResourceLocation soundEvent) {

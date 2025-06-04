@@ -660,8 +660,6 @@ public class SCManualScreen extends Screen {
 				if (patron != null && !patron.isEmpty())
 					guiGraphics.drawString(font, patron, left + 2, relativeY + (SLOT_HEIGHT * i), 0, false);
 			}
-
-			guiGraphics.flush();
 		}
 
 		public void fetchPatrons() {

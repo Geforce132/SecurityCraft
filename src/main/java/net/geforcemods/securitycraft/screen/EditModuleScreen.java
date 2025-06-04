@@ -280,12 +280,6 @@ public class EditModuleScreen extends Screen {
 		}
 
 		@Override
-		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-			guiGraphics.flush();
-			super.render(guiGraphics, mouseX, mouseY, partialTick);
-		}
-
-		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button) {
 			if (isMouseOver(mouseX, mouseY) && mouseX < left + width - 6) {
 				int clickedIndex = ((int) (mouseY - top + scrollDistance - border)) / SLOT_HEIGHT;
@@ -331,8 +325,6 @@ public class EditModuleScreen extends Screen {
 					if (!name.isEmpty())
 						guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
 				}
-
-				guiGraphics.flush();
 			}
 		}
 

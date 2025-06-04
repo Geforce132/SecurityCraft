@@ -86,7 +86,6 @@ public class ToggleScrollList<T> extends ScrollPanel {
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		guiGraphics.flush();
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 		int baseY = top + border - (int) scrollDistance;
@@ -131,8 +130,6 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, be.getFilter(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, left + 1, yStart - 3, 12, 12);
 			i++;
 		}
-
-		guiGraphics.flush();
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -23,20 +22,15 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.render.state.pip.GuiBlockModelRenderState;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.BlockRenderDispatcher;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.BlockItem;
@@ -47,7 +41,6 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -127,27 +120,16 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		PoseStack pose = guiGraphics.pose();
+		Lighting lighting = minecraft.gameRenderer.getLighting();
+		int x = xStart + previewXTranslation;
+		int y = yStart + previewYTranslation;
 
 		DEFAULT_ROTATION.mul(dragRotation, rotation);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
-		pose.pushPose();
-		pose.translate(xStart + previewXTranslation, yStart + previewYTranslation, 100);
-		pose.scale(-24.0F, -24.0F, -24.0F);
-		pose.translate(0.5F, 0.5F, 0.5F);
-		pose.mulPose(rotation.rotateY((float) Math.toRadians(-90.0D)));
-		pose.translate(-0.5F, -0.5F, -0.5F);
-		Lighting.setupForEntityInInventory(rotation);
-		renderBlockModel(state, pose, bufferSource);
-
-		if (beRenderer != null)
-			beRenderer.render(be, partialTick, pose, bufferSource, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, minecraft.gameRenderer.getMainCamera().getPosition());
-
-		pose.popPose();
-		guiGraphics.flush();
-		Lighting.setupFor3DItems();
+		//TODO: width/height ok?
+		guiGraphics.guiRenderState.submitPicturesInPictureState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, rotation, x, y, x + 100, y + 100, 1.0F, guiGraphics.scissorStack.peek()));
 
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
@@ -259,15 +241,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			}
 			else
 				be.setBlockState(state);
-		}
-	}
-
-	public void renderBlockModel(BlockState state, PoseStack pose, MultiBufferSource bufferSource) {
-		if (state.getRenderShape() == RenderShape.MODEL) {
-			BlockRenderDispatcher blockRenderer = minecraft.getBlockRenderer();
-			BlockStateModel blockModel = blockRenderer.getBlockModel(state);
-
-			blockRenderer.getModelRenderer().tesselateWithoutAO(fullbrightBlockAndTintGetter, blockModel.collectParts(minecraft.level, BlockPos.ZERO, state, RandomSource.create(42L)), state, BlockPos.ZERO, pose, bufferSource::getBuffer, false, OverlayTexture.NO_OVERLAY);
 		}
 	}
 
