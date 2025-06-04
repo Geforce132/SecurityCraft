@@ -129,7 +129,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		//TODO: width/height ok?
-		guiGraphics.guiRenderState.submitPicturesInPictureState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, rotation, x, y, x + 100, y + 100, 1.0F, guiGraphics.scissorStack.peek()));
+		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, rotation, x, y, x + 100, y + 100, 1.0F, guiGraphics.peekScissorStack()));
 
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
