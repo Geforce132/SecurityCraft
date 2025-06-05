@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.RenderTypeHelper;
 
 public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockModelRenderState> {
-	protected GuiBlockModelRenderer(BufferSource buffer) {
+	public GuiBlockModelRenderer(BufferSource buffer) {
 		super(buffer);
 	}
 

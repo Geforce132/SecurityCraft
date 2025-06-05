@@ -103,6 +103,7 @@ import net.geforcemods.securitycraft.screen.SingleLensScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
+import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderer;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
@@ -158,6 +159,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterPictureInPictureRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
@@ -368,6 +370,11 @@ public class ClientHandler {
 	public static void registerGuiLayers(RegisterGuiLayersEvent event) {
 		event.registerAboveAll(CAMERA_LAYER, SCClientEventHandler::cameraOverlay);
 		LayerToggleHandler.disable(CAMERA_LAYER);
+	}
+
+	@SubscribeEvent
+	public static void registerPipRenderers(RegisterPictureInPictureRenderersEvent event) {
+		event.register(GuiBlockModelRenderer::new);
 	}
 
 	@SubscribeEvent
