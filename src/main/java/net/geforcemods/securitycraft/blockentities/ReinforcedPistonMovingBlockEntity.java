@@ -76,12 +76,11 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(beToMove.problemPath(), SecurityCraft.LOGGER)) {
 			HolderLookup.Provider registryAccess = beToMove.getLevel().registryAccess();
 			TagValueOutput valueOutput = (TagValueOutput) saveBeToMove(TagValueOutput.createWithContext(problemReporter, registryAccess));
-			ValueInput valueInput;
 			CompoundTag tag;
 
 			tag = valueOutput.buildResult();
 			this.owner = Owner.fromCompound(tag);
-			valueInput = TagValueInput.create(problemReporter, registryAccess, tag);
+			movedBlockEntityTag = TagValueInput.create(problemReporter, registryAccess, tag);
 		}
 	}
 

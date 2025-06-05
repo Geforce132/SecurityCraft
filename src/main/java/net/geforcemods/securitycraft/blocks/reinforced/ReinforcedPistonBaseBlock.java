@@ -44,7 +44,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.redstone.ExperimentalRedstoneUtils;
 import net.minecraft.world.level.redstone.Orientation;
-import net.minecraft.world.level.storage.TagValueOutput;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.EventHooks;
 
@@ -278,7 +277,6 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				BlockState stateToMove = level.getBlockState(posToMove);
 				BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, direction);
 				BlockEntity beToMove = level.getBlockEntity(posToMove);
-				TagValueOutput tag = null;
 
 				posToMove = posToMove.relative(direction);
 

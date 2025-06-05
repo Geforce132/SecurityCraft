@@ -7,7 +7,6 @@ import java.util.List;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -22,9 +21,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.render.state.pip.GuiBlockModelRenderState;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -119,8 +116,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		BufferSource bufferSource = minecraft.renderBuffers().bufferSource();
-		Lighting lighting = minecraft.gameRenderer.getLighting();
 		int x = xStart + previewXTranslation;
 		int y = yStart + previewYTranslation;
 
