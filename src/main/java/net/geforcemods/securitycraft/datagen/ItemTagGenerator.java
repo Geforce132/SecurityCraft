@@ -7,12 +7,12 @@ import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
 
-public class ItemTagGenerator extends ItemTagsProvider {
+public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagsProvider) {
 		super(output, lookupProvider, blockTagsProvider, SecurityCraft.MODID);
 	}
@@ -36,7 +36,7 @@ public class ItemTagGenerator extends ItemTagsProvider {
 				SCContent.KEYCARD_LVL_3.get(),
 				SCContent.KEYCARD_LVL_4.get(),
 				SCContent.KEYCARD_LVL_5.get());
-		tag(SCTags.Items.KEYCARD_HOLDER_CAN_HOLD).addTag(SCTags.Items.KEYCARDS).add(SCContent.LIMITED_USE_KEYCARD.getKey());
+		tag(SCTags.Items.KEYCARD_HOLDER_CAN_HOLD).addTag(SCTags.Items.KEYCARDS).add(SCContent.LIMITED_USE_KEYCARD.get());
 		tag(SCTags.Items.MODULES).add(
 				SCContent.ALLOWLIST_MODULE.get(),
 				SCContent.DENYLIST_MODULE.get(),
