@@ -22,6 +22,7 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 
 	@Override
 	public void draw(ReinforcerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
 		guiGraphics.drawString(Minecraft.getInstance().font, OUTPUT_TEXT, 24, 5, 0x404040, false);
 	}
 
