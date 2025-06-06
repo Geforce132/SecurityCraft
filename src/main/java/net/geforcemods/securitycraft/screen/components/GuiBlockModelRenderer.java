@@ -36,9 +36,8 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 	protected void renderToTexture(GuiBlockModelRenderState state, PoseStack pose) {
 		Minecraft mc = Minecraft.getInstance();
 
-//		pose.translate(state.x0(), state.y0(), 100);
-		pose.scale(-24.0F, -24.0F, -24.0F);
-		pose.translate(0.5F, 0.5F, 0.5F);
+		pose.scale(-24.0F, 24.0F, -24.0F);
+		pose.translate(0.5F, -1.5F, 0.5F);
 		pose.mulPose(state.rotation().rotateY((float) Math.toRadians(-90.0D)));
 		pose.translate(-0.5F, -0.5F, -0.5F);
 		mc.gameRenderer.getLighting().setupFor(Entry.ENTITY_IN_UI);

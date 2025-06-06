@@ -49,9 +49,11 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
-	private static final Quaternionf DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F).rotateAxis(30.0F * ((float) Math.PI / 180.0F), Y_DRAG_ROTATION_VECTOR).mul(Axis.YP.rotationDegrees(-180.0F));
-	private static final EnumProperty<StandingOrWallType> STANDING_OR_WALL_TYPE_PROPERTY = EnumProperty.create("standing_or_wall", StandingOrWallType.class);
+	private static final Quaternionf DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F).rotateAxis(30.0F * ((float) Math.PI / 180.0F), Y_DRAG_ROTATION_VECTOR).mul(Axis.XP.rotationDegrees(180.0F));
 	private static final Vector3f Y_AXIS = new Vector3f(0.0F, 1.0F, 0.0F);
+	private static final Quaternionf YP_90 = Axis.YP.rotationDegrees(90);
+	private static final Quaternionf YN_90 = Axis.YN.rotationDegrees(90);
+	private static final EnumProperty<StandingOrWallType> STANDING_OR_WALL_TYPE_PROPERTY = EnumProperty.create("standing_or_wall", StandingOrWallType.class);
 	private final StateSelectorAccessMenu menu;
 	private final int xStart, yStart, slotToCheck;
 	private final int previewXTranslation, previewYTranslation;
@@ -118,13 +120,13 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		int x = xStart + previewXTranslation;
 		int y = yStart + previewYTranslation;
+		int wh = 120;
 
 		DEFAULT_ROTATION.mul(dragRotation, rotation);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
-		//TODO: width/height ok?
-		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, rotation, x, y, x + 100, y + 100, 1.0F, guiGraphics.peekScissorStack()));
+		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, rotation, x, y, x + wh, y + wh, 1.0F, guiGraphics.peekScissorStack()));
 
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
@@ -253,7 +255,9 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			Quaternionf inverted = new Quaternionf(dragRotation).invert();
 
 			dragRotation.mul(new Quaternionf().fromAxisAngleRad(Y_AXIS.rotate(inverted, xRotationVector), (float) dragX * ROTATION_SENSITIVITY));
-			dragRotation.mul(new Quaternionf().fromAxisAngleRad(Y_DRAG_ROTATION_VECTOR.rotate(inverted, yRotationVector), (float) -dragY * ROTATION_SENSITIVITY));
+			dragRotation.mul(YP_90);
+			dragRotation.mul(new Quaternionf().fromAxisAngleRad(Y_DRAG_ROTATION_VECTOR.rotate(inverted, yRotationVector), (float) dragY * ROTATION_SENSITIVITY));
+			dragRotation.mul(YN_90);
 			return true;
 		}
 
