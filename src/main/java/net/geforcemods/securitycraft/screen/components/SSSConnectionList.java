@@ -17,6 +17,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -97,7 +98,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 		for (ConnectionInfo info : connectionInfo) {
 			int yStart = relativeY + (SLOT_HEIGHT * i++);
 
-			guiGraphics.drawString(font, info.blockName, left + 13, yStart, 0xC6C6C6, false);
+			guiGraphics.drawString(font, info.blockName, left + 13, yStart, 0xFFC6C6C6, false);
 		}
 	}
 
@@ -117,7 +118,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			if (length + 13 >= width - 6) //6 = barWidth
 				guiGraphics.setTooltipForNextFrame(font, blockName, left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: does this look the same as before? one parameter was removed
 
-			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).globalPos.pos()), left + 13, top + height + 5, 4210752, false);
+			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).globalPos.pos()), left + 13, top + height + 5, CommonColors.DARK_GRAY, false);
 		}
 	}
 

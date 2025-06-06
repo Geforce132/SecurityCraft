@@ -20,6 +20,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -58,7 +59,7 @@ public class UsernameLoggerScreen extends Screen {
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, logged, width / 2 - font.width(logged) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, logged, width / 2 - font.width(logged) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override
@@ -139,7 +140,7 @@ public class UsernameLoggerScreen extends Screen {
 						if (uuids[slotIndex] != null && !uuids[slotIndex].isEmpty())
 							guiGraphics.setTooltipForNextFrame(font, Component.literal(be.getUuids()[slotIndex]), mouseX, mouseY); //TODO: works?
 
-						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752, false);
+						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, CommonColors.DARK_GRAY, false);
 					}
 				}
 			}
@@ -169,7 +170,7 @@ public class UsernameLoggerScreen extends Screen {
 			//draw entry strings
 			for (int i = 0; i < be.getPlayers().length; i++) {
 				if (be.getPlayers()[i] != null && !be.getPlayers()[i].equals(""))
-					guiGraphics.drawString(font, be.getPlayers()[i], left + width / 2 - font.width(be.getPlayers()[i]) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
+					guiGraphics.drawString(font, be.getPlayers()[i], left + width / 2 - font.width(be.getPlayers()[i]) / 2, relativeY + (SLOT_HEIGHT * i), 0xFFC6C6C6, false);
 			}
 		}
 

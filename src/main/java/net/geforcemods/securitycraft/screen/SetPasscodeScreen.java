@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -57,13 +58,13 @@ public class SetPasscodeScreen extends Screen {
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, 4210752);
+		guiGraphics.drawString(font, "CODE:", width / 2 - 67, height / 2 - 47 + 2, CommonColors.DARK_GRAY);
 
 		if (font.width(combined) < imageWidth - 10)
-			guiGraphics.drawString(font, combined, width / 2 - font.width(combined) / 2, topPos + 6, 4210752, false);
+			guiGraphics.drawString(font, combined, width / 2 - font.width(combined) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
 		else {
-			guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
-			guiGraphics.drawString(font, setup, width / 2 - font.width(setup) / 2, topPos + 16, 4210752, false);
+			guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
+			guiGraphics.drawString(font, setup, width / 2 - font.width(setup) / 2, topPos + 16, CommonColors.DARK_GRAY, false);
 		}
 	}
 

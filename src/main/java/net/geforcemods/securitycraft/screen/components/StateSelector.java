@@ -28,6 +28,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.item.BlockItem;
@@ -131,10 +132,10 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
 
-			guiGraphics.drawString(font, propertyName, xStart + 91 - font.width(propertyName) - 2, yStart + i * 23 + 10, 0x404040, false);
+			guiGraphics.drawString(font, propertyName, xStart + 91 - font.width(propertyName) - 2, yStart + i * 23 + 10, CommonColors.DARK_GRAY, false);
 		}
 
-		guiGraphics.drawString(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, 0x404040, false);
+		guiGraphics.drawString(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override

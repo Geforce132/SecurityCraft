@@ -20,6 +20,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -52,7 +53,7 @@ public class CheckPasscodeScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 		cooldownText1XPos = width / 2 - font.width(COOLDOWN_TEXT_1) / 2;
 
-		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 55, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), 0x404040));
+		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 55, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), CommonColors.DARK_GRAY));
 		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 35, 20, 20, Component.literal("1"), b -> addNumberToString(1), Button.DEFAULT_NARRATION));
 		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 35, 20, 20, Component.literal("2"), b -> addNumberToString(2), Button.DEFAULT_NARRATION));
 		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 35, 20, 20, Component.literal("3"), b -> addNumberToString(3), Button.DEFAULT_NARRATION));
@@ -89,15 +90,15 @@ public class CheckPasscodeScreen extends Screen {
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
 
 		if (passcodeProtected.isOnCooldown()) {
 			long cooldownEnd = passcodeProtected.getCooldownEnd();
 			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
 			Component text = Component.translatable("gui.securitycraft:passcode.cooldown2", secondsLeft);
 
-			guiGraphics.drawString(font, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, 4210752, false);
-			guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, height / 2 + 75, 4210752, false);
+			guiGraphics.drawString(font, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, CommonColors.DARK_GRAY, false);
+			guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, height / 2 + 75, CommonColors.DARK_GRAY, false);
 
 			if (!wasOnCooldownLastRenderTick)
 				wasOnCooldownLastRenderTick = true;

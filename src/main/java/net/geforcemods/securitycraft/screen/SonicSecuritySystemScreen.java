@@ -23,6 +23,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -154,8 +155,8 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 		int soundTextLength = font.width(SOUND_TEXT);
 
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, leftPos + xSize / 2 - textWidth / 2, topPos + 6, 4210752, false);
-		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, topPos + 141, 4210752, false);
+		guiGraphics.drawString(font, title, leftPos + xSize / 2 - textWidth / 2, topPos + 6, CommonColors.DARK_GRAY, false);
+		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, topPos + 141, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override

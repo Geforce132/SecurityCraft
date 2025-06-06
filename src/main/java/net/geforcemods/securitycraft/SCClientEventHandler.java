@@ -32,6 +32,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item.TooltipContext;
@@ -206,11 +207,11 @@ public class SCClientEventHandler {
 		if (be.hasCustomName()) {
 			Component cameraName = be.getCustomName();
 
-			guiGraphics.drawString(font, cameraName, scaledWidth - font.width(cameraName) - 8, 25, 0xFFFFFF, true);
+			guiGraphics.drawString(font, cameraName, scaledWidth - font.width(cameraName) - 8, 25, CommonColors.WHITE, true);
 			timeY += 10;
 		}
 
-		guiGraphics.drawString(font, time, scaledWidth - font.width(time) - 4, timeY, 0xFFFFFF, true);
+		guiGraphics.drawString(font, time, scaledWidth - font.width(time) - 4, timeY, CommonColors.WHITE, true);
 
 		if (cameraInfoMessageTime >= 0) {
 			float fadeOutPartialTick = Math.max(cameraInfoMessageTime + 1.0F - deltaTracker.getGameTimeDeltaPartialTick(false), 1.0F);

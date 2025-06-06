@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -49,7 +50,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, disguiseModuleName, imageWidth / 2 - font.width(disguiseModuleName) / 2, 6, 0x404040, false);
+		guiGraphics.drawString(font, disguiseModuleName, imageWidth / 2 - font.width(disguiseModuleName) / 2, 6, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override

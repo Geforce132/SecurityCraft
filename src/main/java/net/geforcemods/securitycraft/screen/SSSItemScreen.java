@@ -18,6 +18,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
@@ -53,7 +54,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 		int textWidth = font.width(title);
 
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, leftPos + imageWidth / 2 - textWidth / 2, topPos + 6, 4210752, false);
+		guiGraphics.drawString(font, title, leftPos + imageWidth / 2 - textWidth / 2, topPos + 6, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override

@@ -29,6 +29,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
@@ -90,7 +91,7 @@ public class EditModuleScreen extends Screen {
 		clearButton = addRenderableWidget(new Button(controlsStartX, height / 2 + 57, controlsWidth, 20, Utils.localize("gui.securitycraft:editModule.clear"), this::clearButtonClicked, Button.DEFAULT_NARRATION));
 		playerList = addRenderableWidget(new PlayerList(minecraft, 110, 165, height / 2 - 88, guiLeft + 10));
 		teamList = addRenderableWidget(new TeamList(minecraft, editTeamsButton.getWidth(), 75, editTeamsButton.getY() + editTeamsButton.getHeight(), editTeamsButton.getX()));
-		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).affectEveryone(), newState -> module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).updateAffectEveryone(module, newState), 0x404040));
+		affectEveryPlayerCheckbox = addRenderableWidget(new CallbackCheckbox(guiLeft + xSize / 2 - length / 2, guiTop + ySize - 25, 20, 20, checkboxText, module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).affectEveryone(), newState -> module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY).updateAffectEveryone(module, newState), CommonColors.DARK_GRAY));
 
 		teamList.active = false;
 		editTeamsButton.active = !availableTeams.isEmpty();
@@ -129,7 +130,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawWordWrap(font, editModule, leftPos + xSize / 2 - font.width(editModule) / 2, topPos + 6, width, 4210752, false);
+		guiGraphics.drawWordWrap(font, editModule, leftPos + xSize / 2 - font.width(editModule) / 2, topPos + 6, width, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override
@@ -323,7 +324,7 @@ public class EditModuleScreen extends Screen {
 					String name = players.get(i);
 
 					if (!name.isEmpty())
-						guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
+						guiGraphics.drawString(font, name, left - 2 + width / 2 - font.width(name) / 2, relativeY + (SLOT_HEIGHT * i), 0xFFC6C6C6, false);
 				}
 			}
 		}
@@ -423,7 +424,7 @@ public class EditModuleScreen extends Screen {
 				int yStart = relativeY + (SLOT_HEIGHT * i);
 				PlayerTeam team = availableTeams.get(i);
 
-				guiGraphics.drawString(font, team.getDisplayName(), left + 15, yStart, 0xC6C6C6, false);
+				guiGraphics.drawString(font, team.getDisplayName(), left + 15, yStart, 0xFFC6C6C6, false);
 				guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, teamsListedStatus.get(team) ? CONFIRM_SPRITE : CANCEL_SPRITE, left + 1, yStart - 3, 12, 12);
 			}
 		}

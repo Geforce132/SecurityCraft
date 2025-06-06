@@ -126,7 +126,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			Component name = typeNames.computeIfAbsent(type, t -> Utils.localize(t == be.getDefaultType() ? be.getDefaultTypeName() : t.toString()));
 			int yStart = relativeY + (SLOT_HEIGHT * i);
 
-			guiGraphics.drawString(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xC6C6C6, false);
+			guiGraphics.drawString(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xFFC6C6C6, false);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, be.getFilter(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, left + 1, yStart - 3, 12, 12);
 			i++;
 		}

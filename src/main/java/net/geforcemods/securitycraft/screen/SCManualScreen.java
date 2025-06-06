@@ -49,6 +49,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.item.BlockItem;
@@ -160,14 +161,14 @@ public class SCManualScreen extends Screen {
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			if (subpages.size() > 1)
-				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 100, 0x8E8270, false);
+				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 100, 0xFF8E8270, false);
 
 			if (designedBy != null)
-				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, 0, false);
+				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, CommonColors.BLACK, false);
 
-			guiGraphics.drawString(font, pageTitle, startX + 39, 27, 0, false);
-			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, 0, false);
-			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
+			guiGraphics.drawString(font, pageTitle, startX + 39, 27, CommonColors.BLACK, false);
+			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, CommonColors.BLACK, false);
+			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0xFF8E8270, false);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, ownable ? OWNABLE_HIGHLIGHTED_SPRITE : OWNABLE_SPRITE, startX + 29, 118, 16, 16);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, passcodeProtected ? PASSCODE_PROTECTED_HIGHLIGHTED_SPRITE : PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, viewActivated ? VIEW_ACTIVATED_HIGHLIGHTED_SPRITE : VIEW_ACTIVATED_SPRITE, startX + 82, 118, 16, 16);
@@ -195,22 +196,22 @@ public class SCManualScreen extends Screen {
 		else { //"welcome" page
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
-			guiGraphics.drawString(font, intro1, width / 2 - font.width(intro1) / 2, 22, 0, false);
+			guiGraphics.drawString(font, intro1, width / 2 - font.width(intro1) / 2, 22, CommonColors.BLACK, false);
 
 			for (int i = 0; i < intro2.size(); i++) {
 				FormattedCharSequence text = intro2.get(i);
 
-				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 150 + 10 * i, 0, false);
+				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 150 + 10 * i, CommonColors.BLACK, false);
 			}
 
 			for (int i = 0; i < author.size(); i++) {
 				FormattedCharSequence text = author.get(i);
 
-				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 180 + 10 * i, 0, false);
+				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 180 + 10 * i, CommonColors.BLACK, false);
 			}
 
-			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
-			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0, false);
+			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0xFF8E8270, false);
+			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, CommonColors.BLACK, false);
 		}
 	}
 
@@ -647,7 +648,7 @@ public class SCManualScreen extends Screen {
 					}
 				}
 				else
-					guiGraphics.drawString(font, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, 0, false);
+					guiGraphics.drawString(font, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, CommonColors.BLACK, false);
 			}
 		}
 
@@ -658,7 +659,7 @@ public class SCManualScreen extends Screen {
 				String patron = patrons.get(i);
 
 				if (patron != null && !patron.isEmpty())
-					guiGraphics.drawString(font, patron, left + 2, relativeY + (SLOT_HEIGHT * i), 0, false);
+					guiGraphics.drawString(font, patron, left + 2, relativeY + (SLOT_HEIGHT * i), CommonColors.BLACK, false);
 			}
 		}
 

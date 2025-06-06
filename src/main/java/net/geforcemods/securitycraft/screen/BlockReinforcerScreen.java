@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -54,11 +55,11 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		NonNullList<ItemStack> inv = menu.getItems();
 
-		guiGraphics.drawString(font, title, (imageWidth - font.width(title)) / 2, 5, 4210752, false);
-		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, 4210752, false);
+		guiGraphics.drawString(font, title, (imageWidth - font.width(title)) / 2, 5, CommonColors.DARK_GRAY, false);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, CommonColors.DARK_GRAY, false);
 
 		if (!inv.get(36).isEmpty()) {
-			guiGraphics.drawString(font, output, 50, 25, 4210752, false);
+			guiGraphics.drawString(font, output, 50, 25, CommonColors.DARK_GRAY, false);
 			guiGraphics.renderItem(menu.reinforcingSlot.getOutput(), 116, 20);
 			guiGraphics.renderItemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
 
@@ -67,7 +68,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		}
 
 		if (!menu.isLvl1 && !inv.get(37).isEmpty()) {
-			guiGraphics.drawString(font, output, 50, 50, 4210752, false);
+			guiGraphics.drawString(font, output, 50, 50, CommonColors.DARK_GRAY, false);
 			guiGraphics.renderItem(menu.unreinforcingSlot.getOutput(), 116, 46);
 			guiGraphics.renderItemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
 

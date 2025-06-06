@@ -31,6 +31,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -213,16 +214,16 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752, false);
-		guiGraphics.drawString(font, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752, false);
-		guiGraphics.drawString(font, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752, false);
+		guiGraphics.drawString(font, title, imageWidth / 2 - font.width(title) / 2, 6, CommonColors.DARK_GRAY, false);
+		guiGraphics.drawString(font, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, CommonColors.DARK_GRAY, false);
+		guiGraphics.drawString(font, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, CommonColors.DARK_GRAY, false);
 
 		//numbers infront of keycard levels buttons
 		for (int i = 1; i <= 5; i++) {
-			guiGraphics.drawString(font, "" + i, 91, 55 + 17 * i, 4210752, false);
+			guiGraphics.drawString(font, "" + i, 91, 55 + 17 * i, CommonColors.DARK_GRAY, false);
 		}
 
-		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 93, 4210752, false);
+		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 93, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override

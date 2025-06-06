@@ -11,6 +11,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 
 public class SecurityCraftToVanillaCategory extends BaseCategory {
@@ -23,7 +24,7 @@ public class SecurityCraftToVanillaCategory extends BaseCategory {
 	@Override
 	public void draw(ReinforcerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		guiGraphics.drawString(Minecraft.getInstance().font, OUTPUT_TEXT, 24, 30, 0x404040, false);
+		guiGraphics.drawString(Minecraft.getInstance().font, OUTPUT_TEXT, 24, 30, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override

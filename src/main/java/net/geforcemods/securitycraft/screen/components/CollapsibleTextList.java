@@ -99,7 +99,7 @@ public class CollapsibleTextList extends Button {
 			Screen currentScreen = Minecraft.getInstance().screen;
 
 			if (currentScreen != null)
-				guiGraphics.setTooltipForNextFrame(font, originalDisplayString, getX() + 1, getY() + height + 2); //TODO: works?
+				guiGraphics.setTooltipForNextFrame(font, originalDisplayString, getX() + 1, getY() + height + 2);
 		}
 	}
 
