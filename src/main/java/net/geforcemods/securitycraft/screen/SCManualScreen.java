@@ -183,11 +183,11 @@ public class SCManualScreen extends Screen {
 
 				if (chc != null && chc.checkHover(mouseX, mouseY)) {
 					if (chc instanceof TextHoverChecker thc && thc.getName() != null) {
-						guiGraphics.setComponentTooltipForNextFrame(font, thc.getLines(), mouseX, mouseY); //TODO: works?
+						guiGraphics.setComponentTooltipForNextFrame(font, thc.getLines(), mouseX, mouseY);
 						break;
 					}
 					else if (i < displays.length && !displays[i].getCurrentStack().isEmpty()) {
-						guiGraphics.renderItem(displays[i].getCurrentStack(), mouseX, mouseY); //TODO: works?
+						guiGraphics.setTooltipForNextFrame(font, displays[i].getCurrentStack(), mouseX, mouseY);
 						break;
 					}
 				}

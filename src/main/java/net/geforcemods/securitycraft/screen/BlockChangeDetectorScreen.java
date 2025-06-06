@@ -435,7 +435,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			else if (currentIndex == DetectionMode.PLACE.ordinal())
 				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2);
 			else if (currentIndex == DetectionMode.BOTH.ordinal()) {
-				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2); //TODO: layered correctly?
+				guiGraphics.renderItem(grassBlock, getX() + 2, getY() + 2);
 				guiGraphics.renderItem(ironPickaxe, getX() + 2, getY() + 2);
 			}
 		}

@@ -64,7 +64,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 			guiGraphics.renderItemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
 
 			if (mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 17 && mouseY < topPos + 39)
-				guiGraphics.renderItem(menu.reinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos); //TODO: works?
+				guiGraphics.setTooltipForNextFrame(font, menu.reinforcingSlot.getOutput(), mouseX, mouseY);
 		}
 
 		if (!menu.isLvl1 && !inv.get(37).isEmpty()) {
@@ -73,7 +73,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 			guiGraphics.renderItemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
 
 			if (mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 43 && mouseY < topPos + 64)
-				guiGraphics.renderItem(menu.unreinforcingSlot.getOutput(), mouseX - leftPos, mouseY - topPos); //TODO: works?
+				guiGraphics.setTooltipForNextFrame(font, menu.unreinforcingSlot.getOutput(), mouseX, mouseY);
 		}
 	}
 
