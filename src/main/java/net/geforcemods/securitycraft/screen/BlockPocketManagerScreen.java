@@ -103,13 +103,12 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		outlineButton = addRenderableWidget(new Button(outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showsOutline() ? "show" : "hide")), this::outlineButtonClicked, Button.DEFAULT_NARRATION));
 		assembleButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked, Button.DEFAULT_NARRATION));
 		offsetSlider = addRenderableWidget(new CallbackSlider(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), Component.empty(), (-size + 2) / 2, (size - 2) / 2, be.getAutoBuildOffset(), true, this::offsetSliderReleased));
-		colorChooser = addRenderableWidget(new ColorChooser(Component.empty(), colorChooserX, outlineY, be.getColor()) {
+		colorChooser = new ColorChooser(Component.empty(), colorChooserX, outlineY, be.getColor()) {
 			@Override
 			public void onColorChange() {
 				be.setColor(getRGBColor());
 			}
-		});
-		colorChooser.init(minecraft, width, height);
+		};
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(colorChooserButtonX, outlineY, 20, 20, colorChooser));
 
 		if (!be.isOwnedBy(Minecraft.getInstance().player))
@@ -192,12 +191,6 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
-	protected void containerTick() {
-		if (colorChooser != null)
-			colorChooser.tick();
-	}
-
-	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (minecraft.player.isSpectator())
 			return false;
@@ -207,38 +200,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (colorChooser != null)
-			colorChooser.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-
 		return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-	}
-
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if (colorChooser != null)
-			colorChooser.mouseReleased(mouseX, mouseY, button);
-
-		return super.mouseReleased(mouseX, mouseY, button);
-	}
-
-	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (colorChooser != null) {
-			colorChooser.keyPressed(keyCode, scanCode, modifiers);
-
-			if (!colorChooser.getRgbHexBox().isFocused())
-				return super.keyPressed(keyCode, scanCode, modifiers);
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean charTyped(char codePoint, int modifiers) {
-		if (colorChooser != null && colorChooser.charTyped(codePoint, modifiers))
-			return true;
-
-		return super.charTyped(codePoint, modifiers);
 	}
 
 	@Override

@@ -92,13 +92,12 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}));
 		showAllCheckbox = addRenderableWidget(new CallbackCheckbox(settingsX, topPos + 65, 20, 20, Component.empty(), false, isSelected -> changeEntryList.updateFilteredEntries(), 0));
 		highlightInWorldCheckbox = addRenderableWidget(new CallbackCheckbox(settingsX, topPos + 90, 20, 20, Component.empty(), be.isShowingHighlights(), be::showHighlights, 0));
-		colorChooser = addRenderableWidget(new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
+		colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
 			@Override
 			public void onColorChange() {
 				be.setColor(getRGBColor());
 			}
-		});
-		colorChooser.init(minecraft, width, height);
+		};
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
 
 		clearButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:editModule.clear")));
@@ -157,9 +156,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 
 	@Override
 	protected void containerTick() {
-		if (colorChooser != null)
-			colorChooser.tick();
-
 		if (changeEntryList != null)
 			changeEntryList.tick();
 	}
@@ -187,9 +183,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		if (changeEntryList != null)
 			changeEntryList.mouseReleased(mouseX, mouseY, button);
 
-		if (colorChooser != null)
-			colorChooser.mouseReleased(mouseX, mouseY, button);
-
 		return super.mouseReleased(mouseX, mouseY, button);
 	}
 
@@ -198,30 +191,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		if (changeEntryList != null)
 			changeEntryList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
 
-		if (colorChooser != null)
-			colorChooser.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-
 		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
-	}
-
-	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (colorChooser != null) {
-			colorChooser.keyPressed(keyCode, scanCode, modifiers);
-
-			if (!colorChooser.getRgbHexBox().isFocused())
-				return super.keyPressed(keyCode, scanCode, modifiers);
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean charTyped(char codePoint, int modifiers) {
-		if (colorChooser != null && colorChooser.charTyped(codePoint, modifiers))
-			return true;
-
-		return super.charTyped(codePoint, modifiers);
 	}
 
 	@Override
