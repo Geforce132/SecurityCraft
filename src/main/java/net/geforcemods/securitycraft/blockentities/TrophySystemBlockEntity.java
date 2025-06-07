@@ -162,7 +162,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		int i = 0;
 
 		for (EntityType<?> projectileType : projectileFilter.keySet()) {
-			projectileFilter.put(projectileType, projectilesNBT.getBooleanOr("projectile" + i, false));
+			projectileFilter.put(projectileType, projectilesNBT.getBooleanOr("projectile" + i, projectileFilter.get(projectileType)));
 			i++;
 		}
 

@@ -56,13 +56,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 
 	public RiftStabilizerBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.RIFT_STABILIZER_BLOCK_ENTITY.get(), pos, state);
-		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
-		//ordering is done in ToggleListScreen based on the user's current language
-		teleportationFilter.put(TeleportationType.ITEM_CONSUMPTION, true);
-		teleportationFilter.put(TeleportationType.ENDER_PEARL, true);
-		teleportationFilter.put(TeleportationType.ENDERMAN, false);
-		teleportationFilter.put(TeleportationType.SHULKER, false);
-		teleportationFilter.put(TeleportationType.MODDED, false);
+		setDefaultFilters(this);
 	}
 
 	@Override
@@ -146,7 +140,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		int i = 0;
 
 		for (TeleportationType teleportationType : teleportationFilter.keySet()) {
-			teleportationFilter.put(teleportationType, teleportationNBT.getBooleanOr("teleportationType" + i, false));
+			teleportationFilter.put(teleportationType, teleportationNBT.getBooleanOr("teleportationType" + i, teleportationFilter.get(teleportationType)));
 			i++;
 		}
 
@@ -187,10 +181,10 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 				onRemoveDisguiseModule(connectedBlockEntity);
 		}
 		else if (module == ModuleType.SMART) {
-			onRemoveSmartModule(this);
+			setDefaultFilters(this);
 
 			if (connectedBlockEntity != null)
-				onRemoveSmartModule(connectedBlockEntity);
+				setDefaultFilters(connectedBlockEntity);
 		}
 	}
 
@@ -208,7 +202,9 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 	}
 
-	private void onRemoveSmartModule(RiftStabilizerBlockEntity be) {
+	private void setDefaultFilters(RiftStabilizerBlockEntity be) {
+		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
+		//ordering is done in ToggleListScreen based on the user's current language
 		be.teleportationFilter.put(TeleportationType.ITEM_CONSUMPTION, true);
 		be.teleportationFilter.put(TeleportationType.ENDER_PEARL, true);
 		be.teleportationFilter.put(TeleportationType.ENDERMAN, false);
