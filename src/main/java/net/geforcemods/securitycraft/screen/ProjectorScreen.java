@@ -122,6 +122,9 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+
+		if (stateSelector != null)
+			stateSelector.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 	}
 
 	@Override
