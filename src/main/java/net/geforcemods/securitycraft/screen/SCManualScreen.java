@@ -619,7 +619,7 @@ public class SCManualScreen extends Screen {
 						int baseY = top + border - (int) scrollDistance;
 
 						if (length >= width - 6) //6 = barWidth
-							guiGraphics.setTooltipForNextFrame(font, Component.literal(patron), left - 10, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: does this look the same as before? one parameter was removed
+							guiGraphics.setTooltipForNextFrame(font, Component.literal(patron), left - 10, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 					}
 
 					if (patrons.isEmpty()) {

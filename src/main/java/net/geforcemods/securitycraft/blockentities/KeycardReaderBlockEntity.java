@@ -65,7 +65,6 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		//TODO: does level saving and loading work with and the same as old data?
 		ValueOutput acceptedLevelsTag = tag.child("acceptedLevels");
 
 		for (int i = 1; i <= 5; i++) {

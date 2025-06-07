@@ -97,7 +97,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			int comparatorOutput = be.getComparatorOutputFunction().applyAsInt(orderedFilterList.get(slotIndex));
 
 			if (comparatorOutput > 0)
-				guiGraphics.setTooltipForNextFrame(mc.font, Component.translatable("gui.securitycraft:toggleList.comparatorOutput", comparatorOutput), right - 8, slotBottom); //TODO: works?
+				guiGraphics.setTooltipForNextFrame(mc.font, Component.translatable("gui.securitycraft:toggleList.comparatorOutput", comparatorOutput), right - 8, slotBottom);
 		}
 	}
 

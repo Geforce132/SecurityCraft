@@ -211,7 +211,7 @@ public class AlarmScreen extends Screen {
 				int length = font.width(soundEventKey);
 
 				if (length >= width - 6 - TEXT_OFFSET)
-					guiGraphics.setTooltipForNextFrame(font, soundEventKey, left + TEXT_OFFSET - 12, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: does this look the same as before? one parameter was removed
+					guiGraphics.setTooltipForNextFrame(font, soundEventKey, left + TEXT_OFFSET - 12, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 			}
 		}
 

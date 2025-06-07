@@ -404,7 +404,7 @@ public class EditModuleScreen extends Screen {
 					int baseY = top + border - (int) scrollDistance;
 
 					if (length >= width - 6) //6 = barWidth
-						guiGraphics.setTooltipForNextFrame(font, name, left + 3, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: works?
+						guiGraphics.setTooltipForNextFrame(font, name, left + 3, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 				}
 			}
 		}

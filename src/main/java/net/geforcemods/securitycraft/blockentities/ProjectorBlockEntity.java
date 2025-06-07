@@ -61,7 +61,6 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		if (!projectedBlock.isEmpty())
 			tag.store("storedItem", ItemStack.CODEC, projectedBlock);
 
-		//TODO: is this the same as before?
 		tag.store("SavedState", BlockState.CODEC, projectedState);
 	}
 
@@ -78,7 +77,6 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		horizontal = tag.getBooleanOr("horizontal", false);
 		overridingBlocks = tag.getBooleanOr("overriding_blocks", false);
 		projectedBlock = tag.read("storedItem", ItemStack.CODEC).orElse(ItemStack.EMPTY);
-		//TODO: is this the same as before?
 		tag.read("SavedState", BlockState.CODEC).ifPresentOrElse(this::setProjectedState, this::resetSavedState);
 	}
 

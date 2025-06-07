@@ -101,7 +101,6 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		//TODO: does list saving and loading work with and the same as old data?
 		TypedOutputList<ChangeEntry> entryList = tag.list("entries", ChangeEntry.CODEC);
 
 		entries.forEach(entryList::add);
@@ -328,7 +327,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 						Codec.LONG.fieldOf("timestamp").forGetter(ChangeEntry::timestamp),
 						Codec.INT.fieldOf("action").xmap(ordinal -> DetectionMode.values()[ordinal], DetectionMode::ordinal).forGetter(ChangeEntry::action),
 						Codec.LONG.fieldOf("pos").xmap(BlockPos::of, BlockPos::asLong).forGetter(ChangeEntry::pos),
-						BlockState.CODEC.fieldOf("state").forGetter(ChangeEntry::state)) //TODO: is it correct to use the codec instead of NbtUtils#write/readBlockState?
+						BlockState.CODEC.fieldOf("state").forGetter(ChangeEntry::state))
 			.apply(i, ChangeEntry::new));
 		//@formatter:on
 	}

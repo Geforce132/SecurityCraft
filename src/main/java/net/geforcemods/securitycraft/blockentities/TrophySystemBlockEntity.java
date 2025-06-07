@@ -142,7 +142,6 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		//TODO: does projectile saving and loading work with and the same as old data?
 		ValueOutput projectilesNBT = tag.child("projectiles");
 		int i = 0;
 

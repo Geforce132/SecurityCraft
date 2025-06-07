@@ -111,7 +111,7 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		renderTooltip(guiGraphics, mouseX, mouseY);
 
 		if (slotHoverChecker.checkHover(mouseX, mouseY) && menu.be.isContainerEmpty())
-			guiGraphics.setTooltipForNextFrame(font, slotHoverChecker.getName(), mouseX, mouseY); //TODO: works?
+			guiGraphics.setTooltipForNextFrame(font, slotHoverChecker.getName(), mouseX, mouseY);
 	}
 
 	@Override

@@ -193,7 +193,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 		for (TextHoverChecker chc : hoverCheckers) {
 			if (chc != null && chc.checkHover(mouseX, mouseY)) {
-				guiGraphics.setTooltipForNextFrame(font, chc.getName(), mouseX, mouseY); //TODO: works?
+				guiGraphics.setTooltipForNextFrame(font, chc.getName(), mouseX, mouseY);
 				break;
 			}
 		}

@@ -138,7 +138,7 @@ public class UsernameLoggerScreen extends Screen {
 						String[] uuids = be.getUuids();
 
 						if (uuids[slotIndex] != null && !uuids[slotIndex].isEmpty())
-							guiGraphics.setTooltipForNextFrame(font, Component.literal(be.getUuids()[slotIndex]), mouseX, mouseY); //TODO: works?
+							guiGraphics.setTooltipForNextFrame(font, Component.literal(be.getUuids()[slotIndex]), mouseX, mouseY);
 
 						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, CommonColors.DARK_GRAY, false);
 					}

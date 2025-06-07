@@ -112,7 +112,6 @@ public class CameraSelectScreen extends Screen {
 				//op check is done on the server through the command
 				if (player.isCreative()) {
 					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), b -> {
-						//TODO: test
 						player.connection.sendCommand(String.format("execute in %s run tp %s %s %s", globalPos.dimension().location(), pos.getX(), pos.getY(), pos.getZ()));
 						minecraft.setScreen(null);
 					}));

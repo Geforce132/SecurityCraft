@@ -178,7 +178,6 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 					}
 
 					//safe, because both blocks are the same and thus have the same options
-					//TODO: test anyway
 					Option[] options = be.customOptions();
 					Option[] thisOptions = thisBe.customOptions();
 

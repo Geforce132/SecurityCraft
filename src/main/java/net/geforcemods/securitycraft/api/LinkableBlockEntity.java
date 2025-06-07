@@ -35,7 +35,6 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		//TODO: does linked block saving and loading (with and without level) work with and the same as old data?
 		if (!hasLevel()) {
 			nbtTagStorage = tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC);
 			return;

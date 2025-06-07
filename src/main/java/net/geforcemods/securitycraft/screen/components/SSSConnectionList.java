@@ -116,7 +116,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			int baseY = top + border - (int) scrollDistance;
 
 			if (length + 13 >= width - 6) //6 = barWidth
-				guiGraphics.setTooltipForNextFrame(font, blockName, left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT)); //TODO: does this look the same as before? one parameter was removed
+				guiGraphics.setTooltipForNextFrame(font, blockName, left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 
 			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).globalPos.pos()), left + 13, top + height + 5, CommonColors.DARK_GRAY, false);
 		}

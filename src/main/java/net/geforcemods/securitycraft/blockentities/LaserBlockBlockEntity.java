@@ -86,7 +86,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		//TODO: does side config saving and loading work with and the same as old data?
 		saveSideConfig(tag.child("sideConfig"), sideConfig);
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
@@ -114,7 +113,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		sideConfig = loadSideConfig(tag.childOrEmpty("sideConfig"));
 
 		for (int i = 0; i < lenses.getContainerSize(); i++) {
-			lenses.setItemExclusively(i, tag.read("lens" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY)); //TODO: test if 1.21.5 lenses stay in 1.21.6 laser blocks
+			lenses.setItemExclusively(i, tag.read("lens" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY));
 		}
 
 		lenses.setChanged();
@@ -445,7 +444,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			}
 
 			//safe, because both blocks are the same and thus have the same options
-			//TODO: test anyway
 			Option[] options = that.customOptions();
 			Option[] thisOptions = customOptions();
 

@@ -228,7 +228,6 @@ public class SCClientEventHandler {
 			}
 		}
 
-		//TODO: test because of removal from setShaderColor
 		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, BACKGROUND_SPRITE, 5, 0, 90, 20);
 		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, LIVE_SPRITE, window.getGuiScaledWidth() - 70, 5, 65, 16);
 
