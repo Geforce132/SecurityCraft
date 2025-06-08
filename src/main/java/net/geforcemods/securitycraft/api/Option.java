@@ -172,7 +172,7 @@ public abstract class Option<T> {
 
 		@Override
 		public void load(CompoundTag tag) {
-			tag.getBooleanOr(getName(), getDefaultValue());
+			value = tag.getBooleanOr(getName(), getDefaultValue());
 		}
 
 		@Override

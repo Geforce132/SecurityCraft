@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
 - Fix: Incorrect owner UUID being set when loading an owner without a UUID
+- Fix: Some custom block options do not get loaded correctly, leading to incorrect settings
 
 --------------------------Changelog for v1.10-beta2 of SecurityCraft--------------------------
 
