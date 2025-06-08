@@ -173,7 +173,7 @@ public abstract class Option<T> {
 
 		@Override
 		public void load(ValueInput tag) {
-			tag.getBooleanOr(getName(), getDefaultValue());
+			value = tag.getBooleanOr(getName(), getDefaultValue());
 		}
 
 		@Override
