@@ -9,6 +9,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,9 +28,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 	@Override
 	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.saveAdditional(tag, lookupProvider);
-
-		if (customName != null)
-			tag.putString("CustomName", Component.Serializer.toJson(customName, lookupProvider));
+		tag.storeNullable("CustomName", ComponentSerialization.CODEC, customName);
 	}
 
 	@Override
@@ -37,7 +36,7 @@ public class NamedBlockEntity extends OwnableBlockEntity implements Nameable {
 		super.loadAdditional(tag, lookupProvider);
 
 		if (tag.contains("CustomName"))
-			customName = parseCustomNameSafe(tag.get("CustomName"), lookupProvider);
+			customName = tag.read("CustomName", ComponentSerialization.CODEC).orElse(null);
 		else if (tag.contains("customName")) //Conversion of old string literal names
 			customName = Component.literal(tag.getStringOr("customName", ""));
 	}

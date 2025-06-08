@@ -2,6 +2,7 @@
 
 - Fix: Incorrect owner UUID being set when loading an owner without a UUID
 - Fix: Some custom block options do not get loaded correctly, leading to incorrect settings
+- Fix: Custom names of SecurityCraft's blocks do not get loaded correctly
 
 --------------------------Changelog for v1.10-beta2 of SecurityCraft--------------------------
 
