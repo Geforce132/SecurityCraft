@@ -12,7 +12,6 @@ import com.mojang.math.Axis;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
-import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
@@ -50,7 +49,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
-	private static final Quaternionf DEFAULT_ROTATION = ClientUtils.fromXYZDegrees(15.0F, -135.0F, 0.0F).rotateAxis(30.0F * ((float) Math.PI / 180.0F), Y_DRAG_ROTATION_VECTOR).mul(Axis.XP.rotationDegrees(180.0F));
 	private static final Vector3f Y_AXIS = new Vector3f(0.0F, 1.0F, 0.0F);
 	private static final Quaternionf YP_90 = Axis.YP.rotationDegrees(90);
 	private static final Quaternionf YN_90 = Axis.YN.rotationDegrees(90);
@@ -71,7 +69,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private int page, amountOfPages;
 	private Button previousPageButton, nextPageButton;
 	private Quaternionf dragRotation = new Quaternionf();
-	private Quaternionf rotation = new Quaternionf();
 	private Vector3f xRotationVector = new Vector3f();
 	private Vector3f yRotationVector = new Vector3f();
 	private boolean clickedInDragRegion = false;
@@ -123,11 +120,10 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		int y = yStart + previewYTranslation;
 		int wh = 120;
 
-		DEFAULT_ROTATION.mul(dragRotation, rotation);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
 		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, rotation, x, y, x + wh, y + wh, 1.0F, guiGraphics.peekScissorStack()));
+		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, dragRotation, x, y, x + wh, y + wh, 1.0F, guiGraphics.peekScissorStack()));
 
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
