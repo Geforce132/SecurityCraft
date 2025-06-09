@@ -108,9 +108,14 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		TypedOutputList<NamedPositions.Entry> cameras = tag.list("cameras", NamedPositions.Entry.CODEC.orElse(new NamedPositions.Entry(null, Optional.empty())));
+		TypedOutputList<NamedPositions.Entry> cameras = tag.list("cameras", NamedPositions.Entry.CODEC.orElse(NamedPositions.Entry.EMPTY));
 
-		cameraPositions.forEach(cameras::add);
+		cameraPositions.forEach(entry -> {
+			if (entry == null)
+				cameras.add(NamedPositions.Entry.EMPTY);
+			else
+				cameras.add(entry);
+		});
 
 		if (currentCameraPosition != null)
 			tag.store("current_camera", GlobalPos.CODEC, currentCameraPosition);

@@ -180,7 +180,12 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		TypedOutputList<GlobalPos> linkedBlocksList = tag.list("linked_blocks", GlobalPos.CODEC.orElse(GlobalPositions.DUMMY_GLOBAL_POS));
 		TypedOutputList<NoteWrapper> notesList = tag.list("notes", NoteWrapper.CODEC);
 
-		linkedBlocks.forEach(linkedBlocksList::add);
+		linkedBlocks.forEach(entry -> {
+			if (entry == null)
+				linkedBlocksList.add(GlobalPositions.DUMMY_GLOBAL_POS);
+			else
+				linkedBlocksList.add(entry);
+		});
 		recordedNotes.forEach(notesList::add);
 		tag.putBoolean("emitsPings", emitsPings);
 		tag.putBoolean("isActive", isActive);

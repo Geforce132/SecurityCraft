@@ -34,15 +34,15 @@ public record NamedPositions(List<Entry> positions) implements GlobalPositionCom
 					instance -> instance.group(
 							GlobalPositionComponent.nullableSizedCodec(GlobalPos.CODEC, size)
 							.fieldOf("positions")
-							.forGetter(namedPositions -> namedPositions.positions().stream().map(Entry::globalPos).toList()))
-					.apply(instance, list -> new NamedPositions(list.stream().map(gp -> gp == null ? null : new Entry(gp, Optional.empty())).toList()))));
+							.forGetter(namedPositions -> namedPositions.positions().stream().map(Entry::oGlobalPos).filter(Optional::isPresent).map(Optional::get).toList()))
+					.apply(instance, list -> new NamedPositions(list.stream().map(gp -> gp == null ? null : new Entry(Optional.of(gp), Optional.empty())).toList()))));
 		//@formatter:on
 	}
 
 	public static final StreamCodec<ByteBuf, NamedPositions> streamCodec(int size) {
 		//@formatter:off
 		return StreamCodec.composite(
-			GlobalPositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, size, new Entry(DUMMY_GLOBAL_POS, Optional.empty())), NamedPositions::positions,
+			GlobalPositionComponent.nullableSizedStreamCodec(Entry.STREAM_CODEC, size, new Entry(Optional.of(DUMMY_GLOBAL_POS), Optional.empty())), NamedPositions::positions,
 			NamedPositions::new);
 		//@formatter:on
 	}
@@ -58,12 +58,12 @@ public record NamedPositions(List<Entry> positions) implements GlobalPositionCom
 
 	@Override
 	public GlobalPos getGlobalPos(Entry entry) {
-		return entry == null ? null : entry.globalPos;
+		return entry == null ? null : entry.oGlobalPos.orElse(null);
 	}
 
 	@Override
 	public Entry createEntry(GlobalPos globalPos, Optional<String> name) {
-		return new Entry(globalPos, name);
+		return new Entry(Optional.of(globalPos), name);
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public record NamedPositions(List<Entry> positions) implements GlobalPositionCom
 						optional = Optional.ofNullable(name);
 
 						if (!optional.equals(entry.name)) {
-							newEntries.set(i, new NamedPositions.Entry(entry.globalPos, optional));
+							newEntries.set(i, new NamedPositions.Entry(entry.oGlobalPos, optional));
 							changed = true;
 						}
 					}
@@ -106,17 +106,22 @@ public record NamedPositions(List<Entry> positions) implements GlobalPositionCom
 		}
 	}
 
-	public record Entry(GlobalPos globalPos, Optional<String> name) {
+	public record Entry(Optional<GlobalPos> oGlobalPos, Optional<String> name) {
+		public static final Entry EMPTY = new NamedPositions.Entry(Optional.empty(), Optional.empty());
 		//@formatter:off
 		public static final Codec<Entry> CODEC = RecordCodecBuilder.create(
 				instance -> instance.group(
-						GlobalPos.CODEC.fieldOf("global_pos").forGetter(Entry::globalPos),
+						GlobalPos.CODEC.optionalFieldOf("global_pos").forGetter(Entry::oGlobalPos),
 						Codec.STRING.optionalFieldOf("name").forGetter(Entry::name))
 				.apply(instance, Entry::new));
 		public static final StreamCodec<ByteBuf, Entry> STREAM_CODEC = StreamCodec.composite(
-				GlobalPos.STREAM_CODEC, Entry::globalPos,
+				GlobalPos.STREAM_CODEC.apply(ByteBufCodecs::optional), Entry::oGlobalPos,
 				ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs::optional), Entry::name,
 				Entry::new);
 		//@formatter:on
+
+		public GlobalPos globalPos() {
+			return oGlobalPos.orElse(DUMMY_GLOBAL_POS);
+		}
 	}
 }
