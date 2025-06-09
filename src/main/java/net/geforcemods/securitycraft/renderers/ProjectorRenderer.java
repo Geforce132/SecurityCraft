@@ -56,7 +56,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					if (pos != null && (be.isOverridingBlocks() || level.isEmptyBlock(pos))) {
 						BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
 						BlockStateModel model = dispatcher.getBlockModel(state);
-						Function<ChunkSectionLayer, RenderType> toRenderType = RenderTypeHelper::getEntityRenderType;
+						Function<ChunkSectionLayer, RenderType> toRenderType = RenderTypeHelper::getMovingBlockRenderType;
 
 						dispatcher.renderBatched(state, pos, level, pose, toRenderType.andThen(buffer::getBuffer), true, model.collectParts(be.getLevel(), pos, state, RandomSource.create(state.getSeed(pos))));
 						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);

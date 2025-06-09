@@ -56,7 +56,7 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 		if (state.getRenderShape() == RenderShape.MODEL) {
 			BlockRenderDispatcher blockRenderer = mc.getBlockRenderer();
 			BlockStateModel blockModel = blockRenderer.getBlockModel(state);
-			Function<ChunkSectionLayer, RenderType> toRenderType = RenderTypeHelper::getEntityRenderType;
+			Function<ChunkSectionLayer, RenderType> toRenderType = RenderTypeHelper::getMovingBlockRenderType;
 
 			blockRenderer.getModelRenderer().tesselateWithoutAO(blockAndTintGetter, blockModel.collectParts(mc.level, BlockPos.ZERO, state, RandomSource.create(42L)), state, BlockPos.ZERO, pose, toRenderType.andThen(bufferSource::getBuffer), false, OverlayTexture.NO_OVERLAY);
 		}
