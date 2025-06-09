@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -153,12 +154,13 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", 32, meshData.vertexBuffer());
 						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", 72, meshData.indexBuffer());
 						RenderTarget mainRenderTarget = mc.getMainRenderTarget();
+						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(pose.last().pose(), new Vector4f(1, 1, 1, 1), new Vector3f(1, 1, 1), mc.gameRenderer.getProjectionMatrix(90.0F), 1.0F);
 
 						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + be.getBlockPos(), mainRenderTarget.getColorTextureView(), OptionalInt.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
 							pass.setPipeline(FRAME_PIPELINE);
 							pass.setVertexBuffer(0, vertexBuffer);
 							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
-							pass.setUniform("DynamicTransforms", RenderSystem.getDynamicUniforms().writeTransform(pose.last().pose(), new Vector4f(1, 1, 1, 1), new Vector3f(1, 1, 1), mc.gameRenderer.getProjectionMatrix(90.0F), 1.0F));
+							pass.setUniform("DynamicTransforms", dynamicTransforms);
 							pass.bindSampler("InSampler", target.getColorTextureView());
 							pass.drawIndexed(0, 0, 6, 1);
 						}
@@ -214,10 +216,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Pose pose = poseStack.last();
 		Matrix4f lastPose = poseStack.last().pose();
 
-		bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setColor(r, g, b, a).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(pose, normal);
-		bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setColor(r, g, b, a).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(pose, normal);
-		bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setColor(r, g, b, a).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(pose, normal);
-		bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setColor(r, g, b, a).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setColor(r, g, b, a).setUv(0, 0).setLight(packedLight).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setColor(r, g, b, a).setUv(0, 1).setLight(packedLight).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setColor(r, g, b, a).setUv(1, 1).setLight(packedLight).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setColor(r, g, b, a).setUv(1, 0).setLight(packedLight).setNormal(pose, normal);
 
 		if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 			bufferSource.endBatch();
