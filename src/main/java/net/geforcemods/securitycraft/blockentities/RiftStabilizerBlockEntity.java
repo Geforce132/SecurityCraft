@@ -145,7 +145,9 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		lastTeleportDistance = tag.getDoubleOr("lastTeleportDistance", 0.0D);
-		lastTeleportationType = TeleportationType.values()[tag.getIntOr("lastTeleportationType", 0)];
+
+		if (tag.getInt("lastTeleportationType").isPresent())
+			lastTeleportationType = TeleportationType.values()[tag.getIntOr("lastTeleportationType", 0)];
 	}
 
 	@Override

@@ -137,7 +137,9 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 
 		bombsRemaining = tag.getIntOr("bombsRemaining", 4);
 		updateBombCount = tag.getBooleanOr("updateBombCount", false);
-		targetingMode.setValue(TargetingMode.values()[tag.getIntOr("targetingOption", 1)]);
+
+		if (tag.getInt("targetingOption").isPresent())
+			targetingMode.setValue(TargetingMode.values()[tag.getIntOr("targetingOption", 1)]);
 	}
 
 	public void setBombsRemaining(int bombsRemaining) {

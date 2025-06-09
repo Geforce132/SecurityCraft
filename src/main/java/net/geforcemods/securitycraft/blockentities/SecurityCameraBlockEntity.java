@@ -190,7 +190,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		lens.fromItemList(tag.listOrEmpty("lens", ItemStack.CODEC));
 		initialXRotation = tag.getFloatOr("initial_x_rotation", 1.0F);
 		initialYRotation = tag.getFloatOr("initial_y_rotation", 1.0F);
-		initialZoom = tag.getFloatOr("initial_zoom", 1.0F);
+		initialZoom = tag.getFloatOr("initial_zoom", initialZoom);
 	}
 
 	@Override
