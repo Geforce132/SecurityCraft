@@ -53,12 +53,15 @@ public abstract class LevelRendererMixin {
 	protected abstract boolean collectVisibleEntities(Camera camera, Frustum frustum, List<Entity> output);
 
 	/**
-	 * Allows entities to render in the first frame of a render section being rendered when Sodium is installed, as entities in
-	 * such a section would otherwise not render due to a bug within Sodium. This is achieved by attempting to collect all
-	 * renderable entities a second time after LevelRenderer#setupRender has been called, since this is required for Sodium's
-	 * entity culling logic to work properly. Note: Only allowing this mixin to work when the first collection of renderable
-	 * entities has found 0 entities does not work correctly, since some entities, like ones with the Glowing effect, are
-	 * unaffected by Sodium entity culling and thus always rendered.
+	 * The first purpose of this mixin is to allow entities to render in the first frame of a render section being rendered when
+	 * Sodium is installed. This needs to be done because entities would never render at all in the first frame not render due
+	 * to a bug within Sodium. To allow entities to render in such circumstances, it is attempted to collect all renderable
+	 * entities a second time after LevelRenderer#setupRender has been called, since this is required for Sodium's entity
+	 * culling logic to work properly. Note: Only allowing this mixin to work when the first collection of renderable entities
+	 * has found 0 entities does not work correctly, since some entities, like ones with the Glowing effect, are unaffected by
+	 * Sodium entity culling and thus always rendered.
+	 * The second purpose of this mixin is to capture the fog color used when rendering a frame world, to be able to render it
+	 * in the background of a frame feed.
 	 */
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"))
 	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, Matrix4f frustumMatrix, Matrix4f projectionMatrix, GpuBufferSlice bufferSlice, Vector4f fogColor, boolean renderSky, CallbackInfo ci, @Local Frustum frustum) {
@@ -71,6 +74,9 @@ public abstract class LevelRendererMixin {
 			visibleEntityCount = visibleEntities.size();
 			profiler.popPush("compile_sections");
 		}
+
+		if (FrameFeedHandler.isCapturingCamera())
+			FrameFeedHandler.getCurrentlyCapturedFeed().setBackgroundColor(fogColor);
 	}
 
 	/**

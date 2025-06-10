@@ -46,6 +46,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -137,7 +138,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				Vector3f backgroundColor = feed.backgroundColor();
 
 				//TODO: fog
-				//renderOverlay(direction, pose, buffer, ARGB.as8BitChannel(backgroundColor.x), ARGB.as8BitChannel(backgroundColor.y), ARGB.as8BitChannel(backgroundColor.z), 255, xStart, xEnd, zStart, zEnd, margin, packedLight);
+				renderOverlay(direction, pose, buffer, buffer.getBuffer(RenderType.entityShadow(WHITE)), ARGB.colorFromFloat(1.0F, backgroundColor.x, backgroundColor.y, backgroundColor.z), xStart, xEnd, zStart, zEnd, margin, packedLight);
 
 				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
 					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
