@@ -46,7 +46,6 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -59,6 +58,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final ResourceLocation NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
 	private static final Material NOISE_BACKGROUND = new Material(TextureAtlas.LOCATION_BLOCKS, SecurityCraft.resLoc("entity/frame/noise_background"));
 	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
+	private static final ResourceLocation WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
 	//@formatter:off
 	public static final RenderPipeline FRAME_PIPELINE = RenderPipeline.builder()
 			.withLocation(SecurityCraft.resLoc("pipeline/frame_draw_fb_in_area"))
@@ -136,8 +136,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				RenderTarget target = feed.renderTarget();
 				Vector3f backgroundColor = feed.backgroundColor();
 
-				//fog
-				renderOverlay(direction, pose, buffer, ARGB.as8BitChannel(backgroundColor.x), ARGB.as8BitChannel(backgroundColor.y), ARGB.as8BitChannel(backgroundColor.z), 255, xStart, xEnd, zStart, zEnd, margin, packedLight);
+				//TODO: fog
+				//renderOverlay(direction, pose, buffer, ARGB.as8BitChannel(backgroundColor.x), ARGB.as8BitChannel(backgroundColor.y), ARGB.as8BitChannel(backgroundColor.z), 255, xStart, xEnd, zStart, zEnd, margin, packedLight);
 
 				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
 					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -207,19 +207,18 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	private void renderOverlay(Direction direction, PoseStack pose, MultiBufferSource buffer, int color, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight) {
-		renderOverlay(direction, pose, buffer, ARGB.red(color), ARGB.green(color), ARGB.blue(color), ARGB.alpha(color), xStart, xEnd, zStart, zEnd, margin, packedLight);
+		renderOverlay(direction, pose, buffer, buffer.getBuffer(RenderType.entityTranslucent(WHITE)), color, xStart, xEnd, zStart, zEnd, margin, packedLight);
 	}
 
-	private void renderOverlay(Direction direction, PoseStack poseStack, MultiBufferSource buffer, int r, int g, int b, int a, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight) {
+	private void renderOverlay(Direction direction, PoseStack poseStack, MultiBufferSource buffer, VertexConsumer bufferBuilder, int color, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight) {
 		Vector3f normal = direction.getUnitVec3().toVector3f();
-		VertexConsumer bufferBuilder = buffer.getBuffer(RenderType.solid());
 		Pose pose = poseStack.last();
 		Matrix4f lastPose = poseStack.last().pose();
 
-		bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setColor(r, g, b, a).setUv(0, 0).setLight(packedLight).setNormal(pose, normal);
-		bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setColor(r, g, b, a).setUv(0, 1).setLight(packedLight).setNormal(pose, normal);
-		bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setColor(r, g, b, a).setUv(1, 1).setLight(packedLight).setNormal(pose, normal);
-		bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setColor(r, g, b, a).setUv(1, 0).setLight(packedLight).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xStart, margin, zStart).setColor(color).setUv(0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xStart, 1 - margin, zStart).setColor(color).setUv(0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xEnd, 1 - margin, zEnd).setColor(color).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, normal);
+		bufferBuilder.addVertex(lastPose, xEnd, margin, zEnd).setColor(color).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, normal);
 
 		if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 			bufferSource.endBatch();
