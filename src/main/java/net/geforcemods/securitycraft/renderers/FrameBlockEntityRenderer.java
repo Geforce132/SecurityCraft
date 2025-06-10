@@ -13,7 +13,6 @@ import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.DepthTestFunction;
-import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -35,6 +34,7 @@ import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -61,13 +61,12 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	private static final ResourceLocation WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
 	//@formatter:off
-	public static final RenderPipeline FRAME_PIPELINE = RenderPipeline.builder()
+	public static final RenderPipeline FRAME_PIPELINE = RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
 			.withLocation(SecurityCraft.resLoc("pipeline/frame_draw_fb_in_area"))
 			.withVertexShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
 			.withFragmentShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
 			.withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
 			.withSampler("InSampler")
-			.withUniform("DynamicTransforms", UniformType.UNIFORM_BUFFER)
 			.withBlend(BlendFunction.TRANSLUCENT)
 			.withDepthTestFunction(DepthTestFunction.LEQUAL_DEPTH_TEST)
 			.build();
@@ -155,13 +154,14 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", 32, meshData.vertexBuffer());
 						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", 72, meshData.indexBuffer());
 						RenderTarget mainRenderTarget = mc.getMainRenderTarget();
-						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(1, 1, 1, 1), new Vector3f(1, 1, 1), mc.gameRenderer.getProjectionMatrix(90.0F), 1.0F);
+						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(), new Vector3f(), new Matrix4f(), 0.0F);
 
 						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + be.getBlockPos(), mainRenderTarget.getColorTextureView(), OptionalInt.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
 							pass.setPipeline(FRAME_PIPELINE);
 							pass.setVertexBuffer(0, vertexBuffer);
 							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
 							pass.setUniform("DynamicTransforms", dynamicTransforms);
+							pass.setUniform("Projection", RenderSystem.getProjectionMatrixBuffer());
 							pass.bindSampler("InSampler", target.getColorTextureView());
 							pass.drawIndexed(0, 0, 6, 1);
 						}
