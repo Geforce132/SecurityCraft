@@ -155,7 +155,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", 32, meshData.vertexBuffer());
 						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", 72, meshData.indexBuffer());
 						RenderTarget mainRenderTarget = mc.getMainRenderTarget();
-						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(pose.last().pose(), new Vector4f(1, 1, 1, 1), new Vector3f(1, 1, 1), mc.gameRenderer.getProjectionMatrix(90.0F), 1.0F);
+						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(1, 1, 1, 1), new Vector3f(1, 1, 1), mc.gameRenderer.getProjectionMatrix(90.0F), 1.0F);
 
 						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + be.getBlockPos(), mainRenderTarget.getColorTextureView(), OptionalInt.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
 							pass.setPipeline(FRAME_PIPELINE);
