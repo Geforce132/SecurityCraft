@@ -88,7 +88,6 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		//TODO: does list saving and loading work with and the same as old data?
 		TypedInputList<NamedPositions.Entry> cameras = tag.listOrEmpty("cameras", NamedPositions.Entry.CODEC.orElse(NamedPositions.Entry.EMPTY));
 
 		cameraPositions.clear();

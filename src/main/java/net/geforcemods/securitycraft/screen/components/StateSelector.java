@@ -7,8 +7,6 @@ import java.util.List;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import com.mojang.math.Axis;
-
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
@@ -48,10 +46,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/state_selector.png");
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
-	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));
+	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (-1.0D / Math.sqrt(2)));
 	private static final Vector3f Y_AXIS = new Vector3f(0.0F, 1.0F, 0.0F);
-	private static final Quaternionf YP_90 = Axis.YP.rotationDegrees(90);
-	private static final Quaternionf YN_90 = Axis.YN.rotationDegrees(90);
 	private static final EnumProperty<StandingOrWallType> STANDING_OR_WALL_TYPE_PROPERTY = EnumProperty.create("standing_or_wall", StandingOrWallType.class);
 	private final StateSelectorAccessMenu menu;
 	private final int xStart, yStart, slotToCheck;
@@ -252,9 +248,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 			Quaternionf inverted = new Quaternionf(dragRotation).invert();
 
 			dragRotation.mul(new Quaternionf().fromAxisAngleRad(Y_AXIS.rotate(inverted, xRotationVector), (float) dragX * ROTATION_SENSITIVITY));
-			dragRotation.mul(YP_90);
 			dragRotation.mul(new Quaternionf().fromAxisAngleRad(Y_DRAG_ROTATION_VECTOR.rotate(inverted, yRotationVector), (float) dragY * ROTATION_SENSITIVITY));
-			dragRotation.mul(YN_90);
 			return true;
 		}
 

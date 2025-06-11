@@ -202,7 +202,6 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		//TODO: does linked block saving and loading work with and the same as old data? test loading data from the old version with multiple bound blocks, and missing ones inbetween
 		//what happens when this tries to load old BE data that has an empty compound tag?
 		TypedInputList<GlobalPos> linkedBlocksList = tag.listOrEmpty("linked_blocks", GlobalPos.CODEC.orElse(GlobalPositions.DUMMY_GLOBAL_POS));
 		TypedInputList<NoteWrapper> notesList = tag.listOrEmpty("notes", NoteWrapper.CODEC);

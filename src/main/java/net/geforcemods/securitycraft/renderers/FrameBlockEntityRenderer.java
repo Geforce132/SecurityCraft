@@ -136,7 +136,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				RenderTarget target = feed.renderTarget();
 				Vector3f backgroundColor = feed.backgroundColor();
 
-				//TODO: fog
 				renderOverlay(direction, pose, buffer, buffer.getBuffer(RenderType.entityShadow(WHITE)), ARGB.colorFromFloat(1.0F, backgroundColor.x, backgroundColor.y, backgroundColor.z), xStart, xEnd, zStart, zEnd, margin, packedLight);
 
 				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {

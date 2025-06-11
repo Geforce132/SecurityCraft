@@ -117,7 +117,6 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		//TODO: does type saving and loading work with and the same as old data?
 		ValueOutput teleportationNBT = tag.child("teleportationTypes");
 		int i = 0;
 
