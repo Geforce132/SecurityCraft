@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,9 +22,6 @@ import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
 import snownee.jade.api.WailaPlugin;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.IElement.Align;
-import snownee.jade.impl.Tooltip;
-import snownee.jade.impl.ui.TextElement;
 
 @WailaPlugin(SecurityCraft.MODID)
 public final class JadeDataProvider extends HudModHandler implements IWailaPlugin {
@@ -65,15 +61,7 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 	private class SecurityCraftBlockInfo implements IBlockComponentProvider {
 		@Override
 		public void appendTooltip(ITooltip tooltip, BlockAccessor data, IPluginConfig config) {
-			Level level = data.getLevel();
-			BlockPos pos = data.getPosition();
-			BlockState state = data.getBlockState();
-			Block block = data.getBlock();
-
-			addDisguisedOwnerModuleNameInfo(level, pos, state, block, data.getBlockEntity(), data.getPlayer(), tooltip::add, config::get);
-
-			if (tooltip instanceof Tooltip t && block instanceof IOverlayDisplay overlayDisplay)
-				t.lines.get(0).alignedElements(Align.LEFT).set(0, new TextElement(MutableComponent.create(overlayDisplay.getDisplayStack(level, state, pos).getItemName().getContents()).setStyle(ITEM_NAME_STYLE)));
+			addDisguisedOwnerModuleNameInfo(data.getLevel(), data.getPosition(), data.getBlockState(), data.getBlock(), data.getBlockEntity(), data.getPlayer(), tooltip::add, config::get);
 		}
 
 		@Override
