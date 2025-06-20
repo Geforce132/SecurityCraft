@@ -7,10 +7,9 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.fml.event.lifecycle.InterModProcessEvent;
 
-@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SecurityCraftAPI {
 	private static List<IExtractionBlock> registeredExtractionBlocks = new ArrayList<>();
 	private static List<IPasscodeConvertible> registeredPasscodeConvertibles = new ArrayList<>();

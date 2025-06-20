@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.6.4-beta"
+	version = "21.6.6-beta"
 	validateAccessTransformers = true
 
 	runs {
@@ -101,12 +101,12 @@ dependencies {
 	compileOnly "curse.maven:the-one-probe-245211:5502323"
 	implementation "curse.maven:jade-324717:6662664"
 	compileOnly "curse.maven:betterf3-401648:6364907"
-	compileOnly "curse.maven:cloth-config-348521:6351757" //betterf3 dependency
+	compileOnly "curse.maven:cloth-config-348521:6669837" //betterf3 dependency
 	compileOnly "curse.maven:wthit-forge-455982:6417716"
 	compileOnly "curse.maven:badpackets-615134:6067146" //wthit dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
 	compileOnly "curse.maven:embeddium-908741:6116910"
-	compileOnly "maven.modrinth:sodium:mc1.21.5-0.6.13-neoforge" //incompatible with embeddium
+	implementation "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {

@@ -20,11 +20,10 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent.DataProviderFromOutputLookup;
 
-@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class DataGenRegistrar {
 	private DataGenRegistrar() {}
 

@@ -8,7 +8,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
@@ -17,7 +16,7 @@ import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
-@EventBusSubscriber(bus = Bus.MOD)
+@EventBusSubscriber(modid = SecurityCraft.MODID)
 public class ConfigHandler {
 	public static final ModConfigSpec CLIENT_SPEC;
 	public static final Client CLIENT;
