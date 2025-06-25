@@ -53,7 +53,6 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -93,35 +92,31 @@ public class SCClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRenderLevelStage(RenderLevelStageEvent event) {
-		if (event.getStage() == Stage.AFTER_TRIPWIRE_BLOCKS) {
-			Vec3 camPos = event.getCamera().getPosition();
-			PoseStack pose = event.getPoseStack();
-			Minecraft mc = Minecraft.getInstance();
-			Level level = mc.level;
-			VertexConsumer consumer = mc.renderBuffers().bufferSource().getBuffer(ClientHandler.OVERLAY_LINES);
+	public static void onRenderLevelStage(RenderLevelStageEvent.AfterTripwireBlocks event) {
+		Vec3 camPos = event.getCamera().getPosition();
+		PoseStack pose = event.getPoseStack();
+		Minecraft mc = Minecraft.getInstance();
+		Level level = mc.level;
+		VertexConsumer consumer = mc.renderBuffers().bufferSource().getBuffer(ClientHandler.OVERLAY_LINES);
 
-			for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
-				BlockEntity be = level.getBlockEntity(bcdPos);
+		for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
+			BlockEntity be = level.getBlockEntity(bcdPos);
 
-				if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
-					int packedColor = bcd.getColor();
-					float r = ARGB.red(packedColor) / 255.0F;
-					float g = ARGB.green(packedColor) / 255.0F;
-					float b = ARGB.blue(packedColor) / 255.0F;
+			if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
+				int packedColor = bcd.getColor();
+				float r = ARGB.red(packedColor) / 255.0F;
+				float g = ARGB.green(packedColor) / 255.0F;
+				float b = ARGB.blue(packedColor) / 255.0F;
 
-					for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
-						BlockPos pos = changeEntry.pos();
+				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
+					BlockPos pos = changeEntry.pos();
 
-						pose.pushPose();
-						pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-						ShapeRenderer.renderLineBox(pose, consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
-						pose.popPose();
-					}
+					pose.pushPose();
+					pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
+					ShapeRenderer.renderLineBox(pose, consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
+					pose.popPose();
 				}
 			}
-
-			mc.renderBuffers().bufferSource().endBatch();
 		}
 	}
 

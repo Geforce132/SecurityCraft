@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
+
+- Fix: Compatibility with newer NeoForge versions
+- Misc.: The minimum required NeoForge version is now 21.6.16-beta
+
 --------------------------Changelog for v1.10-beta2 of SecurityCraft--------------------------
 
 - Fix: Jade integration

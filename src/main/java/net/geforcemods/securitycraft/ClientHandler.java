@@ -103,6 +103,7 @@ import net.geforcemods.securitycraft.screen.SingleLensScreen;
 import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
+import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderState;
 import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderer;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
@@ -165,7 +166,7 @@ import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
-import net.neoforged.neoforge.client.model.standalone.StandaloneModelBaker;
+import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelLoader.BakedModels;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -219,8 +220,10 @@ public class ClientHandler {
 			SCContent.USERNAME_LOGGER.get()
 	});
 	private static final ResourceLocation SRI_BASE_MODEL_LOCATION = SecurityCraft.resLoc("block/secure_redstone_interface");
-	private static final StandaloneModelKey<BlockStateModel> SRI_SENDER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_BASE_MODEL_LOCATION.withSuffix("_sender_on"));
-	private static final StandaloneModelKey<BlockStateModel> SRI_RECEIVER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_BASE_MODEL_LOCATION.withSuffix("_receiver_on"));
+	private static final ResourceLocation SRI_SENDER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_sender_on");
+	private static final ResourceLocation SRI_RECEIVER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_receiver_on");
+	private static final StandaloneModelKey<BlockStateModel> SRI_SENDER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_SENDER_ON_MODEL_LOCATION::toString);
+	private static final StandaloneModelKey<BlockStateModel> SRI_RECEIVER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_RECEIVER_ON_MODEL_LOCATION::toString);
     public static final RenderType.CompositeRenderType OVERLAY_LINES = RenderType.create(
 			"overlay_lines",
 			1536,
@@ -244,8 +247,8 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onModelRegisterAdditional(ModelEvent.RegisterStandalone event) {
-		event.register(SRI_SENDER_ON_MODEL_KEY, StandaloneModelBaker.blockStateModel());
-		event.register(SRI_RECEIVER_ON_MODEL_KEY, StandaloneModelBaker.blockStateModel());
+		event.register(SRI_SENDER_ON_MODEL_KEY, SimpleUnbakedStandaloneModel.blockStateModel(SRI_SENDER_ON_MODEL_LOCATION));
+		event.register(SRI_RECEIVER_ON_MODEL_KEY, SimpleUnbakedStandaloneModel.blockStateModel(SRI_RECEIVER_ON_MODEL_LOCATION));
 	}
 
 	@SubscribeEvent
@@ -373,7 +376,7 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void registerPipRenderers(RegisterPictureInPictureRenderersEvent event) {
-		event.register(GuiBlockModelRenderer::new);
+		event.register(GuiBlockModelRenderState.class, GuiBlockModelRenderer::new);
 	}
 
 	@SubscribeEvent
