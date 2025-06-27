@@ -48,8 +48,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IOwnable { //this class doesn't extend PistonBlockEntity because almost all of that class' content is private
 	private static final BlockState DEFAULT_BLOCK_STATE = Blocks.AIR.defaultBlockState();
 	private BlockState movedState = DEFAULT_BLOCK_STATE;
-	private BlockEntity beToMove;
-	private ValueInput movedBlockEntityTag;
+	private CompoundTag movedBlockEntityTag;
 	private Direction direction;
 	private boolean extending = false;
 	private boolean isSourcePiston = false;
@@ -71,27 +70,17 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		this.direction = direction;
 		this.extending = extending;
 		this.isSourcePiston = shouldHeadBeRendered;
-		this.beToMove = beToMove;
 
 		if (beToMove != null) {
 			try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(beToMove.problemPath(), SecurityCraft.LOGGER)) {
 				HolderLookup.Provider registryAccess = level.registryAccess();
-				TagValueOutput valueOutput = (TagValueOutput) saveBeToMove(TagValueOutput.createWithContext(problemReporter, registryAccess));
-				CompoundTag tag;
+				TagValueOutput valueOutput = TagValueOutput.createWithContext(problemReporter, registryAccess);
 
-				tag = valueOutput.buildResult();
-				this.owner = Owner.fromCompound(tag);
-				movedBlockEntityTag = TagValueInput.create(problemReporter, registryAccess, tag);
+				beToMove.saveWithoutMetadata(valueOutput);
+				movedBlockEntityTag = valueOutput.isEmpty() ? null : valueOutput.buildResult();
+				owner = Owner.fromCompound(movedBlockEntityTag);
 			}
 		}
-	}
-
-	private ValueOutput saveBeToMove(ValueOutput tag) {
-		beToMove.saveWithoutMetadata(tag);
-		tag.putInt("x", getBlockPos().getX());
-		tag.putInt("y", getBlockPos().getY());
-		tag.putInt("z", getBlockPos().getZ());
-		return tag;
 	}
 
 	@Override
@@ -315,7 +304,10 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 					BlockEntity be = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(worldPosition, pushedState) : null;
 
 					if (be != null) {
-						be.loadWithComponents(movedBlockEntityTag);
+						try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(be.problemPath(), SecurityCraft.LOGGER)) {
+							be.loadWithComponents(TagValueInput.create(problemReporter, level.registryAccess(), movedBlockEntityTag));
+						}
+
 						level.setBlockEntity(be);
 
 						if (be instanceof IModuleInventory moduleInv) {
@@ -372,7 +364,10 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 							BlockEntity storedBe = pushedState.hasBlockEntity() ? ((EntityBlock) pushedState.getBlock()).newBlockEntity(be.worldPosition, pushedState) : null;
 
 							if (storedBe != null) {
-								storedBe.loadWithComponents(be.movedBlockEntityTag);
+								try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(storedBe.problemPath(), SecurityCraft.LOGGER)) {
+									storedBe.loadWithComponents(TagValueInput.create(problemReporter, level.registryAccess(), be.movedBlockEntityTag));
+								}
+
 								level.setBlockEntity(storedBe);
 
 								if (storedBe instanceof IModuleInventory moduleInv) {
@@ -413,7 +408,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		lastProgress = progress;
 		extending = tag.getBooleanOr("extending", false);
 		isSourcePiston = tag.getBooleanOr("source", false);
-		movedBlockEntityTag = tag.childOrEmpty("movedBlockEntityTag");
+		movedBlockEntityTag = tag.read("movedBlockEntityTag", CompoundTag.CODEC).orElse(null);
 		owner.load(tag);
 	}
 
@@ -426,14 +421,11 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		tag.putBoolean("extending", extending);
 		tag.putBoolean("source", isSourcePiston);
 
-		if (beToMove != null) {
-			ValueOutput child = tag.child("movedBlockEntityTag");
+		if (movedBlockEntityTag != null)
+			tag.store("movedBlockEntityTag", CompoundTag.CODEC, movedBlockEntityTag);
 
-			saveBeToMove(child);
-
-			if (owner != null)
-				owner.save(child, needsValidation());
-		}
+		if (owner != null)
+			owner.save(tag, needsValidation());
 	}
 
 	public VoxelShape getCollisionShape(BlockGetter level, BlockPos pos) {
