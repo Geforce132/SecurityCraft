@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.10-beta4 of SecurityCraft--------------------------
+
+- Fix: Crash when pushing blocks with reinforced pistons
+
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
 - Fix: Compatibility with newer NeoForge versions

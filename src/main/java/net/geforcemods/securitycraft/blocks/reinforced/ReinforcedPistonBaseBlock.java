@@ -156,7 +156,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			BlockState movingPiston = SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, direction).setValue(MovingPistonBlock.TYPE, isSticky ? PistonType.STICKY : PistonType.DEFAULT);
 
 			level.setBlock(pos, movingPiston, 276);
-			level.setBlockEntity(new ReinforcedPistonMovingBlockEntity(pos, movingPiston, defaultBlockState().setValue(FACING, Direction.from3DDataValue(param & 7)), be, direction, false, true));
+			level.setBlockEntity(new ReinforcedPistonMovingBlockEntity(level, pos, movingPiston, defaultBlockState().setValue(FACING, Direction.from3DDataValue(param & 7)), be, direction, false, true));
 			level.updateNeighborsAt(pos, movingPiston.getBlock());
 			movingPiston.updateNeighbourShapes(level, pos, 2);
 
@@ -285,7 +285,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 				stateToPosMap.remove(posToMove);
 				level.setBlock(posToMove, SCContent.REINFORCED_MOVING_PISTON.get().defaultBlockState().setValue(FACING, facing), 324);
-				level.setBlockEntity(new ReinforcedPistonMovingBlockEntity(posToMove, movingPiston, statesToMove.get(l), beToMove, facing, extending, false));
+				level.setBlockEntity(new ReinforcedPistonMovingBlockEntity(level, posToMove, movingPiston, statesToMove.get(l), beToMove, facing, extending, false));
 				updatedBlocks[j++] = stateToMove;
 			}
 
@@ -300,7 +300,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 				stateToPosMap.remove(frontPos);
 				level.setBlock(frontPos, movingPiston, 324);
-				level.setBlockEntity(new ReinforcedPistonMovingBlockEntity(frontPos, movingPiston, pistonHead, headBe, facing, true, true));
+				level.setBlockEntity(new ReinforcedPistonMovingBlockEntity(level, frontPos, movingPiston, pistonHead, headBe, facing, true, true));
 			}
 
 			BlockState air = Blocks.AIR.defaultBlockState();

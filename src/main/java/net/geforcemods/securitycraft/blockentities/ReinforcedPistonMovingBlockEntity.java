@@ -65,7 +65,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		super(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), pos, state);
 	}
 
-	public ReinforcedPistonMovingBlockEntity(BlockPos pos, BlockState state, BlockState movedState, BlockEntity beToMove, Direction direction, boolean extending, boolean shouldHeadBeRendered) {
+	public ReinforcedPistonMovingBlockEntity(Level level, BlockPos pos, BlockState state, BlockState movedState, BlockEntity beToMove, Direction direction, boolean extending, boolean shouldHeadBeRendered) {
 		this(pos, state);
 		this.movedState = movedState;
 		this.direction = direction;
@@ -73,14 +73,16 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		this.isSourcePiston = shouldHeadBeRendered;
 		this.beToMove = beToMove;
 
-		try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(beToMove.problemPath(), SecurityCraft.LOGGER)) {
-			HolderLookup.Provider registryAccess = beToMove.getLevel().registryAccess();
-			TagValueOutput valueOutput = (TagValueOutput) saveBeToMove(TagValueOutput.createWithContext(problemReporter, registryAccess));
-			CompoundTag tag;
+		if (beToMove != null) {
+			try (ProblemReporter.ScopedCollector problemReporter = new ProblemReporter.ScopedCollector(beToMove.problemPath(), SecurityCraft.LOGGER)) {
+				HolderLookup.Provider registryAccess = level.registryAccess();
+				TagValueOutput valueOutput = (TagValueOutput) saveBeToMove(TagValueOutput.createWithContext(problemReporter, registryAccess));
+				CompoundTag tag;
 
-			tag = valueOutput.buildResult();
-			this.owner = Owner.fromCompound(tag);
-			movedBlockEntityTag = TagValueInput.create(problemReporter, registryAccess, tag);
+				tag = valueOutput.buildResult();
+				this.owner = Owner.fromCompound(tag);
+				movedBlockEntityTag = TagValueInput.create(problemReporter, registryAccess, tag);
+			}
 		}
 	}
 
