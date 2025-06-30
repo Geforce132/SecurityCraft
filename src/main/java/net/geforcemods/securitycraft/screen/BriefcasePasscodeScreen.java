@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
@@ -94,11 +94,11 @@ public class BriefcasePasscodeScreen extends Screen {
 			String passcode = digits[0] + "" + digits[1] + "" + digits[2] + "" + digits[3];
 
 			if (isSetup) {
-				PacketDistributor.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
+				ClientPacketDistributor.sendToServer(new SetBriefcasePasscodeAndOwner(passcode));
 				ClientHandler.displayBriefcasePasscodeScreen(briefcase.getHoverName());
 			}
 			else
-				PacketDistributor.sendToServer(new CheckBriefcasePasscode(passcode));
+				ClientPacketDistributor.sendToServer(new CheckBriefcasePasscode(passcode));
 		}
 	}
 

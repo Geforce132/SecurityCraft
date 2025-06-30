@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class InventoryScannerGhostIngredientHandler implements IGhostIngredientHandler<InventoryScannerScreen> {
 	@Override
@@ -35,7 +35,7 @@ public class InventoryScannerGhostIngredientHandler implements IGhostIngredientH
 					@Override
 					public void accept(I ingredient) {
 						screen.be.getContents().set(slot.index, (ItemStack) ingredient);
-						PacketDistributor.sendToServer(new SetGhostSlot(slot.index, (ItemStack) ingredient));
+						ClientPacketDistributor.sendToServer(new SetGhostSlot(slot.index, (ItemStack) ingredient));
 					}
 				});
 			}

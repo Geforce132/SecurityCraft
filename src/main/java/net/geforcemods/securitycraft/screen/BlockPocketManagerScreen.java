@@ -35,7 +35,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocketManagerMenu> implements IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_pocket_manager.png");
@@ -261,7 +261,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	public void toggleButtonClicked(Button button) {
-		PacketDistributor.sendToServer(new ToggleBlockPocketManager(be.getBlockPos(), be.getSize(), !be.isEnabled()));
+		ClientPacketDistributor.sendToServer(new ToggleBlockPocketManager(be.getBlockPos(), be.getSize(), !be.isEnabled()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -295,7 +295,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	public void assembleButtonClicked(Button button) {
 		be.setSize(size);
-		PacketDistributor.sendToServer(new AssembleBlockPocket(be.getBlockPos(), be.getSize()));
+		ClientPacketDistributor.sendToServer(new AssembleBlockPocket(be.getBlockPos(), be.getSize()));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -318,6 +318,6 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	private void sync() {
-		PacketDistributor.sendToServer(new SyncBlockPocketManager(be.getBlockPos(), be.getSize(), be.showsOutline(), be.getAutoBuildOffset(), be.getColor()));
+		ClientPacketDistributor.sendToServer(new SyncBlockPocketManager(be.getBlockPos(), be.getSize(), be.showsOutline(), be.getAutoBuildOffset(), be.getColor()));
 	}
 }

@@ -32,7 +32,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueInput.TypedInputList;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class FrameBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private final DisabledOption disabled = new DisabledOption(false);
@@ -80,7 +80,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			if (!level.isClientSide)
 				switchCameras(null, null, 0, false);
 			else if (clientInteracted)
-				PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
+				ClientPacketDistributor.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
 		}
 	}
 
@@ -152,7 +152,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			currentCameraPosition = null;
 		}
 
-		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.of(cameraPos), Optional.ofNullable(currentCameraPosition), false));
+		ClientPacketDistributor.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.of(cameraPos), Optional.ofNullable(currentCameraPosition), false));
 	}
 
 	public void removeCamera(GlobalPos cameraPos) {
@@ -176,7 +176,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		int requestedRenderDistance = FrameFeedHandler.getFrameFeedViewDistance(this);
 
 		switchCameras(camera, null, requestedRenderDistance, false);
-		PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
+		ClientPacketDistributor.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
 	}
 
 	public void switchCameras(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableNewCamera) {

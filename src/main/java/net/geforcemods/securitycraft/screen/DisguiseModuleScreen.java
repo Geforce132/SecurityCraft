@@ -22,7 +22,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModuleMenu> implements IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/customize1.png");
@@ -83,7 +83,7 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 		}
 
 		module.set(SCContent.SAVED_BLOCK_STATE, new SavedBlockState(state, standingOrWall));
-		PacketDistributor.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
+		ClientPacketDistributor.sendToServer(new SetStateOnDisguiseModule(state, standingOrWall));
 	}
 
 	@Override

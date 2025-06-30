@@ -26,7 +26,7 @@ import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class CameraMonitorItem extends Item {
 	public static final int MAX_CAMERAS = 30;
@@ -114,7 +114,7 @@ public class CameraMonitorItem extends Item {
 	public static void removeCameraOnClient(GlobalPos camera, ItemStack monitor) {
 		if (monitor.has(SCContent.BOUND_CAMERAS)) {
 			monitor.get(SCContent.BOUND_CAMERAS).remove(SCContent.BOUND_CAMERAS, monitor, camera);
-			PacketDistributor.sendToServer(new RemoveCameraTag(camera));
+			ClientPacketDistributor.sendToServer(new RemoveCameraTag(camera));
 		}
 	}
 }

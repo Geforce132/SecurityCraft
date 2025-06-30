@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class KeyChangerScreen extends Screen {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
@@ -101,9 +101,9 @@ public class KeyChangerScreen extends Screen {
 
 	private void confirmButtonClicked(Button button) {
 		if (passcodeProtected instanceof BlockEntity be)
-			PacketDistributor.sendToServer(new SetPasscode(be.getBlockPos(), textboxNewPasscode.getValue()));
+			ClientPacketDistributor.sendToServer(new SetPasscode(be.getBlockPos(), textboxNewPasscode.getValue()));
 		else if (passcodeProtected instanceof Entity entity)
-			PacketDistributor.sendToServer(new SetPasscode(entity.getId(), textboxNewPasscode.getValue()));
+			ClientPacketDistributor.sendToServer(new SetPasscode(entity.getId(), textboxNewPasscode.getValue()));
 
 		Minecraft.getInstance().player.closeContainer();
 		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), ChatFormatting.GREEN, true);

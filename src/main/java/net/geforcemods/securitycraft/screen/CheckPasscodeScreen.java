@@ -23,7 +23,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class CheckPasscodeScreen extends Screen {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/check_passcode.png");
@@ -181,9 +181,9 @@ public class CheckPasscodeScreen extends Screen {
 		keycodeTextbox.setValue("");
 
 		if (passcodeProtected instanceof BlockEntity be)
-			PacketDistributor.sendToServer(new CheckPasscode(be.getBlockPos(), code));
+			ClientPacketDistributor.sendToServer(new CheckPasscode(be.getBlockPos(), code));
 		else if (passcodeProtected instanceof Entity entity)
-			PacketDistributor.sendToServer(new CheckPasscode(entity.getId(), code));
+			ClientPacketDistributor.sendToServer(new CheckPasscode(entity.getId(), code));
 	}
 
 	public static class CensoringEditBox extends EditBox {

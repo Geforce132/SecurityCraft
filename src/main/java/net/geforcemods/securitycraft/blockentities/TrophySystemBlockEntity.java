@@ -57,6 +57,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -292,7 +293,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			setChanged();
 
 			if (level.isClientSide)
-				PacketDistributor.sendToServer(new SyncTrophySystem(worldPosition, Utils.getRegistryName(projectileType), allowed));
+				ClientPacketDistributor.sendToServer(new SyncTrophySystem(worldPosition, Utils.getRegistryName(projectileType), allowed));
 		}
 	}
 

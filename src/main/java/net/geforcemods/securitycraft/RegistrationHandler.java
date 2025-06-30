@@ -158,19 +158,19 @@ public class RegistrationHandler {
 	}
 
 	@SubscribeEvent
-	public static void registerPackets(RegisterPayloadHandlersEvent event) {
+	public static void onRegisterPayloadHandlers(RegisterPayloadHandlersEvent event) {
 		PayloadRegistrar registrar = event.registrar(SecurityCraft.MODID).versioned(SecurityCraft.getVersion());
 
-		registrar.playToClient(BlockPocketManagerFailedActivation.TYPE, BlockPocketManagerFailedActivation.STREAM_CODEC, BlockPocketManagerFailedActivation::handle);
-		registrar.playToClient(InteractWithFrame.TYPE, InteractWithFrame.STREAM_CODEC, InteractWithFrame::handle);
-		registrar.playToClient(OpenScreen.TYPE, OpenScreen.STREAM_CODEC, OpenScreen::handle);
-		registrar.playToClient(PlayAlarmSound.TYPE, PlayAlarmSound.STREAM_CODEC, PlayAlarmSound::handle);
-		registrar.playToClient(RefreshDisguisableModel.TYPE, RefreshDisguisableModel.STREAM_CODEC, RefreshDisguisableModel::handle);
-		registrar.playToClient(SendManualPages.TYPE, SendManualPages.STREAM_CODEC, SendManualPages::handle);
-		registrar.playToClient(SetCameraView.TYPE, SetCameraView.STREAM_CODEC, SetCameraView::handle);
-		registrar.playToClient(SetTrophySystemTarget.TYPE, SetTrophySystemTarget.STREAM_CODEC, SetTrophySystemTarget::handle);
-		registrar.playToClient(UpdateLaserColors.TYPE, UpdateLaserColors.STREAM_CODEC, UpdateLaserColors::handle);
-		registrar.playToClient(UpdateLogger.TYPE, UpdateLogger.STREAM_CODEC, UpdateLogger::handle);
+		registrar.playToClient(BlockPocketManagerFailedActivation.TYPE, BlockPocketManagerFailedActivation.STREAM_CODEC);
+		registrar.playToClient(InteractWithFrame.TYPE, InteractWithFrame.STREAM_CODEC);
+		registrar.playToClient(OpenScreen.TYPE, OpenScreen.STREAM_CODEC);
+		registrar.playToClient(PlayAlarmSound.TYPE, PlayAlarmSound.STREAM_CODEC);
+		registrar.playToClient(RefreshDisguisableModel.TYPE, RefreshDisguisableModel.STREAM_CODEC);
+		registrar.playToClient(SendManualPages.TYPE, SendManualPages.STREAM_CODEC);
+		registrar.playToClient(SetCameraView.TYPE, SetCameraView.STREAM_CODEC);
+		registrar.playToClient(SetTrophySystemTarget.TYPE, SetTrophySystemTarget.STREAM_CODEC);
+		registrar.playToClient(UpdateLaserColors.TYPE, UpdateLaserColors.STREAM_CODEC);
+		registrar.playToClient(UpdateLogger.TYPE, UpdateLogger.STREAM_CODEC);
 		registrar.playToServer(AssembleBlockPocket.TYPE, AssembleBlockPocket.STREAM_CODEC, AssembleBlockPocket::handle);
 		registrar.playToServer(CheckBriefcasePasscode.TYPE, CheckBriefcasePasscode.STREAM_CODEC, CheckBriefcasePasscode::handle);
 		registrar.playToServer(CheckPasscode.TYPE, CheckPasscode.STREAM_CODEC, CheckPasscode::handle);

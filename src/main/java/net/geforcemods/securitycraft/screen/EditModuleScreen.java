@@ -33,7 +33,7 @@ import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class EditModuleScreen extends Screen {
 	private static ListModuleData savedData;
@@ -124,7 +124,7 @@ public class EditModuleScreen extends Screen {
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.sendToServer(new SetListModuleData(module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY)));
+		ClientPacketDistributor.sendToServer(new SetListModuleData(module.getOrDefault(SCContent.LIST_MODULE_DATA, ListModuleData.EMPTY)));
 	}
 
 	@Override

@@ -36,7 +36,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ScreenshotEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class CameraController {
@@ -124,7 +124,7 @@ public class CameraController {
 	}
 
 	private static void dismount() {
-		PacketDistributor.sendToServer(new DismountCamera());
+		ClientPacketDistributor.sendToServer(new DismountCamera());
 	}
 
 	public static void moveViewUp(SecurityCamera cam) {
@@ -193,16 +193,16 @@ public class CameraController {
 		Level level = cam.level();
 
 		if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.isModuleEnabled(ModuleType.REDSTONE))
-			PacketDistributor.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
+			ClientPacketDistributor.sendToServer(new SetCameraPowered(pos, !level.getBlockState(pos).getValue(SecurityCameraBlock.POWERED)));
 	}
 
 	public static void toggleNightVision(SecurityCamera cam) {
 		if (ConfigHandler.SERVER.allowCameraNightVision.get())
-			PacketDistributor.sendToServer(new ToggleNightVision());
+			ClientPacketDistributor.sendToServer(new ToggleNightVision());
 	}
 
 	public static void setDefaultViewingDirection(SecurityCamera cam) {
-		PacketDistributor.sendToServer(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot(), cam.getZoomAmount()));
+		ClientPacketDistributor.sendToServer(new SetDefaultCameraViewingDirection(cam.getId(), cam.getXRot(), cam.getYRot(), cam.getZoomAmount()));
 	}
 
 	public static float getMovementSpeed(SecurityCamera cam) {

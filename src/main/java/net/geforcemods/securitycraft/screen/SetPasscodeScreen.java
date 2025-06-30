@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class SetPasscodeScreen extends Screen {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
@@ -93,9 +93,9 @@ public class SetPasscodeScreen extends Screen {
 
 	private void saveAndContinueButtonClicked(Button button) {
 		if (passcodeProtected instanceof BlockEntity be)
-			PacketDistributor.sendToServer(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
+			ClientPacketDistributor.sendToServer(new SetPasscode(be.getBlockPos(), keycodeTextbox.getValue()));
 		else if (passcodeProtected instanceof Entity entity)
-			PacketDistributor.sendToServer(new SetPasscode(entity.getId(), keycodeTextbox.getValue()));
+			ClientPacketDistributor.sendToServer(new SetPasscode(entity.getId(), keycodeTextbox.getValue()));
 
 		Minecraft.getInstance().player.closeContainer();
 	}

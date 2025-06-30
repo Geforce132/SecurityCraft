@@ -36,13 +36,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderEntity;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.EnderPearl;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.ItemConsumption;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.SpreadPlayersCommand;
 import net.neoforged.neoforge.event.entity.EntityTeleportEvent.TeleportCommand;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<TeleportationType> {
 	private final IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
@@ -82,7 +82,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			setChanged();
 
 			if (level.isClientSide)
-				PacketDistributor.sendToServer(new SyncRiftStabilizer(worldPosition, teleportationType, allowed));
+				ClientPacketDistributor.sendToServer(new SyncRiftStabilizer(worldPosition, teleportationType, allowed));
 
 			RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
 

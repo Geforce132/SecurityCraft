@@ -20,7 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/laser_block.png");
@@ -84,7 +84,7 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 
 	public void onChangeValue(Direction dir, boolean newValue) {
 		sideConfig.put(dir, newValue);
-		PacketDistributor.sendToServer(new SyncLaserSideConfig(be.getBlockPos(), LaserBlockBlockEntity.saveSideConfigToTag(sideConfig)));
+		ClientPacketDistributor.sendToServer(new SyncLaserSideConfig(be.getBlockPos(), LaserBlockBlockEntity.saveSideConfigToTag(sideConfig)));
 	}
 
 	@Override

@@ -44,7 +44,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChangeDetectorMenu> implements ContainerListener, IHasExtraAreas {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_change_detector.png");
@@ -76,7 +76,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			changeEntryList.allEntries.forEach(this::removeWidget);
 			changeEntryList.allEntries.clear();
 			changeEntryList.filteredEntries.clear();
-			PacketDistributor.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
+			ClientPacketDistributor.sendToServer(new ClearChangeDetectorServer(be.getBlockPos()));
 		}));
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
 		boolean isOwner = be.isOwnedBy(minecraft.player);
@@ -203,7 +203,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		int currentColor = be.getColor();
 
 		if (previousMode != currentMode || wasShowingHighlights != isShowingHighlights || previousColor != currentColor)
-			PacketDistributor.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
+			ClientPacketDistributor.sendToServer(new SyncBlockChangeDetector(be.getBlockPos(), currentMode, isShowingHighlights, currentColor));
 
 		be.updateFilteredEntries();
 	}

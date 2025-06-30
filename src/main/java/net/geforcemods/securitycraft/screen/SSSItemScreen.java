@@ -20,7 +20,7 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class SSSItemScreen extends Screen implements ConnectionAccessor {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
@@ -90,7 +90,7 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 		if (sssLinkedBlocks != null)
 			sssLinkedBlocks.remove(SCContent.SSS_LINKED_BLOCKS, stack, globalPos);
 
-		PacketDistributor.sendToServer(new RemovePositionFromSSS(globalPos));
+		ClientPacketDistributor.sendToServer(new RemovePositionFromSSS(globalPos));
 		connectionList.refreshPositions();
 	}
 }

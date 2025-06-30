@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer.png");
@@ -85,6 +85,6 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	@Override
 	public void onClose() {
 		super.onClose();
-		PacketDistributor.sendToServer(new SyncBlockReinforcer(!unreinforceCheckbox.selected()));
+		ClientPacketDistributor.sendToServer(new SyncBlockReinforcer(!unreinforceCheckbox.selected()));
 	}
 }

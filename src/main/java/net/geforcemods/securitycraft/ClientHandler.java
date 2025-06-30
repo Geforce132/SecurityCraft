@@ -45,6 +45,16 @@ import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
+import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
+import net.geforcemods.securitycraft.network.client.InteractWithFrame;
+import net.geforcemods.securitycraft.network.client.OpenScreen;
+import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
+import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
+import net.geforcemods.securitycraft.network.client.SendManualPages;
+import net.geforcemods.securitycraft.network.client.SetCameraView;
+import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
+import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticle;
 import net.geforcemods.securitycraft.renderers.BlockPocketManagerRenderer;
@@ -169,6 +179,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelLoader.BakedModels;
+import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
@@ -483,6 +494,20 @@ public class ClientHandler {
 				return TASER_ARM_POSE;
 			}
 		}, SCContent.TASER.get(), SCContent.TASER_POWERED.get());
+	}
+
+	@SubscribeEvent
+	public static void onRegisterClientPayloadsHandlers(RegisterClientPayloadHandlersEvent event) {
+		event.register(BlockPocketManagerFailedActivation.TYPE, BlockPocketManagerFailedActivation::handle);
+		event.register(InteractWithFrame.TYPE, InteractWithFrame::handle);
+		event.register(OpenScreen.TYPE, OpenScreen::handle);
+		event.register(PlayAlarmSound.TYPE, PlayAlarmSound::handle);
+		event.register(RefreshDisguisableModel.TYPE, RefreshDisguisableModel::handle);
+		event.register(SendManualPages.TYPE, SendManualPages::handle);
+		event.register(SetCameraView.TYPE, SetCameraView::handle);
+		event.register(SetTrophySystemTarget.TYPE, SetTrophySystemTarget::handle);
+		event.register(UpdateLaserColors.TYPE, UpdateLaserColors::handle);
+		event.register(UpdateLogger.TYPE, UpdateLogger::handle);
 	}
 
 	private static void initTint() {

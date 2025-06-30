@@ -26,7 +26,7 @@ import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class MineRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/mrat.png");
@@ -153,20 +153,20 @@ public class MineRemoteAccessToolScreen extends Screen {
 			switch (action) {
 				case DEFUSE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(pos).getBlock()).defuseMine(Minecraft.getInstance().player.level(), pos);
-					PacketDistributor.sendToServer(new RemoteControlMine(pos, Action.DEFUSE));
+					ClientPacketDistributor.sendToServer(new RemoteControlMine(pos, Action.DEFUSE));
 					guiButtons[mine][DEFUSE].active = false;
 					guiButtons[mine][ACTIVATE].active = true;
 					guiButtons[mine][DETONATE].active = false;
 					break;
 				case ACTIVATE:
 					((IExplosive) Minecraft.getInstance().player.level().getBlockState(pos).getBlock()).activateMine(Minecraft.getInstance().player.level(), pos);
-					PacketDistributor.sendToServer(new RemoteControlMine(pos, Action.ACTIVATE));
+					ClientPacketDistributor.sendToServer(new RemoteControlMine(pos, Action.ACTIVATE));
 					guiButtons[mine][DEFUSE].active = true;
 					guiButtons[mine][ACTIVATE].active = false;
 					guiButtons[mine][DETONATE].active = true;
 					break;
 				case DETONATE:
-					PacketDistributor.sendToServer(new RemoteControlMine(pos, Action.DETONATE));
+					ClientPacketDistributor.sendToServer(new RemoteControlMine(pos, Action.DETONATE));
 					removeTagFromToolAndUpdate(mrat, globalPos);
 
 					for (int i = 0; i < 4; i++) {
@@ -204,7 +204,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
 		stack.getOrDefault(SCContent.BOUND_MINES, GlobalPositions.sized(MineRemoteAccessToolItem.MAX_MINES)).remove(SCContent.BOUND_MINES, stack, pos);
-		PacketDistributor.sendToServer(new RemoveMineFromMRAT(pos));
+		ClientPacketDistributor.sendToServer(new RemoveMineFromMRAT(pos));
 	}
 
 	@Override

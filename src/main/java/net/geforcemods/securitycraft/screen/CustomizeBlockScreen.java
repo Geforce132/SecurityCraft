@@ -38,7 +38,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
 	private static final ResourceLocation CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
@@ -99,9 +99,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
 
 								if (menu.entityId == -1)
-									PacketDistributor.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
+									ClientPacketDistributor.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, doubleOption.get()));
 								else
-									PacketDistributor.sendToServer(new UpdateSliderValue(menu.entityId, option, doubleOption.get()));
+									ClientPacketDistributor.sendToServer(new UpdateSliderValue(menu.entityId, option, doubleOption.get()));
 							}) {
 								@Override
 								protected void updateMessage() {
@@ -117,9 +117,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 								optionButtons[sliderIndex].setTooltip(Tooltip.create(getOptionDescription(sliderIndex)));
 
 								if (menu.entityId == -1)
-									PacketDistributor.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
+									ClientPacketDistributor.sendToServer(new UpdateSliderValue(moduleInv.myPos(), option, intOption.get()));
 								else
-									PacketDistributor.sendToServer(new UpdateSliderValue(menu.entityId, option, intOption.get()));
+									ClientPacketDistributor.sendToServer(new UpdateSliderValue(menu.entityId, option, intOption.get()));
 							}) {
 								@Override
 								protected void updateMessage() {
@@ -213,9 +213,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		}
 
 		if (menu.entityId == -1)
-			PacketDistributor.sendToServer(new ToggleModule(moduleInv.myPos(), moduleType));
+			ClientPacketDistributor.sendToServer(new ToggleModule(moduleInv.myPos(), moduleType));
 		else
-			PacketDistributor.sendToServer(new ToggleModule(menu.entityId, moduleType));
+			ClientPacketDistributor.sendToServer(new ToggleModule(menu.entityId, moduleType));
 	}
 
 	private void optionButtonClicked(Button button) {
@@ -231,9 +231,9 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
 
 			if (menu.entityId == -1)
-				PacketDistributor.sendToServer(new ToggleOption(moduleInv.myPos(), i));
+				ClientPacketDistributor.sendToServer(new ToggleOption(moduleInv.myPos(), i));
 			else
-				PacketDistributor.sendToServer(new ToggleOption(menu.entityId, i));
+				ClientPacketDistributor.sendToServer(new ToggleOption(menu.entityId, i));
 
 			return;
 		}

@@ -32,7 +32,7 @@ import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class SentryRemoteAccessToolScreen extends Screen {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/srat.png");
@@ -313,7 +313,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 	}
 
 	private void sendUpdates(List<SetSentryMode.Info> sentriesToUpdate) {
-		PacketDistributor.sendToServer(new SetSentryMode(sentriesToUpdate));
+		ClientPacketDistributor.sendToServer(new SetSentryMode(sentriesToUpdate));
 	}
 
 	/**
@@ -332,7 +332,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 	private void removeTagFromToolAndUpdate(ItemStack stack, GlobalPos pos) {
 		stack.getOrDefault(SCContent.BOUND_SENTRIES, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS).remove(SCContent.BOUND_SENTRIES, stack, pos);
-		PacketDistributor.sendToServer(new RemoveSentryFromSRAT(pos));
+		ClientPacketDistributor.sendToServer(new RemoveSentryFromSRAT(pos));
 	}
 
 	private void updateModeButtonTooltip(Button button) {
