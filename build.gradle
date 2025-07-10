@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.7.1-beta"
+	version = "21.7.16-beta"
 	validateAccessTransformers = true
 
 	runs {
@@ -97,7 +97,7 @@ dependencies {
 	compileOnly "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
 	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
-	compileOnly "curse.maven:jei-238222:6586778"
+	implementation "curse.maven:jei-238222:6752455"
 	compileOnly "curse.maven:the-one-probe-245211:5502323"
 	implementation "curse.maven:jade-324717:6674229"
 	implementation "curse.maven:betterf3-401648:6685252"
