@@ -1,5 +1,10 @@
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
+- Fix: The screen flickers when trying to view a frame feed while Iris/Oculus is installed TODO ONLY PUSH THIS WHEN THE WHOLE THING IS FIXED
+- + OCULUS TESTING
+
+--------------------------Changelog for v1.10 of SecurityCraft--------------------------
+
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
 - New: Several server and client config settings to control chunk loading in camera feeds
 - New: All blocks can now be broken only by the owner with normal tools (axe, shovel, hoe, ...) and the Universal Block Remover has been disabled by default
