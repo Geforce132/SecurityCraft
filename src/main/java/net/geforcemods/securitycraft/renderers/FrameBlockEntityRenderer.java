@@ -71,8 +71,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Direction direction = state.getValue(FrameBlock.FACING);
 		Vec3i normal = direction.getNormal();
 		final float margin = 0.0625F;
-		Vector4f innerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F); //Both vectors have the following format: xStart, xEnd, zStart, zEnd
-		Vector4f outerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
+		Vector4f innerVertices; //Both vectors have the following format: xStart, xEnd, zStart, zEnd
+		Vector4f outerVertices;
 
 		switch (direction) {
 			case Direction.NORTH:
@@ -92,6 +92,9 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				outerVertices = new Vector4f(0.955F, 0.955F, margin, 1 - margin);
 				break;
 			default:
+				innerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
+				outerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
+				break;
 		}
 
 		if (cameraPos == null)

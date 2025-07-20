@@ -22,6 +22,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -89,11 +90,18 @@ public class FrameFeedHandler {
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		Frustum playerFrustum = mc.levelRenderer.getFrustum(); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
+		RenderTarget oldTranslucentTarget = mc.levelRenderer.translucentTarget;
+		RenderTarget oldItemEntityTarget = mc.levelRenderer.itemEntityTarget;
+		RenderTarget oldWeatherTarget = mc.levelRenderer.weatherTarget;
+		PostChain oldTransparencyChain = mc.levelRenderer.transparencyChain;
 
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setRenderHand(false);
 		mc.gameRenderer.setPanoramicMode(true);
-		mc.levelRenderer.graphicsChanged();
+		mc.levelRenderer.translucentTarget = null; //In Fabulous mode, these targets are non-null, and their function is to improve layer rendering. However, Fabulous breaks frame capturing in too many ways to be able to fix (e.g. resizing of these additional render targets), so Fabulous rendering needs to be disabled.
+		mc.levelRenderer.itemEntityTarget = null;
+		mc.levelRenderer.weatherTarget = null;
+		mc.levelRenderer.transparencyChain = null;
 		window.setWidth(100);
 		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
@@ -169,11 +177,14 @@ public class FrameFeedHandler {
 		mc.gameRenderer.setRenderBlockOutline(true);
 		mc.levelRenderer.visibleSections.clear();
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
+		mc.levelRenderer.translucentTarget = oldTranslucentTarget;
+		mc.levelRenderer.itemEntityTarget = oldItemEntityTarget;
+		mc.levelRenderer.weatherTarget = oldWeatherTarget;
+		mc.levelRenderer.transparencyChain = oldTransparencyChain;
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
 		mc.gameRenderer.setRenderHand(true);
 		mc.gameRenderer.setPanoramicMode(false);
-		mc.levelRenderer.graphicsChanged();
 		mc.mainRenderTarget = oldMainRenderTarget;
 		mc.getMainRenderTarget().bindWrite(true);
 		currentlyCapturedCamera = null;
