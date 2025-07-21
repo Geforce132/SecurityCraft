@@ -37,7 +37,6 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.fml.ModList;
 
 public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity> {
 	private static final ResourceLocation CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
@@ -143,7 +142,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 				if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 					bufferSource.endBatch();
-				else if (ModList.get().isLoaded("iris"))
+				else if (SecurityCraft.isIrisPresent)
 					IrisCompat.endWrappedBufferBatch(buffer);
 
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);

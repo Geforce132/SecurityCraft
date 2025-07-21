@@ -85,6 +85,7 @@ public class SecurityCraft {
 				ticketHelper.removeAllTickets(pos);
 		});
 	});
+	public static boolean isIrisPresent;
 
 	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
@@ -103,6 +104,7 @@ public class SecurityCraft {
 		SCContent.PARTICLE_TYPES.register(modEventBus);
 		SCContent.RECIPE_SERIALIZERS.register(modEventBus);
 		SCCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+		isIrisPresent = ModList.get().isLoaded("iris");
 	}
 
 	@SubscribeEvent
