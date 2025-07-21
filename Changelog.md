@@ -1,7 +1,6 @@
---------------------------Changelog for v1.10 of SecurityCraft--------------------------
+--------------------------Changelog for FUTURE VERSION of SecurityCraft--------------------------
 
-- Fix: The screen flickers when trying to view a frame feed while Iris/Oculus is installed TODO ONLY PUSH THIS WHEN THE WHOLE THING IS FIXED
-- + OCULUS TESTING
+- Fix: Several mod incompatibilities that caused Frame feeds to not show up correctly
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
