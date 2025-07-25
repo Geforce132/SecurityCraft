@@ -175,6 +175,7 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LADDER.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_LANTERN.get());
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LEVER.get());
+		createReinforcedLightningRod();
 		createReinforcedCarpet(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
 		createReinforcedPistons();
 		registerReinforcedItemModel(SCContent.REINFORCED_SCAFFOLDING.get(), "_stable");
@@ -503,6 +504,18 @@ public class BlockModelAndStateGenerator {
 						new ReinforcedTint(new GrassColorSource())));
 		//@formatter:on
 		generatedBlocks.add(block);
+	}
+
+	public static void createReinforcedLightningRod() {
+		Block block = SCContent.REINFORCED_LIGHTNING_ROD.get();
+		MultiVariant powered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block, "_on"));
+		MultiVariant unpowered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
+		//@formatter:off
+		blockStateOutput.accept(
+				MultiVariantGenerator.dispatch(block)
+						.with(BlockModelGenerators.createBooleanModelDispatch(BlockStateProperties.POWERED, powered, unpowered))
+						.with(BlockModelGenerators.ROTATIONS_COLUMN_WITH_FACING));
+		//@formatter:on
 	}
 
 	public static void createReinforcedPistons() {

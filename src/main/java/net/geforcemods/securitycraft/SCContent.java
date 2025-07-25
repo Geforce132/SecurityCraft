@@ -167,6 +167,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLavaCauldronBlo
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLecternBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLeverBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLightningRodBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMagmaBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMossyCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedMovingPistonBlock;
@@ -2282,6 +2283,10 @@ public class SCContent {
 	@HasManualPage
 	@Reinforced
 	public static final DeferredBlock<ReinforcedLeverBlock> REINFORCED_LEVER = reinforcedBlock("reinforced_lever", Blocks.LEVER, (p, b) -> new ReinforcedLeverBlock(p.pushReaction(PushReaction.BLOCK).forceSolidOn()));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_LIGHTNING_ROD = reinforcedBlock("reinforced_lightning_rod", Blocks.LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced

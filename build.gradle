@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.8.1-beta"
+	version = "21.8.13"
 	validateAccessTransformers = true
 
 	runs {
@@ -106,7 +106,7 @@ dependencies {
 	implementation "curse.maven:badpackets-615134:6671481" //wthit dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
 	compileOnly "curse.maven:embeddium-908741:6116910"
-	implementation "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium
+	compileOnly "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {
