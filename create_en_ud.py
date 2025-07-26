@@ -23,6 +23,19 @@ def replace_percent_sign(text, index):
 	print(f"Special handling fell back to the default case. Tried to replace % at index {index}: '{text}'")
 	return (1, "%")
 
+def preprocess(lines):
+	max = len(lines) - 1
+
+	for line_i in range(1, max):
+		line = lines[line_i]
+		count = line.count("%s")
+
+		if count > 1:
+			for count in range(1, count + 1):
+				line = line.replace("%s", f"%{count}$s", 1)
+
+		lines[line_i] = line.replace("=", "🟰").replace("🟰", "=", 1)
+
 replacements = {
 	"A": replace_single("Ɐ"),
 	"B": replace_single("ᗺ"),
@@ -88,7 +101,7 @@ replacements = {
 	"9": replace_single("6"),
     "'": replace_single(","),
     ",": replace_single("'"),
-    "=": replace_single("="),
+    "🟰": replace_single("="),
     "+": replace_single("+"),
     "/": replace_single("/"),
     "*": replace_single("*"),
@@ -119,14 +132,13 @@ replacements = {
 
 with open("src/main/resources/assets/securitycraft/lang/en_us.lang", encoding="UTF-8") as file:
 	lines = file.readlines()
+	preprocess(lines)
 	upside_down_lines = []
 	max = len(lines) - 1
 
 	for line_i in range(1, max):
 		split = lines[line_i].split("=")
-		if len(split) > 2:
-			print(split)
-		text = "=".join(split[1:])[:-1]
+		text = split[1][:-1]
 		text_i = 0
 		line = "\n"
 
