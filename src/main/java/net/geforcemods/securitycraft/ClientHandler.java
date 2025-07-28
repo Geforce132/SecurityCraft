@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.OptionalDouble;
@@ -117,6 +118,7 @@ import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderState;
 import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderer;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.screens.inventory.HangingSignEditScreen;
@@ -135,6 +137,7 @@ import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
@@ -230,11 +233,17 @@ public class ClientHandler {
 			SCContent.TROPHY_SYSTEM.get(),
 			SCContent.USERNAME_LOGGER.get()
 	});
+	//@formatter:on
 	private static final ResourceLocation SRI_BASE_MODEL_LOCATION = SecurityCraft.resLoc("block/secure_redstone_interface");
 	private static final ResourceLocation SRI_SENDER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_sender_on");
 	private static final ResourceLocation SRI_RECEIVER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_receiver_on");
-	private static final StandaloneModelKey<BlockStateModel> SRI_SENDER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_SENDER_ON_MODEL_LOCATION::toString);
-	private static final StandaloneModelKey<BlockStateModel> SRI_RECEIVER_ON_MODEL_KEY = new StandaloneModelKey<>(SRI_RECEIVER_ON_MODEL_LOCATION::toString);
+	private static final Map<SRIKey, StandaloneModelKey<BlockStateModel>> SRI_MODEL_KEYS = Util.make(new HashMap<>(), map -> {
+		Arrays.stream(Direction.values()).forEach(direction -> {
+			map.put(new SRIKey(true, direction), new StandaloneModelKey<>(() -> SRI_SENDER_ON_MODEL_LOCATION + "$" + direction.getName()));
+			map.put(new SRIKey(false, direction), new StandaloneModelKey<>(() -> SRI_RECEIVER_ON_MODEL_LOCATION + "$" + direction.getName()));
+		});
+	});
+	//@formatter:off
     public static final RenderType.CompositeRenderType OVERLAY_LINES = RenderType.create(
 			"overlay_lines",
 			1536,
@@ -258,8 +267,9 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onModelRegisterAdditional(ModelEvent.RegisterStandalone event) {
-		event.register(SRI_SENDER_ON_MODEL_KEY, SimpleUnbakedStandaloneModel.blockStateModel(SRI_SENDER_ON_MODEL_LOCATION));
-		event.register(SRI_RECEIVER_ON_MODEL_KEY, SimpleUnbakedStandaloneModel.blockStateModel(SRI_RECEIVER_ON_MODEL_LOCATION));
+		SRI_MODEL_KEYS.forEach((sriKey, modelKey) -> {
+			event.register(modelKey, SimpleUnbakedStandaloneModel.blockStateModel(sriKey.location(), sriKey.modelRotation()));
+		});
 	}
 
 	@SubscribeEvent
@@ -267,8 +277,6 @@ public class ClientHandler {
 		Map<BlockState, BlockStateModel> modelRegistry = event.getBakingResult().blockStateModels();
 		BakedModels standaloneModels = event.getBakingResult().standaloneModels();
 		Block sri = SCContent.SECURE_REDSTONE_INTERFACE.get();
-		BlockStateModel poweredSriSender = standaloneModels.get(SRI_SENDER_ON_MODEL_KEY);
-		BlockStateModel poweredSriReceiver = standaloneModels.get(SRI_RECEIVER_ON_MODEL_KEY);
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
@@ -277,10 +285,10 @@ public class ClientHandler {
 		}
 
 		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
-			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBlockStateModel(poweredSriSender, oldModel));
-			else
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBlockStateModel(poweredSriReceiver, oldModel));
+			boolean sender = state.getValue(SecureRedstoneInterfaceBlock.SENDER);
+			Direction direction = state.getValue(SecureRedstoneInterfaceBlock.FACING);
+
+			registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBlockStateModel(standaloneModels.get(SRI_MODEL_KEYS.get(new SRIKey(sender, direction))), oldModel));
 		}
 	}
 
@@ -772,5 +780,22 @@ public class ClientHandler {
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {
 		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
+	}
+
+	private record SRIKey(boolean sender, Direction direction) {
+		public ResourceLocation location() {
+			return sender ? SRI_SENDER_ON_MODEL_LOCATION : SRI_RECEIVER_ON_MODEL_LOCATION;
+		}
+
+		public BlockModelRotation modelRotation() {
+			return switch (direction) {
+				case DOWN -> BlockModelRotation.X180_Y0;
+				case UP -> BlockModelRotation.X0_Y0;
+				case NORTH -> BlockModelRotation.X90_Y0;
+				case SOUTH -> BlockModelRotation.X90_Y180;
+				case WEST -> BlockModelRotation.X90_Y270;
+				case EAST -> BlockModelRotation.X90_Y90;
+			};
+		}
 	}
 }

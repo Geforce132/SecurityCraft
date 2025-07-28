@@ -2,6 +2,7 @@
 
 - New: Reinforced Lightning Rod
 - Fix: The Level 3 Keycard cannot be crafted
+- Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
 - Misc.: The minimum required NeoForge version is now 21.8.10
 
 --------------------------Changelog for v1.10-beta1 of SecurityCraft--------------------------
