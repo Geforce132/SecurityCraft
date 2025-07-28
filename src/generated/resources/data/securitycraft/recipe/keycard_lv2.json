@@ -4,7 +4,7 @@
   "group": "securitycraft:keycards",
   "key": {
     "I": "#c:ingots/iron",
-    "S": "#c:bricks"
+    "S": "#c:bricks/normal"
   },
   "pattern": [
     "III",
