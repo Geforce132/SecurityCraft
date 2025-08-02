@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.renderers;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
@@ -61,7 +60,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 	@Override
 	public void render(FrameBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		Player player = Minecraft.getInstance().player;
+		Minecraft mc = Minecraft.getInstance();
+		Player player = mc.player;
 
 		if (be.isDisabled() || (!be.isOwnedBy(player) && !be.isAllowed(player)) || be.getCameraPositions().isEmpty())
 			return;
@@ -128,7 +128,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 					shader.MODEL_VIEW_MATRIX.set(pose.last().pose());
 
 				if (shader.PROJECTION_MATRIX != null)
-					shader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
+					shader.PROJECTION_MATRIX.set(mc.gameRenderer.getProjectionMatrix(90.0F));
 
 				shader.apply();
 				lastPose = pose.last().pose();
