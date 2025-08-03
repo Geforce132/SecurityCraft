@@ -60,7 +60,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 				boolean hasNeighborSignal = level.hasNeighborSignal(pos);
 
 				if (wasPowered && !hasNeighborSignal)
-					switchCamera(currentCameraPosition, null, 0, true);
+					disableCameraFeedOnServer(currentCameraPosition);
 
 				if (wasPowered != hasNeighborSignal)
 					level.setBlockAndUpdate(pos, state.setValue(FrameBlock.POWERED, hasNeighborSignal));
@@ -71,7 +71,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 			switchCamera = false;
 
 			if (!level.isClientSide)
-				switchCamera(newCameraPosition, null, 0, true);
+				disableCameraFeedOnServer(newCameraPosition);
 			else
 				switchCameraOnClient(newCameraPosition, true);
 		}
@@ -83,7 +83,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		if (currentCameraPosition != null) { //This is being called on multiple occasions: Block break (server + client), clientside unload (client), world leave (server)
 			if (!level.isClientSide) //Serverside + block break: This method is also called for client; Serverside + world leave: Client has special handling on world leave
-				switchCamera(currentCameraPosition, null, 0, true);
+				disableCameraFeedOnServer(currentCameraPosition);
 			else if (clientInteracted) {//Clientside + block break: This method is also called for server; Clientside + unload: Server receives a packet
 				switchCameraOnClient(currentCameraPosition, true);
 				SecurityCraft.CHANNEL.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
@@ -220,12 +220,20 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		SecurityCraft.CHANNEL.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
 	}
 
-	public void switchCamera(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableNewCamera) {
-		GlobalPos previousCameraPos = getCurrentCamera();
+	public void disableCameraFeedOnServer(GlobalPos newCameraPos) {
+		switchCameraOnServer(newCameraPos, null, 0, true);
+	}
 
-		setCurrentCamera(newCameraPos);
+	public void unsetCurrentCameraOnServer() {
+		switchCameraOnServer(null, null, 0, false);
+	}
 
+	public void switchCameraOnServer(GlobalPos newCameraPos, Player player, int requestedRenderDistance, boolean disableNewCamera) {
 		if (!level.isClientSide) { //Note: This method will update nearby clients, through the updated NBT that is sent to clients
+			GlobalPos previousCameraPos = getCurrentCamera();
+
+			setCurrentCamera(newCameraPos);
+
 			if (previousCameraPos != null && level.getBlockEntity(previousCameraPos.pos()) instanceof SecurityCameraBlockEntity previousCamera) {
 				if (!previousCameraPos.equals(newCameraPos) || (player == null && disableNewCamera))
 					previousCamera.unlinkFrameForAllPlayers(worldPosition);
@@ -250,11 +258,11 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	}
 
 	public void switchCameraOnClient(GlobalPos newCameraPos, boolean disableNewCamera) {
-		GlobalPos previousCameraPos = getCurrentCamera();
+		if (level.isClientSide) {
+			GlobalPos previousCameraPos = getCurrentCamera();
 
-		setCurrentCamera(newCameraPos);
+			setCurrentCamera(newCameraPos);
 
-		if (level.isClientSide) { //Note: This method does not update the server.
 			if (previousCameraPos != null)
 				FrameFeedHandler.removeFrameLink(previousCameraPos, this);
 
@@ -302,7 +310,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		if (!level.isClientSide && ((option.getName().equals(disabled.getName()) && disabled.get()) || option.getName().equals(chunkLoadingDistance.getName())))
-			switchCamera(null, null, 0, false);
+			unsetCurrentCameraOnServer();
 	}
 
 	@Override
@@ -320,13 +328,13 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
 
-		if (module == ModuleType.REDSTONE) {
+		if (module == ModuleType.ALLOWLIST && !level.isClientSide)
+			unsetCurrentCameraOnServer(); //Disable the frame feed for all players, because serverside frames don't know which players are currently viewing them. Clients are updated automatically
+		else if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = false;
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FrameBlock.POWERED, false));
 			setChanged();
 		}
-		else if (module == ModuleType.ALLOWLIST && !level.isClientSide)
-			switchCamera(null, null, 0, false); //Disable the frame feed for all players, because serverside frames don't know which players are currently viewing them. Clients are updated automatically
 	}
 
 	@Override
