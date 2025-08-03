@@ -275,10 +275,6 @@ public class FrameFeedHandler {
 		return FRAME_CAMERA_FEEDS.get(cameraPos);
 	}
 
-	public static CameraFeed getCurrentFeed() {
-		return isCapturingCamera() ? FRAME_CAMERA_FEEDS.get(currentlyCapturedCamera) : null;
-	}
-
 	public static void removeAllFeeds() {
 		FRAME_CAMERA_FEEDS.clear();
 	}

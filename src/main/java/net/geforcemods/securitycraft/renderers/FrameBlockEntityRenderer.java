@@ -142,7 +142,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 				if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 					bufferSource.endBatch();
-				else if (SecurityCraft.isIrisPresent)
+				else if (SecurityCraft.isIrisPresent())
 					IrisCompat.endWrappedBufferBatch(buffer);
 
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);

@@ -85,7 +85,7 @@ public class SecurityCraft {
 				ticketHelper.removeAllTickets(pos);
 		});
 	});
-	public static boolean isIrisPresent;
+	private static boolean isIrisPresent;
 
 	public SecurityCraft(IEventBus modEventBus, ModContainer container) {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
@@ -211,5 +211,9 @@ public class SecurityCraft {
 
 	public static ResourceLocation mcResLoc(String path) {
 		return ResourceLocation.withDefaultNamespace(path);
+	}
+
+	public static boolean isIrisPresent() {
+		return isIrisPresent;
 	}
 }
