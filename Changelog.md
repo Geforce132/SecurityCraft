@@ -1,6 +1,7 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
 - Fix: The Level 3 Keycard cannot be crafted
+- Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
 
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
