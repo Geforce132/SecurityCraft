@@ -68,7 +68,7 @@ public class SyncFrame implements CustomPacketPayload {
 				removedCamera.ifPresent(be::removeCamera);
 
 			if (isOwner || be.isAllowed(player))
-				be.switchCameras(currentCamera, player, requestedRenderDistance, disableCurrentCamera);
+				be.switchCameraOnServer(currentCamera, player, requestedRenderDistance, disableCurrentCamera);
 		}
 	}
 }
