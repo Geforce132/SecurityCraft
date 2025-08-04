@@ -22,6 +22,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -41,7 +42,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderFrameEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class FrameFeedHandler {
@@ -49,12 +49,11 @@ public class FrameFeedHandler {
 	private static GlobalPos currentlyCapturedCamera;
 	private static double lastFrameRendered = 0.0D;
 
-	@SubscribeEvent
-	public static void onRenderFramePost(RenderFrameEvent.Post event) {
+	public static void captureFrameFeeds(DeltaTracker partialTick) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 
-		if (player == null || player.connection.getLevel() == null || !hasFeeds() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+		if (player == null || player.connection.getLevel() == null || !hasFeeds() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get() || isCapturingCamera())
 			return;
 
 		ProfilerFiller profiler = mc.getProfiler();
@@ -65,11 +64,9 @@ public class FrameFeedHandler {
 			return;
 
 		lastFrameRendered = currentTime;
-		profiler.push("gameRenderer");
-		profiler.push("securitycraft:frame_level");
+		profiler.popPush("securitycraft:frame_level");
 
 		Level level = player.level();
-		DeltaTracker partialTick = event.getPartialTick();
 		Camera camera = mc.gameRenderer.getMainCamera();
 		Entity oldCamEntity = mc.cameraEntity;
 		Window window = mc.getWindow();
@@ -91,16 +88,24 @@ public class FrameFeedHandler {
 		float oldEyeHeightO = camera.eyeHeightOld;
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
+		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
+		RenderTarget oldTranslucentTarget = mc.levelRenderer.translucentTarget;
+		RenderTarget oldItemEntityTarget = mc.levelRenderer.itemEntityTarget;
+		RenderTarget oldWeatherTarget = mc.levelRenderer.weatherTarget;
+		PostChain oldTransparencyChain = mc.levelRenderer.transparencyChain;
 		Frustum playerFrustum = mc.levelRenderer.getFrustum(); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setRenderHand(false);
 		mc.gameRenderer.setPanoramicMode(true);
-		mc.levelRenderer.graphicsChanged();
 		window.setWidth(100);
 		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
 		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
+		mc.levelRenderer.translucentTarget = null; //In Fabulous mode, these targets are non-null, and their function is to improve layer rendering. However, Fabulous breaks frame capturing in too many ways to be able to fix (e.g. resizing of these additional render targets), so Fabulous rendering needs to be disabled.
+		mc.levelRenderer.itemEntityTarget = null;
+		mc.levelRenderer.weatherTarget = null;
+		mc.levelRenderer.transparencyChain = null;
 		mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
 
 		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
@@ -131,6 +136,7 @@ public class FrameFeedHandler {
 					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear(true);
 					frameTarget.bindWrite(true);
+					mc.mainRenderTarget = frameTarget;
 					profiler.pop();
 
 					try {
@@ -142,7 +148,6 @@ public class FrameFeedHandler {
 						feed.markForRemoval();
 					}
 
-					frameTarget.unbindWrite();
 					profiler.push("securitycraft:apply_frame_frustum");
 
 					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
@@ -157,6 +162,10 @@ public class FrameFeedHandler {
 
 		securityCamera.discard();
 		mc.setCameraEntity(oldCamEntity);
+		window.setWidth(oldWidth);
+		window.setHeight(oldHeight);
+		mc.levelRenderer.visibleSections.clear();
+		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		player.setPosRaw(oldX, oldY, oldZ);
 		player.xOld = player.xo = oldXO;
 		player.yOld = player.yo = oldYO;
@@ -170,18 +179,15 @@ public class FrameFeedHandler {
 		camera.eyeHeightOld = oldEyeHeightO;
 		mc.options.setCameraType(oldCameraType);
 		mc.gameRenderer.setRenderBlockOutline(true);
-		mc.levelRenderer.visibleSections.clear();
-		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
-		window.setWidth(oldWidth);
-		window.setHeight(oldHeight);
 		mc.gameRenderer.setRenderHand(true);
 		mc.gameRenderer.setPanoramicMode(false);
-		mc.levelRenderer.graphicsChanged();
+		mc.mainRenderTarget = oldMainRenderTarget;
 		mc.getMainRenderTarget().bindWrite(true);
+		mc.levelRenderer.translucentTarget = oldTranslucentTarget;
+		mc.levelRenderer.itemEntityTarget = oldItemEntityTarget;
+		mc.levelRenderer.weatherTarget = oldWeatherTarget;
+		mc.levelRenderer.transparencyChain = oldTransparencyChain;
 		currentlyCapturedCamera = null;
-
-		profiler.pop();
-		profiler.pop();
 	}
 
 	@SubscribeEvent

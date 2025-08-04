@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.renderers;
 
 import org.joml.Matrix4f;
+import org.joml.Vector4f;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
@@ -59,7 +59,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 	@Override
 	public void render(FrameBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		Player player = Minecraft.getInstance().player;
+		Minecraft mc = Minecraft.getInstance();
+		Player player = mc.player;
 
 		if (be.isDisabled() || (!be.isOwnedBy(player) && !be.isAllowed(player)) || be.getCameraPositions().isEmpty())
 			return;
@@ -70,53 +71,54 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Direction direction = state.getValue(FrameBlock.FACING);
 		Vec3i normal = direction.getNormal();
 		final float margin = 0.0625F;
-		float xStart = 0.0F;
-		float xEnd = 1.0F;
-		float zStart = 0.0F;
-		float zEnd = 1.0F;
+		Vector4f innerVertices; //Both vectors have the following format: xStart, xEnd, zStart, zEnd
+		Vector4f outerVertices;
 
 		switch (direction) {
 			case Direction.NORTH:
-				xStart = margin;
-				xEnd = 1 - margin;
-				zStart = zEnd = 0.05F;
+				innerVertices = new Vector4f(margin, 1 - margin, 0.05F, 0.05F);
+				outerVertices = new Vector4f(margin, 1 - margin, 0.045F, 0.045F);
 				break;
 			case Direction.SOUTH:
-				xStart = 1 - margin;
-				xEnd = margin;
-				zStart = zEnd = 0.95F;
+				innerVertices = new Vector4f(1 - margin, margin, 0.95F, 0.95F);
+				outerVertices = new Vector4f(1 - margin, margin, 0.955F, 0.955F);
 				break;
 			case Direction.WEST:
-				zStart = 1 - margin;
-				zEnd = margin;
-				xStart = xEnd = 0.05F;
+				innerVertices = new Vector4f(0.05F, 0.05F, 1 - margin, margin);
+				outerVertices = new Vector4f(0.045F, 0.045F, 1 - margin, margin);
 				break;
 			case Direction.EAST:
-				zStart = margin;
-				zEnd = 1 - margin;
-				xStart = xEnd = 0.95F;
+				innerVertices = new Vector4f(0.95F, 0.95F, margin, 1 - margin);
+				outerVertices = new Vector4f(0.955F, 0.955F, margin, 1 - margin);
 				break;
 			default:
+				innerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
+				outerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
+				break;
 		}
 
 		if (cameraPos == null)
-			renderSolidTexture(pose, buffer, SELECT_CAMERA, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderSolidTexture(pose, buffer, SELECT_CAMERA, innerVertices, packedLight, normal, margin);
 		else if (be.redstoneSignalDisabled()) {
-			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			renderCutoutTexture(pose, buffer, NO_REDSTONE_SIGNAL, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderNoise(pose, buffer, innerVertices, packedLight, normal, margin);
+			renderCutoutTexture(pose, buffer, NO_REDSTONE_SIGNAL, outerVertices, packedLight, normal, margin);
 		}
 		else if (!be.hasClientInteracted()) {
-			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderNoise(pose, buffer, innerVertices, packedLight, normal, margin);
+			renderCutoutTexture(pose, buffer, INACTIVE, outerVertices, packedLight, normal, margin);
 		}
 		else {
 			CameraFeed feed = FrameFeedHandler.getFeed(cameraPos);
 
 			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity))
-				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, innerVertices, packedLight, normal, margin);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				RenderTarget target = feed.renderTarget();
 				ShaderInstance shader = ClientHandler.getFrameFeedShader();
+				float xStart = innerVertices.x;
+				float xEnd = innerVertices.y;
+				float zStart = innerVertices.z;
+				float zEnd = innerVertices.w;
 				VertexConsumer bufferBuilder;
 				Matrix4f lastPose;
 
@@ -126,7 +128,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 					shader.MODEL_VIEW_MATRIX.set(pose.last().pose());
 
 				if (shader.PROJECTION_MATRIX != null)
-					shader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
+					shader.PROJECTION_MATRIX.set(mc.gameRenderer.getProjectionMatrix(90.0F));
 
 				shader.apply();
 				lastPose = pose.last().pose();
@@ -139,6 +141,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 				if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 					bufferSource.endBatch();
+				else //If another mod messes with (e.g. wraps) the buffer source available here, it is assumed that the original buffer source can safely be obtained through the level renderer.
+					mc.levelRenderer.renderBuffers.bufferSource().endBatch();
 
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
 
@@ -148,21 +152,25 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 	}
 
-	private void renderNoise(PoseStack pose, MultiBufferSource buffer, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
-		renderTexture(pose, buffer, NOISE_BACKGROUND.buffer(buffer, RenderType::entitySolid), xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+	private void renderNoise(PoseStack pose, MultiBufferSource buffer, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+		renderTexture(pose, buffer, NOISE_BACKGROUND.buffer(buffer, RenderType::entitySolid), vertices, packedLight, normal, margin);
 	}
 
-	private void renderSolidTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
-		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entitySolid(texture)), xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+	private void renderSolidTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entitySolid(texture)), vertices, packedLight, normal, margin);
 	}
 
-	private void renderCutoutTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
-		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entityCutout(texture)), xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+	private void renderCutoutTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entityCutout(texture)), vertices, packedLight, normal, margin);
 	}
 
-	private void renderTexture(PoseStack pose, MultiBufferSource buffer, VertexConsumer bufferBuilder, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vec3i normal, float margin) {
+	private void renderTexture(PoseStack pose, MultiBufferSource buffer, VertexConsumer bufferBuilder, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
 		Pose last = pose.last();
 		Matrix4f lastPose = last.pose();
+		float xStart = vertices.x;
+		float xEnd = vertices.y;
+		float zStart = vertices.z;
+		float zEnd = vertices.w;
 		int nx = normal.getX();
 		int ny = normal.getY();
 		int nz = normal.getZ();
