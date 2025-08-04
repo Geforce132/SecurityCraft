@@ -96,6 +96,7 @@ public class FrameFeedHandler {
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		Frustum playerFrustum = mc.levelRenderer.getFrustum(); //Saved once before the loop, because the frustum changes depending on which camera is viewed
+		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
 
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setRenderHand(false);
@@ -135,6 +136,7 @@ public class FrameFeedHandler {
 					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear(true);
 					frameTarget.bindWrite(true);
+					mc.mainRenderTarget = frameTarget;
 					profiler.pop();
 
 					try {
@@ -181,6 +183,7 @@ public class FrameFeedHandler {
 		mc.gameRenderer.setRenderHand(true);
 		mc.gameRenderer.setPanoramicMode(false);
 		mc.levelRenderer.graphicsChanged();
+		mc.mainRenderTarget = oldMainRenderTarget;
 		mc.getMainRenderTarget().bindWrite(true);
 		currentlyCapturedCamera = null;
 
