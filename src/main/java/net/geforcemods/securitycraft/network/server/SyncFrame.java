@@ -47,7 +47,7 @@ public record SyncFrame(BlockPos pos, int requestedRenderDistance, Optional<Glob
 				removedCamera.ifPresent(be::removeCamera);
 
 			if (isOwner || be.isAllowed(player))
-				be.switchCameras(currentCamera, player, requestedRenderDistance, disableCurrentCamera);
+				be.switchCameraOnServer(currentCamera, player, requestedRenderDistance, disableCurrentCamera);
 		}
 	}
 }
