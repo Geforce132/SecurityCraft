@@ -60,7 +60,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 	@Override
 	public void render(FrameBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		Player player = Minecraft.getInstance().player;
+		Minecraft mc = Minecraft.getInstance();
+		Player player = mc.player;
 
 		if (be.isDisabled() || (!be.isOwnedBy(player) && !be.isAllowed(player)) || be.getCameraPositions().isEmpty())
 			return;
@@ -128,7 +129,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 					compiledShader.MODEL_VIEW_MATRIX.set(pose.last().pose());
 
 				if (compiledShader.PROJECTION_MATRIX != null)
-					compiledShader.PROJECTION_MATRIX.set(RenderSystem.getProjectionMatrix());
+					compiledShader.PROJECTION_MATRIX.set(mc.gameRenderer.getProjectionMatrix(90.0F));
 
 				compiledShader.apply();
 				lastPose = pose.last().pose();
