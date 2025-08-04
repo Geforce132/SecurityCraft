@@ -1,3 +1,7 @@
+--------------------------Changelog for the next version of SecurityCraft--------------------------
+
+- Fix: The Level 3 Keycard cannot be crafted
+
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
 - Fix: Incorrect owner UUID being set when loading an owner without a UUID
