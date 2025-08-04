@@ -15,7 +15,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
-import net.geforcemods.securitycraft.compat.iris.IrisCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Minecraft;
@@ -142,8 +141,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 				if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 					bufferSource.endBatch();
-				else if (SecurityCraft.isIrisPresent())
-					IrisCompat.endWrappedBufferBatch(buffer);
+				else //If another mod messes with (e.g. wraps) the buffer source available here, it is assumed that the original buffer source can safely be obtained through the level renderer.
+					mc.levelRenderer.renderBuffers.bufferSource().endBatch();
 
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
 

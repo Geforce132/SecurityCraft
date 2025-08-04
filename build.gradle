@@ -107,7 +107,6 @@ dependencies {
 	implementation "curse.maven:projecte-226410:6323142"
 //	implementation "curse.maven:embeddium-908741:5681729"
 	implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge" //incompatible with embeddium
-	implementation "maven.modrinth:iris:1.8.12+1.21.1-neoforge"
 }
 
 tasks.named('jar', Jar).configure {
