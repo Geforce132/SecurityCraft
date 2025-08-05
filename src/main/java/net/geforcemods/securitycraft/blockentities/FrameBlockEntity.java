@@ -82,8 +82,10 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 		super.setRemoved();
 
 		if (currentCameraPosition != null) { //This is being called on multiple occasions: Block break (server + client), clientside unload (client), world leave (server)
-			if (!level.isClientSide) //Serverside + block break: This method is also called for client; Serverside + world leave: Client has special handling on world leave
-				disableCameraFeedOnServer(currentCameraPosition);
+			if (!level.isClientSide) {//Serverside + block break: This method is also called for client; Serverside + world leave: Server does nothing, so chunks don't get loaded again, and client has special handling on world leave
+				if (level.isLoaded(worldPosition))
+					disableCameraFeedOnServer(currentCameraPosition);
+			}
 			else if (clientInteracted) {//Clientside + block break: This method is also called for server; Clientside + unload: Server receives a packet
 				switchCameraOnClient(currentCameraPosition, true);
 				PacketDistributor.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
