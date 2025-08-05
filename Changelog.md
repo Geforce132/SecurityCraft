@@ -1,3 +1,7 @@
+--------------------------Changelog for the next version of SecurityCraft--------------------------
+
+- Fix: The Level 3 Keycard cannot be crafted
+
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
