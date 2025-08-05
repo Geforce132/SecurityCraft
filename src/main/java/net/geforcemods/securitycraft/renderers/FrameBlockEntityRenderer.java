@@ -145,6 +145,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 				if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 					bufferSource.endBatch();
+				else //If another mod messes with (e.g. wraps) the buffer source available here, it is assumed that the original buffer source can safely be obtained through the level renderer.
+					mc.levelRenderer.renderBuffers.bufferSource().endBatch();
 
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
 
