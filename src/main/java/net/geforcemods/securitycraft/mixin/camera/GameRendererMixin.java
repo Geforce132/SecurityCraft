@@ -76,6 +76,15 @@ public class GameRendererMixin {
 	}
 
 	/**
+	 * Provides a hook for capturing the necessary levels for frame feeds. This is done immediately after main level
+	 * rendering, but before GUI rendering, to fix screen flickering with Iris.
+	 */
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;tryTakeScreenshotIfNeeded()V"))
+	private void securitycraft$afterLevelRendering(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
+		FrameFeedHandler.captureFrameFeeds(deltaTracker);
+	}
+
+	/**
 	 * Prevents {@link Minecraft#hitResult} from being modified while the mod is capturing a Frame feed. This resolves issues
 	 * like the wrong teleport position sometimes being suggested when using /tp
 	 */
