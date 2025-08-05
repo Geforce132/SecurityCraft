@@ -208,7 +208,7 @@ package net.geforcemods.securitycraft.entity.camera;
 import java.util.function.Consumer;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
-import net.geforcemods.securitycraft.SecurityCraftClient;
+import net.geforcemods.securitycraft.compat.ium.IumCompat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
@@ -237,7 +237,7 @@ public class CameraClientChunkCacheExtension {
 				modifyChunkMaps(map -> map.remove(chunkPosLong));
 				NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
 				level.unload(chunk);
-				SecurityCraftClient.INSTALLED_IUM_MOD.onChunkStatusRemoved(level, chunkPos.x, chunkPos.z);
+				IumCompat.get().onChunkStatusRemoved(level, chunkPos.x, chunkPos.z);
 			}
 		}
 	}
@@ -271,7 +271,7 @@ public class CameraClientChunkCacheExtension {
 		}
 
 		level.onChunkLoaded(chunkPos);
-		SecurityCraftClient.INSTALLED_IUM_MOD.onChunkStatusAdded(level, x, z);
+		IumCompat.get().onChunkStatusAdded(level, x, z);
 		NeoForge.EVENT_BUS.post(new ChunkEvent.Load(chunk, false));
 		return chunk;
 	}

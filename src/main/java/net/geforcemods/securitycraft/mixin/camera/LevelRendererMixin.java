@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 
-import net.geforcemods.securitycraft.SecurityCraftClient;
 import net.geforcemods.securitycraft.compat.ium.IumCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
@@ -60,7 +59,7 @@ public abstract class LevelRendererMixin {
 	 */
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"))
 	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, Matrix4f frustumMatrix, Matrix4f projectionMatrix, CallbackInfo ci, @Local Frustum frustum) {
-		if (SecurityCraftClient.INSTALLED_IUM_MOD != IumCompat.NONE && FrameFeedHandler.hasFeeds()) {
+		if (IumCompat.isActive() && FrameFeedHandler.hasFeeds()) {
 			ProfilerFiller profiler = Profiler.get();
 
 			profiler.popPush("cullEntities");
@@ -78,7 +77,7 @@ public abstract class LevelRendererMixin {
 	 */
 	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"), ordinal = 3)
 	private boolean securitycraft$modifyEntityOutlineRendered(boolean original) {
-		if (SecurityCraftClient.INSTALLED_IUM_MOD != IumCompat.NONE && securitycraft$entityOutlineRendered) {
+		if (IumCompat.isActive() && securitycraft$entityOutlineRendered) {
 			securitycraft$entityOutlineRendered = false;
 			return true;
 		}
@@ -94,7 +93,7 @@ public abstract class LevelRendererMixin {
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
-		if (FrameFeedHandler.isCapturingCamera() && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
+		if (FrameFeedHandler.isCapturingCamera() && !IumCompat.isActive())
 			ci.cancel();
 	}
 
