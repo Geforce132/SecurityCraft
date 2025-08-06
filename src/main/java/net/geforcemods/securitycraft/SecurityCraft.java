@@ -54,7 +54,6 @@ import net.neoforged.fml.InterModComms;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -68,7 +67,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @Mod(SecurityCraft.MODID)
-@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = SecurityCraft.MODID)
 public class SecurityCraft {
 	public static final Logger LOGGER = LogUtils.getLogger();
 	public static final String MODID = "securitycraft";

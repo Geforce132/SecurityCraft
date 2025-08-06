@@ -11,7 +11,6 @@ import net.minecraft.client.KeyMapping;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
 /**
@@ -19,7 +18,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
  *
  * @author Geforce
  */
-@EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT, bus = Bus.MOD)
+@EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class KeyBindings {
 	public static KeyMapping cameraZoomIn;
 	public static KeyMapping cameraZoomOut;

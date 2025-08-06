@@ -89,7 +89,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.crafting.CompoundIngredient;
@@ -103,7 +102,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-@EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = SecurityCraft.MODID)
 public class RegistrationHandler {
 	private RegistrationHandler() {}
 
