@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -119,7 +120,13 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.AtlasSet;
+import net.minecraft.client.resources.model.AtlasSet.StitchResult;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -216,6 +223,9 @@ public class ClientHandler {
 	});
 	public static final ResourceLocation LINKING_STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "linking_state");
 	private static ShaderInstance frameFeedShader;
+	private static ModelBakery modelBakery;
+	private static Map<ResourceLocation, AtlasSet.StitchResult> atlasPreperations;
+	private static BiFunction<ResourceLocation, Material, TextureAtlasSprite> textureGetter;
 
 	private ClientHandler() {}
 
@@ -268,8 +278,8 @@ public class ClientHandler {
 		Block sri = SCContent.SECURE_REDSTONE_INTERFACE.get();
 		ResourceLocation sriName = Utils.getRegistryName(sri);
 		ResourceLocation modelBase = sriName.withPrefix("block/");
-		BakedModel poweredSriSender = modelRegistry.get(modelBase.withSuffix("_sender_on"));
-		BakedModel poweredSriReceiver = modelRegistry.get(modelBase.withSuffix("_receiver_on"));
+		ResourceLocation poweredSriSenderLocation = modelBase.withSuffix("_sender_on");
+		ResourceLocation poweredSriReceiverLocation = modelBase.withSuffix("_receiver_on");
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
@@ -279,9 +289,9 @@ public class ClientHandler {
 
 		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
 			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriSender, oldModel));
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(poweredSriSenderLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
 			else
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriReceiver, oldModel));
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(poweredSriReceiverLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
 		}
 
 		for (String mine : mines) {
@@ -289,6 +299,9 @@ public class ClientHandler {
 		}
 
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
+		modelBakery = null;
+		atlasPreperations = null;
+		textureGetter = null;
 	}
 
 	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, BlockState state, Function<BakedModel, IDynamicBakedModel> modelFunction) {
@@ -297,6 +310,16 @@ public class ClientHandler {
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
 		modelRegistry.put(mrl, modelFunction.apply(modelRegistry.get(mrl)));
+	}
+
+	private static BakedModel bakeDirectionalModel(ResourceLocation location, Direction facing) {
+		try {
+			return modelBakery.new ModelBakerImpl(textureGetter(), location).bake(location, modelRotationFromDirection(facing));
+		}
+		catch (Exception exception) {
+			SecurityCraft.LOGGER.warn("Unable to bake standalone model: '{}': {}", location, exception);
+			return null;
+		}
 	}
 
 	private static void registerBlockMineModel(ModelEvent.ModifyBakingResult event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
@@ -732,5 +755,41 @@ public class ClientHandler {
 
 	public static ShaderInstance getFrameFeedShader() {
 		return frameFeedShader;
+	}
+
+	public static void setModelBakery(ModelBakery modelBakery) {
+		ClientHandler.modelBakery = modelBakery;
+	}
+
+	public static void setAtlasPreperations(Map<ResourceLocation, StitchResult> atlasPreperations) {
+		ClientHandler.atlasPreperations = atlasPreperations;
+	}
+
+	private static BlockModelRotation modelRotationFromDirection(Direction direction) {
+		return switch (direction) {
+			case DOWN -> BlockModelRotation.X180_Y0;
+			case UP -> BlockModelRotation.X0_Y0;
+			case NORTH -> BlockModelRotation.X90_Y0;
+			case SOUTH -> BlockModelRotation.X90_Y180;
+			case WEST -> BlockModelRotation.X90_Y270;
+			case EAST -> BlockModelRotation.X90_Y90;
+		};
+	}
+
+	private static BiFunction<ResourceLocation, Material, TextureAtlasSprite> textureGetter() {
+		if (textureGetter == null) {
+			textureGetter = (debugName, material) -> {
+				AtlasSet.StitchResult stitchResult = atlasPreperations.get(material.atlasLocation());
+				TextureAtlasSprite sprite = stitchResult.getSprite(material.texture());
+
+				if (sprite != null)
+					return sprite;
+				else
+					return stitchResult.missing();
+			};
+
+		}
+
+		return textureGetter;
 	}
 }
