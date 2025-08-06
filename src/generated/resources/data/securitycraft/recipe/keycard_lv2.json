@@ -7,7 +7,7 @@
       "tag": "c:ingots/iron"
     },
     "S": {
-      "tag": "c:bricks"
+      "tag": "c:bricks/normal"
     }
   },
   "pattern": [
