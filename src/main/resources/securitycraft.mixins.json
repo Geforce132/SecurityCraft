@@ -13,6 +13,8 @@
 		"datagen.BlockStateGeneratorCollectorMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugScreenOverlayMixin",
+		"sri.ModelBakeryMixin",
+		"sri.ModelManagerMixin",
 		"taser.ItemInHandRendererMixin"
 	],
 	"mixins": [
