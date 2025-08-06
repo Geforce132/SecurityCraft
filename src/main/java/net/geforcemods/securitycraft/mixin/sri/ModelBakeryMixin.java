@@ -2,17 +2,15 @@ package net.geforcemods.securitycraft.mixin.sri;
 
 import java.util.Map;
 
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.block.model.UnbakedBlockStateModel;
-import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.resources.ResourceLocation;
 
@@ -22,8 +20,12 @@ import net.minecraft.resources.ResourceLocation;
  */
 @Mixin(ModelBakery.class)
 public class ModelBakeryMixin {
-	@Inject(method = "<init>(Lnet/minecraft/client/model/geom/EntityModelSet;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;Lnet/minecraft/client/resources/model/UnbakedModel;Ljava/util/Map;)V", at = @At("TAIL"))
-	private void securitycraft$captureStandaloneModels(EntityModelSet entityModelSet, Map<ModelResourceLocation, UnbakedBlockStateModel> unbakedBlockStateModels, Map<ResourceLocation, ClientItem> unbakedItemStackModels, Map<ResourceLocation, UnbakedModel> unbakedPlainModels, UnbakedModel missingModel, Map<ResourceLocation, UnbakedModel> standaloneModels, CallbackInfo ci) {
+	@Shadow
+	@Final
+	private Map<ResourceLocation, UnbakedModel> standaloneModels;
+
+	@Inject(method = "bakeModels", at = @At("HEAD"))
+	private void securitycraft$captureStandaloneModels(ModelBakery.TextureGetter textureGetter, CallbackInfoReturnable<ModelBakery.BakingResult> cir) {
 		ClientHandler.setStandaloneModels(standaloneModels);
 	}
 }
