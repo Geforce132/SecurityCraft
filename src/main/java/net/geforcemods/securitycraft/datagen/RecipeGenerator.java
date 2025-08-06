@@ -856,7 +856,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_CRIMSON_PLANKS, SCContent.REINFORCED_CRIMSON_FENCE_GATE);
 		addFenceGateRecipe(recipeOutput, SCContent.REINFORCED_WARPED_PLANKS, SCContent.REINFORCED_WARPED_FENCE_GATE);
 		addKeycardRecipe(recipeOutput, Tags.Items.INGOTS_GOLD, SCContent.KEYCARD_LVL_1);
-		addKeycardRecipe(recipeOutput, Tags.Items.BRICKS, SCContent.KEYCARD_LVL_2);
+		addKeycardRecipe(recipeOutput, Tags.Items.BRICKS_NORMAL, SCContent.KEYCARD_LVL_2);
 		addKeycardRecipe(recipeOutput, Tags.Items.BRICKS_NETHER, SCContent.KEYCARD_LVL_3);
 		addKeycardRecipe(recipeOutput, Tags.Items.DYES_MAGENTA, SCContent.KEYCARD_LVL_4);
 		addKeycardRecipe(recipeOutput, Tags.Items.DYES_PURPLE, SCContent.KEYCARD_LVL_5);
