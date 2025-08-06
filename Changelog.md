@@ -1,4 +1,8 @@
---------------------------Changelog for v1.10.0.1SecurityCraft--------------------------
+--------------------------Changelog for the next version of SecurityCraft--------------------------
+
+- Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
+
+--------------------------Changelog for v1.10.0.1 of SecurityCraft--------------------------
 
 - Fix: Crash on servers
 
