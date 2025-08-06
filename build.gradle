@@ -105,7 +105,7 @@ dependencies {
 	implementation "curse.maven:wthit-forge-455982:5977917"
 	implementation "curse.maven:badpackets-615134:5430629" //wthit dependency
 	implementation "curse.maven:projecte-226410:6323142"
-//	implementation "curse.maven:embeddium-908741:5681729"
+	compileOnly "curse.maven:embeddium-908741:5681729"
 	implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge" //incompatible with embeddium
 }
 

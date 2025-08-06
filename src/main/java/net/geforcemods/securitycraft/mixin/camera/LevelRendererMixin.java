@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 
-import net.geforcemods.securitycraft.SecurityCraftClient;
 import net.geforcemods.securitycraft.compat.ium.IumCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
@@ -53,7 +52,7 @@ public class LevelRendererMixin {
 	 */
 	@Inject(method = "setupRender", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onSetupRender(Camera camera, Frustum frustum, boolean hasCapturedFrustum, boolean isSpectator, CallbackInfo ci) {
-		if (FrameFeedHandler.isCapturingCamera() && SecurityCraftClient.INSTALLED_IUM_MOD == IumCompat.NONE)
+		if (FrameFeedHandler.isCapturingCamera() && !IumCompat.isActive())
 			ci.cancel();
 	}
 
