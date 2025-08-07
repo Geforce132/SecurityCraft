@@ -47,10 +47,6 @@ repositories {
 		name = "ModMaven"
 		url = "modmaven.k-4u.nl"
 	}
-	maven { // TOP
-		name 'tterrag maven'
-		url "http://maven.tterrag.com/"
-	}
 	maven {
 		name = "CurseMaven"
 		url = 'https://cursemaven.com/'
@@ -65,7 +61,7 @@ dependencies {
 	annotationProcessor 'org.spongepowered:mixin:0.8.3:processor'
 	compile 'org.spongepowered:mixin:0.8.3'
 	deobfProvided "curse.maven:hwyla-253449:2568751"
-	deobfProvided "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.28-17"
+	deobfProvided "curse.maven:the-one-probe-245211:2667280"
 	deobfProvided "curse.maven:ftb-library-legacy-forge-237167:2985811"
 	deobfProvided "curse.maven:ftb-utilities-forge-237102:3157548"
 	deobfProvided "curse.maven:cyclic-239286:2883487"
