@@ -1,3 +1,7 @@
+--------------------------Changelog for the next version of SecurityCraft--------------------------
+
+- Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
+
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]

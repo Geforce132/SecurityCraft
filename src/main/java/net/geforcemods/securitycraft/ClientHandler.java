@@ -124,6 +124,8 @@ import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.BlockModelRotation;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
@@ -223,6 +225,7 @@ public class ClientHandler {
 	//@formatter:on
 	public static final ResourceLocation LINKING_STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "linking_state");
 	private static ShaderInstance frameFeedShader;
+	private static ModelBakery modelBakery;
 
 	private ClientHandler() {}
 
@@ -269,8 +272,10 @@ public class ClientHandler {
 		//@formatter:on
 		Map<ResourceLocation, BakedModel> modelRegistry = event.getModelRegistry();
 		Block sri = SCContent.SECURE_REDSTONE_INTERFACE.get();
-		BakedModel poweredSriSender = modelRegistry.get(new ResourceLocation(SecurityCraft.MODID, "block/secure_redstone_interface_sender_on"));
-		BakedModel poweredSriReceiver = modelRegistry.get(new ResourceLocation(SecurityCraft.MODID, "block/secure_redstone_interface_receiver_on"));
+		ResourceLocation sriName = sri.getRegistryName();
+		ResourceLocation modelBase = sriName.withPrefix("block/");
+		ResourceLocation poweredSriSenderLocation = modelBase.withSuffix("_sender_on");
+		ResourceLocation poweredSriReceiverLocation = modelBase.withSuffix("_receiver_on");
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
@@ -280,9 +285,9 @@ public class ClientHandler {
 
 		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
 			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriSender, oldModel));
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(poweredSriSenderLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
 			else
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(poweredSriReceiver, oldModel));
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(poweredSriReceiverLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
 		}
 
 		for (String mine : mines) {
@@ -290,6 +295,7 @@ public class ClientHandler {
 		}
 
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
+		modelBakery = null;
 	}
 
 	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, BlockState state, Function<BakedModel, IDynamicBakedModel> modelFunction) {
@@ -298,6 +304,10 @@ public class ClientHandler {
 		ModelResourceLocation mrl = new ModelResourceLocation(rl, stateString);
 
 		modelRegistry.put(mrl, modelFunction.apply(modelRegistry.get(mrl)));
+	}
+
+	private static BakedModel bakeDirectionalModel(ResourceLocation location, Direction facing) {
+		return modelBakery.bake(location, modelRotationFromDirection(facing));
 	}
 
 	private static void registerBlockMineModel(ModelBakeEvent event, ResourceLocation mineRl, ResourceLocation realBlockRl) {
@@ -937,5 +947,20 @@ public class ClientHandler {
 
 	public static ShaderInstance getFrameFeedShader() {
 		return frameFeedShader;
+	}
+
+	public static void setModelBakery(ModelBakery modelBakery) {
+		ClientHandler.modelBakery = modelBakery;
+	}
+
+	private static BlockModelRotation modelRotationFromDirection(Direction direction) {
+		return switch (direction) {
+			case DOWN -> BlockModelRotation.X180_Y0;
+			case UP -> BlockModelRotation.X0_Y0;
+			case NORTH -> BlockModelRotation.X90_Y0;
+			case SOUTH -> BlockModelRotation.X90_Y180;
+			case WEST -> BlockModelRotation.X90_Y270;
+			case EAST -> BlockModelRotation.X90_Y90;
+		};
 	}
 }
