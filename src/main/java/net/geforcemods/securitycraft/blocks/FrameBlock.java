@@ -87,8 +87,8 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 				NamedPositions cameras = stack.get(SCContent.BOUND_CAMERAS);
 
 				if (!cameras.isEmpty()) {
-					if (be.applyCameraPositions(stack)) {
-						be.switchCameras(null, null, 0, false); //Disable current camera view if new cameras are registered to the frame
+					if (be.applyCameraPositions(stack) && !level.isClientSide) {
+						be.unsetCurrentCameraOnServer(); //Reset current camera view if new cameras are registered to the frame
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.camerasSet"), ChatFormatting.GREEN);
 					}
 				}
