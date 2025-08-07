@@ -12,6 +12,7 @@
 		"dev.GlDebugTextUtilsMixin",
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugOverlayGuiMixin",
+		"sri.ModelManagerMixin",
 		"taser.BipedModelMixin"
 	],
 	"mixins": [
