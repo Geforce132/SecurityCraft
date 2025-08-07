@@ -124,6 +124,7 @@ public class FrameFeedHandler {
 					feed.applyVisibleSections(mc.levelRenderer.visibleSections);
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
+					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
 
 					try {
 						RenderTarget frameTarget = feed.renderTarget();
