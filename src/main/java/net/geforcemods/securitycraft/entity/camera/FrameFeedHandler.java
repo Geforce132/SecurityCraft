@@ -42,7 +42,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.client.event.RenderFrameEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class FrameFeedHandler {
@@ -50,12 +49,11 @@ public class FrameFeedHandler {
 	private static GlobalPos currentlyCapturedCamera;
 	private static double lastFrameRendered = 0.0D;
 
-	@SubscribeEvent
-	public static void onRenderFramePost(RenderFrameEvent.Post event) {
+	public static void captureFrameFeeds(DeltaTracker partialTick) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 
-		if (player == null || player.connection.getLevel() == null || !hasFeeds() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get())
+		if (player == null || player.connection.getLevel() == null || !hasFeeds() || !ConfigHandler.SERVER.frameFeedViewingEnabled.get() || isCapturingCamera())
 			return;
 
 		ProfilerFiller profiler = Profiler.get();
@@ -66,11 +64,9 @@ public class FrameFeedHandler {
 			return;
 
 		lastFrameRendered = currentTime;
-		profiler.push("gameRenderer");
-		profiler.push("securitycraft:frame_level");
+		profiler.popPush("securitycraft:frame_level");
 
 		Level level = player.level();
-		DeltaTracker partialTick = event.getPartialTick();
 		Camera camera = mc.gameRenderer.getMainCamera();
 		Entity oldCamEntity = mc.cameraEntity;
 		Window window = mc.getWindow();
@@ -93,6 +89,7 @@ public class FrameFeedHandler {
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		Frustum playerFrustum = mc.levelRenderer.getFrustum(); //Saved once before the loop, because the frustum changes depending on which camera is viewed
+		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
 
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.gameRenderer.setPanoramicMode(true);
@@ -125,14 +122,10 @@ public class FrameFeedHandler {
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
+					mc.mainRenderTarget = feed.renderTarget();
 
 					try {
-						RenderTarget frameTarget = feed.renderTarget();
-						RenderTarget mainTarget = mc.getMainRenderTarget();
-
-						mc.mainRenderTarget = frameTarget;
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
-						mc.mainRenderTarget = mainTarget;
 					}
 					catch (Exception e) {
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
@@ -172,10 +165,8 @@ public class FrameFeedHandler {
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
 		mc.gameRenderer.setPanoramicMode(false);
+		mc.mainRenderTarget = oldMainRenderTarget;
 		currentlyCapturedCamera = null;
-
-		profiler.pop();
-		profiler.pop();
 	}
 
 	@SubscribeEvent
