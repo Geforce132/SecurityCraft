@@ -74,7 +74,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Direction direction = state.getValue(FrameBlock.FACING);
 		Vec3i normal = direction.getNormal();
 		final float margin = 0.0625F;
-		com.mojang.math.Vector4f innerVertices; //Both vectors have the following format: xStart, xEnd, zStart, zEnd
+		Vector4f innerVertices; //Both vectors have the following format: xStart, xEnd, zStart, zEnd
 		Vector4f outerVertices;
 
 		switch (direction) {
