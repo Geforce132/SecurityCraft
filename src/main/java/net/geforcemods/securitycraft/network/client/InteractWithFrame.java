@@ -40,7 +40,7 @@ public class InteractWithFrame {
 			FrameBlockEntity be = (FrameBlockEntity) te;
 
 			if (!be.redstoneSignalDisabled() && !be.hasClientInteracted() && be.getCurrentCamera() != null)
-				be.setCurrentCameraAndUpdate(be.getCurrentCamera());
+				be.setCameraOnClientAndUpdate(be.getCurrentCamera());
 			else
 				ClientHandler.displayFrameScreen(be, !owner);
 		}

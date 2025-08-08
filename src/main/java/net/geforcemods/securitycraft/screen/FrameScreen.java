@@ -29,7 +29,7 @@ public class FrameScreen extends CameraSelectScreen {
 
 	@Override
 	protected void viewCamera(GlobalPos cameraPos) {
-		be.setCurrentCameraAndUpdate(cameraPos);
+		be.setCameraOnClientAndUpdate(cameraPos);
 		super.viewCamera(cameraPos);
 	}
 

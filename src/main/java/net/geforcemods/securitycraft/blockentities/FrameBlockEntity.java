@@ -54,21 +54,25 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 			boolean wasPowered = getBlockState().getValue(FrameBlock.POWERED);
 
 			if (level.isClientSide && !wasPowered && clientInteracted)
-				switchCameras(currentCameraPosition, null, 0, true);
+				switchCameraOnClient(currentCameraPosition, true);
 			else if (!level.isClientSide) {
 				boolean hasNeighborSignal = level.hasNeighborSignal(worldPosition);
 
 				if (wasPowered && !hasNeighborSignal)
-					switchCameras(currentCameraPosition, null, 0, true);
+					disableCameraFeedOnServer(currentCameraPosition);
 
 				if (wasPowered != hasNeighborSignal)
 					level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FrameBlock.POWERED, hasNeighborSignal));
 			}
 		}
 
-		if (switchCamera) {
+		if (switchCamera) { //Relevant on server and client: Server uses this to set up the play icon on world load, client uses this to update the frame when a remote client changes the feed
 			switchCamera = false;
-			switchCameras(newCameraPosition, null, 0, true);
+
+			if (!level.isClientSide)
+				disableCameraFeedOnServer(newCameraPosition);
+			else
+				switchCameraOnClient(newCameraPosition, true);
 		}
 	}
 
@@ -85,11 +89,15 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 	}
 
 	private void removeLinkWithCamera() {
-		if (currentCameraPosition != null) {
-			if (!level.isClientSide)
-				switchCameras(null, null, 0, false);
-			else if (clientInteracted)
+		if (currentCameraPosition != null) { //This is being called on multiple occasions: Block break (server + client), clientside unload (client), world leave (server)
+			if (!level.isClientSide) {//Serverside + block break: This method is also called for client; Serverside + world leave: Server does nothing, so chunks don't get loaded again, and client has special handling on world leave
+				if (level.isLoaded(worldPosition))
+					disableCameraFeedOnServer(currentCameraPosition);
+			}
+			else if (clientInteracted) {//Clientside + block break: This method is also called for server; Clientside + unload: Server receives a packet
+				switchCameraOnClient(currentCameraPosition, true);
 				SecurityCraft.channel.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), true));
+			}
 		}
 	}
 
@@ -219,19 +227,25 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 		level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 	}
 
-	public void setCurrentCameraAndUpdate(GlobalPos camera) {
-		int requestedRenderDistance = FrameFeedHandler.getFrameFeedViewDistance(this);
-
-		switchCameras(camera, null, requestedRenderDistance, false);
-		SecurityCraft.channel.sendToServer(new SyncFrame(getBlockPos(), requestedRenderDistance, Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
+	public void setCameraOnClientAndUpdate(GlobalPos camera) {
+		switchCameraOnClient(camera, false);
+		SecurityCraft.channel.sendToServer(new SyncFrame(getBlockPos(), FrameFeedHandler.getFrameFeedViewDistance(this), Optional.empty(), Optional.ofNullable(currentCameraPosition), false));
 	}
 
-	public void switchCameras(GlobalPos newCameraPos, PlayerEntity player, int requestedRenderDistance, boolean disableNewCamera) {
-		GlobalPos previousCameraPos = getCurrentCamera();
+	public void disableCameraFeedOnServer(GlobalPos newCameraPos) {
+		switchCameraOnServer(newCameraPos, null, 0, true);
+	}
 
-		setCurrentCamera(newCameraPos);
+	public void unsetCurrentCameraOnServer() {
+		switchCameraOnServer(null, null, 0, false);
+	}
 
-		if (!level.isClientSide) {
+	public void switchCameraOnServer(GlobalPos newCameraPos, PlayerEntity player, int requestedRenderDistance, boolean disableNewCamera) {
+		if (!level.isClientSide) { //Note: This method will update nearby clients, through the updated NBT that is sent to clients
+			GlobalPos previousCameraPos = getCurrentCamera();
+
+			setCurrentCamera(newCameraPos);
+
 			if (previousCameraPos != null) {
 				TileEntity te = level.getBlockEntity(previousCameraPos.pos());
 
@@ -265,7 +279,14 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 			setChanged();
 			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
 		}
-		else {
+	}
+
+	public void switchCameraOnClient(GlobalPos newCameraPos, boolean disableNewCamera) {
+		if (level.isClientSide) {
+			GlobalPos previousCameraPos = getCurrentCamera();
+
+			setCurrentCamera(newCameraPos);
+
 			if (previousCameraPos != null)
 				FrameFeedHandler.removeFrameLink(previousCameraPos, this);
 
@@ -313,7 +334,7 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		if (!level.isClientSide && ((option.getName().equals(disabled.getName()) && disabled.get()) || option.getName().equals(chunkLoadingDistance.getName())))
-			switchCameras(null, null, 0, false);
+			unsetCurrentCameraOnServer();
 	}
 
 	@Override
@@ -331,8 +352,8 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickab
 	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		super.onModuleRemoved(stack, module, toggled);
 
-		if (module == ModuleType.ALLOWLIST)
-			switchCameras(null, null, 0, false); //Disable the frame feed for all players if the allowlist module is removed, because frames on the server side don't know which players are currently viewing them
+		if (module == ModuleType.ALLOWLIST && !level.isClientSide)
+			unsetCurrentCameraOnServer(); //Disable the frame feed for all players, because serverside frames don't know which players are currently viewing them. Clients are updated automatically
 		else if (module == ModuleType.REDSTONE) {
 			activatedByRedstone = false;
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(FrameBlock.POWERED, false));
