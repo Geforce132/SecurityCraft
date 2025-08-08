@@ -5,14 +5,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
-import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.client.util.ITooltipFlag;
@@ -116,7 +114,7 @@ public class BriefcaseItem extends Item implements IDyeableArmorItem {
 				NetworkHooks.openGui(player, new INamedContainerProvider() {
 					@Override
 					public Container createMenu(int windowId, PlayerInventory inv, PlayerEntity player) {
-						return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get())));
+						return new BriefcaseMenu(windowId, inv, ItemContainer.briefcase(briefcase));
 					}
 
 					@Override
