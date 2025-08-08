@@ -197,6 +197,9 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World level, BlockPos pos, BlockState stateAtPos, Consumer<OwnableBlockEntity> fieldModifier) {
+		if (!stateAtPos.is(SCContent.INVENTORY_SCANNER.get()))
+			return null;
+
 		Direction facing = stateAtPos.getValue(FACING);
 		List<BlockPos> fields = new ArrayList<>();
 
