@@ -12,7 +12,6 @@ public class ItemContainer implements Container {
 	private final ItemStack containerStack;
 	private final NonNullList<ItemStack> inventory;
 	private final int maxStackSize;
-	private boolean changed;
 
 	private ItemContainer(ItemStack containerStack, int inventorySize, int maxStackSize) {
 		this.containerStack = containerStack;
@@ -93,7 +92,7 @@ public class ItemContainer implements Container {
 				inventory.set(i, ItemStack.EMPTY);
 		}
 
-		changed = true;
+		save();
 	}
 
 	@Override
@@ -106,8 +105,7 @@ public class ItemContainer implements Container {
 
 	@Override
 	public void stopOpen(Player player) {
-		if (changed)
-			save();
+		save();
 	}
 
 	@Override
