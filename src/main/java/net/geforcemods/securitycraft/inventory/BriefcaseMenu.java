@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.ClickType;
@@ -11,9 +12,11 @@ import net.minecraft.item.ItemStack;
 
 public class BriefcaseMenu extends Container {
 	public static final int CONTAINER_SIZE = 12;
+	private final ItemContainer briefcaseInventory;
 
 	public BriefcaseMenu(int windowId, PlayerInventory playerInventory, ItemContainer briefcaseInventory) {
 		super(SCContent.BRIEFCASE_INVENTORY_MENU.get(), windowId);
+		this.briefcaseInventory = briefcaseInventory;
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -79,6 +82,6 @@ public class BriefcaseMenu extends Container {
 
 	@Override
 	public boolean stillValid(PlayerEntity player) {
-		return true;
+		return PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get()) == briefcaseInventory.getContainerStack();
 	}
 }
