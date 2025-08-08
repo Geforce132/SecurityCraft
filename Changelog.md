@@ -9,6 +9,7 @@
 - Fix: Briefcase and Keycard Holder exploits
 - Fix: Inventory scanner crash
 - Fix: Reinforced cobwebs cannot be mined faster with swords
+- Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
 - Misc.: The minimum required NeoForge version is now 21.8.10
 
 --------------------------Changelog for v1.10-beta1 of SecurityCraft--------------------------
