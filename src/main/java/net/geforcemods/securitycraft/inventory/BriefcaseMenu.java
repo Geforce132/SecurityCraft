@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.BriefcaseItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -80,7 +81,7 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return true;
+		return PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get()) == briefcaseInventory.getContainerStack();
 	}
 
 	@Override
