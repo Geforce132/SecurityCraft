@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.inventory;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -79,7 +80,7 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return true;
+		return PlayerUtils.getItemStackFromAnyHand(player, SCContent.KEYCARD_HOLDER.get()) == keycardHolderInv.getContainerStack();
 	}
 
 	@Override
