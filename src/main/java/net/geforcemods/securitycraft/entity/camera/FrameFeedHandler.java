@@ -109,6 +109,7 @@ public class FrameFeedHandler {
 		PointOfView oldCameraType = mc.options.getCameraType();
 		ArmorStandEntity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		ClippingHelper playerFrustum = prepareFrustum(camera); //Saved once before the loop, because the frustum changes depending on which camera is viewed
+		Framebuffer oldMainRenderTarget = mc.getMainRenderTarget();
 
 		mc.gameRenderer.renderBlockOutline = false;
 		mc.gameRenderer.renderHand = false;
@@ -157,6 +158,7 @@ public class FrameFeedHandler {
 					profiler.popPush("securitycraft:bind_frame_target");
 					frameTarget.clear(true);
 					frameTarget.bindWrite(true);
+					mc.mainRenderTarget = frameTarget;
 					profiler.pop();
 
 					try {
@@ -206,6 +208,7 @@ public class FrameFeedHandler {
 		window.framebufferHeight = oldHeight;
 		mc.gameRenderer.renderHand = oldRenderHand;
 		mc.gameRenderer.panoramicMode = oldPanoramicMode;
+		mc.mainRenderTarget = oldMainRenderTarget;
 		mc.getMainRenderTarget().bindWrite(true);
 		currentlyCapturedCamera = null;
 
