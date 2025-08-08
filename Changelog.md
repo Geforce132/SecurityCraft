@@ -4,6 +4,8 @@
 - Fix: Game performance does not improve when breaking frames with an active frame feed
 - Fix: The Level 3 Keycard cannot be crafted
 - Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
+- Fix: Briefcase and Keycard Holder exploits
+- Fix: Inventory scanner crash
 - Misc.: The minimum required NeoForge version is now 21.1.181
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
