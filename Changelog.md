@@ -4,6 +4,7 @@
 - Fix: Game performance does not improve when breaking frames with an active frame feed
 - Fix: Briefcase and Keycard Holder exploits
 - Fix: Inventory scanner crash
+- Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
