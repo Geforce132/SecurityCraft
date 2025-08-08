@@ -7,6 +7,7 @@
 - Fix: Briefcase and Keycard Holder exploits
 - Fix: Inventory scanner crash
 - Fix: Reinforced cobwebs cannot be mined faster with swords
+- Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
 
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
