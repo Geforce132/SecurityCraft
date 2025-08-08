@@ -6,6 +6,7 @@
 - Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
 - Fix: Briefcase and Keycard Holder exploits
 - Fix: Inventory scanner crash
+- Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
 - Misc.: The minimum required NeoForge version is now 21.1.181
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
