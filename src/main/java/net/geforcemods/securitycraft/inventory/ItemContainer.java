@@ -147,4 +147,8 @@ public class ItemContainer implements Container {
 
 		return true;
 	}
+
+	public ItemStack getContainerStack() {
+		return containerStack;
+	}
 }
