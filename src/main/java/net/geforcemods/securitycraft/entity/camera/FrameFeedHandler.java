@@ -71,7 +71,6 @@ public class FrameFeedHandler {
 		World level = player.world;
 		float partialTick = mc.isGamePaused() ? mc.renderPartialTicksPaused : event.renderTickTime;
 		Entity oldCamEntity = mc.getRenderViewEntity();
-
 		int oldWidth = mc.displayWidth;
 		int oldHeight = mc.displayHeight;
 		int frameFeedResolution = ConfigHandler.frameFeedResolution;
@@ -87,6 +86,7 @@ public class FrameFeedHandler {
 		int oldCameraType = mc.gameSettings.thirdPersonView;
 		EntityArmorStand securityCamera = new EntityArmorStand(level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		Frustum playerFrustum = prepareFrustum(oldCamEntity); //Saved once before the loop, because the frustum changes depending on which camera is viewed
+		Framebuffer oldMainRenderTarget = mc.getFramebuffer();
 
 		mc.entityRenderer.drawBlockOutline = false;
 		mc.entityRenderer.renderHand = false;
@@ -128,6 +128,7 @@ public class FrameFeedHandler {
 					profiler.endStartSection("securitycraft:bind_frame_target");
 					frameTarget.framebufferClear();
 					frameTarget.bindFramebuffer(true);
+					mc.framebuffer = frameTarget;
 					profiler.endSection();
 
 					try {
@@ -166,6 +167,7 @@ public class FrameFeedHandler {
 		mc.entityRenderer.renderHand = oldRenderHand;
 		mc.displayWidth = oldWidth;
 		mc.displayHeight = oldHeight;
+		mc.framebuffer = oldMainRenderTarget;
 		mc.getFramebuffer().bindFramebuffer(true);
 		currentlyCapturedCamera = null;
 
