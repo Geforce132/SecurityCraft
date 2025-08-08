@@ -19,13 +19,13 @@ import net.minecraft.world.item.component.Tool;
  */
 @Mixin(ToolMaterial.class)
 public class ToolMaterialMixin {
-	@SuppressWarnings("rawtypes")
-	@WrapOperation(method = "applySwordProperties", at = @At(value = "INVOKE", target = "Ljava/util/List;of(Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/List;"))
-	private static List securitycraft$addReinforcedCobwebToSwordProperties(Object minesAndDropsCobweb, Object overrideSwordEfficientSpeed, Operation<List> original) {
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	@WrapOperation(method = "applySwordProperties", at = @At(value = "INVOKE", target = "Ljava/util/List;of(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/util/List;"))
+	private static List securitycraft$addReinforcedCobwebToSwordProperties(Object minesAndDropsCobweb, Object overrideSwordInstantlyMinesSpeed, Object overrideSwordEfficientSpeed, Operation<List> original) {
 		List list = new ArrayList();
 
 		list.add(Tool.Rule.minesAndDrops(HolderSet.direct(SCContent.REINFORCED_COBWEB.getDelegate()), 15.0F));
-		list.addAll(original.call(minesAndDropsCobweb, overrideSwordEfficientSpeed));
+		list.addAll(original.call(minesAndDropsCobweb, overrideSwordInstantlyMinesSpeed, overrideSwordEfficientSpeed));
 		return list;
 	}
 }
