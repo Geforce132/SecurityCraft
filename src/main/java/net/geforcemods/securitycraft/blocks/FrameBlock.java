@@ -78,8 +78,8 @@ public class FrameBlock extends OwnableBlock {
 				List<Pair<GlobalPos, String>> cameras = CameraMonitorItem.getCameraPositions(stack.getTagCompound());
 
 				if (!cameras.isEmpty()) {
-					if (be.applyCameraPositions(stack)) {
-						be.switchCameras(null, null, 0, false); //Disable current camera view if new cameras are registered to the frame
+					if (be.applyCameraPositions(stack) && !world.isRemote) {
+						be.unsetCurrentCameraOnServer(); //Reset current camera view if new cameras are registered to the frame
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.camerasSet"), TextFormatting.GREEN);
 					}
 				}

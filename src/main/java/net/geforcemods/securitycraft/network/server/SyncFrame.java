@@ -102,7 +102,7 @@ public class SyncFrame implements IMessage {
 						message.removedCamera.ifPresent(be::removeCamera);
 
 					if (isOwner || be.isAllowed(player))
-						be.switchCameras(currentCamera, player, message.requestedRenderDistance, message.disableCurrentCamera);
+						be.switchCameraOnServer(currentCamera, player, message.requestedRenderDistance, message.disableCurrentCamera);
 				}
 			});
 

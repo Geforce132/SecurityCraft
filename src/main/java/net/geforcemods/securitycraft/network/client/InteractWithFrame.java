@@ -53,7 +53,7 @@ public class InteractWithFrame implements IMessage {
 					FrameBlockEntity be = (FrameBlockEntity) te;
 
 					if (!be.redstoneSignalDisabled() && !be.hasClientInteracted() && be.getCurrentCamera() != null)
-						be.setCurrentCameraAndUpdate(be.getCurrentCamera());
+						be.setCameraOnClientAndUpdate(be.getCurrentCamera());
 					else {
 						Screens screen = !message.owner ? Screens.FRAME_READ_ONLY : Screens.FRAME;
 

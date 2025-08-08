@@ -1,3 +1,8 @@
+--------------------------Changelog for the next version of SecurityCraft--------------------------
+
+- Fix: Several mod incompatibilities that caused Frame feeds to not show up correctly
+- Fix: Game performance does not improve when breaking frames with an active frame feed
+
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
 - New: Cameras can now be viewed on Frames within the world (live camera feeds)[1]
