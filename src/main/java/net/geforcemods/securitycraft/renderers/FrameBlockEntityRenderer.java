@@ -36,6 +36,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.util.math.vector.Vector4f;
 import net.minecraft.world.World;
 
 public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntity> {
@@ -63,54 +64,55 @@ public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntit
 		Direction direction = state.getValue(FrameBlock.FACING);
 		Vector3i normal = direction.getNormal();
 		final float margin = 0.0625F;
-		float xStart = 0.0F;
-		float xEnd = 1.0F;
-		float zStart = 0.0F;
-		float zEnd = 1.0F;
+		Vector4f innerVertices; //Both vectors have the following format: xStart, xEnd, zStart, zEnd
+		Vector4f outerVertices;
 
 		switch (direction) {
 			case NORTH:
-				xStart = margin;
-				xEnd = 1 - margin;
-				zStart = zEnd = 0.05F;
+				innerVertices = new Vector4f(margin, 1 - margin, 0.05F, 0.05F);
+				outerVertices = new Vector4f(margin, 1 - margin, 0.045F, 0.045F);
 				break;
 			case SOUTH:
-				xStart = 1 - margin;
-				xEnd = margin;
-				zStart = zEnd = 0.95F;
+				innerVertices = new Vector4f(1 - margin, margin, 0.95F, 0.95F);
+				outerVertices = new Vector4f(1 - margin, margin, 0.955F, 0.955F);
 				break;
 			case WEST:
-				zStart = 1 - margin;
-				zEnd = margin;
-				xStart = xEnd = 0.05F;
+				innerVertices = new Vector4f(0.05F, 0.05F, 1 - margin, margin);
+				outerVertices = new Vector4f(0.045F, 0.045F, 1 - margin, margin);
 				break;
 			case EAST:
-				zStart = margin;
-				zEnd = 1 - margin;
-				xStart = xEnd = 0.95F;
+				innerVertices = new Vector4f(0.95F, 0.95F, margin, 1 - margin);
+				outerVertices = new Vector4f(0.955F, 0.955F, margin, 1 - margin);
 				break;
 			default:
+				innerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
+				outerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
+				break;
 		}
 
 		if (cameraPos == null)
-			renderSolidTexture(pose, buffer, SELECT_CAMERA, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderSolidTexture(pose, buffer, SELECT_CAMERA, innerVertices, packedLight, normal, margin);
 		else if (be.redstoneSignalDisabled()) {
-			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			renderCutoutTexture(pose, buffer, NO_REDSTONE_SIGNAL, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderNoise(pose, buffer, innerVertices, packedLight, normal, margin);
+			renderCutoutTexture(pose, buffer, NO_REDSTONE_SIGNAL, outerVertices, packedLight, normal, margin);
 		}
 		else if (!be.hasClientInteracted()) {
-			renderNoise(pose, buffer, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
-			renderCutoutTexture(pose, buffer, INACTIVE, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+			renderNoise(pose, buffer, innerVertices, packedLight, normal, margin);
+			renderCutoutTexture(pose, buffer, INACTIVE, outerVertices, packedLight, normal, margin);
 		}
 		else {
 			CameraFeed feed = FrameFeedHandler.getFeed(cameraPos);
 
 			if (feed == null || !feed.isFrameLinked(be) || !level.isLoaded(cameraPos.pos()) || !(level.getBlockEntity(cameraPos.pos()) instanceof SecurityCameraBlockEntity))
-				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, xStart, xEnd, zStart, zEnd, packedLight, normal, margin);
+				renderSolidTexture(pose, buffer, CAMERA_NOT_FOUND, innerVertices, packedLight, normal, margin);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				SecurityCameraBlockEntity cameraBlockEntity = (SecurityCameraBlockEntity) level.getBlockEntity(cameraPos.pos());
 				Framebuffer target = feed.renderTarget();
 				Tessellator tessellator = Tessellator.getInstance(); //ImmPtl ViewAreaRenderer#drawPortalViewTriangle (adapted for quads)
+				float xStart = innerVertices.x();
+				float xEnd = innerVertices.y();
+				float zStart = innerVertices.z();
+				float zEnd = innerVertices.w();
 				BufferBuilder bufferBuilder = tessellator.getBuilder();
 				Matrix4f lastPose = pose.last().pose();
 
@@ -128,31 +130,35 @@ public class FrameBlockEntityRenderer extends TileEntityRenderer<FrameBlockEntit
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
 
 				if (lens.getItem() instanceof IDyeableArmorItem && ((IDyeableArmorItem) lens.getItem()).hasCustomColor(lens))
-					renderOverlay(pose, buffer, xStart, xEnd, zStart, zEnd, ((IDyeableArmorItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), packedLight, normal, margin);
+					renderOverlay(pose, buffer, innerVertices, ((IDyeableArmorItem) lens.getItem()).getColor(lens) + (cameraBlockEntity.getOpacity() << 24), packedLight, normal, margin);
 			}
 		}
 	}
 
-	private void renderNoise(MatrixStack pose, IRenderTypeBuffer buffer, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vector3i normal, float margin) {
+	private void renderNoise(MatrixStack pose, IRenderTypeBuffer buffer, Vector4f vertices, int packedLight, Vector3i normal, float margin) {
 		TextureAtlasSprite sprite = NOISE_BACKGROUND.sprite();
 
-		renderTexture(pose, buffer, buffer.getBuffer(Atlases.solidBlockSheet()), xStart, xEnd, zStart, zEnd, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), 0xFFFFFF, packedLight, normal, margin);
+		renderTexture(pose, buffer, buffer.getBuffer(Atlases.solidBlockSheet()), vertices, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), 0xFFFFFF, packedLight, normal, margin);
 	}
 
-	private void renderSolidTexture(MatrixStack pose, IRenderTypeBuffer buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vector3i normal, float margin) {
-		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entitySolid(texture)), xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, 0xFFFFFFFF, packedLight, normal, margin);
+	private void renderSolidTexture(MatrixStack pose, IRenderTypeBuffer buffer, ResourceLocation texture, Vector4f vertices, int packedLight, Vector3i normal, float margin) {
+		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entitySolid(texture)), vertices, 0, 0, 1, 1, 0xFFFFFFFF, packedLight, normal, margin);
 	}
 
-	private void renderCutoutTexture(MatrixStack pose, IRenderTypeBuffer buffer, ResourceLocation texture, float xStart, float xEnd, float zStart, float zEnd, int packedLight, Vector3i normal, float margin) {
-		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entityCutout(texture)), xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, 0xFFFFFFFF, packedLight, normal, margin);
+	private void renderCutoutTexture(MatrixStack pose, IRenderTypeBuffer buffer, ResourceLocation texture, Vector4f vertices, int packedLight, Vector3i normal, float margin) {
+		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entityCutout(texture)), vertices, 0, 0, 1, 1, 0xFFFFFFFF, packedLight, normal, margin);
 	}
 
-	private void renderOverlay(MatrixStack pose, IRenderTypeBuffer buffer, float xStart, float xEnd, float zStart, float zEnd, int color, int packedLight, Vector3i normal, float margin) {
-		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entityTranslucent(WHITE)), xStart, xEnd, zStart, zEnd, 0, 0, 1, 1, color, packedLight, normal, margin);
+	private void renderOverlay(MatrixStack pose, IRenderTypeBuffer buffer, Vector4f vertices, int color, int packedLight, Vector3i normal, float margin) {
+		renderTexture(pose, buffer, buffer.getBuffer(RenderType.entityTranslucent(WHITE)), vertices, 0, 0, 1, 1, color, packedLight, normal, margin);
 	}
 
-	private void renderTexture(MatrixStack pose, IRenderTypeBuffer buffer, IVertexBuilder bufferBuilder, float xStart, float xEnd, float zStart, float zEnd, float u0, float v0, float u1, float v1, int color, int packedLight, Vector3i normal, float margin) {
+	private void renderTexture(MatrixStack pose, IRenderTypeBuffer buffer, IVertexBuilder bufferBuilder, Vector4f vertices, float u0, float v0, float u1, float v1, int color, int packedLight, Vector3i normal, float margin) {
 		Matrix4f lastPose = pose.last().pose();
+		float xStart = vertices.x();
+		float xEnd = vertices.y();
+		float zStart = vertices.z();
+		float zEnd = vertices.w();
 		int nx = normal.getX();
 		int ny = normal.getY();
 		int nz = normal.getZ();

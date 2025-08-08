@@ -86,10 +86,6 @@ public class FrameFeedHandler {
 		int oldWidth = window.getWidth();
 		int oldHeight = window.getHeight();
 		List<WorldRenderer.LocalRenderInformationContainer> oldVisibleSections = new ObjectArrayList<>(mc.levelRenderer.renderChunks);
-		GraphicsFanciness oldGraphicsMode = mc.options.graphicsMode;
-		Framebuffer oldItemEntityTarget = mc.levelRenderer.getItemEntityTarget();
-		Framebuffer oldWeatherTarget = mc.levelRenderer.getWeatherTarget();
-		ShaderGroup oldTransparencyChain = mc.levelRenderer.transparencyChain;
 		int newFrameFeedViewDistance = getFrameFeedViewDistance(null);
 		double oldX = player.getX();
 		double oldXO = player.xOld;
@@ -107,9 +103,13 @@ public class FrameFeedHandler {
 		boolean oldRenderBlockOutline = mc.gameRenderer.renderBlockOutline;
 		boolean oldPanoramicMode = mc.gameRenderer.panoramicMode;
 		PointOfView oldCameraType = mc.options.getCameraType();
+		GraphicsFanciness oldGraphicsMode = mc.options.graphicsMode;
 		ArmorStandEntity securityCamera = EntityType.ARMOR_STAND.create(level); //A separate entity is used instead of moving the player to allow the player to see themselves
-		ClippingHelper playerFrustum = prepareFrustum(camera); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 		Framebuffer oldMainRenderTarget = mc.getMainRenderTarget();
+		Framebuffer oldItemEntityTarget = mc.levelRenderer.getItemEntityTarget();
+		Framebuffer oldWeatherTarget = mc.levelRenderer.getWeatherTarget();
+		ShaderGroup oldTransparencyChain = mc.levelRenderer.transparencyChain;
+		ClippingHelper playerFrustum = prepareFrustum(camera); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 
 		mc.gameRenderer.renderBlockOutline = false;
 		mc.gameRenderer.renderHand = false;
@@ -118,13 +118,13 @@ public class FrameFeedHandler {
 		if (mc.options.graphicsMode.getId() > GraphicsFanciness.FANCY.getId())
 			mc.options.graphicsMode = GraphicsFanciness.FANCY;
 
-		mc.levelRenderer.itemEntityTarget = null;
-		mc.levelRenderer.weatherTarget = null;
-		mc.levelRenderer.transparencyChain = null;
 		window.framebufferWidth = 100;
 		window.framebufferHeight = 100; //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(PointOfView.FIRST_PERSON);
 		camera.eyeHeight = camera.eyeHeightOld = player.getEyeHeight(Pose.STANDING);
+		mc.levelRenderer.itemEntityTarget = null;
+		mc.levelRenderer.weatherTarget = null;
+		mc.levelRenderer.transparencyChain = null;
 		mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
 
 		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
@@ -185,6 +185,10 @@ public class FrameFeedHandler {
 
 		securityCamera.kill();
 		mc.setCameraEntity(oldCamEntity);
+		window.framebufferWidth = oldWidth;
+		window.framebufferHeight = oldHeight;
+		mc.levelRenderer.renderChunks.clear();
+		mc.levelRenderer.renderChunks.addAll(oldVisibleSections);
 		player.setPosRaw(oldX, oldY, oldZ);
 		player.xOld = player.xo = oldXO;
 		player.yOld = player.yo = oldYO;
@@ -199,17 +203,13 @@ public class FrameFeedHandler {
 		mc.options.setCameraType(oldCameraType);
 		mc.options.graphicsMode = oldGraphicsMode;
 		mc.gameRenderer.renderBlockOutline = oldRenderBlockOutline;
-		mc.levelRenderer.renderChunks.clear();
-		mc.levelRenderer.renderChunks.addAll(oldVisibleSections);
-		mc.levelRenderer.itemEntityTarget = oldItemEntityTarget;
-		mc.levelRenderer.weatherTarget = oldWeatherTarget;
-		mc.levelRenderer.transparencyChain = oldTransparencyChain;
-		window.framebufferWidth = oldWidth;
-		window.framebufferHeight = oldHeight;
 		mc.gameRenderer.renderHand = oldRenderHand;
 		mc.gameRenderer.panoramicMode = oldPanoramicMode;
 		mc.mainRenderTarget = oldMainRenderTarget;
 		mc.getMainRenderTarget().bindWrite(true);
+		mc.levelRenderer.itemEntityTarget = oldItemEntityTarget;
+		mc.levelRenderer.weatherTarget = oldWeatherTarget;
+		mc.levelRenderer.transparencyChain = oldTransparencyChain;
 		currentlyCapturedCamera = null;
 
 		profiler.pop();
