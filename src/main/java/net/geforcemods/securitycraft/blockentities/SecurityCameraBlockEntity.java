@@ -27,6 +27,9 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
@@ -328,25 +331,29 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		requestChunkSending(player, chunkLoadingDistance);
 
 		if (chunkLoadingDistance > maxChunkLoadingRadius) {
-			ChunkPos cameraChunkPos = new ChunkPos(worldPosition);
-			Long cameraChunkPosLong = cameraChunkPos.toLong();
+			if (ConfigHandler.SERVER.frameFeedForceloadingLimitEnabled.get() && ConfigHandler.SERVER.frameFeedForceloadingLimit.get() <= FORCE_LOADED_CAMERA_CHUNKS.size())
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.forceloadingLimitReached"), ChatFormatting.RED);
+			else {
+				ChunkPos cameraChunkPos = new ChunkPos(worldPosition);
+				Long cameraChunkPosLong = cameraChunkPos.toLong();
 
-			if (!FORCE_LOADED_CAMERA_CHUNKS.contains(cameraChunkPosLong)) { //The chunk the camera is in should be forceloaded immediately
-				SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, cameraChunkPos.x, cameraChunkPos.z, true, false);
-				chunkForceLoadQueue.add(cameraChunkPosLong);
-			}
-
-			for (int x = cameraChunkPos.x - chunkLoadingDistance; x <= cameraChunkPos.x + chunkLoadingDistance; x++) {
-				for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
-					Long forceLoadingPos = ChunkPos.asLong(x, z);
-
-					//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
-					if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
-						chunkForceLoadQueue.add(forceLoadingPos);
+				if (!FORCE_LOADED_CAMERA_CHUNKS.contains(cameraChunkPosLong)) { //The chunk the camera is in should be forceloaded immediately
+					SecurityCraft.CAMERA_TICKET_CONTROLLER.forceChunk((ServerLevel) level, worldPosition, cameraChunkPos.x, cameraChunkPos.z, true, false);
+					chunkForceLoadQueue.add(cameraChunkPosLong);
 				}
-			}
 
-			maxChunkLoadingRadius = chunkLoadingDistance;
+				for (int x = cameraChunkPos.x - chunkLoadingDistance; x <= cameraChunkPos.x + chunkLoadingDistance; x++) {
+					for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
+						Long forceLoadingPos = ChunkPos.asLong(x, z);
+
+						//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
+						if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
+							chunkForceLoadQueue.add(forceLoadingPos);
+					}
+				}
+
+				maxChunkLoadingRadius = chunkLoadingDistance;
+			}
 		}
 
 		playerViewedFrames.add(framePos.asLong());

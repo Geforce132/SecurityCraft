@@ -109,6 +109,8 @@ public class ConfigHandler {
 		public final BooleanValue inWorldUnReinforcing;
 		public final BooleanValue frameFeedViewingEnabled;
 		public final IntValue frameFeedViewDistance;
+		public final BooleanValue frameFeedForceloadingLimitEnabled;
+		public final IntValue frameFeedForceloadingLimit;
 		public final BooleanValue vanillaToolBlockBreaking;
 		public final BooleanValue alwaysDrop;
 		public final BooleanValue allowBreakingNonOwnedBlocks;
@@ -242,6 +244,14 @@ public class ConfigHandler {
 			frameFeedViewDistance = builder
 					.comment("Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.")
 					.defineInRange("frame_feed_view_distance", 16, 2, 32);
+
+			frameFeedForceloadingLimitEnabled = builder
+					.comment("Set this to true to enable a limit of chunks per dimension that may be forceloaded around frame feeds. The exact limit can be adjusted in the config option below. This does not affect chunks near frame feeds that are loaded by alternate means, e.g. through players.")
+					.define("frame_feed_forceloading_limit_enabled", false);
+
+			frameFeedForceloadingLimit = builder
+					.comment("Set the limit of chunks per dimension that may be forceloaded around frame feeds. This feature may be toggled through the config option above. A value of 0 corresponds to chunk forceloading being disabled for all frames.")
+					.defineInRange("frame_feed_forceloading_limit", Integer.MAX_VALUE, 0, Integer.MAX_VALUE);
 
 			vanillaToolBlockBreaking = builder
 					.comment("Whether SecurityCraft's blocks should be broken using vanilla tools (axe, shovel, hoe, ...), instead of the Universal Block Remover. If set to true, this will disable the Universal Block Remover.")
