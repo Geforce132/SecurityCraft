@@ -128,6 +128,7 @@ public class FrameFeedHandler {
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
+					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
 					mc.mainRenderTarget = feed.renderTarget();
 
 					try {
