@@ -2,6 +2,8 @@
 
 - Fix: Several mod incompatibilities that caused Frame feeds to not show up correctly
 - Fix: Game performance does not improve when breaking frames with an active frame feed
+- Fix: Briefcase and Keycard Holder exploits
+- Fix: Inventory scanner crash
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
