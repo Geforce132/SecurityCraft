@@ -1,6 +1,7 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
 - New: Reinforced Lightning Rod
+- New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - Fix: Several mod incompatibilities that caused Frame feeds to not show up correctly
 - Fix: Game performance does not improve when breaking frames with an active frame feed
 - Fix: Clouds sometimes flicker rapidly between two positions when a Frame is displaying a camera feed
