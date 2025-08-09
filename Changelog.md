@@ -2,6 +2,7 @@
 
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
+- New: Configuration option for limiting the amount of chunks that may be forceloaded by frame feeds
 - Fix: Several mod incompatibilities that caused Frame feeds to not show up correctly
 - Fix: Game performance does not improve when breaking frames with an active frame feed
 - Fix: The Level 3 Keycard cannot be crafted
