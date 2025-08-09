@@ -40,6 +40,7 @@ public record SetCameraView(int id) implements CustomPacketPayload {
 			mc.setCameraEntity(entity);
 
 			if (isMountingCamera) {
+				CameraController.setCameraMountedTimestamp();
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(CameraType.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
