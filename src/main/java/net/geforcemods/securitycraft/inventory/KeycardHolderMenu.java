@@ -1,7 +1,9 @@
 package net.geforcemods.securitycraft.inventory;
 
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ClickType;
@@ -11,8 +13,11 @@ import net.minecraft.item.ItemStack;
 
 public class KeycardHolderMenu extends Container {
 	public static final int CONTAINER_SIZE = 5;
+	private final ItemContainer keycardHolderInv;
 
 	public KeycardHolderMenu(InventoryPlayer playerInventory, ItemContainer keycardHolderInv) {
+		this.keycardHolderInv = keycardHolderInv;
+
 		for (int i = 0; i < CONTAINER_SIZE; i++) {
 			addSlotToContainer(new Slot(keycardHolderInv, i, 44 + (i * 18), 20) {
 				@Override
@@ -75,6 +80,6 @@ public class KeycardHolderMenu extends Container {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return true;
+		return PlayerUtils.getItemStackFromAnyHand(player, SCContent.keycardHolder) == keycardHolderInv.getContainerStack();
 	}
 }

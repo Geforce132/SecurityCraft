@@ -180,4 +180,8 @@ public class ItemContainer implements IInventory {
 
 		return true;
 	}
+
+	public ItemStack getContainerStack() {
+		return containerStack;
+	}
 }
