@@ -334,8 +334,9 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 		if (chunkLoadingDistance > maxChunkLoadingRadius) {
 			Set<Long> forceLoadedChunksInDimension = FORCE_LOADED_CAMERA_CHUNKS.computeIfAbsent(level.dimension(), d -> new HashSet<>());
+			int frameFeedForceloadingLimit = ConfigHandler.SERVER.frameFeedForceloadingLimit.get();
 
-			if (ConfigHandler.SERVER.frameFeedForceloadingLimitEnabled.get() && ConfigHandler.SERVER.frameFeedForceloadingLimit.get() <= forceLoadedChunksInDimension.size())
+			if (frameFeedForceloadingLimit >= 0 && frameFeedForceloadingLimit <= forceLoadedChunksInDimension.size())
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.forceloadingLimitReached"), ChatFormatting.RED);
 			else {
 				ChunkPos cameraChunkPos = new ChunkPos(worldPosition);
