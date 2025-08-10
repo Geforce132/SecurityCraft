@@ -55,7 +55,7 @@ public class ConfigHandler {
 					.define("reinforced_block_tint", true);
 
 			debugCameraResetTracing = builder
-					.comment("If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working by immediately resetting the player's camera entity.")
+					.comment("If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working when they immediately reset the player's camera entity.")
 					.define("debug_camera_reset_tracing", false);
 
 			reinforcedBlockTintColor = builder

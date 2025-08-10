@@ -8,6 +8,7 @@
 - Fix: Game performance does not improve when breaking frames with an active frame feed
 - Fix: Clouds sometimes flicker rapidly between two positions when a Frame is displaying a camera feed
 - Fix: The Nether fog sometimes switches rapidly between two colors when a Frame is displaying a camera feed
+- Fix: Active camera feeds in multiple dimensions can interfere with each other's chunk loading
 - Fix: The Level 3 Keycard cannot be crafted
 - Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
 - Fix: Briefcase and Keycard Holder exploits

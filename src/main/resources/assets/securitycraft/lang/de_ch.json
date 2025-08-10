@@ -1422,7 +1422,7 @@
 	"securitycraft.configuration.always_drop": "Blöcke immer droppen lassen",
 	"securitycraft.configuration.always_drop.tooltip": "Ob SecurityCrafts Blöcke immer sich selbst droppen, egal welches Werkzeug verwendet wird. Wenn dies deaktiviert ist, muss das korrekte Werkzeug zum Zerbrechen des Blockes verwendet werden (bspw. eine Spitzhacke für verstärkten Stein, oder irgendetwas für verstärkte Erde).\nDies hat nur Auswirkungen, wenn \"Blöcke mit Vanilla-Werkzeugen zerbrechen\" aktiviert ist.",
 	"securitycraft.configuration.debug_camera_reset_tracing": "Debug-Aufzeichnung der Kamerarücksetzung",
-	"securitycraft.configuration.debug_camera_reset_tracing.tooltip": "Wenn diese Debug-Funktion aktiviert ist, wird SecurityCraft versuchen, andere Modifikationen aufzuzeichnen und zu melden, die die Funktion, durch Überwachungskameras schauen zu können, stören, indem sie die Kamera des Spielers sofort zurücksetzen.",
+	"securitycraft.configuration.debug_camera_reset_tracing.tooltip": "Wenn diese Debug-Funktion aktiviert ist, wird SecurityCraft versuchen, andere Modifikationen aufzuzeichnen und zu melden, die die Funktion, durch Überwachungskameras schauen zu können, dadurch stören, dass sie die Kamera des Spielers sofort zurücksetzen.",
 	"securitycraft.configuration.disable_thanks_message": "Nachricht beim Betreten der Welt deaktivieren",
 	"securitycraft.configuration.disable_thanks_message.tooltip": "Wenn aktiviert, wird die Nachricht, die SecurityCraft beitretenden Spielern sendet, nicht gesendet.\nBeachte, dass die Nachricht für jeden Spieler deaktiviert wird, selbst für diejenigen, die sie sehen wollen.",
 	"securitycraft.configuration.enable_team_ownership": "Teameigentum aktivieren",

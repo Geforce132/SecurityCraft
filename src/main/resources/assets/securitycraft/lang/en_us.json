@@ -1431,7 +1431,7 @@
 	"securitycraft.configuration.always_drop": "Always drop blocks",
 	"securitycraft.configuration.always_drop.tooltip": "Whether SecurityCraft's blocks always drop themselves no matter which tool is used. If this is disabled, the correct tool must be used for the block to drop (e.g. pickaxe for reinforced stone, or anything for reinforced dirt).\nThis only applies when \"Vanilla tool block breaking\" are enabled.",
 	"securitycraft.configuration.debug_camera_reset_tracing": "Debug camera reset tracing",
-	"securitycraft.configuration.debug_camera_reset_tracing.tooltip": "If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working by immediately resetting the player's camera entity.",
+	"securitycraft.configuration.debug_camera_reset_tracing.tooltip": "If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working when they immediately reset the player's camera entity.",
 	"securitycraft.configuration.disable_thanks_message": "Disable message when joining the world",
 	"securitycraft.configuration.disable_thanks_message.tooltip": "Set this to true to disable sending the message that SecurityCraft shows when a player joins.\nNote, that this stops showing the message for every player, even those that want to see them.",
 	"securitycraft.configuration.enable_team_ownership": "Enable team ownership",
