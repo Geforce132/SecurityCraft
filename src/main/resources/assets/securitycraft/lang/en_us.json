@@ -1124,6 +1124,7 @@
 	"messages.securitycraft:retinalScanner.notOwner": "Sorry, you cannot use this scanner. It is owned by %s.",
 	"messages.securitycraft:rift_stabilizer.no_teleport_from": "You are not permitted to teleport from this position!",
 	"messages.securitycraft:rift_stabilizer.no_teleport_to": "You are not permitted to teleport to that position!",
+	"messages.securitycraft:security_camera.camera_reset_detected": "Detected camera entity reset %sms after the camera was mounted. If this time interval is very short, a mod incompatibility could be at fault. More information can be found in the game log.",
 	"messages.securitycraft:security_camera.direction_set": "Default viewing direction set",
 	"messages.securitycraft:security_camera.no_permission": "No permission to set the default viewing direction",
 	"messages.securitycraft:security_camera.smart_module_needed": "Smart Module required",
