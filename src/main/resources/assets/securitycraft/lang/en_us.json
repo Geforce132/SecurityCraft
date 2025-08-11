@@ -1048,6 +1048,7 @@
 	"messages.securitycraft:frame.disabled": "The feature of viewing camera feeds in frames has been disabled through the server's configuration file.",
 	"messages.securitycraft:frame.emptyMonitor": "You need to link cameras to the monitor to add them to the frame!",
 	"messages.securitycraft:frame.error": "An unexpected error occurred while trying to display the camera feed. This is most likely caused by a mod incompatibility. More information can be found in the game log.",
+	"messages.securitycraft:frame.forceloadingLimitReached": "The frame feed chunk forceloading limit of this dimension has been reached, so this frame feed cannot load additional chunks in its surroundings. This may lead to display issues if these chunks aren't already loaded.",
 	"messages.securitycraft:frame.noRedstoneSignal": "You need to activate the frame with a redstone signal to be able to view this camera feed.",
 	"messages.securitycraft:invScan.notConnected": "This is not connected to another inventory scanner block!",
 	"messages.securitycraft:keycardReader.cantUse": "You cannot use this keycard.",
