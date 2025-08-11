@@ -8,7 +8,7 @@
 - Fix: Active camera feeds in multiple dimensions can interfere with each other's chunk loading
 - Fix: The Level 3 Keycard cannot be crafted
 - Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
-- Fix: Briefcase and Keycard Holder exploits
+- Fix: Several dupes and exploits
 - Fix: Inventory scanner crash
 - Fix: Reinforced cobwebs cannot be mined faster with swords
 - Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
