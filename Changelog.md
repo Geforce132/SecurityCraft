@@ -5,6 +5,7 @@
 - New: Configuration option for limiting the amount of chunks that may be forceloaded by frame feeds
 - Fix: Several mod incompatibilities that caused Frame feeds to not show up correctly
 - Fix: Game performance does not improve when breaking frames with an active frame feed
+- Fix: Active camera feeds in multiple dimensions can interfere with each other's chunk loading
 - Fix: The Level 3 Keycard cannot be crafted
 - Fix: The powered Secure Redstone Interface model looks wrong when placed on the wall or ceiling
 - Fix: Briefcase and Keycard Holder exploits
