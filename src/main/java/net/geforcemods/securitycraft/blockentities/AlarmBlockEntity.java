@@ -46,8 +46,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		if (level.isClientSide && soundPlaying && (isDisabled() || !isPowered))
 			stopPlayingSound();
 
-		if (!isDisabled() && --cooldown <= 0) {
-			if (!level.isClientSide && isPowered) {
+		if (!isDisabled() && isPowered && --cooldown <= 0) { //Even though isPowered is only explicitly set serverside, it is always synched to the client via NBT due to the block state change
+			if (!level.isClientSide) {
 				double rangeSqr = Math.pow(range.get(), 2);
 				SoundEvent soundEvent = isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event;
 
