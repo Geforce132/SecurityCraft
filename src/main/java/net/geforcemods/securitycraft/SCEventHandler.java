@@ -97,6 +97,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
@@ -106,7 +107,6 @@ import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDestroyBlockEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
-import net.neoforged.neoforge.event.entity.player.AnvilCraftEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
@@ -547,12 +547,10 @@ public class SCEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onAnvilCraftPre(AnvilCraftEvent.Pre event) {
+	public static void onAnvilCraftPre(AnvilUpdateEvent event) {
 		ItemStack stack = event.getLeft();
 
-		if (stack.is(SCContent.CODEBREAKER))
-			event.setCanceled(true);
-		else if (stack.getItem() instanceof UniversalBlockReinforcerItem) {
+		if (stack.getItem() instanceof UniversalBlockReinforcerItem) {
 			ItemStack book = event.getRight();
 
 			if (book.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).keySet().stream().anyMatch(e -> e.is(Enchantments.MENDING)))
