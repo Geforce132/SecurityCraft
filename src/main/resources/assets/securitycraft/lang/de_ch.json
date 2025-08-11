@@ -1014,6 +1014,7 @@
 	"messages.securitycraft:retinalScanner.notOwner": "Entschuldigung, du kannst diesen Scanner nicht benutzen. Er gehört %s.",
 	"messages.securitycraft:rift_stabilizer.no_teleport_from": "Es ist dir nicht gestattet, von dieser Position aus zu teleportieren!",
 	"messages.securitycraft:rift_stabilizer.no_teleport_to": "Es ist dir nicht gestattet, zu dieser Position zu teleportieren!",
+	"messages.securitycraft:security_camera.camera_reset_detected": "Kamerarücksetzung wurde %sms nach Beginn der Kamera-Ansicht detektiert. Wenn dieses Zeitintervall sehr kurz ist, könnte eine Mod-Inkompatibilität der Auslöser sein. Mehr Informationen können dem Spiel-Log entnommen werden.",
 	"messages.securitycraft:security_camera.direction_set": "Standard-Blickrichtung geändert",
 	"messages.securitycraft:security_camera.no_permission": "Keine Erlaubnis, um die Standard-Blickrichtung zu ändern",
 	"messages.securitycraft:security_camera.smart_module_needed": "Schlaues Modul benötigt",

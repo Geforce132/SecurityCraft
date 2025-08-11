@@ -43,6 +43,7 @@ public class ConfigHandler {
 	public static class Client {
 		public final BooleanValue sayThanksMessage;
 		public final BooleanValue reinforcedBlockTint;
+		public final BooleanValue debugCameraResetTracing;
 		public final IntValue reinforcedBlockTintColor;
 		public final IntValue frameFeedRenderDistance;
 		public final IntValue frameFeedResolution;
@@ -57,6 +58,10 @@ public class ConfigHandler {
 			reinforcedBlockTint = builder
 					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? Servers can force this setting on clients if the server config setting \"force_reinforced_block_tint\" is set to true.")
 					.define("reinforced_block_tint", true);
+
+			debugCameraResetTracing = builder
+					.comment("If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working when they immediately reset the player's camera entity.")
+					.define("debug_camera_reset_tracing", false);
 
 			reinforcedBlockTintColor = builder
 					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
