@@ -13,6 +13,7 @@
 - Fix: Reinforced cobwebs cannot be mined faster with swords
 - Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
 - Fix: Lenses placed inside a Claymore, Security Camera, or Trophy System sometimes disappear when the world is reloaded
+- Fix: Blocks projected by a Projector are reset to their default state when opening the Projector's screen
 
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
