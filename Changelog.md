@@ -12,6 +12,7 @@
 - Fix: Inventory scanner crash
 - Fix: Reinforced cobwebs cannot be mined faster with swords
 - Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
+- Fix: Lenses placed inside a Claymore, Security Camera, or Trophy System sometimes disappear when the world is reloaded
 
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
