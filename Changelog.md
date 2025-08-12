@@ -10,6 +10,7 @@
 - Fix: Briefcase and Keycard Holder exploits
 - Fix: Inventory scanner crash
 - Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
+- Fix: Blocks projected by a Projector are reset to their default state when opening the Projector's screen
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 

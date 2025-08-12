@@ -87,11 +87,20 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 		dragStartX += xStart;
 		dragStartY += yStart;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
+		copyStateFromMenu();
 		menu.addSlotListener(this);
 	}
 
 	@Override
 	protected void init() {
+		previousPageButton = new ExtendedButton(xStart + 69, yStart + 125, 20, 20, new StringTextComponent("<"), button -> turnPage(-1));
+		nextPageButton = new ExtendedButton(xStart + 126, yStart + 125, 20, 20, new StringTextComponent(">"), button -> turnPage(1));
+		updateButtons(true, false);
+		extraAreas.add(new Rectangle2d(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
+		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
+	}
+
+	private void copyStateFromMenu() {
 		if (menu.getStateStack().getItem() instanceof BlockItem) {
 			BlockItem item = (BlockItem) menu.getStateStack().getItem();
 			BlockState savedState = menu.getSavedState();
@@ -109,12 +118,6 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 
 			blockItem = item;
 		}
-
-		previousPageButton = new ExtendedButton(xStart + 69, yStart + 125, 20, 20, new StringTextComponent("<"), button -> turnPage(-1));
-		nextPageButton = new ExtendedButton(xStart + 126, yStart + 125, 20, 20, new StringTextComponent(">"), button -> turnPage(1));
-		updateButtons(true, false);
-		extraAreas.add(new Rectangle2d(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
-		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
 	}
 
 	@Override
@@ -293,9 +296,13 @@ public class StateSelector extends Screen implements IGuiEventListener, IContain
 	@Override
 	public void slotChanged(Container menu, int slotIndex, ItemStack newStack) {
 		if (slotIndex == slotToCheck) {
-			if (newStack.getItem() instanceof BlockItem && (state == null || ((BlockItem) newStack.getItem()).getBlock() != state.getBlock())) {
-				state = ((BlockItem) newStack.getItem()).getBlock().defaultBlockState();
-				blockItem = newStack.getItem();
+			if (newStack.getItem() instanceof BlockItem) {
+				BlockItem newItem = (BlockItem) newStack.getItem();
+
+				if (state == null || newItem.getBlock() != state.getBlock()) {
+					state = newItem.getBlock().defaultBlockState();
+					blockItem = newItem;
+				}
 			}
 			else {
 				state = Blocks.AIR.defaultBlockState();
