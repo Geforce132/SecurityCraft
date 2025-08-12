@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
@@ -25,6 +26,7 @@ import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContaine
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,6 +46,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.Capability;
@@ -351,25 +354,31 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		requestChunkSending(player, chunkLoadingDistance);
 
 		if (chunkLoadingDistance > maxChunkLoadingRadius) {
-			ChunkPos cameraChunkPos = new ChunkPos(worldPosition);
-			Long cameraChunkPosLong = cameraChunkPos.toLong();
+			int frameFeedForceloadingLimit = ConfigHandler.SERVER.frameFeedForceloadingLimit.get();
 
-			if (!FORCE_LOADED_CAMERA_CHUNKS.contains(cameraChunkPosLong)) { //The chunk the camera is in should be forceloaded immediately
-				ForgeChunkManager.forceChunk((ServerWorld) level, SecurityCraft.MODID, worldPosition, cameraChunkPos.x, cameraChunkPos.z, true, false);
-				chunkForceLoadQueue.add(cameraChunkPosLong);
-			}
+			if (frameFeedForceloadingLimit >= 0 && frameFeedForceloadingLimit <= FORCE_LOADED_CAMERA_CHUNKS.size())
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.forceloadingLimitReached"), TextFormatting.RED);
+			else {
+				ChunkPos cameraChunkPos = new ChunkPos(worldPosition);
+				Long cameraChunkPosLong = cameraChunkPos.toLong();
 
-			for (int x = cameraChunkPos.x - chunkLoadingDistance; x <= cameraChunkPos.x + chunkLoadingDistance; x++) {
-				for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
-					Long forceLoadingPos = ChunkPos.asLong(x, z);
-
-					//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
-					if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
-						chunkForceLoadQueue.add(forceLoadingPos);
+				if (!FORCE_LOADED_CAMERA_CHUNKS.contains(cameraChunkPosLong)) { //The chunk the camera is in should be forceloaded immediately
+					ForgeChunkManager.forceChunk((ServerWorld) level, SecurityCraft.MODID, worldPosition, cameraChunkPos.x, cameraChunkPos.z, true, false);
+					chunkForceLoadQueue.add(cameraChunkPosLong);
 				}
-			}
 
-			maxChunkLoadingRadius = chunkLoadingDistance;
+				for (int x = cameraChunkPos.x - chunkLoadingDistance; x <= cameraChunkPos.x + chunkLoadingDistance; x++) {
+					for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
+						Long forceLoadingPos = ChunkPos.asLong(x, z);
+
+						//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
+						if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
+							chunkForceLoadQueue.add(forceLoadingPos);
+					}
+				}
+
+				maxChunkLoadingRadius = chunkLoadingDistance;
+			}
 		}
 
 		playerViewedFrames.add(framePos.asLong());
