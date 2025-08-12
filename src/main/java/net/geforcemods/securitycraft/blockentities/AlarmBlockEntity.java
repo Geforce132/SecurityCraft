@@ -54,8 +54,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickab
 		if (world.isRemote && soundPlaying && (isDisabled() || !isPowered))
 			stopPlayingSound();
 
-		if (!isDisabled() && --cooldown <= 0) {
-			if (!world.isRemote && isPowered) {
+		if (!isDisabled() && isPowered && --cooldown <= 0) { //Even though isPowered is only explicitly set serverside, it is always synched to the client via NBT due to the block state change
+			if (!world.isRemote) {
 				double rangeSqr = Math.pow(range.get(), 2);
 				ResourceLocation soundEvent = getSound();
 
