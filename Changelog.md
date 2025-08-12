@@ -12,6 +12,7 @@
 - Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
 - Fix: Lenses placed inside a Claymore, Security Camera, or Trophy System sometimes disappear when the world is reloaded
 - Fix: Blocks projected by a Projector are reset to their default state when opening the Projector's screen
+- Fix: The owner of the topmost block of the cage spawned by a Cage Trap is not set correctly 
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
