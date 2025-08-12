@@ -412,8 +412,8 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 		if (movedBlockEntityTag != null)
 			tag.put("movedBlockEntityTag", movedBlockEntityTag);
 
-		if (owner != null && movedBlockEntityTag != null)
-			owner.save(movedBlockEntityTag, needsValidation());
+		if (owner != null)
+			owner.save(tag, needsValidation());
 	}
 
 	public VoxelShape getCollisionShape(BlockGetter level, BlockPos pos) {
