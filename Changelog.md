@@ -12,6 +12,7 @@
 - Fix: Inventory scanner crash
 - Fix: Placing a Secure Redstone Interface as a receiver does not correctly update itself and surrounding blocks
 - Fix: Lenses placed inside a Claymore, Security Camera, or Trophy System sometimes disappear when the world is reloaded
+- Fix: Blocks projected by a Projector are reset to their default state when opening the Projector's screen
 - Misc.: The minimum required NeoForge version is now 21.1.181
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
