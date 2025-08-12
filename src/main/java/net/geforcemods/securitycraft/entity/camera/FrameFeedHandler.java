@@ -12,10 +12,13 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.geforcemods.securitycraft.ConfigHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -40,6 +43,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
@@ -165,6 +169,7 @@ public class FrameFeedHandler {
 						mc.gameRenderer.renderLevel(1.0F, 0L, new MatrixStack());
 					}
 					catch (Exception e) {
+						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.error"), TextFormatting.RED, true);
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
 						e.printStackTrace();
 						feed.markForRemoval();
