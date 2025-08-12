@@ -115,13 +115,14 @@ public class CageTrapBlock extends DisguisableBlock {
 							level.setBlockAndUpdate(barPos, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
 						else
 							level.setBlockAndUpdate(barPos, SCContent.REINFORCED_IRON_BARS.get().getStateForPlacement(level, barPos));
-					}
 
-					BlockEntity barBe = level.getBlockEntity(barPos);
+						BlockEntity barBe = level.getBlockEntity(barPos);
 
-					if (barBe instanceof ReinforcedIronBarsBlockEntity ironBarsBe) {
-						ironBarsBe.setOwner(ownerUUID, ownerName);
-						ironBarsBe.setCanDrop(false);
+						if (barBe instanceof IOwnable ownable)
+							ownable.setOwner(ownerUUID, ownerName);
+
+						if (barBe instanceof ReinforcedIronBarsBlockEntity ironBarsBe)
+							ironBarsBe.setCanDrop(false);
 					}
 				});
 				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
