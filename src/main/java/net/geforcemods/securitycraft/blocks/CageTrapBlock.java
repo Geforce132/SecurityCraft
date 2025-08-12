@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -43,7 +42,7 @@ import net.minecraft.world.World;
 public class CageTrapBlock extends DisguisableBlock {
 	public static final BooleanProperty DEACTIVATED = BooleanProperty.create("deactivated");
 
-	public CageTrapBlock(AbstractBlock.Properties properties) {
+	public CageTrapBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(DEACTIVATED, false).setValue(WATERLOGGED, false));
 	}
@@ -115,13 +114,14 @@ public class CageTrapBlock extends DisguisableBlock {
 							level.setBlockAndUpdate(barPos, SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get().defaultBlockState());
 						else
 							level.setBlockAndUpdate(barPos, SCContent.REINFORCED_IRON_BARS.get().getStateForPlacement(level, barPos));
-					}
 
-					TileEntity barBe = level.getBlockEntity(barPos);
+						TileEntity barBe = level.getBlockEntity(barPos);
 
-					if (barBe instanceof ReinforcedIronBarsBlockEntity) {
-						((ReinforcedIronBarsBlockEntity) barBe).setOwner(ownerUUID, ownerName);
-						((ReinforcedIronBarsBlockEntity) barBe).setCanDrop(false);
+						if (barBe instanceof IOwnable)
+							((IOwnable) barBe).setOwner(ownerUUID, ownerName);
+
+						if (barBe instanceof ReinforcedIronBarsBlockEntity)
+							((ReinforcedIronBarsBlockEntity) barBe).setCanDrop(false);
 					}
 				});
 				level.setBlockAndUpdate(pos, state.setValue(DEACTIVATED, true));
