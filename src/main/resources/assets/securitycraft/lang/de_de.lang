@@ -450,6 +450,7 @@ messages.securitycraft:frame.cannotConvert=Du kannst keinen Rahmen mit einer akt
 messages.securitycraft:frame.disabled=Die Funktion, Kameraübertragungen in Rahmen anzusehen, wurde in der Server-Konfigurationsdatei deaktiviert.
 messages.securitycraft:frame.emptyMonitor=Du musst Kameras mit dem Monitor verbinden, um sie dem Rahmen hinzuzufügen!
 messages.securitycraft:frame.error=Ein unerwarteter Fehler ist beim Anzeigen der Kameraübertragung aufgetreten. Dieser Fehler wurde wahrscheinlich von einer Mod-Inkompatibilität verursacht. Mehr Informationen können dem Spiel-Log entnommen werden.
+messages.securitycraft:frame.forceloadingLimitReached=Das Maximum an zwangsgeladenen Chunks durch Rahmenübertragungen in dieser Dimension wurde erreicht, daher kann diese Rahmenübertragung keine weiteren umgebenden Chunks mehr zwangsladen. Dies kann zu Anzeigefehlern führen, wenn diese Chunks nicht bereits geladen sind.
 messages.securitycraft:frame.noRedstoneSignal=Du musst den Rahmen mit einem Redstonesignal aktivieren, um diese Rahmenübertragung ansehen zu können.
 messages.securitycraft:invScan.notConnected=Dieser Block ist nicht mit einem anderen Inventarscanner verbunden!
 messages.securitycraft:keycardReader.cantUse=Du kannst diese Schlüsselkarte nicht benutzen.

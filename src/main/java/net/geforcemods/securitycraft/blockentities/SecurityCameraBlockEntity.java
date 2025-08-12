@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IEMPAffectedBE;
@@ -25,6 +26,7 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.GlobalPos;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,6 +40,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -345,31 +348,37 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	public void linkFrameForPlayer(EntityPlayerMP player, BlockPos framePos, int chunkLoadingDistance) {
 		Set<Long> playerViewedFrames = linkedFrames.computeIfAbsent(player.getUniqueID(), uuid -> new HashSet<>());
 		IBlockState state = world.getBlockState(pos);
-		ChunkPos cameraChunkPos = new ChunkPos(pos);
-		Long cameraChunkPosLong = ChunkPos.asLong(cameraChunkPos.x, cameraChunkPos.z);
+		int frameFeedForceloadingLimit = ConfigHandler.frameFeedForceloadingLimit;
 
 		BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.track(this);
 		requestChunkSending(player, chunkLoadingDistance);
 
-		if (!FORCE_LOADED_CAMERA_CHUNKS.contains(cameraChunkPosLong)) { //The chunk the camera is in should be forceloaded immediately
-			getTicketAndForceChunk(cameraChunkPos);
-			chunkForceLoadQueue.add(cameraChunkPosLong);
-		}
+		if (frameFeedForceloadingLimit >= 0 && frameFeedForceloadingLimit <= FORCE_LOADED_CAMERA_CHUNKS.size())
+			PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.frame), Utils.localize("messages.securitycraft:frame.forceloadingLimitReached"), TextFormatting.RED);
+		else {
+			ChunkPos cameraChunkPos = new ChunkPos(pos);
+			Long cameraChunkPosLong = ChunkPos.asLong(cameraChunkPos.x, cameraChunkPos.z);
 
-		for (int x = cameraChunkPos.x - chunkLoadingDistance; x <= cameraChunkPos.x + chunkLoadingDistance; x++) {
-			for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
-				Long forceLoadingPos = ChunkPos.asLong(x, z);
-
-				((WorldServer) world).getPlayerChunkMap().getOrCreateEntry(x, z).addPlayer(player); //Tracks loaded chunks for the player loading them
-
-				//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
-				if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
-					chunkForceLoadQueue.add(forceLoadingPos);
+			if (!FORCE_LOADED_CAMERA_CHUNKS.contains(cameraChunkPosLong)) { //The chunk the camera is in should be forceloaded immediately
+				getTicketAndForceChunk(cameraChunkPos);
+				chunkForceLoadQueue.add(cameraChunkPosLong);
 			}
-		}
 
-		if (chunkLoadingDistance > maxChunkLoadingRadius)
-			maxChunkLoadingRadius = chunkLoadingDistance;
+			for (int x = cameraChunkPos.x - chunkLoadingDistance; x <= cameraChunkPos.x + chunkLoadingDistance; x++) {
+				for (int z = cameraChunkPos.z - chunkLoadingDistance; z <= cameraChunkPos.z + chunkLoadingDistance; z++) {
+					Long forceLoadingPos = ChunkPos.asLong(x, z);
+
+					((WorldServer) world).getPlayerChunkMap().getOrCreateEntry(x, z).addPlayer(player); //Tracks loaded chunks for the player loading them
+
+					//Currently, only forceloading new chunks (as opposed to stopping their force load) is staggered, since the latter is usually finished a lot faster
+					if (!FORCE_LOADED_CAMERA_CHUNKS.contains(forceLoadingPos)) //Only queue chunks for forceloading if they haven't been forceloaded by another camera already
+						chunkForceLoadQueue.add(forceLoadingPos);
+				}
+			}
+
+			if (chunkLoadingDistance > maxChunkLoadingRadius)
+				maxChunkLoadingRadius = chunkLoadingDistance;
+		}
 
 		playerViewedFrames.add(framePos.toLong());
 		world.notifyBlockUpdate(pos, state, state, 3); //Syncs the camera's rotation to all clients again, in case a client is desynched

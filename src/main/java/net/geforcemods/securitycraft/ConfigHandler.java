@@ -257,6 +257,11 @@ public class ConfigHandler {
 	@Comment("Set the radius in which chunks viewed in a frame camera should be loaded and sent to players. If this config has a higher value than the \"view-distance\" server property or the vanilla \"Render Distance\" option of the player requesting the chunks, the smaller value is used instead.")
 	public static int frameFeedViewDistance = 16;
 
+	@Name("Frame Feed Forceloading Limit")
+	@RangeInt(min = -1)
+	@Comment("Set the limit of chunks per dimension that may be forceloaded around frame feeds. A value of 0 will prevent any frame feed from forceloading chunks. A value of -1 will allow an unlimited number of chunks to be forceloaded by frame feeds.")
+	public static int frameFeedForceloadingLimit = -1;
+
 	@Name("Allow Breaking Non-owned Blocks")
 	@Comment({
 		"Whether players who are not the owner of a block can still destroy it.",
