@@ -254,6 +254,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		if (level == null)
 			return;
 
+		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 

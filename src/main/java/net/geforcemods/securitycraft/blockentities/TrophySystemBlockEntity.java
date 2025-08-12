@@ -225,6 +225,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		if (level == null)
 			return;
 
+		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
