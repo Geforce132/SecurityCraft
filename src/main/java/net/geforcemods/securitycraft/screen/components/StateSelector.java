@@ -88,11 +88,20 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		dragStartX += xStart;
 		dragStartY += yStart;
 		dragHoverChecker = new HoverChecker(dragStartY, dragStartY + 47, dragStartX, dragStartX + 47);
+		copyStateFromMenu();
 		menu.addSlotListener(this);
 	}
 
 	@Override
 	protected void init() {
+		previousPageButton = new Button(xStart + 69, yStart + 125, 20, 20, new TextComponent("<"), button -> turnPage(-1));
+		nextPageButton = new Button(xStart + 126, yStart + 125, 20, 20, new TextComponent(">"), button -> turnPage(1));
+		updateButtons(true, false);
+		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
+		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
+	}
+
+	private void copyStateFromMenu() {
 		if (menu.getStateStack().getItem() instanceof BlockItem item) {
 			BlockState savedState = menu.getSavedState();
 			Block blockToCheck = item.getBlock();
@@ -109,12 +118,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 			this.blockItem = item;
 		}
-
-		previousPageButton = new Button(xStart + 69, yStart + 125, 20, 20, new TextComponent("<"), button -> turnPage(-1));
-		nextPageButton = new Button(xStart + 126, yStart + 125, 20, 20, new TextComponent(">"), button -> turnPage(1));
-		updateButtons(true, false);
-		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
-		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
 	}
 
 	@Override
@@ -303,9 +306,11 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	@Override
 	public void slotChanged(AbstractContainerMenu menu, int slotIndex, ItemStack newStack) {
 		if (slotIndex == slotToCheck) {
-			if (newStack.getItem() instanceof BlockItem item && (state == null || item.getBlock() != state.getBlock())) {
-				state = item.getBlock().defaultBlockState();
-				blockItem = item;
+			if (newStack.getItem() instanceof BlockItem item) {
+				if (state == null || item.getBlock() != state.getBlock()) {
+					state = item.getBlock().defaultBlockState();
+					blockItem = item;
+				}
 			}
 			else {
 				state = Blocks.AIR.defaultBlockState();
