@@ -45,6 +45,7 @@ public class SetCameraView implements IMessage {
 					mc.setRenderViewEntity(entity);
 
 					if (isCamera) {
+						CameraController.setCameraMountedTimestamp();
 						CameraController.previousCameraType = mc.gameSettings.thirdPersonView;
 						mc.gameSettings.thirdPersonView = 0;
 						mc.ingameGUI.setOverlayMessage(Utils.localize("mount.onboard", mc.gameSettings.keyBindSneak.getDisplayName()), false);

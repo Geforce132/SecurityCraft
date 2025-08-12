@@ -44,6 +44,7 @@ public class CameraController {
 	};
 	//@formatter:on
 	private static int screenshotSoundCooldown = 0;
+	private static long lastCameraMountTimestamp = 0;
 
 	private CameraController() {}
 
@@ -207,6 +208,14 @@ public class CameraController {
 			return (float) be.getMovementSpeed();
 
 		return 0.0F;
+	}
+
+	public static void setCameraMountedTimestamp() {
+		lastCameraMountTimestamp = System.currentTimeMillis();
+	}
+
+	public static long getMillisSinceLastMount() {
+		return System.currentTimeMillis() - lastCameraMountTimestamp;
 	}
 
 	public static class ViewMovementKeyHandler {

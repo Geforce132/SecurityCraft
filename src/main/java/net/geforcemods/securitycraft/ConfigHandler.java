@@ -229,6 +229,10 @@ public class ConfigHandler {
 	})
 	public static boolean alwaysDrop = true;
 
+	@Name("Debug Camera Reset Tracing")
+	@Comment("If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working when they immediately reset the player's camera entity.")
+	public static boolean debugCameraResetTracing = false;
+
 	@Name("Frame Feed Render Distance")
 	@RangeInt(min = 2, max = 32)
 	@Comment("Set the radius in which chunks viewed in a frame camera feed should be requested from the server and rendered. If this config has a higher value than the vanilla \"Render Distance\" option or the \"view-distance\" server property, the smaller value is used instead.")
