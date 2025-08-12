@@ -130,6 +130,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 
 		IBlockState state = world.getBlockState(pos);
 
+		markDirty();
 		world.notifyBlockUpdate(pos, state, state, 2);
 	}
 

@@ -260,6 +260,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 		IBlockState state = world.getBlockState(pos);
 
+		markDirty();
 		world.notifyBlockUpdate(pos, state, state, 2);
 	}
 

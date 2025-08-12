@@ -217,6 +217,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 		IBlockState state = world.getBlockState(pos);
 
+		markDirty();
 		world.notifyBlockUpdate(pos, state, state, 2);
 	}
 
