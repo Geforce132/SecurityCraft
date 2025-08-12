@@ -143,6 +143,7 @@ public class ClaymoreBlockEntity extends CustomizableBlockEntity implements ITic
 		if (level == null)
 			return;
 
+		setChanged();
 		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 	}
 
