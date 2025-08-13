@@ -79,7 +79,9 @@ public class Utils {
 	public static boolean isInViewDistance(int centerX, int centerZ, int viewDistance, int x, int z) {
 		int xDistance = Math.max(0, Math.abs(x - centerX) - 1);
 		int zDistance = Math.max(0, Math.abs(z - centerZ) - 1);
-		int squareDistance = xDistance * xDistance + zDistance * zDistance;
+		int reducedMaxDistance = Math.max(0, Math.max(xDistance, zDistance) - 1);
+		int minDistance = Math.min(xDistance, zDistance);
+		int squareDistance = reducedMaxDistance * reducedMaxDistance + minDistance * minDistance;
 		int squareViewDistance = viewDistance * viewDistance;
 
 		return squareDistance < squareViewDistance;
