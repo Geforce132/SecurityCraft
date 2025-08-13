@@ -29,16 +29,19 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedButtonBlock(BlockBehaviour.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed) {
 		super(blockSetType, ticksToStayPressed, properties);
 		this.vanillaBlock = vb;
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 		CommonDoorActivator.addActivator(this);
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

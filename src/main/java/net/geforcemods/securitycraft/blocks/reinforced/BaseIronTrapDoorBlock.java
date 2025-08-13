@@ -20,13 +20,17 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock {
+	private final float destroyTimeForOwner;
+
 	public BaseIronTrapDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
 		super(blockSetType, properties);
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

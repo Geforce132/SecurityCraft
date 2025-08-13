@@ -30,15 +30,18 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedLayeredCauldronBlock(Precipitation precipitation, CauldronInteraction.InteractionMap interactions, BlockBehaviour.Properties properties, Block vanillaBlock) {
 		super(precipitation, interactions, properties);
 		this.vanillaBlock = vanillaBlock;
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

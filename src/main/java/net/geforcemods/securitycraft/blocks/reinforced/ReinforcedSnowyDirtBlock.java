@@ -29,15 +29,18 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinforcedBlock, EntityBlock {
 	private Block vanillaBlock;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedSnowyDirtBlock(BlockBehaviour.Properties properties, Block vB) {
 		super(properties);
 		this.vanillaBlock = vB;
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

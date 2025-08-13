@@ -48,13 +48,17 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.EventHooks;
 
 public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinforcedBlock, EntityBlock {
+	private final float destroyTimeForOwner;
+
 	public ReinforcedPistonBaseBlock(boolean sticky, BlockBehaviour.Properties properties) {
 		super(sticky, properties);
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

@@ -131,24 +131,36 @@ public class BlockUtils {
 		}
 	}
 
-	public static float getDestroyProgress(DestroyProgress destroyProgress, BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return getDestroyProgress(destroyProgress, state, player, level, pos, false);
+	public static float getDestroyProgress(DestroyProgress destroyProgress, float destroyTimeForOwner, BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return getDestroyProgress(destroyProgress, destroyTimeForOwner, state, player, level, pos, false);
 	}
 
-	public static float getDestroyProgress(DestroyProgress destroyProgress, BlockState state, Player player, BlockGetter level, BlockPos pos, boolean allowDefault) {
+	public static float getDestroyProgress(DestroyProgress destroyProgress, float destroyTimeForOwner, BlockState state, Player player, BlockGetter level, BlockPos pos, boolean allowDefault) {
+		boolean isAllowedToBreak = false;
+		float breakingSlowdownMultiplier = 1.0F;
+		float newDestroyProgress = -1.0F;
+
 		if (state.getBlock() instanceof IBlockMine)
-			return destroyProgress.get(state, player, level, pos);
+			isAllowedToBreak = true;
 
 		if (ConfigHandler.SERVER.vanillaToolBlockBreaking.get()) {
 			BlockEntity be = level.getBlockEntity(pos);
 
 			if (be instanceof IOwnable ownable && ownable.isOwnedBy(player))
-				return destroyProgress.get(state, player, level, pos);
-			else if (ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() || (allowDefault && be instanceof IOwnable ownable && ownable.getOwner().equals(new Owner())))
-				return destroyProgress.get(state, player, level, pos) / (float) ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble();
+				isAllowedToBreak = true;
+			else if (ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() || (allowDefault && be instanceof IOwnable ownable && ownable.getOwner().equals(new Owner()))) {
+				isAllowedToBreak = true;
+				breakingSlowdownMultiplier = (float) ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble();
+			}
 		}
 
-		return 0.0F;
+		if (isAllowedToBreak) {
+			state.destroySpeed = destroyTimeForOwner;
+			newDestroyProgress = destroyProgress.get(state, player, level, pos) / breakingSlowdownMultiplier;
+			state.destroySpeed = -1.0F;
+		}
+
+		return newDestroyProgress;
 	}
 
 	@FunctionalInterface

@@ -20,15 +20,18 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedCopperBulbBlock extends CopperBulbBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedCopperBulbBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {
 		super(properties);
 		this.vanillaBlock = vanillaBlock;
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

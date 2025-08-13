@@ -46,20 +46,24 @@ import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 
 public class ReinforcedDispenserBlock extends DispenserBlock implements IReinforcedBlock, SimpleWaterloggedBlock, IOverlayDisplay, IDisguisable {
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedDispenserBlock(BlockBehaviour.Properties properties) {
 		super(properties);
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
 		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
+		Block disguisedBlock = disguisedState.getBlock();
 
-		if (disguisedState.getBlock() != state.getBlock())
-			return disguisedState.getDestroyProgress(player, level, pos);
+		if (disguisedBlock != state.getBlock())
+			return disguisedBlock.getDestroyProgress(disguisedState, player, level, pos);
 		else
-			return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

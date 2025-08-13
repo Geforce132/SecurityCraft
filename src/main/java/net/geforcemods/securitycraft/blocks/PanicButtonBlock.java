@@ -52,15 +52,18 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 	private static final VoxelShape CEILING_NS_UNPOWERED = Block.box(3, 14, 5, 13, 16, 11);
 	private static final VoxelShape CEILING_EW_POWERED = Block.box(5, 15, 3, 11, 16, 13);
 	private static final VoxelShape CEILING_EW_UNPOWERED = Block.box(5, 14, 3, 11, 16, 13);
+	private final float destroyTimeForOwner;
 
 	public PanicButtonBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType, int ticksToStayPressed) {
 		super(blockSetType, ticksToStayPressed, properties);
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

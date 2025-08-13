@@ -60,6 +60,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IReinforcedBlock, EntityBlock {
 	public static final MapCodec<ReinforcedCauldronBlock> CODEC = simpleCodec(ReinforcedCauldronBlock::new);
+	private final float destroyTimeForOwner;
 
 	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties) {
 		this(properties, IReinforcedCauldronInteraction.EMPTY);
@@ -67,6 +68,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 
 	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties, CauldronInteraction.InteractionMap interactions) {
 		super(properties, interactions);
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 	}
 
 	@Override
@@ -76,7 +79,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

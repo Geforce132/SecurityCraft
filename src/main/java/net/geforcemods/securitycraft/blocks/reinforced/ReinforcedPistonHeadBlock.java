@@ -24,13 +24,17 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements EntityBlock, IReinforcedBlock {
+	private final float destroyTimeForOwner;
+
 	public ReinforcedPistonHeadBlock(BlockBehaviour.Properties properties) {
 		super(properties);
+		destroyTimeForOwner = properties.destroyTime;
+		properties.destroyTime(-1);
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
