@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.MutablePair;
 
 import net.geforcemods.securitycraft.api.ICodebreakable;
-import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IEMPAffected;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -412,20 +411,7 @@ public class SCEventHandler {
 				event.setCancellationResult(EnumActionResult.SUCCESS);
 
 				if (te instanceof IOwnable && !((IOwnable) te).isOwnedBy(player)) {
-					boolean sendMessage = false;
-
-					if (!(te.getBlockType() instanceof IDisguisable))
-						sendMessage = true;
-					else {
-						IBlockState disguisedState = ((IDisguisable) te.getBlockType()).getDisguisedBlockState(te);
-
-						if (disguisedState == null || disguisedState.getBlock() instanceof IDisguisable)
-							sendMessage = true;
-					}
-
-					if (sendMessage)
-						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.universalBlockModifier), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
-
+					PlayerUtils.checkAndReportOwnership(te, player, SCContent.universalBlockModifier);
 					return;
 				}
 

@@ -57,23 +57,8 @@ public class UniversalOwnerChangerItem extends Item {
 		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
 		if (!ownable.isOwnedBy(player) && !isDefault) {
-			if (!(block instanceof IBlockMine)) {
-				boolean sendMessage = false;
-
-				if (!(te.getBlockType() instanceof IDisguisable))
-					sendMessage = true;
-				else {
-					IBlockState disguisedState = ((IDisguisable) te.getBlockType()).getDisguisedBlockState(te);
-
-					if (disguisedState == null || disguisedState.getBlock() instanceof IDisguisable)
-						sendMessage = true;
-				}
-
-				if (sendMessage) {
-					PlayerUtils.sendMessageToPlayer(player, Utils.localize("item.securitycraft:universalOwnerChanger.name"), Utils.localize("messages.securitycraft:universalOwnerChanger.notOwned"), TextFormatting.RED);
-					return EnumActionResult.SUCCESS;
-				}
-			}
+			if (!(block instanceof IBlockMine) && PlayerUtils.checkAndReportOwnership(te, player, SCContent.universalOwnerChanger, "messages.securitycraft:universalOwnerChanger.notOwned"))
+				return EnumActionResult.SUCCESS;
 
 			return EnumActionResult.PASS;
 		}

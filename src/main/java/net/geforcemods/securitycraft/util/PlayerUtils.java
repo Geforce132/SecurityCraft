@@ -8,10 +8,15 @@ import java.util.function.Predicate;
 
 import com.mojang.authlib.GameProfile;
 
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IDisguisable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.network.ClientProxy;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +27,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -194,5 +200,35 @@ public class PlayerUtils {
 			return Arrays.asList(player);
 
 		return new ArrayList<>();
+	}
+
+	/**
+	 * @see #checkAndReportOwnership(net.minecraft.tileentity.TileEntity, net.minecraft.entity.player.EntityPlayer, net.minecraft.item.Item, String)
+	 */
+	public static boolean checkAndReportOwnership(TileEntity te, EntityPlayer player, Item item) {
+		return checkAndReportOwnership(te, player, item, "messages.securitycraft:notOwned");
+	}
+
+	/**
+	 * Sends the given player a chat message if they do not own the block. If such a block is disguised as a non-disguise able block, no message will be sent.
+	 *
+	 * @param te The {@link net.minecraft.tileentity.TileEntity} to check
+	 * @param player The {@link net.minecraft.entity.player.EntityPlayer} player to check
+	 * @param item The {@link net.minecraft.item.Item} to use for the feedback message prefix
+	 * @param key The translation key of the message to send
+	 * @return Whether feedback was sent to the player
+	 */
+	public static boolean checkAndReportOwnership(TileEntity te, EntityPlayer player, Item item, String key) {
+		Block block = te.getBlockType();
+
+		if (block instanceof IDisguisable) {
+			IBlockState disguisedState = ((IDisguisable) block).getDisguisedBlockState(te);
+
+			if (disguisedState != null && !(disguisedState.getBlock() instanceof IDisguisable))
+				return false;
+		}
+
+		sendMessageToPlayer(player, Utils.localize(item), Utils.localize(key, PlayerUtils.getOwnerComponent(((IOwnable) te).getOwner())), TextFormatting.RED);
+		return true;
 	}
 }
