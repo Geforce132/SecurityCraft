@@ -45,7 +45,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 		int renderDistance = Minecraft.getInstance().options.renderDistance;
 		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
 
-		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.xChunk, cameraEntity.zChunk)) <= (renderDistance + 1) || FrameFeedHandler.shouldAddChunk(pos, renderDistance))
+		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.xChunk, cameraEntity.zChunk)) <= (renderDistance + 3) || FrameFeedHandler.shouldAddChunk(pos, renderDistance))
 			return;
 
 		CameraClientChunkCacheExtension.drop(level, pos);
@@ -63,7 +63,7 @@ public abstract class ClientChunkProviderMixin implements IChunkStorageProvider 
 		boolean isInPlayerRange = storage.inRange(x, z);
 		boolean shouldAddChunk = false;
 
-		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.blockPosition())) <= (renderDistance + 1))
+		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(new ChunkPos(cameraEntity.blockPosition())) <= (renderDistance + 3))
 			shouldAddChunk = true;
 		else
 			shouldAddChunk = FrameFeedHandler.shouldAddChunk(pos, renderDistance);

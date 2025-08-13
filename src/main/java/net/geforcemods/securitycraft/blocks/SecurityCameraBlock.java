@@ -176,14 +176,13 @@ public class SecurityCameraBlock extends DisguisableBlock implements IWaterLogga
 			//can't use ServerPlayer#setCamera here because it also teleports the player
 			serverPlayer.camera = dummyEntity;
 			level.addFreshEntity(dummyEntity);
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity)); //The camera view packet is sent before the surrounding chunks are forceloaded, so the client knows that the chunks are relevant and saves them
 
 			for (int x = chunkPos.getX() - viewDistance; x <= chunkPos.getX() + viewDistance; x++) {
 				for (int z = chunkPos.getZ() - viewDistance; z <= chunkPos.getZ() + viewDistance; z++) {
 					ForgeChunkManager.forceChunk(serverLevel, SecurityCraft.MODID, dummyEntity, x, z, true, false);
 				}
 			}
-
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new SetCameraView(dummyEntity));
 
 			if (te instanceof SecurityCameraBlockEntity)
 				((SecurityCameraBlockEntity) te).startViewing();

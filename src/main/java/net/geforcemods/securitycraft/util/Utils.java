@@ -74,12 +74,10 @@ public class Utils {
 	}
 
 	public static boolean isInViewDistance(int centerX, int centerZ, int viewDistance, int x, int z) {
-		int xDistance = Math.max(0, Math.abs(x - centerX) - 1);
-		int zDistance = Math.max(0, Math.abs(z - centerZ) - 1);
-		int squareDistance = xDistance * xDistance + zDistance * zDistance;
-		int squareViewDistance = viewDistance * viewDistance;
+		int xDistance = centerX - x;
+		int zDistance = centerZ - z;
 
-		return squareDistance < squareViewDistance;
+		return Math.max(Math.abs(xDistance), Math.abs(zDistance)) <= viewDistance;
 	}
 
 	public static void updateBlockEntityWithItemTag(TileEntity be, ItemStack stack) {
