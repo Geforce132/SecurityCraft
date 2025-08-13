@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntit
 import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.SoundType;
@@ -45,7 +46,7 @@ public class ReinforcedDispenserBlock extends BlockDispenser implements IReinfor
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
 		else
-			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
 	}
 
 	@Override

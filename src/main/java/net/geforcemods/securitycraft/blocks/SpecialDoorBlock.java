@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.ITileEntityProvider;
@@ -49,7 +50,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
 		else
-			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
 	}
 
 	@Override

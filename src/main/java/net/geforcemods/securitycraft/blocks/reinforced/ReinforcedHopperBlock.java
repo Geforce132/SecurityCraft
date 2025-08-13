@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHopper;
 import net.minecraft.block.SoundType;
@@ -53,7 +54,7 @@ public class ReinforcedHopperBlock extends BlockHopper implements IReinforcedBlo
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
 		else
-			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
 	}
 
 	@Override
