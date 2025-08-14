@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -31,15 +32,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock implements IReinforcedBlock, EntityBlock {
 	private final Block vanillaBlock;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedLayeredCauldronBlock(Precipitation precipitation, CauldronInteraction.InteractionMap interactions, BlockBehaviour.Properties properties, Block vanillaBlock) {
-		super(precipitation, interactions, properties);
+		super(precipitation, interactions, OwnableBlock.withReinforcedDestroyTime(properties));
 		this.vanillaBlock = vanillaBlock;
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

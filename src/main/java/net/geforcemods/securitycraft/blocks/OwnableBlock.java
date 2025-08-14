@@ -19,13 +19,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class OwnableBlock extends BaseEntityBlock {
+	private static float destroyTimeTempStorage = -1.0F;
+	protected final float destroyTimeForOwner;
+
 	public OwnableBlock(BlockBehaviour.Properties properties) {
-		super(properties);
+		super(withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	public float defaultDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
@@ -51,5 +55,17 @@ public class OwnableBlock extends BaseEntityBlock {
 	@Override
 	protected MapCodec<? extends BaseEntityBlock> codec() {
 		return null;
+	}
+
+	public static BlockBehaviour.Properties withReinforcedDestroyTime(BlockBehaviour.Properties properties) {
+		destroyTimeTempStorage = properties.destroyTime;
+		return properties.destroyTime(-1.0F);
+	}
+
+	public static float getStoredDestroyTime() {
+		float storedDestroyTime = destroyTimeTempStorage;
+
+		destroyTimeTempStorage = -1.0F;
+		return storedDestroyTime;
 	}
 }

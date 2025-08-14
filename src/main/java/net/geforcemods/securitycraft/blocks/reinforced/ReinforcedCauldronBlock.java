@@ -8,6 +8,7 @@ import com.mojang.serialization.MapCodec;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -57,13 +58,15 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IReinforcedBlock, EntityBlock {
 	public static final MapCodec<ReinforcedCauldronBlock> CODEC = simpleCodec(ReinforcedCauldronBlock::new);
+	private final float destroyTimeForOwner;
 
 	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties) {
 		this(properties, IReinforcedCauldronInteraction.EMPTY);
 	}
 
 	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties, CauldronInteraction.InteractionMap interactions) {
-		super(properties, interactions);
+		super(OwnableBlock.withReinforcedDestroyTime(properties), interactions);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
@@ -73,7 +76,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
