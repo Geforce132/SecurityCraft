@@ -41,8 +41,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 
 public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock, IDisguisable, IOverlayDisplay {
+	private final float destroyTimeForOwner;
+
 	protected SpecialDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
-		super(blockSetType, properties);
+		super(blockSetType, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
@@ -52,7 +55,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.getDestroyProgress(player, level, pos);
 		else
-			return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
