@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -29,13 +30,16 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedGrassBlock extends GrassBlock implements IReinforcedBlock, EntityBlock {
+	private final float destroyTimeForOwner;
+
 	public ReinforcedGrassBlock(BlockBehaviour.Properties properties) {
-		super(properties);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

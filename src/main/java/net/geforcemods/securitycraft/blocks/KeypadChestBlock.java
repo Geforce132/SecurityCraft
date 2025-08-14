@@ -103,9 +103,11 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 			return Optional.empty();
 		}
 	};
+	private final float destroyTimeForOwner;
 
 	public KeypadChestBlock(BlockBehaviour.Properties properties) {
-		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY, properties);
+		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
@@ -115,7 +117,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.getDestroyProgress(player, level, pos);
 		else
-			return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
