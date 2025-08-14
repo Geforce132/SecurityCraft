@@ -110,9 +110,8 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	private final float destroyTimeForOwner;
 
 	public KeypadChestBlock(BlockBehaviour.Properties properties) {
-		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY, properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

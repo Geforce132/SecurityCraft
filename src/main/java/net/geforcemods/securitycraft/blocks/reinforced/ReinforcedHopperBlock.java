@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -42,9 +43,8 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	private final float destroyTimeForOwner;
 
 	public ReinforcedHopperBlock(BlockBehaviour.Properties properties) {
-		super(properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

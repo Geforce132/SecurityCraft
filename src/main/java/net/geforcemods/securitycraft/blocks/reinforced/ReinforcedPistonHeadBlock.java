@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -27,9 +28,8 @@ public class ReinforcedPistonHeadBlock extends PistonHeadBlock implements Entity
 	private final float destroyTimeForOwner;
 
 	public ReinforcedPistonHeadBlock(BlockBehaviour.Properties properties) {
-		super(properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

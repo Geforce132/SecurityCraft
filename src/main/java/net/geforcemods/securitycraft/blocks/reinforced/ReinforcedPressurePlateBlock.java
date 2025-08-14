@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -33,10 +34,9 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	private final float destroyTimeForOwner;
 
 	public ReinforcedPressurePlateBlock(BlockBehaviour.Properties properties, Block vanillaBlock, BlockSetType blockSetType) {
-		super(blockSetType, properties);
+		super(blockSetType, OwnableBlock.withReinforcedDestroyTime(properties));
 		this.vanillaBlock = vanillaBlock;
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 		DoorActivator.addActivator(this);
 	}
 

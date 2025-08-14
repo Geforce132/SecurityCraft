@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -25,10 +26,9 @@ public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock, 
 	private final float destroyTimeForOwner;
 
 	public ReinforcedWallBlock(BlockBehaviour.Properties properties, Block vanillaBlock) {
-		super(properties);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
 		vanillaBlockSupplier = () -> vanillaBlock;
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

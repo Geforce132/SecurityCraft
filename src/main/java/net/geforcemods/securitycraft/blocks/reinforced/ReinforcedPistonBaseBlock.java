@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEn
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IPistonMoveListener;
@@ -51,9 +52,8 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 	private final float destroyTimeForOwner;
 
 	public ReinforcedPistonBaseBlock(boolean sticky, BlockBehaviour.Properties properties) {
-		super(sticky, properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(sticky, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

@@ -39,9 +39,8 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 	private final float destroyTimeForOwner;
 
 	protected SpecialDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
-		super(blockSetType, properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(blockSetType, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

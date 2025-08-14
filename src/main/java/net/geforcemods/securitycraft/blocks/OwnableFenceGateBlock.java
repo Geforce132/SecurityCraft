@@ -31,15 +31,13 @@ public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock
 	private final float destroyTimeForOwner;
 
 	public OwnableFenceGateBlock(BlockBehaviour.Properties properties, WoodType woodType) {
-		super(woodType, properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(woodType, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	public OwnableFenceGateBlock(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound) {
-		super(properties, openSound, closeSound);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(OwnableBlock.withReinforcedDestroyTime(properties), openSound, closeSound);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

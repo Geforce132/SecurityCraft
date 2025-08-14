@@ -136,31 +136,26 @@ public class BlockUtils {
 	}
 
 	public static float getDestroyProgress(DestroyProgress destroyProgress, float destroyTimeForOwner, BlockState state, Player player, BlockGetter level, BlockPos pos, boolean allowDefault) {
-		boolean isAllowedToBreak = false;
-		float breakingSlowdownMultiplier = 1.0F;
-		float newDestroyProgress = -1.0F;
+		boolean isBlockMine = state.getBlock() instanceof IBlockMine;
 
-		if (state.getBlock() instanceof IBlockMine)
-			isAllowedToBreak = true;
-
-		if (ConfigHandler.SERVER.vanillaToolBlockBreaking.get()) {
+		if (ConfigHandler.SERVER.vanillaToolBlockBreaking.get() || isBlockMine) {
 			BlockEntity be = level.getBlockEntity(pos);
 
-			if (be instanceof IOwnable ownable && ownable.isOwnedBy(player))
-				isAllowedToBreak = true;
-			else if (ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() || (allowDefault && be instanceof IOwnable ownable && ownable.getOwner().equals(new Owner()))) {
-				isAllowedToBreak = true;
-				breakingSlowdownMultiplier = (float) ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble();
+			if (be instanceof IOwnable ownable && state.destroySpeed == -1.0F) {
+				boolean isOwned = ownable.isOwnedBy(player);
+
+				if (isOwned || isBlockMine || ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() || (allowDefault && ownable.getOwner().equals(new Owner()))) {
+					float newDestroyProgress;
+
+					state.destroySpeed = destroyTimeForOwner;
+					newDestroyProgress = destroyProgress.get(state, player, level, pos) / (float) (isOwned ? 1.0F : ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble());
+					state.destroySpeed = -1.0F;
+					return newDestroyProgress;
+				}
 			}
 		}
 
-		if (isAllowedToBreak) {
-			state.destroySpeed = destroyTimeForOwner;
-			newDestroyProgress = destroyProgress.get(state, player, level, pos) / breakingSlowdownMultiplier;
-			state.destroySpeed = -1.0F;
-		}
-
-		return newDestroyProgress;
+		return destroyProgress.get(state, player, level, pos);
 	}
 
 	@FunctionalInterface

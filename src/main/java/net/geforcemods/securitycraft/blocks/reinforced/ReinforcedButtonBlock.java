@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.CommonDoorActivator;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -32,10 +33,9 @@ public class ReinforcedButtonBlock extends ButtonBlock implements IReinforcedBlo
 	private final float destroyTimeForOwner;
 
 	public ReinforcedButtonBlock(BlockBehaviour.Properties properties, Block vb, BlockSetType blockSetType, int ticksToStayPressed) {
-		super(blockSetType, ticksToStayPressed, properties);
+		super(blockSetType, ticksToStayPressed, OwnableBlock.withReinforcedDestroyTime(properties));
 		this.vanillaBlock = vb;
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 		CommonDoorActivator.addActivator(this);
 	}
 

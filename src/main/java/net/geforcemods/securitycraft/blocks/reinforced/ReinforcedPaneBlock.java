@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -27,11 +28,10 @@ public class ReinforcedPaneBlock extends IronBarsBlock implements IReinforcedBlo
 	private final float destroyTimeForOwner;
 
 	public ReinforcedPaneBlock(BlockBehaviour.Properties properties, Block vB) {
-		super(properties);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
 
 		vanillaBlock = vB;
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

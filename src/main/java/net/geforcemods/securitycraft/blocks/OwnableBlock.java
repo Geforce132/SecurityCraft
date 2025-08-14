@@ -18,12 +18,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class OwnableBlock extends BaseEntityBlock {
+	private static float destroyTimeTempStorage = -1.0F;
 	protected final float destroyTimeForOwner;
 
 	public OwnableBlock(BlockBehaviour.Properties properties) {
-		super(properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = getStoredDestroyTime();
 	}
 
 	@Override
@@ -49,5 +49,17 @@ public class OwnableBlock extends BaseEntityBlock {
 	@Override
 	protected MapCodec<? extends BaseEntityBlock> codec() {
 		return null;
+	}
+
+	public static BlockBehaviour.Properties withReinforcedDestroyTime(BlockBehaviour.Properties properties) {
+		destroyTimeTempStorage = properties.destroyTime;
+		return properties.destroyTime(-1.0F);
+	}
+
+	public static float getStoredDestroyTime() {
+		float storedDestroyTime = destroyTimeTempStorage;
+
+		destroyTimeTempStorage = -1.0F;
+		return storedDestroyTime;
 	}
 }

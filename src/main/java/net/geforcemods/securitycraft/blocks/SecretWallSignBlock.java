@@ -23,9 +23,8 @@ public class SecretWallSignBlock extends WallSignBlock {
 	private final float destroyTimeForOwner;
 
 	public SecretWallSignBlock(BlockBehaviour.Properties properties, WoodType woodType) {
-		super(woodType, properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(woodType, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

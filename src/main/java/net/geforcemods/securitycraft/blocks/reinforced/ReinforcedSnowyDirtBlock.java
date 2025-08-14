@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -32,10 +33,9 @@ public class ReinforcedSnowyDirtBlock extends SnowyDirtBlock implements IReinfor
 	private final float destroyTimeForOwner;
 
 	public ReinforcedSnowyDirtBlock(BlockBehaviour.Properties properties, Block vB) {
-		super(properties);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
 		this.vanillaBlock = vB;
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

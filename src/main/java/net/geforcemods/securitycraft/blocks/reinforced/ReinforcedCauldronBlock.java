@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -67,9 +68,8 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	}
 
 	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties, CauldronInteraction.InteractionMap interactions) {
-		super(properties, interactions);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(OwnableBlock.withReinforcedDestroyTime(properties), interactions);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

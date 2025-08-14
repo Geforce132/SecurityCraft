@@ -55,9 +55,8 @@ public class PanicButtonBlock extends ButtonBlock implements EntityBlock, Simple
 	private final float destroyTimeForOwner;
 
 	public PanicButtonBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType, int ticksToStayPressed) {
-		super(blockSetType, ticksToStayPressed, properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(blockSetType, ticksToStayPressed, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 

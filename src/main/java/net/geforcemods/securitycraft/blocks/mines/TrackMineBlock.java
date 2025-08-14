@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -28,9 +29,8 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 	private final float destroyTimeForOwner;
 
 	public TrackMineBlock(BlockBehaviour.Properties properties) {
-		super(properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override

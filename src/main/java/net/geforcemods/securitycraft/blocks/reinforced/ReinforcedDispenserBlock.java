@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -49,9 +50,8 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 	private final float destroyTimeForOwner;
 
 	public ReinforcedDispenserBlock(BlockBehaviour.Properties properties) {
-		super(properties);
-		destroyTimeForOwner = properties.destroyTime;
-		properties.destroyTime(-1);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
 	}
 
