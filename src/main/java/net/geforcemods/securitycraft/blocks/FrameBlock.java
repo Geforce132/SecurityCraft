@@ -61,7 +61,7 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(this::defaultDestroyProgress, state, player, level, pos, true);
+		return BlockUtils.getDestroyProgress(this::defaultDestroyProgress, destroyTimeForOwner, state, player, level, pos, true);
 	}
 
 	@Override
