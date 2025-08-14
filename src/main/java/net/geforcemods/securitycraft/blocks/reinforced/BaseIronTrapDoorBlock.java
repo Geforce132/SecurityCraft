@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -20,13 +21,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class BaseIronTrapDoorBlock extends TrapDoorBlock implements EntityBlock {
+	private final float destroyTimeForOwner;
+
 	public BaseIronTrapDoorBlock(BlockBehaviour.Properties properties, BlockSetType blockSetType) {
-		super(blockSetType, properties);
+		super(blockSetType, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
