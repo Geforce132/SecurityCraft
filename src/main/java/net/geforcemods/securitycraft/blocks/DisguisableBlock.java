@@ -12,6 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -56,9 +57,10 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
 		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
+		Block disguisedBlock = disguisedState.getBlock();
 
-		if (disguisedState.getBlock() != state.getBlock())
-			return disguisedState.getDestroyProgress(player, level, pos);
+		if (disguisedBlock != state.getBlock())
+			return disguisedBlock.getDestroyProgress(disguisedState, player, level, pos);
 		else
 			return super.getDestroyProgress(state, player, level, pos);
 	}

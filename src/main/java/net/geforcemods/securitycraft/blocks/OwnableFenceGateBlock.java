@@ -26,16 +26,18 @@ import net.minecraftforge.common.MinecraftForge;
 public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock {
 	protected final SoundEvent openSound;
 	protected final SoundEvent closeSound;
+	private final float destroyTimeForOwner;
 
 	public OwnableFenceGateBlock(BlockBehaviour.Properties properties, SoundEvent openSound, SoundEvent closeSound) {
-		super(properties);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
 		this.openSound = openSound;
 		this.closeSound = closeSound;
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
