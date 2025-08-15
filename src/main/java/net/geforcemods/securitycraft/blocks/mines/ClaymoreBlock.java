@@ -46,6 +46,7 @@ public class ClaymoreBlock extends ExplosiveBlock {
 
 	public ClaymoreBlock(Material material) {
 		super(material);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 1);
 		blockMapColor = MapColor.GREEN_STAINED_HARDENED_CLAY;
 	}

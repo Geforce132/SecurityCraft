@@ -29,7 +29,7 @@ public class OldLitAlarmBlock extends OwnableBlock {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		setLightLevel(1.0F);
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 		blockMapColor = MapColor.RED;
 	}

@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IOverlayDisplay, IDisguisable {
 	public ScannerTrapDoorBlock(Material material) {
 		super(material);
-		setHardness(5.0F);
+		setBlockUnbreakable();
 		setHarvestLevel("pickaxe", 0);
 	}
 

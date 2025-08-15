@@ -42,7 +42,7 @@ public abstract class KeycardLockBlock extends OwnableBlock {
 	protected KeycardLockBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
-		setHardness(2.0F);
+		destroyTimeForOwner = 2.0F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

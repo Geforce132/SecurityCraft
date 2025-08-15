@@ -27,16 +27,19 @@ import net.minecraftforge.common.MinecraftForge;
 public class OwnableFenceGateBlock extends BlockFenceGate implements ITileEntityProvider {
 	protected final SoundEvent openSound;
 	protected final SoundEvent closeSound;
+	protected float destroyTimeForOwner;
 
 	public OwnableFenceGateBlock(EnumType type, SoundEvent openSound, SoundEvent closeSound) {
 		super(type);
+		setBlockUnbreakable();
 		this.openSound = openSound;
 		this.closeSound = closeSound;
+		destroyTimeForOwner = 5.0F;
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

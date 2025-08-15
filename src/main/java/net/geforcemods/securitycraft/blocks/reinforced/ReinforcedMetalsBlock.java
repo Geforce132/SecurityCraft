@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -18,6 +19,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,13 +36,14 @@ public class ReinforcedMetalsBlock extends OwnableBlock implements IOverlayDispl
 
 	public ReinforcedMetalsBlock() {
 		super(Material.ROCK);
+		setBlockUnbreakable();
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.GOLD));
 		setSoundType(SoundType.METAL);
 	}
 
 	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
+	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::defaultPlayerRelativeBlockHardness, convertToVanillaState(state).getBlock().blockHardness, state, player, level, pos);
 	}
 
 	@Override

@@ -43,6 +43,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements IOverlay
 	public InventoryScannerFieldBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(HORIZONTAL, false));
+		destroyTimeForOwner = -1.0F;
 	}
 
 	@Override

@@ -34,7 +34,7 @@ public class SonicSecuritySystemBlock extends DisguisableBlock {
 		super(material);
 		setSoundType(SoundType.METAL);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, false));
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

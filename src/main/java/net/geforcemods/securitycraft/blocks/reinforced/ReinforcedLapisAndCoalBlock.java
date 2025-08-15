@@ -33,22 +33,18 @@ public class ReinforcedLapisAndCoalBlock extends OwnableBlock implements IOverla
 
 	public ReinforcedLapisAndCoalBlock() {
 		super(Material.ROCK);
+		setBlockUnbreakable();
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.LAPIS));
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::defaultPlayerRelativeBlockHardness, convertToVanillaState(state).getBlock().blockHardness, state, player, level, pos);
 	}
 
 	@Override
 	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
 		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
 	@Override

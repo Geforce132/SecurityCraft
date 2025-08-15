@@ -34,28 +34,25 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedPressurePlateBlock extends BlockPressurePlate implements IReinforcedBlock {
 	private final Block vanillaBlock;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedPressurePlateBlock(Material material, Sensitivity sensitivity, SoundType soundType, Block vanillaBlock, MapColor color) {
 		super(material, sensitivity);
-
+		setBlockUnbreakable();
 		setSoundType(soundType);
 		this.vanillaBlock = vanillaBlock;
+		destroyTimeForOwner = vanillaBlock.blockHardness;
 		blockMapColor = color;
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
 	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
 		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
 	@Override

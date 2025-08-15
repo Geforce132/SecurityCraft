@@ -39,7 +39,7 @@ public class PortableRadarBlock extends OwnableBlock {
 	public PortableRadarBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(POWERED, false).withProperty(FACING, EnumFacing.UP));
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

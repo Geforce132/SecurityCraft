@@ -40,7 +40,7 @@ public abstract class KeyPanelBlock extends OwnableBlock {
 	protected KeyPanelBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

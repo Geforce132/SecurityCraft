@@ -22,6 +22,7 @@ public class SometimesVisibleBlock extends DisguisableBlock {
 	public SometimesVisibleBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(INVISIBLE, true));
+		destroyTimeForOwner = -1.0F;
 	}
 
 	@Override

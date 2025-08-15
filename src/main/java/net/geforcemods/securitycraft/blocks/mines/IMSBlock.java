@@ -41,6 +41,7 @@ public class IMSBlock extends OwnableBlock {
 	public IMSBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 1);
 		blockMapColor = MapColor.GREEN_STAINED_HARDENED_CLAY;
 	}

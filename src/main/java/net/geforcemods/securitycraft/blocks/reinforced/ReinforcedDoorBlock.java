@@ -32,16 +32,19 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ReinforcedDoorBlock extends BlockDoor implements ITileEntityProvider {
+	private final float destroyTimeForOwner;
+
 	public ReinforcedDoorBlock(Material material) {
 		super(material);
+		setBlockUnbreakable();
 		setSoundType(SoundType.METAL);
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

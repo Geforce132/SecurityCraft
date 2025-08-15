@@ -38,8 +38,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityProvider, IOverlayDisplay, IDisguisable {
+	protected float destroyTimeForOwner;
+
 	protected SpecialDoorBlock(Material material) {
 		super(material);
+		setBlockUnbreakable();
 		setSoundType(SoundType.METAL);
 	}
 
@@ -50,7 +53,7 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
 		else
-			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

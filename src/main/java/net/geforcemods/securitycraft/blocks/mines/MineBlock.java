@@ -29,6 +29,7 @@ public class MineBlock extends ExplosiveBlock {
 
 	public MineBlock(Material material) {
 		super(material);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

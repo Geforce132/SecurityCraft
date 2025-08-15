@@ -29,14 +29,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class TrackMineBlock extends BlockRail implements IExplosive, ITileEntityProvider {
+	private final float destroyTimeForOwner;
+
 	public TrackMineBlock() {
 		setSoundType(SoundType.METAL);
+		setBlockUnbreakable();
+		destroyTimeForOwner = 0.7F;
 		setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

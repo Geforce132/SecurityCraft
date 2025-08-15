@@ -33,19 +33,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class ReinforcedPlanksBlock extends BlockPlanks implements ITileEntityProvider, IOverlayDisplay, IReinforcedBlock {
+	private final float destroyTimeForOwner;
+
+	public ReinforcedPlanksBlock() {
+		setBlockUnbreakable();
+		destroyTimeForOwner = getVanillaBlocks().get(0).blockHardness;
+	}
+
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
 	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
 		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
 	@Override

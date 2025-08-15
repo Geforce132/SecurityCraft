@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRotatedPillar;
 import net.minecraft.block.SoundType;
@@ -39,21 +38,12 @@ public class ReinforcedPurpurBlock extends OwnableBlock implements IOverlayDispl
 	public ReinforcedPurpurBlock() {
 		super(Material.ROCK);
 		setDefaultState(blockState.getBaseState().withProperty(VARIANT, EnumType.DEFAULT));
-	}
-
-	@Override
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		destroyTimeForOwner = getVanillaBlocks().get(0).blockHardness;
 	}
 
 	@Override
 	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
 		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
 	@Override

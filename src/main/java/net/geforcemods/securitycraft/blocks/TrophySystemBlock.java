@@ -27,7 +27,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 	public TrophySystemBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.METAL);
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

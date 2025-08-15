@@ -33,7 +33,7 @@ public abstract class BlockChangeDetectorBlock extends DisguisableBlock {
 	protected BlockChangeDetectorBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

@@ -40,7 +40,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class KeypadTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisguisable, IOverlayDisplay {
 	public KeypadTrapDoorBlock(Material mat) {
 		super(mat);
-		setHardness(5.0F);
 		setHarvestLevel("pickaxe", 0);
 	}
 

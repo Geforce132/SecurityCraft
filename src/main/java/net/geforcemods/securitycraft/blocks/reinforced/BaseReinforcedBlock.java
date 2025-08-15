@@ -31,11 +31,7 @@ public class BaseReinforcedBlock extends OwnableBlock implements IReinforcedBloc
 	public BaseReinforcedBlock(Block... vB) {
 		super(vB[0].getMaterial(vB[0].getDefaultState()));
 		vanillaBlocks = Arrays.asList(vB);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
+		destroyTimeForOwner = vB[0].blockHardness;
 	}
 
 	@Override

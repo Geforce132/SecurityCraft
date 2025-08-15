@@ -34,6 +34,7 @@ public class SecretSignBlock extends OwnableBlock {
 	public SecretSignBlock() {
 		super(Material.WOOD);
 		setSoundType(SoundType.WOOD);
+		destroyTimeForOwner = 1.0F;
 	}
 
 	@Override

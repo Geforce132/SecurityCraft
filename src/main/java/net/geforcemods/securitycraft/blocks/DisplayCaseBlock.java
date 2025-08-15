@@ -65,7 +65,7 @@ public class DisplayCaseBlock extends OwnableBlock {
 		super(material);
 		setSoundType(SoundType.METAL);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ATTACH_FACE, AttachFace.WALL));
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

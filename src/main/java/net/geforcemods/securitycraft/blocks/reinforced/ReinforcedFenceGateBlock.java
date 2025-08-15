@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
 import net.geforcemods.securitycraft.blocks.OwnableFenceGateBlock;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks.EnumType;
 import net.minecraft.block.SoundType;
@@ -33,21 +32,12 @@ public class ReinforcedFenceGateBlock extends OwnableFenceGateBlock implements I
 		super(type, SoundEvents.BLOCK_FENCE_GATE_OPEN, SoundEvents.BLOCK_FENCE_GATE_CLOSE);
 		this.vanillaBlock = vanillaBlock;
 		setSoundType(SoundType.WOOD);
-	}
-
-	@Override
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		destroyTimeForOwner = getVanillaBlocks().get(0).blockHardness;
 	}
 
 	@Override
 	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
 		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
 	@Override

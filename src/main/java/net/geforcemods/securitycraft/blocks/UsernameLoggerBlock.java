@@ -28,7 +28,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 	public UsernameLoggerBlock(Material material) {
 		super(material);
 		setSoundType(SoundType.STONE);
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

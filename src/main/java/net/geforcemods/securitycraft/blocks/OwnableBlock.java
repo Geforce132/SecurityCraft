@@ -23,9 +23,11 @@ import net.minecraftforge.common.MinecraftForge;
 
 public class OwnableBlock extends BlockContainer {
 	private EnumBlockRenderType renderType = EnumBlockRenderType.MODEL;
+	protected float destroyTimeForOwner;
 
 	public OwnableBlock(Material material) {
 		super(material);
+		setBlockUnbreakable();
 
 		if (material == Material.GROUND)
 			setSoundType(SoundType.GROUND);
@@ -37,7 +39,7 @@ public class OwnableBlock extends BlockContainer {
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	public float defaultPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {

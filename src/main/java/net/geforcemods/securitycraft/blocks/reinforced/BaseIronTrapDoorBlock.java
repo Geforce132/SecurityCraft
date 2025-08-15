@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.INameSetter;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -27,14 +28,22 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class BaseIronTrapDoorBlock extends BlockTrapDoor implements ITileEntityProvider {
+	private final float destroyTimeForOwner;
+
 	public BaseIronTrapDoorBlock(Material material) {
 		super(material);
+		setBlockUnbreakable();
 		setSoundType(SoundType.METAL);
+
+		if (this instanceof IReinforcedBlock)
+			destroyTimeForOwner = ((IReinforcedBlock) this).getVanillaBlocks().get(0).blockHardness;
+		else
+			destroyTimeForOwner = 5.0F;
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

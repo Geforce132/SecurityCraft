@@ -43,8 +43,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ReinforcedHopperBlock extends BlockHopper implements IReinforcedBlock, IOverlayDisplay, IDisguisable {
+	private final float destroyTimeForOwner;
+
 	public ReinforcedHopperBlock() {
+		setBlockUnbreakable();
 		setSoundType(SoundType.METAL);
+		destroyTimeForOwner = getVanillaBlocks().get(0).blockHardness;
 	}
 
 	@Override
@@ -54,17 +58,12 @@ public class ReinforcedHopperBlock extends BlockHopper implements IReinforcedBlo
 		if (actualState != null && actualState.getBlock() != this)
 			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
 		else
-			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
 	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
 		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
 	@Override

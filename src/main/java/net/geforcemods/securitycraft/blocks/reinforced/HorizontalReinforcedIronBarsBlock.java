@@ -31,12 +31,8 @@ public class HorizontalReinforcedIronBarsBlock extends OwnableBlock {
 
 	public HorizontalReinforcedIronBarsBlock() {
 		super(Material.IRON);
+		destroyTimeForOwner = SCContent.reinforcedIronBars.blockHardness;
 		setSoundType(SoundType.METAL);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return SCContent.reinforcedIronBars.getDefaultState().getBlockHardness(world, pos);
 	}
 
 	@Override

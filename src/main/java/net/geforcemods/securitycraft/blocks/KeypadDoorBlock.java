@@ -18,7 +18,7 @@ import net.minecraft.world.World;
 public class KeypadDoorBlock extends SpecialDoorBlock {
 	public KeypadDoorBlock(Material material) {
 		super(material);
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

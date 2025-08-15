@@ -29,7 +29,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 
 	public BlockPocketManagerBlock() {
 		super(Material.ROCK);
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

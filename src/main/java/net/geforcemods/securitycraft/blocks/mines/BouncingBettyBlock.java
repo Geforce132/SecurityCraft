@@ -27,6 +27,7 @@ public class BouncingBettyBlock extends ExplosiveBlock {
 
 	public BouncingBettyBlock(Material material) {
 		super(material);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

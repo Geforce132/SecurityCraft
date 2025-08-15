@@ -22,19 +22,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class OwnableStairsBlock extends BlockStairs implements ITileEntityProvider {
+	private final float destroyTimeForOwner;
+
 	public OwnableStairsBlock(Block baseBlock, int meta) {
 		super(meta != 0 ? baseBlock.getStateFromMeta(meta) : baseBlock.getDefaultState());
+		setBlockUnbreakable();
 		useNeighborBrightness = true;
 
 		if (baseBlock == SCContent.reinforcedWoodPlanks)
 			setSoundType(SoundType.WOOD);
 		else
 			setSoundType(SoundType.STONE);
+
+		destroyTimeForOwner = baseBlock.blockHardness;
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

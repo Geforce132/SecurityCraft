@@ -28,7 +28,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 
 	public RetinalScannerBlock(Material material) {
 		super(material);
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

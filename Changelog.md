@@ -14,6 +14,8 @@
 - Fix: The owner of the topmost block of the cage spawned by a Cage Trap is not set correctly
 - Fix: Crash when interacting with certain blocks belonging to a different player
 - Fix: Certain blocks can be mined by any player, regardless of who owns the block
+- Fix: Ownable blocks can be mined by drills or similar blocks from certain other mods
+- Fix: The Floor Trap cannot be mined with vanilla tools
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 

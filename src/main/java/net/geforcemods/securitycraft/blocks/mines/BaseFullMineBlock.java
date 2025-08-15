@@ -31,11 +31,7 @@ public class BaseFullMineBlock extends ExplosiveBlock implements IOverlayDisplay
 	public BaseFullMineBlock(Block disguisedBlock) {
 		super(disguisedBlock.getMaterial(disguisedBlock.getDefaultState()));
 		blockDisguisedAs = disguisedBlock;
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return blockDisguisedAs.getDefaultState().getBlockHardness(world, pos);
+		destroyTimeForOwner = blockDisguisedAs.blockHardness;
 	}
 
 	@Override

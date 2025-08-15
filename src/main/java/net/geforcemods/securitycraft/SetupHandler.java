@@ -166,7 +166,7 @@ public class SetupHandler {
 	public static void init() {
 		//blocks
 		SCContent.laserBlock = new LaserBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("laser_block").setTranslationKey("securitycraft:laserBlock");
-		SCContent.laserField = new LaserFieldBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("laser").setTranslationKey("securitycraft:laserField");
+		SCContent.laserField = new LaserFieldBlock(Material.ROCK).setRegistryName("laser").setTranslationKey("securitycraft:laserField");
 		SCContent.keypad = new KeypadBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keypad").setTranslationKey("securitycraft:keypad");
 		SCContent.retinalScanner = new RetinalScannerBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("retinal_scanner").setTranslationKey("securitycraft:retinalScanner");
 		SCContent.reinforcedDoor = new ReinforcedDoorBlock(Material.IRON).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("iron_door_reinforced").setTranslationKey("securitycraft:ironDoorReinforced");
@@ -177,7 +177,7 @@ public class SetupHandler {
 		SCContent.keycardReader = new KeycardReaderBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keycard_reader").setTranslationKey("securitycraft:keycardReader");
 		SCContent.reinforcedIronTrapdoor = new ReinforcedIronTrapDoorBlock(Material.IRON).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_iron_trapdoor").setTranslationKey("securitycraft:reinforcedIronTrapdoor");
 		SCContent.inventoryScanner = new InventoryScannerBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("inventory_scanner").setTranslationKey("securitycraft:inventoryScanner");
-		SCContent.inventoryScannerField = new InventoryScannerFieldBlock(Material.GLASS).setBlockUnbreakable().setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");
+		SCContent.inventoryScannerField = new InventoryScannerFieldBlock(Material.GLASS).setRegistryName("inventory_scanner_field").setTranslationKey("securitycraft:inventoryScannerField");
 		SCContent.cageTrap = new CageTrapBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("cage_trap").setTranslationKey("securitycraft:cageTrap");
 		SCContent.portableRadar = new PortableRadarBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("portable_radar").setTranslationKey("securitycraft:portableRadar");
 		SCContent.reinforcedIronBars = new ReinforcedIronBarsBlock(Material.IRON, true).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_iron_bars").setTranslationKey("securitycraft:reinforcedIronBars");
@@ -296,7 +296,7 @@ public class SetupHandler {
 		SCContent.sonicSecuritySystem = new SonicSecuritySystemBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("sonic_security_system").setTranslationKey("securitycraft:sonic_security_system");
 		SCContent.blockChangeDetectorFloorCeiling = new BlockChangeDetectorFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("block_change_detector").setTranslationKey("securitycraft:block_change_detector");
 		SCContent.blockChangeDetectorWall = new BlockChangeDetectorWallBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("wall_block_change_detector").setTranslationKey("securitycraft:block_change_detector");
-		SCContent.sentryDisguise = new SometimesVisibleBlock(Material.ROCK).setBlockUnbreakable().setRegistryName("sentry_disguise");
+		SCContent.sentryDisguise = new SometimesVisibleBlock(Material.ROCK).setRegistryName("sentry_disguise");
 		SCContent.reinforcedEndRod = new ReinforcedEndRodBlock().setLightLevel(0.9375F).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_end_rod").setTranslationKey("securitycraft:reinforced_end_rod");
 		SCContent.reinforcedWhiteGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(Blocks.WHITE_GLAZED_TERRACOTTA).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_white_glazed_terracotta").setTranslationKey("securitycraft:reinforced_white_glazed_terracotta");
 		SCContent.reinforcedOrangeGlazedTerracotta = new ReinforcedGlazedTerracottaBlock(Blocks.ORANGE_GLAZED_TERRACOTTA).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_orange_glazed_terracotta").setTranslationKey("securitycraft:reinforced_orange_glazed_terracotta");
@@ -318,7 +318,7 @@ public class SetupHandler {
 		SCContent.displayCase = new DisplayCaseBlock(Material.IRON).setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("display_case").setTranslationKey("securitycraft:display_case");
 		SCContent.keypadTrapdoor = (KeypadTrapDoorBlock) new KeypadTrapDoorBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("keypad_trapdoor").setTranslationKey("securitycraft:keypad_trapdoor");
 		SCContent.reinforcedLadder = new ReinforcedLadderBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_ladder").setTranslationKey("securitycraft:reinforced_ladder");
-		SCContent.floorTrap = new FloorTrapBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setHardness(-1.0F).setRegistryName("floor_trap").setTranslationKey("securitycraft:floor_trap");
+		SCContent.floorTrap = new FloorTrapBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("floor_trap").setTranslationKey("securitycraft:floor_trap");
 		SCContent.keycardLockFloorCeilingBlock = new KeycardLockFloorCeilingBlock(Material.ROCK).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("floor_ceiling_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 		SCContent.keycardLockWallBlock = new KeycardLockWallBlock(Material.ROCK).setRegistryName("wall_keycard_lock").setTranslationKey("securitycraft:keycard_lock");
 		SCContent.scannerTrapdoor = (ScannerTrapDoorBlock) new ScannerTrapDoorBlock(Material.IRON).setCreativeTab(SecurityCraft.TECHNICAL_TAB).setRegistryName("scanner_trapdoor").setTranslationKey("securitycraft:scanner_trapdoor");
@@ -342,8 +342,8 @@ public class SetupHandler {
 		SCContent.reinforcedSoulSand = new ReinforcedSoulSandBlock().setCreativeTab(SecurityCraft.DECORATION_TAB).setRegistryName("reinforced_soul_sand").setTranslationKey("securitycraft:reinforced_soul_sand");
 
 		//mines
-		SCContent.mine = (MineBlock) new MineBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("mine").setTranslationKey("securitycraft:mine");
-		SCContent.mineCut = (MineBlock) new MineBlock(Material.IRON).setHardness(3.5F).setRegistryName("mine_cut").setTranslationKey("securitycraft:mineCut");
+		SCContent.mine = (MineBlock) new MineBlock(Material.IRON).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("mine").setTranslationKey("securitycraft:mine");
+		SCContent.mineCut = (MineBlock) new MineBlock(Material.IRON).setRegistryName("mine_cut").setTranslationKey("securitycraft:mineCut");
 		SCContent.dirtMine = new BaseFullMineBlock(Blocks.DIRT).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("dirt_mine").setTranslationKey("securitycraft:dirtMine");
 		SCContent.stoneMine = new BaseFullMineBlock(Blocks.STONE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("stone_mine").setTranslationKey("securitycraft:stoneMine");
 		SCContent.cobblestoneMine = new BaseFullMineBlock(Blocks.COBBLESTONE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("cobblestone_mine").setTranslationKey("securitycraft:cobblestoneMine");
@@ -351,10 +351,10 @@ public class SetupHandler {
 		SCContent.diamondOreMine = new BaseFullMineBlock(Blocks.DIAMOND_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("diamond_mine").setTranslationKey("securitycraft:diamondMine");
 		SCContent.furnaceMine = new FurnaceMineBlock().setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("furnace_mine").setTranslationKey("securitycraft:furnaceMine");
 		SCContent.gravelMine = new FallingBlockMineBlock(Blocks.GRAVEL).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("gravel_mine").setTranslationKey("securitycraft:gravelMine");
-		SCContent.trackMine = new TrackMineBlock().setHardness(0.7F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
-		SCContent.bouncingBetty = new BouncingBettyBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
-		SCContent.claymore = new ClaymoreBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
-		SCContent.ims = new IMSBlock(Material.IRON).setHardness(3.5F).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("ims").setTranslationKey("securitycraft:ims");
+		SCContent.trackMine = new TrackMineBlock().setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("track_mine").setTranslationKey("securitycraft:trackMine");
+		SCContent.bouncingBetty = new BouncingBettyBlock(Material.IRON).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("bouncing_betty").setTranslationKey("securitycraft:bouncingBetty");
+		SCContent.claymore = new ClaymoreBlock(Material.IRON).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("claymore").setTranslationKey("securitycraft:claymore");
+		SCContent.ims = new IMSBlock(Material.IRON).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("ims").setTranslationKey("securitycraft:ims");
 		SCContent.coalOreMine = new BaseFullMineBlock(Blocks.COAL_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("coal_mine").setTranslationKey("securitycraft:coal_mine");
 		SCContent.emeraldOreMine = new BaseFullMineBlock(Blocks.EMERALD_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("emerald_mine").setTranslationKey("securitycraft:emerald_mine");
 		SCContent.goldOreMine = new BaseFullMineBlock(Blocks.GOLD_ORE).setCreativeTab(SecurityCraft.MINE_TAB).setRegistryName("gold_mine").setTranslationKey("securitycraft:gold_mine");

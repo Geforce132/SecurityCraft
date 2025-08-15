@@ -34,7 +34,7 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 	public BlockPocketWallBlock() {
 		super(Material.ROCK);
 		setDefaultState(blockState.getBaseState().withProperty(SEE_THROUGH, true).withProperty(SOLID, false));
-		setHardness(0.8F);
+		destroyTimeForOwner = 0.8F;
 		setHarvestLevel("pickaxe", 0);
 		blockMapColor = MapColor.CYAN;
 	}

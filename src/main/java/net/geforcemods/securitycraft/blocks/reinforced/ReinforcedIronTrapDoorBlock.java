@@ -25,11 +25,6 @@ public class ReinforcedIronTrapDoorBlock extends BaseIronTrapDoorBlock implement
 	}
 
 	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
-	}
-
-	@Override
 	public Material getMaterial(IBlockState state) {
 		return convertToVanillaState(state).getMaterial();
 	}

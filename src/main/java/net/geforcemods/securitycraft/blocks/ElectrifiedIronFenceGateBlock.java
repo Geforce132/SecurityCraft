@@ -22,7 +22,6 @@ public class ElectrifiedIronFenceGateBlock extends OwnableFenceGateBlock impleme
 		super(BlockPlanks.EnumType.OAK, SoundEvents.BLOCK_IRON_DOOR_OPEN, SoundEvents.BLOCK_IRON_DOOR_CLOSE);
 		ObfuscationReflectionHelper.setPrivateValue(Block.class, this, Material.IRON, 18);
 		setSoundType(SoundType.METAL);
-		setHardness(5.0F);
 		setHarvestLevel("pickaxe", 1);
 	}
 

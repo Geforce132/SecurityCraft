@@ -33,24 +33,23 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ReinforcedStainedGlassBlock extends BlockStainedGlass implements ITileEntityProvider, IReinforcedBlock {
+	private final float destroyTimeForOwner;
+
 	public ReinforcedStainedGlassBlock(Material material) {
 		super(material);
+		setBlockUnbreakable();
 		setSoundType(SoundType.GLASS);
+		destroyTimeForOwner = getVanillaBlocks().get(0).blockHardness;
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
 	public boolean canHarvestBlock(IBlockAccess level, BlockPos pos, EntityPlayer player) {
 		return ConfigHandler.alwaysDrop || super.canHarvestBlock(level, pos, player);
-	}
-
-	@Override
-	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
-		return convertToVanillaState(state).getBlockHardness(world, pos);
 	}
 
 	@Override

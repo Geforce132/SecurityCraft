@@ -30,7 +30,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		super(material);
 		setSoundType(SoundType.GLASS);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 1);
 	}
 

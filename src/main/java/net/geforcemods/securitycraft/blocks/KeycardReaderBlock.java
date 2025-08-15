@@ -40,7 +40,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	public KeycardReaderBlock(Material material) {
 		super(material);
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public class ScannerDoorBlock extends SpecialDoorBlock {
 	public ScannerDoorBlock(Material material) {
 		super(material);
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 0);
 	}
 

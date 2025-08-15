@@ -43,13 +43,13 @@ public class FrameBlock extends OwnableBlock {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(POWERED, false));
 		setSoundType(SoundType.METAL);
-		setHardness(5.0F);
+		destroyTimeForOwner = 5.0F;
 		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(this::defaultPlayerRelativeBlockHardness, state, player, level, pos, true);
+		return BlockUtils.getDestroyProgress(this::defaultPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos, true);
 	}
 
 	@Override

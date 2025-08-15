@@ -43,6 +43,7 @@ public class LaserFieldBlock extends OwnableBlock implements IOverlayDisplay {
 
 	public LaserFieldBlock(Material material) {
 		super(material);
+		destroyTimeForOwner = -1.0F;
 	}
 
 	@Override

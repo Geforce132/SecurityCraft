@@ -38,7 +38,7 @@ public class AlarmBlock extends OwnableBlock {
 	public AlarmBlock(Material material) {
 		super(material);
 		setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-		setHardness(3.5F);
+		destroyTimeForOwner = 3.5F;
 		setHarvestLevel("pickaxe", 0);
 		blockMapColor = MapColor.RED;
 	}
