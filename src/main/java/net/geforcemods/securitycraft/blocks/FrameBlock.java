@@ -63,7 +63,7 @@ public class FrameBlock extends OwnableBlock implements IWaterLoggable {
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(this::defaultDestroyProgress, state, player, level, pos, true);
+		return BlockUtils.getDestroyProgress(this::defaultDestroyProgress, destroyTimeForOwner, state, player, level, pos, true);
 	}
 
 	@Override

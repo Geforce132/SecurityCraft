@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AllowlistOnlyBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
@@ -31,16 +32,17 @@ import net.minecraftforge.common.ToolType;
 
 public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements IReinforcedBlock {
 	private final Block vanillaBlock;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedPressurePlateBlock(Sensitivity sensitivity, AbstractBlock.Properties properties, Block vanillaBlock) {
-		super(sensitivity, properties);
-
+		super(sensitivity, OwnableBlock.withReinforcedDestroyTime(properties));
 		this.vanillaBlock = vanillaBlock;
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

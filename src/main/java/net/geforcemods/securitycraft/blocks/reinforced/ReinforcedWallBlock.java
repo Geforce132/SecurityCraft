@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.block.AbstractBlock;
@@ -23,16 +24,17 @@ import net.minecraftforge.common.ToolType;
 
 public class ReinforcedWallBlock extends WallBlock implements IReinforcedBlock {
 	private final Supplier<Block> vanillaBlockSupplier;
+	private final float destroyTimeForOwner;
 
 	public ReinforcedWallBlock(AbstractBlock.Properties properties, Block vanillaBlock) {
-		super(properties);
-
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
 		this.vanillaBlockSupplier = () -> vanillaBlock;
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

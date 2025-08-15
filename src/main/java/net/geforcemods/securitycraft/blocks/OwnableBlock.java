@@ -18,13 +18,17 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 public class OwnableBlock extends Block {
+	private static float destroyTimeTempStorage = -1.0F;
+	protected final float destroyTimeForOwner;
+
 	public OwnableBlock(AbstractBlock.Properties properties) {
-		super(properties);
+		super(withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	public float defaultDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
@@ -57,5 +61,18 @@ public class OwnableBlock extends Block {
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader level) {
 		return new OwnableBlockEntity();
+	}
+
+	public static AbstractBlock.Properties withReinforcedDestroyTime(AbstractBlock.Properties properties) {
+		destroyTimeTempStorage = properties.destroyTime;
+		properties.destroyTime = -1.0F;
+		return properties;
+	}
+
+	public static float getStoredDestroyTime() {
+		float storedDestroyTime = destroyTimeTempStorage;
+
+		destroyTimeTempStorage = -1.0F;
+		return storedDestroyTime;
 	}
 }

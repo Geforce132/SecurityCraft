@@ -37,8 +37,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
 public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable, IOverlayDisplay {
+	private final float destroyTimeForOwner;
+
 	protected SpecialDoorBlock(AbstractBlock.Properties properties) {
-		super(properties);
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.getDestroyProgress(player, level, pos);
 		else
-			return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+			return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

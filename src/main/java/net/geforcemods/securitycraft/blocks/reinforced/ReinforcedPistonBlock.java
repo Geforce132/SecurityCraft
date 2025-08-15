@@ -16,6 +16,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedPistonBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ValidationOwnableBlockEntity;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceBlock;
 import net.geforcemods.securitycraft.blocks.ElectrifiedIronFenceGateBlock;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ReinforcedPistonBlockStructureHelper;
@@ -45,13 +46,16 @@ import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class ReinforcedPistonBlock extends PistonBlock implements IReinforcedBlock {
+	private final float destroyTimeForOwner;
+
 	public ReinforcedPistonBlock(boolean sticky, AbstractBlock.Properties properties) {
-		super(sticky, properties);
+		super(sticky, OwnableBlock.withReinforcedDestroyTime(properties));
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

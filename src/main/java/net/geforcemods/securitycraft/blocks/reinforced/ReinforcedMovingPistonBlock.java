@@ -31,11 +31,6 @@ public class ReinforcedMovingPistonBlock extends MovingPistonBlock {
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
-	}
-
-	@Override
 	public boolean canHarvestBlock(BlockState state, IBlockReader level, BlockPos pos, PlayerEntity player) {
 		return ConfigHandler.SERVER.alwaysDrop.get() || super.canHarvestBlock(state, level, pos, player);
 	}
