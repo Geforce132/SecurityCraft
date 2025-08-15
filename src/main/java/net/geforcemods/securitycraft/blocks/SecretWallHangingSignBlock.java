@@ -22,13 +22,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.MinecraftForge;
 
 public class SecretWallHangingSignBlock extends WallHangingSignBlock {
+	private final float destroyTimeForOwner;
+
 	public SecretWallHangingSignBlock(BlockBehaviour.Properties properties, WoodType type) {
-		super(properties, type);
+		super(OwnableBlock.withReinforcedDestroyTime(properties), type);
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		return BlockUtils.getDestroyProgress(super::getDestroyProgress, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
