@@ -15,6 +15,7 @@
 - Fix: Blocks projected by a Projector are reset to their default state when opening the Projector's screen
 - Fix: The owner of the topmost block of the cage spawned by a Cage Trap is not set correctly
 - Fix: Ownable blocks can be mined by drills or similar blocks from certain other mods
+- Fix: Blocks disguised as vanilla blocks can be mined by anyone
 - Misc.: The minimum required NeoForge version is now 21.1.181
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
