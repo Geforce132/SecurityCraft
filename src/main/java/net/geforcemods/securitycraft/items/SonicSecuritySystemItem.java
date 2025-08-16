@@ -73,7 +73,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
 						return ActionResultType.SUCCESS;
 					}
-					else if (addLinkedBlock(stack.getTag(), pos, player)) {
+					else if (addLinkedBlock(stack.getOrCreateTag(), pos, player)) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), TextFormatting.GREEN);
 						SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new UpdateNBTTagOnClient(stack));
 						return ActionResultType.SUCCESS;
@@ -159,7 +159,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @param pos The position to remove from the tag
 	 */
 	public static void removeLinkedBlock(CompoundNBT tag, BlockPos pos) {
-		if (!tag.contains("LinkedBlocks"))
+		if (tag == null || !tag.contains("LinkedBlocks"))
 			return;
 
 		ListNBT list = tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
@@ -181,7 +181,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @return true if the position is added, false otherwise
 	 */
 	public static boolean isAdded(CompoundNBT tag, BlockPos pos) {
-		if (!tag.contains("LinkedBlocks"))
+		if (tag == null || !tag.contains("LinkedBlocks"))
 			return false;
 
 		ListNBT list = tag.getList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);

@@ -42,7 +42,7 @@ public class SentryRemoteAccessToolItem extends Item {
 
 		if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getOrCreateTag()));
 		}
 
 		return ActionResult.consume(stack);
@@ -94,7 +94,7 @@ public class SentryRemoteAccessToolItem extends Item {
 		}
 		else if (!level.isClientSide) {
 			updateTagWithNames(stack, level);
-			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getTag()));
+			SecurityCraft.channel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL, stack.getOrCreateTag()));
 		}
 
 		return ActionResultType.SUCCESS;

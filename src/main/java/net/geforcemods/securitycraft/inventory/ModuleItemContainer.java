@@ -111,7 +111,7 @@ public class ModuleItemContainer implements IInventory {
 				moduleInventory.set(i, ItemStack.EMPTY);
 		}
 
-		save(module.getTag());
+		save(module.getOrCreateTag());
 
 		if (menu != null)
 			menu.slotsChanged(this);

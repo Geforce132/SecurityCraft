@@ -16,6 +16,7 @@
 - Fix: Ownable blocks can be mined by drills or similar blocks from certain other mods
 - Fix: Blocks disguised as vanilla blocks can be mined by anyone
 - Fix: The rotation of a Security Camera can become desynced between client and server
+- Fix: Potential crash when placing keycards into a Keycard Holder
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 

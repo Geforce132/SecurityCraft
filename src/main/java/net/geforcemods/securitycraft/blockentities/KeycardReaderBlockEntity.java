@@ -156,7 +156,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 						feedback = insertCard(keycardStack, player);
 
 						if (feedback == null) {
-							holderInventory.save(stack.getTag());
+							holderInventory.save(stack.getOrCreateTag());
 							return ActionResultType.SUCCESS;
 						}
 					}
