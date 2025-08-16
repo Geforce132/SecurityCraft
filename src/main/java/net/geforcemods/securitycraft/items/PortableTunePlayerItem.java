@@ -65,7 +65,7 @@ public class PortableTunePlayerItem extends Item {
 			if (!isTunePlaying && tag.contains("Notes")) {
 				Deque<NoteWrapper> notes = new ArrayDeque<>();
 
-				SonicSecuritySystemBlockEntity.loadNotes(stack.getTag(), notes);
+				SonicSecuritySystemBlockEntity.loadNotes(tag, notes);
 				SCEventHandler.PLAYING_TUNES.put(player, MutablePair.of(0, notes));
 				return InteractionResultHolder.success(stack);
 			}
