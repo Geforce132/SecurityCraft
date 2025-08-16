@@ -112,7 +112,7 @@ public class ItemContainer implements Container {
 				inventory.set(i, ItemStack.EMPTY);
 		}
 
-		save(containerStack.getTag());
+		save(containerStack.getOrCreateTag());
 	}
 
 	@Override

@@ -39,7 +39,7 @@ public class RemoveCameraTag implements CustomPacketPayload {
 		Player player = ctx.player().orElseThrow();
 		ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(ctx.player().orElseThrow(), SCContent.CAMERA_MONITOR.get());
 
-		if (!player.isSpectator() && !monitor.isEmpty())
+		if (!player.isSpectator() && !monitor.isEmpty() && monitor.hasTag())
 			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), CameraMonitorItem.getCameraPositions(monitor.getTag()).get(camID - 1).getLeft()));
 	}
 }
