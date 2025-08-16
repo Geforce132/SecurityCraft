@@ -127,6 +127,9 @@ public class ItemContainer implements IInventory {
 				inventory.set(i, ItemStack.EMPTY);
 		}
 
+		if (!containerStack.hasTagCompound())
+			containerStack.setTagCompound(new NBTTagCompound());
+
 		writeToNBT(containerStack.getTagCompound());
 	}
 

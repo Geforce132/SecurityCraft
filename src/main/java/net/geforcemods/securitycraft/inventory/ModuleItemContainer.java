@@ -126,6 +126,9 @@ public class ModuleItemContainer implements IInventory {
 				moduleInventory.set(i, ItemStack.EMPTY);
 		}
 
+		if (!module.hasTagCompound())
+			module.setTagCompound(new NBTTagCompound());
+
 		writeToNBT(module.getTagCompound());
 
 		if (container != null)

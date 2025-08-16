@@ -143,7 +143,9 @@ public class CameraMonitorItem extends Item {
 	}
 
 	public static void removeCameraOnClient(int camID, NBTTagCompound stackTag) {
-		stackTag.removeTag(CameraMonitorItem.getTagNameFromPosition(stackTag, CameraMonitorItem.getCameraPositions(stackTag).get(camID - 1).getLeft()));
+		if (stackTag != null)
+			stackTag.removeTag(CameraMonitorItem.getTagNameFromPosition(stackTag, CameraMonitorItem.getCameraPositions(stackTag).get(camID - 1).getLeft()));
+
 		SecurityCraft.network.sendToServer(new RemoveCameraTag(camID));
 	}
 

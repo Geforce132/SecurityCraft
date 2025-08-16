@@ -149,7 +149,7 @@ public class SonicSecuritySystemItem extends ItemBlock {
 	 * @param pos The position to remove from the tag
 	 */
 	public static void removeLinkedBlock(NBTTagCompound tag, BlockPos pos) {
-		if (!tag.hasKey("LinkedBlocks"))
+		if (tag == null || !tag.hasKey("LinkedBlocks"))
 			return;
 
 		NBTTagList list = tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
@@ -171,7 +171,7 @@ public class SonicSecuritySystemItem extends ItemBlock {
 	 * @return true if the position is added, false otherwise
 	 */
 	public static boolean isAdded(NBTTagCompound tag, BlockPos pos) {
-		if (!tag.hasKey("LinkedBlocks"))
+		if (tag == null || !tag.hasKey("LinkedBlocks"))
 			return false;
 
 		NBTTagList list = tag.getTagList("LinkedBlocks", Constants.NBT.TAG_COMPOUND);
