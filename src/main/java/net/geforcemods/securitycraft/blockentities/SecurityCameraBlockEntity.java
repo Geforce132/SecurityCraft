@@ -140,19 +140,21 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 					cameraRotation %= Mth.TWO_PI;
 					oCameraRotation %= Mth.TWO_PI;
 				}
+			}
+			else {
+				if (addToRotation && getCameraRotation() <= Mth.HALF_PI)
+					cameraRotation = getCameraRotation() + rotationSpeedOption.get();
+				else
+					addToRotation = false;
 
-				return;
+				if (!addToRotation && getCameraRotation() >= -Mth.HALF_PI)
+					cameraRotation = getCameraRotation() - rotationSpeedOption.get();
+				else
+					addToRotation = true;
 			}
 
-			if (addToRotation && getCameraRotation() <= Mth.HALF_PI)
-				cameraRotation = getCameraRotation() + rotationSpeedOption.get();
-			else
-				addToRotation = false;
-
-			if (!addToRotation && getCameraRotation() >= -Mth.HALF_PI)
-				cameraRotation = getCameraRotation() - rotationSpeedOption.get();
-			else
-				addToRotation = true;
+			if (!level.isClientSide)
+				level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
 
@@ -187,10 +189,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		super.load(tag);
 
 		if (tag.contains("camera_rotation")) {
-			double newCamRotation = tag.getDouble("camera_rotation");
-
-			cameraRotation = newCamRotation;
-			oCameraRotation = newCamRotation;
+			cameraRotation = tag.getDouble("camera_rotation");
 			addToRotation = tag.getBoolean("add_to_rotation");
 		}
 
@@ -356,7 +355,6 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 		}
 
 		playerViewedFrames.add(framePos.asLong());
-		level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //Syncs the camera's rotation to all clients again, in case a client is desynched
 	}
 
 	public void unlinkFrameForPlayer(UUID playerUUID, BlockPos framePos) {
