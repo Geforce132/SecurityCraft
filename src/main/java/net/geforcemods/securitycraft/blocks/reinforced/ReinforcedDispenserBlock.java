@@ -58,13 +58,7 @@ public class ReinforcedDispenserBlock extends DispenserBlock implements IReinfor
 
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
-		Block disguisedBlock = disguisedState.getBlock();
-
-		if (disguisedBlock != state.getBlock())
-			return disguisedBlock.getDestroyProgress(disguisedState, player, level, pos);
-		else
-			return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

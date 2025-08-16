@@ -43,17 +43,6 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IDisg
 	}
 
 	@Override
-	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
-		Block disguisedBlock = disguisedState.getBlock();
-
-		if (disguisedBlock != state.getBlock())
-			return disguisedBlock.getDestroyProgress(disguisedState, player, level, pos);
-		else
-			return super.getDestroyProgress(state, player, level, pos);
-	}
-
-	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
 		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
 
