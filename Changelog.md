@@ -15,6 +15,7 @@
 - Fix: The owner of the topmost block of the cage spawned by a Cage Trap is not set correctly
 - Fix: Nearby chunks can visually disappear from the world when dismounting a Security Camera that's close to the player
 - Fix: Ownable blocks can be mined by drills or similar blocks from certain other mods
+- Fix: Blocks disguised as vanilla blocks can be mined by anyone
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
