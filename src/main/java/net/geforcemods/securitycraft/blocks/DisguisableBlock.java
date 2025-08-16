@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blocks;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IWaterLoggable;
 import net.minecraft.block.SoundType;
@@ -58,13 +57,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
-		Block disguisedBlock = disguisedState.getBlock();
-
-		if (disguisedBlock != state.getBlock())
-			return disguisedBlock.getDestroyProgress(disguisedState, player, level, pos);
-		else
-			return super.getDestroyProgress(state, player, level, pos);
+		return super.getDestroyProgress(state, player, level, pos);
 	}
 
 	@Override

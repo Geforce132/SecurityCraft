@@ -112,12 +112,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader level, BlockPos pos) {
-		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
-
-		if (disguisedState.getBlock() != state.getBlock())
-			return disguisedState.getDestroyProgress(player, level, pos);
-		else
-			return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override
