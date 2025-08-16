@@ -16,6 +16,7 @@
 - Fix: The owner of the topmost block of the cage spawned by a Cage Trap is not set correctly
 - Fix: Ownable blocks can be mined by drills or similar blocks from certain other mods
 - Fix: Blocks disguised as vanilla blocks can be mined by anyone
+- Fix: The rotation of a Security Camera can become desynced between client and server
 - Misc.: The minimum required NeoForge version is now 21.1.181
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
