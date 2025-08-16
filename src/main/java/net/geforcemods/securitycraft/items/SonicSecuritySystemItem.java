@@ -65,7 +65,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockUnlinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 						return InteractionResult.SUCCESS;
 					}
-					else if (addLinkedBlock(stack.getTag(), pos, player)) {
+					else if (addLinkedBlock(stack.getOrCreateTag(), pos, player)) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SONIC_SECURITY_SYSTEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:sonic_security_system.blockLinked", Utils.localize(level.getBlockState(pos).getBlock().getDescriptionId()), pos), ChatFormatting.GREEN);
 						return InteractionResult.SUCCESS;
 					}
@@ -147,7 +147,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @param pos The position to remove from the tag
 	 */
 	public static void removeLinkedBlock(CompoundTag tag, BlockPos pos) {
-		if (!tag.contains("LinkedBlocks"))
+		if (tag == null || !tag.contains("LinkedBlocks"))
 			return;
 
 		ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);
@@ -169,7 +169,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 	 * @return true if the position is added, false otherwise
 	 */
 	public static boolean isAdded(CompoundTag tag, BlockPos pos) {
-		if (!tag.contains("LinkedBlocks"))
+		if (tag == null || !tag.contains("LinkedBlocks"))
 			return false;
 
 		ListTag list = tag.getList("LinkedBlocks", Tag.TAG_COMPOUND);

@@ -31,7 +31,7 @@ public class RemoveCameraTag {
 		Player player = ctx.get().getSender();
 		ItemStack monitor = PlayerUtils.getItemStackFromAnyHand(player, SCContent.CAMERA_MONITOR.get());
 
-		if (!player.isSpectator() && !monitor.isEmpty())
+		if (!player.isSpectator() && !monitor.isEmpty() && monitor.hasTag())
 			monitor.getTag().remove(CameraMonitorItem.getTagNameFromPosition(monitor.getTag(), CameraMonitorItem.getCameraPositions(monitor.getTag()).get(camID - 1).getLeft()));
 	}
 }
