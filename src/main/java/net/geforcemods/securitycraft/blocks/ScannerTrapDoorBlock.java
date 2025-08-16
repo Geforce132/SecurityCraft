@@ -60,16 +60,6 @@ public class ScannerTrapDoorBlock extends BaseIronTrapDoorBlock implements IOver
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(level.getTileEntity(pos));
-
-		if (actualState != null && actualState.getBlock() != this)
-			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
-		else
-			return super.getPlayerRelativeBlockHardness(state, player, level, pos);
-	}
-
-	@Override
 	public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 		IBlockState actualState = getDisguisedBlockState(world.getTileEntity(pos));
 

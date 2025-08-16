@@ -53,12 +53,7 @@ public class ReinforcedHopperBlock extends BlockHopper implements IReinforcedBlo
 
 	@Override
 	public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World level, BlockPos pos) {
-		IBlockState actualState = getDisguisedBlockState(level.getTileEntity(pos));
-
-		if (actualState != null && actualState.getBlock() != this)
-			return actualState.getPlayerRelativeBlockHardness(player, level, pos);
-		else
-			return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
+		return BlockUtils.getDestroyProgress(super::getPlayerRelativeBlockHardness, destroyTimeForOwner, state, player, level, pos);
 	}
 
 	@Override

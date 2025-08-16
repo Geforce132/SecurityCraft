@@ -16,6 +16,7 @@
 - Fix: Certain blocks can be mined by any player, regardless of who owns the block
 - Fix: Ownable blocks can be mined by drills or similar blocks from certain other mods
 - Fix: The Floor Trap cannot be mined with vanilla tools
+- Fix: Blocks disguised as vanilla blocks can be mined by anyone
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
