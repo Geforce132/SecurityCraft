@@ -81,10 +81,18 @@ public interface IOwnable {
 	 * @return true if the given entity owns this IOwnable, false otherwise
 	 */
 	public default boolean isOwnedBy(Entity entity) {
-		if (entity instanceof Player player)
-			return isOwnedBy(new Owner(player));
-		else
-			return false;
+		if (entity instanceof Player player) {
+			if (!isOwnedIgnoringMask(player))
+				return false;
+
+			return isOwnedBy(PlayerUtils.getOwnerFromPlayerOrMask(player));
+		}
+
+		return false;
+	}
+
+	public default boolean isOwnedIgnoringMask(Player player) { //TODO better name?
+		return isOwnedBy(new Owner(player));
 	}
 
 	/**
@@ -103,10 +111,12 @@ public interface IOwnable {
 		String otherUUID = otherOwner.getUUID();
 		String otherName = otherOwner.getName();
 
+		// Check the player's UUID first.
 		if (otherUUID != null && otherUUID.equals(selfUUID))
 			return true;
 
-		return otherName != null && selfUUID.equals("ownerUUID") && otherName.equals(self.getName());
+		// If the BlockEntity doesn't have a UUID saved, use the player's name instead.
+		return otherName != null && (selfUUID.equals("ownerUUID") || otherUUID.equals("ownerUUID")) && otherName.equals(self.getName());
 	}
 
 	/**

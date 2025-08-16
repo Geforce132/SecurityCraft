@@ -215,6 +215,14 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('I', SCContent.REINFORCED_IRON_BLOCK)
 		.unlockedBy("has_radar", has(SCContent.PORTABLE_RADAR))
 		.save(output);
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.TOOLS, SCContent.INCOGNITO_MASK)
+		.pattern(" B ")
+		.pattern("SLS")
+		.define('B', Tags.Items.DYES_BLACK)
+		.define('S', Tags.Items.STRINGS)
+		.define('L', Tags.Items.LEATHERS)
+		.unlockedBy("has_leather", has(Tags.Items.LEATHERS))
+		.save(output);
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, SCContent.INVENTORY_SCANNER)
 		.pattern("SSS")
 		.pattern("SLS")

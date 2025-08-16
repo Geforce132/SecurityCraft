@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
@@ -136,6 +137,24 @@ public class PlayerUtils {
 			return Utils.localize("messages.securitycraft:teamOwner", Component.literal(teamRepresentation.name()).withStyle(Style.EMPTY.withColor(teamRepresentation.color()))).withStyle(ChatFormatting.GRAY);
 
 		return Component.literal(owner.getName());
+	}
+
+	public static Owner getOwnerFromPlayerOrMask(Player player) {
+		ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
+
+		if (headItem.is(SCContent.INCOGNITO_MASK))
+			return new Owner(getNameFromPlayerOrMask(player), "ownerUUID");
+
+		return new Owner(player);
+	}
+
+	public static String getNameFromPlayerOrMask(Player player) {
+		ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
+
+		if (headItem.is(SCContent.INCOGNITO_MASK))
+			return headItem.has(DataComponents.CUSTOM_NAME) ? headItem.getCustomName().getString() : "owner";
+
+		return player.getName().getString();
 	}
 
 	/**
