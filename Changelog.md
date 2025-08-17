@@ -21,6 +21,7 @@
 - Fix: Ownable blocks can be mined by drills or similar blocks from certain other mods
 - Fix: Blocks disguised as vanilla blocks can be mined by anyone
 - Fix: The rotation of a Security Camera can become desynced between client and server
+- Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
 - Misc.: The minimum required NeoForge version is now 21.8.10
 
 --------------------------Changelog for v1.10-beta1 of SecurityCraft--------------------------
