@@ -61,18 +61,13 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 
 			if (!isLocked() && !isDisabled()) {
 				Owner viewingPlayer;
-				boolean isAllowed;
 
-				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD) {
+				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
 					viewingPlayer = PlayerUtils.getSkullOwner(player);
-					isAllowed = isAllowed(viewingPlayer.getName());
-				}
-				else {
+				else
 					viewingPlayer = isOwnedBy(player, true) ? PlayerUtils.getOwnerFromPlayerOrMask(player) : new Owner(player);
-					isAllowed = isAllowed(player);
-				}
 
-				if (!isOwnedBy(viewingPlayer) && !isAllowed) {
+				if (!isOwnedBy(viewingPlayer) && !isAllowed(viewingPlayer.getName())) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner())), ChatFormatting.RED);
 					return true;
 				}
