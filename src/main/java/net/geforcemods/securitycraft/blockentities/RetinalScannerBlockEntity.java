@@ -82,7 +82,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 						isAllowed = isAllowed(viewingPlayer.getName());
 					}
 					else {
-						viewingPlayer = isOwnedIgnoringMask(player) ? PlayerUtils.getOwnerFromPlayerOrMask(player) : new Owner(player);
+						viewingPlayer = isOwnedBy(player, true) ? PlayerUtils.getOwnerFromPlayerOrMask(player) : new Owner(player);
 						isAllowed = isAllowed(player);
 					}
 

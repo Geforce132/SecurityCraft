@@ -81,18 +81,18 @@ public interface IOwnable {
 	 * @return true if the given entity owns this IOwnable, false otherwise
 	 */
 	public default boolean isOwnedBy(Entity entity) {
-		if (entity instanceof Player player) {
-			if (!isOwnedIgnoringMask(player))
-				return false;
-
-			return isOwnedBy(PlayerUtils.getOwnerFromPlayerOrMask(player));
-		}
-
-		return false;
+		return entity instanceof Player player && isOwnedBy(player, false);
 	}
 
-	public default boolean isOwnedIgnoringMask(Player player) { //TODO better name?
-		return isOwnedBy(new Owner(player));
+	/**
+	 * Checks whether the given player owns this IOwnable.
+	 *
+	 * @param player The player to check ownership of
+	 * @param ignoreMask Whether the incognito mask, if worn by the player, should be taken into account
+	 * @return true if the player, or the player represented by the incognito mask, owns this IOwnable, false otherwise
+	 */
+	public default boolean isOwnedBy(Player player, boolean ignoreMask) {
+		return ignoreMask && isOwnedBy(new Owner(player)) || isOwnedBy(PlayerUtils.getOwnerFromPlayerOrMask(player));
 	}
 
 	/**

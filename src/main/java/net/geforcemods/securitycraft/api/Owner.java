@@ -103,6 +103,9 @@ public class Owner {
 		return true;
 	}
 
+	/**
+	 * @return true if this Owner has no player data attached to it and represents the fallback owner object, false otherwise
+	 */
 	public boolean isDefaultOwner() {
 		return equals(new Owner());
 	}

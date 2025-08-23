@@ -476,7 +476,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default boolean isAllowed(Entity entity) {
 		String name;
 
-		if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedIgnoringMask(player))
+		if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedBy(player, true))
 			name = PlayerUtils.getNameFromPlayerOrMask(player);
 		else
 			name = entity.getName().getString();
@@ -528,7 +528,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					return true;
 			}
 
-			if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedIgnoringMask(player))
+			if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedBy(player, true))
 				name = PlayerUtils.getNameFromPlayerOrMask(player);
 			else
 				name = entity.getName().getString();
