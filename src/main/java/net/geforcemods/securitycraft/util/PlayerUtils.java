@@ -143,7 +143,7 @@ public class PlayerUtils {
 		ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
 
 		if (headItem.is(SCContent.INCOGNITO_MASK))
-			return new Owner(getNameFromPlayerOrMask(player), "ownerUUID");
+			return new Owner(getNameFromMask(headItem), "ownerUUID");
 
 		return new Owner(player);
 	}
@@ -152,9 +152,13 @@ public class PlayerUtils {
 		ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
 
 		if (headItem.is(SCContent.INCOGNITO_MASK))
-			return headItem.has(DataComponents.CUSTOM_NAME) ? headItem.getCustomName().getString() : "owner";
+			return getNameFromMask(headItem);
 
 		return player.getName().getString();
+	}
+
+	private static String getNameFromMask(ItemStack mask) {
+		return mask.has(DataComponents.CUSTOM_NAME) ? mask.getCustomName().getString() : "owner";
 	}
 
 	/**
