@@ -1,5 +1,8 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -19,6 +22,7 @@ import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -35,11 +39,12 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
 public class PayBlockBlockEntity extends DisguisableBlockEntity implements WorldlyContainer, MenuProvider {
-	private static final int[] SLOTS_FOR_UP_SIDES = new int[] {12, 13, 14, 15, 16, 17, 18, 19};
+	private static final int[] SLOTS_FOR_UP_AND_SIDES = new int[] {12, 13, 14, 15, 16, 17, 18, 19};
 	private static final int[] SLOTS_FOR_DOWN = new int[] {4, 5, 6, 7, 8, 9, 10, 11};
 	private IntOption signalLength = new SignalLengthOption(60);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private final NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(20, ItemStack.EMPTY); //2 for payment reference, 2 for reward reference, 8 for payment storage, 8 for reward storage
+	public int rewardLimitedTransactions = 0;
 
 	public PayBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.PAY_BLOCK_BLOCK_ENTITY.get(), pos, state);
@@ -59,59 +64,83 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 		ContainerHelper.saveAllItems(tag, inventoryContents, lookupProvider);
 	}
 
-	public void doTransaction(Player player, int requestedTransactionAmount) {
+	@Override
+	public void setChanged() {
+		boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
+
+		rewardLimitedTransactions = getReferenceLimitedTransactions(this, 4, getContainerSize() - 1, getRewardPerTransaction(hasSmartModule), hasSmartModule);
+		super.setChanged();
+	}
+
+	public void doTransaction(Player player, int requestedTransactions) {
 		if (player instanceof ServerPlayer serverPlayer && serverPlayer.containerMenu instanceof PayBlockMenu menu) {
-			int signalLength = this.signalLength.get();
+			int signalLengthOption = signalLength.get();
 			boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
-			int transactions = Math.min(menu.inputLimitedTransactions, requestedTransactionAmount);
+			int transactions = Math.min(menu.paymentLimitedTransactions, requestedTransactions);
 
 			if (transactions == 0)
-				return;
+				return; //TODO error message
 
-			for (int i = 0; i < 2; i++) {
-				ItemStack inputItemStack = getItem(i);
+			Map<ItemStack, Integer> unifiedPaymentRequestItems = getPaymentPerTransaction(hasSmartModule);
 
-				if (inputItemStack.isEmpty())
-					continue;
+			for (Map.Entry<ItemStack, Integer> paymentRequest : unifiedPaymentRequestItems.entrySet()) {
+				ItemStack paymentStackToMatch = paymentRequest.getKey();
+				int quantityPerTransaction = paymentRequest.getValue();
+				int totalQuantity = quantityPerTransaction * transactions;
 
-				int inputItemCount = inputItemStack.getCount();
-				int consumingInputItems = transactions * inputItemCount;
-
-				BlockUtils.checkInventoryForItem(menu.paymentInput.items, inputItemStack, consumingInputItems, hasSmartModule, true, stack -> handleConsumedPaymentItem(stack, menu), menu.paymentInput::setItem);
+				BlockUtils.checkInventoryForItem(menu.paymentInput.items, paymentStackToMatch, totalQuantity, hasSmartModule, true, stack -> handleConsumedPaymentItem(stack, menu), menu.paymentInput::setItem);
 			}
 
-			if (menu.givesOutRewardItems) {
-				for (int i = 0; i < 2; i++) {
-					ItemStack rewardStack = getItem(2 + i);
+			if (hasRewardReferenceStacks()) {
+				Map<ItemStack, Integer> rewardItems = getRewardPerTransaction(hasSmartModule);
 
-					if (rewardStack.isEmpty())
-						continue;
+				for (Map.Entry<ItemStack, Integer> rewardEntry : rewardItems.entrySet()) {
+					ItemStack rewardStackToMatch = rewardEntry.getKey();
+					int quantityPerTransaction = rewardEntry.getValue();
+					int totalQuantity = quantityPerTransaction * transactions;
 
-					int rewardItemCount = rewardStack.getCount();
-					int totalReceivedRewardItems = transactions * rewardItemCount;
-
-					BlockUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStack, totalReceivedRewardItems, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(PayBlock.FACING), 0.7)), inventoryContents::set);
+					BlockUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(PayBlock.FACING), 0.7)), inventoryContents::set);
 				}
 			}
 
+			//menu.slotsChanged(this); TODO see if calc updates without this
 			level.setBlockAndUpdate(worldPosition, blockState.cycle(PayBlock.POWERED));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.PAY_BLOCK.get());
 
-			if (signalLength > 0)
-				level.scheduleTick(worldPosition, SCContent.PAY_BLOCK.get(), signalLength);
+			if (signalLengthOption > 0)
+				level.scheduleTick(worldPosition, SCContent.PAY_BLOCK.get(), signalLengthOption);
 		}
 	}
 
 	private void handleConsumedPaymentItem(ItemStack paymentStack, PayBlockMenu menu) {
 		System.out.println("paid: " + paymentStack); //TODO remove the printlns
 
-		if (isModuleEnabled(ModuleType.STORAGE)) {
-			menu.moveItemStackTo(paymentStack, 9, 17, false);
-			System.out.println("left: " + paymentStack);
-		}
+		if (isModuleEnabled(ModuleType.STORAGE))
+			menu.moveItemStackTo(paymentStack, 9, 17, false); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
+
+		System.out.println("left: " + paymentStack);
 
 		if (!paymentStack.isEmpty())
 			DefaultDispenseItemBehavior.spawnItem(level, paymentStack, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(PayBlock.FACING).getOpposite(), 0.7));
+	}
+
+	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {
+		int possibleTransactions = -1;
+
+		if (itemReference.isEmpty())
+			return 1; //If no reference items are set, default to 1 transaction per button push
+
+		for (Map.Entry<ItemStack, Integer> paymentRequest : itemReference.entrySet()) {
+			ItemStack paymentStackToMatch = paymentRequest.getKey();
+			int quantityPerTransaction = paymentRequest.getValue();
+			int paymentItemsInInputSlots = BlockUtils.countItemsBetween(slotsToSearch, paymentStackToMatch, start, endInclusive, hasSmartModule);
+			int transactions = paymentItemsInInputSlots / quantityPerTransaction;
+
+			if (possibleTransactions == -1 || possibleTransactions > transactions)
+				possibleTransactions = transactions;
+		}
+
+		return Math.max(possibleTransactions, 0);
 	}
 
 	public NonNullList<ItemStack> getContents() {
@@ -212,6 +241,38 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 		setChanged();
 	}
 
+	public Map<ItemStack, Integer> getPaymentPerTransaction(boolean exactComponentCheck) {
+		return getReferencePerTransaction(0, 1, exactComponentCheck);
+	}
+
+	public Map<ItemStack, Integer> getRewardPerTransaction(boolean exactComponentCheck) {
+		return getReferencePerTransaction(2, 3, exactComponentCheck);
+	}
+
+	private Map<ItemStack, Integer> getReferencePerTransaction(int start, int endInclusive, boolean exactComponentCheck) {
+		Map<ItemStack, Integer> payment = new HashMap<>();
+		ItemStack firstPaymentReference = getItem(start);
+		ItemStack secondPaymentReference = getItem(endInclusive);
+
+		if (BlockUtils.areItemsEqual(firstPaymentReference, secondPaymentReference, exactComponentCheck)) {
+			if (!firstPaymentReference.isEmpty())
+				payment.put(firstPaymentReference.copyWithCount(1), firstPaymentReference.getCount() + secondPaymentReference.getCount());
+		}
+		else {
+			if (!firstPaymentReference.isEmpty())
+				payment.put(firstPaymentReference.copyWithCount(1), firstPaymentReference.getCount());
+
+			if (!secondPaymentReference.isEmpty())
+				payment.put(secondPaymentReference.copyWithCount(1), secondPaymentReference.getCount());
+		}
+
+		return payment;
+	}
+
+	public boolean hasRewardReferenceStacks() {
+		return !getItem(2).isEmpty() || !getItem(3).isEmpty();
+	}
+
 	@Override
 	public boolean stillValid(Player player) {
 		return true;
@@ -230,7 +291,7 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 	public int[] getSlotsForFace(Direction side) {
 		return switch (side) {
 			case null -> new int[0];
-			case UP, NORTH, SOUTH, WEST, EAST -> SLOTS_FOR_UP_SIDES;
+			case UP, NORTH, SOUTH, WEST, EAST -> SLOTS_FOR_UP_AND_SIDES;
 			case DOWN -> SLOTS_FOR_DOWN;
 		};
 	}
@@ -274,7 +335,7 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 	}
 
 	public void dropContents() {
-		//first 4 slots (0-3) are the payment & reward slots
+		//First 4 slots (0-3) are the payment & reward slots
 		for (int i = 4; i < getContainerSize(); i++) {
 			Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
 		}

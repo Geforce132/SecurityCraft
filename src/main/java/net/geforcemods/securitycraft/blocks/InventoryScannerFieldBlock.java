@@ -155,7 +155,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 			return false;
 
 		for (ItemStack prohibitedStack : prohibitedItems) {
-			int removeItems = BlockUtils.checkItemsInItem(entity.getItem(), 0, prohibitedStack, -1, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), (i, stack) -> {
+			int removeItems = BlockUtils.checkItemsInInventorySlot(entity.getItem(), 0, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), (i, stack) -> {
 				if (stack.isEmpty())
 					entity.discard();
 			});

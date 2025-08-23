@@ -166,85 +166,74 @@ public class BlockUtils {
 		return destroyProgress.get(state, player, level, pos);
 	}
 
-	@FunctionalInterface
-	public static interface DestroyProgress {
-		float get(BlockState state, Player player, BlockGetter level, BlockPos pos);
-	}
-
 	//TODO maybe move these helper methods to different class?
-	public static int checkInventoryForItem(List<ItemStack> inventory, ItemStack stackReference, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
-		return checkInventoryForItem(inventory, 0, inventory.size() - 1, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
+	public static int checkInventoryForItem(List<ItemStack> inventory, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+		return checkInventoryForItem(inventory, 0, inventory.size() - 1, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
 	}
 
-	public static int checkInventoryForItem(List<ItemStack> inventory, int startSlot, int endSlot, ItemStack stackReference, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
-		for (int i = startSlot; i <= endSlot; i++) {
-			removeAmount = checkItemsInItem(inventory.get(i), i, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
+	public static int checkInventoryForItem(List<ItemStack> inventory, int startSlot, int endSlotInclusive, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+		if (itemsLeftToFind == 0)
+			return 0;
 
-			if (removeAmount == 0)
+		for (int i = startSlot; i <= endSlotInclusive; i++) {
+			itemsLeftToFind = checkItemsInInventorySlot(inventory.get(i), i, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
+
+			if (itemsLeftToFind == 0)
 				break;
 		}
 
-		return removeAmount;
+		return itemsLeftToFind;
 	}
 
-	public static int checkItemsInItem(ItemStack stackToCheck, int positionInInv, ItemStack stackReference, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
-		if (areItemsEqual(stackToCheck, stackReference, exactStackCheck)) {
+	public static int checkItemsInInventorySlot(ItemStack stackInSlot, int positionInInv, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+		if (itemsLeftToFind == 0)
+			return 0;
+		else if (areItemsEqual(stackInSlot, stackToMatch, exactStackCheck)) {
 			if (shouldRemoveItems) {
-				ItemStack splitStack = stackToCheck.split(removeAmount);
+				ItemStack splitStack = stackInSlot.split(itemsLeftToFind); //After this operation, stackInSlot may be an empty stack
 
-				removeAmount -= splitStack.getCount();
+				itemsLeftToFind -= splitStack.getCount();
 				handleRemovedItem.accept(splitStack);
-				handleRemainingItemInSlot.accept(positionInInv, stackToCheck);
+				handleRemainingItemInSlot.accept(positionInInv, stackInSlot);
 			}
 			else
-				removeAmount = Math.max(removeAmount - stackToCheck.getCount(), 0);
+				itemsLeftToFind = Math.max(itemsLeftToFind - stackInSlot.getCount(), 0);
 
-			if (removeAmount == 0)
-				return removeAmount;
+			if (itemsLeftToFind == 0)
+				return 0;
 		}
 
-		int containerRemoveAmount = checkItemsInItemContainer(stackToCheck, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem);
+		itemsLeftToFind = checkItemsInItemContainer(stackInSlot, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem);
+		itemsLeftToFind = checkItemsInBundle(stackInSlot, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem);
 
-		if (containerRemoveAmount != removeAmount) {
-			removeAmount = containerRemoveAmount;
-
-			if (removeAmount == 0)
-				return removeAmount;
-		}
-
-		int bundleRemoveAmount = checkItemsInBundle(stackToCheck, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem);
-
-		if (bundleRemoveAmount != removeAmount) {
-			removeAmount = bundleRemoveAmount;
-
-			if (removeAmount == 0)
-				return removeAmount;
-		}
-
-		return removeAmount;
+		return itemsLeftToFind;
 	}
 
 	//TODO maybe move to a better place?
-	public static int checkItemsInItemContainer(ItemStack item, ItemStack stackToCheck, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
-		if (item != null && item.has(DataComponents.CONTAINER)) {
-			ItemContainerContents contents = item.get(DataComponents.CONTAINER);
+	public static int checkItemsInItemContainer(ItemStack itemContainer, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
+		if (itemsLeftToFind == 0)
+			return 0;
+		else if (itemContainer != null && itemContainer.has(DataComponents.CONTAINER)) {
+			ItemContainerContents contents = itemContainer.get(DataComponents.CONTAINER);
 			NonNullList<ItemStack> containerItems = NonNullList.withSize(contents.getSlots(), ItemStack.EMPTY);
 
 			contents.copyInto(containerItems);
-			removeAmount = checkInventoryForItem(containerItems, stackToCheck, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, containerItems::set);
+			itemsLeftToFind = checkInventoryForItem(containerItems, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, containerItems::set);
 
 			if (shouldRemoveItems)
-				item.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(containerItems)); //TODO check if shulker box content tag is updated appropriately
+				itemContainer.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(containerItems)); //TODO check if shulker box content tag is updated appropriately
 		}
 
-		return removeAmount;
+		return itemsLeftToFind;
 	}
 
-	public static int checkItemsInBundle(ItemStack item, ItemStack stackToCheck, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
-		if (item != null && item.has(DataComponents.BUNDLE_CONTENTS)) {
-			List<ItemStack> bundleItems = item.get(DataComponents.BUNDLE_CONTENTS).itemCopyStream().collect(Collectors.toList());
+	public static int checkItemsInBundle(ItemStack bundle, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
+		if (itemsLeftToFind == 0)
+			return 0;
+		else if (bundle != null && bundle.has(DataComponents.BUNDLE_CONTENTS)) {
+			List<ItemStack> bundleItems = bundle.get(DataComponents.BUNDLE_CONTENTS).itemCopyStream().collect(Collectors.toList());
 
-			removeAmount = checkInventoryForItem(bundleItems, stackToCheck, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
+			itemsLeftToFind = checkInventoryForItem(bundleItems, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
 				if (stack.isEmpty())
 					bundleItems.remove((int) i);
 				else
@@ -252,23 +241,28 @@ public class BlockUtils {
 			});
 
 			if (shouldRemoveItems)
-				item.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(bundleItems));
+				bundle.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(bundleItems));
 		}
 
-		return removeAmount;
+		return itemsLeftToFind;
 	}
 
-	public static int countItemsBetween(Container container, ItemStack stackReference, int start, int endInclusive, boolean hasSmartModule) {
-		int itemsToRemove = Integer.MAX_VALUE;
+	public static int countItemsBetween(Container container, ItemStack stackToMatch, int start, int endInclusive, boolean hasSmartModule) {
+		int itemsLeftToFind = Integer.MAX_VALUE;
 
 		for (int i = start; i <= endInclusive; i++) {
-			itemsToRemove = checkItemsInItem(container.getItem(i), i, stackReference, itemsToRemove, hasSmartModule, false, stack -> {}, (slot, stack) -> {});
+			itemsLeftToFind = checkItemsInInventorySlot(container.getItem(i), i, stackToMatch, itemsLeftToFind, hasSmartModule, false, stack -> {}, (slot, stack) -> {});
 		}
 
-		return Integer.MAX_VALUE - itemsToRemove;
+		return Integer.MAX_VALUE - itemsLeftToFind;
 	}
 
 	public static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean exactComponentCheck) {
 		return exactComponentCheck ? ItemStack.isSameItemSameComponents(firstItemStack, secondItemStack) : firstItemStack.is(secondItemStack.getItem());
+	}
+
+	@FunctionalInterface
+	public static interface DestroyProgress {
+		float get(BlockState state, Player player, BlockGetter level, BlockPos pos);
 	}
 }

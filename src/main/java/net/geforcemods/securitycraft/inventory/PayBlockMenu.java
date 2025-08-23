@@ -1,14 +1,8 @@
 package net.geforcemods.securitycraft.inventory;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.PayBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,13 +20,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 	private final boolean hasSmartModule;
 	public final boolean withStorageAccess;
 	private final ContainerLevelAccess worldPosCallable;
-
-	public boolean givesOutRewardItems;
-	public boolean sufficientInputForTransaction;
-
-	public int inputLimitedTransactions = 0;
-	public int rewardLimitedTransactions = 0;
-	public boolean notEnoughSupply;
+	public int paymentLimitedTransactions = 0;
 
 	public PayBlockMenu(int windowId, Level level, BlockPos pos, Inventory playerInventory) {
 		super(SCContent.PAY_BLOCK_MENU.get(), windowId);
@@ -43,9 +31,8 @@ public class PayBlockMenu extends AbstractContainerMenu {
 
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		withStorageAccess = isOwner && be.isModuleEnabled(ModuleType.STORAGE);
-		givesOutRewardItems = !be.getItem(2).isEmpty() || !be.getItem(3).isEmpty();
 
-		//payment item reference: 0-1
+		//payment item ghost slots: 0-1
 		for (int i = 0; i < 2; i++) {
 			addSlot(new OwnerRestrictedSlot(be, be, i, 65 + i * 18, 18, isOwner, true));
 		}
@@ -55,12 +42,12 @@ public class PayBlockMenu extends AbstractContainerMenu {
 			addSlot(new Slot(paymentInput, i, 17 + i * 18, 43));
 		}
 
-		if (withStorageAccess) {
-			//reward item reference: 7-8
-			for (int i = 0; i < 2; i++) {
-				addSlot(new OwnerRestrictedSlot(be, be, 2 + i, 65 + i * 18, 93, isOwner, true));
-			}
+		//reward item ghost slots: 7-8
+		for (int i = 0; i < 2; i++) {
+			addSlot(new OwnerRestrictedSlot(be, be, 2 + i, 65 + i * 18, 93, isOwner, true));
+		}
 
+		if (withStorageAccess) {
 			//pay block payment storage slots: 9-16
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 4; j++) {
@@ -76,14 +63,14 @@ public class PayBlockMenu extends AbstractContainerMenu {
 			}
 		}
 
-		//main player inventory: 25-51 in storage version, 7-33 otherwise
+		//main player inventory: 25-51 in storage version, 9-35 otherwise
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlot(new Slot(playerInventory, 9 + j + i * 9, 8 + j * 18, 167 + i * 18));
 			}
 		}
 
-		//player hotbar: 52-60  in storage version, 34-42 otherwise
+		//player hotbar: 52-60 in storage version, 36-43 otherwise
 		for (int i = 0; i < 9; i++) {
 			addSlot(new Slot(playerInventory, i, 8 + i * 18, 225));
 		}
@@ -93,64 +80,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 	public void slotsChanged(Container container) {
 		super.slotsChanged(container);
 
-		notEnoughSupply = false;
-		givesOutRewardItems = !be.getItem(2).isEmpty() || !be.getItem(3).isEmpty();
-
-		int inputLimitedTransactions = getMaxPossibleTransactions(paymentInput, hasSmartModule);
-		int rewardLimitedTransactions = 1;
-
-		if (givesOutRewardItems) {
-			rewardLimitedTransactions = -1;
-
-			for (int i = 0; i < 2; i++) {
-				ItemStack rewardItem = getSlot(7 + i).getItem();
-
-				if (rewardItem.isEmpty())
-					continue;
-
-				int outputItemCount = BlockUtils.countItemsBetween(be, rewardItem, 4, be.getContainerSize() - 1, hasSmartModule);
-				int supplyTransactionCount = outputItemCount / rewardItem.getCount();
-
-				notEnoughSupply |= supplyTransactionCount < inputLimitedTransactions;
-
-				if (rewardLimitedTransactions == -1 || rewardLimitedTransactions > supplyTransactionCount)
-					rewardLimitedTransactions = Math.min(supplyTransactionCount, inputLimitedTransactions);
-			}
-		}
-
-		this.inputLimitedTransactions = inputLimitedTransactions;
-		this.rewardLimitedTransactions = Math.max(rewardLimitedTransactions, 0);
-	}
-
-	public int getMaxPossibleTransactions(Container paymentInput, boolean hasSmartModule) {
-		int possibleTransactions = -1;
-		Map<ItemStack, Integer> unifiedPaymentRequestItems = new HashMap<>();
-
-		for (int i = 0; i < 2; i++) {
-			ItemStack paymentItem = be.getItem(i);
-			Optional<ItemStack> identical = unifiedPaymentRequestItems.keySet().stream().filter(stack -> BlockUtils.areItemsEqual(paymentItem, stack, hasSmartModule)).findFirst();
-
-			if (identical.isPresent())
-				unifiedPaymentRequestItems.put(paymentItem, paymentItem.getCount() + identical.get().getCount());
-			else
-				unifiedPaymentRequestItems.put(paymentItem, paymentItem.getCount());
-		}
-
-		for (Entry<ItemStack, Integer> paymentRequest : unifiedPaymentRequestItems.entrySet()) {
-			ItemStack paymentItem = paymentRequest.getKey();
-			int quantity = paymentRequest.getValue();
-
-			if (paymentItem.isEmpty())
-				continue;
-
-			int inputItemCount = BlockUtils.countItemsBetween(paymentInput, paymentItem, 0, 4, hasSmartModule);
-			int transactionCount = inputItemCount / quantity;
-
-			if (possibleTransactions == -1 || possibleTransactions > transactionCount)
-				possibleTransactions = transactionCount;
-		}
-
-		return Math.max(possibleTransactions, 0);
+		paymentLimitedTransactions = be.getReferenceLimitedTransactions(paymentInput, 0, 4, be.getPaymentPerTransaction(hasSmartModule), hasSmartModule);
 	}
 
 	@Override
@@ -164,7 +94,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 	public ItemStack quickMoveStack(Player player, int index) {
 		ItemStack toReturn = ItemStack.EMPTY;
 		Slot slot = slots.get(index);
-		int playerInvStartIndex = withStorageAccess ? 25 : 7;
+		int playerInvStartIndex = withStorageAccess ? 25 : 9;
 
 		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
@@ -203,7 +133,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
-		return super.moveItemStackTo(stack, startIndex, endIndex, reverseDirection);
+		return super.moveItemStackTo(stack, startIndex, endIndex, reverseDirection); //Overridden to change method access modifier to public
 	}
 
 	@Override

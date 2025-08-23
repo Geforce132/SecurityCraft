@@ -42,15 +42,10 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 	}
 
 	@Override
-	protected void handleSlotStateChanged(int slotId, int containerId, boolean newState) {
-		super.handleSlotStateChanged(slotId, containerId, newState);
-	}
-
-	@Override
 	protected void containerTick() {
 		super.containerTick();
 
-		payButton.active = menu.sufficientInputForTransaction = menu.inputLimitedTransactions > 0;
+		payButton.active = menu.paymentLimitedTransactions > 0;
 	}
 
 	@Override
@@ -66,11 +61,11 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 		guiGraphics.drawString(font, paymentText, 15, 25, 0x404040, false);
 		guiGraphics.drawString(font, rewardText, 15, 65, 0x404040, false);
 
-		if (menu.givesOutRewardItems || menu.withStorageAccess) {
+		if (be.hasRewardReferenceStacks() || menu.withStorageAccess) {
 			guiGraphics.drawString(font, storedItemsText, 15, 80, 0x404040, false);
 
-			if (menu.sufficientInputForTransaction)
-				guiGraphics.drawString(font, "(" + menu.rewardLimitedTransactions + "x)", 105, 100, menu.notEnoughSupply ? 0x900000 : 0x404040, false);
+			if (payButton.active)
+				guiGraphics.drawString(font, "(" + Math.min(menu.paymentLimitedTransactions, be.rewardLimitedTransactions) + "x)", 105, 100, menu.paymentLimitedTransactions > be.rewardLimitedTransactions ? 0x900000 : 0x404040, false);
 		}
 	}
 
@@ -80,6 +75,6 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 	}
 
 	private void sendTransactionRequest(Button button) {
-		PacketDistributor.sendToServer(new TogglePayBlock(be.getBlockPos(), Math.max(menu.rewardLimitedTransactions, 1)));
+		PacketDistributor.sendToServer(new TogglePayBlock(be.getBlockPos(), Math.min(menu.paymentLimitedTransactions, Math.max(be.rewardLimitedTransactions, 1))));
 	}
 }
