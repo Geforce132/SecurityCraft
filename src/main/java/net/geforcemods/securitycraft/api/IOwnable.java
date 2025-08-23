@@ -92,7 +92,7 @@ public interface IOwnable {
 	 * @return true if the player, or the player represented by the incognito mask, owns this IOwnable, false otherwise
 	 */
 	public default boolean isOwnedBy(Player player, boolean ignoreMask) {
-		return ignoreMask && isOwnedBy(new Owner(player)) || isOwnedBy(PlayerUtils.getOwnerFromPlayerOrMask(player));
+		return isOwnedBy(new Owner(player)) && (ignoreMask || isOwnedBy(PlayerUtils.getOwnerFromPlayerOrMask(player)));
 	}
 
 	/**
