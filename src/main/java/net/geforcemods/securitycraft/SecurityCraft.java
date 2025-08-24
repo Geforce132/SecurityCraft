@@ -97,6 +97,7 @@ public class SecurityCraft {
 		NeoForge.EVENT_BUS.addListener(RegistrationHandler::registerBrewingRecipes);
 		container.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
 		container.registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
+		SCContent.ARMOR_MATERIALS.register(modEventBus);
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);
 		SCContent.COMMAND_ARGUMENT_TYPES.register(modEventBus);
