@@ -22,6 +22,7 @@
 - Fix: Blocks disguised as vanilla blocks can be mined by anyone
 - Fix: The rotation of a Security Camera can become desynced between client and server
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
+- Fix: The Mine and Sentry Remote Access Tool appear to be able to interact with mines/sentries that are not owned by the player, even though they can't
 - Misc.: The minimum required NeoForge version is now 21.8.10
 
 --------------------------Changelog for v1.10-beta1 of SecurityCraft--------------------------

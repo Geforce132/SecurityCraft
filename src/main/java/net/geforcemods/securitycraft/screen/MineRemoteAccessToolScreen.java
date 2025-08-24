@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.items.MineRemoteAccessToolItem;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
@@ -25,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
@@ -89,16 +91,17 @@ public class MineRemoteAccessToolScreen extends Screen {
 			boolean foundMine = false;
 
 			if (globalPos != null) {
+				Level level = minecraft.level;
 				BlockPos minePos = globalPos.pos();
 
 				guiButtons[i][UNBIND].active = true;
 				lines[i] = Utils.localize("gui.securitycraft:mrat.mineLocations", minePos);
 
-				if (globalPos.dimension().equals(minecraft.level.dimension()) && minecraft.level.isLoaded(minePos)) {
-					Block block = minecraft.level.getBlockState(minePos).getBlock();
+				if (globalPos.dimension().equals(level.dimension()) && level.isLoaded(minePos)) {
+					Block block = level.getBlockState(minePos).getBlock();
 
-					if (block instanceof IExplosive explosive) {
-						boolean active = explosive.isActive(minecraft.level, minePos);
+					if (block instanceof IExplosive explosive && (!(level.getBlockEntity(minePos) instanceof IOwnable ownable) || ownable.isOwnedBy(minecraft.player))) {
+						boolean active = explosive.isActive(level, minePos);
 						boolean defusable = explosive.isDefusable();
 
 						guiButtons[i][DEFUSE].active = active && defusable;
