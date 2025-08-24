@@ -86,6 +86,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 				SCContent.LENS,
 				SCContent.REDSTONE_MODULE,
 				SCContent.REINFORCED_SCAFFOLDING_ITEM,
+				SCContent.SECURITY_CAMERA_ITEM,
 				SCContent.SPEED_MODULE,
 				SCContent.TASER,
 				SCContent.TASER_POWERED,
