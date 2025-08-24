@@ -9,6 +9,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine.Action;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
@@ -22,10 +23,12 @@ import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.util.InputMappings;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
@@ -96,17 +99,19 @@ public class MineRemoteAccessToolScreen extends Screen {
 				addButton(guiButtons[i][j]);
 			}
 
+			World level = minecraft.level;
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
 			boolean foundMine = false;
 
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				guiButtons[i][UNBIND].active = true;
 
-				if (Minecraft.getInstance().player.level.isLoaded(minePos)) {
-					Block block = minecraft.level.getBlockState(minePos).getBlock();
+				if (level.isLoaded(minePos)) {
+					Block block = level.getBlockState(minePos).getBlock();
+					TileEntity be = level.getBlockEntity(minePos);
 
-					if (block instanceof IExplosive) {
-						boolean active = ((IExplosive) block).isActive(minecraft.level, minePos);
+					if (block instanceof IExplosive && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(minecraft.player))) {
+						boolean active = ((IExplosive) block).isActive(level, minePos);
 						boolean defusable = ((IExplosive) block).isDefusable();
 
 						guiButtons[i][DEFUSE].active = active && defusable;
