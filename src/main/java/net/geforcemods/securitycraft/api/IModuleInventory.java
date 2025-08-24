@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -478,7 +479,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @return true if the entity is listed on the allowlist module, false otherwise
 	 */
 	public default boolean isAllowed(Entity entity) {
-		return isAllowed(entity.getName().getString());
+		String name;
+
+		if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedBy(player, true))
+			name = PlayerUtils.getNameFromPlayerOrMask(player);
+		else
+			name = entity.getName().getString();
+
+		return isAllowed(name);
 	}
 
 	/**
@@ -511,6 +519,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return false;
 
 		ItemStack stack = getModule(ModuleType.DENYLIST);
+		String name;
 
 		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
 			if (this instanceof IOwnable ownable) {
@@ -523,11 +532,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				else
 					return true;
 			}
-			else
-				return true;
 		}
 
-		String name = entity.getName().getString();
+		if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedBy(player, true))
+			name = PlayerUtils.getNameFromPlayerOrMask(player);
+		else
+			name = entity.getName().getString();
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
 		return ModuleItem.doesModuleHaveTeamOf(stack, name, myLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());

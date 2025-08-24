@@ -8,6 +8,7 @@ import java.util.List;
 import com.mojang.authlib.GameProfile;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
@@ -143,6 +144,28 @@ public class PlayerUtils {
 			return Utils.localize("messages.securitycraft:teamOwner", Component.literal(teamRepresentation.name()).withStyle(Style.EMPTY.withColor(teamRepresentation.color()))).withStyle(ChatFormatting.GRAY);
 
 		return Component.literal(owner.getName());
+	}
+
+	public static Owner getOwnerFromPlayerOrMask(Player player) {
+		ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
+
+		if (headItem.is(SCContent.INCOGNITO_MASK))
+			return new Owner(getNameFromMask(headItem), "ownerUUID");
+
+		return new Owner(player);
+	}
+
+	public static String getNameFromPlayerOrMask(Player player) {
+		ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
+
+		if (headItem.is(SCContent.INCOGNITO_MASK))
+			return getNameFromMask(headItem);
+
+		return player.getName().getString();
+	}
+
+	private static String getNameFromMask(ItemStack mask) {
+		return mask.hasCustomHoverName() ? mask.getHoverName().getString() : "owner";
 	}
 
 	/**
