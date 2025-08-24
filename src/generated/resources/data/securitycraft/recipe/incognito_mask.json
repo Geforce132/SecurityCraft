@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": "#c:leathers",
+    "S": "#c:strings"
+  },
+  "pattern": [
+    " S ",
+    "S S",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:incognito_mask"
+  }
+}
