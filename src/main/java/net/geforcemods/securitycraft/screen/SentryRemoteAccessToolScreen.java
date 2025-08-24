@@ -106,7 +106,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			}
 
 			if (sentryPos != null) {
-				Level level = Minecraft.getInstance().player.level;
+				Level level = minecraft.level;
 				String nameKey = "sentry" + (i + 1) + "_name";
 				Component sentryName = null;
 
@@ -121,20 +121,20 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 					if (!sentries.isEmpty()) {
 						Sentry sentry = sentries.get(0);
-						SentryMode mode = sentry.getMode();
 
-						if (sentryName == null && sentry.hasCustomName())
-							sentryName = sentry.getCustomName();
+						if (sentry.isOwnedBy(minecraft.player)) {
+							SentryMode mode = sentry.getMode();
 
-						guiButtons[i][MODE].active = true;
-						guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
-						guiButtons[i][UNBIND].active = true;
-						((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
-						((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2"), Utils.localize("gui.securitycraft:srat.mode1"), Utils.localize("gui.securitycraft:srat.mode3"))));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1"), Utils.localize("gui.securitycraft:srat.targets2"), Utils.localize("gui.securitycraft:srat.targets3"))));
-						hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
-						foundSentry = true;
+							guiButtons[i][MODE].active = true;
+							guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
+							guiButtons[i][UNBIND].active = true;
+							((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
+							((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
+							hoverCheckers.add(new TextHoverChecker(guiButtons[i][MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2"), Utils.localize("gui.securitycraft:srat.mode1"), Utils.localize("gui.securitycraft:srat.mode3"))));
+							hoverCheckers.add(new TextHoverChecker(guiButtons[i][TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1"), Utils.localize("gui.securitycraft:srat.targets2"), Utils.localize("gui.securitycraft:srat.targets3"))));
+							hoverCheckers.add(new TextHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind")));
+							foundSentry = true;
+						}
 					}
 				}
 
