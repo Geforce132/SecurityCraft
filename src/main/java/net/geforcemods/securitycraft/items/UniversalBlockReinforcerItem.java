@@ -54,7 +54,7 @@ public class UniversalBlockReinforcerItem extends Item {
 					BlockPos modifyPos = source.pos().relative(state.getValue(DispenserBlock.FACING));
 					BlockState modifyState = level.getBlockState(modifyPos);
 
-					setSuccess(convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.blockEntity()).getOwner()));
+					setSuccess(convertBlock(modifyState, level, stack, modifyPos, null, ((IOwnable) source.blockEntity()).getOwner()));
 
 					if (isSuccess() && level instanceof ServerLevel serverLevel)
 						stack.hurtAndBreak(1, serverLevel, null, i -> {});
@@ -97,7 +97,7 @@ public class UniversalBlockReinforcerItem extends Item {
 
 	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player) {
 		if (!player.isCreative() && level.mayInteract(player, pos)) {
-			boolean result = convertBlock(state, level, stack, pos, new Owner(player));
+			boolean result = convertBlock(state, level, stack, pos, player, new Owner(player));
 
 			if (result && !level.isClientSide)
 				stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
@@ -108,7 +108,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			return false;
 	}
 
-	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Owner owner) {
+	public static boolean convertBlock(BlockState state, Level level, ItemStack stack, BlockPos pos, Player player, Owner owner) {
 		boolean isReinforcing = isReinforcing(stack);
 		Block block = state.getBlock();
 		Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
@@ -123,7 +123,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			BlockEntity be = level.getBlockEntity(pos);
 			CompoundTag tag = null;
 
-			if (be instanceof IOwnable ownable && !ownable.isOwnedBy(owner))
+			if (be instanceof IOwnable ownable && ((player != null && !ownable.isOwnedBy(player)) || !ownable.isOwnedBy(owner)))
 				return false;
 
 			if (!level.isClientSide) {
