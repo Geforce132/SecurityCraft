@@ -105,7 +105,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			}
 
 			if (sentryPos != null) {
-				Level level = Minecraft.getInstance().player.level;
+				Level level = minecraft.level;
 				String nameKey = "sentry" + (i + 1) + "_name";
 				Component sentryName = null;
 
@@ -120,20 +120,23 @@ public class SentryRemoteAccessToolScreen extends Screen {
 
 					if (!sentries.isEmpty()) {
 						Sentry sentry = sentries.get(0);
-						SentryMode mode = sentry.getMode();
 
-						if (sentryName == null && sentry.hasCustomName())
-							sentryName = sentry.getCustomName();
+						if (sentry.isOwnedBy(minecraft.player)) {
+							SentryMode mode = sentry.getMode();
 
-						guiButtons[i][MODE].active = true;
-						guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
-						guiButtons[i][UNBIND].active = true;
-						((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
-						((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						updateModeButtonTooltip(guiButtons[i][MODE]);
-						updateTargetsButtonTooltip(guiButtons[i][TARGETS]);
-						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
-						foundSentry = true;
+							if (sentryName == null && sentry.hasCustomName())
+								sentryName = sentry.getCustomName();
+
+							guiButtons[i][MODE].active = true;
+							guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
+							guiButtons[i][UNBIND].active = true;
+							((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
+							((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
+							updateModeButtonTooltip(guiButtons[i][MODE]);
+							updateTargetsButtonTooltip(guiButtons[i][TARGETS]);
+							guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
+							foundSentry = true;
+						}
 					}
 				}
 
