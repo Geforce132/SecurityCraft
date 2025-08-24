@@ -108,7 +108,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 			if (entry != null) {
 				GlobalPos globalPos = entry.globalPos();
 				BlockPos sentryPos = globalPos.pos();
-				Level level = Minecraft.getInstance().player.level();
+				Level level = minecraft.level;
 				Component sentryName = null;
 
 				if (entry.name().isPresent())
@@ -117,25 +117,28 @@ public class SentryRemoteAccessToolScreen extends Screen {
 				lines[i] = Utils.getFormattedCoordinates(sentryPos);
 				guiButtons[i][UNBIND].active = true;
 
-				if (globalPos.dimension().equals(minecraft.level.dimension()) && level.isLoaded(sentryPos)) {
+				if (globalPos.dimension().equals(level.dimension()) && level.isLoaded(sentryPos)) {
 					List<Sentry> sentries = level.getEntitiesOfClass(Sentry.class, new AABB(sentryPos));
 
 					if (!sentries.isEmpty()) {
 						Sentry sentry = sentries.get(0);
-						SentryMode mode = sentry.getMode();
 
-						if (sentryName == null && sentry.hasCustomName())
-							sentryName = sentry.getCustomName();
+						if (sentry.isOwnedBy(minecraft.player)) {
+							SentryMode mode = sentry.getMode();
 
-						guiButtons[i][MODE].active = true;
-						guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
-						guiButtons[i][UNBIND].active = true;
-						((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
-						((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						updateModeButtonTooltip(guiButtons[i][MODE]);
-						updateTargetsButtonTooltip(guiButtons[i][TARGETS]);
-						guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
-						foundSentry = true;
+							if (sentryName == null && sentry.hasCustomName())
+								sentryName = sentry.getCustomName();
+
+							guiButtons[i][MODE].active = true;
+							guiButtons[i][TARGETS].active = mode != SentryMode.IDLE;
+							guiButtons[i][UNBIND].active = true;
+							((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
+							((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
+							updateModeButtonTooltip(guiButtons[i][MODE]);
+							updateTargetsButtonTooltip(guiButtons[i][TARGETS]);
+							guiButtons[i][UNBIND].setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:srat.unbind")));
+							foundSentry = true;
+						}
 					}
 				}
 
