@@ -6,6 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IExplosive;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.inventory.GenericMenu;
 import net.geforcemods.securitycraft.network.server.RemoteControlMine;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
@@ -19,8 +20,10 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class MineRemoteAccessToolScreen extends GuiContainer {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
@@ -81,15 +84,19 @@ public class MineRemoteAccessToolScreen extends GuiContainer {
 				buttonList.add(buttons[i][j]);
 			}
 
+			World level = mc.world;
 			BlockPos minePos = new BlockPos(coords[0], coords[1], coords[2]);
 			boolean foundMine = false;
 
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				buttons[i][UNBIND].enabled = true;
-				if (Minecraft.getMinecraft().player.world.isBlockLoaded(minePos, false)) {
-					Block block = mc.world.getBlockState(minePos).getBlock();
-					if (block instanceof IExplosive) {
-						boolean active = ((IExplosive) block).isActive(mc.world, minePos);
+
+				if (level.isBlockLoaded(minePos, false)) {
+					Block block = level.getBlockState(minePos).getBlock();
+					TileEntity be = level.getTileEntity(minePos);
+
+					if (block instanceof IExplosive && (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(mc.player))) {
+						boolean active = ((IExplosive) block).isActive(level, minePos);
 						boolean defusable = ((IExplosive) block).isDefusable();
 
 						buttons[i][DEFUSE].enabled = active && defusable;

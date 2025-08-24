@@ -93,7 +93,7 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 			}
 
 			BlockPos sentryPos = new BlockPos(coords[0], coords[1], coords[2]);
-			World world = Minecraft.getMinecraft().player.world;
+			World level = mc.world;
 
 			if (!(coords[0] == 0 && coords[1] == 0 && coords[2] == 0)) {
 				String nameKey = "sentry" + (i + 1) + "_name";
@@ -105,25 +105,28 @@ public class SentryRemoteAccessToolScreen extends GuiContainer {
 				names[i] = Utils.getFormattedCoordinates(sentryPos).getFormattedText();
 				guiButtons[i][UNBIND].enabled = true;
 
-				if (world.isBlockLoaded(sentryPos, false)) {
-					List<Sentry> sentries = world.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(sentryPos));
+				if (level.isBlockLoaded(sentryPos, false)) {
+					List<Sentry> sentries = level.getEntitiesWithinAABB(Sentry.class, new AxisAlignedBB(sentryPos));
 
 					if (!sentries.isEmpty()) {
 						Sentry sentry = sentries.get(0);
-						SentryMode mode = sentry.getMode();
 
-						if (sentryName == null && sentry.hasCustomName())
-							sentryName = sentry.getCustomNameTag();
+						if (sentry.isOwnedBy(mc.player)) {
+							SentryMode mode = sentry.getMode();
 
-						guiButtons[i][MODE].enabled = true;
-						guiButtons[i][TARGETS].enabled = mode != SentryMode.IDLE;
-						guiButtons[i][UNBIND].enabled = true;
-						((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
-						((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode1").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets2").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
-						hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
-						foundSentry = true;
+							if (sentryName == null && sentry.hasCustomName())
+								sentryName = sentry.getCustomNameTag();
+
+							guiButtons[i][MODE].enabled = true;
+							guiButtons[i][TARGETS].enabled = mode != SentryMode.IDLE;
+							guiButtons[i][UNBIND].enabled = true;
+							((TogglePictureButton) guiButtons[i][0]).setCurrentIndex(mode.ordinal() / 3);
+							((TogglePictureButton) guiButtons[i][1]).setCurrentIndex(mode.ordinal() % 3);
+							hoverCheckers.add(new StringHoverChecker(guiButtons[i][MODE], Arrays.asList(Utils.localize("gui.securitycraft:srat.mode2").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode1").getFormattedText(), Utils.localize("gui.securitycraft:srat.mode3").getFormattedText())));
+							hoverCheckers.add(new StringHoverChecker(guiButtons[i][TARGETS], Arrays.asList(Utils.localize("gui.securitycraft:srat.targets1").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets2").getFormattedText(), Utils.localize("gui.securitycraft:srat.targets3").getFormattedText())));
+							hoverCheckers.add(new StringHoverChecker(guiButtons[i][UNBIND], Utils.localize("gui.securitycraft:srat.unbind").getFormattedText()));
+							foundSentry = true;
+						}
 					}
 				}
 
