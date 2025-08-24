@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.ExtraCodecs;
@@ -473,7 +474,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @return true if the entity is listed on the allowlist module, false otherwise
 	 */
 	public default boolean isAllowed(Entity entity) {
-		return isAllowed(entity.getName().getString());
+		String name;
+
+		if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedBy(player, true))
+			name = PlayerUtils.getNameFromPlayerOrMask(player);
+		else
+			name = entity.getName().getString();
+
+		return isAllowed(name);
 	}
 
 	/**
@@ -502,6 +510,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return false;
 
 		ListModuleData listModuleData = getModule(ModuleType.DENYLIST).get(SCContent.LIST_MODULE_DATA);
+		String name;
 
 		if (listModuleData != null) {
 			if (listModuleData.affectEveryone()) {
@@ -519,7 +528,10 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 					return true;
 			}
 
-			String name = entity.getName().getString();
+			if (this instanceof IOwnable ownable && entity instanceof Player player && ownable.isOwnedBy(player, true))
+				name = PlayerUtils.getNameFromPlayerOrMask(player);
+			else
+				name = entity.getName().getString();
 
 			return listModuleData.isTeamOfPlayerOnList(myLevel(), name) || listModuleData.isPlayerOnList(name);
 		}

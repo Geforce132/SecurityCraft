@@ -6,7 +6,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -93,30 +92,22 @@ public class Owner {
 	}
 
 	/**
-	 * @return If this user is the owner of the given blocks.
+	 * @return If this user is the owner of all the given blocks.
 	 */
 	public boolean owns(IOwnable... ownables) {
 		for (IOwnable ownable : ownables) {
-			if (ownable == null)
-				continue;
-
-			Owner ownableOwner = ownable.getOwner();
-			String uuidToCheck = ownableOwner.getUUID();
-			String nameToCheck = ownableOwner.getName();
-
-			if (TeamUtils.areOnSameTeam(this, ownableOwner))
-				continue;
-
-			// Check the player's UUID first.
-			if (uuidToCheck == null || !uuidToCheck.equals(ownerUUID))
-				return false;
-
-			// If the BlockEntity doesn't have a UUID saved, use the player's name instead.
-			if (nameToCheck != null && uuidToCheck.equals("ownerUUID") && !nameToCheck.equals("owner") && !nameToCheck.equals(ownerName))
+			if (ownable != null && !ownable.isOwnedBy(this))
 				return false;
 		}
 
 		return true;
+	}
+
+	/**
+	 * @return true if this Owner has no player data attached to it and represents the fallback owner object, false otherwise
+	 */
+	public boolean isDefaultOwner() {
+		return equals(new Owner());
 	}
 
 	/**
