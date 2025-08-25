@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "L": {
+      "tag": "forge:leather"
+    },
+    "S": {
+      "tag": "forge:string"
+    }
+  },
+  "pattern": [
+    " S ",
+    "S S",
+    " L "
+  ],
+  "result": {
+    "item": "securitycraft:incognito_mask"
+  },
+  "show_notification": true
+}

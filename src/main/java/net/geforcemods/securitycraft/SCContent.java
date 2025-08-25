@@ -220,6 +220,7 @@ import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.DisplayCaseItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
+import net.geforcemods.securitycraft.items.IncognitoMaskItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
@@ -2597,6 +2598,8 @@ public class SCContent {
 	@HasManualPage(hasRecipeDescription = true)
 	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(1)));
 	public static final RegistryObject<Item> GLOW_DISPLAY_CASE_ITEM = ITEMS.register(GLOW_DISPLAY_CASE_PATH, () -> new DisplayCaseItem(SCContent.GLOW_DISPLAY_CASE.get(), itemProp(), true));
+	@HasManualPage
+	public static final RegistryObject<Item> INCOGNITO_MASK = ITEMS.register("incognito_mask", () -> new IncognitoMaskItem(itemProp(1)));
 	@HasManualPage
 	public static final RegistryObject<Item> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(1)));
 	@HasManualPage(PageGroup.KEYCARDS)

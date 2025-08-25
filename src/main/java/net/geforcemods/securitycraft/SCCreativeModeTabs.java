@@ -134,6 +134,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.UNIVERSAL_BLOCK_REMOVER.get()));
 				output.accept(new ItemStack(SCContent.TASER.get()));
 				output.accept(new ItemStack(SCContent.BRIEFCASE.get()));
+				output.accept(new ItemStack(SCContent.INCOGNITO_MASK.get()));
 				output.accept(new ItemStack(SCContent.FAKE_WATER_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.FAKE_LAVA_BUCKET.get()));
 				output.accept(new ItemStack(SCContent.ADMIN_TOOL.get()));
