@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,7 +35,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public NonNullList<ItemStack> getInventory();
 
 	/**
-	 * @return An array of what {@link ModuleType} can be inserted into this inventory
+	 * @return An array of what {@link net.geforcemods.securitycraft.misc.ModuleType} can be inserted into this inventory
 	 */
 	public ModuleType[] acceptedModules();
 
@@ -281,7 +282,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	/**
-	 * @return true if the inventory accepts the given {@link ModuleType}, false otherwise
+	 * @return true if the inventory accepts the given {@link net.geforcemods.securitycraft.misc.ModuleType}, false otherwise
 	 */
 	public default boolean acceptsModule(ModuleType type) {
 		for (ModuleType module : acceptedModules()) {
@@ -384,7 +385,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	/**
 	 * @param module The type to check if it is present in this inventory
 	 * @return true if the given module type is present in this inventory, false otherwise
-	 * @deprecated Prefer using {@link #isModuleEnabled(ModuleType)}
+	 * @deprecated Prefer using {@link #isModuleEnabled(net.geforcemods.securitycraft.misc.ModuleType)}
 	 */
 	@Deprecated
 	public default boolean hasModule(ModuleType module) {
@@ -500,7 +501,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 * @return true if the entity is listed on the allowlist module, false otherwise
 	 */
 	public default boolean isAllowed(Entity entity) {
-		return isAllowed(entity.getName().getString());
+		String name;
+
+		if (this instanceof IOwnable && entity instanceof PlayerEntity && ((IOwnable) this).isOwnedBy((PlayerEntity) entity, true))
+			name = PlayerUtils.getNameFromPlayerOrMask((PlayerEntity) entity);
+		else
+			name = entity.getName().getString();
+
+		return isAllowed(name);
 	}
 
 	/**
@@ -533,6 +541,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 			return false;
 
 		ItemStack stack = getModule(ModuleType.DENYLIST);
+		String name;
 
 		if (stack.hasTag() && stack.getTag().getBoolean("affectEveryone")) {
 			if (this instanceof IOwnable) {
@@ -545,11 +554,12 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 				else
 					return true;
 			}
-			else
-				return true;
 		}
 
-		String name = entity.getName().getString();
+		if (this instanceof IOwnable && entity instanceof PlayerEntity && ((IOwnable) this).isOwnedBy((PlayerEntity) entity, true))
+			name = PlayerUtils.getNameFromPlayerOrMask((PlayerEntity) entity);
+		else
+			name = entity.getName().getString();
 
 		//IModuleInventory#getModule returns ItemStack.EMPTY when the module does not exist, and getPlayersFromModule will then have an empty list
 		return ModuleItem.doesModuleHaveTeamOf(stack, name, myLevel()) || ModuleItem.getPlayersFromModule(stack).contains(name.toLowerCase());

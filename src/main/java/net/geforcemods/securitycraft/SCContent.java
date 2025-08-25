@@ -192,6 +192,7 @@ import net.geforcemods.securitycraft.items.BriefcaseItem;
 import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
+import net.geforcemods.securitycraft.items.IncognitoMaskItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
@@ -2085,6 +2086,8 @@ public class SCContent {
 	public static final RegistryObject<Item> FAKE_LAVA_BUCKET = ITEMS.register("bucket_f_lava", () -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA, itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
 	@HasManualPage(hasRecipeDescription = true)
 	public static final RegistryObject<Item> FAKE_WATER_BUCKET = ITEMS.register("bucket_f_water", () -> new FakeLiquidBucketItem(SCContent.FAKE_WATER, itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
+	@HasManualPage
+	public static final RegistryObject<Item> INCOGNITO_MASK = ITEMS.register("incognito_mask", () -> new IncognitoMaskItem(itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
 	@HasManualPage
 	public static final RegistryObject<Item> KEYCARD_HOLDER = ITEMS.register("keycard_holder", () -> new KeycardHolderItem(itemProp(SecurityCraft.TECHNICAL_TAB, 1)));
 	@HasManualPage(PageGroup.KEYCARDS)

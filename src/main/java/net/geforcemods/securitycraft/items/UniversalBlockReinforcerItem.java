@@ -38,7 +38,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 public class UniversalBlockReinforcerItem extends Item {
-	public UniversalBlockReinforcerItem(Item.Properties properties) {
+	public UniversalBlockReinforcerItem(Properties properties) {
 		super(properties);
 
 		DispenserBlock.registerBehavior(this, new OptionalDispenseBehavior() {
@@ -53,7 +53,7 @@ public class UniversalBlockReinforcerItem extends Item {
 					BlockPos modifyPos = source.getPos().relative(state.getValue(DispenserBlock.FACING));
 					BlockState modifyState = level.getBlockState(modifyPos);
 
-					setSuccess(convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.getEntity()).getOwner()));
+					setSuccess(convertBlock(modifyState, level, stack, modifyPos, null, ((IOwnable) source.getEntity()).getOwner()));
 
 					if (isSuccess() && !level.isClientSide) {
 						if (stack.hurt(1, level.getRandom(), null))
@@ -92,7 +92,7 @@ public class UniversalBlockReinforcerItem extends Item {
 
 	public static boolean convertBlock(BlockState state, World level, ItemStack stack, BlockPos pos, PlayerEntity player) {
 		if (!player.isCreative() && level.mayInteract(player, pos)) {
-			boolean result = convertBlock(state, level, stack, pos, new Owner(player));
+			boolean result = convertBlock(state, level, stack, pos, player, new Owner(player));
 
 			if (result && !level.isClientSide)
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(p.getUsedItemHand()));
@@ -103,7 +103,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			return false;
 	}
 
-	public static boolean convertBlock(BlockState state, World level, ItemStack stack, BlockPos pos, Owner owner) {
+	public static boolean convertBlock(BlockState state, World level, ItemStack stack, BlockPos pos, PlayerEntity player, Owner owner) {
 		boolean isReinforcing = isReinforcing(stack);
 		Block block = state.getBlock();
 		Block convertedBlock = (isReinforcing ? IReinforcedBlock.VANILLA_TO_SECURITYCRAFT : IReinforcedBlock.SECURITYCRAFT_TO_VANILLA).get(block);
@@ -118,8 +118,12 @@ public class UniversalBlockReinforcerItem extends Item {
 			TileEntity be = level.getBlockEntity(pos);
 			CompoundNBT tag = null;
 
-			if (be instanceof IOwnable && !((IOwnable) be).isOwnedBy(owner))
-				return false;
+			if (be instanceof IOwnable) {
+				IOwnable ownable = (IOwnable) be;
+
+				if ((player != null && !ownable.isOwnedBy(player)) || !ownable.isOwnedBy(owner))
+					return false;
+			}
 
 			if (!level.isClientSide) {
 				if (be != null) {

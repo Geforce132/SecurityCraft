@@ -17,7 +17,7 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 /**
- * This interface marks a {@link TileEntity} as "ownable". Any TileEntity that implements this interface is able to be
+ * This interface marks a {@link net.minecraft.tileentity.TileEntity} as "ownable". Any TileEntity that implements this interface is able to be
  * destroyed by the Universal Block Remover, and can only be broken or modified by the person who placed it down. <p> Use
  * this to set the owner, preferably in Block.onBlockPlacedBy():
  *
@@ -91,10 +91,18 @@ public interface IOwnable {
 	 * @return true if the given entity owns this IOwnable, false otherwise
 	 */
 	public default boolean isOwnedBy(Entity entity) {
-		if (entity instanceof PlayerEntity)
-			return isOwnedBy(new Owner((PlayerEntity) entity));
-		else
-			return false;
+		return entity instanceof PlayerEntity && isOwnedBy((PlayerEntity) entity, false);
+	}
+
+	/**
+	 * Checks whether the given player owns this IOwnable.
+	 *
+	 * @param player The player to check ownership of
+	 * @param ignoreMask Whether the incognito mask, if worn by the player, should be taken into account
+	 * @return true if the player, or the player represented by the incognito mask, owns this IOwnable, false otherwise
+	 */
+	public default boolean isOwnedBy(PlayerEntity player, boolean ignoreMask) {
+		return isOwnedBy(new Owner(player)) && (ignoreMask || isOwnedBy(PlayerUtils.getOwnerFromPlayerOrMask(player)));
 	}
 
 	/**
@@ -113,10 +121,12 @@ public interface IOwnable {
 		String otherUUID = otherOwner.getUUID();
 		String otherName = otherOwner.getName();
 
+		// Check the player's UUID first.
 		if (otherUUID != null && otherUUID.equals(selfUUID))
 			return true;
 
-		return otherName != null && selfUUID.equals("ownerUUID") && otherName.equals(self.getName());
+		// If the BlockEntity doesn't have a UUID saved, use the player's name instead.
+		return otherName != null && (selfUUID.equals("ownerUUID") || otherUUID.equals("ownerUUID")) && otherName.equals(self.getName());
 	}
 
 	/**

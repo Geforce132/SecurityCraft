@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.api.IDoorActivator;
 import net.geforcemods.securitycraft.api.IExtractionBlock;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -145,7 +144,7 @@ public class BlockUtils {
 				IOwnable ownable = (IOwnable) be;
 				boolean isOwned = ownable.isOwnedBy(player);
 
-				if (isOwned || isBlockMine || ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() || (allowDefault && ownable.getOwner().equals(new Owner()))) {
+				if (isOwned || isBlockMine || ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() || (allowDefault && ownable.getOwner().isDefaultOwner())) {
 					float newDestroyProgress;
 
 					state.destroySpeed = destroyTimeForOwner;
