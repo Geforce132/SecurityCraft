@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "S S",
+	" L "
+  ],
+  "key": {
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    },
+    "L": {
+      "type": "forge:ore_dict",
+      "ore": "leather"
+    }
+  },
+  "result": {
+    "item": "securitycraft:incognito_mask"
+  }
+}

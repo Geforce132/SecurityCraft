@@ -45,7 +45,7 @@ public class UniversalBlockReinforcerItem extends Item {
 					BlockPos modifyPos = source.getBlockPos().offset(state.getValue(BlockDispenser.FACING));
 					IBlockState modifyState = level.getBlockState(modifyPos);
 
-					successful = convertBlock(modifyState, level, stack, modifyPos, ((IOwnable) source.getBlockTileEntity()).getOwner());
+					successful = convertBlock(modifyState, level, stack, modifyPos, null, ((IOwnable) source.getBlockTileEntity()).getOwner());
 
 					if (successful && !level.isRemote && stack.attemptDamageItem(1, level.rand, null))
 						stack.setCount(0);
@@ -75,7 +75,7 @@ public class UniversalBlockReinforcerItem extends Item {
 
 		if (!player.capabilities.isCreativeMode && world.isBlockModifiable(player, pos)) {
 			IBlockState state = world.getBlockState(pos);
-			boolean result = convertBlock(state, world, stack, pos, new Owner(player));
+			boolean result = convertBlock(state, world, stack, pos, player, new Owner(player));
 
 			if (result && !world.isRemote)
 				stack.damageItem(1, player);
@@ -86,7 +86,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			return false;
 	}
 
-	public static boolean convertBlock(IBlockState state, World world, ItemStack stack, BlockPos pos, Owner owner) {
+	public static boolean convertBlock(IBlockState state, World world, ItemStack stack, BlockPos pos, EntityPlayer player, Owner owner) {
 		boolean isReinforcing = isReinforcing(stack);
 		Block blockToConvert = state.getBlock();
 		IBlockState convertedState = null;
@@ -110,8 +110,12 @@ public class UniversalBlockReinforcerItem extends Item {
 			TileEntity te = world.getTileEntity(pos);
 			NBTTagCompound tag = null;
 
-			if (!isReinforcing && te instanceof IOwnable && !((IOwnable) te).isOwnedBy(owner))
-				return false;
+			if (!isReinforcing && te instanceof IOwnable) {
+				IOwnable ownable = (IOwnable) te;
+
+				if ((player != null && !ownable.isOwnedBy(player)) || !ownable.isOwnedBy(owner))
+					return false;
+			}
 
 			if (!world.isRemote) {
 				if (te != null) {

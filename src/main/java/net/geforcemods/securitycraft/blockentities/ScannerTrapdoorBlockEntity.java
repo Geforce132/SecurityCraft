@@ -57,10 +57,12 @@ public class ScannerTrapdoorBlockEntity extends DisguisableBlockEntity implement
 			EntityPlayer player = (EntityPlayer) entity;
 
 			if (!isLocked() && !isDisabled()) {
-				Owner viewingPlayer = new Owner(player);
+				Owner viewingPlayer;
 
 				if (ConfigHandler.trickScannersWithPlayerHeads && player.getItemStackFromSlot(EntityEquipmentSlot.HEAD).getItem() == Items.SKULL)
 					viewingPlayer = PlayerUtils.getSkullOwner(player);
+				else
+					viewingPlayer = isOwnedBy(player, true) ? PlayerUtils.getOwnerFromPlayerOrMask(player) : new Owner(player);
 
 				if (!isOwnedBy(viewingPlayer) && !isAllowed(viewingPlayer.getName())) {
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.scannerTrapdoor), Utils.localize("messages.securitycraft:retinalScanner.notOwner", PlayerUtils.getOwnerComponent(getOwner())), TextFormatting.RED);

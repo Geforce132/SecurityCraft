@@ -467,6 +467,7 @@ public class SCContent {
 	public static Item crystalQuartzItem;
 	public static Item fLavaBucket;
 	public static Item fWaterBucket;
+	public static Item incognitoMask;
 	public static Item keycardLvl1;
 	public static Item keycardLvl2;
 	public static Item keycardLvl3;

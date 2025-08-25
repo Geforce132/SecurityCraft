@@ -155,6 +155,28 @@ public class PlayerUtils {
 		return new TextComponentString(owner.getName());
 	}
 
+	public static Owner getOwnerFromPlayerOrMask(EntityPlayer player) {
+		ItemStack headItem = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+
+		if (headItem.getItem().equals(SCContent.incognitoMask))
+			return new Owner(getNameFromMask(headItem), "ownerUUID");
+
+		return new Owner(player);
+	}
+
+	public static String getNameFromPlayerOrMask(EntityPlayer player) {
+		ItemStack headItem = player.getItemStackFromSlot(EntityEquipmentSlot.HEAD);
+
+		if (headItem.getItem().equals(SCContent.incognitoMask))
+			return getNameFromMask(headItem);
+
+		return player.getName();
+	}
+
+	private static String getNameFromMask(ItemStack mask) {
+		return mask.hasDisplayName() ? mask.getDisplayName() : "owner";
+	}
+
 	/**
 	 * Retrieves the name of the player head the given player may be wearing
 	 *

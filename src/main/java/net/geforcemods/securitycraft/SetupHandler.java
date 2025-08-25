@@ -129,6 +129,7 @@ import net.geforcemods.securitycraft.items.CameraMonitorItem;
 import net.geforcemods.securitycraft.items.CodebreakerItem;
 import net.geforcemods.securitycraft.items.FakeLiquidBucketItem;
 import net.geforcemods.securitycraft.items.FloorCeilingWallBlockItem;
+import net.geforcemods.securitycraft.items.IncognitoMaskItem;
 import net.geforcemods.securitycraft.items.KeyPanelItem;
 import net.geforcemods.securitycraft.items.KeycardHolderItem;
 import net.geforcemods.securitycraft.items.KeycardItem;
@@ -412,5 +413,6 @@ public class SetupHandler {
 		SCContent.lens = (LensItem) new LensItem().setRegistryName("lens").setTranslationKey("securitycraft:lens").setCreativeTab(SecurityCraft.TECHNICAL_TAB);
 		SCContent.keycardLock = new FloorCeilingWallBlockItem(SCContent.keycardLockFloorCeilingBlock, SCContent.keycardLockWallBlock).setRegistryName("keycard_lock");
 		SCContent.blockChangeDetectorItem = new FloorCeilingWallBlockItem(SCContent.blockChangeDetectorFloorCeiling, SCContent.blockChangeDetectorWall).setRegistryName("block_change_detector");
+		SCContent.incognitoMask = new IncognitoMaskItem().setRegistryName("incognito_mask").setTranslationKey("securitycraft:incognito_mask");
 	}
 }

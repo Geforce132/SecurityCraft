@@ -426,6 +426,7 @@ public class RegistrationHandler {
 		registerItem(event, SCContent.limitedUseKeycard, PageGroup.SINGLE_ITEM, () -> ConfigHandler.ableToCraftLUKeycard);
 		registerItem(event, SCContent.mineRemoteAccessTool);
 		registerItem(event, SCContent.sentryRemoteAccessTool);
+		registerItem(event, SCContent.incognitoMask);
 		registerItem(event, SCContent.fWaterBucket);
 		registerItem(event, SCContent.fLavaBucket);
 		registerItem(event, SCContent.universalBlockModifier);
@@ -985,6 +986,7 @@ public class RegistrationHandler {
 		registerInventoryModel(SCContent.reinforcedDoorItem, 0, "door_indestructible_iron_item");
 		registerInventoryModel(SCContent.fWaterBucket, 0, "bucket_f_water");
 		registerInventoryModel(SCContent.fLavaBucket, 0, "bucket_f_lava");
+		registerInventoryModel(SCContent.incognitoMask, 0, "incognito_mask");
 		registerInventoryModel(SCContent.keycardLvl1, 0, "keycard_lv1");
 		registerInventoryModel(SCContent.keycardLvl2, 0, "keycard_lv2");
 		registerInventoryModel(SCContent.keycardLvl3, 0, "keycard_lv3");
