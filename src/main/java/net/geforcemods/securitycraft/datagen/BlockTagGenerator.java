@@ -613,6 +613,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.MOTION_ACTIVATED_LIGHT.get(),
 				SCContent.LASER_BLOCK.get(),
 				SCContent.PANIC_BUTTON.get(),
+				SCContent.PAY_BLOCK.get(),
 				SCContent.PORTABLE_RADAR.get(),
 				SCContent.PROJECTOR.get(),
 				SCContent.PROTECTO.get(),

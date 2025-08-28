@@ -148,8 +148,8 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.STORAGE, ModuleType.SMART
-		};
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE, ModuleType.STORAGE, ModuleType.SMART
+		}; //TODO: Once the block has a block model, add the field to the list of disguisable blocks in ClientHandler
 	}
 
 	@Override

@@ -485,7 +485,7 @@ public class SCContent {
 	@RegisterItemBlock
 	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.registerBlock("panic_button", p -> new PanicButtonBlock(p, BlockSetType.STONE, -1), prop(3.5F).lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
 	@HasManualPage
-	@RegisterItemBlock
+	@RegisterItemBlock //TODO: If this field is renamed, make sure all references are still sorted alphabetically!
 	public static final DeferredBlock<PayBlock> PAY_BLOCK = BLOCKS.registerBlock("pay_block", PayBlock::new, prop(MapColor.METAL, 5.0F));
 	@HasManualPage
 	@RegisterItemBlock
