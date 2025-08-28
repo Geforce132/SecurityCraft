@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -175,7 +176,7 @@ public class BlockUtils {
 		if (itemsLeftToFind == 0)
 			return 0;
 
-		for (int i = startSlot; i <= endSlotInclusive; i++) {
+		for (int i = endSlotInclusive; i >= startSlot; i--) { //Iteration in backwards order, so slot numbers still match when an entry is removed from the inventory
 			itemsLeftToFind = checkItemsInInventorySlot(inventory.get(i), i, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
 
 			if (itemsLeftToFind == 0)
@@ -233,7 +234,7 @@ public class BlockUtils {
 		else if (bundle != null && bundle.has(DataComponents.BUNDLE_CONTENTS)) {
 			List<ItemStack> bundleItems = bundle.get(DataComponents.BUNDLE_CONTENTS).itemCopyStream().collect(Collectors.toList());
 
-			itemsLeftToFind = checkInventoryForItem(bundleItems, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
+			itemsLeftToFind = checkInventoryForItem(new ArrayList<>(bundleItems), stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
 				if (stack.isEmpty())
 					bundleItems.remove((int) i);
 				else
