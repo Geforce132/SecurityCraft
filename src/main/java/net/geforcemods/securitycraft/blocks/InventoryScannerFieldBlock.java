@@ -160,7 +160,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 					entity.discard();
 			});
 
-			if (removeItems == 0) {
+			if (removeItems < Integer.MAX_VALUE) {
 				if (hasRedstoneModule)
 					updateInventoryScannerPower(be);
 
