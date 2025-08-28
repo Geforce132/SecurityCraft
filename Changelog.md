@@ -3,6 +3,7 @@
 - New: Incognito Mask
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
+- New: Reinforced Lightning Rod
 - New: Configuration option for limiting the amount of chunks that may be forceloaded by frame feeds
 - API: New IOwnable#isOwnedBy overload taking a Player and a boolean for checking ownership respecting the new Incognito Mask
 - API: New method Owner#isDefaultOwner to check if the Owner object has no player data associated with it
@@ -22,7 +23,7 @@
 - Fix: The rotation of a Security Camera can become desynced between client and server
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
 - Fix: The Mine and Sentry Remote Access Tool appear to be able to interact with mines/sentries that are not owned by the player, even though they can't
-- Misc.: The minimum required NeoForge version is now 21.1.181
+- Misc.: The minimum required NeoForge version is now 21.1.206
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 

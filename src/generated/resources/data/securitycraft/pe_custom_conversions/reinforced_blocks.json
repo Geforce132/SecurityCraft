@@ -4914,6 +4914,18 @@
         "ingredients": [
           {
             "type": "projecte:item",
+            "id": "minecraft:lightning_rod"
+          }
+        ],
+        "output": {
+          "type": "projecte:item",
+          "id": "securitycraft:reinforced_lightning_rod"
+        }
+      },
+      {
+        "ingredients": [
+          {
+            "type": "projecte:item",
             "id": "minecraft:redstone_lamp"
           }
         ],
