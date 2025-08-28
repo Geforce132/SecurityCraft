@@ -172,7 +172,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 	}
 
 	private static void addItemToStorage(ItemStack stack, InventoryScannerBlockEntity be) {
-		ItemStack remainder = be.addItemToStorage(stack);
+		ItemStack remainder = InventoryScannerBlockEntity.addItemToStorage(be, 10, be.getContents().size() - 1, stack);
 
 		if (!remainder.isEmpty())
 			Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());

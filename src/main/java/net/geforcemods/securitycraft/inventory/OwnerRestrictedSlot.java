@@ -3,16 +3,19 @@ package net.geforcemods.securitycraft.inventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class OwnerRestrictedSlot extends Slot {
+	private final AbstractContainerMenu menu;
 	private final IOwnable ownable;
 	private final boolean isHighlightable;
 	private final boolean isGhostSlot;
 
-	public OwnerRestrictedSlot(Container inventory, IOwnable ownable, int index, int xPos, int yPos, boolean highlightable, boolean ghostSlot) {
+	public OwnerRestrictedSlot(AbstractContainerMenu menu, Container inventory, IOwnable ownable, int index, int xPos, int yPos, boolean highlightable, boolean ghostSlot) {
 		super(inventory, index, xPos, yPos);
+		this.menu = menu;
 		this.ownable = ownable;
 		isHighlightable = highlightable;
 		isGhostSlot = ghostSlot;
@@ -33,6 +36,7 @@ public class OwnerRestrictedSlot extends Slot {
 		if (mayPlace(stack)) {
 			container.setItem(getSlotIndex(), stack);
 			setChanged();
+			menu.slotsChanged(container);
 		}
 	}
 

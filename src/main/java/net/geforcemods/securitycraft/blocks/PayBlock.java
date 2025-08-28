@@ -24,7 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class PayBlock extends DisguisableBlock {
 	/*TODO: I haven't worked on this in a longer time, this is something I'm not sure anymore whether I've implemented it:
-	- Does the secure redstone signal work?
 	- Allowlisted players can activate the block without needing to pay (and access the inventory?)
 	- Recipe suggestion: SHS IEI III with S = r. smooth stone slab, H = r. hopper, I = r. iron block, e. = emerald (potentially more expensive?)
 	*/

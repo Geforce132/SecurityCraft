@@ -18,6 +18,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 	public final SimpleUpdatingContainer paymentInput = new SimpleUpdatingContainer(5, this);
 	public final PayBlockBlockEntity be;
 	private final boolean hasSmartModule;
+	public final boolean hasStorageModule;
 	public final boolean withStorageAccess;
 	private final ContainerLevelAccess worldPosCallable;
 	public int paymentLimitedTransactions = 0;
@@ -30,11 +31,12 @@ public class PayBlockMenu extends AbstractContainerMenu {
 		boolean isOwner = be.isOwnedBy(playerInventory.player);
 
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
-		withStorageAccess = isOwner && be.isModuleEnabled(ModuleType.STORAGE);
+		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE);
+		withStorageAccess = hasStorageModule && isOwner;
 
 		//payment item ghost slots: 0-1
 		for (int i = 0; i < 2; i++) {
-			addSlot(new OwnerRestrictedSlot(be, be, i, 65 + i * 18, 18, isOwner, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, i, 65 + i * 18, 18, isOwner, true));
 		}
 
 		//payment input slots: 2-6
@@ -44,7 +46,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 
 		//reward item ghost slots: 7-8
 		for (int i = 0; i < 2; i++) {
-			addSlot(new OwnerRestrictedSlot(be, be, 2 + i, 65 + i * 18, 93, isOwner, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, 2 + i, 65 + i * 18, 93, isOwner, true));
 		}
 
 		if (withStorageAccess) {
@@ -129,11 +131,6 @@ public class PayBlockMenu extends AbstractContainerMenu {
 		}
 
 		return toReturn;
-	}
-
-	@Override
-	public boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
-		return super.moveItemStackTo(stack, startIndex, endIndex, reverseDirection); //Overridden to change method access modifier to public
 	}
 
 	@Override

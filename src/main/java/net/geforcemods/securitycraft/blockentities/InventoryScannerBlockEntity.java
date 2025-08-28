@@ -189,11 +189,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
-	public ItemStack addItemToStorage(ItemStack stack) {
+	//TODO maybe move?
+	public static ItemStack addItemToStorage(Container container, int start, int endInclusive, ItemStack stack) {
 		ItemStack remainder = stack;
 
-		for (int i = 10; i < getContents().size(); i++) {
-			remainder = insertItem(i, remainder);
+		for (int i = start; i <= endInclusive; i++) {
+			remainder = insertItem(container, i, remainder);
 
 			if (remainder.isEmpty())
 				break;
@@ -202,22 +203,23 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		return remainder;
 	}
 
-	public ItemStack insertItem(int slot, ItemStack stackToInsert) {
-		if (stackToInsert.isEmpty() || slot < 0 || slot >= getContents().size())
+	//TODO maybe move?
+	private static ItemStack insertItem(Container container, int slot, ItemStack stackToInsert) {
+		if (stackToInsert.isEmpty())
 			return stackToInsert;
 
-		ItemStack slotStack = getStackInSlot(slot);
+		ItemStack slotStack = container.getItem(slot);
 		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
 
 		if (slotStack.isEmpty()) {
-			setItem(slot, stackToInsert);
-			setChanged();
+			container.setItem(slot, stackToInsert);
+			container.setChanged();
 			return ItemStack.EMPTY;
 		}
 		else if (InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit) {
 			if (limit - slotStack.getCount() >= stackToInsert.getCount()) {
 				slotStack.setCount(slotStack.getCount() + stackToInsert.getCount());
-				setChanged();
+				container.setChanged();
 				return ItemStack.EMPTY;
 			}
 			else {
@@ -225,7 +227,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				ItemStack toReturn = toInsert.split((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
 
 				slotStack.setCount(slotStack.getCount() + toInsert.getCount());
-				setChanged();
+				container.setChanged();
 				return toReturn;
 			}
 		}

@@ -88,7 +88,7 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 				int quantityPerTransaction = paymentRequest.getValue();
 				int totalQuantity = quantityPerTransaction * transactions;
 
-				BlockUtils.checkInventoryForItem(menu.paymentInput.items, paymentStackToMatch, totalQuantity, hasSmartModule, true, stack -> handleConsumedPaymentItem(stack, menu), menu.paymentInput::setItem);
+				BlockUtils.checkInventoryForItem(menu.paymentInput.items, paymentStackToMatch, totalQuantity, hasSmartModule, true, this::handleConsumedPaymentItem, menu.paymentInput::setItem);
 			}
 
 			if (hasRewardReferenceStacks()) {
@@ -103,7 +103,6 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 				}
 			}
 
-			//menu.slotsChanged(this); TODO see if calc updates without this
 			level.setBlockAndUpdate(worldPosition, blockState.cycle(PayBlock.POWERED));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.PAY_BLOCK.get());
 
@@ -112,16 +111,14 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 		}
 	}
 
-	private void handleConsumedPaymentItem(ItemStack paymentStack, PayBlockMenu menu) {
-		System.out.println("paid: " + paymentStack); //TODO remove the printlns
+	private void handleConsumedPaymentItem(ItemStack paymentStack) {
+		ItemStack remainder = paymentStack;
 
 		if (isModuleEnabled(ModuleType.STORAGE))
-			menu.moveItemStackTo(paymentStack, 9, 17, false); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
+			remainder = InventoryScannerBlockEntity.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
-		System.out.println("left: " + paymentStack);
-
-		if (!paymentStack.isEmpty())
-			DefaultDispenseItemBehavior.spawnItem(level, paymentStack, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(PayBlock.FACING).getOpposite(), 0.7));
+		if (!remainder.isEmpty())
+			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(PayBlock.FACING).getOpposite(), 0.7));
 	}
 
 	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {

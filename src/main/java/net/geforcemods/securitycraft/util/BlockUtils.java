@@ -221,7 +221,7 @@ public class BlockUtils {
 			itemsLeftToFind = checkInventoryForItem(containerItems, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, containerItems::set);
 
 			if (shouldRemoveItems)
-				itemContainer.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(containerItems)); //TODO check if shulker box content tag is updated appropriately
+				itemContainer.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(containerItems));
 		}
 
 		return itemsLeftToFind;
