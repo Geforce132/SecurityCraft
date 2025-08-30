@@ -46,7 +46,7 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 
 		//reward item ghost slots: 7-8
 		for (int i = 0; i < 2; i++) {
-			addSlot(new OwnerRestrictedSlot(this, be, be, 2 + i, 65 + i * 18, 93, isOwner, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, 2 + i, 65 + i * 18, 93, withStorageAccess, true));
 		}
 
 		if (withStorageAccess) {
