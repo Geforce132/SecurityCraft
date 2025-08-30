@@ -22,7 +22,6 @@ import net.minecraft.util.Direction.Axis;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
@@ -35,10 +34,10 @@ public class MotionActivatedLightBlock extends OwnableBlock implements IWaterLog
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-	private static final VoxelShape SHAPE_NORTH = VoxelShapes.or(Block.box(6, 3, 13, 10, 4, 14), VoxelShapes.or(Block.box(6, 6, 13, 10, 9, 14), VoxelShapes.joinUnoptimized(Block.box(7, 3, 14, 9, 8, 16), Block.box(7, 4, 15, 9, 7, 14), IBooleanFunction.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_EAST = VoxelShapes.or(Block.box(3, 3, 6, 2, 4, 10), VoxelShapes.or(Block.box(3, 6, 6, 2, 9, 10), VoxelShapes.joinUnoptimized(Block.box(2, 3, 7, 0, 8, 9), Block.box(1, 4, 7, 2, 7, 9), IBooleanFunction.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.or(Block.box(6, 3, 2, 10, 4, 3), VoxelShapes.or(Block.box(6, 6, 2, 10, 9, 3), VoxelShapes.joinUnoptimized(Block.box(7, 3, 0, 9, 8, 2), Block.box(7, 4, 1, 9, 7, 2), IBooleanFunction.ONLY_FIRST)));
-	private static final VoxelShape SHAPE_WEST = VoxelShapes.or(Block.box(13, 3, 6, 14, 4, 10), VoxelShapes.or(Block.box(13, 6, 6, 14, 9, 10), VoxelShapes.joinUnoptimized(Block.box(14, 3, 7, 16, 8, 9), Block.box(15, 4, 7, 14, 7, 9), IBooleanFunction.ONLY_FIRST)));
+	private static final VoxelShape SHAPE_NORTH = VoxelShapes.or(Block.box(5, 3, 15, 11, 10, 16), Block.box(6, 5, 13, 10, 9, 15));
+	private static final VoxelShape SHAPE_EAST = VoxelShapes.or(Block.box(0, 3, 5, 1, 10, 11), Block.box(1, 5, 6, 3, 9, 10));
+	private static final VoxelShape SHAPE_SOUTH = VoxelShapes.or(Block.box(5, 3, 0, 11, 10, 1), Block.box(6, 5, 1, 10, 9, 3));
+	private static final VoxelShape SHAPE_WEST = VoxelShapes.or(Block.box(15, 3, 5, 16, 10, 11), Block.box(13, 5, 6, 15, 9, 10));
 
 	public MotionActivatedLightBlock(AbstractBlock.Properties properties) {
 		super(properties);
