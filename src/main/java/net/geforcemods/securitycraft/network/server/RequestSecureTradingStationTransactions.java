@@ -10,13 +10,13 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record ToggleSecureTradingStation(BlockPos pos, int requestedTransactions) implements CustomPacketPayload {
-	public static final Type<ToggleSecureTradingStation> TYPE = new Type<>(SecurityCraft.resLoc("toggle_secure_trading_station"));
+public record RequestSecureTradingStationTransactions(BlockPos pos, int requestedTransactions) implements CustomPacketPayload {
+	public static final Type<RequestSecureTradingStationTransactions> TYPE = new Type<>(SecurityCraft.resLoc("request_secure_trading_station_transactions"));
 	//@formatter:off
-	public static final StreamCodec<RegistryFriendlyByteBuf, ToggleSecureTradingStation> STREAM_CODEC = StreamCodec.composite(
-			BlockPos.STREAM_CODEC, ToggleSecureTradingStation::pos,
-			ByteBufCodecs.VAR_INT, ToggleSecureTradingStation::requestedTransactions,
-			ToggleSecureTradingStation::new);
+	public static final StreamCodec<RegistryFriendlyByteBuf, RequestSecureTradingStationTransactions> STREAM_CODEC = StreamCodec.composite(
+			BlockPos.STREAM_CODEC, RequestSecureTradingStationTransactions::pos,
+			ByteBufCodecs.VAR_INT, RequestSecureTradingStationTransactions::requestedTransactions,
+			RequestSecureTradingStationTransactions::new);
 	//@formatter:on
 
 	@Override

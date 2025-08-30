@@ -6,7 +6,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
-import net.geforcemods.securitycraft.network.server.ToggleSecureTradingStation;
+import net.geforcemods.securitycraft.network.server.RequestSecureTradingStationTransactions;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -125,7 +125,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	}
 
 	private void sendTransactionRequest(Button button) {
-		PacketDistributor.sendToServer(new ToggleSecureTradingStation(be.getBlockPos(), getTransactionsOnConfirmation()));
+		PacketDistributor.sendToServer(new RequestSecureTradingStationTransactions(be.getBlockPos(), getTransactionsOnConfirmation()));
 
 		if (transactionAmountBox != null)
 			transactionAmountBox.setValue("");

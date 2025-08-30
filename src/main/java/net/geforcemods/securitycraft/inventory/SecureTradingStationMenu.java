@@ -81,7 +81,7 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 	@Override
 	public void slotsChanged(Container container) {
 		super.slotsChanged(container);
-
+		
 		paymentLimitedTransactions = be.getReferenceLimitedTransactions(paymentInput, 0, 4, be.getPaymentPerTransaction(hasSmartModule), hasSmartModule);
 	}
 
