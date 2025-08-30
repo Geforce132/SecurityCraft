@@ -55,13 +55,13 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 		float px = 1.0F / 16.0F;
 
 		if (dir == EnumFacing.NORTH)
-			return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
+			return new AxisAlignedBB(px * 5, px * 3, 0F, px * 11, px * 10, px * 3);
 		else if (dir == EnumFacing.SOUTH)
-			return new AxisAlignedBB(px * 6, px * 3, 1F, px * 10, px * 9, 1F - (px * 3));
+			return new AxisAlignedBB(px * 5, px * 3, 1F, px * 11, px * 10, 1F - (px * 3));
 		else if (dir == EnumFacing.EAST)
-			return new AxisAlignedBB(1F, px * 3, px * 6, 1F - (px * 3), px * 9, px * 10);
+			return new AxisAlignedBB(1F, px * 3, px * 5, 1F - (px * 3), px * 10, px * 11);
 		else if (dir == EnumFacing.WEST)
-			return new AxisAlignedBB(0F, px * 3, px * 6, px * 3, px * 9, px * 10);
+			return new AxisAlignedBB(0F, px * 3, px * 5, px * 3, px * 10, px * 11);
 
 		return new AxisAlignedBB(px * 6, px * 3, 0F, px * 10, px * 9, px * 3);
 	}
@@ -112,7 +112,7 @@ public class MotionActivatedLightBlock extends OwnableBlock {
 
 	@Override
 	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()).withProperty(LIT, false);
+		return getDefaultState().withProperty(FACING, facing.getOpposite()).withProperty(LIT, false);
 	}
 
 	@Override
