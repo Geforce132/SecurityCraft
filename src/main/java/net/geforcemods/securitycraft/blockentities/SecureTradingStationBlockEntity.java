@@ -24,6 +24,7 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
@@ -363,5 +364,11 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
 		return inventoryContents.remove(index);
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
 	}
 }
