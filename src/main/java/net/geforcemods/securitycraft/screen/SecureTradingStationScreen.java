@@ -29,6 +29,9 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	private final Component storedItemsText = Utils.localize("gui.securitycraft:secure_trading_station.reward_items");
 	private final Component payButtonText = Utils.localize("gui.securitycraft:secure_trading_station.pay_button");
 	private final Component transactionAmountBoxTooltip = Utils.localize("gui.securitycraft:secure_trading_station.transaction_amount_tooltip");
+	private final Component noRewardText = Utils.localize("gui.securitycraft:secure_trading_station.no_reward");
+	private final Component confirmText = Utils.localize("gui.securitycraft:secure_trading_station.confirm");
+	private final Component allowedText = Utils.localize("gui.securitycraft:secure_trading_station.allowed");
 	private final SecureTradingStationBlockEntity be;
 	private final boolean isOwner;
 	private final boolean skipPaymentCheck;
@@ -57,7 +60,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 
 		if (storageVisible) {
 			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 112, topPos + 93, 26, 16, Component.empty()));
-			transactionAmountBox.setFilter(s -> s.matches("\\d*")); //Only allow numbers
+			transactionAmountBox.setFilter(s -> s.matches("\\d*")); //Only allow strings of digits or empty
 			transactionAmountBox.setMaxLength(3);
 			transactionAmountBox.setHint(Component.literal("1").withStyle(ChatFormatting.GRAY));
 			transactionAmountBox.setTooltip(Tooltip.create(transactionAmountBoxTooltip));
@@ -83,7 +86,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 				Component warning;
 
 				if (be.rewardLimitedTransactions == 0)
-					warning = Utils.localize("gui.securitycraft:secure_trading_station.no_reward");
+					warning = noRewardText;
 				else
 					warning = Utils.localize("gui.securitycraft:secure_trading_station.not_enough_reward", be.rewardLimitedTransactions);
 
@@ -96,12 +99,12 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 			int transactions = getTransactionsOnConfirmation();
 
 			if (transactions == 1)
-				buttonTooltip.add(Utils.localize("gui.securitycraft:secure_trading_station.confirm"));
+				buttonTooltip.add(confirmText);
 			else
 				buttonTooltip.add(Utils.localize("gui.securitycraft:secure_trading_station.confirm_multiple", transactions));
 
 			if (skipPaymentCheck)
-				buttonTooltip.add(Utils.localize("gui.securitycraft:secure_trading_station.allowed"));
+				buttonTooltip.add(allowedText);
 
 			guiGraphics.renderComponentTooltip(font, buttonTooltip, mouseX, mouseY);
 		}
@@ -112,11 +115,11 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		super.renderLabels(guiGraphics, mouseX, mouseY);
-		guiGraphics.drawString(font, paymentText, 15, 25, 0x404040, false);
-		guiGraphics.drawString(font, rewardText, 15, 65, 0x404040, false);
+		guiGraphics.drawString(font, paymentText, 15, 25, 0xFF404040, false);
+		guiGraphics.drawString(font, rewardText, 15, 65, 0xFF404040, false);
 
 		if (storageVisible)
-			guiGraphics.drawString(font, storedItemsText, 15, 80, 0x404040, false);
+			guiGraphics.drawString(font, storedItemsText, 15, 80, 0xFF404040, false);
 	}
 
 	@Override
