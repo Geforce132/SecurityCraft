@@ -64,47 +64,44 @@ public class InventoryUtils {
 	}
 
 	public static int checkInventoryForItem(List<ItemStack> inventory, int startSlot, int endSlotInclusive, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
-		if (itemsLeftToFind == 0)
-			return 0;
+		if (itemsLeftToFind > 0) {
+			for (int i = endSlotInclusive; i >= startSlot; i--) { //Iteration in backwards order, so slot numbers still match when an entry is removed from the inventory
+				itemsLeftToFind = checkItemsInInventorySlot(inventory.get(i), i, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
 
-		for (int i = endSlotInclusive; i >= startSlot; i--) { //Iteration in backwards order, so slot numbers still match when an entry is removed from the inventory
-			itemsLeftToFind = checkItemsInInventorySlot(inventory.get(i), i, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
-
-			if (itemsLeftToFind == 0)
-				break;
+				if (itemsLeftToFind == 0)
+					break;
+			}
 		}
 
 		return itemsLeftToFind;
 	}
 
 	public static int checkItemsInInventorySlot(ItemStack stackInSlot, int positionInInv, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
-		if (itemsLeftToFind == 0)
-			return 0;
-		else if (BlockUtils.areItemsEqual(stackInSlot, stackToMatch, exactStackCheck)) {
-			if (shouldRemoveItems) {
-				ItemStack splitStack = stackInSlot.split(itemsLeftToFind); //After this operation, stackInSlot may be an empty stack
+		if (itemsLeftToFind > 0) {
+			if (BlockUtils.areItemsEqual(stackInSlot, stackToMatch, exactStackCheck)) {
+				if (shouldRemoveItems) {
+					ItemStack splitStack = stackInSlot.split(itemsLeftToFind); //After this operation, stackInSlot may be an empty stack
 
-				itemsLeftToFind -= splitStack.getCount();
-				handleRemovedItem.accept(splitStack);
-				handleRemainingItemInSlot.accept(positionInInv, stackInSlot);
+					itemsLeftToFind -= splitStack.getCount();
+					handleRemovedItem.accept(splitStack);
+					handleRemainingItemInSlot.accept(positionInInv, stackInSlot);
+				}
+				else
+					itemsLeftToFind = Math.max(itemsLeftToFind - stackInSlot.getCount(), 0);
+
+				if (itemsLeftToFind == 0)
+					return 0;
 			}
-			else
-				itemsLeftToFind = Math.max(itemsLeftToFind - stackInSlot.getCount(), 0);
 
-			if (itemsLeftToFind == 0)
-				return 0;
+			itemsLeftToFind = checkItemsInItemContainer(stackInSlot, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem);
+			itemsLeftToFind = checkItemsInBundle(stackInSlot, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem);
 		}
-
-		itemsLeftToFind = checkItemsInItemContainer(stackInSlot, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem);
-		itemsLeftToFind = checkItemsInBundle(stackInSlot, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem);
 
 		return itemsLeftToFind;
 	}
 
 	public static int checkItemsInItemContainer(ItemStack itemContainer, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
-		if (itemsLeftToFind == 0)
-			return 0;
-		else if (itemContainer != null && itemContainer.has(DataComponents.CONTAINER)) {
+		if (itemsLeftToFind > 0 && itemContainer != null && itemContainer.has(DataComponents.CONTAINER)) {
 			ItemContainerContents contents = itemContainer.get(DataComponents.CONTAINER);
 			NonNullList<ItemStack> containerItems = NonNullList.withSize(contents.getSlots(), ItemStack.EMPTY);
 
@@ -119,9 +116,7 @@ public class InventoryUtils {
 	}
 
 	public static int checkItemsInBundle(ItemStack bundle, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
-		if (itemsLeftToFind == 0)
-			return 0;
-		else if (bundle != null && bundle.has(DataComponents.BUNDLE_CONTENTS)) {
+		if (itemsLeftToFind > 0 && bundle != null && bundle.has(DataComponents.BUNDLE_CONTENTS)) {
 			List<ItemStack> bundleItems = bundle.get(DataComponents.BUNDLE_CONTENTS).itemCopyStream().collect(Collectors.toList());
 
 			itemsLeftToFind = checkInventoryForItem(new ArrayList<>(bundleItems), stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
@@ -138,7 +133,7 @@ public class InventoryUtils {
 		return itemsLeftToFind;
 	}
 
-	public static int countItemsBetween(Container container, ItemStack stackToMatch, int start, int endInclusive, boolean hasSmartModule) {
+	public static int countItemsInSlotRange(Container container, ItemStack stackToMatch, int start, int endInclusive, boolean hasSmartModule) {
 		int itemsLeftToFind = Integer.MAX_VALUE;
 
 		for (int i = start; i <= endInclusive; i++) {

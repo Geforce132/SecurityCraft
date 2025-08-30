@@ -137,7 +137,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		for (Map.Entry<ItemStack, Integer> paymentRequest : itemReference.entrySet()) {
 			ItemStack paymentStackToMatch = paymentRequest.getKey();
 			int quantityPerTransaction = paymentRequest.getValue();
-			int paymentItemsInInputSlots = InventoryUtils.countItemsBetween(slotsToSearch, paymentStackToMatch, start, endInclusive, hasSmartModule);
+			int paymentItemsInInputSlots = InventoryUtils.countItemsInSlotRange(slotsToSearch, paymentStackToMatch, start, endInclusive, hasSmartModule);
 			int transactions = paymentItemsInInputSlots / quantityPerTransaction;
 
 			if (possibleTransactions == -1 || possibleTransactions > transactions)
