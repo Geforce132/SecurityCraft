@@ -4,6 +4,7 @@
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
 - New: Configuration option for limiting the amount of chunks that may be forceloaded by frame feeds
+- Change: Reworked the model and texture of the Motion-Activated Light
 - API: New IOwnable#isOwnedBy overload taking a Player and a boolean for checking ownership respecting the new Incognito Mask
 - API: New method Owner#isDefaultOwner to check if the Owner object has no player data associated with it
 - Fix: Several mod incompatibilities that caused Frame feeds to not show up correctly
