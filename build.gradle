@@ -30,7 +30,7 @@ compileJava {
 }
 
 minecraft {
-	version = "1.12.2-14.23.5.2826"
+	version = "1.12.2-14.23.5.2847"
 	runDir = "run"
 	clientRunArgs = ["--username Dev"]
 	serverRunArgs = ["nogui"]
@@ -39,14 +39,6 @@ minecraft {
 }
 
 repositories {
-	maven { //main jei maven
-		name = "Progwml6 maven"
-		url = "http://dvs1.progwml6.com/files/maven"
-	}
-	maven { //jei fallback
-		name = "ModMaven"
-		url = "modmaven.k-4u.nl"
-	}
 	maven {
 		name = "CurseMaven"
 		url = 'https://cursemaven.com/'
@@ -64,11 +56,11 @@ dependencies {
 	deobfProvided "curse.maven:the-one-probe-245211:2667280"
 	deobfProvided "curse.maven:ftb-library-legacy-forge-237167:2985811"
 	deobfProvided "curse.maven:ftb-utilities-forge-237102:3157548"
-	deobfProvided "curse.maven:cyclic-239286:2883487"
-	deobfProvided "curse.maven:icbm-classic-244451:4399322"
-	deobfProvided "curse.maven:lycanites-mobs-224770:2935745"
+	deobfProvided "curse.maven:cyclic-239286:4075832"
+	deobfProvided "curse.maven:icbm-classic-244451:6496624"
+	deobfProvided "curse.maven:lycanites-mobs-224770:5750564"
 	deobfProvided "curse.maven:projecte-226410:2702991"
-	deobfProvided 'mezz.jei:jei_1.12.2:4.16.1.302'
+	deobfProvided "curse.maven:jei-238222:5846804"
 }
 
 mixin {
@@ -90,7 +82,7 @@ task noMixinJar(type: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 	classifier = 'no_mixin'
 	relocators = shadowJar.relocators
 	archiveName = "[1.12.2] SecurityCraft ${version} (No mixin).jar"
-	
+
 	manifest {
 		inheritFrom jar.manifest
 	}
@@ -120,7 +112,7 @@ processResources {
 	from(sourceSets.main.resources.srcDirs) {
 		exclude 'mcmod.info'
 	}
-	
+
 	//minify json resources
 	doLast {
 		fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
