@@ -24,6 +24,7 @@
 - Fix: The rotation of a Security Camera can become desynced between client and server
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
 - Fix: The Mine and Sentry Remote Access Tool appear to be able to interact with mines/sentries that are not owned by the player, even though they can't
+- Fix: Players viewing a Security Camera are invisible for players in spectator mode
 
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
