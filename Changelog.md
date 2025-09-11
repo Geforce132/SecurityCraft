@@ -25,6 +25,7 @@
 - Fix: Potential crash when placing keycards into a Keycard Holder
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
 - Fix: Motion-Activated Lights can be placed on non-solid block surfaces
+- Fix: Players viewing a Security Camera are invisible for players in spectator mode
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
