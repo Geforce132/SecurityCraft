@@ -23,6 +23,7 @@
 - Fix: The rotation of a Security Camera can become desynced between client and server
 - Fix: Potential crash when placing keycards into a Keycard Holder
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
+- Fix: Players viewing a Security Camera are invisible for players in spectator mode
 
 --------------------------Changelog for v1.10.0.1 of SecurityCraft--------------------------
 
