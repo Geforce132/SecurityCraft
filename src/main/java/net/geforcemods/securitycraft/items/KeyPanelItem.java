@@ -5,7 +5,11 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -32,9 +36,16 @@ public class KeyPanelItem extends BlockItem {
 		if (!(level.getBlockEntity(pos) instanceof IOwnable ownable) || ownable.isOwnedBy(player)) {
 			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 				if (pc.isUnprotectedBlock(state)) {
+					int requiredKeyPanels = pc.getRequiredKeyPanels(state);
+
+					if (requiredKeyPanels > stack.getCount()) {
+						PlayerUtils.sendMessageToPlayer(player, new TextComponent("SecurityCraft"), Utils.localize("messages.securitycraft:notEnoughKeyPanels", requiredKeyPanels), ChatFormatting.RED);
+						return InteractionResult.FAIL;
+					}
+
 					if (pc.protect(player, level, pos)) {
 						if (!player.isCreative())
-							stack.shrink(1);
+							stack.shrink(requiredKeyPanels);
 
 						level.playSound(null, pos, SCSounds.LOCK.event, SoundSource.BLOCKS, 1.0F, 1.0F);
 						return InteractionResult.SUCCESS;

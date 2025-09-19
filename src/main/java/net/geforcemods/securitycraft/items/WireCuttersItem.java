@@ -37,7 +37,7 @@ public class WireCuttersItem extends Item {
 				if (pc.isProtectedBlock(state) && level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player) && pc.unprotect(player, level, pos)) {
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
 					level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-					Block.popResource(level, pos, new ItemStack(SCContent.KEY_PANEL.get()));
+					Block.popResource(level, pos, new ItemStack(SCContent.KEY_PANEL.get(), pc.getRequiredKeyPanels(state)));
 				}
 			}
 		}
