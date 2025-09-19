@@ -367,6 +367,11 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 			return true;
 		}
 
+		@Override
+		public int getRequiredKeyPanels(BlockState state) {
+			return state.getValue(TYPE) != ChestType.SINGLE ? 2 : 1;
+		}
+
 		private void convert(PlayerEntity player, World level, BlockPos pos, boolean protect) {
 			BlockState state = level.getBlockState(pos);
 			Direction facing = state.getValue(FACING);
