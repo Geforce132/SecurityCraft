@@ -1145,6 +1145,7 @@
 	"messages.securitycraft:mrat.unbound": "˙ꞁooʇ ssǝɔɔɐ ǝʇoɯǝɹ ǝɥʇ ɯoɹɟ %s ʇɐ ǝuᴉɯ ǝɥʇ punoqu∩",
 	"messages.securitycraft:naming.alreadyMatches": "˙,%s, sǝɥɔʇɐɯ ʎpɐǝɹꞁɐ ǝɯɐu s,ʞɔoꞁq sᴉɥ⟘",
 	"messages.securitycraft:naming.named": "˙,%s, oʇ pǝɯɐuǝɹ uǝǝq sɐɥ ʞɔoꞁq sᴉɥ⟘",
+	"messages.securitycraft:notEnoughKeyPanels": "¡ʞɔoꞁq sᴉɥʇ ʇɹǝʌuoɔ oʇ sꞁǝuɐd ʎǝʞ %s pǝǝu no⅄",
 	"messages.securitycraft:notOwned": "˙%s ʎq pǝuʍo sᴉ sᴉɥ⟘ ˙ʇɐɥʇ op ʇouuɐɔ noʎ 'ʎɹɹoS",
 	"messages.securitycraft:ownable.ownerNotValidated": "˙ʇᴉ ʞɔᴉꞁɔʇɥᵷᴉɹ oʇ sɐɥ ʞɔoꞁq ǝɥʇ ɟo ɹǝuʍo ʍǝu ǝɥʇ 'ʞɔoꞁq ɐ ǝʇɐpᴉꞁɐʌ o⟘ ˙uᴉɐᵷɐ ʞɹoʍ oʇ ɹǝuʍo ʍǝu ǝɥʇ ʎq pǝʇɐpᴉꞁɐʌ ǝq oʇ spǝǝu snɥʇ puɐ ɹǝᵷuɐɥƆ ɹǝuʍO ꞁɐsɹǝʌᴉu∩ ǝɥʇ ʎq pǝᵷuɐɥɔ uǝǝq sɐɥ ɹǝuʍo s,ʞɔoꞁq sᴉɥ⟘",
 	"messages.securitycraft:ownable.validate": "˙pǝʇɐpᴉꞁɐʌ ʎꞁꞁnɟssǝɔɔns uǝǝq sɐɥ ʞɔoꞁq sᴉɥʇ ɟo ɹǝuʍo ǝɥ⟘",
