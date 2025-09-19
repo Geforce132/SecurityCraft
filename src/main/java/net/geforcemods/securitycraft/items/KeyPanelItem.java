@@ -38,7 +38,7 @@ public class KeyPanelItem extends BlockItem {
 					int requiredKeyPanels = pc.getRequiredKeyPanels(state);
 
 					if (requiredKeyPanels > stack.getCount()) {
-						PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("You need %s key panels to convert this block!", requiredKeyPanels), ChatFormatting.RED);
+						PlayerUtils.sendMessageToPlayer(player, Component.literal("SecurityCraft"), Component.translatable("messages.securitycraft:notEnoughKeyPanels", requiredKeyPanels), ChatFormatting.RED);
 						return InteractionResult.FAIL;
 					}
 
