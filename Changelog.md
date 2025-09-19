@@ -8,6 +8,7 @@
 - Change: Reworked the model and texture of the Motion-Activated Light
 - API: New IOwnable#isOwnedBy overload taking a Player and a boolean for checking ownership respecting the new Incognito Mask
 - API: New method Owner#isDefaultOwner to check if the Owner object has no player data associated with it
+- API: New method IPasscodeConvertible#getRequiredKeyPanels to control how many key panels items are consumed when converting this block
 - Fix: Several mod incompatibilities that caused frame feeds to not show up correctly
 - Fix: Game performance does not improve when breaking frames with an active frame feed
 - Fix: Clouds sometimes flicker rapidly between two positions when a Frame is displaying a camera feed

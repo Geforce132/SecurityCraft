@@ -1137,6 +1137,7 @@
 	"messages.securitycraft:mrat.unbound": "Mine bei %s von der Einheit getrennt.",
 	"messages.securitycraft:naming.alreadyMatches": "Der Name dieses Blocks ist schon '%s'.",
 	"messages.securitycraft:naming.named": "Dieser Block wurde zu '%s' umbenannt.",
+	"messages.securitycraft:notEnoughKeyPanels": "Du benötigst %s Nummernfelder, um diesen Block zu konvertieren!",
 	"messages.securitycraft:notOwned": "Entschuldigung, du kannst das nicht tun. Dies gehört %s.",
 	"messages.securitycraft:ownable.ownerNotValidated": "Der Besitzer dieses Blocks wurde von einem Universellen Besitzeränderer geändert und muss deshalb vom neuen Besitzer verifiziert werden, um wieder zu funktionieren. Um einen Block zu verifizieren, muss der neue Besitzer des Blocks den Block rechtsklicken.",
 	"messages.securitycraft:ownable.validate": "Der Besitzer dieses Blocks wurde erfolgreich verifiziert.",

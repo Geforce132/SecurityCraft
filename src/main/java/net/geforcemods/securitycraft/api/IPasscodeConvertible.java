@@ -40,7 +40,7 @@ public interface IPasscodeConvertible {
 	 *
 	 * @param player The player who initiated the conversion
 	 * @param level The level in which the conversion takes place
-	 * @param pos The position the conversaion takes place at
+	 * @param pos The position the conversion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
 	public boolean protect(Player player, Level level, BlockPos pos);
@@ -50,8 +50,18 @@ public interface IPasscodeConvertible {
 	 *
 	 * @param player The player who initiated the conversion
 	 * @param level The level in which the conversion takes place
-	 * @param pos The position the conversaion takes place at
+	 * @param pos The position the conversion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
 	public boolean unprotect(Player player, Level level, BlockPos pos);
+
+	/**
+	 * Returns the amount of key panel items that are consumed when converting the given state to a passcode-protected block
+	 *
+	 * @param state The block state to check
+	 * @return The amount of key panel items that will be consumed on conversion
+	 */
+	public default int getRequiredKeyPanels(BlockState state) {
+		return 1;
+	}
 }
