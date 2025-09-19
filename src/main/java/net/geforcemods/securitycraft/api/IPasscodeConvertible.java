@@ -42,7 +42,7 @@ public interface IPasscodeConvertible {
 	 *
 	 * @param player The player who initiated the conversion
 	 * @param level The world in which the conversion takes place
-	 * @param pos The position the conversaion takes place at
+	 * @param pos The position the conversion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
 	public boolean protect(EntityPlayer player, World level, BlockPos pos);
@@ -52,8 +52,20 @@ public interface IPasscodeConvertible {
 	 *
 	 * @param player The player who initiated the conversion
 	 * @param level The level in which the conversion takes place
-	 * @param pos The position the conversaion takes place at
+	 * @param pos The position the conversion takes place at
 	 * @return true if the conversion was successful, false otherwise
 	 */
 	public boolean unprotect(EntityPlayer player, World level, BlockPos pos);
+
+	/**
+	 * Returns the amount of key panel items that are consumed when converting the given state to a passcode-protected block
+	 *
+	 * @param state The block state to check
+	 * @param level The level in which the conversion takes place
+	 * @param pos The position the conversion takes place at
+	 * @return The amount of key panel items that will be consumed on conversion
+	 */
+	public default int getRequiredKeyPanels(IBlockState state, World level, BlockPos pos) {
+		return 1;
+	}
 }

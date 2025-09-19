@@ -32,7 +32,7 @@ public class WireCuttersItem extends Item {
 					if (be instanceof IOwnable && ((IOwnable) be).isOwnedBy(player) && pc.unprotect(player, level, pos)) {
 						stack.damageItem(1, player);
 						level.playSound(null, pos, SoundEvents.ENTITY_SHEEP_SHEAR, SoundCategory.BLOCKS, 1.0F, 1.0F);
-						Block.spawnAsEntity(level, pos, new ItemStack(SCContent.keyPanel));
+						Block.spawnAsEntity(level, pos, new ItemStack(SCContent.keyPanel, pc.getRequiredKeyPanels(state, level, pos)));
 						return EnumActionResult.SUCCESS;
 					}
 				}

@@ -5,6 +5,8 @@ import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.geforcemods.securitycraft.misc.SCSounds;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,6 +16,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 public class KeyPanelItem extends FloorCeilingWallBlockItem {
@@ -30,9 +34,16 @@ public class KeyPanelItem extends FloorCeilingWallBlockItem {
 		if (!(be instanceof IOwnable) || ((IOwnable) be).isOwnedBy(player)) {
 			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 				if (pc.isUnprotectedBlock(state)) {
+					int requiredKeyPanels = pc.getRequiredKeyPanels(state, world, pos);
+
+					if (requiredKeyPanels > stack.getCount()) {
+						PlayerUtils.sendMessageToPlayer(player, new TextComponentString("SecurityCraft"), Utils.localize("messages.securitycraft:notEnoughKeyPanels", requiredKeyPanels), TextFormatting.RED);
+						return EnumActionResult.SUCCESS;
+					}
+
 					if (pc.protect(player, world, pos)) {
 						if (!player.capabilities.isCreativeMode)
-							stack.shrink(1);
+							stack.shrink(requiredKeyPanels);
 
 						world.playSound(player, pos, SCSounds.LOCK.event, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						return EnumActionResult.SUCCESS;

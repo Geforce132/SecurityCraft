@@ -520,6 +520,11 @@ public class KeypadChestBlock extends DisguisableBlock {
 			return true;
 		}
 
+		@Override
+		public int getRequiredKeyPanels(IBlockState state, World world, BlockPos pos) {
+			return getDoubleChestFacing(world.getBlockState(pos), world, pos) != EnumFacing.UP ? 2 : 1;
+		}
+
 		public void convert(EntityPlayer player, World world, BlockPos pos, boolean protect) {
 			IBlockState oldChestState = world.getBlockState(pos);
 			EnumFacing facing = oldChestState.getValue(FACING);
