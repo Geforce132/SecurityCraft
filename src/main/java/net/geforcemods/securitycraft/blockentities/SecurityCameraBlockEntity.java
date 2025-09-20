@@ -98,7 +98,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 				setDefaultViewingDirection(facing, initialZoom);
 		}
 
-		if (!level.isClientSide && !chunkForceLoadQueue.isEmpty()) {
+		if (!level.isClientSide() && !chunkForceLoadQueue.isEmpty()) {
 			Set<Long> queueCopy = new HashSet<>(chunkForceLoadQueue);
 
 			for (Long chunkPosLong : queueCopy) {
@@ -124,7 +124,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 			if (!shouldRotateOption.get()) {
 				cameraRotation = customRotationOption.get();
 
-				if (level.isClientSide && cameraRotation != oCameraRotation) {
+				if (level.isClientSide() && cameraRotation != oCameraRotation) {
 					GlobalPos cameraPos = GlobalPos.of(level.dimension(), pos);
 
 					if (FrameFeedHandler.hasFeed(cameraPos))
@@ -154,7 +154,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 					addToRotation = true;
 			}
 
-			if (!level.isClientSide)
+			if (!level.isClientSide())
 				level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
@@ -270,7 +270,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		//make players stop viewing the camera when it's disabled
-		if (option.getName().equals("disabled") && !level.isClientSide && ((BooleanOption) option).get()) {
+		if (option.getName().equals("disabled") && !level.isClientSide() && ((BooleanOption) option).get()) {
 			for (ServerPlayer player : ((ServerLevel) level).players()) {
 				if (player.getCamera() instanceof SecurityCamera camera && camera.blockPosition().equals(worldPosition))
 					camera.stopViewing(player);
@@ -409,7 +409,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 			unlinkFrameForPlayer(player, null);
 		}
 
-		if (level.isClientSide)
+		if (level.isClientSide())
 			FrameFeedHandler.removeAllFrameLinks(GlobalPos.of(level.dimension(), worldPosition));
 	}
 

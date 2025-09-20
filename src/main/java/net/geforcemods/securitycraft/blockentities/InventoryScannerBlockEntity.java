@@ -85,7 +85,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		if (connectedScanner != null) {
 			connectedScanner.setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!level.isClientSide)
+			if (!level.isClientSide())
 				level.getServer().getPlayerList().broadcastAll(connectedScanner.getUpdatePacket());
 		}
 
@@ -258,7 +258,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 			return;
 
 		InventoryScannerBlockEntity otherScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition, getBlockState(), be -> {
-			if (be.getLevel().isClientSide)
+			if (be.getLevel().isClientSide())
 				ClientHandler.updateBlockColorAroundPosition(be.getBlockPos());
 		});
 
@@ -367,14 +367,14 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	private void onInsertDisguiseModule(BlockEntity be, ItemStack stack) {
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide())
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		else
 			ClientHandler.putDisguisedBeRenderer(be, stack);
 	}
 
 	private void onRemoveDisguiseModule(BlockEntity be) {
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide())
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		else
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);

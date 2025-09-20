@@ -36,7 +36,7 @@ public class GameRendererMixin {
 	 */
 	@ModifyExpressionValue(method = "tickFov", at = @At(value = "CONSTANT", args = "floatValue=1.0F"))
 	private float securitycraft$modifyInitialFValue(float original) {
-		if (minecraft.cameraEntity instanceof SecurityCamera cam)
+		if (minecraft.getCameraEntity() instanceof SecurityCamera cam)
 			return cam.getZoomAmount();
 		else
 			return original;
@@ -48,9 +48,9 @@ public class GameRendererMixin {
 	 */
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V"))
 	private void securitycraft$renderCameraTint(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci, @Local GuiGraphics guiGraphics) {
-		if (minecraft.cameraEntity instanceof SecurityCamera) {
+		if (minecraft.getCameraEntity() instanceof SecurityCamera) {
 			Level level = minecraft.level;
-			BlockPos pos = minecraft.cameraEntity.blockPosition();
+			BlockPos pos = minecraft.getCameraEntity().blockPosition();
 			Window window = minecraft.getWindow();
 
 			if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be))

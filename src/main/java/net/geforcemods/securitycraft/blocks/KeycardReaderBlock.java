@@ -56,7 +56,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	}
 
 	public static <BE extends KeycardReaderBlockEntity> InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, Consumer<BE> noKeycardRightclick) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			BE be = (BE) level.getBlockEntity(pos);
 
 			if (be.isDisabled())

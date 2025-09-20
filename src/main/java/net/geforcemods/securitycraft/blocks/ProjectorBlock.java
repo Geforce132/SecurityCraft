@@ -78,7 +78,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 		boolean isOwner = be.isOwnedBy(player);
 
-		if (!level.isClientSide && isOwner)
+		if (!level.isClientSide() && isOwner)
 			player.openMenu(be);
 
 		return isOwner ? InteractionResult.SUCCESS : InteractionResult.FAIL;
@@ -91,7 +91,7 @@ public class ProjectorBlock extends DisguisableBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isActivatedByRedstone()) {
+		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isActivatedByRedstone()) {
 			be.setActive(level.hasNeighborSignal(pos));
 			level.sendBlockUpdated(pos, state, state, 3);
 		}

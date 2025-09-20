@@ -81,7 +81,7 @@ public class CameraMonitorItem extends Item {
 			updateComponentWithNames(stack, level);
 		}
 
-		if (level.isClientSide && stack.getItem() == SCContent.CAMERA_MONITOR.get())
+		if (level.isClientSide() && stack.getItem() == SCContent.CAMERA_MONITOR.get())
 			ClientHandler.displayCameraMonitorScreen(stack);
 
 		return InteractionResult.CONSUME;

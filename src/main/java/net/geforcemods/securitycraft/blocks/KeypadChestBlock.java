@@ -121,7 +121,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide && !isBlocked(level, pos)) {
+		if (!level.isClientSide() && !isBlocked(level, pos)) {
 			KeypadChestBlockEntity be = (KeypadChestBlockEntity) level.getBlockEntity(pos);
 
 			if (be.verifyPasscodeSet(level, pos, be, player)) {
@@ -144,7 +144,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	}
 
 	public void activate(BlockState state, Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			KeypadChestBlock block = (KeypadChestBlock) state.getBlock();
 			MenuProvider menuProvider = block.getMenuProvider(state, level, pos);
 
@@ -240,7 +240,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return level.isClientSide ? createTickerHelper(type, SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestBlockEntity::lidAnimateTick) : null;
+		return level.isClientSide() ? createTickerHelper(type, SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), KeypadChestBlockEntity::lidAnimateTick) : null;
 	}
 
 	public static boolean isBlocked(Level level, BlockPos pos) {

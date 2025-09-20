@@ -73,7 +73,7 @@ public class SecurityCamera extends Entity {
 	public void tick() {
 		Level level = level();
 
-		if (!level.isClientSide && level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
+		if (!level.isClientSide() && level.getBlockState(blockPosition()).getBlock() != SCContent.SECURITY_CAMERA.get())
 			discard();
 	}
 
@@ -129,7 +129,7 @@ public class SecurityCamera extends Entity {
 	}
 
 	public void stopViewing(ServerPlayer player) {
-		if (!level().isClientSide) {
+		if (!level().isClientSide()) {
 			discard();
 			player.camera = player;
 			PacketDistributor.sendToPlayer(player, new SetCameraView(player.getId()));
@@ -145,7 +145,7 @@ public class SecurityCamera extends Entity {
 	 */
 	@Deprecated
 	public void discardCamera() {
-		if (!level().isClientSide) {
+		if (!level().isClientSide()) {
 			if (getBlockEntity() != null && !be.isRemoved())
 				be.stopViewing();
 

@@ -102,7 +102,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			return;
 
 		// If the trophy does not have a target, try looking for one
-		if (!level.isClientSide && getTarget() == null) {
+		if (!level.isClientSide() && getTarget() == null) {
 			Projectile target = getPotentialTarget(level, pos);
 
 			if (target != null) {
@@ -218,7 +218,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		entityBeingTargeted = target;
 		setChanged();
 
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new SetTrophySystemTarget(worldPosition, target.getId()));
 	}
 
@@ -228,7 +228,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	private void destroyTarget() {
 		getTarget().remove(RemovalReason.KILLED);
 
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			level.explode(null, getTarget().getX(), getTarget().getY(), getTarget().getZ(), 0.1F, ExplosionInteraction.NONE);
 
 		resetTarget();
@@ -293,7 +293,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			projectileFilter.put(projectileType, allowed);
 			setChanged();
 
-			if (level.isClientSide)
+			if (level.isClientSide())
 				ClientPacketDistributor.sendToServer(new SyncTrophySystem(worldPosition, Utils.getRegistryName(projectileType), allowed));
 		}
 	}

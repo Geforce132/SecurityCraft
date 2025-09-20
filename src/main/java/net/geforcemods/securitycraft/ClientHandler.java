@@ -771,7 +771,7 @@ public class ClientHandler {
 	}
 
 	public static boolean isPlayerMountedOnCamera() {
-		return Minecraft.getInstance().cameraEntity instanceof SecurityCamera;
+		return Minecraft.getInstance().getCameraEntity() instanceof SecurityCamera;
 	}
 
 	public static void putDisguisedBeRenderer(BlockEntity disguisableBlockEntity, ItemStack stack) {

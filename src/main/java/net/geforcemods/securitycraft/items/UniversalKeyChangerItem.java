@@ -47,7 +47,7 @@ public class UniversalKeyChangerItem extends Item {
 			return InteractionResult.PASS;
 		else if (be instanceof IPasscodeProtected) {
 			if (((IOwnable) be).isOwnedBy(player) || player.isCreative()) {
-				if (!level.isClientSide)
+				if (!level.isClientSide())
 					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.CHANGE_PASSCODE, pos));
 
 				return InteractionResult.SUCCESS;
@@ -74,7 +74,7 @@ public class UniversalKeyChangerItem extends Item {
 				PasscodeData passcodeData = briefcase.get(SCContent.PASSCODE_DATA);
 
 				if (passcodeData != null) {
-					if (!level.isClientSide)
+					if (!level.isClientSide())
 						SaltData.removeSalt(passcodeData.saltKey());
 
 					briefcase.remove(SCContent.PASSCODE_DATA);

@@ -71,7 +71,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 	@Override
 	protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-		if (!oldState.is(state.getBlock()) && !level.isClientSide && level.getBlockEntity(pos) instanceof ValidationOwnableBlockEntity)
+		if (!oldState.is(state.getBlock()) && !level.isClientSide() && level.getBlockEntity(pos) instanceof ValidationOwnableBlockEntity)
 			checkIfExtend(level, pos, state);
 	}
 
@@ -126,7 +126,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 		Direction direction = state.getValue(FACING);
 		BlockState extendedState = state.setValue(EXTENDED, true);
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			boolean isPowered = getNeighborSignal(level, pos, direction);
 
 			if (isPowered && (id == 1 || id == 2)) {
@@ -268,7 +268,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 
 				dropResources(stateToDestroy, level, posToDestroy, beToDestroy);
 
-				if (!stateToDestroy.is(BlockTags.FIRE) && level.isClientSide)
+				if (!stateToDestroy.is(BlockTags.FIRE) && level.isClientSide())
 					level.levelEvent(2001, posToDestroy, getId(stateToDestroy));
 
 				level.setBlock(posToDestroy, Blocks.AIR.defaultBlockState(), 18);

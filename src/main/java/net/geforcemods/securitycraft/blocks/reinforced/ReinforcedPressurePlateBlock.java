@@ -49,7 +49,7 @@ public class ReinforcedPressurePlateBlock extends PressurePlateBlock implements 
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
 		int redstoneStrength = getSignalForState(state);
 
-		if (!level.isClientSide && redstoneStrength == 0 && entity instanceof Player player && level.getBlockEntity(pos) instanceof AllowlistOnlyBlockEntity be && isAllowedToPress(be, player))
+		if (!level.isClientSide() && redstoneStrength == 0 && entity instanceof Player player && level.getBlockEntity(pos) instanceof AllowlistOnlyBlockEntity be && isAllowedToPress(be, player))
 			checkPressed(player, level, pos, state, redstoneStrength);
 	}
 

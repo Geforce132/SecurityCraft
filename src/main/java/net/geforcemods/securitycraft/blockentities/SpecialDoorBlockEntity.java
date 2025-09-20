@@ -38,7 +38,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 		if (level.getBlockEntity(pos) instanceof SpecialDoorBlockEntity be && isLinkedWith(this, be)) {
 			be.setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!level.isClientSide)
+			if (!level.isClientSide())
 				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
 

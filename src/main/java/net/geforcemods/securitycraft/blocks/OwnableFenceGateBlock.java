@@ -66,7 +66,7 @@ public class OwnableFenceGateBlock extends FenceGateBlock implements EntityBlock
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			boolean isPoweredSCBlock = BlockUtils.hasActiveSCBlockNextTo(level, pos);
 
 			if (state.getValue(POWERED) != isPoweredSCBlock) {

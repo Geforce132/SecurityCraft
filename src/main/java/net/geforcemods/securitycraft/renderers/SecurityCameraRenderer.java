@@ -44,7 +44,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 	@Override
 	public void render(SecurityCameraBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 cameraPos) {
-		if (FrameFeedHandler.amIBeingCaptured(be) || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().cameraEntity.blockPosition().equals(be.getBlockPos()))
+		if (FrameFeedHandler.amIBeingCaptured(be) || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().getCameraEntity().blockPosition().equals(be.getBlockPos()))
 			return;
 
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay, cameraPos);

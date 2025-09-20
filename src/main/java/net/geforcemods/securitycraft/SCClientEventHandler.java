@@ -178,7 +178,7 @@ public class SCClientEventHandler {
 	public static void cameraOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
-		BlockPos pos = mc.cameraEntity.blockPosition();
+		BlockPos pos = mc.getCameraEntity().blockPosition();
 		Window window = mc.getWindow();
 		int scaledWidth = window.getGuiScaledWidth();
 		int scaledHeight = window.getGuiScaledHeight();

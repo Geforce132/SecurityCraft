@@ -46,11 +46,11 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (level.isClientSide && soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
+		if (level.isClientSide() && soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
 			stopPlayingSound();
 
 		if (!isDisabled() && isPowered && --cooldown <= 0) { //Even though isPowered is only explicitly set serverside, it is always synched to the client via NBT due to the block state change
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				double rangeSqr = Math.pow(range.get(), 2);
 				Holder<SoundEvent> soundEventHolder = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event);
 
@@ -111,7 +111,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		this.soundLength = Mth.clamp(soundLength, 1, MAXIMUM_ALARM_SOUND_LENGTH);
 		setCooldown(0);
 
-		if (level.isClientSide)
+		if (level.isClientSide())
 			stopPlayingSound();
 	}
 
@@ -159,7 +159,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void setRemoved() {
 		super.setRemoved();
 
-		if (level.isClientSide && soundPlaying)
+		if (level.isClientSide() && soundPlaying)
 			stopPlayingSound();
 	}
 

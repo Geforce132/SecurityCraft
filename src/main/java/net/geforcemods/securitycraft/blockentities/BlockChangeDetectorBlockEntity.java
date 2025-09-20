@@ -168,7 +168,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public void setMode(DetectionMode mode) {
 		this.mode = mode;
 
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			setChanged();
 	}
 

@@ -87,7 +87,7 @@ public class CageTrapBlock extends DisguisableBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			CageTrapBlockEntity cageTrap = (CageTrapBlockEntity) level.getBlockEntity(pos);
 
 			if (cageTrap.isDisabled())
@@ -184,7 +184,7 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	public static void disassembleIronBars(BlockState state, Level level, BlockPos cageTrapPos, Owner cageTrapOwner) {
-		if (cageTrapOwner != null && !level.isClientSide && state.getValue(CageTrapBlock.DEACTIVATED)) {
+		if (cageTrapOwner != null && !level.isClientSide() && state.getValue(CageTrapBlock.DEACTIVATED)) {
 			loopIronBarPositions(cageTrapPos.mutable(), barPos -> {
 				BlockEntity barBe = level.getBlockEntity(barPos);
 

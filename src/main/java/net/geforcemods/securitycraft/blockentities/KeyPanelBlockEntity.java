@@ -101,7 +101,7 @@ public class KeyPanelBlockEntity extends CustomizableBlockEntity implements IPas
 
 	@Override
 	public void activate(Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeyPanelBlock block)
+		if (!level.isClientSide() && getBlockState().getBlock() instanceof KeyPanelBlock block)
 			block.activate(getBlockState(), level, worldPosition, signalLength.get());
 	}
 

@@ -82,7 +82,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			KeypadBarrelBlockEntity be = (KeypadBarrelBlockEntity) level.getBlockEntity(pos);
 
 			if (be.verifyPasscodeSet(level, pos, be, player)) {
@@ -105,7 +105,7 @@ public class KeypadBarrelBlock extends DisguisableBlock {
 	}
 
 	public void activate(BlockState state, Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			MenuProvider menuProvider = getMenuProvider(state, level, pos);
 
 			if (menuProvider != null) {

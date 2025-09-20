@@ -227,7 +227,7 @@ public class SCEventHandler {
 			SaltData.invalidate();
 			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
 		}
-		else if (level.isClientSide()) {
+		else if (level.isClientSide()){
 			FrameFeedHandler.removeAllFeeds();
 			CameraClientChunkCacheExtension.clear();
 			CameraViewAreaExtension.clear();
@@ -270,7 +270,7 @@ public class SCEventHandler {
 		if (event.getSource().is(CustomDamageSources.ELECTRICITY))
 			level.playSound(null, entity.blockPosition(), SCSounds.ELECTRIFIED.event, SoundSource.BLOCKS, 0.25F, 1.0F);
 
-		if (!level.isClientSide && entity instanceof ServerPlayer player && PlayerUtils.isPlayerMountedOnCamera(entity))
+		if (!level.isClientSide() && entity instanceof ServerPlayer player && PlayerUtils.isPlayerMountedOnCamera(entity))
 			((SecurityCamera) player.getCamera()).stopViewing(player);
 	}
 
@@ -378,7 +378,7 @@ public class SCEventHandler {
 			}
 		}
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			if (event.getItemStack().is(Items.REDSTONE) && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
 				empAffected.reactivate();
 
@@ -462,7 +462,7 @@ public class SCEventHandler {
 			}
 		}
 
-		if (!level.isClientSide()) {
+		if (!level.isClientSide()){
 			BlockPos pos = event.getPos();
 
 			if (level.getBlockEntity(pos) instanceof IModuleInventory be && be.shouldDropModules()) {
@@ -497,7 +497,7 @@ public class SCEventHandler {
 	@SubscribeEvent
 	public static void onBlockEventPlace(BlockEvent.EntityPlaceEvent event) {
 		if (!(event.getLevel() instanceof Level level) || level.isClientSide())
-			return;
+		return;
 
 		if (event.getEntity() instanceof Player player) {
 			BlockPos pos = event.getPos();

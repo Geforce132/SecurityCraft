@@ -81,7 +81,7 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 				Player player = CommonHooks.getCraftingPlayer();
 				Level level = player != null ? player.level() : ServerLifecycleHooks.getCurrentServer().overworld();
 
-				if (level != null && !level.isClientSide)
+				if (level != null && !level.isClientSide())
 					stack.hurtAndBreak(1, (ServerLevel) level, player, item -> {});
 
 				newInv.set(i, stack.copy());

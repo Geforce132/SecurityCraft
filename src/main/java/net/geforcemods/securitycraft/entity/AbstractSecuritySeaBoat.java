@@ -120,13 +120,13 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 		if (player.isSecondaryUseActive()) {
 			if (stack.is(SCContent.CODEBREAKER.get())) {
-				if (!level.isClientSide)
+				if (!level.isClientSide())
 					handleCodebreaking(player, player.getMainHandItem().is(SCContent.CODEBREAKER.get()) ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND);
 
 				return InteractionResult.SUCCESS;
 			}
 			else if (stack.is(SCContent.UNIVERSAL_KEY_CHANGER.get())) {
-				if (!level.isClientSide) {
+				if (!level.isClientSide()) {
 					if (isOwnedBy(player) || player.isCreative())
 						PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.CHANGE_PASSCODE_FOR_ENTITY, getId()));
 					else
@@ -136,7 +136,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 				return InteractionResult.SUCCESS;
 			}
 			else if (stack.is(SCContent.UNIVERSAL_OWNER_CHANGER.get()) && isOwnedBy(player)) {
-				if (!level.isClientSide) {
+				if (!level.isClientSide()) {
 					String newOwner = stack.getHoverName().getString();
 
 					//disable this in a development environment
@@ -151,7 +151,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 			}
 			else if (stack.is(SCContent.UNIVERSAL_BLOCK_MODIFIER.get())) {
 				if (isOwnedBy(player)) {
-					if (!level.isClientSide) {
+					if (!level.isClientSide()) {
 						BlockPos pos = blockPosition();
 
 						player.openMenu(new MenuProvider() {
@@ -178,7 +178,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 				return InteractionResult.SUCCESS;
 			}
-			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && !level.isClientSide) {
+			else if (stack.is(SCContent.UNIVERSAL_BLOCK_REMOVER.get()) && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get() && !level.isClientSide()) {
 				if (isOwnedBy(player) || player.isCreative())
 					destroy((ServerLevel) level, damageSources().playerAttack(player));
 				else
@@ -202,7 +202,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		Level level = level();
 		BlockPos pos = blockPosition();
 
-		if (!level.isClientSide && verifyPasscodeSet(level, pos, this, player)) {
+		if (!level.isClientSide() && verifyPasscodeSet(level, pos, this, player)) {
 			if (isDenied(player)) {
 				if (sendsDenylistMessage())
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getType().getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
@@ -217,7 +217,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 				openPasscodeGUI(level, pos, player);
 		}
 
-		return !level.isClientSide ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
+		return !level.isClientSide() ? InteractionResult.CONSUME : InteractionResult.SUCCESS;
 	}
 
 	@Override
@@ -227,7 +227,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public void openPasscodeGUI(Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide && getPasscode() != null)
+		if (!level.isClientSide() && getPasscode() != null)
 			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.CHECK_PASSCODE_FOR_ENTITY, getId()));
 	}
 
@@ -264,7 +264,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	public void tick() {
 		super.tick();
 
-		if (!level().isClientSide && isInLava) {
+		if (!level().isClientSide() && isInLava) {
 			Entity passenger = getFirstPassenger();
 
 			if (passenger != null) {
@@ -287,7 +287,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (!level().isClientSide && reason.shouldDestroy()) {
+		if (!level().isClientSide() && reason.shouldDestroy()) {
 			Containers.dropContents(level(), blockPosition(), getInventory());
 			SaltData.removeSalt(getSaltKey());
 		}
@@ -326,13 +326,13 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public <T> void onOptionChanged(Option<T> option) {
-		if (!level().isClientSide)
+		if (!level().isClientSide())
 			entityData.set(((EntityDataWrappedOption<T>) option).getEntityDataKey(), option.get());
 	}
 
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
-		if (level().isClientSide) {
+		if (level().isClientSide()) {
 			if (key == SEND_ALLOWLIST_MESSAGE)
 				sendAllowlistMessage.setValue(entityData.get(SEND_ALLOWLIST_MESSAGE));
 			else if (key == SEND_DENYLIST_MESSAGE)

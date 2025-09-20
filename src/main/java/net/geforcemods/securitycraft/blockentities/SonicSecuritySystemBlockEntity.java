@@ -87,7 +87,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 			tracked = true;
 		}
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			if (!isActive())
 				return;
 
@@ -325,7 +325,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 		isListening = false;
 		level.updateNeighborsAt(worldPosition, SCContent.SONIC_SECURITY_SYSTEM.get());
 
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			sync();
 	}
 
@@ -346,7 +346,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 	public void recordNote(int noteID, NoteBlockInstrument instrument, String customSoundId) {
 		recordedNotes.add(new NoteWrapper(noteID, instrument.getSerializedName(), customSoundId));
 
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			sync();
 	}
 

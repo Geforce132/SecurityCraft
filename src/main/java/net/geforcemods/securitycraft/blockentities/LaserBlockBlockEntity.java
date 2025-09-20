@@ -262,7 +262,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			if (level.getBlockEntity(modifiedPos) instanceof LaserBlockBlockEntity otherLaser) {
 				otherLaser.getLensContainer().setItemExclusively(direction.getOpposite().ordinal(), lenses.getItem(direction.ordinal()));
 
-				if (!level.isClientSide)
+				if (!level.isClientSide())
 					PacketDistributor.sendToPlayersInDimension((ServerLevel) level, new UpdateLaserColors(positionsToUpdate));
 
 				level.sendBlockUpdated(modifiedPos, stateAtModifiedPos, stateAtModifiedPos, 2);

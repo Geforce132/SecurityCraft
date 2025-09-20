@@ -13,7 +13,7 @@ public interface IEMPAffectedBE extends IEMPAffected {
 
 		IEMPAffected.super.shutDown();
 
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide())
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 	}
 
@@ -23,7 +23,7 @@ public interface IEMPAffectedBE extends IEMPAffected {
 
 		IEMPAffected.super.reactivate();
 
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide())
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 	}
 }

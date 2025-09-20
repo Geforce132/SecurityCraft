@@ -23,9 +23,9 @@ public class LevelUtils {
 	 */
 	public static void addScheduledTask(LevelAccessor level, Runnable runnable) {
 		if (level.isClientSide())
-			Minecraft.getInstance().execute(runnable);
+		Minecraft.getInstance().execute(runnable);
 		else
-			ServerLifecycleHooks.getCurrentServer().execute(runnable);
+		ServerLifecycleHooks.getCurrentServer().execute(runnable);
 	}
 
 	public static LightningBolt createLightning(Level level, Vec3 pos, boolean effectOnly) {

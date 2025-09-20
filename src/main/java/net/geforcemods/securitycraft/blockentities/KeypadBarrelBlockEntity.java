@@ -240,7 +240,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 
 	@Override
 	public void activate(Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadBarrelBlock block)
+		if (!level.isClientSide() && getBlockState().getBlock() instanceof KeypadBarrelBlock block)
 			block.activate(getBlockState(), level, worldPosition, player);
 	}
 

@@ -61,7 +61,7 @@ public class FloorTrapBlock extends SometimesVisibleBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		if (level.isClientSide)
+		if (level.isClientSide())
 			return state.getValue(INVISIBLE) ? createTickerHelper(type, SCContent.FLOOR_TRAP_BLOCK_ENTITY.get(), FloorTrapBlockEntity::particleTick) : null;
 
 		return createTickerHelper(type, SCContent.FLOOR_TRAP_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);

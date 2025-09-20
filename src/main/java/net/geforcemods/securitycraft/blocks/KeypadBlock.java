@@ -48,7 +48,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 		if (state.getValue(POWERED) && be.getSignalLength() > 0)
 			return InteractionResult.PASS;
-		else if (!level.isClientSide) {
+		else if (!level.isClientSide()) {
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else if (be.verifyPasscodeSet(level, pos, be, player)) {

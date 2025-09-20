@@ -28,7 +28,7 @@ public class ScannerDoorBlock extends SpecialDoorBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return level.isClientSide ? null : BaseEntityBlock.createTickerHelper(type, SCContent.SCANNER_DOOR_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+		return level.isClientSide() ? null : BaseEntityBlock.createTickerHelper(type, SCContent.SCANNER_DOOR_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 	}
 
 	@Override

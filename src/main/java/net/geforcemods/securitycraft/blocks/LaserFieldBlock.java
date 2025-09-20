@@ -71,7 +71,7 @@ public class LaserFieldBlock extends OwnableBlock implements SimpleWaterloggedBl
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
-		if (!level.isClientSide && entity instanceof LivingEntity livingEntity) {
+		if (!level.isClientSide() && entity instanceof LivingEntity livingEntity) {
 			if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 				return;
 
@@ -137,7 +137,7 @@ public class LaserFieldBlock extends OwnableBlock implements SimpleWaterloggedBl
 
 	@Override
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-		if (!level.isClientSide()) {
+		if (!level.isClientSide()){
 			int boundType = state.getValue(LaserFieldBlock.BOUNDTYPE);
 			Direction direction = Direction.from3DDataValue((boundType - 1) * 2);
 

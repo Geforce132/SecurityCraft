@@ -58,7 +58,7 @@ public class CameraController {
 	@SubscribeEvent
 	public static void onClientTickPre(ClientTickEvent.Pre event) {
 		//up/down/left/right handling is split to prevent players who are viewing a camera from moving around in a boat or on a horse
-		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 
 		if (cameraEntity instanceof SecurityCamera) {
 			Options options = Minecraft.getInstance().options;
@@ -76,7 +76,7 @@ public class CameraController {
 
 	@SubscribeEvent
 	public static void onClientTickPost(ClientTickEvent.Post event) {
-		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 
 		if (cameraEntity instanceof SecurityCamera cam) {
 			Options options = Minecraft.getInstance().options;

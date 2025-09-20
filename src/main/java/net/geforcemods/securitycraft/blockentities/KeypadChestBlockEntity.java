@@ -184,13 +184,13 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 
 	@Override
 	public void activate(Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadChestBlock block && !isBlocked())
+		if (!level.isClientSide() && getBlockState().getBlock() instanceof KeypadChestBlock block && !isBlocked())
 			block.activate(getBlockState(), level, worldPosition, player);
 	}
 
 	@Override
 	public void openPasscodeGUI(Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide && !isBlocked())
+		if (!level.isClientSide() && !isBlocked())
 			IPasscodeProtected.super.openPasscodeGUI(level, pos, player);
 	}
 

@@ -90,7 +90,7 @@ public class ProjectorMenu extends StateSelectorAccessMenu {
 		be.setProjectedState(state);
 		broadcastChanges();
 
-		if (be.getLevel().isClientSide)
+		if (be.getLevel().isClientSide())
 			ClientPacketDistributor.sendToServer(new SyncProjector(be.getBlockPos(), state));
 	}
 

@@ -45,7 +45,7 @@ public class UniversalBlockModifierItem extends Item {
 
 				return InteractionResult.FAIL;
 			}
-			else if (!ctx.getLevel().isClientSide) {
+			else if (!ctx.getLevel().isClientSide()) {
 				player.openMenu(new MenuProvider() {
 					@Override
 					public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {

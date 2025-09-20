@@ -84,7 +84,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
-		if (!level.isClientSide && entity instanceof LivingEntity livingEntity && getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox())) {
+		if (!level.isClientSide() && entity instanceof LivingEntity livingEntity && getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).inflate(0.01D).intersects(entity.getBoundingBox())) {
 			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
 			TargetingMode mode = mine.getTargetingMode();
 
@@ -131,7 +131,7 @@ public class BouncingBettyBlock extends ExplosiveBlock implements SimpleWaterlog
 
 	@Override
 	public void explode(Level level, BlockPos pos) {
-		if (level.isClientSide || level.getBlockState(pos).getValue(DEACTIVATED))
+		if (level.isClientSide() || level.getBlockState(pos).getValue(DEACTIVATED))
 			return;
 
 		BouncingBetty bouncingBettyEntity = new BouncingBetty(level, pos.getX() + 0.5F, pos.getY() + 0.5F, pos.getZ() + 0.5F);

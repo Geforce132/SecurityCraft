@@ -64,7 +64,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 
 	@Override
 	public void activate(Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof DisplayCaseBlock block)
+		if (!level.isClientSide() && getBlockState().getBlock() instanceof DisplayCaseBlock block)
 			block.activate(this);
 	}
 
@@ -132,7 +132,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
 		loadPasscodeAndSaltKey(tag);
 
-		if (level != null && level.isClientSide && !hasReceivedData) { //Skip opening animation when the display case is first loaded on the client
+		if (level != null && level.isClientSide() && !hasReceivedData) { //Skip opening animation when the display case is first loaded on the client
 			forceOpen(shouldBeOpen);
 			hasReceivedData = true;
 		}
@@ -226,7 +226,7 @@ public class DisplayCaseBlockEntity extends CustomizableBlockEntity implements I
 	}
 
 	private void sync() {
-		if (level != null && !level.isClientSide) {
+		if (level != null && !level.isClientSide()) {
 			setChanged();
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 2);
 		}

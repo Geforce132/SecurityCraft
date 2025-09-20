@@ -39,7 +39,7 @@ public class MinecraftMixin {
 	 */
 	@Inject(method = "setCameraEntity", at = @At("HEAD"))
 	private void securitycraft$onSetCameraEntity(Entity newCameraEntity, CallbackInfo ci) {
-		if (ConfigHandler.CLIENT.debugCameraResetTracing.get() && Minecraft.getInstance().cameraEntity instanceof SecurityCamera && !(newCameraEntity instanceof SecurityCamera)) {
+		if (ConfigHandler.CLIENT.debugCameraResetTracing.get() && Minecraft.getInstance().getCameraEntity() instanceof SecurityCamera && !(newCameraEntity instanceof SecurityCamera)) {
 			StackTraceElement[] stacktrace = StackWalker.getInstance().walk(frames -> frames.skip(1).map(StackWalker.StackFrame::toStackTraceElement).toArray(StackTraceElement[]::new)); //0 is this mixin, 1 is setCameraEntity
 			Exception exception = new Exception();
 			long millisSinceLastMount = CameraController.getMillisSinceLastMount();

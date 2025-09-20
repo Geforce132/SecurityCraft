@@ -196,7 +196,7 @@ public class ReinforcedMossyCarpetBlock extends BaseReinforcedBlock implements B
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, entity, stack);
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			BlockState topper = createTopperWithSideChance(level, pos, level.getRandom()::nextBoolean);
 
 			if (!topper.isAir())
@@ -255,9 +255,12 @@ public class ReinforcedMossyCarpetBlock extends BaseReinforcedBlock implements B
 	@Override
 	protected BlockState rotate(BlockState state, Rotation rotation) {
 		return switch (rotation) {
-			case CLOCKWISE_180 -> state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
-			case COUNTERCLOCKWISE_90 -> state.setValue(NORTH, state.getValue(EAST)).setValue(EAST, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(WEST)).setValue(WEST, state.getValue(NORTH));
-			case CLOCKWISE_90 -> state.setValue(NORTH, state.getValue(WEST)).setValue(EAST, state.getValue(NORTH)).setValue(SOUTH, state.getValue(EAST)).setValue(WEST, state.getValue(SOUTH));
+			case CLOCKWISE_180 ->
+					state.setValue(NORTH, state.getValue(SOUTH)).setValue(EAST, state.getValue(WEST)).setValue(SOUTH, state.getValue(NORTH)).setValue(WEST, state.getValue(EAST));
+			case COUNTERCLOCKWISE_90 ->
+					state.setValue(NORTH, state.getValue(EAST)).setValue(EAST, state.getValue(SOUTH)).setValue(SOUTH, state.getValue(WEST)).setValue(WEST, state.getValue(NORTH));
+			case CLOCKWISE_90 ->
+					state.setValue(NORTH, state.getValue(WEST)).setValue(EAST, state.getValue(NORTH)).setValue(SOUTH, state.getValue(EAST)).setValue(WEST, state.getValue(SOUTH));
 			default -> state;
 		};
 	}

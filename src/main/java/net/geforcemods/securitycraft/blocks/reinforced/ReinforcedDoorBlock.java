@@ -89,7 +89,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (!level.isClientSide && player.isCreative()) {
+		if (!level.isClientSide() && player.isCreative()) {
 			DoubleBlockHalf doorHalf = state.getValue(HALF);
 
 			if (doorHalf == DoubleBlockHalf.UPPER) {
@@ -218,7 +218,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			}
 
 			if (drop) {
-				if (!level.isClientSide) {
+				if (!level.isClientSide()) {
 					level.destroyBlock(firstDoorPos, false);
 					Block.popResource(level, firstDoorPos, new ItemStack(SCContent.REINFORCED_DOOR_ITEM.get()));
 				}

@@ -43,7 +43,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @param player The player who the GUI should be opened to.
 	 */
 	public default void openPasscodeGUI(Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide && getPasscode() != null)
+		if (!level.isClientSide() && getPasscode() != null)
 			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.CHECK_PASSCODE, pos));
 	}
 
@@ -57,7 +57,7 @@ public interface IPasscodeProtected extends ICodebreakable {
 	 * @return true if a passcode has been set, false otherwise
 	 */
 	default boolean verifyPasscodeSet(Level level, BlockPos pos, IOwnable ownable, Player player) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			if (getPasscode() != null)
 				return true;
 

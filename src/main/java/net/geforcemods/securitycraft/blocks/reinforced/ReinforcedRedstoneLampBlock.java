@@ -32,7 +32,7 @@ public class ReinforcedRedstoneLampBlock extends BaseReinforcedBlock {
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean isMoving) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			boolean isLit = state.getValue(LIT);
 
 			if (isLit != level.hasNeighborSignal(pos)) {

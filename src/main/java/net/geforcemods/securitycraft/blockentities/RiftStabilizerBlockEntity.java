@@ -81,7 +81,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			teleportationFilter.put(teleportationType, allowed);
 			setChanged();
 
-			if (level.isClientSide)
+			if (level.isClientSide())
 				ClientPacketDistributor.sendToServer(new SyncRiftStabilizer(worldPosition, teleportationType, allowed));
 
 			RiftStabilizerBlockEntity connectedBlockEntity = RiftStabilizerBlock.getConnectedBlockEntity(level, worldPosition);
@@ -190,14 +190,14 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	}
 
 	private void onInsertDisguiseModule(BlockEntity be, ItemStack stack) {
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide())
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		else
 			ClientHandler.putDisguisedBeRenderer(be, stack);
 	}
 
 	private void onRemoveDisguiseModule(BlockEntity be) {
-		if (!be.getLevel().isClientSide)
+		if (!be.getLevel().isClientSide())
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		else
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
@@ -265,7 +265,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 		if (be != null) {
 			be.setOwner(getOwner().getUUID(), getOwner().getName());
 
-			if (!level.isClientSide)
+			if (!level.isClientSide())
 				level.getServer().getPlayerList().broadcastAll(be.getUpdatePacket());
 		}
 

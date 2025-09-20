@@ -163,7 +163,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public MutableComponent enableMultiblock() {
-		if (level.isClientSide)
+		if (level.isClientSide())
 			return Component.translatable("enableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
 		if (!isEnabled()) { //multiblock detection
@@ -322,7 +322,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	 * @return The feedback message. null if none should be sent.
 	 */
 	public MutableComponent autoAssembleMultiblock() {
-		if (level.isClientSide)
+		if (level.isClientSide())
 			return Component.translatable("autoAssembleMultiblock called on client! Send an AssembleBlockPocket packet instead.");
 
 		if (!isEnabled()) {
@@ -505,7 +505,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	public MutableComponent disableMultiblock() {
-		if (level.isClientSide)
+		if (level.isClientSide())
 			return Component.translatable("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
 		if (isEnabled()) {

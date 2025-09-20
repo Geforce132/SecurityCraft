@@ -42,7 +42,7 @@ public class SentryRemoteAccessToolItem extends Item {
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			updateComponentWithNames(stack, level);
 			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 		}
@@ -84,7 +84,7 @@ public class SentryRemoteAccessToolItem extends Item {
 				return InteractionResult.SUCCESS;
 			}
 		}
-		else if (!level.isClientSide) {
+		else if (!level.isClientSide()) {
 			updateComponentWithNames(stack, level);
 			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SENTRY_REMOTE_ACCESS_TOOL));
 		}

@@ -28,7 +28,7 @@ public class KeypadDoorBlock extends SpecialDoorBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			KeypadDoorBlockEntity be = (KeypadDoorBlockEntity) level.getBlockEntity(pos);
 
 			if (be.isDisabled())

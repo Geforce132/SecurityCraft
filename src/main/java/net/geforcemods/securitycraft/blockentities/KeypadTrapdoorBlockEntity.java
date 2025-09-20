@@ -62,7 +62,7 @@ public class KeypadTrapdoorBlockEntity extends DisguisableBlockEntity implements
 
 	@Override
 	public void activate(Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadTrapDoorBlock block)
+		if (!level.isClientSide() && getBlockState().getBlock() instanceof KeypadTrapDoorBlock block)
 			block.activate(getBlockState(), level, worldPosition, signalLength.get());
 	}
 

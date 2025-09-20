@@ -95,7 +95,7 @@ public class SonicSecuritySystemBlock extends DisguisableBlock implements Simple
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		SonicSecuritySystemBlockEntity be = (SonicSecuritySystemBlockEntity) level.getBlockEntity(pos);
 
-		if (!level.isClientSide && (be.isOwnedBy(player) || be.isAllowed(player)))
+		if (!level.isClientSide() && (be.isOwnedBy(player) || be.isAllowed(player)))
 			PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SONIC_SECURITY_SYSTEM, pos));
 
 		return InteractionResult.SUCCESS;

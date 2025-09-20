@@ -82,13 +82,13 @@ public class ModuleItem extends Item {
 
 		if (canBeCustomized()) {
 			if (module == ModuleType.ALLOWLIST || module == ModuleType.DENYLIST) {
-				if (level.isClientSide)
+				if (level.isClientSide())
 					ClientHandler.displayEditModuleScreen(stack);
 
 				return InteractionResult.CONSUME;
 			}
 			else if (module == ModuleType.DISGUISE) {
-				if (!level.isClientSide) {
+				if (!level.isClientSide()) {
 					player.openMenu(new MenuProvider() {
 						@Override
 						public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {

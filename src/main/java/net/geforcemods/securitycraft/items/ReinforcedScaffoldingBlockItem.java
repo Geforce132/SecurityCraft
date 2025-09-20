@@ -49,7 +49,7 @@ public class ReinforcedScaffoldingBlockItem extends ScaffoldingBlockItem {
 			mutable = pos.mutable().move(direction);
 
 			while (distance < 7) {
-				if (!level.isClientSide && !level.isInWorldBounds(mutable)) {
+				if (!level.isClientSide() && !level.isInWorldBounds(mutable)) {
 					if (player instanceof ServerPlayer serverPlayer && mutable.getY() >= maxBuildHeight)
 						serverPlayer.sendSystemMessage(Component.translatable("build.tooHigh", maxBuildHeight - 1).withStyle(ChatFormatting.RED), true);
 

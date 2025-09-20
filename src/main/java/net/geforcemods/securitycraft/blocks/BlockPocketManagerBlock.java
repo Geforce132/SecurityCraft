@@ -31,7 +31,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isPlacingBlocks())
+		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isPlacingBlocks())
 			player.openMenu(be);
 
 		return InteractionResult.SUCCESS;
@@ -54,7 +54,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return !level.isClientSide ? createTickerHelper(type, SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
+		return !level.isClientSide() ? createTickerHelper(type, SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
 	}
 
 	@Override

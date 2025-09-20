@@ -72,7 +72,7 @@ public class FrameFeedHandler {
 
 		Level level = player.level();
 		Camera camera = mc.gameRenderer.getMainCamera();
-		Entity oldCamEntity = mc.cameraEntity;
+		Entity oldCamEntity = mc.getCameraEntity();
 		Window window = mc.getWindow();
 		int oldWidth = window.getWidth();
 		int oldHeight = window.getHeight();

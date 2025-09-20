@@ -115,7 +115,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 	@Override
 	public void useCodebreaker(Player player) {
-		if (!level.isClientSide)
+		if (!level.isClientSide())
 			activate();
 	}
 

@@ -55,7 +55,7 @@ public class ProtectoBlockEntity extends DisguisableBlockEntity implements ITick
 						if (entity instanceof Player player && (player.isCreative() || !player.canBeSeenByAnyone() || (isOwnedBy(player) && ignoresOwner()) || isAllowed(entity)) || entity instanceof OwnableEntity ownableEntity && allowsOwnableEntity(ownableEntity))
 							continue;
 
-						if (!level.isClientSide)
+						if (!level.isClientSide())
 							level.addFreshEntity(LevelUtils.createLightning(level, entity.position(), false));
 
 						shouldDeactivate = true;

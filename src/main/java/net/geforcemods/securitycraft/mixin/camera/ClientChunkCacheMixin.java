@@ -45,7 +45,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	@Inject(method = "drop", at = @At("HEAD"))
 	private void securitycraft$onDrop(ChunkPos pos, CallbackInfo ci) {
 		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
-		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 
 		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1) || FrameFeedHandler.shouldAddChunk(pos, renderDistance))
 			return;
@@ -60,7 +60,7 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	@Inject(method = "replaceWithPacketData", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onReplaceChunk(int x, int z, FriendlyByteBuf buffer, Map<Heightmap.Types, long[]> heightmaps, Consumer<BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> cir) {
 		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
-		Entity cameraEntity = Minecraft.getInstance().cameraEntity;
+		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		ChunkPos pos = new ChunkPos(x, z);
 		boolean isInPlayerRange = storage.inRange(x, z);
 

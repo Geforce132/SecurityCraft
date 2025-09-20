@@ -96,7 +96,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
 		toggleModuleState(module, true);
 
-		if (this instanceof BlockEntity be && !be.getLevel().isClientSide) {
+		if (this instanceof BlockEntity be && !be.getLevel().isClientSide()) {
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}
@@ -112,7 +112,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	public default void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
 		toggleModuleState(module, false);
 
-		if (this instanceof BlockEntity be && !be.getLevel().isClientSide) {
+		if (this instanceof BlockEntity be && !be.getLevel().isClientSide()) {
 			be.setChanged();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 		}

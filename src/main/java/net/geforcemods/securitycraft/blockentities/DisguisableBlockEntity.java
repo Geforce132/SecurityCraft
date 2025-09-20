@@ -49,7 +49,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockPos worldPosition = be.getBlockPos();
 		int newLight = IDisguisable.getDisguisedBlockStateFromStack(stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
@@ -81,7 +81,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		Level level = be.getLevel();
 		BlockPos worldPosition = be.getBlockPos();
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
@@ -113,7 +113,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	public static <T extends BlockEntity & IModuleInventory> void onHandleUpdateTag(T be) {
 		Level level = be.getLevel();
 
-		if (level != null && level.isClientSide) {
+		if (level != null && level.isClientSide()) {
 			ItemStack stack = be.getModule(ModuleType.DISGUISE);
 
 			if (!stack.isEmpty())
@@ -132,7 +132,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 	}
 
 	public static void onSetRemoved(BlockEntity be) {
-		if (be.getLevel().isClientSide)
+		if (be.getLevel().isClientSide())
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.removeDelegateOf(be);
 	}
 

@@ -67,7 +67,7 @@ public class KeypadBlockEntity extends DisguisableBlockEntity implements IPassco
 
 	@Override
 	public void activate(Player player) {
-		if (!level.isClientSide && getBlockState().getBlock() instanceof KeypadBlock block)
+		if (!level.isClientSide() && getBlockState().getBlock() instanceof KeypadBlock block)
 			block.activate(getBlockState(), level, worldPosition, signalLength.get());
 	}
 

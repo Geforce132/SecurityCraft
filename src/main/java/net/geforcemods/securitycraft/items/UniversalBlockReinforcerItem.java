@@ -74,7 +74,7 @@ public class UniversalBlockReinforcerItem extends Item {
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
 		ItemStack heldItem = player.getItemInHand(hand);
 
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			maybeRemoveMending(level.registryAccess(), heldItem);
 			player.openMenu(new MenuProvider() {
 				@Override
@@ -102,7 +102,7 @@ public class UniversalBlockReinforcerItem extends Item {
 		if (!player.isCreative() && level.mayInteract(player, pos)) {
 			boolean result = convertBlock(state, level, stack, pos, player, new Owner(player));
 
-			if (result && !level.isClientSide)
+			if (result && !level.isClientSide())
 				stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
 
 			return result;
@@ -129,7 +129,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			if (be instanceof IOwnable ownable && ((player != null && !ownable.isOwnedBy(player)) || !ownable.isOwnedBy(owner)))
 				return false;
 
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (be != null) {
 					tag = be.saveWithoutMetadata(level.registryAccess());
 

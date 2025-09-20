@@ -265,7 +265,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	public void onLoad() {
 		super.onLoad();
 
-		if (level.isClientSide)
+		if (level.isClientSide())
 			ClientHandler.PROJECTOR_RENDER_DELEGATE.putDelegateFor(this, projectedState, projectedBlock);
 	}
 
@@ -273,12 +273,12 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	public void setRemoved() {
 		super.setRemoved();
 
-		if (level.isClientSide)
+		if (level.isClientSide())
 			ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
 	}
 
 	public void setProjectedState(BlockState projectedState) {
-		if (level != null && level.isClientSide) {
+		if (level != null && level.isClientSide()) {
 			if (this.projectedState.getBlock() != projectedState.getBlock())
 				ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
 
@@ -295,7 +295,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 		else {
 			projectedState = Blocks.AIR.defaultBlockState();
 
-			if (level != null && level.isClientSide)
+			if (level != null && level.isClientSide())
 				ClientHandler.PROJECTOR_RENDER_DELEGATE.removeDelegateOf(this);
 
 			setChanged();

@@ -130,7 +130,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void tick() {
 		super.tick();
 
-		if (!level().isClientSide) {
+		if (!level().isClientSide()) {
 			BlockPos downPos = getBlockPosBelowThatAffectsMyMovement();
 
 			if (level().getBlockState(downPos).isAir() || level().noCollision(new AABB(downPos)))
@@ -388,7 +388,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		throwableEntity.shoot(x, y + yOffset, z, 1.6F, 0.0F); //no inaccuracy for sentries!
 
 		if (shootSound == null) {
-			if (!level.isClientSide && pdb != null)
+			if (!level.isClientSide() && pdb != null)
 				pdb.playSound(new BlockSource((ServerLevel) level, blockPosition(), null, null)); //probably safe as long as playSound does not call the state and blockEntity methods.
 		}
 		else
@@ -444,7 +444,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	public void onSyncedDataUpdated(List<SynchedEntityData.DataValue<?>> dataList) {
 		super.onSyncedDataUpdated(dataList);
 
-		if (level().isClientSide && !hasReceivedEntityData) {
+		if (level().isClientSide() && !hasReceivedEntityData) {
 			if (shouldHeadBeUp())
 				headYTranslation = UPWARDS_ANIMATION_LIMIT; //skip upwards animation when the sentry spawns on the client
 

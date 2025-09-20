@@ -289,7 +289,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 
 	@Override
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-		if (!level.isClientSide()) {
+		if (!level.isClientSide()){
 			Direction facing = state.getValue(FACING);
 
 			BlockUtils.removeInSequence((direction, stateToCheck) -> {

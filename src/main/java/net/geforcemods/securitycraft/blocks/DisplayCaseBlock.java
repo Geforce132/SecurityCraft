@@ -109,7 +109,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 	@Override
 	public InteractionResult useItemOn(ItemStack heldStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && !heldStack.isEmpty() && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be && be.isOpen()) {
+		if (!level.isClientSide() && !heldStack.isEmpty() && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be && be.isOpen()) {
 			ItemStack displayedStack = be.getDisplayedStack();
 
 			if (displayedStack.isEmpty()) {
@@ -133,7 +133,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
+		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
 			if (be.isLocked() && be.disableInteractionWhenLocked(level, pos, player)) {
 				MutableComponent blockName = Utils.localize(getDescriptionId());
 
@@ -231,7 +231,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		if (level.isClientSide) {
+		if (level.isClientSide()) {
 			if (glowing)
 				return createTickerHelper(type, SCContent.GLOW_DISPLAY_CASE_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
 			else

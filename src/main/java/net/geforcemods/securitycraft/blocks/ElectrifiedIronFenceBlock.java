@@ -223,7 +223,7 @@ public class ElectrifiedIronFenceBlock extends OwnableBlock {
 			if (be.allowsOwnableEntity(ownableEntity))
 				return;
 		}
-		else if (!level.isClientSide) {
+		else if (!level.isClientSide()) {
 			LightningBolt lightning = LevelUtils.createLightning(level, Vec3.atBottomCenterOf(pos), true);
 
 			entity.thunderHit((ServerLevel) level, lightning);

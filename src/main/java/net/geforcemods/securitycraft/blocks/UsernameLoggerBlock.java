@@ -40,7 +40,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player))) {
+		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player))) {
 			if (be.isDisabled())
 				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 			else
@@ -72,7 +72,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return !level.isClientSide ? BaseEntityBlock.createTickerHelper(type, SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
+		return !level.isClientSide() ? BaseEntityBlock.createTickerHelper(type, SCContent.USERNAME_LOGGER_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker) : null;
 	}
 
 	@Override

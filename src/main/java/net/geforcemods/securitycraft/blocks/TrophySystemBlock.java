@@ -66,7 +66,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(player)) {
-			if (!level.isClientSide) {
+			if (!level.isClientSide()) {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
 				else

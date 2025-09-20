@@ -88,7 +88,7 @@ public class SonicSecuritySystemItem extends BlockItem {
 
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
-		if (level.isClientSide)
+		if (level.isClientSide())
 			ClientHandler.displaySSSItemScreen(player.getItemInHand(hand));
 
 		return InteractionResult.SUCCESS_SERVER;

@@ -115,7 +115,7 @@ public abstract class AbstractKeypadFurnaceBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide) {
+		if (!level.isClientSide()) {
 			AbstractKeypadFurnaceBlockEntity be = (AbstractKeypadFurnaceBlockEntity) level.getBlockEntity(pos);
 
 			if (be.isDisabled())

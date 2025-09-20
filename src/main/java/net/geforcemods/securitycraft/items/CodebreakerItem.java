@@ -51,7 +51,7 @@ public class CodebreakerItem extends Item {
 					else {
 						codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 
-						if (!level.isClientSide) {
+						if (!level.isClientSide()) {
 							if (!player.isCreative() && codebreaker.getOrDefault(SCContent.CODEBREAKER_DATA, CodebreakerData.DEFAULT).wasRecentlyUsed())
 								return InteractionResult.PASS;
 

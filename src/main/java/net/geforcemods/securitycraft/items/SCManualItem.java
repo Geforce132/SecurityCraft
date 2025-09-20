@@ -35,7 +35,7 @@ public class SCManualItem extends Item {
 
 	@Override
 	public InteractionResult use(Level level, Player player, InteractionHand hand) {
-		if (level.isClientSide)
+		if (level.isClientSide())
 			ClientHandler.displaySCManualScreen();
 
 		return InteractionResult.CONSUME;
