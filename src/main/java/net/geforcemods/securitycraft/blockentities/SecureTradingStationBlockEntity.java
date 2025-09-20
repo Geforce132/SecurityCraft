@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.InventoryUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -94,7 +95,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 				int quantityPerTransaction = paymentRequest.getValue();
 				int totalQuantity = quantityPerTransaction * transactions;
 
-				BlockUtils.checkInventoryForItem(menu.paymentInput.items, paymentStackToMatch, totalQuantity, hasSmartModule, true, this::handleConsumedPaymentItem, menu.paymentInput::setItem);
+				InventoryUtils.checkInventoryForItem(menu.paymentInput.items, paymentStackToMatch, totalQuantity, hasSmartModule, true, this::handleConsumedPaymentItem, menu.paymentInput::setItem);
 			}
 
 			if (hasRewardReferenceStacks()) {
@@ -105,7 +106,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 					int quantityPerTransaction = rewardEntry.getValue();
 					int totalQuantity = quantityPerTransaction * transactions;
 
-					BlockUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(SecureTradingStation.FACING), 0.7)), inventoryContents::set);
+					InventoryUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(SecureTradingStation.FACING), 0.7)), inventoryContents::set);
 				}
 			}
 
@@ -121,7 +122,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		ItemStack remainder = paymentStack;
 
 		if (isModuleEnabled(ModuleType.STORAGE))
-			remainder = InventoryScannerBlockEntity.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
+			remainder = InventoryUtils.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
 		if (!remainder.isEmpty())
 			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
@@ -136,7 +137,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		for (Map.Entry<ItemStack, Integer> paymentRequest : itemReference.entrySet()) {
 			ItemStack paymentStackToMatch = paymentRequest.getKey();
 			int quantityPerTransaction = paymentRequest.getValue();
-			int paymentItemsInInputSlots = BlockUtils.countItemsBetween(slotsToSearch, paymentStackToMatch, start, endInclusive, hasSmartModule);
+			int paymentItemsInInputSlots = InventoryUtils.countItemsBetween(slotsToSearch, paymentStackToMatch, start, endInclusive, hasSmartModule);
 			int transactions = paymentItemsInInputSlots / quantityPerTransaction;
 
 			if (possibleTransactions == -1 || possibleTransactions > transactions)

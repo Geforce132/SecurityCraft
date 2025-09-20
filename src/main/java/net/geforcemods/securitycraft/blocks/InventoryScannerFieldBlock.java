@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.InventoryUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -131,9 +132,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 			return false;
 
 		for (ItemStack prohibitedStack : prohibitedItems) {
-			int removeInventoryItems = BlockUtils.checkInventoryForItem(inventoryItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), inventoryItems::set);
-			int removeArmorItems = BlockUtils.checkInventoryForItem(armorItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), armorItems::set);
-			int removeOffhandItems = BlockUtils.checkInventoryForItem(offhandItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), offhandItems::set);
+			int removeInventoryItems = InventoryUtils.checkInventoryForItem(inventoryItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), inventoryItems::set);
+			int removeArmorItems = InventoryUtils.checkInventoryForItem(armorItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), armorItems::set);
+			int removeOffhandItems = InventoryUtils.checkInventoryForItem(offhandItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), offhandItems::set);
 
 			if (removeInventoryItems < Integer.MAX_VALUE || removeArmorItems < Integer.MAX_VALUE || removeOffhandItems < Integer.MAX_VALUE) {
 				if (hasRedstoneModule)
@@ -155,7 +156,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 			return false;
 
 		for (ItemStack prohibitedStack : prohibitedItems) {
-			int removeItems = BlockUtils.checkItemsInInventorySlot(entity.getItem(), 0, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), (i, stack) -> {
+			int removeItems = InventoryUtils.checkItemsInInventorySlot(entity.getItem(), 0, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), (i, stack) -> {
 				if (stack.isEmpty())
 					entity.discard();
 			});
@@ -172,7 +173,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 	}
 
 	private static void addItemToStorage(ItemStack stack, InventoryScannerBlockEntity be) {
-		ItemStack remainder = InventoryScannerBlockEntity.addItemToStorage(be, 10, be.getContents().size() - 1, stack);
+		ItemStack remainder = InventoryUtils.addItemToStorage(be, 10, be.getContents().size() - 1, stack);
 
 		if (!remainder.isEmpty())
 			Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());

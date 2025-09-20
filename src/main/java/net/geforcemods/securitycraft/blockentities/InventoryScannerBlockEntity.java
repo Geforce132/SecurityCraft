@@ -189,52 +189,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
-	//TODO maybe move?
-	public static ItemStack addItemToStorage(Container container, int start, int endInclusive, ItemStack stack) {
-		ItemStack remainder = stack;
-
-		for (int i = start; i <= endInclusive; i++) {
-			remainder = insertItem(container, i, remainder);
-
-			if (remainder.isEmpty())
-				break;
-		}
-
-		return remainder;
-	}
-
-	//TODO maybe move?
-	private static ItemStack insertItem(Container container, int slot, ItemStack stackToInsert) {
-		if (stackToInsert.isEmpty())
-			return stackToInsert;
-
-		ItemStack slotStack = container.getItem(slot);
-		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
-
-		if (slotStack.isEmpty()) {
-			container.setItem(slot, stackToInsert);
-			container.setChanged();
-			return ItemStack.EMPTY;
-		}
-		else if (InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit) {
-			if (limit - slotStack.getCount() >= stackToInsert.getCount()) {
-				slotStack.setCount(slotStack.getCount() + stackToInsert.getCount());
-				container.setChanged();
-				return ItemStack.EMPTY;
-			}
-			else {
-				ItemStack toInsert = stackToInsert.copy();
-				ItemStack toReturn = toInsert.split((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
-
-				slotStack.setCount(slotStack.getCount() + toInsert.getCount());
-				container.setChanged();
-				return toReturn;
-			}
-		}
-
-		return stackToInsert;
-	}
-
 	public LensContainer getLensContainer() {
 		return lens;
 	}
@@ -421,7 +375,8 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				if (connectedScanner != null)
 					connectedScanner.setSignalLength(io.get());
 			}
-			default -> throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
+			default ->
+					throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
 		}
 
 		super.onOptionChanged(option);
