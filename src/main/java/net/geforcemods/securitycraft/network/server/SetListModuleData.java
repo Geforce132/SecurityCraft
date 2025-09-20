@@ -35,7 +35,7 @@ public record SetListModuleData(ListModuleData listModuleData) implements Custom
 			//@formatter:off
 			stack.set(SCContent.LIST_MODULE_DATA, new ListModuleData(
 					listModuleData.players().stream().distinct().toList(),
-					listModuleData.teams().stream().filter(player.getScoreboard().getTeamNames()::contains).toList(),
+					listModuleData.teams().stream().filter(player.level().getScoreboard().getTeamNames()::contains).toList(),
 					listModuleData.affectEveryone()));
 			//@formatter:on
 		}

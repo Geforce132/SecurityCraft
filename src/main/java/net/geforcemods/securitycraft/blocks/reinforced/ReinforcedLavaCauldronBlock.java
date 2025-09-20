@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.InsideBlockEffectType;
@@ -36,7 +37,7 @@ public class ReinforcedLavaCauldronBlock extends ReinforcedCauldronBlock {
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction p_435855_) {
 		return 3;
 	}
 

@@ -43,14 +43,14 @@ public class Owner {
 	public Owner(Entity entity) {
 		if (entity instanceof Player player) {
 			ownerName = player.getName().getString();
-			ownerUUID = player.getGameProfile().getId().toString();
+			ownerUUID = player.getGameProfile().id().toString();
 		}
 	}
 
 	public Owner(Player player) {
 		if (player != null) {
 			ownerName = player.getName().getString();
-			ownerUUID = player.getGameProfile().getId().toString();
+			ownerUUID = player.getGameProfile().id().toString();
 		}
 	}
 

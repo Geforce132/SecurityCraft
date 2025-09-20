@@ -40,6 +40,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -75,7 +76,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int count, int openCount) {}
 
 		@Override
-		protected boolean isOwnContainer(Player player) {
+		public boolean isOwnContainer(Player player) {
 			if (player.containerMenu instanceof ChestMenu menu)
 				return menu.getContainer() == KeypadBarrelBlockEntity.this;
 
@@ -373,15 +374,15 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	}
 
 	@Override
-	public void startOpen(Player player) {
-		if (!remove && !player.isSpectator())
-			openersCounter.incrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+	public void startOpen(ContainerUser player) {
+		if (!remove && !player.getLivingEntity().isSpectator())
+			openersCounter.incrementOpeners(player.getLivingEntity(), getLevel(), getBlockPos(), getBlockState(), player.getContainerInteractionRange());
 	}
 
 	@Override
-	public void stopOpen(Player player) {
-		if (!remove && !player.isSpectator())
-			openersCounter.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+	public void stopOpen(ContainerUser player) {
+		if (!remove && !player.getLivingEntity().isSpectator())
+			openersCounter.decrementOpeners(player.getLivingEntity(), getLevel(), getBlockPos(), getBlockState());
 	}
 
 	public void recheckOpen() {

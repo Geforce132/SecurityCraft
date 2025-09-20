@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.items.ModuleItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -96,10 +97,10 @@ public class ModuleItemContainer implements Container {
 	}
 
 	@Override
-	public void startOpen(Player player) {}
+	public void startOpen(ContainerUser player) {}
 
 	@Override
-	public void stopOpen(Player player) {
+	public void stopOpen(ContainerUser player) {
 		if (changed)
 			save();
 	}

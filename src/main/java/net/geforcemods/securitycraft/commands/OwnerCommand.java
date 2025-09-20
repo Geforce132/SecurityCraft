@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import com.mojang.authlib.GameProfile;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -21,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.FillCommand;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -62,8 +62,8 @@ public class OwnerCommand {
 		return setOwner(source, pos, UUID.randomUUID().toString(), RandomStringUtils.randomAlphanumeric(10));
 	}
 
-	private static int setOwner(CommandSourceStack source, BlockPos pos, GameProfile gameProfile) throws CommandSyntaxException {
-		return setOwner(source, pos, gameProfile.getId().toString(), gameProfile.getName());
+	private static int setOwner(CommandSourceStack source, BlockPos pos, NameAndId gameProfile) throws CommandSyntaxException {
+		return setOwner(source, pos, gameProfile.id().toString(), gameProfile.name());
 	}
 
 	private static int setOwner(CommandSourceStack source, BlockPos pos, String uuid, String name) throws CommandSyntaxException {
@@ -93,8 +93,8 @@ public class OwnerCommand {
 		return fillOwner(ctx, UUID.randomUUID().toString(), RandomStringUtils.randomAlphanumeric(10));
 	}
 
-	private static int fillOwner(CommandContext<CommandSourceStack> ctx, GameProfile gameProfile) throws CommandSyntaxException {
-		return fillOwner(ctx, gameProfile.getId().toString(), gameProfile.getName());
+	private static int fillOwner(CommandContext<CommandSourceStack> ctx, NameAndId gameProfile) throws CommandSyntaxException {
+		return fillOwner(ctx, gameProfile.id().toString(), gameProfile.name());
 	}
 
 	private static int fillOwner(CommandContext<CommandSourceStack> ctx, String uuid, String name) throws CommandSyntaxException {

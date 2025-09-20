@@ -59,7 +59,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 						Player player = nearbyPlayers.get(playerIndex++);
 
 						getPlayers()[i] = player.getName().getString();
-						getUuids()[i] = player.getGameProfile().getId().toString();
+						getUuids()[i] = player.getGameProfile().id().toString();
 						getTimestamps()[i] = timestamp;
 						changed = true;
 					}

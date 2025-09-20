@@ -82,8 +82,8 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 
 		if (level.getBlockEntity(pos) instanceof LinkableBlockEntity lowerBe && level.getBlockEntity(pos.above()) instanceof LinkableBlockEntity upperBe) {
 			if (placer instanceof Player player) {
-				lowerBe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
-				upperBe.setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+				lowerBe.setOwner(player.getGameProfile().id().toString(), player.getName().getString());
+				upperBe.setOwner(player.getGameProfile().id().toString(), player.getName().getString());
 			}
 
 			LinkableBlockEntity.link(lowerBe, upperBe);

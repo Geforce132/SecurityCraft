@@ -44,7 +44,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		if (entity instanceof Player player) {
 			if (level.getBlockEntity(pos) instanceof RetinalScannerBlockEntity be)
-				be.setOwnerProfile(new ResolvableProfile(player.getGameProfile()));
+				be.setOwnerProfile(ResolvableProfile.createResolved(player.getGameProfile()));
 
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 		}

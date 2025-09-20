@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -66,7 +65,7 @@ public interface ICodebreakable {
 				boolean isSuccessful = canBypass || SecurityCraft.RANDOM.nextDouble() < chance;
 
 				if (!canBypass)
-					codebreaker.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+					codebreaker.hurtAndBreak(1, player, hand.asEquipmentSlot());
 
 				codebreaker.set(SCContent.CODEBREAKER_DATA, new CodebreakerData(System.currentTimeMillis(), isSuccessful));
 

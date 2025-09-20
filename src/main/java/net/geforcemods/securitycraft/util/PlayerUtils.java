@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import net.geforcemods.securitycraft.ClientHandler;
@@ -176,13 +175,10 @@ public class PlayerUtils {
 			ResolvableProfile profile = stack.get(DataComponents.PROFILE);
 
 			if (profile != null) {
-				Optional<UUID> profileUUID = profile.id();
-				String uuid = "ownerUUID";
+				//TODO: correct?
+				UUID profileUUID = profile.partialProfile().id();
 
-				if (profileUUID.isPresent())
-					uuid = profileUUID.get().toString();
-
-				return new Owner(profile.name().orElse("ownerName"), uuid);
+				return new Owner(profile.name().orElse("ownerName"), profileUUID.toString());
 			}
 		}
 

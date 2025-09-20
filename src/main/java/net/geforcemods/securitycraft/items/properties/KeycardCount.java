@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.items.KeycardItem;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.properties.numeric.RangeSelectItemModelProperty;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 
@@ -14,7 +14,7 @@ public record KeycardCount() implements RangeSelectItemModelProperty {
 	public static final MapCodec<KeycardCount> MAP_CODEC = MapCodec.unit(new KeycardCount());
 
 	@Override
-	public float get(ItemStack stack, ClientLevel level, LivingEntity entity, int seed) {
+	public float get(ItemStack stack, ClientLevel level, ItemOwner entity, int seed) {
 		ItemContainerContents containerContents = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
 		int size = containerContents.getSlots();
 

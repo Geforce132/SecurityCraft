@@ -38,6 +38,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ContainerUser;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
@@ -91,7 +92,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int oldCount, int newCount) {}
 
 		@Override
-		protected boolean isOwnContainer(Player player) {
+		public boolean isOwnContainer(Player player) {
 			if (player.containerMenu instanceof AbstractKeypadFurnaceMenu menu) {
 				Container container = menu.be;
 
@@ -224,15 +225,15 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	}
 
 	@Override
-	public void startOpen(Player player) {
-		if (!remove && !player.isSpectator())
-			openersCounter.incrementOpeners(player, this.getLevel(), getBlockPos(), getBlockState());
+	public void startOpen(ContainerUser player) {
+		if (!remove && !player.getLivingEntity().isSpectator())
+			openersCounter.incrementOpeners(player.getLivingEntity(), getLevel(), getBlockPos(), getBlockState(), player.getContainerInteractionRange());
 	}
 
 	@Override
-	public void stopOpen(Player player) {
-		if (!remove && !player.isSpectator())
-			openersCounter.decrementOpeners(player, getLevel(), getBlockPos(), getBlockState());
+	public void stopOpen(ContainerUser player) {
+		if (!remove && !player.getLivingEntity().isSpectator())
+			openersCounter.decrementOpeners(player.getLivingEntity(), getLevel(), getBlockPos(), getBlockState());
 	}
 
 	public void recheckOpen() {

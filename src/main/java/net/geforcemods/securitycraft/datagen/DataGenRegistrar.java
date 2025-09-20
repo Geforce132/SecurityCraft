@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.datagen;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -15,7 +14,6 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
-import net.minecraft.util.InclusiveRange;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -46,11 +44,15 @@ public class DataGenRegistrar {
 		//		if (ModList.get().isLoaded("projecte"))
 		//			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
 
+		//TODO: Does this even need to be generated? NeoForge might automatically add a pack.mcmeta for mods
 		//@formatter:off
 		event.createProvider(output -> new PackMetadataGenerator(output)
-                .add(PackMetadataSection.TYPE, new PackMetadataSection(Component.literal("SecurityCraft resources & data"),
-                        DetectedVersion.BUILT_IN.packVersion(PackType.CLIENT_RESOURCES),
-                        Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
+                .add(PackMetadataSection.CLIENT_TYPE, new PackMetadataSection(
+						Component.literal("SecurityCraft resources"),
+                        DetectedVersion.BUILT_IN.packVersion(PackType.CLIENT_RESOURCES).minorRange()))
+				.add(PackMetadataSection.SERVER_TYPE, new PackMetadataSection(
+						Component.literal("SecurityCraft data"),
+						DetectedVersion.BUILT_IN.packVersion(PackType.SERVER_DATA).minorRange())));
 		//@formatter:on
 		event.createProvider(RecipeGenerator.Runner::new);
 	}

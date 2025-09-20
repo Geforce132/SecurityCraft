@@ -412,13 +412,13 @@ public class SCContent {
 	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(MapColor.COLOR_CYAN, 3.5F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(MapColor.COLOR_CYAN, 0.8F).noCollission().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
+	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(MapColor.COLOR_CYAN, 0.8F).noCollision().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.registerBlock("bouncing_betty", BouncingBettyBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<CageTrapBlock> CAGE_TRAP = BLOCKS.registerBlock("cage_trap", CageTrapBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).noCollission());
+	public static final DeferredBlock<CageTrapBlock> CAGE_TRAP = BLOCKS.registerBlock("cage_trap", CageTrapBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).noCollision());
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
 	public static final DeferredBlock<ClaymoreBlock> CLAYMORE = BLOCKS.registerBlock("claymore", ClaymoreBlock::new, prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
@@ -527,11 +527,11 @@ public class SCContent {
 	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollission());
+	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollision());
 	@HasManualPage
-	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL).noCollission());
+	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL).noCollision());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<TrackMineBlock> TRACK_MINE = BLOCKS.registerBlock("track_mine", TrackMineBlock::new, prop(MapColor.METAL, 0.7F).noCollission().sound(SoundType.METAL));
+	public static final DeferredBlock<TrackMineBlock> TRACK_MINE = BLOCKS.registerBlock("track_mine", TrackMineBlock::new, prop(MapColor.METAL, 0.7F).noCollision().sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<TrophySystemBlock> TROPHY_SYSTEM = BLOCKS.registerBlock("trophy_system", TrophySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL));
@@ -1943,7 +1943,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_CHAIN = reinforcedBlock("reinforced_chain", Blocks.CHAIN, ReinforcedChainBlock::new);
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_CHAIN = reinforcedBlock("reinforced_chain", Blocks.IRON_CHAIN, ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)

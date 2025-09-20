@@ -24,7 +24,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -103,7 +102,7 @@ public class UniversalBlockReinforcerItem extends Item {
 			boolean result = convertBlock(state, level, stack, pos, player, new Owner(player));
 
 			if (result && !level.isClientSide())
-				stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(player.getUsedItemHand()));
+				stack.hurtAndBreak(1, player, player.getUsedItemHand().asEquipmentSlot());
 
 			return result;
 		}

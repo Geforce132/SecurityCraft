@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,7 +35,7 @@ public class WireCuttersItem extends Item {
 
 			for (IPasscodeConvertible pc : SecurityCraftAPI.getRegisteredPasscodeConvertibles()) {
 				if (pc.isProtectedBlock(state) && level.getBlockEntity(pos) instanceof IOwnable ownable && ownable.isOwnedBy(player) && pc.unprotect(player, level, pos)) {
-					stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+					stack.hurtAndBreak(1, player, hand.asEquipmentSlot());
 					level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 					Block.popResource(level, pos, new ItemStack(SCContent.KEY_PANEL.get(), pc.getRequiredKeyPanels(state)));
 				}

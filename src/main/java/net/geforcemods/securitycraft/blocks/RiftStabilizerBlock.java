@@ -167,7 +167,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos, Direction direction) {
 		return state.getValue(HALF) == DoubleBlockHalf.LOWER && level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isModuleEnabled(ModuleType.REDSTONE) && be.getLastTeleportationType() != null ? be.getComparatorOutputFunction().applyAsInt(be.getLastTeleportationType()) : 0;
 	}
 

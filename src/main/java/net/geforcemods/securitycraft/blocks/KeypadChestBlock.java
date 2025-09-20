@@ -38,7 +38,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -192,11 +191,12 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	}
 
 	@Override
-	public Direction candidatePartnerFacing(BlockPlaceContext ctx, Direction dir) {
-		Direction returnValue = super.candidatePartnerFacing(ctx, dir);
+	public Direction candidatePartnerFacing(Level level, BlockPos pos, Direction dir) {
+		Direction returnValue = super.candidatePartnerFacing(level, pos, dir);
 
+		//TODO: Where can the player be retrieved from?
 		//only connect to chests which have the same owner
-		if (returnValue != null && ctx.getLevel().getBlockEntity(ctx.getClickedPos().relative(dir)) instanceof IOwnable ownable && ownable.isOwnedBy(ctx.getPlayer()))
+		if (returnValue != null && level.getBlockEntity(pos.relative(dir)) instanceof IOwnable ownable && ownable.isOwnedBy(ctx.getPlayer()))
 			return returnValue;
 
 		return null;

@@ -31,7 +31,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -131,7 +130,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 				boolean isSuccessful = player.isCreative() || SecurityCraft.RANDOM.nextDouble() < chance;
 
-				stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+				stack.hurtAndBreak(1, player, hand.asEquipmentSlot());
 				stack.set(SCContent.CODEBREAKER_DATA, new CodebreakerData(System.currentTimeMillis(), isSuccessful));
 
 				if (isSuccessful)
@@ -184,7 +183,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		KeycardData keycardData = stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
 
 		//the name of the player who can use the keycard does not match the one of the player trying to use it
-		if (!keycardData.usableBy().map(player.getGameProfile().getName()::equals).orElse(true))
+		if (!keycardData.usableBy().map(player.getGameProfile().name()::equals).orElse(true))
 			return Component.translatable("messages.securitycraft:keycardReader.cantUse");
 
 		//the keycard's signature does not match this keycard reader's

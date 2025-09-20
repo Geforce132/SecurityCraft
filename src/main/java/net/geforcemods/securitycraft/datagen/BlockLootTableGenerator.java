@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.flag.FeatureFlags;
@@ -26,9 +27,8 @@ import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
-import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
-import net.minecraft.world.level.storage.loot.functions.CopyNameFunction.NameSource;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -124,17 +124,18 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM)
-								.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+								.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 										.include(SCContent.SSS_LINKED_BLOCKS.get())
-										.include(SCContent.NOTES.get()))
-								.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY)))));
+										.include(SCContent.NOTES.get())
+										.include(DataComponents.CUSTOM_NAME))))); //TODO: Correct?
 		//@formatter:on
 	}
 
 	protected final LootTable.Builder createTwoHighBlockLootTable(Block twoHighBlock) {
 		//@formatter:off
 		return createSinglePropConditionTable(twoHighBlock, BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER)
-				.apply(CopyNameFunction.copyName(NameSource.BLOCK_ENTITY));
+				.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+						.include(DataComponents.CUSTOM_NAME)); //TODO: Correct?
 		//@formatter:on
 	}
 

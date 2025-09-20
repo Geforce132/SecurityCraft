@@ -124,6 +124,6 @@ public class CheckPasscode implements CustomPacketPayload {
 			name = entity.getType().getDescription().getString();
 		}
 
-		return String.format(logMessage, player.getGameProfile().getName(), name, new GlobalPos(level.dimension(), pos));
+		return String.format(logMessage, player.getGameProfile().name(), name, new GlobalPos(level.dimension(), pos));
 	}
 }

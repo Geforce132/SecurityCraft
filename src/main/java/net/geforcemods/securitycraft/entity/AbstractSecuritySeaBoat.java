@@ -346,7 +346,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	public void setOwner(Player player) {
 		if (player != null)
-			setOwner(player.getGameProfile().getId().toString(), player.getName().getString());
+			setOwner(player.getGameProfile().id().toString(), player.getName().getString());
 	}
 
 	@Override

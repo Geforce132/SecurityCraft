@@ -150,7 +150,7 @@ public class SecurityCraft {
 	}
 
 	public static void addReloadListener(AddServerReloadListenersEvent event) {
-		event.addListener(resLoc("collect_sc_content_data"), (barrier, manager, e1, e2) -> CompletableFuture.runAsync(() -> collectSCContentData(true), e1).thenCompose(barrier::wait));
+		event.addListener(resLoc("collect_sc_content_data"), (state, e1, barrier, e2) -> CompletableFuture.runAsync(() -> collectSCContentData(true), e1).thenCompose(barrier::wait));
 	}
 
 	@SubscribeEvent

@@ -93,7 +93,7 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent.AfterTripwireBlocks event) {
-		Vec3 camPos = event.getCamera().getPosition();
+		Vec3 camPos = event.getCamera().pos;
 		PoseStack pose = event.getPoseStack();
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
@@ -113,7 +113,7 @@ public class SCClientEventHandler {
 
 					pose.pushPose();
 					pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-					ShapeRenderer.renderLineBox(pose, consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
+					ShapeRenderer.renderLineBox(pose.last(), consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
 					pose.popPose();
 				}
 			}

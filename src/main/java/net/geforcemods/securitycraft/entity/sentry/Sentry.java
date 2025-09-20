@@ -98,7 +98,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 	}
 
 	public void setUpSentry(Player player) {
-		entityData.set(OWNER, new Owner(player.getName().getString(), player.getGameProfile().getId().toString()));
+		entityData.set(OWNER, new Owner(player.getName().getString(), player.getGameProfile().id().toString()));
 		entityData.set(ALLOWLIST, ItemStack.EMPTY);
 		entityData.set(HAS_SPEED_MODULE, false);
 		entityData.set(MODE, SentryMode.CAMOUFLAGE_HP.ordinal());
@@ -199,7 +199,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				kill(null);
 
 				if (!player.isCreative())
-					player.getMainHandItem().hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+					player.getMainHandItem().hurtAndBreak(1, player, hand.asEquipmentSlot());
 			}
 			else if (item == SCContent.DISGUISE_MODULE.get()) {
 				ItemStack module = getDisguiseModule();
