@@ -20,11 +20,11 @@
               "source": "block_entity"
             }
           ],
-          "name": "securitycraft:pay_block"
+          "name": "securitycraft:secure_trading_station"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "securitycraft:blocks/pay_block"
+  "random_sequence": "securitycraft:blocks/secure_trading_station"
 }

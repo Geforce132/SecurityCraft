@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.blockentities.PayBlockBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
@@ -14,18 +14,18 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class PayBlockMenu extends AbstractContainerMenu {
+public class SecureTradingStationMenu extends AbstractContainerMenu {
 	public final SimpleUpdatingContainer paymentInput = new SimpleUpdatingContainer(5, this);
-	public final PayBlockBlockEntity be;
+	public final SecureTradingStationBlockEntity be;
 	private final boolean hasSmartModule;
 	public final boolean hasStorageModule;
 	public final boolean withStorageAccess;
 	private final ContainerLevelAccess worldPosCallable;
 	public int paymentLimitedTransactions = 0;
 
-	public PayBlockMenu(int windowId, Level level, BlockPos pos, Inventory playerInventory) {
-		super(SCContent.PAY_BLOCK_MENU.get(), windowId);
-		be = (PayBlockBlockEntity) level.getBlockEntity(pos);
+	public SecureTradingStationMenu(int windowId, Level level, BlockPos pos, Inventory playerInventory) {
+		super(SCContent.SECURE_TRADING_STATION_MENU.get(), windowId);
+		be = (SecureTradingStationBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 
 		boolean isOwner = be.isOwnedBy(playerInventory.player);
@@ -50,14 +50,14 @@ public class PayBlockMenu extends AbstractContainerMenu {
 		}
 
 		if (withStorageAccess) {
-			//pay block payment storage slots: 9-16
+			//payment storage slots: 9-16
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 4; j++) {
 					addSlot(new Slot(be, 4 + j + i * 4, 13 + j * 18, 117 + i * 18));
 				}
 			}
 
-			//pay block reward storage slots: 17-24
+			//reward storage slots: 17-24
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 4; j++) {
 					addSlot(new Slot(be, 12 + j + i * 4, 93 + j * 18, 117 + i * 18));
@@ -108,7 +108,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 				if (!moveItemStackTo(slotStack, playerInvStartIndex, slots.size(), true))
 					return ItemStack.EMPTY;
 			}
-			//pay block storage
+			//payment and reward storage
 			else if (withStorageAccess && index <= 26) {
 				//try to move it to the player's inventory
 				if (!moveItemStackTo(slotStack, playerInvStartIndex, slots.size(), true))
@@ -116,11 +116,11 @@ public class PayBlockMenu extends AbstractContainerMenu {
 			}
 			//player's main inventory (minus hotbar)
 			else if (index >= playerInvStartIndex && index <= playerInvStartIndex + 27) {
-				//try to move it to the pay block reward storage if available, then payment input
+				//try to move it to the reward storage if available, then payment input
 				if ((!withStorageAccess || !moveItemStackTo(slotStack, 17, 25, false)) && !moveItemStackTo(slotStack, 2, 7, false))
 					return ItemStack.EMPTY;
 			}
-			//hotbar; try to move it to pay block reward storage if available, then payment input
+			//hotbar; try to move it to reward storage if available, then payment input
 			else if ((!withStorageAccess || !moveItemStackTo(slotStack, 17, 25, false)) && !moveItemStackTo(slotStack, 2, 7, false))
 				return ItemStack.EMPTY;
 
@@ -135,7 +135,7 @@ public class PayBlockMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return stillValid(worldPosCallable, player, SCContent.PAY_BLOCK.get());
+		return stillValid(worldPosCallable, player, SCContent.SECURE_TRADING_STATION.get());
 	}
 
 	@Override

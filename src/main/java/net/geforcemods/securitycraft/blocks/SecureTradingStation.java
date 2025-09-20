@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.blocks;
 
-import net.geforcemods.securitycraft.blockentities.PayBlockBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -24,14 +24,14 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class PayBlock extends DisguisableBlock {
-	/*TODO: I haven't worked on this in a longer time, this is something I'm not sure anymore whether I've implemented it:
-	- Recipe suggestion: SHS IEI III with S = r. smooth stone slab, H = r. hopper, I = r. iron block, e. = emerald (potentially more expensive?)
+public class SecureTradingStation extends DisguisableBlock {
+	/*TODO: Figure out recipe, dependent on how the texture will end up
+	- Original recipe suggestion from the Discord post: SHS IEI III with S = r. smooth stone slab, H = r. hopper, I = r. iron block, e. = emerald (potentially more expensive?)
 	*/
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public PayBlock(Properties properties) {
+	public SecureTradingStation(Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
@@ -47,7 +47,7 @@ public class PayBlock extends DisguisableBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof PayBlockBlockEntity be) {
+		if (level.getBlockEntity(pos) instanceof SecureTradingStationBlockEntity be) {
 			if (player instanceof ServerPlayer serverPlayer) {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
@@ -71,7 +71,7 @@ public class PayBlock extends DisguisableBlock {
 	@Override
 	protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
 		if (!level.isClientSide && state.getBlock() != newState.getBlock()) {
-			if (level.getBlockEntity(pos) instanceof PayBlockBlockEntity be) {
+			if (level.getBlockEntity(pos) instanceof SecureTradingStationBlockEntity be) {
 				be.dropContents();
 
 				if (state.getValue(POWERED)) {
@@ -101,6 +101,6 @@ public class PayBlock extends DisguisableBlock {
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new PayBlockBlockEntity(pos, state);
+		return new SecureTradingStationBlockEntity(pos, state);
 	}
 }

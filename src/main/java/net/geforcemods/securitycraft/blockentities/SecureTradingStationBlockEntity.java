@@ -9,9 +9,9 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.PayBlock;
+import net.geforcemods.securitycraft.blocks.SecureTradingStation;
 import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
-import net.geforcemods.securitycraft.inventory.PayBlockMenu;
+import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
@@ -38,7 +38,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
-public class PayBlockBlockEntity extends DisguisableBlockEntity implements WorldlyContainer, MenuProvider {
+public class SecureTradingStationBlockEntity extends DisguisableBlockEntity implements WorldlyContainer, MenuProvider {
 	private static final int[] SLOTS_FOR_UP_AND_SIDES = new int[] {12, 13, 14, 15, 16, 17, 18, 19};
 	private static final int[] SLOTS_FOR_DOWN = new int[] {4, 5, 6, 7, 8, 9, 10, 11};
 	private IntOption signalLength = new SignalLengthOption(60);
@@ -46,8 +46,8 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 	private final NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(20, ItemStack.EMPTY); //2 for payment reference, 2 for reward reference, 8 for payment storage, 8 for reward storage
 	public int rewardLimitedTransactions = 0;
 
-	public PayBlockBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.PAY_BLOCK_BLOCK_ENTITY.get(), pos, state);
+	public SecureTradingStationBlockEntity(BlockPos pos, BlockState state) {
+		super(SCContent.SECURE_TRADING_STATION_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 	}
 
 	public void doTransaction(Player player, int requestedTransactions) {
-		if (player instanceof ServerPlayer serverPlayer && serverPlayer.containerMenu instanceof PayBlockMenu menu) {
+		if (player instanceof ServerPlayer serverPlayer && serverPlayer.containerMenu instanceof SecureTradingStationMenu menu) {
 			int signalLengthOption = signalLength.get();
 			boolean skipPaymentCheck = isOwnedBy(player) || isAllowed(player);
 			boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
@@ -100,15 +100,15 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 					int quantityPerTransaction = rewardEntry.getValue();
 					int totalQuantity = quantityPerTransaction * transactions;
 
-					BlockUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(PayBlock.FACING), 0.7)), inventoryContents::set);
+					BlockUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(SecureTradingStation.FACING), 0.7)), inventoryContents::set);
 				}
 			}
 
-			level.setBlockAndUpdate(worldPosition, blockState.cycle(PayBlock.POWERED));
-			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.PAY_BLOCK.get());
+			level.setBlockAndUpdate(worldPosition, blockState.cycle(SecureTradingStation.POWERED));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SECURE_TRADING_STATION.get());
 
 			if (signalLengthOption > 0)
-				level.scheduleTick(worldPosition, SCContent.PAY_BLOCK.get(), signalLengthOption);
+				level.scheduleTick(worldPosition, SCContent.SECURE_TRADING_STATION.get(), signalLengthOption);
 		}
 	}
 
@@ -119,7 +119,7 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 			remainder = InventoryScannerBlockEntity.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
 		if (!remainder.isEmpty())
-			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(PayBlock.FACING).getOpposite(), 0.7));
+			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
 	}
 
 	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {
@@ -281,7 +281,7 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 		return true;
 	}
 
-	public static IItemHandler getCapability(PayBlockBlockEntity be, Direction side) {
+	public static IItemHandler getCapability(SecureTradingStationBlockEntity be, Direction side) {
 		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new SidedInvWrapper(be, side) : new InsertOnlySidedInvWrapper(be, side);
 	}
 
@@ -319,8 +319,8 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 
-		if (state.getValue(PayBlock.POWERED)) {
-			level.setBlockAndUpdate(pos, state.setValue(PayBlock.POWERED, false));
+		if (state.getValue(SecureTradingStation.POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(SecureTradingStation.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock());
 		}
 
@@ -329,7 +329,7 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
-		return new PayBlockMenu(windowId, level, worldPosition, inv);
+		return new SecureTradingStationMenu(windowId, level, worldPosition, inv);
 	}
 
 	public void dropContents() {

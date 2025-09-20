@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blockentities.PayBlockBlockEntity;
-import net.geforcemods.securitycraft.inventory.PayBlockMenu;
-import net.geforcemods.securitycraft.network.server.TogglePayBlock;
+import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
+import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
+import net.geforcemods.securitycraft.network.server.ToggleSecureTradingStation;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
@@ -19,15 +19,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
-	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/pay_block.png");
-	private static final ResourceLocation GUI_TEXTURE_OWNER = SecurityCraft.resLoc("textures/gui/container/pay_block_owner.png");
-	private static final ResourceLocation GUI_TEXTURE_OWNER_STORAGE = SecurityCraft.resLoc("textures/gui/container/pay_block_owner_storage.png");
+public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTradingStationMenu> {
+	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station.png");
+	private static final ResourceLocation GUI_TEXTURE_OWNER = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner.png");
+	private static final ResourceLocation GUI_TEXTURE_OWNER_STORAGE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner_storage.png");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("world_list/warning_highlighted");
 	private final Component paymentText = Utils.localize("Payment: "); //TODO l10n
 	private final Component rewardText = Utils.localize("Reward: Redstone Activation");
 	private final Component storedItemsText = Utils.localize("+ Stored items: ");
-	private final PayBlockBlockEntity be;
+	private final SecureTradingStationBlockEntity be;
 	private final boolean isOwner;
 	private final boolean skipPaymentCheck;
 	private final boolean storageVisible;
@@ -35,7 +35,7 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 	private EditBox transactionAmountBox;
 	private int requestedTransactions;
 
-	public PayBlockScreen(PayBlockMenu menu, Inventory playerInventory, Component title) {
+	public SecureTradingStationScreen(SecureTradingStationMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 
 		be = menu.be;
@@ -123,7 +123,7 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 	}
 
 	private void sendTransactionRequest(Button button) {
-		PacketDistributor.sendToServer(new TogglePayBlock(be.getBlockPos(), getTransactionsOnConfirmation()));
+		PacketDistributor.sendToServer(new ToggleSecureTradingStation(be.getBlockPos(), getTransactionsOnConfirmation()));
 
 		if (transactionAmountBox != null)
 			transactionAmountBox.setValue("");

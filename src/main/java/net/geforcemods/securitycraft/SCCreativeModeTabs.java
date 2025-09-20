@@ -64,7 +64,7 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.RETINAL_SCANNER.get()));
 				output.accept(new ItemStack(SCContent.LASER_BLOCK.get()));
 				output.accept(new ItemStack(SCContent.INVENTORY_SCANNER.get()));
-				output.accept(new ItemStack(SCContent.PAY_BLOCK.get()));
+				output.accept(new ItemStack(SCContent.SECURE_TRADING_STATION.get()));
 				output.accept(new ItemStack(SCContent.USERNAME_LOGGER.get()));
 				output.accept(new ItemStack(SCContent.PORTABLE_RADAR.get()));
 				output.accept(new ItemStack(SCContent.TROPHY_SYSTEM.get()));
