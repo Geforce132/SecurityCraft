@@ -14,6 +14,9 @@ import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
@@ -79,8 +82,10 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 			boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
 			int transactions = skipPaymentCheck ? requestedTransactions : Math.min(menu.paymentLimitedTransactions, requestedTransactions);
 
-			if (transactions == 0)
-				return; //TODO error message
+			if (transactions == 0) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:secure_trading_station.transaction_failed"), ChatFormatting.RED);
+				return;
+			}
 
 			Map<ItemStack, Integer> unifiedPaymentRequestItems = getPaymentPerTransaction(hasSmartModule);
 

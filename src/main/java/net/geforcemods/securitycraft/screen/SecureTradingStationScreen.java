@@ -24,9 +24,11 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	private static final ResourceLocation GUI_TEXTURE_OWNER = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner.png");
 	private static final ResourceLocation GUI_TEXTURE_OWNER_STORAGE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner_storage.png");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("world_list/warning_highlighted");
-	private final Component paymentText = Utils.localize("Payment: "); //TODO l10n
-	private final Component rewardText = Utils.localize("Reward: Redstone Activation");
-	private final Component storedItemsText = Utils.localize("+ Stored items: ");
+	private final Component paymentText = Utils.localize("gui.securitycraft:secure_trading_station.payment");
+	private final Component rewardText = Utils.localize("gui.securitycraft:secure_trading_station.reward_redstone");
+	private final Component storedItemsText = Utils.localize("gui.securitycraft:secure_trading_station.reward_items");
+	private final Component payButtonText = Utils.localize("gui.securitycraft:secure_trading_station.pay_button");
+	private final Component transactionAmountBoxTooltip = Utils.localize("gui.securitycraft:secure_trading_station.transaction_amount_tooltip");
 	private final SecureTradingStationBlockEntity be;
 	private final boolean isOwner;
 	private final boolean skipPaymentCheck;
@@ -50,7 +52,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	protected void init() {
 		super.init();
 
-		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 43, 50, 16, Component.literal("Pay"), this::sendTransactionRequest, Button.DEFAULT_NARRATION));
+		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 43, 50, 16, payButtonText, this::sendTransactionRequest, Button.DEFAULT_NARRATION));
 		payButton.active = skipPaymentCheck;
 
 		if (storageVisible) {
@@ -58,7 +60,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 			transactionAmountBox.setFilter(s -> s.matches("\\d*")); //Only allow numbers
 			transactionAmountBox.setMaxLength(3);
 			transactionAmountBox.setHint(Component.literal("1").withStyle(ChatFormatting.GRAY));
-			transactionAmountBox.setTooltip(Tooltip.create(Utils.localize("How many transactions should be done?")));
+			transactionAmountBox.setTooltip(Tooltip.create(transactionAmountBoxTooltip));
 			transactionAmountBox.setResponder(s -> requestedTransactions = s.isEmpty() ? 1 : Integer.parseInt(s));
 			requestedTransactions = 1;
 		}
@@ -74,16 +76,16 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-		if (storageVisible && getTransactionsOnConfirmation() > be.rewardLimitedTransactions) {
+		if (be.hasRewardReferenceStacks() && getTransactionsOnConfirmation() > be.rewardLimitedTransactions) {
 			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, leftPos + 148, topPos + 89, 24, 24);
 
-			if (mouseX >= leftPos + 148 && mouseX <= leftPos + 160 && mouseY >= topPos + 92 && mouseY <= topPos + 110) { //TODO l10n and below
+			if (mouseX >= leftPos + 148 && mouseX <= leftPos + 160 && mouseY >= topPos + 92 && mouseY <= topPos + 110) {
 				Component warning;
 
 				if (be.rewardLimitedTransactions == 0)
-					warning = Utils.localize("Warning: There are not enough items left in stock to fully pay out transactions!");
+					warning = Utils.localize("gui.securitycraft:secure_trading_station.no_reward");
 				else
-					warning = Utils.localize("Warning: There are only enough items in stock to fully pay out %s transactions!", be.rewardLimitedTransactions);
+					warning = Utils.localize("gui.securitycraft:secure_trading_station.not_enough_reward", be.rewardLimitedTransactions);
 
 				guiGraphics.renderComponentTooltip(font, List.of(warning), mouseX, mouseY);
 			}
@@ -94,12 +96,12 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 			int transactions = getTransactionsOnConfirmation();
 
 			if (transactions == 1)
-				buttonTooltip.add(Utils.localize("Confirm transaction"));
+				buttonTooltip.add(Utils.localize("gui.securitycraft:secure_trading_station.confirm"));
 			else
-				buttonTooltip.add(Utils.localize("Confirm %s transactions", transactions));
+				buttonTooltip.add(Utils.localize("gui.securitycraft:secure_trading_station.confirm_multiple", transactions));
 
 			if (skipPaymentCheck)
-				buttonTooltip.add(Utils.localize("(Owners and allowlisted players do not need to supply payment items for transactions)"));
+				buttonTooltip.add(Utils.localize("gui.securitycraft:secure_trading_station.allowed"));
 
 			guiGraphics.renderComponentTooltip(font, buttonTooltip, mouseX, mouseY);
 		}
