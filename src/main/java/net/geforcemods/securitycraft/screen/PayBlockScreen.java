@@ -22,7 +22,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/pay_block.png");
 	private static final ResourceLocation GUI_TEXTURE_OWNER = SecurityCraft.resLoc("textures/gui/container/pay_block_owner.png");
-	private static final ResourceLocation GUI_TEXTURE_STORAGE = SecurityCraft.resLoc("textures/gui/container/pay_block_storage.png");
+	private static final ResourceLocation GUI_TEXTURE_OWNER_STORAGE = SecurityCraft.resLoc("textures/gui/container/pay_block_owner_storage.png");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("world_list/warning_highlighted");
 	private final Component paymentText = Utils.localize("Payment: "); //TODO l10n
 	private final Component rewardText = Utils.localize("Reward: Redstone Activation");
@@ -119,7 +119,7 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		guiGraphics.blit(isOwner ? (menu.withStorageAccess ? GUI_TEXTURE_STORAGE : GUI_TEXTURE_OWNER) : GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+		guiGraphics.blit(isOwner ? (menu.withStorageAccess ? GUI_TEXTURE_OWNER_STORAGE : GUI_TEXTURE_OWNER) : GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
 	private void sendTransactionRequest(Button button) {
