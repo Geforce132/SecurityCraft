@@ -1062,7 +1062,7 @@
 	"itemGroup.securitycraft.technical": "SecurityCraft: テクニカル",
 	"jei.securitycraft.category.reinforcing": "ブロックの強化",
 	"jei.securitycraft.category.unreinforcing": "強化の除去",
-	"key.categories.securitycraft": "SecurityCraft",
+	"key.category.securitycraft.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "暗視の切り替え",
 	"key.securitycraft.cameraEmitRedstone": "レッドストーン出力の切り替え",
 	"key.securitycraft.cameraZoomIn": "ズームイン",

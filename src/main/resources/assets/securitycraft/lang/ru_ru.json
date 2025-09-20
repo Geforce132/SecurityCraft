@@ -1073,7 +1073,7 @@
 	"itemGroup.securitycraft.technical": "SecurityCraft: Технические",
 	"jei.securitycraft.category.reinforcing": "Укрепление блоков",
 	"jei.securitycraft.category.unreinforcing": "Удаление укрепления",
-	"key.categories.securitycraft": "SecurityCraft",
+	"key.category.securitycraft.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "Переключить ночное видение",
 	"key.securitycraft.cameraEmitRedstone": "Переключить выход редстоуна",
 	"key.securitycraft.cameraZoomIn": "Приблизить",

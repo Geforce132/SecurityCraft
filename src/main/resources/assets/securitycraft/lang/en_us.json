@@ -1065,7 +1065,7 @@
 	"itemGroup.securitycraft.technical": "SecurityCraft: Technical",
 	"jei.securitycraft.category.reinforcing": "Block Reinforcing",
 	"jei.securitycraft.category.unreinforcing": "Removing Reinforcement",
-	"key.categories.securitycraft": "SecurityCraft",
+	"key.category.securitycraft.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "Toggle Night Vision",
 	"key.securitycraft.cameraEmitRedstone": "Toggle Redstone Output",
 	"key.securitycraft.cameraZoomIn": "Zoom In",

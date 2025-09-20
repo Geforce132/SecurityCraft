@@ -770,7 +770,7 @@
 	"itemGroup.securitycraft.technical": "시큐리티크래프트: 기술",
 	"jei.securitycraft.category.reinforcing": "블록 강화",
 	"jei.securitycraft.category.unreinforcing": "강화 제거",
-	"key.categories.securitycraft": "시큐리티크래프트",
+	"key.category.securitycraft.securitycraft": "시큐리티크래프트",
 	"key.securitycraft.cameraActivateNightVision": "야간 투시 토글",
 	"key.securitycraft.cameraEmitRedstone": "레드스톤 출력 토글",
 	"key.securitycraft.cameraZoomIn": "확대",

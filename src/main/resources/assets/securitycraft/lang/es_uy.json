@@ -1063,7 +1063,7 @@
 	"itemGroup.securitycraft.technical": "SecurityCraft: Técnico",
 	"jei.securitycraft.category.reinforcing": "Reforzando bloque",
 	"jei.securitycraft.category.unreinforcing": "Eliminando el refuerzo",
-	"key.categories.securitycraft": "SecurityCraft",
+	"key.category.securitycraft.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "Activar visión nocturna",
 	"key.securitycraft.cameraEmitRedstone": "Activar salida de redstone",
 	"key.securitycraft.cameraZoomIn": "Acercar",

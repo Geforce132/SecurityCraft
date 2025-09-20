@@ -20,6 +20,7 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
  */
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class KeyBindings {
+	public static KeyMapping.Category category;
 	public static KeyMapping cameraZoomIn;
 	public static KeyMapping cameraZoomOut;
 	public static TickingKeyMapping<SecurityCamera> cameraEmitRedstone;
@@ -30,6 +31,7 @@ public class KeyBindings {
 
 	@SubscribeEvent
 	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+		category = KeyMapping.Category.register(SecurityCraft.resLoc(SecurityCraft.MODID));
 		cameraZoomIn = register(event, "cameraZoomIn", GLFW.GLFW_KEY_EQUAL);
 		cameraZoomOut = register(event, "cameraZoomOut", GLFW.GLFW_KEY_MINUS);
 		cameraEmitRedstone = registerTicking(event, "cameraEmitRedstone", GLFW.GLFW_KEY_R, CameraController::toggleRedstone);
@@ -53,7 +55,7 @@ public class KeyBindings {
 
 	public static class SCKeyMapping extends KeyMapping {
 		public SCKeyMapping(String name, int defaultKey) {
-			super("key.securitycraft." + name, defaultKey, "key.categories.securitycraft");
+			super("key.securitycraft." + name, defaultKey, category);
 		}
 	}
 

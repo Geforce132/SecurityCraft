@@ -1062,7 +1062,7 @@
 	"itemGroup.securitycraft.technical": "SecurityCraft: Technique",
 	"jei.securitycraft.category.reinforcing": "Renforcement d'un bloc",
 	"jei.securitycraft.category.unreinforcing": "Suppression d'un renforcement",
-	"key.categories.securitycraft": "SecurityCraft",
+	"key.category.securitycraft.securitycraft": "SecurityCraft",
 	"key.securitycraft.cameraActivateNightVision": "Activer la vision nocturne",
 	"key.securitycraft.cameraEmitRedstone": "Basculer la sortie de redstone",
 	"key.securitycraft.cameraZoomIn": "Zoomer",

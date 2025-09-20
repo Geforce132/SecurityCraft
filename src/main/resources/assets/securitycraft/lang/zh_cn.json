@@ -1062,7 +1062,7 @@
 	"itemGroup.securitycraft.technical": "安全工艺丨技术",
 	"jei.securitycraft.category.reinforcing": "方块强化",
 	"jei.securitycraft.category.unreinforcing": "移除强化",
-	"key.categories.securitycraft": "安全工艺",
+	"key.category.securitycraft.securitycraft": "安全工艺",
 	"key.securitycraft.cameraActivateNightVision": "切换夜视功能",
 	"key.securitycraft.cameraEmitRedstone": "切换红石输出",
 	"key.securitycraft.cameraZoomIn": "放大",
