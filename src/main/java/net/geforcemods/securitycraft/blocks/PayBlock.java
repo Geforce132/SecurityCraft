@@ -2,7 +2,9 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.blockentities.PayBlockBlockEntity;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +26,6 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class PayBlock extends DisguisableBlock {
 	/*TODO: I haven't worked on this in a longer time, this is something I'm not sure anymore whether I've implemented it:
-	- Allowlisted players can activate the block without needing to pay (and access the inventory?)
 	- Recipe suggestion: SHS IEI III with S = r. smooth stone slab, H = r. hopper, I = r. iron block, e. = emerald (potentially more expensive?)
 	*/
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -50,6 +51,8 @@ public class PayBlock extends DisguisableBlock {
 			if (player instanceof ServerPlayer serverPlayer) {
 				if (be.isDisabled())
 					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				else if (be.isDenied(player))
+					PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:module.onDenylist"), ChatFormatting.RED);
 				else
 					serverPlayer.openMenu(be, pos);
 			}

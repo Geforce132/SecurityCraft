@@ -75,8 +75,9 @@ public class PayBlockBlockEntity extends DisguisableBlockEntity implements World
 	public void doTransaction(Player player, int requestedTransactions) {
 		if (player instanceof ServerPlayer serverPlayer && serverPlayer.containerMenu instanceof PayBlockMenu menu) {
 			int signalLengthOption = signalLength.get();
+			boolean skipPaymentCheck = isOwnedBy(player) || isAllowed(player);
 			boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
-			int transactions = Math.min(menu.paymentLimitedTransactions, requestedTransactions);
+			int transactions = skipPaymentCheck ? requestedTransactions : Math.min(menu.paymentLimitedTransactions, requestedTransactions);
 
 			if (transactions == 0)
 				return; //TODO error message

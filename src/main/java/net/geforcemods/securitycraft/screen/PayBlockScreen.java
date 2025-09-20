@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -7,6 +8,7 @@ import net.geforcemods.securitycraft.blockentities.PayBlockBlockEntity;
 import net.geforcemods.securitycraft.inventory.PayBlockMenu;
 import net.geforcemods.securitycraft.network.server.TogglePayBlock;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -27,7 +29,8 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 	private final Component storedItemsText = Utils.localize("+ Stored items: ");
 	private final PayBlockBlockEntity be;
 	private final boolean isOwner;
-	private final boolean hasRewardReference;
+	private final boolean skipPaymentCheck;
+	private final boolean storageVisible;
 	private Button payButton;
 	private EditBox transactionAmountBox;
 	private int requestedTransactions;
@@ -37,7 +40,8 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 
 		be = menu.be;
 		isOwner = be.isOwnedBy(playerInventory.player);
-		hasRewardReference = be.hasRewardReferenceStacks();
+		skipPaymentCheck = isOwner || be.isAllowed(playerInventory.player);
+		storageVisible = be.hasRewardReferenceStacks() || menu.withStorageAccess;
 		imageHeight = 249;
 		inventoryLabelY = imageHeight - 94;
 	}
@@ -47,13 +51,13 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 		super.init();
 
 		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 43, 50, 16, Component.literal("Pay"), this::sendTransactionRequest, Button.DEFAULT_NARRATION));
-		payButton.active = false;
+		payButton.active = skipPaymentCheck;
 
-		if (hasRewardReference) {
+		if (storageVisible) {
 			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 112, topPos + 93, 26, 16, Component.empty()));
-			transactionAmountBox.setValue("1");
 			transactionAmountBox.setFilter(s -> s.matches("\\d*")); //Only allow numbers
 			transactionAmountBox.setMaxLength(3);
+			transactionAmountBox.setHint(Component.literal("1").withStyle(ChatFormatting.GRAY));
 			transactionAmountBox.setTooltip(Tooltip.create(Utils.localize("How many transactions should be done?")));
 			transactionAmountBox.setResponder(s -> requestedTransactions = s.isEmpty() ? 1 : Integer.parseInt(s));
 			requestedTransactions = 1;
@@ -70,7 +74,7 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 
-		if ((hasRewardReference || menu.withStorageAccess) && getTransactionsOnConfirmation() > be.rewardLimitedTransactions) {
+		if (storageVisible && getTransactionsOnConfirmation() > be.rewardLimitedTransactions) {
 			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, leftPos + 148, topPos + 89, 24, 24);
 
 			if (mouseX >= leftPos + 148 && mouseX <= leftPos + 160 && mouseY >= topPos + 92 && mouseY <= topPos + 110) { //TODO l10n and below
@@ -86,15 +90,18 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 		}
 
 		if (payButton.active && mouseX >= leftPos + 112 && mouseX <= leftPos + 161 && mouseY >= topPos + 43 && mouseY <= topPos + 58) {
-			Component buttonTooltip;
+			List<Component> buttonTooltip = new ArrayList<>();
 			int transactions = getTransactionsOnConfirmation();
 
 			if (transactions == 1)
-				buttonTooltip = Utils.localize("Confirm transaction");
+				buttonTooltip.add(Utils.localize("Confirm transaction"));
 			else
-				buttonTooltip = Utils.localize("Confirm %s transactions", transactions);
+				buttonTooltip.add(Utils.localize("Confirm %s transactions", transactions));
 
-			guiGraphics.renderComponentTooltip(font, List.of(buttonTooltip), mouseX, mouseY);
+			if (skipPaymentCheck)
+				buttonTooltip.add(Utils.localize("(Owners and allowlisted players do not need to supply payment items for transactions)"));
+
+			guiGraphics.renderComponentTooltip(font, buttonTooltip, mouseX, mouseY);
 		}
 
 		renderTooltip(guiGraphics, mouseX, mouseY);
@@ -106,7 +113,7 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 		guiGraphics.drawString(font, paymentText, 15, 25, 0x404040, false);
 		guiGraphics.drawString(font, rewardText, 15, 65, 0x404040, false);
 
-		if (hasRewardReference || menu.withStorageAccess)
+		if (storageVisible)
 			guiGraphics.drawString(font, storedItemsText, 15, 80, 0x404040, false);
 	}
 
@@ -117,10 +124,14 @@ public class PayBlockScreen extends AbstractContainerScreen<PayBlockMenu> {
 
 	private void sendTransactionRequest(Button button) {
 		PacketDistributor.sendToServer(new TogglePayBlock(be.getBlockPos(), getTransactionsOnConfirmation()));
-		transactionAmountBox.setValue("1");
+
+		if (transactionAmountBox != null)
+			transactionAmountBox.setValue("");
 	}
 
 	private int getTransactionsOnConfirmation() {
-		return Math.min(menu.paymentLimitedTransactions, Math.max(1, requestedTransactions));
+		int requestedTransactions = Math.max(1, this.requestedTransactions);
+
+		return skipPaymentCheck ? requestedTransactions : Math.min(menu.paymentLimitedTransactions, requestedTransactions);
 	}
 }
