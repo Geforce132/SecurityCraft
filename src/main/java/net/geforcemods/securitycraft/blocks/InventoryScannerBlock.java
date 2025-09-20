@@ -238,7 +238,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 	}
 
 	public static InventoryScannerBlockEntity getConnectedInventoryScanner(World world, BlockPos pos, IBlockState stateAtPos, Consumer<OwnableBlockEntity> fieldModifier) {
-		if (stateAtPos.getBlock() != SCContent.inventoryScanner)
+		if (stateAtPos.getBlock() != SCContent.inventoryScanner && stateAtPos.getBlock() != SCContent.inventoryScannerField)
 			return null;
 
 		EnumFacing facing = stateAtPos.getValue(FACING);
