@@ -1,6 +1,10 @@
 package net.geforcemods.securitycraft.util;
 
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDoorActivator;
@@ -10,7 +14,13 @@ import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BundleContents;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
@@ -159,5 +169,106 @@ public class BlockUtils {
 	@FunctionalInterface
 	public static interface DestroyProgress {
 		float get(BlockState state, Player player, BlockGetter level, BlockPos pos);
+	}
+
+	//TODO maybe move these helper methods to different class?
+	public static int checkInventoryForItem(List<ItemStack> inventory, ItemStack stackReference, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+		return checkInventoryForItem(inventory, 0, inventory.size() - 1, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
+	}
+
+	public static int checkInventoryForItem(List<ItemStack> inventory, int startSlot, int endSlot, ItemStack stackReference, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+		for (int i = startSlot; i <= endSlot; i++) {
+			removeAmount = checkItemsInItem(inventory.get(i), i, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
+
+			if (removeAmount == 0)
+				break;
+		}
+
+		return removeAmount;
+	}
+
+	public static int checkItemsInItem(ItemStack stackToCheck, int positionInInv, ItemStack stackReference, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+		if (areItemsEqual(stackToCheck, stackReference, exactStackCheck)) {
+			if (shouldRemoveItems) {
+				ItemStack splitStack = stackToCheck.split(removeAmount);
+
+				removeAmount -= splitStack.getCount();
+				handleRemovedItem.accept(splitStack);
+				handleRemainingItemInSlot.accept(positionInInv, stackToCheck);
+			}
+			else
+				removeAmount = Math.max(removeAmount - stackToCheck.getCount(), 0);
+
+			if (removeAmount == 0)
+				return removeAmount;
+		}
+
+		int containerRemoveAmount = checkItemsInItemContainer(stackToCheck, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem);
+
+		if (containerRemoveAmount != removeAmount) {
+			removeAmount = containerRemoveAmount;
+
+			if (removeAmount == 0)
+				return removeAmount;
+		}
+
+		int bundleRemoveAmount = checkItemsInBundle(stackToCheck, stackReference, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem);
+
+		if (bundleRemoveAmount != removeAmount) {
+			removeAmount = bundleRemoveAmount;
+
+			if (removeAmount == 0)
+				return removeAmount;
+		}
+
+		return removeAmount;
+	}
+
+	//TODO maybe move to a better place?
+	public static int checkItemsInItemContainer(ItemStack item, ItemStack stackToCheck, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
+		if (item != null && item.has(DataComponents.CONTAINER)) {
+			ItemContainerContents contents = item.get(DataComponents.CONTAINER);
+			NonNullList<ItemStack> containerItems = NonNullList.withSize(contents.getSlots(), ItemStack.EMPTY);
+
+			contents.copyInto(containerItems);
+			removeAmount = checkInventoryForItem(containerItems, stackToCheck, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, containerItems::set);
+
+			if (shouldRemoveItems)
+				item.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(containerItems)); //TODO check if shulker box content tag is updated appropriately
+		}
+
+		return removeAmount;
+	}
+
+	public static int checkItemsInBundle(ItemStack item, ItemStack stackToCheck, int removeAmount, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
+		if (item != null && item.has(DataComponents.BUNDLE_CONTENTS)) {
+			List<ItemStack> bundleItems = item.get(DataComponents.BUNDLE_CONTENTS).itemCopyStream().collect(Collectors.toList());
+
+			removeAmount = checkInventoryForItem(bundleItems, stackToCheck, removeAmount, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
+				if (stack.isEmpty())
+					bundleItems.remove((int) i);
+				else
+					bundleItems.set(i, stack);
+			});
+
+			if (shouldRemoveItems)
+				item.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(bundleItems));
+		}
+
+		return removeAmount;
+	}
+
+	public static int countItemsBetween(Container container, ItemStack stackReference, int start, int endInclusive, boolean hasSmartModule) {
+		int itemsToRemove = Integer.MAX_VALUE;
+
+		for (int i = start; i <= endInclusive; i++) {
+			itemsToRemove = checkItemsInItem(container.getItem(i), i, stackReference, itemsToRemove, hasSmartModule, false, stack -> {}, (slot, stack) -> {});
+		}
+
+		return Integer.MAX_VALUE - itemsToRemove;
+	}
+
+	public static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean exactComponentCheck) {
+		return exactComponentCheck ? ItemStack.isSameItemSameComponents(firstItemStack, secondItemStack) : firstItemStack.is(secondItemStack.getItem());
 	}
 }

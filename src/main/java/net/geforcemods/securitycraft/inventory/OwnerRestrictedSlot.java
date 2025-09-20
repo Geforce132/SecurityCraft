@@ -8,11 +8,13 @@ import net.minecraft.world.item.ItemStack;
 
 public class OwnerRestrictedSlot extends Slot {
 	private final IOwnable ownable;
+	private final boolean isHighlightable;
 	private final boolean isGhostSlot;
 
-	public OwnerRestrictedSlot(Container inventory, IOwnable ownable, int index, int xPos, int yPos, boolean ghostSlot) {
+	public OwnerRestrictedSlot(Container inventory, IOwnable ownable, int index, int xPos, int yPos, boolean highlightable, boolean ghostSlot) {
 		super(inventory, index, xPos, yPos);
 		this.ownable = ownable;
+		isHighlightable = highlightable;
 		isGhostSlot = ghostSlot;
 	}
 
@@ -35,8 +37,8 @@ public class OwnerRestrictedSlot extends Slot {
 	}
 
 	@Override
-	public int getMaxStackSize() {
-		return 1;
+	public boolean isHighlightable() {
+		return isHighlightable;
 	}
 
 	public boolean isGhostSlot() {

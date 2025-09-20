@@ -45,6 +45,7 @@ import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MineBlockEntity;
 import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PanicButtonBlockEntity;
+import net.geforcemods.securitycraft.blockentities.PayBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.PortableRadarBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ProtectoBlockEntity;
@@ -103,6 +104,7 @@ import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.blocks.MotionActivatedLightBlock;
 import net.geforcemods.securitycraft.blocks.PanicButtonBlock;
+import net.geforcemods.securitycraft.blocks.PayBlock;
 import net.geforcemods.securitycraft.blocks.PortableRadarBlock;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.blocks.ProtectoBlock;
@@ -223,6 +225,7 @@ import net.geforcemods.securitycraft.inventory.KeypadFurnaceMenu;
 import net.geforcemods.securitycraft.inventory.KeypadSmokerMenu;
 import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
+import net.geforcemods.securitycraft.inventory.PayBlockMenu;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.inventory.ReinforcedLecternMenu;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu;
@@ -481,6 +484,9 @@ public class SCContent {
 	@OwnableBE
 	@RegisterItemBlock
 	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.registerBlock("panic_button", p -> new PanicButtonBlock(p, BlockSetType.STONE, -1), prop(3.5F).lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
+	@HasManualPage
+	@RegisterItemBlock
+	public static final DeferredBlock<PayBlock> PAY_BLOCK = BLOCKS.registerBlock("pay_block", PayBlock::new, prop(MapColor.METAL, 5.0F));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.COLOR_BLACK, 5.0F));
@@ -3123,6 +3129,7 @@ public class SCContent {
 			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> BlockEntityType.Builder.of(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FrameBlockEntity>> FRAME_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("frame", () -> BlockEntityType.Builder.of(FrameBlockEntity::new, SCContent.FRAME.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PayBlockBlockEntity>> PAY_BLOCK_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("pay_block", () -> BlockEntityType.Builder.of(PayBlockBlockEntity::new, SCContent.PAY_BLOCK.get()).build(null));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
@@ -3188,6 +3195,7 @@ public class SCContent {
 	public static final DeferredHolder<MenuType<?>, MenuType<SingleLensMenu>> SINGLE_LENS_MENU = MENU_TYPES.register("single_lens", () -> IMenuTypeExtension.create((windowId, inv, data) -> new SingleLensMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IMenuTypeExtension.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level(), data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
 	public static final DeferredHolder<MenuType<?>, MenuType<ReinforcedLecternMenu>> REINFORCED_LECTERN_MENU = MENU_TYPES.register("reinforced_lectern", () -> IMenuTypeExtension.create((windowId, inv, data) -> new ReinforcedLecternMenu(windowId, inv.player.level(), data.readBlockPos())));
+	public static final DeferredHolder<MenuType<?>, MenuType<PayBlockMenu>> PAY_BLOCK_MENU = MENU_TYPES.register("pay_block", () -> IMenuTypeExtension.create((windowId, inv, data) -> new PayBlockMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 
 	public static final BlockBehaviour.Properties reinforcedCopy(Block block) {
 		return reinforcedCopy(block, UnaryOperator.identity());

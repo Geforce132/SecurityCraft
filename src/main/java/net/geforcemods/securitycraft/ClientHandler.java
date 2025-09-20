@@ -97,6 +97,7 @@ import net.geforcemods.securitycraft.screen.KeypadFurnaceScreen;
 import net.geforcemods.securitycraft.screen.KeypadSmokerScreen;
 import net.geforcemods.securitycraft.screen.LaserBlockScreen;
 import net.geforcemods.securitycraft.screen.MineRemoteAccessToolScreen;
+import net.geforcemods.securitycraft.screen.PayBlockScreen;
 import net.geforcemods.securitycraft.screen.ProjectorScreen;
 import net.geforcemods.securitycraft.screen.ReinforcedLecternScreen;
 import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
@@ -404,6 +405,7 @@ public class ClientHandler {
 		event.register(SCContent.SINGLE_LENS_MENU.get(), SingleLensScreen::new);
 		event.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
 		event.register(SCContent.REINFORCED_LECTERN_MENU.get(), ReinforcedLecternScreen::new);
+		event.register(SCContent.PAY_BLOCK_MENU.get(), PayBlockScreen::new);
 	}
 
 	@SubscribeEvent
