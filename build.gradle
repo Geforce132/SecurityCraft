@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.99'
+	id 'net.neoforged.moddev' version '2.0.107'
 }
 
 import groovy.json.JsonOutput
@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.8.13"
+	version = "21.5.0-alpha.1.21.9-pre1.20250918.184530"
 	validateAccessTransformers = true
 
 	runs {
@@ -74,6 +74,15 @@ neoForge {
 }
 
 repositories {
+	maven {
+		name = "Maven for PR #2639" // https://github.com/neoforged/NeoForge/pull/2639
+		url = uri("https://prmaven.neoforged.net/NeoForge/pr2639")
+		content {
+			includeModule("net.neoforged", "neoforge")
+			includeModule("net.neoforged", "testframework")
+		}
+	}
+
 	maven {
 		url = "https://cursemaven.com/"
 		content {
