@@ -11,6 +11,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.GlobalPos;
@@ -123,7 +124,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	}
 
 	@Override
-	protected boolean clickPanel(double mouseX, double mouseY, int button) {
+	protected boolean clickPanel(double mouseX, double mouseY, MouseButtonEvent event) {
 		int slotIndex = (int) (mouseY + (border / 2)) / SLOT_HEIGHT;
 
 		if (slotIndex >= 0 && slotIndex < connectionInfo.size()) {

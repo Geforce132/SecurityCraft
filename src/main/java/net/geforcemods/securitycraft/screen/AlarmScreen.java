@@ -23,6 +23,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -130,13 +132,13 @@ public class AlarmScreen extends Screen {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (!searchBar.isFocused() && minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+	public boolean keyPressed(KeyEvent event) {
+		if (!searchBar.isFocused() && minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(event))) {
 			onClose();
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 
 	@Override
@@ -171,7 +173,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		protected boolean clickPanel(double mouseX, double mouseY, int button) {
+		protected boolean clickPanel(double mouseX, double mouseY, MouseButtonEvent event) {
 			int slotIndex = (int) (mouseY + (border / 2)) / SLOT_HEIGHT;
 
 			if (slotIndex >= 0 && slotIndex < filteredSoundEvents.size()) {

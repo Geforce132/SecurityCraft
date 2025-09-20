@@ -27,6 +27,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -290,11 +292,11 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (minecraft.player.isSpectator())
 			return false;
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
@@ -306,15 +308,15 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+	public boolean keyPressed(KeyEvent event) {
 		if (usableByTextField.isFocused()) {
-			Key key = InputConstants.getKey(keyCode, scanCode);
+			Key key = InputConstants.getKey(event);
 
 			if (minecraft.options.keyInventory.isActiveAndMatches(key) || minecraft.options.keySwapOffhand.isActiveAndMatches(key) || minecraft.options.keyPickItem.isActiveAndMatches(key))
 				return false;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 
 	@Override

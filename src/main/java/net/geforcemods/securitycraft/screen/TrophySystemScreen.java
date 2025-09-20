@@ -11,6 +11,8 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -46,19 +48,19 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (minecraft.player.isSpectator())
 			return false;
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (scrollList != null && scrollList.mouseDragged(mouseX, mouseY, button, dragX, dragY))
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		if (scrollList != null && scrollList.mouseDragged(event, dragX, dragY))
 			return true;
 		else
-			return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+			return super.mouseDragged(event, dragX, dragY);
 	}
 
 	@Override
@@ -88,13 +90,13 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+	public boolean keyPressed(KeyEvent event) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(event))) {
 			onClose();
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 
 	@Override

@@ -19,6 +19,8 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.InputWithModifiers;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -246,8 +248,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (button == 0 && clickedInDragRegion) {
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		if (event.button() == 0 && clickedInDragRegion) {
 			Quaternionf inverted = new Quaternionf(dragRotation).invert();
 
 			dragRotation.mul(new Quaternionf().fromAxisAngleRad(Y_AXIS.rotate(inverted, xRotationVector), (float) dragX * ROTATION_SENSITIVITY));
@@ -259,19 +261,19 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		for (int i = 0; i < propertyButtons.size(); i++) {
-			if (propertyButtons.get(i).mouseClicked(mouseX, mouseY, button))
+			if (propertyButtons.get(i).mouseClicked(event, doubleClick))
 				break;
 		}
 
-		previousPageButton.mouseClicked(mouseX, mouseY, button);
-		nextPageButton.mouseClicked(mouseX, mouseY, button);
+		previousPageButton.mouseClicked(event, doubleClick);
+		nextPageButton.mouseClicked(event, doubleClick);
 		return false;
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+	public boolean mouseReleased(MouseButtonEvent event) {
 		clickedInDragRegion = false;
 		return false;
 	}
@@ -366,7 +368,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		}
 
 		@Override
-		public void onPress() {
+		public void onPress(InputWithModifiers input) {
 			if (property == STANDING_OR_WALL_TYPE_PROPERTY) {
 				state = standingOrWallType.getNewState((StandingAndWallBlockItem) blockItem);
 				standingOrWallType = standingOrWallType == StandingOrWallType.STANDING ? StandingOrWallType.WALL : StandingOrWallType.STANDING;

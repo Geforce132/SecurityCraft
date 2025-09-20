@@ -17,11 +17,11 @@ public record HorizontalGradientRenderState(RenderPipeline pipeline, TextureSetu
 	}
 
 	@Override
-	public void buildVertices(VertexConsumer builder, float zLevel) {
-		builder.addVertexWith2DPose(pose, right, top, zLevel).setColor(toColor);
-		builder.addVertexWith2DPose(pose, left, top, zLevel).setColor(fromColor);
-		builder.addVertexWith2DPose(pose, left, bottom, zLevel).setColor(fromColor);
-		builder.addVertexWith2DPose(pose, right, bottom, zLevel).setColor(toColor);
+	public void buildVertices(VertexConsumer builder) {
+		builder.addVertexWith2DPose(pose, right, top).setColor(toColor);
+		builder.addVertexWith2DPose(pose, left, top).setColor(fromColor);
+		builder.addVertexWith2DPose(pose, left, bottom).setColor(fromColor);
+		builder.addVertexWith2DPose(pose, right, bottom).setColor(toColor);
 	}
 
 	@Nullable

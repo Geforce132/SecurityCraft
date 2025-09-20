@@ -27,6 +27,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -176,8 +177,8 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		return getFocused() != null && isDragging() && event.button() == 0 && getFocused().mouseDragged(event, dragX, dragY) || super.mouseDragged(event, dragX, dragY);
 	}
 
 	@Override

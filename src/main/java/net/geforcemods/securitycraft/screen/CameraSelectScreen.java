@@ -17,6 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
@@ -179,13 +180,13 @@ public class CameraSelectScreen extends Screen {
 	protected void unbindCamera(GlobalPos cameraPos) {}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+	public boolean keyPressed(KeyEvent event) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(event))) {
 			onClose();
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 
 	@Override

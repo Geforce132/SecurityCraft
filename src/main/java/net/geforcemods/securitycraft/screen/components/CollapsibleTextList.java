@@ -9,6 +9,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -127,9 +128,9 @@ public class CollapsibleTextList extends Button {
 	}
 
 	@Override
-	public void onPress() {
+	public void onPress(InputWithModifiers input) {
 		switchOpenStatus();
-		super.onPress();
+		super.onPress(input);
 	}
 
 	@Override

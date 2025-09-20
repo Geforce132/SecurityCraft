@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.screen.components;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 
 public class ColorChooserButton extends Button {
@@ -23,7 +24,7 @@ public class ColorChooserButton extends Button {
 	}
 
 	@Override
-	public void onPress() {
+	public void onPress(InputWithModifiers input) {
 		if (colorChooser.disabled)
 			Minecraft.getInstance().pushGuiLayer(colorChooser);
 		else

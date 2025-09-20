@@ -41,6 +41,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.ClickEvent;
@@ -238,7 +239,7 @@ public class SCManualScreen extends Screen {
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-		if (Screen.hasShiftDown()) {
+		if (Minecraft.getInstance().hasShiftDown()) {
 			for (ItemStacksDisplay display : displays) {
 				if (display != null)
 					display.changeRenderingStack(-scrollY);
@@ -255,7 +256,7 @@ public class SCManualScreen extends Screen {
 			return true;
 		}
 
-		if (Screen.hasControlDown() && subpages.size() > 1) {
+		if (Minecraft.getInstance().hasControlDown() && subpages.size() > 1) {
 			switch ((int) Math.signum(scrollY)) {
 				case -1:
 					nextSubpage();
@@ -558,19 +559,19 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (patronList != null)
-			patronList.mouseClicked(mouseX, mouseY, button);
+			patronList.mouseClicked(event, doubleClick);
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+	public boolean mouseReleased(MouseButtonEvent event) {
 		if (patronList != null)
-			patronList.mouseReleased(mouseX, mouseY, button);
+			patronList.mouseReleased(event);
 
-		return super.mouseReleased(mouseX, mouseY, button);
+		return super.mouseReleased(event);
 	}
 
 	class PatronList extends ScrollPanel {

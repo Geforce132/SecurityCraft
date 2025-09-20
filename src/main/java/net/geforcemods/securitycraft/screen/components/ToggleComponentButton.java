@@ -2,8 +2,12 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.IntFunction;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
 
 public class ToggleComponentButton extends Button implements IToggleableButton {
@@ -21,20 +25,20 @@ public class ToggleComponentButton extends Button implements IToggleableButton {
 	}
 
 	@Override
-	public void onClick(double mouseX, double mouseY) {
-		if (Screen.hasShiftDown())
+	public void onClick(MouseButtonEvent event, boolean doubleClick) {
+		if (Minecraft.getInstance().hasShiftDown())
 			cycleIndex(-1);
 		else
 			cycleIndex(1);
 
-		super.onClick(mouseX, mouseY);
+		super.onClick(event, doubleClick);
 	}
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		if (isMouseOver(mouseX, mouseY)) {
 			cycleIndex(-(int) Math.signum(scrollY));
-			onPress();
+			onPress(new MouseButtonInfo(InputConstants.MOUSE_BUTTON_LEFT, 0));
 			return true;
 		}
 

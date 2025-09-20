@@ -30,8 +30,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -169,29 +169,29 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (minecraft.player.isSpectator())
 			return false;
 		else if (changeEntryList != null)
-			changeEntryList.mouseClicked(mouseX, mouseY, button);
+			changeEntryList.mouseClicked(event, doubleClick);
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+	public boolean mouseReleased(MouseButtonEvent event) {
 		if (changeEntryList != null)
-			changeEntryList.mouseReleased(mouseX, mouseY, button);
+			changeEntryList.mouseReleased(event);
 
-		return super.mouseReleased(mouseX, mouseY, button);
+		return super.mouseReleased(event);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+	public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
 		if (changeEntryList != null)
-			changeEntryList.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+			changeEntryList.mouseDragged(event, deltaX, deltaY);
 
-		return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+		return super.mouseDragged(event, deltaX, deltaY);
 	}
 
 	@Override
@@ -352,19 +352,21 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+			double mouseY = event.y();
+
 			if (mouseY < top || mouseY > bottom)
 				return false;
 
-			return super.mouseClicked(mouseX, mouseY, button);
+			return super.mouseClicked(event, doubleClick);
 		}
 
 		@Override
-		public boolean mouseDragged(double mouseX, double mouseY, int button, double deltaX, double deltaY) {
+		public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
 			if (getContentHeight() < height)
 				return false;
 
-			return super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY);
+			return super.mouseDragged(event, deltaX, deltaY);
 		}
 
 		@Override
@@ -411,13 +413,13 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public void onClick(double mouseX, double mouseY) {
-			if (Screen.hasShiftDown())
+		public void onClick(MouseButtonEvent event, boolean doubleClick) {
+			if (Minecraft.getInstance().hasShiftDown())
 				setCurrentIndex(currentIndex - 1);
 			else
 				setCurrentIndex(currentIndex + 1);
 
-			super.onClick(mouseX, mouseY);
+			super.onClick(event, doubleClick);
 		}
 
 		@Override

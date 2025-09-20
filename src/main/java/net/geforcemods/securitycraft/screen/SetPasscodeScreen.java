@@ -11,6 +11,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -75,15 +76,15 @@ public class SetPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+	public boolean keyPressed(KeyEvent event) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(event))) {
 			onClose();
 			return true;
 		}
-		else if (keyCode == InputConstants.KEY_NUMPADENTER || keyCode == InputConstants.KEY_RETURN && saveAndContinueButton.active)
+		else if (event.key() == InputConstants.KEY_NUMPADENTER || event.key() == InputConstants.KEY_RETURN && saveAndContinueButton.active)
 			saveAndContinueButtonClicked(saveAndContinueButton);
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 
 	@Override

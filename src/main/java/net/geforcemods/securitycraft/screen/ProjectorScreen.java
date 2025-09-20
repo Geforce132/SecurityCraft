@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -128,19 +129,19 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (minecraft.player.isSpectator())
 			return false;
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (stateSelector != null && stateSelector.mouseDragged(mouseX, mouseY, button, dragX, dragY))
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		if (stateSelector != null && stateSelector.mouseDragged(event, dragX, dragY))
 			return true;
 
-		return (getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY)) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		return (getFocused() != null && isDragging() && event.button() == 0 && getFocused().mouseDragged(event, dragX, dragY)) || super.mouseDragged(event, dragX, dragY);
 	}
 
 	@Override

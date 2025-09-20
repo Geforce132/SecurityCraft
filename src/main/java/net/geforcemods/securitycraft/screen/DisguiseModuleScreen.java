@@ -13,6 +13,7 @@ import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -62,11 +63,11 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (stateSelector != null && stateSelector.mouseDragged(mouseX, mouseY, button, dragX, dragY))
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		if (stateSelector != null && stateSelector.mouseDragged(event, dragX, dragY))
 			return true;
 
-		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		return super.mouseDragged(event, dragX, dragY);
 	}
 
 	@Override

@@ -20,6 +20,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.render.TextureSetup;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -159,11 +160,11 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		super.mouseDragged(event, dragX, dragY);
 
-		if (button == 0 && clickedInDragRegion) {
-			setSelection(mouseX, mouseY);
+		if (event.button() == 0 && clickedInDragRegion) {
+			setSelection(event.x(), event.y());
 			return true;
 		}
 
@@ -171,19 +172,19 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		super.mouseClicked(mouseX, mouseY, button);
-		clickedInDragRegion = colorFieldHoverChecker.checkHover(mouseX, mouseY);
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		super.mouseClicked(event, doubleClick);
+		clickedInDragRegion = colorFieldHoverChecker.checkHover(event.x(), event.y());
 
 		if (clickedInDragRegion)
-			setSelection(mouseX, mouseY);
+			setSelection(event.x(), event.y());
 
 		return false;
 	}
 
 	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		super.mouseReleased(mouseX, mouseY, button);
+	public boolean mouseReleased(MouseButtonEvent event) {
+		super.mouseReleased(event);
 		clickedInDragRegion = false;
 		return false;
 	}

@@ -1,8 +1,9 @@
 package net.geforcemods.securitycraft.screen.components;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -42,13 +43,13 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 	}
 
 	@Override
-	public void onPress() {
-		if (Screen.hasShiftDown())
+	public void onPress(InputWithModifiers input) {
+		if (Minecraft.getInstance().hasShiftDown())
 			setCurrentIndex(currentIndex - 1);
 		else
 			setCurrentIndex(currentIndex + 1);
 
-		super.onPress();
+		super.onPress(input);
 	}
 
 	@Override

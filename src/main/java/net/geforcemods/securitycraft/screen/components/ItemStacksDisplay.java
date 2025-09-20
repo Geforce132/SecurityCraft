@@ -3,9 +3,9 @@ package net.geforcemods.securitycraft.screen.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemStacksDisplay implements Renderable {
@@ -31,7 +31,7 @@ public class ItemStacksDisplay implements Renderable {
 	}
 
 	public void tick() {
-		if (!Screen.hasShiftDown() && --ticksToChange <= 0) {
+		if (!Minecraft.getInstance().hasShiftDown() && --ticksToChange <= 0) {
 			changeRenderingStack(1);
 			ticksToChange = DISPLAY_LENGTH;
 		}

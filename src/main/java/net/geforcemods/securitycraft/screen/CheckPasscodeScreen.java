@@ -16,6 +16,9 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.input.CharacterEvent;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -69,8 +72,8 @@ public class CheckPasscodeScreen extends Screen {
 
 		keycodeTextbox = addRenderableWidget(new CensoringEditBox(font, width / 2 - 37, height / 2 - 72, 77, 12, Component.empty()) {
 			@Override
-			public boolean mouseClicked(double mouseX, double mouseY, int button) {
-				return active && super.mouseClicked(mouseX, mouseY, button);
+			public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+				return active && super.mouseClicked(event, doubleClick);
 			}
 
 			@Override
@@ -116,12 +119,14 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+	public boolean keyPressed(KeyEvent event) {
+		int keyCode = event.key();
+
 		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && !keycodeTextbox.getValue().isEmpty())
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 
-		if (!super.keyPressed(keyCode, scanCode, modifiers) && !keycodeTextbox.keyPressed(keyCode, scanCode, modifiers)) {
-			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode)))
+		if (!super.keyPressed(event) && !keycodeTextbox.keyPressed(event)) {
+			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(event)))
 				onClose();
 
 			if (!passcodeProtected.isOnCooldown() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
@@ -139,9 +144,10 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public boolean charTyped(char typedChar, int keyCode) {
-		if (!passcodeProtected.isOnCooldown() && isValidChar(typedChar)) {
-			keycodeTextbox.charTyped(typedChar, keyCode);
+	public boolean charTyped(CharacterEvent event) {
+		//TODO: Test isValidChar
+		if (!passcodeProtected.isOnCooldown() && isValidChar((char) event.codepoint())) {
+			keycodeTextbox.charTyped(event);
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 		}
 
@@ -196,12 +202,12 @@ public class CheckPasscodeScreen extends Screen {
 		}
 
 		@Override
-		public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 			String originalValue = value;
 			boolean success;
 
 			value = renderedText;
-			success = super.mouseClicked(mouseX, mouseY, button);
+			success = super.mouseClicked(event, doubleClick);
 			value = originalValue;
 			return success;
 		}

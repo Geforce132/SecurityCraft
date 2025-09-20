@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.util.LevelUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.MutableComponent;
@@ -207,7 +207,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 		if (level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
 			ItemStack displayedStack = be.getDisplayedStack();
 
-			if (!displayedStack.isEmpty() && be.isOpen() && !Screen.hasControlDown())
+			if (!displayedStack.isEmpty() && be.isOpen() && !Minecraft.getInstance().hasControlDown())
 				return displayedStack;
 		}
 

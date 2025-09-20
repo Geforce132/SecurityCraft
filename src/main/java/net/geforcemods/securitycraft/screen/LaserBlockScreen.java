@@ -14,6 +14,9 @@ import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.InputWithModifiers;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -46,9 +49,9 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 		sideConfig.forEach((dir, enabled) -> {
 			CallbackCheckbox checkbox = new CallbackCheckbox(leftPos + 40, topPos + dir.get3DDataValue() * 22 + 25, 20, 20, Utils.localize("gui.securitycraft:laser." + dir.getName() + "Enabled"), enabled, newValue -> onChangeValue(dir, newValue), CommonColors.DARK_GRAY) {
 				@Override
-				public void onPress() {
+				public void onPress(InputWithModifiers input) {
 					if (hasSmartModule)
-						super.onPress();
+						super.onPress(input);
 				}
 			};
 
@@ -75,11 +78,11 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	}
 
 	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (minecraft.player.isSpectator())
 			return false;
 
-		return super.mouseClicked(mouseX, mouseY, button);
+		return super.mouseClicked(event, doubleClick);
 	}
 
 	public void onChangeValue(Direction dir, boolean newValue) {
@@ -93,12 +96,12 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	}
 
 	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+	public boolean keyPressed(KeyEvent event) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(event))) {
 			onClose();
 			return true;
 		}
 
-		return super.keyPressed(keyCode, scanCode, modifiers);
+		return super.keyPressed(event);
 	}
 }

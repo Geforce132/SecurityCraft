@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -61,7 +62,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 	}
 
 	@Override
-	protected boolean clickPanel(double mouseX, double mouseY, int button) {
+	protected boolean clickPanel(double mouseX, double mouseY, MouseButtonEvent event) {
 		if (hasSmartModule) {
 			int slotIndex = (int) (mouseY + (border / 2)) / SLOT_HEIGHT;
 
