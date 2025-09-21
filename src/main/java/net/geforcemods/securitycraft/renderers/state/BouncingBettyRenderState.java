@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.renderers;
+package net.geforcemods.securitycraft.renderers.state;
 
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 

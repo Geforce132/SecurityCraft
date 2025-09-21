@@ -12,9 +12,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -22,16 +21,15 @@ import net.minecraft.world.item.ItemDisplayContext;
 
 public record DisplayCaseSpecialRenderer(DisplayCaseModel model, ResourceLocation texture, float openness, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
-	public void render(ItemDisplayContext ctx, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay, boolean glint) {
-		model.setUpAnim(openness);
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entityCutout(texture)), light.orElse(packedLight), packedOverlay);
+	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, int packedOverlay, boolean glint) {
+		submitNodeCollector.submitModel(model, openness, pose, RenderType.entityCutout(texture), light.orElse(packedLight), packedOverlay, 0xFFFFFFFF, null);
 	}
 
 	@Override
 	public void getExtents(Set<Vector3f> extents) {
 		PoseStack poseStack = new PoseStack();
 
-		model.setUpAnim(openness);
+		model.setupAnim(openness);
 		model.root().getExtentsForGui(poseStack, extents);
 	}
 
@@ -52,8 +50,8 @@ public record DisplayCaseSpecialRenderer(DisplayCaseModel model, ResourceLocatio
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-			DisplayCaseModel model = new DisplayCaseModel(modelSet.bakeLayer(ClientHandler.DISPLAY_CASE_LOCATION));
+		public SpecialModelRenderer<?> bake(BakingContext ctx) {
+			DisplayCaseModel model = new DisplayCaseModel(ctx.entityModelSet().bakeLayer(ClientHandler.DISPLAY_CASE_LOCATION));
 
 			return new DisplayCaseSpecialRenderer(model, texture.withPrefix("textures/entity/display_case/").withSuffix(".png"), openness, light);
 		}

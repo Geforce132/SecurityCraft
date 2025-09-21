@@ -9,7 +9,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 
-public class DisplayCaseModel extends Model {
+public class DisplayCaseModel extends Model<Float> {
 	private final ModelPart door;
 
 	public DisplayCaseModel(ModelPart root) {
@@ -40,7 +40,8 @@ public class DisplayCaseModel extends Model {
 		return LayerDefinition.create(meshDefinition, 48, 48);
 	}
 
-	public void setUpAnim(float openness) {
+	@Override
+	public void setupAnim(Float openness) {
 		door.yRot = -(openness * (float) (Math.PI / 2.0F));
 	}
 }
