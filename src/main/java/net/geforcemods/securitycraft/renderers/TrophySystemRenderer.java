@@ -1,16 +1,15 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.joml.Matrix4f;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.geforcemods.securitycraft.renderers.state.TrophySystemRenderState;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlockEntity> {
+public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlockEntity, TrophySystemRenderState> {
 	/**
 	 * The number of blocks away from the trophy system you can be for the laser beam between itself and the projectile to be
 	 * rendered
@@ -28,32 +27,55 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 	public TrophySystemRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(TrophySystemBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
-		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos))
+	public void submit(TrophySystemRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
+		//TODO: render delegate
+		//if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos))
+		//	return;
+		if (!state.hasTarget)
 			return;
 
+		BlockPos bePos = state.blockPos;
+		float r = state.r;
+		float g = state.g;
+		float b = state.b;
+
+		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, buffer) -> {
+			buffer.addVertex(pose, 0.5F, 0.75F, 0.5F).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+			buffer.addVertex(pose, (float) (state.targetX - bePos.getX()), (float) (state.targetY - bePos.getY()), (float) (state.targetZ - bePos.getZ())).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+
+		});
+	}
+
+	@Override
+	public TrophySystemRenderState createRenderState() {
+		return new TrophySystemRenderState();
+	}
+
+	@Override
+	public void extractRenderState(TrophySystemBlockEntity be, TrophySystemRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+
+		ItemStack lens = be.getLensContainer().getItem(0);
 		Entity target = be.getTarget();
 
-		if (target == null)
-			return;
-
-		VertexConsumer builder = buffer.getBuffer(RenderType.lines());
-		Matrix4f positionMatrix = pose.last().pose();
-		BlockPos pos = be.getBlockPos();
-		ItemStack lens = be.getLensContainer().getItem(0);
-		int r = 255, g = 255, b = 255;
+		if (target != null) {
+			state.hasTarget = true;
+			state.targetX = target.getX();
+			state.targetY = target.getY();
+			state.targetZ = target.getZ();
+		}
+		else
+			state.hasTarget = false;
 
 		if (lens.has(DataComponents.DYED_COLOR)) {
 			int color = lens.get(DataComponents.DYED_COLOR).rgb();
 
-			r = (color >> 0x10) & 0xFF;
-			g = (color >> 0x8) & 0xFF;
-			b = color & 0xFF;
+			state.r = (color >> 0x10) & 0xFF;
+			state.g = (color >> 0x8) & 0xFF;
+			state.b = color & 0xFF;
 		}
-
-		//draws a line between the trophy system and the projectile that it's targeting
-		builder.addVertex(positionMatrix, 0.5F, 0.75F, 0.5F).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		builder.addVertex(positionMatrix, (float) (target.getX() - pos.getX()), (float) (target.getY() - pos.getY()), (float) (target.getZ() - pos.getZ())).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+		else
+			state.r = state.g = state.b = 255;
 	}
 
 	@Override

@@ -12,9 +12,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -24,14 +23,14 @@ import net.minecraft.world.item.ItemDisplayContext;
 
 public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceLocation texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
-	public void render(ItemDisplayContext ctx, PoseStack pose, MultiBufferSource buffer, int packedLight, int packedOverlay, boolean glint) {
+	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector collector, int packedLight, int packedOverlay, boolean glint) {
 		int color = lensColor.orElseGet(() -> {
 			model.cameraRotationPoint2.visible = false;
 			return 0x70FFFF;
 		});
 
 		model.rotateCameraY(rotation);
-		model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(texture)), light.orElse(packedLight), packedOverlay, ARGB.color(255, color));
+		collector.submitModel(model, null, pose, RenderType.entitySolid(texture), light.orElse(packedLight), packedOverlay, ARGB.color(255, color), null, 0, null);
 		model.cameraRotationPoint2.visible = true;
 	}
 
@@ -60,8 +59,8 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceL
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(EntityModelSet modelSet) {
-			SecurityCameraModel model = new SecurityCameraModel(modelSet.bakeLayer(ClientHandler.SECURITY_CAMERA_LOCATION));
+		public SpecialModelRenderer<?> bake(BakingContext bakingContext) {
+			SecurityCameraModel model = new SecurityCameraModel(bakingContext.entityModelSet().bakeLayer(ClientHandler.SECURITY_CAMERA_LOCATION));
 
 			return new SecurityCameraSpecialRenderer(model, texture.withPrefix("textures/entity/security_camera/").withSuffix(".png"), rotation, lensColor, light);
 		}

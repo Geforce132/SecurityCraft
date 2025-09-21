@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.models;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.renderers.state.SentryRenderState;
 import net.minecraft.client.model.EntityModel;
@@ -13,6 +12,9 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 
 public class SentryModel extends EntityModel<SentryRenderState> {
 	private final ModelPart base;
@@ -48,11 +50,11 @@ public class SentryModel extends EntityModel<SentryRenderState> {
 		return LayerDefinition.create(meshDefinition, 64, 64);
 	}
 
-	public void renderBase(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
-		base.render(pose, builder, packedLight, packedOverlay, packedARGB);
+	public void submitBase(SentryRenderState state, PoseStack pose, SubmitNodeCollector submitNodeCollector, RenderType renderType) {
+		submitNodeCollector.submitModelPart(base, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null, state.outlineColor, null);
 	}
 
-	public void renderHead(PoseStack pose, VertexConsumer builder, int packedLight, int packedOverlay, int packedARGB) {
-		headPartList.forEach(part -> part.render(pose, builder, packedLight, packedOverlay, packedARGB));
+	public void submitHead(SentryRenderState state, PoseStack pose, SubmitNodeCollector submitNodeCollector, RenderType renderType) {
+		headPartList.forEach(part -> submitNodeCollector.submitModelPart(part, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null, state.outlineColor, null));
 	}
 }
