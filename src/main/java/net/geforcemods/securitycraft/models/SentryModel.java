@@ -51,10 +51,10 @@ public class SentryModel extends EntityModel<SentryRenderState> {
 	}
 
 	public void submitBase(SentryRenderState state, PoseStack pose, SubmitNodeCollector submitNodeCollector, RenderType renderType) {
-		submitNodeCollector.submitModelPart(base, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null, state.outlineColor, null);
+		submitNodeCollector.submitModelPart(base, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null);
 	}
 
 	public void submitHead(SentryRenderState state, PoseStack pose, SubmitNodeCollector submitNodeCollector, RenderType renderType) {
-		headPartList.forEach(part -> submitNodeCollector.submitModelPart(part, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null, state.outlineColor, null));
+		headPartList.forEach(part -> submitNodeCollector.submitModelPart(part, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, null, -1, null));
 	}
 }

@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -53,7 +51,9 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 	}
 
 	@Override
-	public void extractRenderState(ClaymoreBlockEntity be, ClaymoreRenderState state, float partialTick, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+	public void extractRenderState(ClaymoreBlockEntity be, ClaymoreRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+
 		ItemStack lens = be.getLensContainer().getItem(0);
 		Direction claymoreFacing = be.getBlockState().getValue(ClaymoreBlock.FACING);
 		Direction rotationDirection = switch (claymoreFacing) {

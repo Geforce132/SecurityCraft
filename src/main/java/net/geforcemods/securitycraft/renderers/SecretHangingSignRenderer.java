@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.renderers.state.SecretSignRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
@@ -49,7 +49,7 @@ public class SecretHangingSignRenderer extends HangingSignRenderer {
 	public void extractRenderState(SignBlockEntity be, SignRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 
-		if (be instanceof SecretSignBlockEntity secretSignBlockEntity && state instanceof SecretSignRenderState secretSignRenderState) {
+		if (be instanceof SecretHangingSignBlockEntity secretSignBlockEntity && state instanceof SecretSignRenderState secretSignRenderState) {
 			LocalPlayer player = Minecraft.getInstance().player;
 
 			secretSignRenderState.isAllowedToSeeFrontText = secretSignBlockEntity.isPlayerAllowedToSeeText(player, true);

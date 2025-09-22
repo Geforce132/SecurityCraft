@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -97,7 +95,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 		RenderType renderType = RenderType.entityCutout(state.isGlowing ? glowTexture : texture);
 
 		pose.scale(-1.0F, 1.0F, -1.0F);
-		submitNodeCollector.submitModel(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF, null);
+		submitNodeCollector.submitModel(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		pose.popPose();
 	}
 
@@ -107,7 +105,9 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 	}
 
 	@Override
-	public void extractRenderState(DisplayCaseBlockEntity be, DisplayCaseRenderState renderState, float partialTick, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+	public void extractRenderState(DisplayCaseBlockEntity be, DisplayCaseRenderState renderState, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		BlockEntityRenderer.super.extractRenderState(be, renderState, partialTick, cameraPos, crumblingOverlay);
+
 		BlockState state = be.getBlockState();
 		Direction facing = state.getValue(DisplayCaseBlock.FACING);
 

@@ -73,6 +73,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 
 	@Override
 	public void extractRenderState(ProjectorBlockEntity be, ProjectorRenderState renderState, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		BlockEntityRenderer.super.extractRenderState(be, renderState, partialTick, cameraPos, crumblingOverlay);
 		renderState.projectedState = be.getProjectedState();
 		renderState.isActive = be.isActive() && !be.isContainerEmpty();
 		renderState.isHanging = be.getBlockState().getValue(ProjectorBlock.HANGING);

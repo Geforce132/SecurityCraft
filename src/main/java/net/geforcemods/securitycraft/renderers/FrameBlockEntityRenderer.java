@@ -86,7 +86,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Vec3i normal = state.normal;
 		int lightCoords = state.lightCoords;
 
-
 		if (state.isCameraSelected)
 			renderSolidTexture(pose, collector, SELECT_CAMERA, innerVertices, lightCoords, normal, margin);
 		else if (state.isRedstoneSignalDisabled) {
@@ -161,7 +160,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Player player = Minecraft.getInstance().player;
 		Level level = be.getLevel();
 		GlobalPos securityCameraPos = be.getCurrentCamera();
-		CameraFeed feed = FrameFeedHandler.getFeed(securityCameraPos);
 		Direction direction = be.getBlockState().getValue(FrameBlock.FACING);
 		final float margin = 0.0625F;
 
@@ -194,22 +192,26 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		state.isRedstoneSignalDisabled = be.redstoneSignalDisabled();
 		state.hasClientInteracted = be.hasClientInteracted();
 
-		if (feed != null && feed.isFrameLinked(be) && level.isLoaded(securityCameraPos.pos()) && level.getBlockEntity(securityCameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity) {
-			state.isCameraPresent = true;
-			state.renderTargetColorTexture = feed.renderTarget().getColorTextureView();
-			state.backgroundColor = feed.backgroundColor();
+		if (state.isCameraSelected) {
+			CameraFeed feed = FrameFeedHandler.getFeed(securityCameraPos);
 
-			ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+			if (feed != null && feed.isFrameLinked(be) && level.isLoaded(securityCameraPos.pos()) && level.getBlockEntity(securityCameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity) {
+				state.isCameraPresent = true;
+				state.renderTargetColorTexture = feed.renderTarget().getColorTextureView();
+				state.backgroundColor = feed.backgroundColor();
 
-			if (lens.has(DataComponents.DYED_COLOR)) {
-				state.hasLens = true;
-				state.lensColor = lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24);
+				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
+
+				if (lens.has(DataComponents.DYED_COLOR)) {
+					state.hasLens = true;
+					state.lensColor = lens.get(DataComponents.DYED_COLOR).rgb() + (cameraBlockEntity.getOpacity() << 24);
+				}
+				else
+					state.hasLens = false;
 			}
 			else
-				state.hasLens = false;
+				state.isCameraPresent = false;
 		}
-		else
-			state.isCameraPresent = false;
 	}
 
 	private void renderNoise(PoseStack pose, SubmitNodeCollector collector, Vector4f vertices, int packedLight, Vec3i normal, float margin) {

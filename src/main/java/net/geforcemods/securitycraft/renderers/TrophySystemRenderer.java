@@ -42,7 +42,6 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, buffer) -> {
 			buffer.addVertex(pose, 0.5F, 0.75F, 0.5F).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
 			buffer.addVertex(pose, (float) (state.targetX - bePos.getX()), (float) (state.targetY - bePos.getY()), (float) (state.targetZ - bePos.getZ())).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-
 		});
 	}
 

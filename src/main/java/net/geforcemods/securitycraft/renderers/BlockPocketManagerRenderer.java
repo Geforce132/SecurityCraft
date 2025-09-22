@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
@@ -41,7 +39,9 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 	}
 
 	@Override
-	public void extractRenderState(BlockPocketManagerBlockEntity be, BlockPocketManagerRenderState state, float partialTick, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+	public void extractRenderState(BlockPocketManagerBlockEntity be, BlockPocketManagerRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+
 		Direction facing = be.getBlockState().getValue(BlockPocketManagerBlock.FACING);
 		int offset = facing == Direction.NORTH || facing == Direction.EAST ? -be.getAutoBuildOffset() : be.getAutoBuildOffset(); //keep negative values moving the offset to the left consistent
 		int size = be.getSize();

@@ -62,7 +62,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		if (!state.hasDisguiseModule) {
 			pose.mulPose(POSITIVE_X_180);
 			model.setRadarRotation(state.radarRotationDegrees);
-			collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, null); //TODO test
+			collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress); //TODO test
 		}
 	}
 

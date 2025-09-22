@@ -107,7 +107,7 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 
 		Direction facing = be.getBlockState().getValue(RetinalScannerBlock.FACING);
-		BlockPos offsetPos = state.blockPos.relative(state.facing);
+		BlockPos offsetPos = state.blockPos.relative(facing);
 
 		state.skinRenderType = getSkinRenderType(be.getPlayerProfile());
 		state.facing = facing;

@@ -39,7 +39,7 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 			pose.mulPose(state.facing.getRotation());
 			pose.translate(0.0D, -0.49999D, 0.0D);
 			model.rotate(state.dishRotationDegrees);
-			collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
+			collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		}
 	}
 

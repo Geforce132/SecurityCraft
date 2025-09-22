@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 public record DisplayCaseSpecialRenderer(DisplayCaseModel model, ResourceLocation texture, float openness, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
 	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, int packedOverlay, boolean glint) {
-		submitNodeCollector.submitModel(model, openness, pose, RenderType.entityCutout(texture), light.orElse(packedLight), packedOverlay, 0xFFFFFFFF, null);
+		submitNodeCollector.submitModel(model, openness, pose, RenderType.entityCutout(texture), light.orElse(packedLight), packedOverlay, 0, null);
 	}
 
 	@Override
