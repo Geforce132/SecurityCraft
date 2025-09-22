@@ -11,7 +11,8 @@
 		"camera.ViewAreaMixin",
 		"datagen.BlockStateGeneratorCollectorMixin",
 		"f3.BetterF3TargetModuleMixin",
-		"f3.DebugScreenOverlayMixin",
+		"f3.DebugEntryLookingAtBlockMixin",
+		"f3.DebugEntryLookingAtFluidMixin",
 		"taser.ItemInHandRendererMixin"
 	],
 	"mixins": [
