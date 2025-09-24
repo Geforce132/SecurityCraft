@@ -5,11 +5,13 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.geforcemods.securitycraft.renderers.state.BouncingBettyRenderState;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.TntMinecartRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.Mth;
 
 public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, BouncingBettyRenderState> {
@@ -22,7 +24,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, Bouncin
 	}
 
 	@Override
-	public void render(BouncingBettyRenderState state, PoseStack pose, MultiBufferSource buffer, int packedLight) {
+	public void submit(BouncingBettyRenderState state, PoseStack pose, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
 		pose.pushPose();
 		pose.translate(0.0F, 0.5F, 0.0F);
 
@@ -39,9 +41,9 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, Bouncin
 		pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
 		pose.translate(-0.5F, -0.5F, 0.5F);
 		pose.mulPose(Axis.YP.rotationDegrees(90.0F));
-		TntMinecartRenderer.renderWhiteSolidBlock(blockRenderer, SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, buffer, packedLight, state.fuseRemainingInTicks / 5 % 2 == 0);
+		TntMinecartRenderer.submitWhiteSolidBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, submitNodeCollector, state.lightCoords, state.fuseRemainingInTicks / 5 % 2 == 0, state.outlineColor);
 		pose.popPose();
-		super.render(state, pose, buffer, packedLight);
+		super.submit(state, pose, submitNodeCollector, cameraRenderState);
 	}
 
 	@Override

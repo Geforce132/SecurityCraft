@@ -6,12 +6,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.geforcemods.securitycraft.renderers.state.KeypadChestRenderState;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
+import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
@@ -39,19 +43,36 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 	}
 
 	@Override
-	public void render(ChestBlockEntity be, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay, Vec3 cameraPos) {
-		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, poseStack, buffer, packedLight, packedOverlay, cameraPos);
+	public void submit(ChestRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
+		if (state instanceof KeypadChestRenderState keypadChestRenderState) {
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(keypadChestRenderState.disguiseRenderState, pose, collector, camera);
 
-		if (be instanceof IModuleInventory moduleInv && !moduleInv.isModuleEnabled(ModuleType.DISGUISE))
-			super.render(be, partialTicks, poseStack, buffer, packedLight, packedOverlay, cameraPos);
+			if (!keypadChestRenderState.hasDisguiseModule)
+				super.submit(state, pose, collector, camera);
+		}
 	}
 
 	@Override
-	protected Material getMaterial(ChestBlockEntity be, ChestType type) {
+	public ChestRenderState createRenderState() {
+		return new KeypadChestRenderState();
+	}
+
+	@Override
+	public void extractRenderState(ChestBlockEntity be, ChestRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+
+		if (be instanceof KeypadChestBlockEntity keypadChestBlockEntity && state instanceof KeypadChestRenderState keypadChestRenderState) {
+			keypadChestRenderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(keypadChestBlockEntity, partialTick, cameraPos, crumblingOverlay);
+			keypadChestRenderState.hasDisguiseModule = keypadChestBlockEntity.isModuleEnabled(ModuleType.DISGUISE);
+		}
+	}
+
+	@Override
+	protected Material getMaterial(ChestRenderState.ChestMaterialType materialType, ChestType type) {
 		if (isChristmas)
 			return getMaterialForType(type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
-		else if (be.getOpenNess(0.0F) >= 0.9F)
-			return getMaterialForType(type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
+		//else if (be.getOpenNess(0.0F) >= 0.9F) TODO the openness cannot be queried easily anymore. Mixin?
+		//	return getMaterialForType(type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
 		else
 			return getMaterialForType(type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);
 	}

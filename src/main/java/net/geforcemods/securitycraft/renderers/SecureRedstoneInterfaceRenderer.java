@@ -8,16 +8,20 @@ import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockE
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.geforcemods.securitycraft.renderers.state.SecureRedstoneInterfaceRenderState;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<SecureRedstoneInterfaceBlockEntity> {
+public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<SecureRedstoneInterfaceBlockEntity, SecureRedstoneInterfaceRenderState> {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/secure_redstone_interface_dish.png");
 	private final SecureRedstoneInterfaceDishModel model;
 
@@ -26,15 +30,33 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 	}
 
 	@Override
-	public void render(SecureRedstoneInterfaceBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
-		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
+	public void submit(SecureRedstoneInterfaceRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
-		if (!be.isModuleEnabled(ModuleType.DISGUISE) && !be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER)) {
+		if (!state.hasDisguiseModule && !state.isSender) {
 			pose.translate(0.5D, 0.5D, 0.5D);
-			pose.mulPose(be.getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getRotation());
+			pose.mulPose(state.facing.getRotation());
 			pose.translate(0.0D, -0.49999D, 0.0D);
-			model.rotate(Mth.lerp(partialTicks, be.getOriginalDishRotationDegrees(), be.getDishRotationDegrees()));
-			model.renderToBuffer(pose, buffer.getBuffer(RenderType.entitySolid(TEXTURE)), combinedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
+			model.rotate(state.dishRotationDegrees);
+			collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		}
+	}
+
+	@Override
+	public SecureRedstoneInterfaceRenderState createRenderState() {
+		return new SecureRedstoneInterfaceRenderState();
+	}
+
+	@Override
+	public void extractRenderState(SecureRedstoneInterfaceBlockEntity be, SecureRedstoneInterfaceRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+
+		BlockState blockState = be.getBlockState();
+
+		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
+		state.facing = blockState.getValue(SecureRedstoneInterfaceBlock.FACING);
+		state.hasDisguiseModule = be.isModuleEnabled(ModuleType.DISGUISE);
+		state.isSender = blockState.getValue(SecureRedstoneInterfaceBlock.SENDER);
+		state.dishRotationDegrees = Mth.lerp(partialTick, be.getOriginalDishRotationDegrees(), be.getDishRotationDegrees());
 	}
 }

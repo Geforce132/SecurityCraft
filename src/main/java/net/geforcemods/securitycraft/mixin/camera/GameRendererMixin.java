@@ -29,7 +29,7 @@ import net.minecraft.world.level.Level;
 public class GameRendererMixin {
 	@Shadow
 	@Final
-	Minecraft minecraft;
+	private Minecraft minecraft;
 
 	/**
 	 * Makes sure camera zooming works, because the fov is only updated when the camera entity is the player itself
