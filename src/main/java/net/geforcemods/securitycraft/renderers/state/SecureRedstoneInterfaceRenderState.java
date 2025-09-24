@@ -1,9 +1,8 @@
 package net.geforcemods.securitycraft.renderers.state;
 
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;
 
-public class SecureRedstoneInterfaceRenderState extends BlockEntityRenderState {
+public class SecureRedstoneInterfaceRenderState extends DisguisableRenderState {
 	public Direction facing;
 	public boolean hasDisguiseModule;
 	public boolean isSender;

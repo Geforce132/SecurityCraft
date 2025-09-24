@@ -7,6 +7,7 @@ import org.joml.Matrix4f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
@@ -40,9 +41,8 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 
 	@Override
 	public void submit(RetinalScannerRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
-		//TODO disguise render delegate
-		//if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos))
-		//	return;
+		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera))
+			return;
 
 		Direction direction = state.facing;
 
@@ -109,6 +109,7 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		Direction facing = be.getBlockState().getValue(RetinalScannerBlock.FACING);
 		BlockPos offsetPos = state.blockPos.relative(facing);
 
+		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		state.skinRenderType = getSkinRenderType(be.getPlayerProfile());
 		state.facing = facing;
 		state.hasFilledDisguiseModule = be.isModuleEnabled(ModuleType.DISGUISE) && ModuleItem.getBlockAddon(be.getModule(ModuleType.DISGUISE)) != null;

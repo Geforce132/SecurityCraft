@@ -39,8 +39,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 
 	@Override
 	public void submit(SonicSecuritySystemRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		//TODO: render delegate
-		//ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay, cameraPos);
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
 		boolean recording = state.isRecording;
 
@@ -74,6 +73,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	@Override
 	public void extractRenderState(SonicSecuritySystemBlockEntity be, SonicSecuritySystemRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		state.isRecording = be.isRecording();
 		state.isListening = be.isListening();
 		state.isShutDown = be.isShutDown();

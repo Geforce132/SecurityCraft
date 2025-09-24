@@ -3,7 +3,8 @@ package net.geforcemods.securitycraft.renderers.state;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ProjectorRenderState extends BlockEntityRenderState {
+public class ProjectorRenderState extends DisguisableRenderState {
+	public BlockEntityRenderState projectedRenderState;
 	public BlockState projectedState;
 	public boolean isActive;
 	public boolean isHanging;

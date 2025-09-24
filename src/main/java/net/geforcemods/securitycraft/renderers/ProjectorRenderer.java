@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.renderers.state.ProjectorRenderState;
@@ -9,6 +10,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -27,13 +29,13 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 
 	@Override
 	public void submit(ProjectorRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		//TODO disguise delegate
-		//ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
 		if (state.isActive) {
 			ModelBlockRenderer.enableCaching();
 
 			boolean hanging = state.isHanging;
+			BlockEntityRenderState projectedRenderState = state.projectedRenderState;
 			BlockState projectedState = state.projectedState;
 			BlockPos pos;
 
@@ -53,8 +55,8 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 						BlockStateModel model = dispatcher.getBlockModel(projectedState);
 						Function<ChunkSectionLayer, RenderType> toRenderType = RenderTypeHelper::getMovingBlockRenderType;
 
-						dispatcher.renderBatched(state, pos, level, pose, toRenderType.andThen(buffer::getBuffer), true, model.collectParts(be.getLevel(), pos, state, RandomSource.create(state.getSeed(pos))));
-						ClientHandler.PROJECTOR_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);*/
+						dispatcher.renderBatched(state, pos, level, pose, toRenderType.andThen(buffer::getBuffer), true, model.collectParts(be.getLevel(), pos, state, RandomSource.create(state.getSeed(pos))));*/
+						ClientHandler.PROJECTOR_RENDER_DELEGATE.trySubmitDelegate(projectedRenderState, pose, collector, camera);
 					}
 
 					pose.popPose();
@@ -74,6 +76,8 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	@Override
 	public void extractRenderState(ProjectorBlockEntity be, ProjectorRenderState renderState, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, renderState, partialTick, cameraPos, crumblingOverlay);
+		renderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
+		renderState.projectedRenderState = ClientHandler.PROJECTOR_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		renderState.projectedState = be.getProjectedState();
 		renderState.isActive = be.isActive() && !be.isContainerEmpty();
 		renderState.isHanging = be.getBlockState().getValue(ProjectorBlock.HANGING);

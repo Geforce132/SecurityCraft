@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.renderers.state.TrophySystemRenderState;
 import net.minecraft.client.renderer.RenderType;
@@ -28,10 +29,9 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 
 	@Override
 	public void submit(TrophySystemRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
-		//TODO: render delegate
-		//if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos))
-		//	return;
-		if (!state.hasTarget)
+		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera))
+			return;
+		else if (!state.hasTarget)
 			return;
 
 		BlockPos bePos = state.blockPos;
@@ -53,6 +53,7 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 	@Override
 	public void extractRenderState(TrophySystemBlockEntity be, TrophySystemRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 
 		ItemStack lens = be.getLensContainer().getItem(0);
 		Entity target = be.getTarget();

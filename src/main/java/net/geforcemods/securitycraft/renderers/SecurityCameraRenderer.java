@@ -50,8 +50,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 		if (state.isInsideThisCamera)
 			return;
 
-		//TODO: render delegate
-		//ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, packedLight, packedOverlay, cameraPos);
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
 		if (!state.isDown && !state.hasDisguiseModule) {
 			Direction side = state.side;
@@ -88,6 +87,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	@Override
 	public void extractRenderState(SecurityCameraBlockEntity be, SecurityCameraRenderState renderState, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, renderState, partialTick, cameraPos, crumblingOverlay);
+		renderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 
 		ItemStack lens = be.getLensContainer().getItem(0);
 

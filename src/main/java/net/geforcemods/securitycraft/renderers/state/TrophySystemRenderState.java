@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.renderers.state;
 
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
-
-public class TrophySystemRenderState extends BlockEntityRenderState {
+public class TrophySystemRenderState extends DisguisableRenderState {
 	public boolean hasTarget;
 	public double targetX;
 	public double targetY;

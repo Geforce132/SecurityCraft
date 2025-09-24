@@ -1,9 +1,8 @@
 package net.geforcemods.securitycraft.renderers.state;
 
-import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Direction;
 
-public class SecurityCameraRenderState extends BlockEntityRenderState {
+public class SecurityCameraRenderState extends DisguisableRenderState {
 	public Direction side;
 	public boolean isInsideThisCamera;
 	public boolean isDown;

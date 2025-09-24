@@ -31,8 +31,7 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 
 	@Override
 	public void submit(SecureRedstoneInterfaceRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		//TODO delegate renderer
-		//ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
 		if (!state.hasDisguiseModule && !state.isSender) {
 			pose.translate(0.5D, 0.5D, 0.5D);
@@ -54,6 +53,7 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 
 		BlockState blockState = be.getBlockState();
 
+		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		state.facing = blockState.getValue(SecureRedstoneInterfaceBlock.FACING);
 		state.hasDisguiseModule = be.isModuleEnabled(ModuleType.DISGUISE);
 		state.isSender = blockState.getValue(SecureRedstoneInterfaceBlock.SENDER);

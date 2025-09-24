@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -43,11 +44,12 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 
 	@Override
 	public void submit(ChestRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		//TODO render delegate
-		//ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, poseStack, buffer, packedLight, packedOverlay, cameraPos);
+		if (state instanceof KeypadChestRenderState keypadChestRenderState) {
+			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(keypadChestRenderState.disguiseRenderState, pose, collector, camera);
 
-		if (state instanceof KeypadChestRenderState keypadChestRenderState && !keypadChestRenderState.hasDisguiseModule)
-			super.submit(state, pose, collector, camera);
+			if (!keypadChestRenderState.hasDisguiseModule)
+				super.submit(state, pose, collector, camera);
+		}
 	}
 
 	@Override
@@ -59,8 +61,10 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 	public void extractRenderState(ChestBlockEntity be, ChestRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 
-		if (be instanceof KeypadChestBlockEntity keypadChestBlockEntity && state instanceof KeypadChestRenderState keypadChestRenderState)
+		if (be instanceof KeypadChestBlockEntity keypadChestBlockEntity && state instanceof KeypadChestRenderState keypadChestRenderState) {
+			keypadChestRenderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(keypadChestBlockEntity, partialTick, cameraPos, crumblingOverlay);
 			keypadChestRenderState.hasDisguiseModule = keypadChestBlockEntity.isModuleEnabled(ModuleType.DISGUISE);
+		}
 	}
 
 	@Override
