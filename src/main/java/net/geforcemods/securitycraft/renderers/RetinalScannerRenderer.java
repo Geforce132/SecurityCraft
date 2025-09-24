@@ -1,9 +1,5 @@
 package net.geforcemods.securitycraft.renderers;
 
-import javax.annotation.Nullable;
-
-import org.joml.Matrix4f;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -44,10 +40,10 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera))
 			return;
 
-		Direction direction = state.facing;
+		Direction direction = state.direction;
 
 		if (direction != null) {
-			if (state.hasFilledDisguiseModule)
+			if (state.isDisguised)
 				return;
 
 			poseStack.pushPose();
@@ -73,26 +69,22 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			}
 
 			poseStack.scale(-1.0F, -1.0F, 1.0F);
-
-			Vec3i normalVector = direction.getUnitVec3i();
-			int combinedLight = state.combinedFacingLight;
-
-			collector.submitCustomGeometry(poseStack, state.skinRenderType, (pose, vertexBuilder) -> {
-				Matrix4f positionMatrix = pose.pose();
+			collector.submitCustomGeometry(poseStack, state.renderType, (pose, builder) -> {
+				Vec3i normalVector = direction.getUnitVec3i();
+				int combinedLight = state.combinedSkinLight;
 
 				// face
-				vertexBuilder.addVertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				vertexBuilder.addVertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				vertexBuilder.addVertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.25F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				vertexBuilder.addVertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.25F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 
 				// helmet
-				vertexBuilder.addVertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				vertexBuilder.addVertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				vertexBuilder.addVertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.75F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				vertexBuilder.addVertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.75F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.75F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.75F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 			});
-
 			poseStack.popPose();
 		}
 	}
@@ -106,17 +98,17 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 	public void extractRenderState(RetinalScannerBlockEntity be, RetinalScannerRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 
-		Direction facing = be.getBlockState().getValue(RetinalScannerBlock.FACING);
-		BlockPos offsetPos = state.blockPos.relative(facing);
+		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
+		BlockPos offsetPos = be.getBlockPos().relative(direction);
 
 		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
-		state.skinRenderType = getSkinRenderType(be.getPlayerProfile());
-		state.facing = facing;
-		state.hasFilledDisguiseModule = be.isModuleEnabled(ModuleType.DISGUISE) && ModuleItem.getBlockAddon(be.getModule(ModuleType.DISGUISE)) != null;
-		state.combinedFacingLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
+		state.renderType = getRenderType(be.getPlayerProfile());
+		state.direction = direction;
+		state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE) && ModuleItem.getBlockAddon(be.getModule(ModuleType.DISGUISE)) != null;
+		state.combinedSkinLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
 	}
 
-	private RenderType getSkinRenderType(@Nullable ResolvableProfile profile) {
+	private RenderType getRenderType(ResolvableProfile profile) {
 		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null)
 			return playerSkinRenderCache.getOrDefault(profile).renderType();
 		else

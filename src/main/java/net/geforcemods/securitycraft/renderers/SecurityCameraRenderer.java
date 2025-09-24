@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
@@ -29,7 +28,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCameraBlockEntity, SecurityCameraRenderState> {
@@ -47,13 +45,16 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 	@Override
 	public void submit(SecurityCameraRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		if (state.isInsideThisCamera)
+		if (state.isBeingCaptured || state.isBeingViewed)
 			return;
 
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
-		if (!state.isDown && !state.hasDisguiseModule) {
-			Direction side = state.side;
+		if (state.isDown)
+			return;
+
+		if (!state.isDisguised) {
+			Direction side = state.direction;
 
 			pose.translate(0.5D, 1.5D, 0.5D);
 
@@ -63,20 +64,10 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 				pose.mulPose(POSITIVE_Y_90);
 			else if (side == Direction.WEST)
 				pose.mulPose(NEGATIVE_Y_90);
+
+			pose.mulPose(POSITIVE_X_180);
+			collector.submitModel(model, state, pose, RenderType.entitySolid(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, state.lensColor, state.breakProgress);
 		}
-
-		pose.mulPose(POSITIVE_X_180);
-		model.rotateCameraY(state.cameraRotation);
-
-		if (state.isShutDown)
-			model.rotateCameraX(0.9F);
-		else
-			model.rotateCameraX(SecurityCameraModel.DEFAULT_X_ROT);
-
-		if (!state.hasLens)
-			model.cameraRotationPoint2.visible = false;
-
-		collector.submitModel(model, null, pose, RenderType.entitySolid(state.isViewed ? BEING_VIEWED_TEXTURE : TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, ARGB.colorFromFloat(1.0F, state.r, state.g, state.b), null, 0, null);
 	}
 
 	@Override
@@ -85,42 +76,32 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 	}
 
 	@Override
-	public void extractRenderState(SecurityCameraBlockEntity be, SecurityCameraRenderState renderState, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-		BlockEntityRenderer.super.extractRenderState(be, renderState, partialTick, cameraPos, crumblingOverlay);
-		renderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
+	public void extractRenderState(SecurityCameraBlockEntity be, SecurityCameraRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
+		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
+		state.isBeingCaptured = FrameFeedHandler.amIBeingCaptured(be);
+		state.isBeingViewed = PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().getCameraEntity().blockPosition().equals(be.getBlockPos());
+		state.isDown = be.isDown();
+		state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE);
+		state.direction = be.getBlockState().getValue(SecurityCameraBlock.FACING);
+		state.isShutDown = be.isShutDown();
+		state.cameraYRot = (float) Mth.lerp(partialTick, be.getOriginalCameraRotation(), be.getCameraRotation());
 
 		ItemStack lens = be.getLensContainer().getItem(0);
-
-		if (be.hasLevel()) {
-			BlockState state = be.getLevel().getBlockState(be.getBlockPos());
-
-			if (state.getBlock() == SCContent.SECURITY_CAMERA.get())
-				renderState.side = state.getValue(SecurityCameraBlock.FACING);
-		}
-		else
-			renderState.side = Direction.SOUTH;
-
-		renderState.isInsideThisCamera = FrameFeedHandler.amIBeingCaptured(be) || PlayerUtils.isPlayerMountedOnCamera(Minecraft.getInstance().player) && Minecraft.getInstance().getCameraEntity().blockPosition().equals(be.getBlockPos());
-		renderState.isDown = be.isDown();
-		renderState.isShutDown = be.isShutDown();
-		renderState.hasDisguiseModule = be.isModuleEnabled(ModuleType.DISGUISE);
+		float r = 0.4392156862745098F, g = 1.0F, b = 1.0F;
 
 		if (lens.has(DataComponents.DYED_COLOR)) {
 			int color = lens.get(DataComponents.DYED_COLOR).rgb();
 
-			renderState.hasLens = true;
-			renderState.r = ((color >> 0x10) & 0xFF) / 255.0F;
-			renderState.g = ((color >> 0x8) & 0xFF) / 255.0F;
-			renderState.b = (color & 0xFF) / 255.0F;
+			r = ARGB.redFloat(color);
+			g = ARGB.greenFloat(color);
+			b = ARGB.blueFloat(color);
+			state.hasLens = true;
 		}
-		else {
-			renderState.hasLens = false;
-			renderState.r = 0.4392156862745098F;
-			renderState.g = 1.0F;
-			renderState.b = 1.0F;
-		}
+		else
+			state.hasLens = false;
 
-		renderState.isViewed = be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED);
-		renderState.cameraRotation = (float) Mth.lerp(partialTick, be.getOriginalCameraRotation(), be.getCameraRotation());
+		state.lensColor = ARGB.colorFromFloat(1.0F, r, g, b);
+		state.texture = be.getBlockState().getValue(SecurityCameraBlock.BEING_VIEWED) ? BEING_VIEWED_TEXTURE : TEXTURE;
 	}
 }

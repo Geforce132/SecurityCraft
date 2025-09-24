@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<SecureRedstoneInterfaceBlockEntity, SecureRedstoneInterfaceRenderState> {
@@ -33,12 +32,11 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 	public void submit(SecureRedstoneInterfaceRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
-		if (!state.hasDisguiseModule && !state.isSender) {
+		if (!state.isDisguised && !state.isSender) {
 			pose.translate(0.5D, 0.5D, 0.5D);
-			pose.mulPose(state.facing.getRotation());
+			pose.mulPose(state.modelRotation);
 			pose.translate(0.0D, -0.49999D, 0.0D);
-			model.rotate(state.dishRotationDegrees);
-			collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+			collector.submitModel(model, state.dishRotation, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		}
 	}
 
@@ -50,13 +48,10 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 	@Override
 	public void extractRenderState(SecureRedstoneInterfaceBlockEntity be, SecureRedstoneInterfaceRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
-
-		BlockState blockState = be.getBlockState();
-
 		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
-		state.facing = blockState.getValue(SecureRedstoneInterfaceBlock.FACING);
-		state.hasDisguiseModule = be.isModuleEnabled(ModuleType.DISGUISE);
-		state.isSender = blockState.getValue(SecureRedstoneInterfaceBlock.SENDER);
-		state.dishRotationDegrees = Mth.lerp(partialTick, be.getOriginalDishRotationDegrees(), be.getDishRotationDegrees());
+		state.modelRotation = be.getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getRotation();
+		state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE);
+		state.isSender = be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER);
+		state.dishRotation = Mth.lerp(partialTick, be.getOriginalDishRotationDegrees(), be.getDishRotationDegrees());
 	}
 }

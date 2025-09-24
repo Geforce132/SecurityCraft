@@ -3,16 +3,17 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.model.EntityModel;
+import net.geforcemods.securitycraft.renderers.state.SecurityCameraRenderState;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.RenderType;
 
-public class SecurityCameraModel extends EntityModel<EntityRenderState> {
+public class SecurityCameraModel extends Model<SecurityCameraRenderState> {
 	public static final float DEFAULT_X_ROT = 0.2617993877991494F;
 	private ModelPart attachment;
 	private ModelPart stickTop;
@@ -20,7 +21,7 @@ public class SecurityCameraModel extends EntityModel<EntityRenderState> {
 	public final ModelPart cameraRotationPoint2;
 
 	public SecurityCameraModel(ModelPart modelPart) {
-		super(modelPart);
+		super(modelPart, RenderType::entitySolid);
 		attachment = modelPart.getChild("attachment");
 		stickTop = modelPart.getChild("stick_top");
 		stickTop.xRot = -(DEFAULT_X_ROT * 2);
@@ -73,5 +74,18 @@ public class SecurityCameraModel extends EntityModel<EntityRenderState> {
 		rotationPoint.xRot = DEFAULT_X_ROT;
 		rotationPoint.getChild(child).xRot = DEFAULT_X_ROT;
 		return rotationPoint;
+	}
+
+	@Override
+	public void setupAnim(SecurityCameraRenderState state) {
+		super.setupAnim(state);
+		rotateCameraY(state.cameraYRot);
+
+		if (state.isShutDown)
+			rotateCameraX(0.9F);
+		else
+			rotateCameraX(SecurityCameraModel.DEFAULT_X_ROT);
+
+		cameraRotationPoint2.visible = state.hasLens;
 	}
 }

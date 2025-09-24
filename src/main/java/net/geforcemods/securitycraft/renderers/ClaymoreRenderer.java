@@ -23,13 +23,13 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 	public ClaymoreRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void submit(ClaymoreRenderState state, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+	public void submit(ClaymoreRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
 		poseStack.pushPose();
 		poseStack.translate(0.5D, 0.0D, 0.5D);
 		poseStack.mulPose(state.rotation);
 		poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-		submitNodeCollector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, builder) -> {
+		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, builder) -> {
 			Vec3i normal = state.normal;
 			float multiplier = 0.0625F;
 			float xzStart = 9.0F * multiplier;

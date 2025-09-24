@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.blockentity.PistonHeadRenderer;
 import net.minecraft.client.renderer.blockentity.state.PistonHeadRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
 import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,15 +27,15 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 	public ReinforcedPistonHeadRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void submit(PistonHeadRenderState renderState, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		if (renderState.block != null) {
+	public void submit(PistonHeadRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
+		if (state.block != null) {
 			pose.pushPose();
-			pose.translate(renderState.xOffset, renderState.yOffset, renderState.zOffset);
-			collector.submitMovingBlock(pose, renderState.block);
+			pose.translate(state.xOffset, state.yOffset, state.zOffset);
+			collector.submitMovingBlock(pose, state.block);
 			pose.popPose();
 
-			if (renderState.base != null)
-				collector.submitMovingBlock(pose, renderState.base);
+			if (state.base != null)
+				collector.submitMovingBlock(pose, state.base);
 		}
 	}
 
@@ -56,37 +57,26 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 		Level level = be.getLevel();
 
 		if (level != null && !state.isAir()) {
-			BlockPos backPos = be.getBlockPos().relative(be.getMovementDirection().getOpposite());
-			Holder<Biome> biome = level.getBiome(backPos);
+			BlockPos oppositePos = be.getBlockPos().relative(be.getMovementDirection().getOpposite());
+			Holder<Biome> biome = level.getBiome(oppositePos);
 
 			if (state.is(SCContent.REINFORCED_PISTON_HEAD.get()) && be.getProgress(partialTick) <= 4.0F) {
 				state = state.setValue(PistonHeadBlock.SHORT, be.getProgress(partialTick) <= 0.5F);
-				renderState.block = createMovingBlock(backPos, state, biome, level);
+				renderState.block = PistonHeadRenderer.createMovingBlock(oppositePos, state, biome, level);
 			}
 			else if (be.isSourcePiston() && !be.isExtending()) {
-				PistonType type = state.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
-				BlockState defaultPistonHead = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, type).setValue(PistonHeadBlock.FACING, state.getValue(PistonBaseBlock.FACING));
-				BlockPos thisPos = backPos.relative(be.getMovementDirection());
+				PistonType pistonType = state.is(SCContent.REINFORCED_STICKY_PISTON.get()) ? PistonType.STICKY : PistonType.DEFAULT;
+				BlockState headState = SCContent.REINFORCED_PISTON_HEAD.get().defaultBlockState().setValue(PistonHeadBlock.TYPE, pistonType).setValue(DirectionalBlock.FACING, state.getValue(DirectionalBlock.FACING));
+				BlockPos renderPos = oppositePos.relative(be.getMovementDirection());
 
-				defaultPistonHead = defaultPistonHead.setValue(PistonHeadBlock.SHORT, be.getProgress(partialTick) >= 0.5F);
-				renderState.block = createMovingBlock(backPos, defaultPistonHead, biome, level);
+				headState = headState.setValue(PistonHeadBlock.SHORT, be.getProgress(partialTick) >= 0.5F);
+				renderState.block = PistonHeadRenderer.createMovingBlock(oppositePos, headState, biome, level);
 				state = state.setValue(PistonBaseBlock.EXTENDED, true);
-				renderState.base = createMovingBlock(thisPos, state, biome, level);
+				renderState.base = PistonHeadRenderer.createMovingBlock(renderPos, state, biome, level);
 			}
 			else
-				renderState.block = createMovingBlock(backPos, state, biome, level);
+				renderState.block = PistonHeadRenderer.createMovingBlock(oppositePos, state, biome, level);
 		}
-	}
-
-	private static MovingBlockRenderState createMovingBlock(BlockPos pos, BlockState state, Holder<Biome> biome, Level level) {
-		MovingBlockRenderState renderState = new MovingBlockRenderState();
-
-		renderState.randomSeedPos = pos;
-		renderState.blockPos = pos;
-		renderState.blockState = state;
-		renderState.biome = biome;
-		renderState.level = level;
-		return renderState;
 	}
 
 	@Override
@@ -95,7 +85,7 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 	}
 
 	@Override
-	public AABB getRenderBoundingBox(ReinforcedPistonMovingBlockEntity blockEntity) {
+	public AABB getRenderBoundingBox(ReinforcedPistonMovingBlockEntity be) {
 		return AABB.INFINITE;
 	}
 }

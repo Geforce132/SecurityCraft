@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.blockentities.KeypadChestBlockEntity;
+import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.renderers.state.KeypadChestRenderState;
 import net.minecraft.client.renderer.Sheets;
@@ -47,7 +47,7 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 		if (state instanceof KeypadChestRenderState keypadChestRenderState) {
 			ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(keypadChestRenderState.disguiseRenderState, pose, collector, camera);
 
-			if (!keypadChestRenderState.hasDisguiseModule)
+			if (!keypadChestRenderState.isDisguised)
 				super.submit(state, pose, collector, camera);
 		}
 	}
@@ -61,17 +61,19 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 	public void extractRenderState(ChestBlockEntity be, ChestRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 
-		if (be instanceof KeypadChestBlockEntity keypadChestBlockEntity && state instanceof KeypadChestRenderState keypadChestRenderState) {
-			keypadChestRenderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(keypadChestBlockEntity, partialTick, cameraPos, crumblingOverlay);
-			keypadChestRenderState.hasDisguiseModule = keypadChestBlockEntity.isModuleEnabled(ModuleType.DISGUISE);
+		if (state instanceof KeypadChestRenderState keypadChestRenderState) {
+			keypadChestRenderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
+			keypadChestRenderState.isDisguised = be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.DISGUISE);
 		}
 	}
 
 	@Override
 	protected Material getMaterial(ChestRenderState.ChestMaterialType materialType, ChestType type) {
-		if (isChristmas)
+		if (isChristmas) {
 			return getMaterialForType(type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
-		//else if (be.getOpenNess(0.0F) >= 0.9F) TODO the openness cannot be queried easily anymore. Mixin?
+		}
+		//TODO: Fix when NeoForge improves the access of this
+		//else if (be.getOpenNess(0.0F) >= 0.9F)
 		//	return getMaterialForType(type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
 		else
 			return getMaterialForType(type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);

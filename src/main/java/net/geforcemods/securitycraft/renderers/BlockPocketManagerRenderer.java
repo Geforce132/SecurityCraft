@@ -28,8 +28,8 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		if (!state.showsOutline || !state.ownedByPlayer)
 			return;
 
-		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, buffer) -> {
-			ShapeRenderer.renderLineBox(pose, buffer, state.leftX, 0, state.frontZ, state.rightX, state.size, state.backZ, state.r, state.g, state.b, 1.0F);
+		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, builder) -> {
+			ShapeRenderer.renderLineBox(pose, builder, state.leftX, 0, state.frontZ, state.rightX, state.size, state.backZ, state.r, state.g, state.b, 1.0F);
 		});
 	}
 

@@ -69,10 +69,11 @@ public class BlockEntityRenderDelegate {
 
 			BlockEntityRenderer<T, S> delegateRenderer = delegateRendererInfo.delegateRenderer();
 			S delegateState = delegateRenderer.createRenderState();
+			BlockPos previousPos = delegateBlockEntity.worldPosition;
 
 			delegateBlockEntity.worldPosition = pos;
 			delegateRenderer.extractRenderState((T) delegateRendererInfo.delegateBlockEntity(), delegateState, partialTick, cameraPos, crumblingOverlay);
-			delegateBlockEntity.worldPosition = BlockPos.ZERO;
+			delegateBlockEntity.worldPosition = previousPos;
 			return delegateState;
 		}
 

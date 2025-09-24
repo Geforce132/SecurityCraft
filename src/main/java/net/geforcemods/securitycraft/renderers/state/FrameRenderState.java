@@ -14,7 +14,9 @@ public class FrameRenderState extends BlockEntityRenderState {
 	public Vector4f innerVertices;
 	public Vector4f outerVertices;
 	public Vec3i normal;
-	public boolean isSomethingRendered;
+	public boolean isDisabled;
+	public boolean canSeeFeed;
+	public boolean hasCamerasLinked;
 	public boolean isCameraSelected;
 	public boolean isRedstoneSignalDisabled;
 	public boolean hasClientInteracted;

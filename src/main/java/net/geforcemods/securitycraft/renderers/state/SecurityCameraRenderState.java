@@ -1,17 +1,17 @@
 package net.geforcemods.securitycraft.renderers.state;
 
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 
-public class SecurityCameraRenderState extends DisguisableRenderState {
-	public Direction side;
-	public boolean isInsideThisCamera;
+public class SecurityCameraRenderState extends DisguisableBlockEntityRenderState {
+	public Direction direction;
 	public boolean isDown;
 	public boolean isShutDown;
-	public boolean hasDisguiseModule;
+	public boolean isDisguised;
 	public boolean hasLens;
-	public boolean isViewed;
-	public float cameraRotation;
-	public float r;
-	public float g;
-	public float b;
+	public boolean isBeingViewed;
+	public boolean isBeingCaptured;
+	public float cameraYRot;
+	public int lensColor;
+	public ResourceLocation texture;
 }

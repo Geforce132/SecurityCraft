@@ -5,5 +5,5 @@ import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 
 public class KeypadChestRenderState extends ChestRenderState {
 	public BlockEntityRenderState disguiseRenderState;
-	public boolean hasDisguiseModule;
+	public boolean isDisguised;
 }
