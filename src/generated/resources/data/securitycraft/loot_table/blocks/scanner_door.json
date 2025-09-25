@@ -2,7 +2,10 @@
   "type": "minecraft:block",
   "functions": [
     {
-      "function": "minecraft:copy_name",
+      "function": "minecraft:copy_components",
+      "include": [
+        "minecraft:custom_name"
+      ],
       "source": "block_entity"
     }
   ],
