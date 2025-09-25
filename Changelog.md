@@ -26,6 +26,7 @@
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
 - Fix: The Mine and Sentry Remote Access Tool appear to be able to interact with mines/sentries that are not owned by the player, even though they can't
 - Fix: Players viewing a Security Camera are invisible for players in spectator mode
+- Fix: The Rift Stabilizer does not keep its custom name as an item when the bottom half is mined
 - Misc.: The minimum required NeoForge version is now 21.1.206
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
