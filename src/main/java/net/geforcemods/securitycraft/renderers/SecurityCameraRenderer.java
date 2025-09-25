@@ -66,7 +66,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 				pose.mulPose(NEGATIVE_Y_90);
 
 			pose.mulPose(POSITIVE_X_180);
-			collector.submitModel(model, state, pose, RenderType.entitySolid(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, state.lensColor, state.breakProgress);
+			collector.submitModel(model, state, pose, RenderType.entitySolid(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, state.lensColor, null, 0, state.breakProgress);
 		}
 	}
 

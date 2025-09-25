@@ -76,6 +76,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		state.projectedBlockEntityRenderState = ClientHandler.PROJECTOR_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		state.projectedState = be.getProjectedState();
+		state.facing = be.getBlockState().getValue(ProjectorBlock.FACING);
 		state.isActive = be.isActive();
 		state.projectsBlock = !be.isContainerEmpty();
 		state.isHanging = be.getBlockState().getValue(ProjectorBlock.HANGING);
