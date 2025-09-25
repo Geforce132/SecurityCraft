@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.blockentities.SpecialDoorBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -104,21 +105,33 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 				BlockPos blockAbove = pos.up();
 				IBlockState stateAbove = world.getBlockState(blockAbove);
 
-				if (stateAbove.getBlock() != this) {
-					world.setBlockToAir(pos);
+				if (stateAbove.getBlock() != this)
 					drop = true;
-				}
 
 				if (!world.isSideSolid(pos.down(), EnumFacing.UP)) {
-					world.setBlockToAir(pos);
 					drop = true;
 
 					if (stateAbove.getBlock() == this)
 						world.setBlockToAir(blockAbove);
 				}
 
-				if (drop && !world.isRemote)
-					dropBlockAsItem(world, pos, state, 0);
+				if (drop) {
+					if (!world.isRemote) {
+						ItemStack dropStack = new ItemStack(Item.getItemFromBlock(this), 1);
+						TileEntity tileEntity = access.getTileEntity(pos);
+
+						if (tileEntity instanceof SpecialDoorBlockEntity) {
+							SpecialDoorBlockEntity be = (SpecialDoorBlockEntity) tileEntity;
+
+							if (be.hasCustomName())
+								dropStack.setStackDisplayName(be.getName());
+						}
+
+						spawnAsEntity(world, pos, dropStack);
+					}
+
+					world.setBlockToAir(pos);
+				}
 			}
 		}
 	}

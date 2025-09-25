@@ -109,17 +109,26 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 				lowerState.neighborChanged(world, lowerPos, block, fromPos);
 		}
 		else {
-			boolean shouldDrop = false;
 			BlockPos upperPos = pos.up();
 			IBlockState upperState = world.getBlockState(upperPos);
 
 			if (upperState.getBlock() != this) {
-				world.setBlockToAir(pos);
-				shouldDrop = true;
-			}
+				if (!world.isRemote) {
+					ItemStack dropStack = new ItemStack(Item.getItemFromBlock(this), 1);
+					TileEntity tileEntity = world.getTileEntity(pos);
 
-			if (shouldDrop && !world.isRemote)
-				dropBlockAsItem(world, pos, state, 0);
+					if (tileEntity instanceof RiftStabilizerBlockEntity) {
+						RiftStabilizerBlockEntity be = (RiftStabilizerBlockEntity) tileEntity;
+
+						if (be.hasCustomName())
+							dropStack.setStackDisplayName(be.getName());
+					}
+
+					spawnAsEntity(world, pos, dropStack);
+				}
+
+				world.setBlockToAir(pos);
+			}
 		}
 	}
 
