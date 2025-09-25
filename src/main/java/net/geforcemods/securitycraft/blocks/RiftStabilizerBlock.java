@@ -126,19 +126,10 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (!level.isClientSide) {
-			if (player.isCreative())
-				DoublePlantBlock.preventDropFromBottomPart(level, pos, state, player);
-			else
-				dropResources(state, level, pos, null, player, player.getMainHandItem());
-		}
+		if (!level.isClientSide && player.isCreative())
+			DoublePlantBlock.preventDropFromBottomPart(level, pos, state, player);
 
 		return super.playerWillDestroy(level, pos, state, player);
-	}
-
-	@Override
-	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity be, ItemStack stack) {
-		super.playerDestroy(level, player, pos, Blocks.AIR.defaultBlockState(), be, stack);
 	}
 
 	@Override
