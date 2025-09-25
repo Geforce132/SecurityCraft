@@ -86,7 +86,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Vec3i normal = state.normal;
 		int lightCoords = state.lightCoords;
 
-		if (state.isCameraSelected)
+		if (!state.isCameraSelected)
 			submitSolidTexture(pose, collector, SELECT_CAMERA, innerVertices, lightCoords, normal, margin);
 		else if (state.isRedstoneSignalDisabled) {
 			submitNoise(pose, collector, state.innerVertices, lightCoords, normal, margin);
@@ -100,7 +100,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (!state.isCameraPresent)
 				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal, margin);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
-				//RenderTarget target = feed.renderTarget();
 				Vector3f backgroundColor = state.backgroundColor;
 				float xStart = innerVertices.x;
 				float xEnd = innerVertices.y;
@@ -145,7 +144,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 					submitOverlay(pose, collector, state.lensColor, xStart, xEnd, zStart, zEnd, margin, lightCoords, normal);
 			}
 		}
-
 	}
 
 	@Override

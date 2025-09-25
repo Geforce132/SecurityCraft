@@ -41,15 +41,16 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	@Override
 	public void submit(SonicSecuritySystemRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
-		pose.translate(0.5D, 1.5D, 0.5D);
+		pose.translate(0.5D, 1.0D, 0.5D);
 
 		if (state.isRecording || state.isListening && !state.isShutDown) {
 			Component text = state.isRecording ? RECORDING_TEXT : LISTENING_TEXT;
 
-			collector.submitNameTag(pose, Vec3.ZERO, 0, text, true, state.lightCoords, state.distanceToCameraSqr, camera); //TODO: test
+			collector.submitNameTag(pose, Vec3.ZERO, 0, text, true, state.lightCoords, state.distanceToCameraSqr, camera);
 		}
 
 		if (!state.isDisguised) {
+			pose.translate(0.0D, 0.5D, 0.0D);
 			pose.mulPose(POSITIVE_X_180);
 			collector.submitModel(model, state.radarRotation, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		}
