@@ -2781,6 +2781,22 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_OXIDIZED_COPPER_BARS = reinforcedBlock("reinforced_oxidized_copper_bars", Blocks.COPPER_BARS.oxidized(), ReinforcedPaneBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_COPPER_LANTERN = reinforcedBlock("reinforced_copper_lantern", Blocks.COPPER_LANTERN.unaffected(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_EXPOSED_COPPER_LANTERN = reinforcedBlock("reinforced_exposed_copper_lantern", Blocks.COPPER_LANTERN.exposed(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_WEATHERED_COPPER_LANTERN = reinforcedBlock("reinforced_weathered_copper_lantern", Blocks.COPPER_LANTERN.weathered(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_OXIDIZED_COPPER_LANTERN = reinforcedBlock("reinforced_oxidized_copper_lantern", Blocks.COPPER_LANTERN.oxidized(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 
 	//misc
 	@RegisterItemBlock

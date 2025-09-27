@@ -361,6 +361,10 @@
     "securitycraft:reinforced_exposed_copper_chain",
     "securitycraft:reinforced_weathered_copper_chain",
     "securitycraft:reinforced_oxidized_copper_chain",
+    "securitycraft:reinforced_copper_lantern",
+    "securitycraft:reinforced_exposed_copper_lantern",
+    "securitycraft:reinforced_weathered_copper_lantern",
+    "securitycraft:reinforced_oxidized_copper_lantern",
     "#securitycraft:reinforced/bars",
     "#securitycraft:reinforced/walls",
     "#securitycraft:reinforced/cauldrons"
