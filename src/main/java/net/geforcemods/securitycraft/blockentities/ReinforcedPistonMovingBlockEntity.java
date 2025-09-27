@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
+import net.geforcemods.securitycraft.util.IPistonMoveListener;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -79,6 +80,9 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 				beToMove.saveWithoutMetadata(valueOutput);
 				movedBlockEntityTag = valueOutput.isEmpty() ? null : valueOutput.buildResult();
 				owner = Owner.fromCompound(movedBlockEntityTag);
+
+				if (beToMove instanceof IPistonMoveListener listener)
+					listener.prePistonPushSideEffects(pos);
 			}
 		}
 	}

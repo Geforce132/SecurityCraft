@@ -74,7 +74,7 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 	}
 
 	@Override
-	public void prePistonPushSideEffects(BlockPos pos, BlockState state) {
+	public void prePistonPushSideEffects(BlockPos pos) {
 		clearContent(); //Clear the books from the block before it is moved by a piston to prevent book duplication
 	}
 
