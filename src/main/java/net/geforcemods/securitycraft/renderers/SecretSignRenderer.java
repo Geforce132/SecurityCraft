@@ -41,8 +41,8 @@ public class SecretSignRenderer extends SignRenderer {
 		if (be instanceof SecretSignBlockEntity secretSignBlockEntity && state instanceof SecretSignRenderState secretSignRenderState) {
 			LocalPlayer player = Minecraft.getInstance().player;
 
-			secretSignRenderState.isFrontSecret = secretSignBlockEntity.isPlayerAllowedToSeeText(player, true);
-			secretSignRenderState.isBackSecret = secretSignBlockEntity.isPlayerAllowedToSeeText(player, false);
+			secretSignRenderState.isFrontSecret = !secretSignBlockEntity.isPlayerAllowedToSeeText(player, true);
+			secretSignRenderState.isBackSecret = !secretSignBlockEntity.isPlayerAllowedToSeeText(player, false);
 		}
 	}
 }
