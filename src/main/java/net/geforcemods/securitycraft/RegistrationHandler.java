@@ -162,6 +162,9 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void onExtendPoiTypes(ExtendPoiTypesEvent event) {
 		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_LIGHTNING_ROD.get());
+		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get());
+		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get());
+		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
 	}
 
 	@SubscribeEvent

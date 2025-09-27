@@ -2737,6 +2737,18 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PALE_MOSS_BLOCK = reinforcedBlock("reinforced_pale_moss_block", Blocks.PALE_MOSS_BLOCK, p -> p.pushReaction(PushReaction.NORMAL));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_EXPOSED_LIGHTNING_ROD = reinforcedBlock("reinforced_exposed_lightning_rod", Blocks.EXPOSED_LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_WEATHERED_LIGHTNING_ROD = reinforcedBlock("reinforced_weathered_lightning_rod", Blocks.WEATHERED_LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_OXIDIZED_LIGHTNING_ROD = reinforcedBlock("reinforced_oxidized_lightning_rod", Blocks.OXIDIZED_LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
 
 	//misc
 	@RegisterItemBlock

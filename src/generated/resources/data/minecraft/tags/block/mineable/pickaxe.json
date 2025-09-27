@@ -355,6 +355,9 @@
     "securitycraft:reinforced_stone_button",
     "securitycraft:reinforced_polished_blackstone_button",
     "securitycraft:reinforced_lightning_rod",
+    "securitycraft:reinforced_exposed_lightning_rod",
+    "securitycraft:reinforced_weathered_lightning_rod",
+    "securitycraft:reinforced_oxidized_lightning_rod",
     "#securitycraft:reinforced/walls",
     "#securitycraft:reinforced/cauldrons"
   ]

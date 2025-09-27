@@ -175,7 +175,10 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LADDER.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_LANTERN.get());
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LEVER.get());
-		createReinforcedLightningRod();
+		createReinforcedLightningRod(SCContent.REINFORCED_LIGHTNING_ROD.get());
+		createReinforcedLightningRod(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get());
+		createReinforcedLightningRod(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get());
+		createReinforcedLightningRod(SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
 		createReinforcedCarpet(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
 		createReinforcedPistons();
 		registerReinforcedItemModel(SCContent.REINFORCED_SCAFFOLDING.get(), "_stable");
@@ -506,9 +509,8 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(block);
 	}
 
-	public static void createReinforcedLightningRod() {
-		Block block = SCContent.REINFORCED_LIGHTNING_ROD.get();
-		MultiVariant powered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block, "_on"));
+	public static void createReinforcedLightningRod(Block block) {
+		MultiVariant powered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(SCContent.REINFORCED_LIGHTNING_ROD.get(), "_on"));
 		MultiVariant unpowered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
 		//@formatter:off
 		blockStateOutput.accept(

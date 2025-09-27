@@ -972,7 +972,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_CHISELED_RESIN_BRICKS.get(),
 				SCContent.REINFORCED_STONE_BUTTON.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
-				SCContent.REINFORCED_LIGHTNING_ROD.get())
+				SCContent.REINFORCED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get())
 		.addTag(SCTags.Blocks.REINFORCED_WALLS)
 		.addTag(SCTags.Blocks.REINFORCED_CAULDRONS);
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
@@ -1062,7 +1065,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_EXPOSED_COPPER_BULB.get(),
 				SCContent.REINFORCED_WEATHERED_COPPER_BULB.get(),
 				SCContent.REINFORCED_OXIDIZED_COPPER_BULB.get(),
-				SCContent.REINFORCED_LIGHTNING_ROD.get());
+				SCContent.REINFORCED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
 	}
 
 	@Override

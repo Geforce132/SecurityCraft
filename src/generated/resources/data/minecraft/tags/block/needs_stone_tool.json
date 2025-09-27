@@ -61,6 +61,9 @@
     "securitycraft:reinforced_exposed_copper_bulb",
     "securitycraft:reinforced_weathered_copper_bulb",
     "securitycraft:reinforced_oxidized_copper_bulb",
-    "securitycraft:reinforced_lightning_rod"
+    "securitycraft:reinforced_lightning_rod",
+    "securitycraft:reinforced_exposed_lightning_rod",
+    "securitycraft:reinforced_weathered_lightning_rod",
+    "securitycraft:reinforced_oxidized_lightning_rod"
   ]
 }

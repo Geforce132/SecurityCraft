@@ -1,6 +1,6 @@
 {
 	"parent": "securitycraft:block/template_reinforced_lightning_rod",
 	"textures": {
-		"texture": "minecraft:block/lightning_rod"
+		"texture": "minecraft:block/exposed_lightning_rod"
 	}
 }
