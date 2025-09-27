@@ -165,7 +165,7 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModel(SCContent.PROTECTO.get(), "_deactivated");
 		createRailMine();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_CAULDRON.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_IRON_CHAIN.get());
 		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_BOOKSHELF.get(), "_inventory");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COBWEB.get());
 		createReinforcedGrassBlock();

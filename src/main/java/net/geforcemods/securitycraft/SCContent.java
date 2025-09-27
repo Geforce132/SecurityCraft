@@ -1943,7 +1943,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_CHAIN = reinforcedBlock("reinforced_chain", Blocks.IRON_CHAIN, ReinforcedChainBlock::new);
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_IRON_CHAIN = reinforcedBlock("reinforced_chain", Blocks.IRON_CHAIN, ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)

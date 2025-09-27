@@ -738,7 +738,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_CHISELED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_IRON_BARS.get(),
 				SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(),
-				SCContent.REINFORCED_CHAIN.get(),
+				SCContent.REINFORCED_IRON_CHAIN.get(),
 				SCContent.REINFORCED_BRICK_STAIRS.get(),
 				SCContent.REINFORCED_STONE_BRICK_STAIRS.get(),
 				SCContent.REINFORCED_NETHER_BRICKS.get(),
