@@ -62,7 +62,7 @@ public class ReinforcedShelfBlockEntity extends ShelfBlockEntity implements IOwn
 	}
 
 	@Override
-	public void prePistonPushSideEffects(BlockPos pos, BlockState state) {
+	public void prePistonPushSideEffects(BlockPos pos) {
 		clearContent(); //Clear the items from the block before it is moved by a piston to prevent duplication
 	}
 
