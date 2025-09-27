@@ -323,6 +323,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
+		tag(SCTags.Blocks.REINFORCED_WOODEN_SHELVES).add(
+				SCContent.REINFORCED_OAK_SHELF.get(),
+				SCContent.REINFORCED_SPRUCE_SHELF.get(),
+				SCContent.REINFORCED_BIRCH_SHELF.get(),
+				SCContent.REINFORCED_JUNGLE_SHELF.get(),
+				SCContent.REINFORCED_ACACIA_SHELF.get(),
+				SCContent.REINFORCED_DARK_OAK_SHELF.get(),
+				SCContent.REINFORCED_MANGROVE_SHELF.get(),
+				SCContent.REINFORCED_CHERRY_SHELF.get(),
+				SCContent.REINFORCED_PALE_OAK_SHELF.get(),
+				SCContent.REINFORCED_BAMBOO_SHELF.get(),
+				SCContent.REINFORCED_CRIMSON_SHELF.get(),
+				SCContent.REINFORCED_WARPED_SHELF.get());
 		tag(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(woodenSlabs.toArray(new Block[woodenSlabs.size()]));
 		tag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(woodenStairs.toArray(new Block[woodenStairs.size()]));
 		tag(SCTags.Blocks.REINFORCED_WOOL).add(
@@ -612,6 +625,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_BUTTONS)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_PRESSURE_PLATES)
+			.addTag(SCTags.Blocks.REINFORCED_WOODEN_SHELVES)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_SLABS)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS)
 			.addTag(SCTags.Blocks.SECRET_HANGING_SIGNS)

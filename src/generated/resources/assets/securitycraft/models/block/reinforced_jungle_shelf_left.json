@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/template_reinforced_shelf_left",
+  "textures": {
+    "all": "minecraft:block/jungle_shelf",
+    "particle": "minecraft:block/stripped_jungle_log"
+  }
+}

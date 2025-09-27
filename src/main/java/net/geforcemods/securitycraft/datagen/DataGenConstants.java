@@ -50,6 +50,13 @@ public class DataGenConstants {
 		public static final ModelTemplate REINFORCED_FENCE_SIDE = ModelTemplates.create("securitycraft:reinforced_fence_side", "_side", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_DOWN = ModelTemplates.create("securitycraft:reinforced_pressure_plate_down", "_down", TextureSlot.TEXTURE);
 		public static final ModelTemplate REINFORCED_PRESSURE_PLATE_UP = ModelTemplates.create("securitycraft:reinforced_pressure_plate_up", TextureSlot.TEXTURE);
+		public static final ModelTemplate REINFORCED_SHELF_BODY = ModelTemplates.create("securitycraft:template_reinforced_shelf_body", TextureSlot.ALL, TextureSlot.PARTICLE);
+		public static final ModelTemplate REINFORCED_SHELF_INVENTORY = ModelTemplates.create("securitycraft:template_reinforced_shelf_inventory", "_inventory", TextureSlot.ALL, TextureSlot.PARTICLE);
+		public static final ModelTemplate REINFORCED_SHELF_UNPOWERED = ModelTemplates.create("securitycraft:template_reinforced_shelf_unpowered", "_unpowered", TextureSlot.ALL, TextureSlot.PARTICLE);
+		public static final ModelTemplate REINFORCED_SHELF_UNCONNECTED = ModelTemplates.create("securitycraft:template_reinforced_shelf_unconnected", "_unconnected", TextureSlot.ALL, TextureSlot.PARTICLE);
+		public static final ModelTemplate REINFORCED_SHELF_LEFT = ModelTemplates.create("securitycraft:template_reinforced_shelf_left", "_left", TextureSlot.ALL, TextureSlot.PARTICLE);
+		public static final ModelTemplate REINFORCED_SHELF_CENTER = ModelTemplates.create("securitycraft:template_reinforced_shelf_center", "_center", TextureSlot.ALL, TextureSlot.PARTICLE);
+		public static final ModelTemplate REINFORCED_SHELF_RIGHT = ModelTemplates.create("securitycraft:template_reinforced_shelf_right", "_right", TextureSlot.ALL, TextureSlot.PARTICLE);
 		public static final ModelTemplate REINFORCED_SLAB_BOTTOM = ModelTemplates.create("securitycraft:reinforced_slab", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);
 		public static final ModelTemplate REINFORCED_SLAB_TOP = ModelTemplates.create("securitycraft:reinforced_slab_top", "_top", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);
 		public static final ModelTemplate REINFORCED_STAIRS_INNER = ModelTemplates.create("securitycraft:reinforced_inner_stairs", "_inner", TextureSlot.BOTTOM, TextureSlot.TOP, TextureSlot.SIDE);

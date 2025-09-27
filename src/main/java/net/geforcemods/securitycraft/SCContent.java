@@ -60,6 +60,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedObserverBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedShelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ScannerDoorBlockEntity;
@@ -185,6 +186,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRootedDirtBlock
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedScaffoldingBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedShelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSoulSandBlock;
@@ -2797,6 +2799,42 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_OXIDIZED_COPPER_LANTERN = reinforcedBlock("reinforced_oxidized_copper_lantern", Blocks.COPPER_LANTERN.oxidized(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_OAK_SHELF = reinforcedBlock("reinforced_oak_shelf", Blocks.OAK_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_SPRUCE_SHELF = reinforcedBlock("reinforced_spruce_shelf", Blocks.SPRUCE_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_BIRCH_SHELF = reinforcedBlock("reinforced_birch_shelf", Blocks.BIRCH_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_ACACIA_SHELF = reinforcedBlock("reinforced_acacia_shelf", Blocks.ACACIA_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_JUNGLE_SHELF = reinforcedBlock("reinforced_jungle_shelf", Blocks.JUNGLE_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_DARK_OAK_SHELF = reinforcedBlock("reinforced_dark_oak_shelf", Blocks.DARK_OAK_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_MANGROVE_SHELF = reinforcedBlock("reinforced_mangrove_shelf", Blocks.MANGROVE_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_CHERRY_SHELF = reinforcedBlock("reinforced_cherry_shelf", Blocks.CHERRY_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_PALE_OAK_SHELF = reinforcedBlock("reinforced_pale_oak_shelf", Blocks.PALE_OAK_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_BAMBOO_SHELF = reinforcedBlock("reinforced_bamboo_shelf", Blocks.BAMBOO_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_CRIMSON_SHELF = reinforcedBlock("reinforced_crimson_shelf", Blocks.CRIMSON_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_WARPED_SHELF = reinforcedBlock("reinforced_warped_shelf", Blocks.WARPED_SHELF, ReinforcedShelfBlock::new);
 
 	//misc
 	@RegisterItemBlock
@@ -3277,6 +3315,20 @@ public class SCContent {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> new BlockEntityType<>(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FrameBlockEntity>> FRAME_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("frame", () -> new BlockEntityType<>(FrameBlockEntity::new, SCContent.FRAME.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CreakingHeartMineBlockEntity>> CREAKING_HEART_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("creaking_heart_mine", () -> new BlockEntityType<>(CreakingHeartMineBlockEntity::new, SCContent.CREAKING_HEART_MINE.get()));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedShelfBlockEntity>> REINFORCED_SHELF_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_shelf", () -> new BlockEntityType<>(ReinforcedShelfBlockEntity::new,
+			SCContent.REINFORCED_OAK_SHELF.get(),
+			SCContent.REINFORCED_SPRUCE_SHELF.get(),
+			SCContent.REINFORCED_BIRCH_SHELF.get(),
+			SCContent.REINFORCED_JUNGLE_SHELF.get(),
+			SCContent.REINFORCED_ACACIA_SHELF.get(),
+			SCContent.REINFORCED_DARK_OAK_SHELF.get(),
+			SCContent.REINFORCED_MANGROVE_SHELF.get(),
+			SCContent.REINFORCED_CHERRY_SHELF.get(),
+			SCContent.REINFORCED_PALE_OAK_SHELF.get(),
+			SCContent.REINFORCED_BAMBOO_SHELF.get(),
+			SCContent.REINFORCED_CRIMSON_SHELF.get(),
+			SCContent.REINFORCED_WARPED_SHELF.get(),
+			SCContent.REINFORCED_MOVING_PISTON.get()));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
