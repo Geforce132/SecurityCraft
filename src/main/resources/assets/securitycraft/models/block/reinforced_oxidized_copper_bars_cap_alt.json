@@ -1,0 +1,7 @@
+{
+	"parent": "securitycraft:block/template_reinforced_bars_cap_alt",
+	"textures": {
+		"bars": "minecraft:block/oxidized_copper_bars",
+		"edge": "minecraft:block/oxidized_copper_bars"
+	}
+}

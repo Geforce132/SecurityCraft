@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:item/reinforced_weathered_copper_bars",
+    "tints": [
+      {
+        "type": "securitycraft:reinforced"
+      }
+    ]
+  }
+}

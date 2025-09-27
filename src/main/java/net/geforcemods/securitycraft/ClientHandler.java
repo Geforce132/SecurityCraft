@@ -329,6 +329,7 @@ public class ClientHandler {
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHTNING_ROD.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(), cutout);

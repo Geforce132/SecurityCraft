@@ -118,7 +118,6 @@
     "securitycraft:reinforced_mossy_stone_bricks",
     "securitycraft:reinforced_cracked_stone_bricks",
     "securitycraft:reinforced_chiseled_stone_bricks",
-    "securitycraft:reinforced_iron_bars",
     "securitycraft:horizontal_reinforced_iron_bars",
     "securitycraft:reinforced_chain",
     "securitycraft:reinforced_brick_stairs",
@@ -362,6 +361,7 @@
     "securitycraft:reinforced_exposed_copper_chain",
     "securitycraft:reinforced_weathered_copper_chain",
     "securitycraft:reinforced_oxidized_copper_chain",
+    "#securitycraft:reinforced/bars",
     "#securitycraft:reinforced/walls",
     "#securitycraft:reinforced/cauldrons"
   ]

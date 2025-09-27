@@ -2765,6 +2765,22 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_OXIDIZED_COPPER_CHAIN = reinforcedBlock("reinforced_oxidized_copper_chain", Blocks.COPPER_CHAIN.oxidized(), ReinforcedChainBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_COPPER_BARS = reinforcedBlock("reinforced_copper_bars", Blocks.COPPER_BARS.unaffected(), ReinforcedPaneBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_EXPOSED_COPPER_BARS = reinforcedBlock("reinforced_exposed_copper_bars", Blocks.COPPER_BARS.exposed(), ReinforcedPaneBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_WEATHERED_COPPER_BARS = reinforcedBlock("reinforced_weathered_copper_bars", Blocks.COPPER_BARS.weathered(), ReinforcedPaneBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_OXIDIZED_COPPER_BARS = reinforcedBlock("reinforced_oxidized_copper_bars", Blocks.COPPER_BARS.oxidized(), ReinforcedPaneBlock::new);
 
 	//misc
 	@RegisterItemBlock

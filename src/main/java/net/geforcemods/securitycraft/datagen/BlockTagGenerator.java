@@ -66,6 +66,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(SCTags.Blocks.REINFORCED_BAMBOO_BLOCKS).add(
 				SCContent.REINFORCED_BAMBOO_BLOCK.get(),
 				SCContent.REINFORCED_STRIPPED_BAMBOO_BLOCK.get());
+		tag(SCTags.Blocks.REINFORCED_BARS).add(
+				SCContent.REINFORCED_IRON_BARS.get(),
+				SCContent.REINFORCED_COPPER_BARS.get(),
+				SCContent.REINFORCED_EXPOSED_COPPER_BARS.get(),
+				SCContent.REINFORCED_WEATHERED_COPPER_BARS.get(),
+				SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get());
 		tag(SCTags.Blocks.REINFORCED_BIRCH_LOGS).add(
 				SCContent.REINFORCED_BIRCH_LOG.get(),
 				SCContent.REINFORCED_BIRCH_WOOD.get(),
@@ -412,6 +418,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		//minecraft tags
 		tag(BlockTags.ALL_SIGNS).addTag(SCTags.Blocks.ALL_SECRET_SIGNS);
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_DIRT).add(SCContent.REINFORCED_GRAVEL.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get());
+		tag(BlockTags.BARS).addTag(SCTags.Blocks.REINFORCED_BARS);
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
 				SCContent.REINFORCED_EMERALD_BLOCK.get(),
@@ -736,7 +743,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CHISELED_STONE_BRICKS.get(),
-				SCContent.REINFORCED_IRON_BARS.get(),
 				SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(),
 				SCContent.REINFORCED_IRON_CHAIN.get(),
 				SCContent.REINFORCED_BRICK_STAIRS.get(),
@@ -980,6 +986,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_EXPOSED_COPPER_CHAIN.get(),
 				SCContent.REINFORCED_WEATHERED_COPPER_CHAIN.get(),
 				SCContent.REINFORCED_OXIDIZED_COPPER_CHAIN.get())
+		.addTag(SCTags.Blocks.REINFORCED_BARS)
 		.addTag(SCTags.Blocks.REINFORCED_WALLS)
 		.addTag(SCTags.Blocks.REINFORCED_CAULDRONS);
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(

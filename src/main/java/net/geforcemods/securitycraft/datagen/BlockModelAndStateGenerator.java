@@ -175,6 +175,10 @@ public class BlockModelAndStateGenerator {
 		createReinforcedGrassBlock();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_HOPPER.get());
 		registerFlatItemModel(SCContent.REINFORCED_IRON_BARS.get());
+		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COPPER_BARS.get());
+		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get());
+		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get());
+		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get());
 		registerSimpleItemModel(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "_bottom");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LADDER.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_LANTERN.get());

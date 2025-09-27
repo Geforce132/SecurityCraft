@@ -1,0 +1,7 @@
+{
+	"parent": "securitycraft:block/template_reinforced_bars_cap",
+	"textures": {
+		"bars": "minecraft:block/exposed_copper_bars",
+		"edge": "minecraft:block/exposed_copper_bars"
+	}
+}

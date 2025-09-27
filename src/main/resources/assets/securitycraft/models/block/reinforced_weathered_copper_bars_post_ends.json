@@ -1,0 +1,7 @@
+{
+	"parent": "securitycraft:block/template_reinforced_bars_post_ends",
+	"textures": {
+		"bars": "minecraft:block/weathered_copper_bars",
+		"edge": "minecraft:block/weathered_copper_bars"
+	}
+}

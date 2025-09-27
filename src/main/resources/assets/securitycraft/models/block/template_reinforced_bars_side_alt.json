@@ -1,0 +1,38 @@
+{
+    "ambientocclusion": false,
+    "render_type": "minecraft:cutout_mipped",
+    "textures": {
+        "particle": "#bars"
+    },
+    "elements": [
+        {   "from": [ 8, 0, 8 ],
+            "to": [ 8, 16, 16 ],
+            "faces": {
+                "west": { "uv": [ 8, 0, 0, 16 ], "texture": "#bars", "tintindex": 0 },
+                "east": { "uv": [ 0, 0, 8, 16 ], "texture": "#bars", "tintindex": 0 }
+            }
+        },
+        {   "from": [ 7, 0, 9 ],
+            "to": [ 9, 16, 16 ],
+            "faces": {
+                "south": { "uv": [ 7, 0, 9, 16 ], "texture": "#edge", "cullface": "south", "tintindex": 0 },
+                "down":  { "uv": [ 9, 9, 7, 16 ], "texture": "#edge", "tintindex": 0 },
+                "up":    { "uv": [ 7, 9, 9, 16 ], "texture": "#edge", "tintindex": 0 }
+            }
+        },
+        {   "from": [ 7, 0.001, 9 ],
+            "to": [ 9, 0.001, 16 ],
+            "faces": {
+                "down":  { "uv": [ 9, 9, 7, 16 ], "texture": "#edge", "tintindex": 0 },
+                "up":    { "uv": [ 7, 9, 9, 16 ], "texture": "#edge", "tintindex": 0 }
+            }
+        },
+        {   "from": [ 7, 15.999, 9 ],
+            "to": [ 9, 15.999, 16 ],
+            "faces": {
+                "down":  { "uv": [ 9, 9, 7, 16 ], "texture": "#edge", "tintindex": 0 },
+                "up":    { "uv": [ 7, 9, 9, 16 ], "texture": "#edge", "tintindex": 0 }
+            }
+        }
+    ]
+}
