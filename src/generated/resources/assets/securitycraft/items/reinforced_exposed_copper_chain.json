@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:item/reinforced_exposed_copper_chain",
+    "tints": [
+      {
+        "type": "securitycraft:reinforced"
+      }
+    ]
+  }
+}

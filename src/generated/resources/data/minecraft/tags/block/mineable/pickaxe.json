@@ -358,6 +358,10 @@
     "securitycraft:reinforced_exposed_lightning_rod",
     "securitycraft:reinforced_weathered_lightning_rod",
     "securitycraft:reinforced_oxidized_lightning_rod",
+    "securitycraft:reinforced_copper_chain",
+    "securitycraft:reinforced_exposed_copper_chain",
+    "securitycraft:reinforced_weathered_copper_chain",
+    "securitycraft:reinforced_oxidized_copper_chain",
     "#securitycraft:reinforced/walls",
     "#securitycraft:reinforced/cauldrons"
   ]

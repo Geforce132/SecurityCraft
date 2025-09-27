@@ -166,6 +166,10 @@ public class BlockModelAndStateGenerator {
 		createRailMine();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_CAULDRON.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_IRON_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_COPPER_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_EXPOSED_COPPER_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_OXIDIZED_COPPER_CHAIN.get());
 		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_BOOKSHELF.get(), "_inventory");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COBWEB.get());
 		createReinforcedGrassBlock();

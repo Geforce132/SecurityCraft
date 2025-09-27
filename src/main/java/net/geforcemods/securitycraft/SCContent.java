@@ -2749,6 +2749,22 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_OXIDIZED_LIGHTNING_ROD = reinforcedBlock("reinforced_oxidized_lightning_rod", Blocks.OXIDIZED_LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_COPPER_CHAIN = reinforcedBlock("reinforced_copper_chain", Blocks.COPPER_CHAIN.unaffected(), ReinforcedChainBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_EXPOSED_COPPER_CHAIN = reinforcedBlock("reinforced_exposed_copper_chain", Blocks.COPPER_CHAIN.exposed(), ReinforcedChainBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_WEATHERED_COPPER_CHAIN = reinforcedBlock("reinforced_weathered_copper_chain", Blocks.COPPER_CHAIN.weathered(), ReinforcedChainBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_OXIDIZED_COPPER_CHAIN = reinforcedBlock("reinforced_oxidized_copper_chain", Blocks.COPPER_CHAIN.oxidized(), ReinforcedChainBlock::new);
 
 	//misc
 	@RegisterItemBlock

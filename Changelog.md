@@ -1,6 +1,7 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
 - New: Reinforced Lightning Rod
+- New: Reinforced Copper Chain, 
 - New: Incognito Mask
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
