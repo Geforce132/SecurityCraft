@@ -29,8 +29,7 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 
 	@Override
 	public void submit(TrophySystemRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
-		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera))
-			return;
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera);
 
 		Vec3 target = state.target;
 
