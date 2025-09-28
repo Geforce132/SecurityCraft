@@ -22,6 +22,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexSorting;
 
@@ -36,6 +37,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.SubmitNodeCollector.CustomGeometryRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -214,8 +216,33 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 	}
 
-	private void submitNoise(PoseStack pose, SubmitNodeCollector collector, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
-		//renderTexture(pose, collector, NOISE_BACKGROUND.buffer(collector, RenderType::entitySolid), vertices, packedLight, normal, margin); TODO I don't know how to link the material to the SubmitNodeCollector
+	private void submitNoise(PoseStack poseStack, SubmitNodeCollector collector, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+		Pose last = poseStack.last();
+		float xStart = vertices.x;
+		float xEnd = vertices.y;
+		float zStart = vertices.z - 0.0001f;
+		float zEnd = vertices.w;
+		int nx = normal.getX();
+		int ny = normal.getY();
+		int nz = normal.getZ();
+
+		collector.submitCustomGeometry(poseStack, RenderType.entitySolid(NOISE_BACKGROUND.texture()), new WrappingGeometryRenderer(NOISE_BACKGROUND) {
+			@Override
+			public void render(Pose pose, VertexConsumer builder) {
+				builder.addVertex(pose, xStart, margin, zStart).setUv(1, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+				builder.addVertex(pose, xStart, 1 - margin, zStart).setUv(1, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+				builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(0, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+				builder.addVertex(pose, xEnd, margin, zEnd).setUv(0, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			}
+		});
+	}
+
+	public abstract class WrappingGeometryRenderer implements CustomGeometryRenderer {
+		public final Material material;
+
+		public WrappingGeometryRenderer(Material material) {
+			this.material = material;
+		}
 	}
 
 	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, ResourceLocation texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
@@ -242,9 +269,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(0, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
 			builder.addVertex(pose, xEnd, margin, zEnd).setUv(0, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
 		});
-
-		//if (collector instanceof MultiBufferSource.BufferSource bufferSource)
-		//	bufferSource.endBatch(); TODO is that even needed
 	}
 
 	private void submitOverlay(PoseStack pose, SubmitNodeCollector collector, int color, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight, Vec3i normal) {
@@ -262,8 +286,5 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			builder.addVertex(pose, xEnd, 1 - margin, zEnd).setColor(color).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
 			builder.addVertex(pose, xEnd, margin, zEnd).setColor(color).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
 		});
-
-		//if (collector instanceof MultiBufferSource.BufferSource bufferSource)
-		//	bufferSource.endBatch(); TODO is that even needed
 	}
 }
