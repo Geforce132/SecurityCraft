@@ -1,7 +1,6 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
-- New: Reinforced Lightning Rod
-- New: Reinforced Copper Chain, Reinforced Copper Bars, Reinforced Copper Lantern, Reinforced Shelves
+- New: Reinforced blocks: All types of Reinforced Lightning Rod, Reinforced Copper Chain, Reinforced Copper Bars, Reinforced Copper Lantern, Reinforced Shelf
 - New: Incognito Mask
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
