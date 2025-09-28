@@ -5,7 +5,8 @@
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
 - New: Reinforced Lightning Rod
 - New: Configuration option for limiting the amount of chunks that may be forceloaded by frame feeds
-- Change: Reworked the model and texture of the Motion-Activated Light
+- Change: The model and texture of the Motion-Activated Light have been updated
+- Change: The Trophy System now shows its targeting laser even when disguised
 - API: New IOwnable#isOwnedBy overload taking a Player and a boolean for checking ownership respecting the new Incognito Mask
 - API: New method Owner#isDefaultOwner to check if the Owner object has no player data associated with it
 - API: New method IPasscodeConvertible#getRequiredKeyPanels to control how many key panel items are consumed when converting this block
