@@ -20,8 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TrophySystemRenderer extends TileEntitySpecialRenderer<TrophySystemBlockEntity> {
 	@Override
 	public void render(TrophySystemBlockEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		if (BlockEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha))
-			return;
+		BlockEntityRenderDelegate.DISGUISED_BLOCK.tryRenderDelegate(te, x, y, z, partialTicks, destroyStage, alpha);
 
 		if (te.getTarget() == null)
 			return;
