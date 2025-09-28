@@ -25,8 +25,7 @@ public class TrophySystemRenderer extends TileEntityRenderer<TrophySystemBlockEn
 
 	@Override
 	public void render(TrophySystemBlockEntity be, float partialTicks, MatrixStack pose, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay))
-			return;
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay);
 
 		if (be.getTarget() == null)
 			return;
