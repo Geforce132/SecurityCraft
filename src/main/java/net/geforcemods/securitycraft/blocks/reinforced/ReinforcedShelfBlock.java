@@ -41,17 +41,21 @@ public class ReinforcedShelfBlock extends ShelfBlock implements IReinforcedBlock
 	protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		//Only allow interaction if this shelf, as well as all connected shelves, are owned by or allow the interacting player
 		if (!isConnectable(state)) {
-			if ((!(level.getBlockEntity(pos) instanceof ReinforcedShelfBlockEntity be) || (!be.isOwnedBy(player) && !be.isAllowed(player))))
+			if (isNonInteractableShelf(level, pos, player))
 				return InteractionResult.SUCCESS;
 		}
 		else {
 			for (BlockPos connectedPos : getAllBlocksConnectedTo(level, pos)) {
-				if (!(level.getBlockEntity(connectedPos) instanceof ReinforcedShelfBlockEntity be) || (!be.isOwnedBy(player) && !be.isAllowed(player)))
+				if (isNonInteractableShelf(level, connectedPos, player))
 					return InteractionResult.SUCCESS;
 			}
 		}
 
 		return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+	}
+
+	private boolean isNonInteractableShelf(Level level, BlockPos pos, Player player) {
+		return !(level.getBlockEntity(pos) instanceof ReinforcedShelfBlockEntity be) || (!be.isOwnedBy(player) && !be.isAllowed(player));
 	}
 
 	@Override
