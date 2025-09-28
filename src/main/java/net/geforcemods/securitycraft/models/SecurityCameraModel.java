@@ -15,18 +15,22 @@ import net.minecraft.client.renderer.RenderType;
 
 public class SecurityCameraModel extends Model<SecurityCameraRenderState> {
 	public static final float DEFAULT_X_ROT = 0.2617993877991494F;
-	private ModelPart attachment;
-	private ModelPart stickTop;
-	private ModelPart cameraRotationPoint1;
+	private final ModelPart attachment;
+	private final ModelPart stickTop;
+	private final ModelPart cameraRotationPoint1;
+	private final ModelPart cameraBody;
 	public final ModelPart cameraRotationPoint2;
+	private final ModelPart cameraLens;
 
 	public SecurityCameraModel(ModelPart modelPart) {
 		super(modelPart, RenderType::entitySolid);
 		attachment = modelPart.getChild("attachment");
 		stickTop = modelPart.getChild("stick_top");
 		stickTop.xRot = -(DEFAULT_X_ROT * 2);
-		cameraRotationPoint1 = setUpRotationPoint(modelPart, "camera_rotation_point_1", "camera_body");
-		cameraRotationPoint2 = setUpRotationPoint(modelPart, "camera_rotation_point_2", "camera_lens");
+		cameraRotationPoint1 = modelPart.getChild("camera_rotation_point_1");
+		cameraBody = cameraRotationPoint1.getChild("camera_body");
+		cameraRotationPoint2 = modelPart.getChild("camera_rotation_point_2");
+		cameraLens = cameraRotationPoint2.getChild("camera_lens");
 	}
 
 	public static LayerDefinition createLayer() {
@@ -68,23 +72,17 @@ public class SecurityCameraModel extends Model<SecurityCameraRenderState> {
 		cameraRotationPoint2.yRot = rot;
 	}
 
-	private ModelPart setUpRotationPoint(ModelPart modelPart, String name, String child) {
-		ModelPart rotationPoint = modelPart.getChild(name);
-
-		rotationPoint.xRot = DEFAULT_X_ROT;
-		rotationPoint.getChild(child).xRot = DEFAULT_X_ROT;
-		return rotationPoint;
-	}
-
 	@Override
 	public void setupAnim(SecurityCameraRenderState state) {
 		super.setupAnim(state);
+		cameraBody.xRot = DEFAULT_X_ROT;
+		cameraLens.xRot = DEFAULT_X_ROT;
 		rotateCameraY(state.cameraYRot);
 
 		if (state.isShutDown)
 			rotateCameraX(0.9F);
 		else
-			rotateCameraX(SecurityCameraModel.DEFAULT_X_ROT);
+			rotateCameraX(DEFAULT_X_ROT);
 
 		cameraRotationPoint2.visible = state.hasLens;
 	}

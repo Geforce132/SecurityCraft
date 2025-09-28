@@ -31,7 +31,7 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceL
 			state.lensColor = color;
 		}, () -> state.lensColor = 0x70FFFF);
 		state.cameraYRot = rotation;
-		collector.submitModel(model, state, pose, RenderType.entitySolid(texture), light.orElse(packedLight), packedOverlay, -1, null);
+		collector.submitModel(model, state, pose, RenderType.entitySolid(texture), light.orElse(packedLight), packedOverlay, 0, null);
 	}
 
 	@Override
