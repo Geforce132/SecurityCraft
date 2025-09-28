@@ -328,6 +328,10 @@ public class ClientHandler {
 
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_COPPER_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutoutMipped);

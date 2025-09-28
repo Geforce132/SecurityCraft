@@ -1,7 +1,0 @@
-{
-	"parent": "securitycraft:block/template_reinforced_bars_side_alt",
-	"textures": {
-		"bars": "minecraft:block/weathered_copper_bars",
-		"edge": "minecraft:block/weathered_copper_bars"
-	}
-}

@@ -1,11 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "securitycraft:item/reinforced_exposed_copper_bars",
-    "tints": [
-      {
-        "type": "securitycraft:reinforced"
-      }
-    ]
+    "model": "securitycraft:item/reinforced_exposed_copper_bars"
   }
 }

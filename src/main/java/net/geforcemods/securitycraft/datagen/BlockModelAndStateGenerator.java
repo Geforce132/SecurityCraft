@@ -168,10 +168,10 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModel(SCContent.PROTECTO.get(), "_deactivated");
 		createRailMine();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_CAULDRON.get());
-		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COPPER_BARS.get());
+		createBarsAndItem(SCContent.REINFORCED_COPPER_BARS.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_COPPER_CHAIN.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_COPPER_LANTERN.get());
-		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get());
+		createBarsAndItem(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_EXPOSED_COPPER_CHAIN.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_EXPOSED_COPPER_LANTERN.get());
 		createReinforcedLightningRod(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get());
@@ -180,14 +180,14 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COBWEB.get());
 		createReinforcedGrassBlock();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_HOPPER.get());
-		registerFlatItemModel(SCContent.REINFORCED_IRON_BARS.get());
+		createBarsAndItem(SCContent.REINFORCED_IRON_BARS.get());
 		registerSimpleItemModel(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "_bottom");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LADDER.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_LANTERN.get());
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LEVER.get());
 		createReinforcedLightningRod(SCContent.REINFORCED_LIGHTNING_ROD.get());
 		createReinforcedCarpet(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get());
+		createBarsAndItem(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_OXIDIZED_COPPER_CHAIN.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_OXIDIZED_COPPER_LANTERN.get());
 		createReinforcedLightningRod(SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
@@ -200,7 +200,7 @@ public class BlockModelAndStateGenerator {
 		createSecurityCamera();
 		registerSimpleItemModel(SCContent.TROPHY_SYSTEM.get());
 		registerSimpleItemModel(SCContent.USERNAME_LOGGER.get());
-		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get());
+		createBarsAndItem(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_CHAIN.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_LANTERN.get());
 		createReinforcedLightningRod(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get());
@@ -322,6 +322,11 @@ public class BlockModelAndStateGenerator {
 			else if (mineTabItems.contains(item) && block instanceof IBlockMine mine)
 				createBlockMine(block, mine.getBlockDisguisedAs());
 		});
+	}
+
+	public static void createBarsAndItem(Block block) {
+		blockModelGenerators.createBarsAndItem(block);
+		generatedBlocks.add(block);
 	}
 
 	public static void createBlockMine(Block block, Block vanillaBlock) {
@@ -580,7 +585,7 @@ public class BlockModelAndStateGenerator {
 
 	public static void addShelfPart(Block block, TextureMapping textures, MultiPartGenerator multiPartGenerator, ModelTemplate template, Boolean powered, SideChainPart sideChainPart) {
 		MultiVariant model = BlockModelGenerators.plainVariant(template.create(block, textures, modelOutput));
-		
+
 		BlockModelGenerators.forEachHorizontalDirection((direction, variant) -> multiPartGenerator.with(BlockModelGenerators.shelfCondition(direction, powered, sideChainPart), model.with(variant)));
 	}
 
