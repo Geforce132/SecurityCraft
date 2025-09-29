@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.lwjgl.glfw.GLFW;
@@ -20,12 +22,13 @@ import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
  */
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class KeyBindings {
-	public static KeyMapping.Category category;
-	public static KeyMapping cameraZoomIn;
-	public static KeyMapping cameraZoomOut;
-	public static TickingKeyMapping<SecurityCamera> cameraEmitRedstone;
-	public static TickingKeyMapping<SecurityCamera> cameraActivateNightVision;
-	public static TickingKeyMapping<SecurityCamera> setDefaultViewingDirection;
+	private static final List<TickingKeyMapping> TICKING_KEY_MAPPINGS = new ArrayList<>();
+	private static KeyMapping.Category category;
+	private static KeyMapping cameraZoomIn;
+	private static KeyMapping cameraZoomOut;
+	private static KeyMapping cameraEmitRedstone;
+	private static KeyMapping cameraActivateNightVision;
+	private static KeyMapping setDefaultViewingDirection;
 
 	private KeyBindings() {}
 
@@ -46,30 +49,55 @@ public class KeyBindings {
 		return keyMapping;
 	}
 
-	private static <T> TickingKeyMapping<T> registerTicking(RegisterKeyMappingsEvent event, String name, int defaultKey, Consumer<T> action) {
-		TickingKeyMapping<T> keyMapping = new TickingKeyMapping<>(name, defaultKey, action);
+	private static KeyMapping registerTicking(RegisterKeyMappingsEvent event, String name, int defaultKey, Consumer<SecurityCamera> action) {
+		TickingKeyMapping keyMapping = new TickingKeyMapping(name, defaultKey, action);
 
 		event.register(keyMapping);
+		TICKING_KEY_MAPPINGS.add(keyMapping);
 		return keyMapping;
 	}
 
-	public static class SCKeyMapping extends KeyMapping {
+	public static void tick(SecurityCamera cam) {
+		TICKING_KEY_MAPPINGS.forEach(keyMapping -> keyMapping.tick(cam));
+	}
+
+	public static KeyMapping cameraZoomIn() {
+		return cameraZoomIn;
+	}
+
+	public static KeyMapping cameraZoomOut() {
+		return cameraZoomOut;
+	}
+
+	public static KeyMapping cameraEmitRedstone() {
+		return cameraEmitRedstone;
+	}
+
+	public static KeyMapping cameraActivateNightVision() {
+		return cameraActivateNightVision;
+	}
+
+	public static KeyMapping setDefaultViewingDirection() {
+		return setDefaultViewingDirection;
+	}
+
+	private static class SCKeyMapping extends KeyMapping {
 		public SCKeyMapping(String name, int defaultKey) {
 			super("key.securitycraft." + name, defaultKey, category);
 		}
 	}
 
-	public static class TickingKeyMapping<T> extends SCKeyMapping {
+	private static class TickingKeyMapping extends SCKeyMapping {
 		private static final int MAX_COOLDOWN = 30;
 		private int cooldown = MAX_COOLDOWN;
-		private Consumer<T> action;
+		private Consumer<SecurityCamera> action;
 
-		public TickingKeyMapping(String name, int defaultKey, Consumer<T> action) {
+		public TickingKeyMapping(String name, int defaultKey, Consumer<SecurityCamera> action) {
 			super(name, defaultKey);
 			this.action = action;
 		}
 
-		public void tick(T t) {
+		public void tick(SecurityCamera t) {
 			cooldown--;
 
 			if (consumeClick() && cooldown <= 0) {

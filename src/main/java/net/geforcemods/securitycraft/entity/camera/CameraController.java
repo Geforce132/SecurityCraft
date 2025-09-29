@@ -85,16 +85,14 @@ public class CameraController {
 				handler.tickEnd(cam, options);
 			}
 
-			if (KeyBindings.cameraZoomIn.isDown())
+			if (KeyBindings.cameraZoomIn().isDown())
 				zoomIn(cam);
-			else if (KeyBindings.cameraZoomOut.isDown())
+			else if (KeyBindings.cameraZoomOut().isDown())
 				zoomOut(cam);
 			else
 				cam.zooming = false;
 
-			KeyBindings.cameraEmitRedstone.tick(cam);
-			KeyBindings.cameraActivateNightVision.tick(cam);
-			KeyBindings.setDefaultViewingDirection.tick(cam);
+			KeyBindings.tick(cam);
 			screenshotSoundCooldown--;
 
 			//update other players with the head rotation
