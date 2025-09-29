@@ -107,16 +107,20 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				float xEnd = innerVertices.y;
 				float zStart = innerVertices.z;
 				float zEnd = innerVertices.w;
+				float xStartO = outerVertices.x;
+				float xEndO = outerVertices.y;
+				float zStartO = outerVertices.z;
+				float zEndO = outerVertices.w;
 
 				submitOverlay(pose, collector, RenderType.entityShadow(WHITE), ARGB.colorFromFloat(1.0F, backgroundColor.x, backgroundColor.y, backgroundColor.z), xStart, xEnd, zStart, zEnd, margin, lightCoords, normal);
 
 				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
 					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-					bufferBuilder.addVertex(pose.last().pose(), xStart, margin, zStart).setUv(1, 0);
-					bufferBuilder.addVertex(pose.last().pose(), xStart, 1 - margin, zStart).setUv(1, 1);
-					bufferBuilder.addVertex(pose.last().pose(), xEnd, 1 - margin, zEnd).setUv(0, 1);
-					bufferBuilder.addVertex(pose.last().pose(), xEnd, margin, zEnd).setUv(0, 0);
+					bufferBuilder.addVertex(pose.last().pose(), xStartO, margin, zStartO).setUv(1, 0);
+					bufferBuilder.addVertex(pose.last().pose(), xStartO, 1 - margin, zStartO).setUv(1, 1);
+					bufferBuilder.addVertex(pose.last().pose(), xEndO, 1 - margin, zEndO).setUv(0, 1);
+					bufferBuilder.addVertex(pose.last().pose(), xEndO, margin, zEndO).setUv(0, 0);
 
 					try (MeshData meshData = bufferBuilder.buildOrThrow()) {
 						meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
@@ -143,7 +147,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				}
 
 				if (state.hasLens)
-					submitOverlay(pose, collector, state.lensColor, xStart, xEnd, zStart, zEnd, margin, lightCoords, normal);
+					submitOverlay(pose, collector, state.lensColor, xStartO, xEndO, zStartO, zEndO, margin, lightCoords, normal);
 			}
 		}
 	}
