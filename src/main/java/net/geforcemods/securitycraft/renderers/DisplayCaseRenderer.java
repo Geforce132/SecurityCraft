@@ -39,7 +39,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 	}
 
 	@Override
-	public void submit(DisplayCaseRenderState state, PoseStack pose, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
+	public void submit(DisplayCaseRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
 		float rotation = state.rotation;
 
 		pose.pushPose();
@@ -71,7 +71,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 			int lightCoords = state.isGlowing ? LightTexture.FULL_BRIGHT : state.lightCoords;
 
 			pose.scale(0.5F, 0.5F, 0.5F);
-			state.stack.submit(pose, submitNodeCollector, lightCoords, OverlayTexture.NO_OVERLAY, 0);
+			state.stack.submit(pose, collector, lightCoords, OverlayTexture.NO_OVERLAY, 0);
 			pose.popPose();
 		}
 
@@ -95,7 +95,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 		RenderType renderType = RenderType.entityCutout(state.isGlowing ? glowTexture : texture);
 
 		pose.scale(-1.0F, 1.0F, -1.0F);
-		submitNodeCollector.submitModel(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+		collector.submitModel(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		pose.popPose();
 	}
 

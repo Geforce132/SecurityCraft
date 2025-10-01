@@ -9,6 +9,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.RandomSource;
 
 public class InterfaceHighlightParticle extends DustParticleBase<InterfaceHighlightParticleOptions> {
 	private final TextureAtlasSprite permanentSprite;
@@ -45,7 +46,7 @@ public class InterfaceHighlightParticle extends DustParticleBase<InterfaceHighli
 		}
 
 		@Override
-		public Particle createParticle(InterfaceHighlightParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+		public Particle createParticle(InterfaceHighlightParticleOptions options, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			return new InterfaceHighlightParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options, sprites);
 		}
 	}

@@ -33,11 +33,13 @@ import net.minecraft.client.data.models.BlockModelGenerators.BlockFamilyProvider
 import net.minecraft.client.data.models.ItemModelOutput;
 import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator;
+import net.minecraft.client.data.models.blockstates.MultiPartGenerator;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
@@ -59,6 +61,7 @@ import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.SideChainPart;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockModelAndStateGenerator {
@@ -165,18 +168,29 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModel(SCContent.PROTECTO.get(), "_deactivated");
 		createRailMine();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_CAULDRON.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_CHAIN.get());
+		createBarsAndItem(SCContent.REINFORCED_COPPER_BARS.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_COPPER_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_COPPER_LANTERN.get());
+		createBarsAndItem(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_EXPOSED_COPPER_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_EXPOSED_COPPER_LANTERN.get());
+		createReinforcedLightningRod(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_IRON_CHAIN.get());
 		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_BOOKSHELF.get(), "_inventory");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COBWEB.get());
 		createReinforcedGrassBlock();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_HOPPER.get());
-		registerFlatItemModel(SCContent.REINFORCED_IRON_BARS.get());
+		createBarsAndItem(SCContent.REINFORCED_IRON_BARS.get());
 		registerSimpleItemModel(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "_bottom");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LADDER.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_LANTERN.get());
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LEVER.get());
-		createReinforcedLightningRod();
+		createReinforcedLightningRod(SCContent.REINFORCED_LIGHTNING_ROD.get());
 		createReinforcedCarpet(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
+		createBarsAndItem(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_OXIDIZED_COPPER_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_OXIDIZED_COPPER_LANTERN.get());
+		createReinforcedLightningRod(SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
 		createReinforcedPistons();
 		registerReinforcedItemModel(SCContent.REINFORCED_SCAFFOLDING.get(), "_stable");
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_SOUL_LANTERN.get());
@@ -186,6 +200,10 @@ public class BlockModelAndStateGenerator {
 		createSecurityCamera();
 		registerSimpleItemModel(SCContent.TROPHY_SYSTEM.get());
 		registerSimpleItemModel(SCContent.USERNAME_LOGGER.get());
+		createBarsAndItem(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_CHAIN.get());
+		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_LANTERN.get());
+		createReinforcedLightningRod(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get());
 
 		createGlassBlocks(SCContent.REINFORCED_GLASS.get(), SCContent.REINFORCED_GLASS_PANE.get());
 		createGlassBlocks(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get());
@@ -229,6 +247,19 @@ public class BlockModelAndStateGenerator {
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_WARPED_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_WARPED_HYPHAE.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_WARPED_STEM.get(), LogGenerator.DEFAULT).wood(SCContent.REINFORCED_STRIPPED_WARPED_HYPHAE.get());
+
+		createReinforcedShelf(SCContent.REINFORCED_ACACIA_SHELF.get(), Blocks.ACACIA_SHELF, Blocks.STRIPPED_ACACIA_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_BAMBOO_SHELF.get(), Blocks.BAMBOO_SHELF, Blocks.STRIPPED_BAMBOO_BLOCK);
+		createReinforcedShelf(SCContent.REINFORCED_BIRCH_SHELF.get(), Blocks.BIRCH_SHELF, Blocks.STRIPPED_BIRCH_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_CHERRY_SHELF.get(), Blocks.CHERRY_SHELF, Blocks.STRIPPED_CHERRY_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_CRIMSON_SHELF.get(), Blocks.CRIMSON_SHELF, Blocks.STRIPPED_CRIMSON_STEM);
+		createReinforcedShelf(SCContent.REINFORCED_DARK_OAK_SHELF.get(), Blocks.DARK_OAK_SHELF, Blocks.STRIPPED_DARK_OAK_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_JUNGLE_SHELF.get(), Blocks.JUNGLE_SHELF, Blocks.STRIPPED_JUNGLE_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_MANGROVE_SHELF.get(), Blocks.MANGROVE_SHELF, Blocks.STRIPPED_MANGROVE_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_OAK_SHELF.get(), Blocks.OAK_SHELF, Blocks.STRIPPED_OAK_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_PALE_OAK_SHELF.get(), Blocks.PALE_OAK_SHELF, Blocks.STRIPPED_PALE_OAK_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_SPRUCE_SHELF.get(), Blocks.SPRUCE_SHELF, Blocks.STRIPPED_SPRUCE_LOG);
+		createReinforcedShelf(SCContent.REINFORCED_WARPED_SHELF.get(), Blocks.WARPED_SHELF, Blocks.STRIPPED_WARPED_STEM);
 
 		createSecretSign(SCContent.SECRET_ACACIA_SIGN_ITEM.get(), Blocks.ACACIA_SIGN);
 		createSecretSign(SCContent.SECRET_BAMBOO_SIGN_ITEM.get(), Blocks.BAMBOO_SIGN);
@@ -291,6 +322,11 @@ public class BlockModelAndStateGenerator {
 			else if (mineTabItems.contains(item) && block instanceof IBlockMine mine)
 				createBlockMine(block, mine.getBlockDisguisedAs());
 		});
+	}
+
+	public static void createBarsAndItem(Block block) {
+		blockModelGenerators.createBarsAndItem(block);
+		generatedBlocks.add(block);
 	}
 
 	public static void createBlockMine(Block block, Block vanillaBlock) {
@@ -506,9 +542,8 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(block);
 	}
 
-	public static void createReinforcedLightningRod() {
-		Block block = SCContent.REINFORCED_LIGHTNING_ROD.get();
-		MultiVariant powered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block, "_on"));
+	public static void createReinforcedLightningRod(Block block) {
+		MultiVariant powered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(SCContent.REINFORCED_LIGHTNING_ROD.get(), "_on"));
 		MultiVariant unpowered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
 		//@formatter:off
 		blockStateOutput.accept(
@@ -532,6 +567,26 @@ public class BlockModelAndStateGenerator {
 
 		generate(block, BlockModelGenerators.createPressurePlate(block, upModel, downModel));
 		registerReinforcedItemModel(block);
+	}
+
+	public static void createReinforcedShelf(Block block, Block vanilla, Block particles) {
+		TextureMapping textures = new TextureMapping().put(TextureSlot.ALL, TextureMapping.getBlockTexture(vanilla)).put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(particles));
+		MultiPartGenerator generator = MultiPartGenerator.multiPart(block);
+
+		addShelfPart(block, textures, generator, SCModelTemplates.REINFORCED_SHELF_BODY, null, null);
+		addShelfPart(block, textures, generator, SCModelTemplates.REINFORCED_SHELF_UNPOWERED, false, null);
+		addShelfPart(block, textures, generator, SCModelTemplates.REINFORCED_SHELF_UNCONNECTED, true, SideChainPart.UNCONNECTED);
+		addShelfPart(block, textures, generator, SCModelTemplates.REINFORCED_SHELF_LEFT, true, SideChainPart.LEFT);
+		addShelfPart(block, textures, generator, SCModelTemplates.REINFORCED_SHELF_CENTER, true, SideChainPart.CENTER);
+		addShelfPart(block, textures, generator, SCModelTemplates.REINFORCED_SHELF_RIGHT, true, SideChainPart.RIGHT);
+		generate(block, generator);
+		registerReinforcedItemModel(block, SCModelTemplates.REINFORCED_SHELF_INVENTORY.create(block, textures, modelOutput));
+	}
+
+	public static void addShelfPart(Block block, TextureMapping textures, MultiPartGenerator multiPartGenerator, ModelTemplate template, Boolean powered, SideChainPart sideChainPart) {
+		MultiVariant model = BlockModelGenerators.plainVariant(template.create(block, textures, modelOutput));
+
+		BlockModelGenerators.forEachHorizontalDirection((direction, variant) -> multiPartGenerator.with(BlockModelGenerators.shelfCondition(direction, powered, sideChainPart), model.with(variant)));
 	}
 
 	public static void createReinforcedSlab(Block block, String doubleSlabModel, String texture) {

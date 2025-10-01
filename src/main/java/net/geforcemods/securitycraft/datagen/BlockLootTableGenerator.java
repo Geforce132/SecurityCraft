@@ -127,7 +127,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 								.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 										.include(SCContent.SSS_LINKED_BLOCKS.get())
 										.include(SCContent.NOTES.get())
-										.include(DataComponents.CUSTOM_NAME))))); //TODO: Correct?
+										.include(DataComponents.CUSTOM_NAME)))));
 		//@formatter:on
 	}
 
@@ -135,7 +135,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		//@formatter:off
 		return createSinglePropConditionTable(twoHighBlock, BlockStateProperties.DOUBLE_BLOCK_HALF, DoubleBlockHalf.LOWER)
 				.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
-						.include(DataComponents.CUSTOM_NAME)); //TODO: Correct?
+						.include(DataComponents.CUSTOM_NAME));
 		//@formatter:on
 	}
 

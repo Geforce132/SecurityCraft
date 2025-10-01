@@ -80,6 +80,7 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 				SCContent.SECRET_WARPED_SIGN_ITEM.get());
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BAMBOO_BLOCKS, SCTags.Items.REINFORCED_BAMBOO_BLOCKS);
+		copy(SCTags.Blocks.REINFORCED_BARS, SCTags.Items.REINFORCED_BARS);
 		copy(SCTags.Blocks.REINFORCED_BIRCH_LOGS, SCTags.Items.REINFORCED_BIRCH_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BUTTONS, SCTags.Items.REINFORCED_BUTTONS);
 		copy(SCTags.Blocks.REINFORCED_CHERRY_LOGS, SCTags.Items.REINFORCED_CHERRY_LOGS);

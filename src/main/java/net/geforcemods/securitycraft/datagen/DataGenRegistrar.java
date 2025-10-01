@@ -44,7 +44,6 @@ public class DataGenRegistrar {
 		//		if (ModList.get().isLoaded("projecte"))
 		//			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
 
-		//TODO: Does this even need to be generated? NeoForge might automatically add a pack.mcmeta for mods
 		//@formatter:off
 		event.createProvider(output -> new PackMetadataGenerator(output)
                 .add(PackMetadataSection.CLIENT_TYPE, new PackMetadataSection(

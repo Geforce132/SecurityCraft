@@ -29,20 +29,22 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 
 	@Override
 	public void submit(TrophySystemRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
-		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera))
-			return;
-		else if (!state.hasTarget)
-			return;
+		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera);
 
-		BlockPos bePos = state.blockPos;
-		float r = state.r;
-		float g = state.g;
-		float b = state.b;
+		Vec3 target = state.target;
 
-		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, buffer) -> {
-			buffer.addVertex(pose, 0.5F, 0.75F, 0.5F).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-			buffer.addVertex(pose, (float) (state.targetX - bePos.getX()), (float) (state.targetY - bePos.getY()), (float) (state.targetZ - bePos.getZ())).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-		});
+		if (target != null) {
+			collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, builder) -> {
+				BlockPos pos = state.blockPos;
+				int r = state.r;
+				int g = state.g;
+				int b = state.b;
+
+				//draws a line between the trophy system and the projectile that it's targeting
+				builder.addVertex(pose, 0.5F, 0.75F, 0.5F).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+				builder.addVertex(pose, (float) (target.x() - pos.getX()), (float) (target.y() - pos.getY()), (float) (target.z() - pos.getZ())).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+			});
+		}
 	}
 
 	@Override
@@ -55,27 +57,27 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 
-		ItemStack lens = be.getLensContainer().getItem(0);
 		Entity target = be.getTarget();
 
-		if (target != null) {
-			state.hasTarget = true;
-			state.targetX = target.getX();
-			state.targetY = target.getY();
-			state.targetZ = target.getZ();
-		}
+		if (target == null)
+			state.target = null;
 		else
-			state.hasTarget = false;
+			state.target = target.position();
+
+		ItemStack lens = be.getLensContainer().getItem(0);
+		int r = 255, g = 255, b = 255;
 
 		if (lens.has(DataComponents.DYED_COLOR)) {
 			int color = lens.get(DataComponents.DYED_COLOR).rgb();
 
-			state.r = (color >> 0x10) & 0xFF;
-			state.g = (color >> 0x8) & 0xFF;
-			state.b = color & 0xFF;
+			r = (color >> 0x10) & 0xFF;
+			g = (color >> 0x8) & 0xFF;
+			b = color & 0xFF;
 		}
-		else
-			state.r = state.g = state.b = 255;
+
+		state.r = r;
+		state.g = g;
+		state.b = b;
 	}
 
 	@Override

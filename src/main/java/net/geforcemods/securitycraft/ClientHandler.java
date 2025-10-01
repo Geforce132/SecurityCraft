@@ -135,6 +135,7 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
+import net.minecraft.client.renderer.blockentity.ShelfRenderer;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.resources.model.BlockModelRotation;
@@ -327,9 +328,17 @@ public class ClientHandler {
 
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_COPPER_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutoutMipped);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHTNING_ROD.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), translucent);
@@ -427,6 +436,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_LECTERN_BLOCK_ENTITY.get(), LecternRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.PROJECTOR_BLOCK_ENTITY.get(), ProjectorRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), ReinforcedPistonHeadRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.REINFORCED_SHELF_BLOCK_ENTITY.get(), ShelfRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RETINAL_SCANNER_BLOCK_ENTITY.get(), RetinalScannerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), SecureRedstoneInterfaceRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraRenderer::new);

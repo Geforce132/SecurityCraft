@@ -17,6 +17,7 @@ public class SCTags {
 		public static final TagKey<Block> ALL_SECRET_SIGNS = tag("all_secret_signs");
 		public static final TagKey<Block> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final TagKey<Block> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
+		public static final TagKey<Block> REINFORCED_BARS = tag("reinforced/bars");
 		public static final TagKey<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final TagKey<Block> REINFORCED_CAULDRONS = tag("reinforced/cauldrons");
@@ -54,6 +55,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_WOODEN_FENCES = tag("reinforced/wooden_fences");
 		public static final TagKey<Block> REINFORCED_WOODEN_FENCE_GATES = tag("reinforced/wooden_fence_gates");
 		public static final TagKey<Block> REINFORCED_WOODEN_PRESSURE_PLATES = tag("reinforced/wooden_pressure_plates");
+		public static final TagKey<Block> REINFORCED_WOODEN_SHELVES = tag("reinforced/wooden_shelves");
 		public static final TagKey<Block> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final TagKey<Block> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final TagKey<Block> REINFORCED_WOOL = tag("reinforced/wool");
@@ -90,6 +92,7 @@ public class SCTags {
 		public static final TagKey<Item> MODULES = tag("modules");
 		public static final TagKey<Item> REINFORCED_ACACIA_LOGS = tag("reinforced/acacia_logs");
 		public static final TagKey<Item> REINFORCED_BAMBOO_BLOCKS = tag("reinforced/bamboo_blocks");
+		public static final TagKey<Item> REINFORCED_BARS = tag("reinforced/bars");
 		public static final TagKey<Item> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Item> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final TagKey<Item> REINFORCED_CHERRY_LOGS = tag("reinforced/cherry_logs");
@@ -128,6 +131,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_WOODEN_FENCES = tag("reinforced/wooden_fences");
 		public static final TagKey<Item> REINFORCED_WOODEN_FENCE_GATES = tag("reinforced/wooden_fence_gates");
 		public static final TagKey<Item> REINFORCED_WOODEN_PRESSURE_PLATES = tag("reinforced/wooden_pressure_plates");
+		public static final TagKey<Item> REINFORCED_WOODEN_SHELVES = tag("reinforced/wooden_shelves");
 		public static final TagKey<Item> REINFORCED_WOODEN_SLABS = tag("reinforced/wooden_slabs");
 		public static final TagKey<Item> REINFORCED_WOODEN_STAIRS = tag("reinforced/wooden_stairs");
 		public static final TagKey<Item> REINFORCED_WOOL = tag("reinforced/wool");

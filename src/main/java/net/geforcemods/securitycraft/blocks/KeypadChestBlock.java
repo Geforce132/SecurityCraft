@@ -24,6 +24,7 @@ import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.util.ProblemReporter;
@@ -38,6 +39,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -56,6 +58,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -109,7 +112,7 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	private final float destroyTimeForOwner;
 
 	public KeypadChestBlock(BlockBehaviour.Properties properties) {
-		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY, OwnableBlock.withReinforcedDestroyTime(properties));
+		super(SCContent.KEYPAD_CHEST_BLOCK_ENTITY, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, OwnableBlock.withReinforcedDestroyTime(properties));
 		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
 
@@ -191,12 +194,38 @@ public class KeypadChestBlock extends ChestBlock implements IOverlayDisplay, IDi
 	}
 
 	@Override
-	public Direction candidatePartnerFacing(Level level, BlockPos pos, Direction dir) {
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		ChestType type = ChestType.SINGLE;
+		Direction chestFacing = ctx.getHorizontalDirection().getOpposite();
+		Level level = ctx.getLevel();
+		BlockPos clickedPos = ctx.getClickedPos();
+		boolean isSneaking = ctx.isSecondaryUseActive();
+		Direction clickedFace = ctx.getClickedFace();
+
+		if (clickedFace.getAxis().isHorizontal() && isSneaking) {
+			Direction neighborChestFacing = candidatePartnerFacing(level, clickedPos, clickedFace.getOpposite(), ctx.getPlayer());
+
+			if (neighborChestFacing != null && neighborChestFacing.getAxis() != clickedFace.getAxis()) {
+				chestFacing = neighborChestFacing;
+				type = neighborChestFacing.getCounterClockWise() == clickedFace.getOpposite() ? ChestType.RIGHT : ChestType.LEFT;
+			}
+		}
+
+		if (type == ChestType.SINGLE && !isSneaking) {
+			if (chestFacing == candidatePartnerFacing(level, clickedPos, chestFacing.getClockWise(), ctx.getPlayer()))
+				type = ChestType.LEFT;
+			else
+				type = chestFacing == candidatePartnerFacing(level, clickedPos, chestFacing.getCounterClockWise(), ctx.getPlayer()) ? ChestType.RIGHT : ChestType.SINGLE;
+		}
+
+		return defaultBlockState().setValue(FACING, chestFacing).setValue(TYPE, type).setValue(WATERLOGGED, level.getFluidState(clickedPos).getType() == Fluids.WATER);
+	}
+
+	public Direction candidatePartnerFacing(Level level, BlockPos pos, Direction dir, Player player) {
 		Direction returnValue = super.candidatePartnerFacing(level, pos, dir);
 
-		//TODO: Where can the player be retrieved from?
 		//only connect to chests which have the same owner
-		if (returnValue != null && level.getBlockEntity(pos.relative(dir)) instanceof IOwnable ownable && ownable.isOwnedBy(ctx.getPlayer()))
+		if (returnValue != null && level.getBlockEntity(pos.relative(dir)) instanceof IOwnable ownable && ownable.isOwnedBy(player))
 			return returnValue;
 
 		return null;

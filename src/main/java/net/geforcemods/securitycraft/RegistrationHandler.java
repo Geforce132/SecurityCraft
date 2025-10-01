@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedChiseledBookshelfBl
 import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedShelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
@@ -162,6 +163,9 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void onExtendPoiTypes(ExtendPoiTypesEvent event) {
 		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_LIGHTNING_ROD.get());
+		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get());
+		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get());
+		event.addBlockToPoi(PoiTypes.LIGHTNING_ROD, SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
 	}
 
 	@SubscribeEvent
@@ -233,6 +237,7 @@ public class RegistrationHandler {
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), TrophySystemBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY.get(), ReinforcedChiseledBookshelfBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), ReinforcedDispenserBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_SHELF_BLOCK_ENTITY.get(), ReinforcedShelfBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
 		registerSecuritySeaBoatCapabilities(event, SCContent.OAK_SECURITY_SEA_BOAT_ENTITY.get());

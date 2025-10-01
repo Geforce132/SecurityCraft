@@ -52,8 +52,6 @@ public record SyncProjector(BlockPos pos, int data, DataType dataType) implement
 		Level level = player.level();
 
 		if (!player.isSpectator() && level.isLoaded(pos) && level.getBlockEntity(pos) instanceof ProjectorBlockEntity be && be.isOwnedBy(player)) {
-			BlockState state = level.getBlockState(pos);
-
 			switch (dataType) {
 				case WIDTH -> be.setProjectionWidth(data);
 				case HEIGHT -> be.setProjectionHeight(data);
@@ -64,8 +62,6 @@ public record SyncProjector(BlockPos pos, int data, DataType dataType) implement
 				case BLOCK_STATE -> be.setProjectedState(Block.stateById(data));
 				case INVALID -> throw new UnsupportedOperationException("Invalid sync projector payload received!");
 			}
-
-			level.sendBlockUpdated(pos, state, state, 2);
 		}
 	}
 	public enum DataType {

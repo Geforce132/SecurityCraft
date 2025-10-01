@@ -5,6 +5,7 @@
 	"refmap": "securitycraft.refmap.json",
 	"client": [
 		"camera.ClientChunkCacheMixin",
+		"camera.CustomFeatureRendererMixin",
 		"camera.GameRendererMixin",
 		"camera.LevelRendererMixin",
 		"camera.MinecraftMixin",

@@ -66,6 +66,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(SCTags.Blocks.REINFORCED_BAMBOO_BLOCKS).add(
 				SCContent.REINFORCED_BAMBOO_BLOCK.get(),
 				SCContent.REINFORCED_STRIPPED_BAMBOO_BLOCK.get());
+		tag(SCTags.Blocks.REINFORCED_BARS).add(
+				SCContent.REINFORCED_IRON_BARS.get(),
+				SCContent.REINFORCED_COPPER_BARS.get(),
+				SCContent.REINFORCED_EXPOSED_COPPER_BARS.get(),
+				SCContent.REINFORCED_WEATHERED_COPPER_BARS.get(),
+				SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get());
 		tag(SCTags.Blocks.REINFORCED_BIRCH_LOGS).add(
 				SCContent.REINFORCED_BIRCH_LOG.get(),
 				SCContent.REINFORCED_BIRCH_WOOD.get(),
@@ -317,6 +323,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_BAMBOO_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_CRIMSON_PRESSURE_PLATE.get(),
 				SCContent.REINFORCED_WARPED_PRESSURE_PLATE.get());
+		tag(SCTags.Blocks.REINFORCED_WOODEN_SHELVES).add(
+				SCContent.REINFORCED_OAK_SHELF.get(),
+				SCContent.REINFORCED_SPRUCE_SHELF.get(),
+				SCContent.REINFORCED_BIRCH_SHELF.get(),
+				SCContent.REINFORCED_JUNGLE_SHELF.get(),
+				SCContent.REINFORCED_ACACIA_SHELF.get(),
+				SCContent.REINFORCED_DARK_OAK_SHELF.get(),
+				SCContent.REINFORCED_MANGROVE_SHELF.get(),
+				SCContent.REINFORCED_CHERRY_SHELF.get(),
+				SCContent.REINFORCED_PALE_OAK_SHELF.get(),
+				SCContent.REINFORCED_BAMBOO_SHELF.get(),
+				SCContent.REINFORCED_CRIMSON_SHELF.get(),
+				SCContent.REINFORCED_WARPED_SHELF.get());
 		tag(SCTags.Blocks.REINFORCED_WOODEN_SLABS).add(woodenSlabs.toArray(new Block[woodenSlabs.size()]));
 		tag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS).add(woodenStairs.toArray(new Block[woodenStairs.size()]));
 		tag(SCTags.Blocks.REINFORCED_WOOL).add(
@@ -412,6 +431,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		//minecraft tags
 		tag(BlockTags.ALL_SIGNS).addTag(SCTags.Blocks.ALL_SECRET_SIGNS);
 		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_DIRT).add(SCContent.REINFORCED_GRAVEL.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get());
+		tag(BlockTags.BARS).addTag(SCTags.Blocks.REINFORCED_BARS);
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
 				SCContent.REINFORCED_EMERALD_BLOCK.get(),
@@ -605,6 +625,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_BUTTONS)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_PRESSURE_PLATES)
+			.addTag(SCTags.Blocks.REINFORCED_WOODEN_SHELVES)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_SLABS)
 			.addTag(SCTags.Blocks.REINFORCED_WOODEN_STAIRS)
 			.addTag(SCTags.Blocks.SECRET_HANGING_SIGNS)
@@ -736,9 +757,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CRACKED_STONE_BRICKS.get(),
 				SCContent.REINFORCED_CHISELED_STONE_BRICKS.get(),
-				SCContent.REINFORCED_IRON_BARS.get(),
 				SCContent.HORIZONTAL_REINFORCED_IRON_BARS.get(),
-				SCContent.REINFORCED_CHAIN.get(),
+				SCContent.REINFORCED_IRON_CHAIN.get(),
 				SCContent.REINFORCED_BRICK_STAIRS.get(),
 				SCContent.REINFORCED_STONE_BRICK_STAIRS.get(),
 				SCContent.REINFORCED_NETHER_BRICKS.get(),
@@ -972,7 +992,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_CHISELED_RESIN_BRICKS.get(),
 				SCContent.REINFORCED_STONE_BUTTON.get(),
 				SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON.get(),
-				SCContent.REINFORCED_LIGHTNING_ROD.get())
+				SCContent.REINFORCED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_COPPER_CHAIN.get(),
+				SCContent.REINFORCED_EXPOSED_COPPER_CHAIN.get(),
+				SCContent.REINFORCED_WEATHERED_COPPER_CHAIN.get(),
+				SCContent.REINFORCED_OXIDIZED_COPPER_CHAIN.get(),
+				SCContent.REINFORCED_COPPER_LANTERN.get(),
+				SCContent.REINFORCED_EXPOSED_COPPER_LANTERN.get(),
+				SCContent.REINFORCED_WEATHERED_COPPER_LANTERN.get(),
+				SCContent.REINFORCED_OXIDIZED_COPPER_LANTERN.get())
+		.addTag(SCTags.Blocks.REINFORCED_BARS)
 		.addTag(SCTags.Blocks.REINFORCED_WALLS)
 		.addTag(SCTags.Blocks.REINFORCED_CAULDRONS);
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
@@ -1062,7 +1094,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_EXPOSED_COPPER_BULB.get(),
 				SCContent.REINFORCED_WEATHERED_COPPER_BULB.get(),
 				SCContent.REINFORCED_OXIDIZED_COPPER_BULB.get(),
-				SCContent.REINFORCED_LIGHTNING_ROD.get());
+				SCContent.REINFORCED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(),
+				SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
 	}
 
 	@Override

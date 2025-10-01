@@ -254,6 +254,9 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 
 		if (old.getItem() != projectedBlock.getItem())
 			resetSavedState();
+
+		if (level != null && !level.isClientSide())
+			level.sendBlockUpdated(worldPosition, blockState, blockState, 2);
 	}
 
 	@Override

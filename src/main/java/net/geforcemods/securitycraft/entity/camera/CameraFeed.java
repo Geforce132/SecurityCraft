@@ -36,7 +36,9 @@ public class CameraFeed {
 	private final List<RenderSection> compilingSectionsQueue = new ArrayList<>();
 	private final RenderTarget renderTarget;
 	private final Vector3f backgroundColor = new Vector3f();
+	private Frustum cameraFrustum;
 	private boolean requiresFrustumUpdate = false;
+	private boolean hasFrameInFrustum = false;
 
 	public CameraFeed(GlobalPos globalPos, RenderSection startingSection) {
 		int resolution = ConfigHandler.CLIENT.frameFeedResolution.get();
@@ -124,13 +126,19 @@ public class CameraFeed {
 		return !visibleSections.isEmpty();
 	}
 
-	public boolean hasFrameInFrustum(Frustum frustum) {
-		for (BlockPos framePos : linkedFrames) {
-			if (frustum.isVisible(new AABB(framePos)))
-				return true;
-		}
+	public void updateHasFrameInFrustum(Frustum frustum) {
+		hasFrameInFrustum = false;
 
-		return false;
+		for (BlockPos framePos : linkedFrames) {
+			if (frustum.isVisible(new AABB(framePos))) {
+				hasFrameInFrustum = true;
+				break;
+			}
+		}
+	}
+
+	public boolean hasFrameInFrustum() {
+		return hasFrameInFrustum;
 	}
 
 	public void linkFrame(FrameBlockEntity be) {
@@ -167,5 +175,13 @@ public class CameraFeed {
 
 	public Vector3f backgroundColor() {
 		return backgroundColor;
+	}
+
+	public void setCameraFrustum(Frustum cameraFrustum) {
+		this.cameraFrustum = cameraFrustum;
+	}
+
+	public Frustum getCameraFrustum() {
+		return cameraFrustum;
 	}
 }

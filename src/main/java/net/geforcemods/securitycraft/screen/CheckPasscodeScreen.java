@@ -145,7 +145,6 @@ public class CheckPasscodeScreen extends Screen {
 
 	@Override
 	public boolean charTyped(CharacterEvent event) {
-		//TODO: Test isValidChar
 		if (!passcodeProtected.isOnCooldown() && isValidChar((char) event.codepoint())) {
 			keycodeTextbox.charTyped(event);
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);

@@ -29,7 +29,7 @@ public class IMSBombRenderer extends EntityRenderer<IMSBomb, EntityRenderState> 
 	public void submit(EntityRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
 		pose.translate(-0.1D, 0, 0.1D);
 		pose.scale(1.4F, 1.4F, 1.4F);
-		collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, null);
+		collector.submitModel(model, state, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor, null);
 	}
 
 	@Override

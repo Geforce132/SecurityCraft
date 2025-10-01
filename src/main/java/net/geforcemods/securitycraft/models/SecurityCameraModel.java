@@ -3,29 +3,34 @@ package net.geforcemods.securitycraft.models;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import net.minecraft.client.model.EntityModel;
+import net.geforcemods.securitycraft.renderers.state.SecurityCameraRenderState;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.entity.state.EntityRenderState;
+import net.minecraft.client.renderer.RenderType;
 
-public class SecurityCameraModel extends EntityModel<EntityRenderState> {
+public class SecurityCameraModel extends Model<SecurityCameraRenderState> {
 	public static final float DEFAULT_X_ROT = 0.2617993877991494F;
-	private ModelPart attachment;
-	private ModelPart stickTop;
-	private ModelPart cameraRotationPoint1;
+	private final ModelPart attachment;
+	private final ModelPart stickTop;
+	private final ModelPart cameraRotationPoint1;
+	private final ModelPart cameraBody;
 	public final ModelPart cameraRotationPoint2;
+	private final ModelPart cameraLens;
 
 	public SecurityCameraModel(ModelPart modelPart) {
-		super(modelPart);
+		super(modelPart, RenderType::entitySolid);
 		attachment = modelPart.getChild("attachment");
 		stickTop = modelPart.getChild("stick_top");
 		stickTop.xRot = -(DEFAULT_X_ROT * 2);
-		cameraRotationPoint1 = setUpRotationPoint(modelPart, "camera_rotation_point_1", "camera_body");
-		cameraRotationPoint2 = setUpRotationPoint(modelPart, "camera_rotation_point_2", "camera_lens");
+		cameraRotationPoint1 = modelPart.getChild("camera_rotation_point_1");
+		cameraBody = cameraRotationPoint1.getChild("camera_body");
+		cameraRotationPoint2 = modelPart.getChild("camera_rotation_point_2");
+		cameraLens = cameraRotationPoint2.getChild("camera_lens");
 	}
 
 	public static LayerDefinition createLayer() {
@@ -67,11 +72,18 @@ public class SecurityCameraModel extends EntityModel<EntityRenderState> {
 		cameraRotationPoint2.yRot = rot;
 	}
 
-	private ModelPart setUpRotationPoint(ModelPart modelPart, String name, String child) {
-		ModelPart rotationPoint = modelPart.getChild(name);
+	@Override
+	public void setupAnim(SecurityCameraRenderState state) {
+		super.setupAnim(state);
+		cameraBody.xRot = DEFAULT_X_ROT;
+		cameraLens.xRot = DEFAULT_X_ROT;
+		rotateCameraY(state.cameraYRot);
 
-		rotationPoint.xRot = DEFAULT_X_ROT;
-		rotationPoint.getChild(child).xRot = DEFAULT_X_ROT;
-		return rotationPoint;
+		if (state.isShutDown)
+			rotateCameraX(0.9F);
+		else
+			rotateCameraX(DEFAULT_X_ROT);
+
+		cameraRotationPoint2.visible = state.hasLens;
 	}
 }

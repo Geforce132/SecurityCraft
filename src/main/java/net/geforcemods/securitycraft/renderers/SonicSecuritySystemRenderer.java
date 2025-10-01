@@ -12,12 +12,11 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.renderers.state.SonicSecuritySystemRenderState;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -32,36 +31,28 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	private static final Component RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
 	private static final Component LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 	private final SonicSecuritySystemModel model;
+	private final EntityRenderDispatcher entityRenderDispatcher;
 
 	public SonicSecuritySystemRenderer(BlockEntityRendererProvider.Context ctx) {
 		model = new SonicSecuritySystemModel(ctx.bakeLayer(ClientHandler.SONIC_SECURITY_SYSTEM_LOCATION));
+		entityRenderDispatcher = ctx.entityRenderer();
 	}
 
 	@Override
 	public void submit(SonicSecuritySystemRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
+		pose.translate(0.5D, 1.0D, 0.5D);
 
-		boolean recording = state.isRecording;
+		if (state.isRecording || state.isListening && !state.isShutDown) {
+			Component text = state.isRecording ? RECORDING_TEXT : LISTENING_TEXT;
 
-		if (recording || state.isListening && !state.isShutDown) {
-			Minecraft mc = Minecraft.getInstance();
-			Component text = recording ? RECORDING_TEXT : LISTENING_TEXT;
-			float opacity = mc.options.getBackgroundOpacity(0.25F);
-			int backgroundColor = (int) (opacity * 255.0F) << 24;
-			float halfWidth = -mc.font.width(text) / 2;
-
-			pose.pushPose();
-			pose.mulPose(camera.orientation);
-			pose.scale(0.025F, -0.025F, 0.025F); //TODO: Can the name tag submitting be used here for the same visual effect?
-			collector.submitText(pose, halfWidth, 0, text.getVisualOrderText(), false, Font.DisplayMode.SEE_THROUGH, state.lightCoords, 0x20FFFFFF, backgroundColor, 0);
-			collector.submitText(pose, halfWidth, 0, text.getVisualOrderText(), false, Font.DisplayMode.NORMAL, state.lightCoords, -1, 0, 0);
-			pose.popPose();
+			collector.submitNameTag(pose, Vec3.ZERO, 0, text, true, state.lightCoords, state.distanceToCameraSqr, camera);
 		}
 
-		if (!state.hasDisguiseModule) {
+		if (!state.isDisguised) {
+			pose.translate(0.0D, 0.5D, 0.0D);
 			pose.mulPose(POSITIVE_X_180);
-			model.setRadarRotation(state.radarRotationDegrees);
-			collector.submitModel(model, null, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress); //TODO test
+			collector.submitModel(model, state.radarRotation, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		}
 	}
 
@@ -77,7 +68,8 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		state.isRecording = be.isRecording();
 		state.isListening = be.isListening();
 		state.isShutDown = be.isShutDown();
-		state.hasDisguiseModule = be.isModuleEnabled(ModuleType.DISGUISE);
-		state.radarRotationDegrees = Mth.lerp(partialTick, be.getOriginalRadarRotationDegrees(), be.getRadarRotationDegrees());
+		state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE);
+		state.radarRotation = Mth.lerp(partialTick, be.getOriginalRadarRotationDegrees(), be.getRadarRotationDegrees());
+		state.distanceToCameraSqr = cameraPos.distanceToSqr(Vec3.upFromBottomCenterOf(be.getBlockPos(), 1.5D));
 	}
 }

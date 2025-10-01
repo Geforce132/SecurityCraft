@@ -92,7 +92,6 @@ public class FrameFeedHandler {
 		float oldEyeHeightO = camera.eyeHeightOld;
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
-		Frustum playerFrustum = mc.levelRenderer.getFrustum(); //Saved once before the loop, because the frustum changes depending on which camera is viewed
 		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
 
 		mc.gameRenderer.setRenderBlockOutline(false);
@@ -112,7 +111,7 @@ public class FrameFeedHandler {
 				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
 					CameraFeed feed = cameraView.getValue();
 
-					if (!feed.hasFrameInFrustum(playerFrustum))
+					if (!feed.hasFrameInFrustum())
 						continue;
 
 					Vec3 cameraEntityPos = new Vec3(pos.getX() + 0.5D, pos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, pos.getZ() + 0.5D);
@@ -143,7 +142,7 @@ public class FrameFeedHandler {
 
 					profiler.push("securitycraft:apply_frame_frustum");
 
-					Frustum frustum = LevelRenderer.offsetFrustum(mc.levelRenderer.getFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
+					Frustum frustum = LevelRenderer.offsetFrustum(feed.getCameraFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
 
 					if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
 						feed.updateVisibleSections(frustum);
@@ -248,6 +247,12 @@ public class FrameFeedHandler {
 		}
 
 		return false;
+	}
+
+	public static void doFeedFrustumCheck(Frustum playerFrustum) {
+		for (CameraFeed feed : FRAME_CAMERA_FEEDS.values()) {
+			feed.updateHasFrameInFrustum(playerFrustum);
+		}
 	}
 
 	public static boolean hasFeeds() {

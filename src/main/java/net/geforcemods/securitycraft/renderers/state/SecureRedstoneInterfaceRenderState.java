@@ -1,10 +1,10 @@
 package net.geforcemods.securitycraft.renderers.state;
 
-import net.minecraft.core.Direction;
+import org.joml.Quaternionf;
 
-public class SecureRedstoneInterfaceRenderState extends DisguisableRenderState {
-	public Direction facing;
-	public boolean hasDisguiseModule;
+public class SecureRedstoneInterfaceRenderState extends DisguisableBlockEntityRenderState {
+	public Quaternionf modelRotation;
+	public boolean isDisguised;
 	public boolean isSender;
-	public float dishRotationDegrees;
+	public float dishRotation;
 }

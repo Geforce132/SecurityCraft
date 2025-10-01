@@ -42,6 +42,7 @@ public class DisplayCaseModel extends Model<Float> {
 
 	@Override
 	public void setupAnim(Float openness) {
+		super.setupAnim(openness);
 		door.yRot = -(openness * (float) (Math.PI / 2.0F));
 	}
 }

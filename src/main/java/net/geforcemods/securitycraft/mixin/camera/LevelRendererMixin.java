@@ -16,6 +16,7 @@ import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
 
 import net.geforcemods.securitycraft.compat.ium.IumCompat;
+import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Camera;
@@ -34,6 +35,8 @@ public abstract class LevelRendererMixin {
 	private SectionRenderDispatcher sectionRenderDispatcher;
 	@Shadow
 	private ClientLevel level;
+	@Shadow
+	private Frustum lastFrustum;
 	@Unique
 	private boolean securitycraft$entityOutlineRendered;
 
@@ -47,12 +50,21 @@ public abstract class LevelRendererMixin {
 	 * Sodium entity culling and thus always rendered.
 	 * The second purpose of this mixin is to capture the fog color used when rendering a frame world, to be able to render it
 	 * in the background of a frame feed.
+	 * The third purpose of this mixin is to capture the frustum that is used in rendering, both when the real level is
+	 * rendered (to check whether any frame is in the frustum, which then determines whether the feed should be captured) and
+	 * when the frame level is rendered (for the feed's visible section discovery after rendering)
 	 */
 	//TODO check if that sodium bug (mentioned in the javadoc) is fixed without extra modification by SC being needed, now that the method calls have been rearranged
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"))
 	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, Matrix4f frustumMatrix, Matrix4f projectionMatrix, Matrix4f cullingMatrix, GpuBufferSlice bufferSlice, Vector4f fogColor, boolean renderSky, CallbackInfo ci, @Local Frustum frustum) {
-		if (FrameFeedHandler.isCapturingCamera())
-			FrameFeedHandler.getCurrentlyCapturedFeed().setBackgroundColor(fogColor);
+		if (FrameFeedHandler.isCapturingCamera()) {
+			CameraFeed feed = FrameFeedHandler.getCurrentlyCapturedFeed();
+
+			feed.setBackgroundColor(fogColor);
+			feed.setCameraFrustum(lastFrustum);
+		}
+		else
+			FrameFeedHandler.doFeedFrustumCheck(lastFrustum);
 	}
 
 	/**
