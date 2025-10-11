@@ -85,7 +85,7 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean b) {
 		if (!level.isClientSide()) {
 			CageTrapBlockEntity cageTrap = (CageTrapBlockEntity) level.getBlockEntity(pos);
 
@@ -177,9 +177,9 @@ public class CageTrapBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, ItemStack stack, boolean willHarvest, FluidState fluid) {
 		disassembleIronBars(state, level, pos, level.getBlockEntity(pos) instanceof CageTrapBlockEntity be ? be.getOwner() : null);
-		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+		return super.onDestroyedByPlayer(state, level, pos, player, stack, willHarvest, fluid);
 	}
 
 	public static void disassembleIronBars(BlockState state, Level level, BlockPos cageTrapPos, Owner cageTrapOwner) {

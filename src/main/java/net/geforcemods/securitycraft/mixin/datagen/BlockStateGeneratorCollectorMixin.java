@@ -14,7 +14,7 @@ import net.neoforged.fml.loading.FMLEnvironment;
 public class BlockStateGeneratorCollectorMixin {
 	@Inject(method = "validate", at = @At("HEAD"), cancellable = true)
 	private void validate(CallbackInfo ci) {
-		if (!FMLEnvironment.production)
+		if (!FMLEnvironment.isProduction())
 			ci.cancel();
 	}
 }

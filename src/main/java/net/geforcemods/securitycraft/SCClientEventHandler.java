@@ -93,7 +93,7 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent.AfterTripwireBlocks event) {
-		Vec3 camPos = event.getCamera().pos;
+		Vec3 camPos = event.getLevelRenderState().cameraRenderState.pos;
 		PoseStack pose = event.getPoseStack();
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;

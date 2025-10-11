@@ -22,10 +22,12 @@ public class F3Spoofer {
 	public static BlockState spoofBlockState(BlockState originalState, BlockPos pos) {
 		Block originalBlock = originalState.getBlock();
 
-		if (FMLEnvironment.production) {
+		if (FMLEnvironment.isProduction()) {
 			return switch (originalBlock) {
-				case IDisguisable disguisable -> IDisguisable.getDisguisedBlockState(Minecraft.getInstance().level.getBlockEntity(pos)).orElse(originalState);
-				case FurnaceMineBlock mine -> Blocks.FURNACE.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, originalState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+				case IDisguisable disguisable ->
+						IDisguisable.getDisguisedBlockState(Minecraft.getInstance().level.getBlockEntity(pos)).orElse(originalState);
+				case FurnaceMineBlock mine ->
+						Blocks.FURNACE.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, originalState.getValue(BlockStateProperties.HORIZONTAL_FACING));
 				case IBlockMine mine -> mine.getBlockDisguisedAs().defaultBlockState();
 				default -> originalState;
 			};
@@ -37,7 +39,7 @@ public class F3Spoofer {
 	public static FluidState spoofFluidState(FluidState originalState) {
 		Fluid originalFluid = originalState.getType();
 
-		if (FMLEnvironment.production) {
+		if (FMLEnvironment.isProduction()) {
 			if (originalFluid == SCContent.FAKE_WATER.get())
 				return Fluids.WATER.defaultFluidState().setValue(FlowingFluid.FALLING, originalState.getValue(FlowingFluid.FALLING));
 			else if (originalFluid == SCContent.FLOWING_FAKE_WATER.get())

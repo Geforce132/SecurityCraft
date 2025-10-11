@@ -100,7 +100,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean b) {
 		if (!getShape(state, level, pos, CollisionContext.of(entity)).bounds().move(pos).intersects(entity.getBoundingBox()))
 			return;
 
@@ -289,7 +289,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 
 	@Override
 	public void destroy(LevelAccessor level, BlockPos pos, BlockState state) {
-		if (!level.isClientSide()){
+		if (!level.isClientSide()) {
 			Direction facing = state.getValue(FACING);
 
 			BlockUtils.removeInSequence((direction, stateToCheck) -> {

@@ -91,7 +91,7 @@ public class UniversalOwnerChangerItem extends Item {
 			level.sendBlockUpdated(pos, state, state, 3);
 
 		//disable this in a development environment
-		if (FMLEnvironment.production && be instanceof IModuleInventory inv) {
+		if (FMLEnvironment.isProduction() && be instanceof IModuleInventory inv) {
 			for (ModuleType moduleType : inv.getInsertedModules()) {
 				ItemStack moduleStack = inv.getModule(moduleType);
 

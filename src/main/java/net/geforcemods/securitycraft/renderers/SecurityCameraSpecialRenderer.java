@@ -23,7 +23,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 
 public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceLocation texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
-	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector collector, int packedLight, int packedOverlay, boolean glint) {
+	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector collector, int packedLight, int packedOverlay, boolean glint, int outlineColor) {
 		SecurityCameraRenderState state = new SecurityCameraRenderState();
 
 		lensColor.ifPresentOrElse(color -> {
@@ -31,7 +31,7 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceL
 			state.lensColor = color;
 		}, () -> state.lensColor = 0x70FFFF);
 		state.cameraYRot = rotation;
-		collector.submitModel(model, state, pose, RenderType.entitySolid(texture), light.orElse(packedLight), packedOverlay, 0, null);
+		collector.submitModel(model, state, pose, RenderType.entitySolid(texture), light.orElse(packedLight), packedOverlay, outlineColor, null);
 	}
 
 	@Override

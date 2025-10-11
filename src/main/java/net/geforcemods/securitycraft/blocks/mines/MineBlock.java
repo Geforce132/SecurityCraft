@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -75,20 +76,20 @@ public class MineBlock extends ExplosiveBlock implements SimpleWaterloggedBlock 
 	}
 
 	@Override
-	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, ItemStack stack, boolean willHarvest, FluidState fluid) {
 		if (!level.isClientSide()) {
 			MineBlockEntity mine = (MineBlockEntity) level.getBlockEntity(pos);
 			TargetingMode mode = mine.getTargetingMode();
 
 			if (!mode.allowsPlayers() || player != null && player.isCreative() && !ConfigHandler.SERVER.mineExplodesWhenInCreative.get())
-				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+				return super.onDestroyedByPlayer(state, level, pos, player, stack, willHarvest, fluid);
 			else if (mine.isOwnedBy(player) && !mine.ignoresOwner()) {
 				explode(level, pos);
-				return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+				return super.onDestroyedByPlayer(state, level, pos, player, stack, willHarvest, fluid);
 			}
 		}
 
-		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+		return super.onDestroyedByPlayer(state, level, pos, player, stack, willHarvest, fluid);
 	}
 
 	@Override

@@ -70,7 +70,7 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean b) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedHopperBlockEntity be)
 			HopperBlockEntity.entityInside(level, pos, state, entity, be);
 	}

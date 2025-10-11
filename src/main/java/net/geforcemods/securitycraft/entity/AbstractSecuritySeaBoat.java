@@ -140,7 +140,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 					String newOwner = stack.getHoverName().getString();
 
 					//disable this in a development environment
-					if (FMLEnvironment.production)
+					if (FMLEnvironment.isProduction())
 						dropAllModules();
 
 					setOwner(PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID", newOwner);

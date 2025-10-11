@@ -28,7 +28,7 @@ public class ReinforcedCobwebBlock extends BaseReinforcedBlock {
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier) {
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity, InsideBlockEffectApplier effectApplier, boolean b) {
 		if (entity instanceof Player player && level.getBlockEntity(pos) instanceof OwnableBlockEntity be && be.isOwnedBy(player))
 			return;
 
