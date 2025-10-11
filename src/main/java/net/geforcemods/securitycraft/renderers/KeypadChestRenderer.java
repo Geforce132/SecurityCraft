@@ -65,18 +65,13 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 			keypadChestRenderState.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 			keypadChestRenderState.isDisguised = be instanceof IModuleInventory moduleInv && moduleInv.isModuleEnabled(ModuleType.DISGUISE);
 		}
-	}
 
-	@Override
-	protected Material getMaterial(ChestRenderState.ChestMaterialType materialType, ChestType type) {
-		if (isChristmas) {
-			return getMaterialForType(type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
-		}
-		//TODO: Fix when NeoForge improves the access of this
-		//else if (be.getOpenNess(0.0F) >= 0.9F)
-		//	return getMaterialForType(type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
+		if (isChristmas)
+			state.customMaterial = getMaterialForType(state.type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
+		else if (be.getOpenNess(0.0F) >= 0.9F)
+			state.customMaterial = getMaterialForType(state.type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
 		else
-			return getMaterialForType(type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);
+			state.customMaterial = getMaterialForType(state.type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);
 	}
 
 	private Material getMaterialForType(ChestType type, Material left, Material right, Material single) {
@@ -84,7 +79,6 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 			case LEFT -> left;
 			case RIGHT -> right;
 			case SINGLE -> single;
-			default -> single;
 		};
 	}
 
