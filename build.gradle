@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.9.0-alpha.1.21.9-pre3.20250923.155515"
+	version = "21.10.10-beta"
 	validateAccessTransformers = true
 
 	runs {
@@ -74,15 +74,6 @@ neoForge {
 }
 
 repositories {
-	maven {
-		name = "Maven for PR #2639" // https://github.com/neoforged/NeoForge/pull/2639
-		url = uri("https://prmaven.neoforged.net/NeoForge/pr2639")
-		content {
-			includeModule("net.neoforged", "neoforge")
-			includeModule("net.neoforged", "testframework")
-		}
-	}
-
 	maven {
 		url = "https://cursemaven.com/"
 		content {
