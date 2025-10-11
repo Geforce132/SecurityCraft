@@ -5,7 +5,9 @@ import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -14,8 +16,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class CustomizeBlockMenu extends AbstractContainerMenu {
 	public final IModuleInventory moduleInv;
@@ -55,37 +55,39 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 		if (moduleInv.enableHack())
 			slotId = 100;
 
+		Container moduleContainer = Utils.createContainerFromList(moduleInv.getInventory());
+
 		if (moduleInv.getMaxNumberOfModules() == 1)
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId, 80, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId, 80, 20));
 		else if (moduleInv.getMaxNumberOfModules() == 2) {
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 70, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 88, 20));
 		}
 		else if (moduleInv.getMaxNumberOfModules() == 3) {
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 62, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 80, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 98, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 62, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 80, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 98, 20));
 		}
 		else if (moduleInv.getMaxNumberOfModules() == 4) {
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 52, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 70, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 88, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 106, 20));
 		}
 		else if (moduleInv.getMaxNumberOfModules() == 5) {
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 34, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 34, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 52, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 70, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 88, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 106, 20));
 		}
 		else if (moduleInv.getMaxNumberOfModules() == 6) {
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 16, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 34, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 52, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 70, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 88, 20));
-			addSlot(new CustomSlotItemHandler(moduleInv, slotId++, 106, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 16, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 34, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 52, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 70, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 88, 20));
+			addSlot(new CustomSlot(moduleContainer, slotId++, 106, 20));
 		}
 
 		maxSlots = 36 + moduleInv.getMaxNumberOfModules();
@@ -144,11 +146,11 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 		return maxSlots;
 	}
 
-	private class CustomSlotItemHandler extends SlotItemHandler {
+	private class CustomSlot extends Slot {
 		private final int index;
 
-		public CustomSlotItemHandler(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
-			super(itemHandler, index, xPosition, yPosition);
+		public CustomSlot(Container container, int index, int xPosition, int yPosition) {
+			super(container, index, xPosition, yPosition);
 			this.index = index;
 		}
 
@@ -162,11 +164,6 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 				broadcastChanges();
 			}
-		}
-
-		@Override
-		public void initialize(ItemStack stack) {
-			set(stack);
 		}
 
 		@Override

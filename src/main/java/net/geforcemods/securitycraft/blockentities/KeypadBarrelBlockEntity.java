@@ -19,7 +19,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.KeypadBarrelBlock;
 import net.geforcemods.securitycraft.entity.sentry.ISentryBulletContainer;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
@@ -53,9 +53,10 @@ import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity implements IPasscodeProtected, IOwnable, IModuleInventory, ICustomizable, ILockable, ISentryBulletContainer {
 	private NonNullList<ItemStack> items = NonNullList.withSize(27, ItemStack.EMPTY);
@@ -202,14 +203,16 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		return Utils.localize(SCContent.KEYPAD_BARREL.get().getDescriptionId());
 	}
 
-	public static IItemHandler getCapability(KeypadBarrelBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be) : new InsertOnlyInvWrapper(be);
+	public static ResourceHandler<ItemResource> getCapability(KeypadBarrelBlockEntity be, Direction side) {
+		ResourceHandler<ItemResource> resourceHandler = VanillaContainerWrapper.of(be);
+
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? resourceHandler : new InsertOnlyResourceHandler<>(resourceHandler);
 	}
 
 	@Override
-	public IItemHandler getHandlerForSentry(Sentry entity) {
+	public ResourceHandler<ItemResource> getHandlerForSentry(Sentry entity) {
 		if (entity.getOwner().owns(this))
-			return new InvWrapper(this);
+			return VanillaContainerWrapper.of(this);
 		else
 			return null;
 	}

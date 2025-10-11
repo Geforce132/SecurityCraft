@@ -101,11 +101,11 @@ import net.neoforged.neoforge.common.world.poi.ExtendPoiTypesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID)
 public class RegistrationHandler {
@@ -224,22 +224,22 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), AbstractKeypadFurnaceBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), AbstractKeypadFurnaceBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), AbstractKeypadFurnaceBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), InventoryScannerBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), KeypadBarrelBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), (chest, dir) -> KeypadChestBlockEntity.getCapability((KeypadChestBlockEntity) chest, dir));
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), LaserBlockBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get(), ReinforcedHopperBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), TrophySystemBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY.get(), ReinforcedChiseledBookshelfBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), ReinforcedDispenserBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_SHELF_BLOCK_ENTITY.get(), ReinforcedShelfBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.KEYPAD_BLAST_FURNACE_BLOCK_ENTITY.get(), AbstractKeypadFurnaceBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.KEYPAD_FURNACE_BLOCK_ENTITY.get(), AbstractKeypadFurnaceBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.KEYPAD_SMOKER_BLOCK_ENTITY.get(), AbstractKeypadFurnaceBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.BLOCK_POCKET_MANAGER_BLOCK_ENTITY.get(), BlockPocketManagerBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.CLAYMORE_BLOCK_ENTITY.get(), ClaymoreBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.INVENTORY_SCANNER_BLOCK_ENTITY.get(), InventoryScannerBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), KeypadBarrelBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.KEYPAD_CHEST_BLOCK_ENTITY.get(), (chest, dir) -> KeypadChestBlockEntity.getCapability((KeypadChestBlockEntity) chest, dir));
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), LaserBlockBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.REINFORCED_HOPPER_BLOCK_ENTITY.get(), ReinforcedHopperBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), TrophySystemBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.REINFORCED_CHISELED_BOOKSHELF_BLOCK_ENTITY.get(), ReinforcedChiseledBookshelfBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.REINFORCED_DISPENSER_BLOCK_ENTITY.get(), ReinforcedDispenserBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.REINFORCED_SHELF_BLOCK_ENTITY.get(), ReinforcedShelfBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
 		registerSecuritySeaBoatCapabilities(event, SCContent.OAK_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.SPRUCE_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.BIRCH_SECURITY_SEA_BOAT_ENTITY.get());
@@ -250,13 +250,13 @@ public class RegistrationHandler {
 		registerSecuritySeaBoatCapabilities(event, SCContent.CHERRY_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.PALE_OAK_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.BAMBOO_SECURITY_SEA_RAFT_ENTITY.get());
-		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_WATER_BUCKET);
-		event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), SCContent.FAKE_LAVA_BUCKET);
+		event.registerItem(Capabilities.Fluid.ITEM, (stack, access) -> new BucketResourceHandler(access), SCContent.FAKE_WATER_BUCKET);
+		event.registerItem(Capabilities.Fluid.ITEM, (stack, access) -> new BucketResourceHandler(access), SCContent.FAKE_LAVA_BUCKET);
 	}
 
 	private static void registerSecuritySeaBoatCapabilities(RegisterCapabilitiesEvent event, EntityType<? extends AbstractSecuritySeaBoat> boatType) {
-		event.registerEntity(Capabilities.ItemHandler.ENTITY, boatType, (boat, ctx) -> AbstractSecuritySeaBoat.getCapability(boat, null));
-		event.registerEntity(Capabilities.ItemHandler.ENTITY_AUTOMATION, boatType, AbstractSecuritySeaBoat::getCapability);
+		event.registerEntity(Capabilities.Item.ENTITY, boatType, (boat, ctx) -> AbstractSecuritySeaBoat.getCapability(boat, null));
+		event.registerEntity(Capabilities.Item.ENTITY_AUTOMATION, boatType, AbstractSecuritySeaBoat::getCapability);
 	}
 
 	@SubscribeEvent

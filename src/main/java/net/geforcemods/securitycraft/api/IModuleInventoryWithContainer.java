@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.api;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 /**
  * @see Container
@@ -28,13 +29,13 @@ public interface IModuleInventoryWithContainer extends IModuleInventory {
 	}
 
 	@Override
-	default int getSlots() {
+	default int size() {
 		return getContainerSize();
 	}
 
 	@Override
-	default ItemStack getStackInSlot(int slot) {
-		return isContainer(slot) ? getStackInContainer(slot) : IModuleInventory.super.getStackInSlot(slot);
+	default ItemResource getResource(int slot) {
+		return isContainer(slot) ? ItemResource.of(getStackInContainer(slot)) : IModuleInventory.super.getResource(slot);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public interface IModuleInventoryWithContainer extends IModuleInventory {
 			if (stack.isEmpty())
 				return ItemStack.EMPTY;
 
-			if (!isItemValid(slot, stack))
+			if (!isValid(slot, ItemResource.of(stack)))
 				return stack;
 
 			ItemStack existing = getStackInContainer(slot);
@@ -78,12 +79,12 @@ public interface IModuleInventoryWithContainer extends IModuleInventory {
 	}
 
 	@Override
-	default int getSlotLimit(int slot) {
-		return isContainer(slot) ? getContainerStackSize() : IModuleInventory.super.getSlotLimit(slot);
+	default long getCapacityAsLong(int slot, ItemResource resource) {
+		return isContainer(slot) ? getContainerStackSize() : IModuleInventory.super.getCapacityAsLong(slot, resource);
 	}
 
 	@Override
-	default boolean isItemValid(int slot, ItemStack stack) {
-		return isContainer(slot) ? isItemValidForContainer(slot, stack) : IModuleInventory.super.isItemValid(slot, stack);
+	default boolean isValid(int slot, ItemResource resource) {
+		return isContainer(slot) ? isItemValidForContainer(slot, resource.toStack()) : IModuleInventory.super.isValid(slot, resource);
 	}
 }

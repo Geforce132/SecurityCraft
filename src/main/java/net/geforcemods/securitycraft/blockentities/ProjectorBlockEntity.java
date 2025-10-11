@@ -83,7 +83,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
 		if (level != null)
-			Block.popResource(level, pos, getStackInSlot(36));
+			Block.popResource(level, pos, projectedBlock);
 
 		super.preRemoveSideEffects(pos, state);
 	}
@@ -234,13 +234,8 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return !isContainer(slot) ? getModuleInSlot(slot) : (slot == 36 ? projectedBlock : ItemStack.EMPTY);
-	}
-
-	@Override
 	public ItemStack getStackInContainer(int slot) {
-		return getStackInSlot(slot);
+		return !isContainer(slot) ? getModuleInSlot(slot) : (slot == 36 ? projectedBlock : ItemStack.EMPTY);
 	}
 
 	@Override

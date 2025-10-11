@@ -71,7 +71,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffected, IOwnable { //needs to be a pathfinder mob so it can target a player, ai is also only given to living entities
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(Sentry.class, Owner.getSerializer());
@@ -348,7 +350,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		Projectile throwableEntity = null;
 		SoundEvent shootSound = SoundEvents.ARROW_SHOOT;
 		ProjectileDispenseBehavior pdb = null;
-		IItemHandler handler = null;
+		ResourceHandler<ItemResource> handler = null;
 		double baseY = target.getY() + target.getEyeHeight() - 1.100000023841858D;
 		double x = target.getX() - getX();
 		double projectileY = getEyeHeight() - 0.1F;
@@ -359,23 +361,27 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		if (blockEntity instanceof ISentryBulletContainer be)
 			handler = be.getHandlerForSentry(this);
 		else if (blockEntity != null)
-			handler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, Direction.UP);
+			handler = level.getCapability(Capabilities.Item.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, Direction.UP);
 
 		if (handler != null) {
-			for (int i = 0; i < handler.getSlots(); i++) {
-				ItemStack stack = handler.getStackInSlot(i);
+			for (int i = 0; i < handler.size(); i++) {
+				ItemResource resource = handler.getResource(i);
 
-				if (!stack.isEmpty()) {
+				if (!resource.isEmpty()) {
+					ItemStack stack = resource.toStack();
 					DispenseItemBehavior dispenseBehavior = ((DispenserBlock) Blocks.DISPENSER).getDispenseMethod(level, stack);
 
 					if (dispenseBehavior instanceof ProjectileDispenseBehavior projectileDispenseBehavior) {
-						ItemStack extracted = handler.extractItem(i, 1, false);
-
-						pdb = projectileDispenseBehavior;
-						throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, projectileY, 0.0D), extracted, Direction.getApproximateNearest(x, y, z));
-						throwableEntity.setOwner(this);
-						shootSound = null;
-						break;
+						try (Transaction transaction = Transaction.openRoot()) {
+							if (handler.extract(i, resource, 1, transaction) == 1) {
+								transaction.commit();
+								pdb = projectileDispenseBehavior;
+								throwableEntity = pdb.projectileItem.asProjectile(level, position().add(0.0D, projectileY, 0.0D), stack, Direction.getApproximateNearest(x, y, z));
+								throwableEntity.setOwner(this);
+								shootSound = null;
+								break;
+							}
+						}
 					}
 				}
 			}
@@ -571,7 +577,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	/**
 	 * @return An optional containing the block entity of the block that the sentry uses to disguise itself, or an empty optional
-	 *         if it doesn't exist
+	 * if it doesn't exist
 	 */
 	public Optional<DisguisableBlockEntity> getSentryDisguiseBlockEntity() {
 		BlockEntity be;

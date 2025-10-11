@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
@@ -134,7 +135,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	@Override
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
 		if (level != null)
-			Block.popResource(level, pos, getStackInSlot(36));
+			Block.popResource(level, pos, filter);
 
 		super.preRemoveSideEffects(pos, state);
 	}
@@ -280,11 +281,11 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
+	public ItemResource getResource(int slot) {
 		if (!isContainer(slot))
-			return getModuleInSlot(slot);
+			return getResource(slot);
 		else
-			return slot == 36 ? filter : ItemStack.EMPTY;
+			return slot == 36 ? ItemResource.of(filter) : ItemResource.EMPTY;
 	}
 
 	public void showHighlights(boolean showHighlights) {

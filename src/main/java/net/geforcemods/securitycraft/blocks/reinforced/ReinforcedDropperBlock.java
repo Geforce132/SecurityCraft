@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.items.ContainerOrHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.transfer.item.ContainerOrHandler;
+import net.neoforged.neoforge.transfer.item.ItemUtil;
 
 public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 	private static final DispenseItemBehavior DISPENSE_BEHAVIOUR = new DefaultDispenseItemBehavior();
@@ -58,7 +58,7 @@ public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 						if (containerOrHandler.container() != null)
 							afterDispenseStack = HopperBlockEntity.addItem(be, containerOrHandler.container(), dispenseStack.copyWithCount(1), direction.getOpposite());
 						else
-							afterDispenseStack = ItemHandlerHelper.insertItem(containerOrHandler.itemHandler(), dispenseStack.copyWithCount(1), false);
+							afterDispenseStack = ItemUtil.insertItemReturnRemaining(containerOrHandler.itemHandler(), dispenseStack.copyWithCount(1), false, null);
 
 						if (afterDispenseStack.isEmpty()) {
 							afterDispenseStack = dispenseStack.copy();

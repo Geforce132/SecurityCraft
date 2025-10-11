@@ -18,7 +18,7 @@ import net.geforcemods.securitycraft.api.Option.SmartModuleCooldownOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.AbstractKeypadFurnaceBlock;
 import net.geforcemods.securitycraft.inventory.AbstractKeypadFurnaceMenu;
-import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -52,10 +52,10 @@ import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
-import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 
 public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBlockEntity implements IPasscodeProtected, MenuProvider, IOwnable, IModuleInventory, ICustomizable, ILockable {
 	private Owner owner = new Owner();
@@ -185,11 +185,10 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		owner.set(uuid, name);
 	}
 
-	public static IItemHandler getCapability(AbstractKeypadFurnaceBlockEntity be, Direction side) {
-		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
-			return side == null ? new InvWrapper(be) : new SidedInvWrapper(be, side);
-		else
-			return new InsertOnlySidedInvWrapper(be, side);
+	public static ResourceHandler<ItemResource> getCapability(AbstractKeypadFurnaceBlockEntity be, Direction side) {
+		ResourceHandler<ItemResource> resourceHandler = new WorldlyContainerWrapper(be, side);
+
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? resourceHandler : new InsertOnlyResourceHandler<>(resourceHandler);
 	}
 
 	@Override

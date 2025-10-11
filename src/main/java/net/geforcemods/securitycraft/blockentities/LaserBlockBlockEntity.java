@@ -21,7 +21,7 @@ import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blocks.LaserBlock;
 import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
-import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.items.ModuleItem;
@@ -49,10 +49,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.model.data.ModelData;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuProvider, ContainerListener {
 	private DisabledOption disabled = new DisabledOption(false) {
@@ -291,8 +292,10 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 	}
 
-	public static IItemHandler getCapability(LaserBlockBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new InvWrapper(be.lenses) : new InsertOnlyInvWrapper(be.lenses);
+	public static ResourceHandler<ItemResource> getCapability(LaserBlockBlockEntity be, Direction side) {
+		ResourceHandler<ItemResource> resourceHandler = VanillaContainerWrapper.of(be.lenses);
+
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? resourceHandler : new InsertOnlyResourceHandler<>(resourceHandler);
 	}
 
 	@Override

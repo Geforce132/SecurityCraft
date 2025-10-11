@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.blocks.BlockPocketWallBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedCrystalQuartzPillar;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBlock;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
-import net.geforcemods.securitycraft.inventory.InsertOnlyItemStackHandler;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IBlockPocket;
@@ -50,8 +50,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable {
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -589,12 +591,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		}
 	}
 
-	public static IItemHandler getCapability(BlockPocketManagerBlockEntity be, Direction side) {
+	public static ResourceHandler<ItemResource> getCapability(BlockPocketManagerBlockEntity be, Direction side) {
+		ResourceHandler<ItemResource> resourceHandler = new ItemStacksResourceHandler(be.storage);
+
 		//prevent extracting while auto building the block pocket
 		if (!be.isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
-			return new ValidityCheckItemStackHandler(be.storage);
+			return new ValidityCheckResourceHandler(resourceHandler);
 		else
-			return new ValidityCheckInsertOnlyItemStackHandler(be.storage);
+			return new ValidityCheckInsertOnlyResourceHandler(resourceHandler);
 	}
 
 	public NonNullList<ItemStack> getStorage() {
@@ -778,25 +782,25 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return enabled;
 	}
 
-	public static class ValidityCheckInsertOnlyItemStackHandler extends InsertOnlyItemStackHandler {
-		public ValidityCheckInsertOnlyItemStackHandler(NonNullList<ItemStack> stacks) {
-			super(stacks);
+	public static class ValidityCheckInsertOnlyResourceHandler extends InsertOnlyResourceHandler<ItemResource> {
+		public ValidityCheckInsertOnlyResourceHandler(ResourceHandler<ItemResource> delegate) {
+			super(delegate);
 		}
 
 		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			return BlockPocketManagerBlockEntity.isItemValid(stack);
+		public boolean isValid(int slot, ItemResource resource) {
+			return BlockPocketManagerBlockEntity.isItemValid(resource.toStack());
 		}
 	}
 
-	public static class ValidityCheckItemStackHandler extends ItemStackHandler {
-		public ValidityCheckItemStackHandler(NonNullList<ItemStack> stacks) {
-			super(stacks);
+	public static class ValidityCheckResourceHandler extends DelegatingResourceHandler<ItemResource> {
+		public ValidityCheckResourceHandler(ResourceHandler<ItemResource> delegate) {
+			super(delegate);
 		}
 
 		@Override
-		public boolean isItemValid(int slot, ItemStack stack) {
-			return BlockPocketManagerBlockEntity.isItemValid(stack);
+		public boolean isValid(int slot, ItemResource resource) {
+			return BlockPocketManagerBlockEntity.isItemValid(resource.toStack());
 		}
 	}
 }

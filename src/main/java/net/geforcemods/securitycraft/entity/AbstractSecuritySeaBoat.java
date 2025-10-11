@@ -20,7 +20,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.inventory.CustomizeBlockMenu;
-import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
@@ -65,9 +65,10 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implements IOwnable, IPasscodeProtected, IModuleInventory, ICustomizable {
 	private static final EntityDataAccessor<Owner> OWNER = SynchedEntityData.<Owner>defineId(AbstractSecuritySeaBoat.class, Owner.getSerializer());
@@ -295,8 +296,10 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 		super.remove(reason);
 	}
 
-	public static IItemHandler getCapability(AbstractSecuritySeaBoat boat, Direction direction) {
-		return BlockUtils.isAllowedToExtractFromProtectedObject(direction, boat, boat.level(), boat.blockPosition()) ? new InvWrapper(boat) : new InsertOnlyInvWrapper(boat);
+	public static ResourceHandler<ItemResource> getCapability(AbstractSecuritySeaBoat boat, Direction direction) {
+		ResourceHandler<ItemResource> resourceHandler = VanillaContainerWrapper.of(boat);
+
+		return BlockUtils.isAllowedToExtractFromProtectedObject(direction, boat, boat.level(), boat.blockPosition()) ? resourceHandler : new InsertOnlyResourceHandler<>(resourceHandler);
 	}
 
 	@Override

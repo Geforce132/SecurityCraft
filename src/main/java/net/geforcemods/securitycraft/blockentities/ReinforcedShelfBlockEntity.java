@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.inventory.InsertOnlyInvWrapper;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IPistonMoveListener;
@@ -23,8 +23,9 @@ import net.minecraft.world.level.block.entity.ShelfBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class ReinforcedShelfBlockEntity extends ShelfBlockEntity implements IOwnable, IModuleInventory, IPistonMoveListener {
 	private Owner owner = new Owner();
@@ -35,11 +36,10 @@ public class ReinforcedShelfBlockEntity extends ShelfBlockEntity implements IOwn
 		super(pos, state);
 	}
 
-	public static IItemHandler getCapability(ReinforcedShelfBlockEntity be, Direction side) {
-		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
-			return new InvWrapper(be);
-		else
-			return new InsertOnlyInvWrapper(be);
+	public static ResourceHandler<ItemResource> getCapability(ReinforcedShelfBlockEntity be, Direction side) {
+		ResourceHandler<ItemResource> resourceHandler = VanillaContainerWrapper.of(be);
+
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? resourceHandler : new InsertOnlyResourceHandler<>(resourceHandler);
 	}
 
 	@Override

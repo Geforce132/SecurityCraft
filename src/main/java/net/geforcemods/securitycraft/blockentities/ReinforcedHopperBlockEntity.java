@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.inventory.VanillaHopperInsertOnlyItemHandler;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.IPistonMoveListener;
@@ -26,9 +26,10 @@ import net.minecraft.world.level.block.entity.HopperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.VanillaHopperItemHandler;
 import net.neoforged.neoforge.model.data.ModelData;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IOwnable, IModuleInventory, IPistonMoveListener {
 	private NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
@@ -135,13 +136,8 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
-		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
-	}
-
-	@Override
 	public ItemStack getItem(int slot) {
-		return getStackInSlot(slot);
+		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
 	}
 
 	@Override
@@ -149,8 +145,10 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		return Component.translatable(SCContent.REINFORCED_HOPPER.get().getDescriptionId());
 	}
 
-	public static IItemHandler getCapability(ReinforcedHopperBlockEntity be, Direction side) {
-		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new VanillaHopperItemHandler(be) : new VanillaHopperInsertOnlyItemHandler(be);
+	public static ResourceHandler<ItemResource> getCapability(ReinforcedHopperBlockEntity be, Direction side) {
+		ResourceHandler<ItemResource> resourceHandler = VanillaContainerWrapper.of(be);
+
+		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? resourceHandler : new InsertOnlyResourceHandler<>(resourceHandler);
 	}
 
 	@Override

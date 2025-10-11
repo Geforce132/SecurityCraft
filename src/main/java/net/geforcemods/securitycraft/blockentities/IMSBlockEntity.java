@@ -28,7 +28,9 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption range = new IntOption("range", 15, 1, 30, 1);
@@ -56,14 +58,16 @@ public class IMSBlockEntity extends CustomizableBlockEntity implements ITickingB
 				BlockEntity be = level.getBlockEntity(pos.below());
 
 				if (be != null) {
-					IItemHandler handler = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, be.getBlockState(), be, Direction.UP);
+					ResourceHandler<ItemResource> handler = level.getCapability(Capabilities.Item.BLOCK, pos, be.getBlockState(), be, Direction.UP);
 
 					if (handler != null) {
-						for (int i = 0; i < handler.getSlots(); i++) {
-							if (handler.getStackInSlot(i).getItem() == SCContent.BOUNCING_BETTY.get().asItem()) {
-								handler.extractItem(i, 1, false);
-								bombsRemaining++;
-								return;
+						for (int i = 0; i < handler.size(); i++) {
+							try (Transaction transaction = Transaction.openRoot()) {
+								if (handler.extract(ItemResource.of(SCContent.BOUNCING_BETTY), 0, transaction) == 1) {
+									transaction.commit();
+									bombsRemaining++;
+									return;
+								}
 							}
 						}
 					}

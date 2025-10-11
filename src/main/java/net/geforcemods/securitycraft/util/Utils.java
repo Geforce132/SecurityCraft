@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.util;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -9,9 +10,12 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -82,5 +86,15 @@ public class Utils {
 			case BlockState state -> getLanguageKeyDenotation(state.getBlock());
 			default -> "";
 		};
+	}
+
+	public static Container createContainerFromList(NonNullList<ItemStack> list) {
+		Container container = new SimpleContainer(list.size());
+
+		for (int i = 0; i < list.size(); i++) {
+			container.setItem(i, list.get(i));
+		}
+
+		return container;
 	}
 }

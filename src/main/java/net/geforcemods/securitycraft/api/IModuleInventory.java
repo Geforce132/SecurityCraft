@@ -26,7 +26,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 
 import static com.mojang.serialization.codecs.RecordCodecBuilder.create;
 
@@ -35,7 +36,7 @@ import static com.mojang.serialization.codecs.RecordCodecBuilder.create;
  *
  * @author bl4ckscor3
  */
-public interface IModuleInventory extends IItemHandlerModifiable {
+public interface IModuleInventory extends ResourceHandler<ItemResource> {
 	Codec<ItemStackWithSlot> MODULE_SLOT_CODEC = create(i -> i.group(
 					ExtraCodecs.UNSIGNED_BYTE.fieldOf("ModuleSlot").orElse(0).forGetter(ItemStackWithSlot::slot),
 					ItemStack.MAP_CODEC.forGetter(ItemStackWithSlot::stack))
@@ -56,7 +57,7 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	 *
 	 * @param module The module
 	 * @return true if the given module is enabled, false otherwise. If the module does not exist, this should return false as
-	 *         well.
+	 * well.
 	 */
 	public boolean isModuleEnabled(ModuleType module);
 
@@ -157,18 +158,23 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	@Override
-	public default int getSlots() {
+	default long getAmountAsLong(int index) {
+		return getResource(index).isEmpty() ? 0 : 1;
+	}
+
+	@Override
+	public default int size() {
 		return acceptedModules().length;
 	}
 
 	@Override
-	public default ItemStack getStackInSlot(int slot) {
-		return getModuleInSlot(slot);
+	public default ItemResource getResource(int slot) {
+		return ItemResource.of(getModuleInSlot(slot));
 	}
 
 	public default ItemStack getModuleInSlot(int slot) {
 		slot = fixSlotId(slot);
-		return slot < 0 || slot >= getSlots() ? ItemStack.EMPTY : getInventory().get(slot);
+		return slot < 0 || slot >= size() ? ItemStack.EMPTY : getInventory().get(slot);
 	}
 
 	@Override
@@ -264,14 +270,14 @@ public interface IModuleInventory extends IItemHandlerModifiable {
 	}
 
 	@Override
-	public default int getSlotLimit(int slot) {
+	public default long getCapacityAsLong(int slot, ItemResource resource) {
 		return 1;
 	}
 
 	@Override
-	public default boolean isItemValid(int slot, ItemStack stack) {
+	public default boolean isValid(int slot, ItemResource resource) {
 		slot = fixSlotId(slot);
-		return getModuleInSlot(slot).isEmpty() && !stack.isEmpty() && stack.getItem() instanceof ModuleItem module && acceptsModule(module.getModuleType()) && !hasModule(module.getModuleType());
+		return getModuleInSlot(slot).isEmpty() && !resource.isEmpty() && resource.getItem() instanceof ModuleItem module && acceptsModule(module.getModuleType()) && !hasModule(module.getModuleType());
 	}
 
 	/**
