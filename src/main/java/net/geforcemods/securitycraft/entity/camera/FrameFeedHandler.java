@@ -46,6 +46,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class FrameFeedHandler {
@@ -180,6 +181,16 @@ public class FrameFeedHandler {
 	public static void onClientTickPost(ClientTickEvent.Post event) {
 		if (hasFeeds())
 			FRAME_CAMERA_FEEDS.entrySet().removeIf(e -> e.getValue().shouldBeRemoved());
+	}
+
+	@SubscribeEvent
+	public static void onExtractLevelRenderState(ExtractLevelRenderStateEvent event) {
+		Frustum frustum = event.getFrustum();
+
+		if (FrameFeedHandler.isCapturingCamera())
+			FrameFeedHandler.getCurrentlyCapturedFeed().setCameraFrustum(frustum);
+		else
+			FrameFeedHandler.doFeedFrustumCheck(frustum);
 	}
 
 	public static Map<GlobalPos, CameraFeed> getFeedsToRender(Minecraft mc, double currentTime) {
