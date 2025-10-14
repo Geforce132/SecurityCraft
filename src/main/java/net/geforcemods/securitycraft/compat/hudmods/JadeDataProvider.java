@@ -46,7 +46,7 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 					BlockPos pos = blockAccessor.getPosition();
 
 					if (!overlayDisplay.shouldShowSCInfo(level, state, pos))
-						return registration.blockAccessor().from(blockAccessor).fakeBlock(overlayDisplay.getDisplayStack(level, state, pos)).build();
+						return registration.blockAccessor().from(blockAccessor).serversideRep(overlayDisplay.getDisplayStack(level, state, pos)).build();
 				}
 				else if (block instanceof FakeWaterBlock)
 					return registration.blockAccessor().from(blockAccessor).blockState(Blocks.WATER.defaultBlockState()).build();

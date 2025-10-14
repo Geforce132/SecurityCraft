@@ -97,16 +97,16 @@ dependencies {
 	compileOnly "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
 	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
 	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
-    compileOnly "curse.maven:jei-238222:6752455"
+    implementation "curse.maven:jei-238222:7090453"
 	compileOnly "curse.maven:the-one-probe-245211:5502323"
-	compileOnly "curse.maven:jade-324717:6674229"
+	implementation "curse.maven:jade-324717:7056468"
 	compileOnly "curse.maven:betterf3-401648:6685252"
 	compileOnly "curse.maven:cloth-config-348521:6669837" //betterf3 dependency
-	compileOnly "curse.maven:wthit-forge-455982:6678048"
-	compileOnly "curse.maven:badpackets-615134:6671481" //wthit dependency
+    implementation "curse.maven:wthit-forge-455982:7095465"
+    implementation "curse.maven:badpackets-615134:7066076" //wthit dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
 	compileOnly "curse.maven:embeddium-908741:6116910"
-	compileOnly "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium
+    compileOnly "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium
 }
 
 tasks.named('jar', Jar).configure {
