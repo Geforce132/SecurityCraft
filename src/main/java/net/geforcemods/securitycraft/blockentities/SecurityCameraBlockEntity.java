@@ -161,9 +161,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-
-		if (!level.isLoaded(worldPosition) || !(level.getBlockEntity(worldPosition) instanceof SecurityCameraBlockEntity))
-			unlinkAllFrames();
+		unlinkAllFrames(); //This method does not affect linked frame BEs, but only this block entity and the clientside frame feed handler, so it can be safely called from here.
 	}
 
 	@Override

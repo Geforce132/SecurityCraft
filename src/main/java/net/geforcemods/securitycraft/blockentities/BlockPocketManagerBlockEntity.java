@@ -505,7 +505,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	public MutableComponent disableMultiblock() {
 		if (level.isClientSide)
-			return Component.translatable("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
+			return Component.literal("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
 		if (isEnabled()) {
 			setEnabled(false);
@@ -529,6 +529,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			walls.clear();
 			floor.clear();
 			setChanged();
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
 			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
 
@@ -598,14 +599,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	public NonNullList<ItemStack> getStorage() {
 		return storage;
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-
-		if (level.isLoaded(worldPosition) && level.getBlockState(worldPosition).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
-			disableMultiblock();
 	}
 
 	@Override
