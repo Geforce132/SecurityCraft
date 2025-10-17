@@ -27,6 +27,7 @@
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
 - Fix: Players viewing a Security Camera are invisible for players in spectator mode
 - Fix: The Rift Stabilizer does not keep its custom name as an item when the bottom half is mined
+- Fix: Crash when teleporting near Security Cameras
 
 --------------------------Changelog for v1.10.0.1 of SecurityCraft--------------------------
 
