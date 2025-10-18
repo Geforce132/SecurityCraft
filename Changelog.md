@@ -31,6 +31,7 @@
 - Fix: The Mine and Sentry Remote Access Tool appear to be able to interact with mines/sentries that are not owned by the player, even though they can't
 - Fix: Players viewing a Security Camera are invisible for players in spectator mode
 - Fix: The Rift Stabilizer does not keep its custom name as an item when the bottom half is mined
+- Fix: Crash when teleporting or respawning near Security Cameras
 - Misc.: The minimum required NeoForge version is now 21.8.10
 
 --------------------------Changelog for v1.10-beta1 of SecurityCraft--------------------------
