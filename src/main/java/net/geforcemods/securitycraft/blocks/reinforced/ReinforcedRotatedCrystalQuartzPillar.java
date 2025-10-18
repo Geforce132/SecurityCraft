@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
@@ -18,6 +19,18 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ReinforcedRotatedCrystalQuartzPillar extends ReinforcedRotatedPillarBlock implements IBlockPocket {
 	public ReinforcedRotatedCrystalQuartzPillar(BlockBehaviour.Properties properties, Supplier<Block> vB) {
 		super(properties, vB);
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
+			BlockPocketManagerBlockEntity manager = be.getManager();
+
+			if (manager != null)
+				manager.disableMultiblock();
+		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.LevelUtils;
 import net.minecraft.core.BlockPos;
@@ -52,6 +53,18 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	@Override
 	public boolean isValidSpawn(BlockState state, BlockGetter level, BlockPos pos, Type type, EntityType<?> entityType) {
 		return false;
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof BlockPocketBlockEntity be) {
+			BlockPocketManagerBlockEntity manager = be.getManager();
+
+			if (manager != null)
+				manager.disableMultiblock();
+		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
