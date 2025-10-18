@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
 import net.geforcemods.securitycraft.util.BlockUtils;
@@ -95,6 +96,20 @@ public class ReinforcedCrystalQuartzBlock extends BlockQuartz implements ITileEn
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		if (placer instanceof EntityPlayer)
 			MinecraftForge.EVENT_BUS.post(new OwnershipEvent(world, pos, (EntityPlayer) placer));
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity be = world.getTileEntity(pos);
+
+		if (be instanceof BlockPocketBlockEntity) {
+			BlockPocketManagerBlockEntity manager = ((BlockPocketBlockEntity) be).getManager();
+
+			if (manager != null)
+				manager.disableMultiblock();
+		}
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override

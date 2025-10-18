@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentBase;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -56,7 +56,7 @@ public class ToggleBlockPocketManager implements IMessage {
 				TileEntity te = world.getTileEntity(message.pos);
 
 				if (!player.isSpectator() && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
-					TextComponentTranslation feedback;
+					TextComponentBase feedback;
 
 					((BlockPocketManagerBlockEntity) te).setSize(message.size);
 

@@ -1,8 +1,6 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -42,18 +40,6 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicka
 
 			if (te instanceof BlockPocketManagerBlockEntity)
 				manager = (BlockPocketManagerBlockEntity) te;
-		}
-	}
-
-	@Override
-	public void invalidate() {
-		super.invalidate();
-
-		if (world.isBlockLoaded(pos) && manager != null) {
-			Block block = world.getBlockState(pos).getBlock();
-
-			if (block != SCContent.blockPocketWall && block != SCContent.reinforcedCrystalQuartz)
-				manager.disableMultiblock();
 		}
 	}
 

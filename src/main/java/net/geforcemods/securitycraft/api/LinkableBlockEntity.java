@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickable {
@@ -82,16 +83,6 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void invalidate() {
-		for (LinkedBlock block : linkedBlocks) {
-			if (world.isBlockLoaded(block.getPos()))
-				LinkableBlockEntity.unlink(block.asTileEntity(world), this);
-		}
-
-		super.invalidate();
-	}
-
-	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		propagate(new ILinkedAction.OptionChanged<>(option), this);
 	}
@@ -127,6 +118,24 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 		if (tileEntity1.linkedBlocks.contains(block))
 			tileEntity1.linkedBlocks.remove(block);
+	}
+
+
+	/**
+	 * Unlinks the block entity from all blocks that it is linked to.
+	 *
+	 * @param blockEntity The block entity to unlink from all blocks that it is linked to
+	 */
+	public static void unlinkFromAllLinked(LinkableBlockEntity blockEntity) {
+		if (blockEntity == null)
+			return;
+
+		World level = blockEntity.myLevel();
+
+		for (LinkedBlock block : blockEntity.linkedBlocks) {
+			if (level.isBlockLoaded(block.getPos()))
+				LinkableBlockEntity.unlink(block.asTileEntity(level), blockEntity);
+		}
 	}
 
 	/**

@@ -60,11 +60,14 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof BlockPocketManagerBlockEntity) {
-			IItemHandler handler = ((BlockPocketManagerBlockEntity) tile).getStorageHandler();
+			BlockPocketManagerBlockEntity be = (BlockPocketManagerBlockEntity) tile;
+			IItemHandler handler = be.getStorageHandler();
 
 			for (int i = 0; i < handler.getSlots(); i++) {
 				InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
 			}
+
+			be.disableMultiblock();
 		}
 
 		super.breakBlock(world, pos, state);

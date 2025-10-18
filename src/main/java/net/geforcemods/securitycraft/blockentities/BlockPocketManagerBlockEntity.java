@@ -38,6 +38,8 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentBase;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.capabilities.Capability;
@@ -510,11 +512,13 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return null;
 	}
 
-	public TextComponentTranslation disableMultiblock() {
+	public TextComponentBase disableMultiblock() {
 		if (world.isRemote)
-			return new TextComponentTranslation("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
+			return new TextComponentString("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
 		if (isEnabled()) {
+			IBlockState state = world.getBlockState(pos);
+
 			setEnabled(false);
 
 			for (BlockPos pos : blocks) {
@@ -525,10 +529,10 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			}
 
 			for (BlockPos pos : floor) {
-				IBlockState state = world.getBlockState(pos);
+				IBlockState floorState = world.getBlockState(pos);
 
-				if (state.getProperties().containsKey(BlockPocketWallBlock.SOLID))
-					world.setBlockState(pos, state.withProperty(BlockPocketWallBlock.SOLID, false));
+				if (floorState.getProperties().containsKey(BlockPocketWallBlock.SOLID))
+					world.setBlockState(pos, floorState.withProperty(BlockPocketWallBlock.SOLID, false));
 			}
 
 			if (isModuleEnabled(ModuleType.DISGUISE))
@@ -537,6 +541,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			blocks.clear();
 			walls.clear();
 			floor.clear();
+			markDirty();
+			world.notifyBlockUpdate(pos, state, state, 3);
 			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
 

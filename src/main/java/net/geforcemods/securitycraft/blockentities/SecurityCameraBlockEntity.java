@@ -179,9 +179,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 	@Override
 	public void invalidate() {
 		super.invalidate();
-
-		if (!world.isBlockLoaded(pos) || !(world.getTileEntity(pos) instanceof SecurityCameraBlockEntity))
-			unlinkAllFrames();
+		unlinkAllFrames(); //This method does not affect linked frame BEs, but only this block entity and the clientside frame feed handler, so it can be safely called from here.
 
 		if (!world.isRemote && chunkTicket != null) {
 			ForgeChunkManager.releaseTicket(chunkTicket);

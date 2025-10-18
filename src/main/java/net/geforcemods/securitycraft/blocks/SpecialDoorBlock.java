@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SpecialDoorBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.OwnershipEvent;
@@ -184,6 +185,9 @@ public abstract class SpecialDoorBlock extends BlockDoor implements ITileEntityP
 
 		if (te instanceof IPasscodeProtected)
 			SaltData.removeSalt(((IPasscodeProtected) te).getSaltKey());
+
+		if (te instanceof LinkableBlockEntity)
+			LinkableBlockEntity.unlinkFromAllLinked((LinkableBlockEntity) te);
 
 		world.removeTileEntity(pos);
 	}

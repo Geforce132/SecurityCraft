@@ -6,6 +6,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.screen.ScreenHandler.Screens;
@@ -151,11 +152,13 @@ public class LaserBlock extends DisguisableBlock {
 		TileEntity te = world.getTileEntity(pos);
 
 		if (te instanceof LaserBlockBlockEntity) {
-			InventoryBasic lensContainer = ((LaserBlockBlockEntity) te).getLensContainer();
+			LaserBlockBlockEntity be = (LaserBlockBlockEntity) te;
+			InventoryBasic lensContainer = be.getLensContainer();
 
 			InventoryHelper.dropInventoryItems(world, pos, lensContainer);
 			lensContainer.clear();
 			BlockUtils.updateIndirectNeighbors(world, pos, SCContent.laserBlock);
+			LinkableBlockEntity.unlinkFromAllLinked(be);
 		}
 
 		super.breakBlock(world, pos, state);

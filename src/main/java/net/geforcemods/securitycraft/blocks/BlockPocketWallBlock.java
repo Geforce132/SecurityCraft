@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -89,6 +90,20 @@ public class BlockPocketWallBlock extends OwnableBlock implements ITileEntityPro
 	@Override
 	public float getAmbientOcclusionLightValue(IBlockState state) {
 		return state.getValue(SEE_THROUGH) ? 1.0F : super.getAmbientOcclusionLightValue(state);
+	}
+
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity be = world.getTileEntity(pos);
+
+		if (be instanceof BlockPocketBlockEntity) {
+			BlockPocketManagerBlockEntity manager = ((BlockPocketBlockEntity) be).getManager();
+
+			if (manager != null)
+				manager.disableMultiblock();
+		}
+
+		super.breakBlock(world, pos, state);
 	}
 
 	@Override
