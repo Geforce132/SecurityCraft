@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -43,11 +42,11 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicki
 	}
 
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
-
-		if (level.isLoaded(worldPosition) && manager != null && !(level.getBlockState(worldPosition).getBlock() instanceof IBlockPocket))
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		if (manager != null)
 			manager.disableMultiblock();
+
+		super.preRemoveSideEffects(pos, state);
 	}
 
 	@Override
