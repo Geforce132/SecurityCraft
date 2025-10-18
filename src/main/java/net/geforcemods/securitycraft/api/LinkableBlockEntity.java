@@ -10,6 +10,7 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
 public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickableTileEntity {
@@ -70,16 +71,6 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void setRemoved() {
-		for (LinkedBlock block : linkedBlocks) {
-			if (level.isLoaded(block.getPos()))
-				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
-		}
-
-		super.setRemoved();
-	}
-
-	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		propagate(new ILinkedAction.OptionChanged<>(option), this);
 	}
@@ -128,6 +119,25 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 		if (blockEntity1.linkedBlocks.contains(block))
 			blockEntity1.linkedBlocks.remove(block);
+	}
+
+	/**
+	 * Unlinks the block entity from all blocks that it is linked to.
+	 *
+	 * @param blockEntity The block entity to unlink from all blocks that it is linked to
+	 */
+	public static void unlinkFromAllLinked(LinkableBlockEntity blockEntity) {
+		if (blockEntity == null)
+			return;
+
+		World level = blockEntity.level;
+
+		for (LinkedBlock block : blockEntity.linkedBlocks) {
+			if (level.isLoaded(block.getPos()))
+				LinkableBlockEntity.unlink(block.asBlockEntity(level), blockEntity);
+		}
+
+		blockEntity.setChanged();
 	}
 
 	/**

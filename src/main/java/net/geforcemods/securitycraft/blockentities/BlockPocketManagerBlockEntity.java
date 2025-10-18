@@ -45,6 +45,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
@@ -507,9 +509,9 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		return null;
 	}
 
-	public TranslationTextComponent disableMultiblock() {
+	public TextComponent disableMultiblock() {
 		if (level.isClientSide)
-			return new TranslationTextComponent("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
+			return new StringTextComponent("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
 		if (isEnabled()) {
 			setEnabled(false);
@@ -534,6 +536,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			blocks.clear();
 			walls.clear();
 			floor.clear();
+			setChanged();
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
 			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
 
@@ -620,14 +624,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		storageHandler = null; //recreated in getStorageHandler
 		insertOnlyHandler = null; //recreated in getInsertOnlyHandler
 		super.reviveCaps();
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-
-		if (level.hasChunkAt(worldPosition) && level.getBlockState(worldPosition).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
-			disableMultiblock();
 	}
 
 	@Override

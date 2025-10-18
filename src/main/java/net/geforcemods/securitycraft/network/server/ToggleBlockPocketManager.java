@@ -12,8 +12,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fml.network.NetworkEvent;
 
 public class ToggleBlockPocketManager {
@@ -46,7 +46,7 @@ public class ToggleBlockPocketManager {
 		TileEntity te = player.level.getBlockEntity(pos);
 
 		if (!player.isSpectator() && te instanceof BlockPocketManagerBlockEntity && ((BlockPocketManagerBlockEntity) te).isOwnedBy(player)) {
-			TranslationTextComponent feedback;
+			TextComponent feedback;
 
 			((BlockPocketManagerBlockEntity) te).setSize(size);
 

@@ -5,13 +5,13 @@ import java.util.Random;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 public class LaserBlock extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public LaserBlock(AbstractBlock.Properties properties) {
+	public LaserBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
@@ -152,11 +152,13 @@ public class LaserBlock extends DisguisableBlock {
 			TileEntity te = level.getBlockEntity(pos);
 
 			if (te instanceof LaserBlockBlockEntity) {
-				LensContainer lensContainer = ((LaserBlockBlockEntity) te).getLensContainer();
+				LaserBlockBlockEntity be = (LaserBlockBlockEntity) te;
+				LensContainer lensContainer = be.getLensContainer();
 
 				InventoryHelper.dropContents(level, pos, lensContainer);
 				lensContainer.clearContent();
 				level.updateNeighbourForOutputSignal(pos, this);
+				LinkableBlockEntity.unlinkFromAllLinked(be);
 			}
 		}
 

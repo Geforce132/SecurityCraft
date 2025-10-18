@@ -46,14 +46,6 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicka
 	}
 
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
-
-		if (level.hasChunkAt(worldPosition) && manager != null && !(level.getBlockState(worldPosition).getBlock() instanceof IBlockPocket))
-			manager.disableMultiblock();
-	}
-
-	@Override
 	public CompoundNBT save(CompoundNBT tag) {
 		if (manager != null)
 			tag.putLong("ManagerPos", manager.getBlockPos().asLong());

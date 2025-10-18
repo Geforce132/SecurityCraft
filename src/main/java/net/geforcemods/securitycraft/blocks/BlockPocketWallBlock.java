@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.blocks;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.BlockPocketBlockEntity;
+import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -21,6 +22,7 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -61,6 +63,22 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 	@Override
 	public boolean canCreatureSpawn(BlockState state, IBlockReader level, BlockPos pos, PlacementType type, EntityType<?> entityType) {
 		return false;
+	}
+
+	@Override
+	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			TileEntity be = level.getBlockEntity(pos);
+
+			if (be instanceof BlockPocketBlockEntity) {
+				BlockPocketManagerBlockEntity manager = ((BlockPocketBlockEntity) be).getManager();
+
+				if (manager != null)
+					manager.disableMultiblock();
+			}
+		}
+
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override

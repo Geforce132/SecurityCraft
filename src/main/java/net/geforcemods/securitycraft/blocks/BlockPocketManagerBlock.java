@@ -56,6 +56,8 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 					InventoryHelper.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), handler.getStackInSlot(i));
 				}
 			});
+
+			be.disableMultiblock();
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);

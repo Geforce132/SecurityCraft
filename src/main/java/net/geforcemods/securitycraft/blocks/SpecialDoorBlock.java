@@ -12,7 +12,6 @@ import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.util.BlockUtils;
-import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.DoorBlock;
@@ -39,7 +38,7 @@ import net.minecraft.world.server.ServerWorld;
 public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable, IOverlayDisplay {
 	private final float destroyTimeForOwner;
 
-	protected SpecialDoorBlock(AbstractBlock.Properties properties) {
+	protected SpecialDoorBlock(Properties properties) {
 		super(OwnableBlock.withReinforcedDestroyTime(properties));
 		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
@@ -163,6 +162,9 @@ public abstract class SpecialDoorBlock extends DoorBlock implements IDisguisable
 
 			if (be instanceof IPasscodeProtected)
 				SaltData.removeSalt(((IPasscodeProtected) be).getSaltKey());
+
+			if (be instanceof LinkableBlockEntity)
+				LinkableBlockEntity.unlinkFromAllLinked((LinkableBlockEntity) be);
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);
