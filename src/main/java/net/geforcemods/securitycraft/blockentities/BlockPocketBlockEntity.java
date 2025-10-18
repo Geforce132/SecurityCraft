@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.blockentities;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
-import net.geforcemods.securitycraft.util.IBlockPocket;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -40,14 +39,6 @@ public class BlockPocketBlockEntity extends OwnableBlockEntity implements ITicki
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (manager == null && managerPos != null && level.getBlockEntity(managerPos) instanceof BlockPocketManagerBlockEntity be)
 			manager = be;
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-
-		if (level.isLoaded(worldPosition) && manager != null && !(level.getBlockState(worldPosition).getBlock() instanceof IBlockPocket))
-			manager.disableMultiblock();
 	}
 
 	@Override

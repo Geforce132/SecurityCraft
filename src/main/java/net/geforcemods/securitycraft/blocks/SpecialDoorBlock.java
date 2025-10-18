@@ -150,6 +150,9 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 
 			if (be instanceof IPasscodeProtected passcodeProtected)
 				SaltData.removeSalt(passcodeProtected.getSaltKey());
+
+			if (be instanceof LinkableBlockEntity linkable)
+				LinkableBlockEntity.unlinkFromAllLinked(linkable);
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);

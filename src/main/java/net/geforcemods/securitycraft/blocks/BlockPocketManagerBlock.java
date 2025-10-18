@@ -43,8 +43,10 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 		if (level.isClientSide || state.getBlock() == newState.getBlock())
 			return;
 
-		if (level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be)
+		if (level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be) {
 			Containers.dropContents(level, pos, be.getStorage());
+			be.disableMultiblock();
+        }
 
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
