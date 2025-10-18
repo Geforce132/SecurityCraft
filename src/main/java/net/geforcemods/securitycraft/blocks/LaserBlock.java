@@ -7,6 +7,7 @@ import com.mojang.math.Vector3f;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -156,6 +157,7 @@ public class LaserBlock extends DisguisableBlock {
 			Containers.dropContents(level, pos, lensContainer);
 			lensContainer.clearContent();
 			level.updateNeighbourForOutputSignal(pos, this);
+			LinkableBlockEntity.unlinkFromAllLinked(be);
 		}
 
 		super.onRemove(state, level, pos, newState, isMoving);

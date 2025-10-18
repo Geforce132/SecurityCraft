@@ -31,6 +31,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -512,7 +513,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 
 	public MutableComponent disableMultiblock() {
 		if (level.isClientSide)
-			return new TranslatableComponent("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
+			return new TextComponent("disableMultiblock called on client! Send a ToggleBlockPocketManager packet instead.");
 
 		if (isEnabled()) {
 			setEnabled(false);
@@ -536,6 +537,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 			walls.clear();
 			floor.clear();
 			setChanged();
+			level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
 			return Utils.localize("messages.securitycraft:blockpocket.deactivated");
 		}
 
@@ -620,14 +622,6 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		storageHandler = null; //recreated in getStorageHandler
 		insertOnlyHandler = null; //recreated in getInsertOnlyHandler
 		super.reviveCaps();
-	}
-
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-
-		if (level.isLoaded(worldPosition) && level.getBlockState(worldPosition).getBlock() != SCContent.BLOCK_POCKET_MANAGER.get())
-			disableMultiblock();
 	}
 
 	@Override
