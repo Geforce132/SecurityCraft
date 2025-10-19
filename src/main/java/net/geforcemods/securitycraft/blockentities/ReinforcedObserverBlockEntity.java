@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedObserverBlockEntity extends DisguisableBlockEntity {
 	public ReinforcedObserverBlockEntity(BlockPos pos, BlockState state) {
-		super(SCContent.OWNABLE_BLOCK_ENTITY.get(), pos, state);
+		super(SCContent.OBSERVER_BLOCK_ENTITY.get(), pos, state);
 	}
 
 	public ReinforcedObserverBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -26,11 +26,6 @@ public class ReinforcedObserverBlockEntity extends DisguisableBlockEntity {
 
 	@Override
 	public boolean needsValidation() {
-		return true;
-	}
-
-	@Override
-	public boolean shouldRender() {
 		return true;
 	}
 }
