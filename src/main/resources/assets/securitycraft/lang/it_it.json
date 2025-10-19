@@ -762,7 +762,7 @@
 	"gui.securitycraft:keycard_reader.link": "Collegamento",
 	"gui.securitycraft:keycard_reader.noSmartModule": "Hai bisogno di un Modulo intelligente per controllare i livelli delle Tessere singolarmente.",
 	"gui.securitycraft:keycard_reader.randomize_signature": "Rende la firma casuale",
-	"gui.securitycraft:keycard_reader.signature": "Firma: %s",
+	"gui.securitycraft:keycard_reader.signature": "Firma:",
 	"gui.securitycraft:keycard_reader.smartModule": "Controllo livello Tessere individuale attivo!",
 	"gui.securitycraft:keycard_reader.usable_by.hint": "Giocatore...",
 	"gui.securitycraft:keycard_reader.usable_by.tooltip": "Il nome del giocatore al quale sarà consentito usare questa Tessera. Lascialo vuoto per consentire a chiunque di usarla.",
