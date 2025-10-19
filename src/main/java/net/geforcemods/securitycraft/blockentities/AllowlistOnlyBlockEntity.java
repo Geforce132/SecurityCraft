@@ -70,7 +70,7 @@ public class AllowlistOnlyBlockEntity extends CustomizableBlockEntity {
 			case FLOOR:
 				return Direction.UP;
 			default:
-				return state.getValue(BlockStateProperties.FACING);
+				return state.getValue(BlockStateProperties.HORIZONTAL_FACING);
 		}
 	}
 }
