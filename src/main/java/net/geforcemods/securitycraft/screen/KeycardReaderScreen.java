@@ -138,7 +138,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		signatureTextLength = font.width(signatureText);
 		signatureTextStartX = imageWidth / 2 - signatureTextLength + 5;
 		signatureTextField = addRenderableWidget(new EditBox(font, leftPos + 96, topPos + 21, 40, 12, Component.empty()));
-		signatureTextField.setValue(StringUtils.leftPad("" + signature, 5, "0"));
+		signatureTextField.setValue(leftPaddedSignature());
 		signatureTextField.setFilter(s -> s.matches("\\d*"));
 		signatureTextField.setMaxLength(5);
 		signatureTextField.setResponder(this::changeSignature);
@@ -363,7 +363,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		plusThree.active = enablePlusButtons;
 
 		if (!throughTextField) {
-			String textFieldValue = StringUtils.leftPad("" + signature, 5, "0");
+			String textFieldValue = leftPaddedSignature();
 
 			if (!signatureTextField.getValue().equals(textFieldValue))
 				signatureTextField.setValue(textFieldValue);
@@ -384,5 +384,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			return Optional.empty();
 		else
 			return Optional.of(message);
+	}
+
+	private String leftPaddedSignature() {
+		return StringUtils.leftPad("" + signature, 5, "0");
 	}
 }
