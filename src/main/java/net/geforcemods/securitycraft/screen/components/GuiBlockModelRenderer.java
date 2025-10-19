@@ -59,6 +59,7 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 			FeatureRenderDispatcher featureRenderDispatcher = mc.gameRenderer.getFeatureRenderDispatcher();
 
 			beRenderer.extractRenderState(guiRenderState.be(), beRenderState, mc.getDeltaTracker().getGameTimeDeltaPartialTick(true), mc.gameRenderer.getMainCamera().getPosition(), null);
+			beRenderState.lightCoords = 15728880; //The block entity should always be rendered at full brightness
 			beRenderer.submit(beRenderState, pose, featureRenderDispatcher.getSubmitNodeStorage(), mc.levelRenderer.levelRenderState.cameraRenderState);
 			featureRenderDispatcher.renderAllFeatures();
 		}
