@@ -66,8 +66,4 @@ public class OwnableBlockEntity extends BlockEntity implements IOwnable {
 		owner.set(uuid, name);
 		setChanged();
 	}
-
-	public boolean shouldRender() {
-		return false;
-	}
 }
