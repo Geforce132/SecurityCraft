@@ -736,7 +736,7 @@
 	"gui.securitycraft:keycard_reader.link": "链接",
 	"gui.securitycraft:keycard_reader.noSmartModule": "需要安装一个智能模块来单独控制各安全卡等级。",
 	"gui.securitycraft:keycard_reader.randomize_signature": "随机签名",
-	"gui.securitycraft:keycard_reader.signature": "签名：%s",
+	"gui.securitycraft:keycard_reader.signature": "签名：",
 	"gui.securitycraft:keycard_reader.smartModule": "独立的安全卡等级控制已启用！",
 	"gui.securitycraft:keycard_reader.usable_by.hint": "玩家……",
 	"gui.securitycraft:keycard_reader.usable_by.tooltip": "允许使用此安全卡的玩家名。留空即可允许所有玩家使用。",
