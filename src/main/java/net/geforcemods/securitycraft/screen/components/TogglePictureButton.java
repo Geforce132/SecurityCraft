@@ -31,15 +31,12 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 
 	@Override
 	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		if (visible) {
-			ResourceLocation sprite = getCurrentSprite();
+		super.renderWidget(guiGraphics, mouseX, mouseX, partialTicks);
 
-			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
+		ResourceLocation sprite = getCurrentSprite();
 
-			if (sprite != null)
-				guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, getX() + drawOffset, getY() + drawOffset, drawWidth, drawHeight);
-		}
+		if (sprite != null)
+			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, getX() + drawOffset, getY() + drawOffset, drawWidth, drawHeight);
 	}
 
 	@Override

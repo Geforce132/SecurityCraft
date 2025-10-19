@@ -10,6 +10,8 @@ import java.util.function.ToIntFunction;
 import org.apache.commons.lang3.StringUtils;
 import org.joml.Matrix3x2f;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.Font;
@@ -133,12 +135,17 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		boolean colorFieldHovered = colorFieldHoverChecker.checkHover(mouseX, mouseY);
+
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, colorFieldHoverChecker.checkHover(mouseX, mouseY) ? FIELD_SELECTOR_HIGHLIGHTED_SPRITE : FIELD_SELECTOR_SPRITE, (int) selectionX - 1, (int) selectionY - 1, 3, 3); //color field indicator
+		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, colorFieldHovered ? FIELD_SELECTOR_HIGHLIGHTED_SPRITE : FIELD_SELECTOR_SPRITE, (int) selectionX - 1, (int) selectionY - 1, 3, 3); //color field indicator
 		guiGraphics.drawString(font, rText, colorFieldRight + 5, colorFieldTop + 1, CommonColors.DARK_GRAY, false);
 		guiGraphics.drawString(font, gText, colorFieldRight + 5, colorFieldTop + 16, CommonColors.DARK_GRAY, false);
 		guiGraphics.drawString(font, bText, colorFieldRight + 5, colorFieldTop + 31, CommonColors.DARK_GRAY, false);
 		guiGraphics.drawString(font, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, CommonColors.DARK_GRAY, false);
+
+		if (colorFieldHovered)
+			guiGraphics.requestCursor(clickedInDragRegion ? CursorTypes.RESIZE_ALL : CursorTypes.POINTING_HAND);
 	}
 
 	@Override

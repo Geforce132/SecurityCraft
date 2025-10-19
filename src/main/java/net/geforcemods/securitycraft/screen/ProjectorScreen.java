@@ -145,6 +145,14 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	}
 
 	@Override
+	public boolean mouseReleased(MouseButtonEvent event) {
+		if (stateSelector != null && stateSelector.mouseReleased(event))
+			return true;
+
+		return super.mouseReleased(event);
+	}
+
+	@Override
 	public List<Rect2i> getExtraAreas() {
 		if (stateSelector != null)
 			return stateSelector.getGuiExtraAreas();

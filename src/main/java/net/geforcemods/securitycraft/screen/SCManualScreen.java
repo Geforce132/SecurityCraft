@@ -16,6 +16,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
+
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -706,6 +708,9 @@ public class SCManualScreen extends Screen {
 		@Override
 		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
+
+			if (isHovered())
+				guiGraphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
 		}
 	}
 
@@ -718,6 +723,9 @@ public class SCManualScreen extends Screen {
 		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isHoveredOrFocused() ? LINK_OUT_HIGHLIGHTED_SPRITE : LINK_OUT_SPRITE, getX(), getY(), 16, 16);
+
+			if (isHovered())
+				guiGraphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
 		}
 	}
 

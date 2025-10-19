@@ -2,6 +2,8 @@ package net.geforcemods.securitycraft.screen.components;
 
 import java.util.function.Consumer;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -49,6 +51,9 @@ public class CallbackCheckbox extends AbstractButton {
 
 		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, getX(), getY(), width, height);
 		guiGraphics.drawString(minecraft.font, getMessage(), getX() + (int) (width * 1.2F), getY() + (height - 8) / 2, textColor | Mth.ceil(alpha * 255.0F) << 24, false);
+
+		if (isHovered())
+			guiGraphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
 	}
 
 	@Override

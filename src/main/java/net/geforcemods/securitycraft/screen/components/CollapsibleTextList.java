@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -73,6 +75,9 @@ public class CollapsibleTextList extends Button {
 		int interpolatedHeight = (int) Mth.lerp(partialTick, previousHeight, currentHeight);
 
 		guiGraphics.fillGradient(getX(), getY() + height, getX() + width, getY() + interpolatedHeight, 0xC0101010, 0xD0101010);
+
+		if (isHovered())
+			guiGraphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
 
 		for (int i = 0; i < textLines.size(); i++) {
 			int textY = getY() + 2 + height + renderedLines * font.lineHeight + (i * 12);

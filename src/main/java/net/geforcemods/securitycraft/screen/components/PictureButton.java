@@ -45,24 +45,21 @@ public class PictureButton extends Button {
 
 	@Override
 	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		if (visible) {
-			Minecraft mc = Minecraft.getInstance();
-			Font font = mc.font;
+		Minecraft mc = Minecraft.getInstance();
+		Font font = mc.font;
 
-			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
-			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
+		super.renderWidget(guiGraphics, mouseX, mouseX, partialTicks);
 
-			if (!blockToRender.isEmpty()) {
-				guiGraphics.renderItem(blockToRender, getX() + 2, getY() + 3);
-				guiGraphics.renderItemDecorations(font, blockToRender, getX() + 2, getY() + 3, "");
-			}
-			else if (!itemToRender.isEmpty()) {
-				guiGraphics.renderItem(itemToRender, getX() + 2, getY() + 2);
-				guiGraphics.renderItemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
-			}
-			else if (getSpriteLocation() != null)
-				guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, getSpriteLocation(), getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight);
+		if (!blockToRender.isEmpty()) {
+			guiGraphics.renderItem(blockToRender, getX() + 2, getY() + 3);
+			guiGraphics.renderItemDecorations(font, blockToRender, getX() + 2, getY() + 3, "");
 		}
+		else if (!itemToRender.isEmpty()) {
+			guiGraphics.renderItem(itemToRender, getX() + 2, getY() + 2);
+			guiGraphics.renderItemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
+		}
+		else if (getSpriteLocation() != null)
+			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, getSpriteLocation(), getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight);
 	}
 
 	public ResourceLocation getSpriteLocation() {

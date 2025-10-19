@@ -71,6 +71,14 @@ public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModule
 	}
 
 	@Override
+	public boolean mouseReleased(MouseButtonEvent event) {
+		if (stateSelector != null && stateSelector.mouseReleased(event))
+			return true;
+
+		return super.mouseReleased(event);
+	}
+
+	@Override
 	public void onClose() {
 		super.onClose();
 

@@ -7,6 +7,8 @@ import java.util.List;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import com.mojang.blaze3d.platform.cursor.CursorTypes;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
@@ -133,6 +135,9 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		}
 
 		guiGraphics.drawString(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, CommonColors.DARK_GRAY, false);
+
+		if (dragHoverChecker.checkHover(mouseX, mouseY))
+			guiGraphics.requestCursor(clickedInDragRegion ? CursorTypes.RESIZE_ALL : CursorTypes.POINTING_HAND);
 	}
 
 	@Override
