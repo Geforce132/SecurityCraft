@@ -11,6 +11,7 @@ import com.mojang.math.Axis;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.render.pip.PictureInPictureRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -59,7 +60,7 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 			FeatureRenderDispatcher featureRenderDispatcher = mc.gameRenderer.getFeatureRenderDispatcher();
 
 			beRenderer.extractRenderState(guiRenderState.be(), beRenderState, mc.getDeltaTracker().getGameTimeDeltaPartialTick(true), mc.gameRenderer.getMainCamera().getPosition(), null);
-			beRenderState.lightCoords = 15728880; //The block entity should always be rendered at full brightness
+			beRenderState.lightCoords = LightTexture.FULL_BRIGHT;
 			beRenderer.submit(beRenderState, pose, featureRenderDispatcher.getSubmitNodeStorage(), mc.levelRenderer.levelRenderState.cameraRenderState);
 			featureRenderDispatcher.renderAllFeatures();
 		}
