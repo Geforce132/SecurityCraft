@@ -3329,6 +3329,7 @@ public class SCContent {
 			SCContent.REINFORCED_CRIMSON_SHELF.get(),
 			SCContent.REINFORCED_WARPED_SHELF.get(),
 			SCContent.REINFORCED_MOVING_PISTON.get()));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedObserverBlockEntity>> OBSERVER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("observer", () -> new BlockEntityType<>(ReinforcedObserverBlockEntity::new, SCContent.REINFORCED_OBSERVER.get()));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",

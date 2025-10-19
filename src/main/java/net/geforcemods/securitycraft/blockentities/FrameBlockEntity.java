@@ -308,9 +308,4 @@ public class FrameBlockEntity extends CustomizableBlockEntity implements ITickin
 				ModuleType.ALLOWLIST, ModuleType.REDSTONE
 		};
 	}
-
-	@Override
-	public boolean shouldRender() {
-		return true;
-	}
 }
