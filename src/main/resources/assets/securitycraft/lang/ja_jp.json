@@ -580,7 +580,7 @@
 	"gui.securitycraft:keycard_reader.link": "リンク",
 	"gui.securitycraft:keycard_reader.noSmartModule": "キーカードのレベルを個別に制御するにはスマートモジュールが必要です。",
 	"gui.securitycraft:keycard_reader.randomize_signature": "署名のランダム化",
-	"gui.securitycraft:keycard_reader.signature": "署名: %s",
+	"gui.securitycraft:keycard_reader.signature": "署名:",
 	"gui.securitycraft:keycard_reader.smartModule": "個別のキーカードレベルのコントロールが有効です！",
 	"gui.securitycraft:keycard_reader.usable_by.hint": "プレイヤー...",
 	"gui.securitycraft:keycard_reader.usable_by.tooltip": "このキーカードを使用できるプレイヤーの名前です。誰でも使用できるようにするには空白のままにしておきます。",

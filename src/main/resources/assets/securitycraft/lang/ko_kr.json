@@ -492,7 +492,7 @@
 	"gui.securitycraft:keycard_reader.level_mismatch": "이 단계의 키카드를 이 키카드 판독기에서 사용할 수 없습니다!",
 	"gui.securitycraft:keycard_reader.link": "링크",
 	"gui.securitycraft:keycard_reader.noSmartModule": "스마트 모듈이 있어야 키카드 단계를 개별적으로 제어할 수 있습니다.",
-	"gui.securitycraft:keycard_reader.signature": "서명: %s",
+	"gui.securitycraft:keycard_reader.signature": "서명:",
 	"gui.securitycraft:keycard_reader.smartModule": "개별 키카드 단계 제어가 활성화됩니다!",
 	"gui.securitycraft:logger.date": "날짜: %s",
 	"gui.securitycraft:logger.logged": "기록된 플레이어:",
