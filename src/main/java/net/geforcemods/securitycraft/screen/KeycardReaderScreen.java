@@ -23,6 +23,7 @@ import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiPageButtonList.GuiResponder;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +31,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
 public class KeycardReaderScreen extends GuiContainer {
@@ -47,6 +47,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	private static final String GREATER_THAN_EQUALS = ">=";
 	private static final int MAX_SIGNATURE = 99999;
 	private final String title;
+	private final String signatureText = Utils.localize("gui.securitycraft:keycard_reader.signature").getFormattedText();
 	private final String inventoryText = Utils.localize("container.inventory").getFormattedText();
 	private final String keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels").getFormattedText();
 	private final String linkText = Utils.localize("gui.securitycraft:keycard_reader.link").getFormattedText();
@@ -60,12 +61,11 @@ public class KeycardReaderScreen extends GuiContainer {
 	private int previousSignature;
 	private int signature;
 	private boolean[] acceptedLevels;
-	private String signatureText;
 	private int signatureTextLength;
 	private int signatureTextStartX;
 	private GuiButton minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
-	private GuiTextField usesTextField;
+	private GuiTextField signatureTextField, usesTextField;
 	private HintEditBox usableByTextField;
 	private StringHoverChecker usesHoverChecker, randomizeHoverChecker, usableByHoverChecker;
 	private GuiButton setUsesButton;
@@ -137,6 +137,24 @@ public class KeycardReaderScreen extends GuiContainer {
 			}
 		}
 
+		signatureTextLength = fontRenderer.getStringWidth(signatureText);
+		signatureTextStartX = xSize / 2 - signatureTextLength + 5;
+		signatureTextField = new GuiTextField(id++, fontRenderer, guiLeft + 96, guiTop + 21, 40, 12);
+		signatureTextField.setText(leftPaddedSignature());
+		signatureTextField.setValidator(s -> s.matches("\\d*"));
+		signatureTextField.setMaxStringLength(5);
+		signatureTextField.setGuiResponder(new GuiResponder() {
+			@Override
+			public void setEntryValue(int id, String value) {
+				changeSignature(value);
+			}
+
+			@Override
+			public void setEntryValue(int id, float value) {}
+
+			@Override
+			public void setEntryValue(int id, boolean value) {}
+		});
 		minusThree = addButton(new ClickButton(id++, guiLeft + 22, buttonY, 24, buttonHeight, "---", b -> changeSignature(signature - 100)));
 		minusTwo = addButton(new ClickButton(id++, guiLeft + 48, buttonY, 18, buttonHeight, "--", b -> changeSignature(signature - 10)));
 		minusOne = addButton(new ClickButton(id++, guiLeft + 68, buttonY, 12, buttonHeight, "-", b -> changeSignature(signature - 1)));
@@ -245,7 +263,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		fontRenderer.drawString(title, xSize / 2 - fontRenderer.getStringWidth(title) / 2, 6, 4210752);
-		fontRenderer.drawString(signatureText, xSize / 2 - fontRenderer.getStringWidth(signatureText) / 2, 23, 4210752);
+		fontRenderer.drawString(signatureText, signatureTextStartX, 23, 4210752);
 		fontRenderer.drawString(keycardLevelsText, 170 - fontRenderer.getStringWidth(keycardLevelsText), 56, 4210752);
 
 		//numbers infront of keycard levels buttons
@@ -294,6 +312,7 @@ public class KeycardReaderScreen extends GuiContainer {
 		super.drawScreen(mouseX, mouseY, partialTicks);
 
 		GlStateManager.disableLighting();
+		signatureTextField.drawTextBox();
 		usesTextField.drawTextBox();
 		usableByTextField.drawTextBox();
 		GlStateManager.enableLighting();
@@ -339,6 +358,8 @@ public class KeycardReaderScreen extends GuiContainer {
 	@Override
 	protected void keyTyped(char typedChar, int keyCode) throws IOException {
 		if (keyCode != Keyboard.KEY_ESCAPE) {
+			if (signatureTextField.isFocused())
+				signatureTextField.textboxKeyTyped(typedChar, keyCode);
 			if (usesTextField.isFocused())
 				usesTextField.textboxKeyTyped(typedChar, keyCode);
 			else if (usableByTextField.isFocused())
@@ -351,6 +372,7 @@ public class KeycardReaderScreen extends GuiContainer {
 	@Override
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
+		signatureTextField.mouseClicked(mouseX, mouseY, mouseButton);
 		usesTextField.mouseClicked(mouseX, mouseY, mouseButton);
 		usableByTextField.mouseClicked(mouseX, mouseY, mouseButton);
 	}
@@ -381,15 +403,21 @@ public class KeycardReaderScreen extends GuiContainer {
 	}
 
 	public void changeSignature(int newSignature) {
+		changeSignature(newSignature, false);
+	}
+
+	public void changeSignature(String newSignature) {
+		if (newSignature != null && !newSignature.isEmpty())
+			changeSignature(Integer.parseInt(newSignature), true);
+	}
+
+	public void changeSignature(int newSignature, boolean throughTextField) {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
 		if (isOwner)
 			signature = MathHelper.clamp(newSignature, 0, MAX_SIGNATURE); //keep between 0 and the max allowed (disallow negative numbers)
 
-		signatureText = new TextComponentTranslation("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0")).getFormattedText();
-		signatureTextLength = fontRenderer.getStringWidth(signatureText);
-		signatureTextStartX = xSize / 2 - signatureTextLength / 2;
 		enablePlusButtons = isOwner && signature != MAX_SIGNATURE;
 		enableMinusButtons = isOwner && signature != 0;
 		minusThree.enabled = enableMinusButtons;
@@ -399,6 +427,13 @@ public class KeycardReaderScreen extends GuiContainer {
 		plusOne.enabled = enablePlusButtons;
 		plusTwo.enabled = enablePlusButtons;
 		plusThree.enabled = enablePlusButtons;
+
+		if (!throughTextField) {
+			String textFieldValue = leftPaddedSignature();
+
+			if (!signatureTextField.getText().equals(textFieldValue))
+				signatureTextField.setText(textFieldValue);
+		}
 	}
 
 	public void changeLevelState(int i, boolean active) {
@@ -406,5 +441,9 @@ public class KeycardReaderScreen extends GuiContainer {
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
 			acceptedLevels[i] = active;
 		}
+	}
+
+	private String leftPaddedSignature() {
+		return StringUtils.leftPad("" + signature, 5, "0");
 	}
 }
