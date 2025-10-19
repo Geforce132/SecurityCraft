@@ -711,7 +711,7 @@
 	"gui.securitycraft:keycard_reader.link": "Vínculo",
 	"gui.securitycraft:keycard_reader.noSmartModule": "Se necesita un módulo inteligente para controlar los niveles de la tarjeta de acceso individualmente.",
 	"gui.securitycraft:keycard_reader.randomize_signature": "Crear firma aleatoria",
-	"gui.securitycraft:keycard_reader.signature": "Firma: %s",
+	"gui.securitycraft:keycard_reader.signature": "Firma:",
 	"gui.securitycraft:keycard_reader.smartModule": "¡Control individual de tarjeta de acceso activo!",
 	"gui.securitycraft:keycard_reader.usable_by.hint": "Jugador...",
 	"gui.securitycraft:keycard_reader.usable_by.tooltip": "El nombre del jugador que podrá utilizar esta tarjeta de acceso. Si no se escribe ningún nombre, todo el mundo podrá utilizarla.",

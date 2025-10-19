@@ -710,7 +710,7 @@
 	"gui.securitycraft:keycard_reader.link": "Lien",
 	"gui.securitycraft:keycard_reader.noSmartModule": "Vous avez besoin d'un module intelligent pour contrôler les niveaux de carte d'accès individuellement.",
 	"gui.securitycraft:keycard_reader.randomize_signature": "Randomiser la signature",
-	"gui.securitycraft:keycard_reader.signature": "Signature : %s",
+	"gui.securitycraft:keycard_reader.signature": "Signature :",
 	"gui.securitycraft:keycard_reader.smartModule": "Le contrôle de niveau de carte d'accès individuel est actif !",
 	"gui.securitycraft:keycard_reader.usable_by.hint": "Joueur...",
 	"gui.securitycraft:keycard_reader.usable_by.tooltip": "Le nom du joueur qui sera autorisé à utiliser cette carte d'accès. Laisser vide pour autoriser tout le monde à l'utiliser.",
