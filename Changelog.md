@@ -29,6 +29,7 @@
 - Fix: Players viewing a Security Camera are invisible for players in spectator mode
 - Fix: The Rift Stabilizer does not keep its custom name as an item when the bottom half is mined
 - Fix: Crash when teleporting or respawning near Security Cameras
+- Fix: Crash when trying to change the owner of a Reinforced Button or Reinforced Lever
 
 --------------------------Changelog for v1.10-beta3 of SecurityCraft--------------------------
 
