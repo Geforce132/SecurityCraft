@@ -3212,6 +3212,7 @@ public class SCContent {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> new BlockEntityType<>(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FrameBlockEntity>> FRAME_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("frame", () -> new BlockEntityType<>(FrameBlockEntity::new, SCContent.FRAME.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CreakingHeartMineBlockEntity>> CREAKING_HEART_MINE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("creaking_heart_mine", () -> new BlockEntityType<>(CreakingHeartMineBlockEntity::new, SCContent.CREAKING_HEART_MINE.get()));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedObserverBlockEntity>> OBSERVER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("observer", () -> new BlockEntityType<>(ReinforcedObserverBlockEntity::new, SCContent.REINFORCED_OBSERVER.get()));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
