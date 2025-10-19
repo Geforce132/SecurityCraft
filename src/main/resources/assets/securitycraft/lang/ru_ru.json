@@ -643,7 +643,7 @@
 	"gui.securitycraft:keycard_reader.link": "Связать",
 	"gui.securitycraft:keycard_reader.noSmartModule": "Вам нужно установить умный модуль для индивидуального контроля уровней ключ-карт.",
 	"gui.securitycraft:keycard_reader.randomize_signature": "Случайная сигнатура",
-	"gui.securitycraft:keycard_reader.signature": "Сигнатура: %s",
+	"gui.securitycraft:keycard_reader.signature": "Сигнатура:",
 	"gui.securitycraft:keycard_reader.smartModule": "Активирован индивидуальный контроль уровней ключ-карт!",
 	"gui.securitycraft:keycard_reader.usable_by.hint": "Игрок...",
 	"gui.securitycraft:keycard_reader.usable_by.tooltip": "Имя игрока, которому будет разрешено использовать эту ключ-карту. Оставьте пустым, чтобы разрешить использование всем.",

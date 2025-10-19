@@ -29,7 +29,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -49,6 +48,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private static final Component EQUALS = new TextComponent("=");
 	private static final Component GREATER_THAN_EQUALS = new TextComponent(">=");
 	private static final int MAX_SIGNATURE = 99999;
+	private final Component signatureText = Utils.localize("gui.securitycraft:keycard_reader.signature");
 	private final Component keycardLevelsText = Utils.localize("gui.securitycraft:keycard_reader.keycard_levels");
 	private final Component linkText = Utils.localize("gui.securitycraft:keycard_reader.link");
 	private final Component levelMismatchInfo = Utils.localize("gui.securitycraft:keycard_reader.level_mismatch");
@@ -61,12 +61,11 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private int previousSignature;
 	private int signature;
 	private boolean[] acceptedLevels;
-	private TranslatableComponent signatureText;
 	private int signatureTextLength;
 	private int signatureTextStartX;
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
-	private EditBox usesTextField;
+	private EditBox signatureTextField, usesTextField;
 	private HintEditBox usableByTextField;
 	private TextHoverChecker usesHoverChecker, randomizeHoverChecker, usableByHoverChecker;
 	private Button setUsesButton;
@@ -134,6 +133,13 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			}
 		}
 
+		signatureTextLength = font.width(signatureText);
+		signatureTextStartX = imageWidth / 2 - signatureTextLength + 5;
+		signatureTextField = addRenderableWidget(new EditBox(font, leftPos + 96, topPos + 21, 40, 12, TextComponent.EMPTY));
+		signatureTextField.setValue(leftPaddedSignature());
+		signatureTextField.setFilter(s -> s.matches("\\d*"));
+		signatureTextField.setMaxLength(5);
+		signatureTextField.setResponder(this::changeSignature);
 		minusThree = addRenderableWidget(new ExtendedButton(leftPos + 22, buttonY, 24, buttonHeight, new TextComponent("---"), b -> changeSignature(signature - 100)));
 		minusTwo = addRenderableWidget(new ExtendedButton(leftPos + 48, buttonY, 18, buttonHeight, new TextComponent("--"), b -> changeSignature(signature - 10)));
 		minusOne = addRenderableWidget(new ExtendedButton(leftPos + 68, buttonY, 12, buttonHeight, new TextComponent("-"), b -> changeSignature(signature - 1)));
@@ -214,7 +220,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	@Override
 	protected void renderLabels(PoseStack pose, int mouseX, int mouseY) {
 		font.draw(pose, title, imageWidth / 2 - font.width(title) / 2, 6, 4210752);
-		font.draw(pose, signatureText, imageWidth / 2 - font.width(signatureText) / 2, 23, 4210752);
+		font.draw(pose, signatureText, signatureTextStartX, 23, 4210752);
 		font.draw(pose, keycardLevelsText, 170 - font.width(keycardLevelsText), 56, 4210752);
 
 		//numbers infront of keycard levels buttons
@@ -300,7 +306,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if (isOwner && mouseX >= leftPos + signatureTextStartX && mouseY >= topPos + 23 && mouseX <= leftPos + signatureTextStartX + signatureTextLength && mouseY <= topPos + 43)
+		if (isOwner && mouseX >= leftPos + signatureTextStartX && mouseY >= topPos + 23 && mouseX <= leftPos + signatureTextStartX + signatureTextLength + 42 && mouseY <= topPos + 43)
 			changeSignature(signature + (int) Math.signum(delta));
 
 		return super.mouseScrolled(mouseX, mouseY, delta);
@@ -331,15 +337,21 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	public void changeSignature(int newSignature) {
+		changeSignature(newSignature, false);
+	}
+
+	public void changeSignature(String newSignature) {
+		if (newSignature != null && !newSignature.isEmpty())
+			changeSignature(Integer.parseInt(newSignature), true);
+	}
+
+	public void changeSignature(int newSignature, boolean throughTextField) {
 		boolean enablePlusButtons;
 		boolean enableMinusButtons;
 
 		if (isOwner)
 			signature = Mth.clamp(newSignature, 0, MAX_SIGNATURE); //keep between 0 and the max allowed (disallow negative numbers)
 
-		signatureText = new TranslatableComponent("gui.securitycraft:keycard_reader.signature", StringUtils.leftPad("" + signature, 5, "0"));
-		signatureTextLength = font.width(signatureText);
-		signatureTextStartX = imageWidth / 2 - signatureTextLength / 2;
 		enablePlusButtons = isOwner && signature != MAX_SIGNATURE;
 		enableMinusButtons = isOwner && signature != 0;
 		minusThree.active = enableMinusButtons;
@@ -349,6 +361,13 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		plusOne.active = enablePlusButtons;
 		plusTwo.active = enablePlusButtons;
 		plusThree.active = enablePlusButtons;
+
+		if (!throughTextField) {
+			String textFieldValue = leftPaddedSignature();
+
+			if (!signatureTextField.getValue().equals(textFieldValue))
+				signatureTextField.setValue(textFieldValue);
+		}
 	}
 
 	public void changeLevelState(int i, boolean active) {
@@ -356,5 +375,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 			toggleButtons[i].setCurrentIndex(active ? 1 : 0);
 
 		acceptedLevels[i] = active;
+	}
+
+	private String leftPaddedSignature() {
+		return StringUtils.leftPad("" + signature, 5, "0");
 	}
 }
