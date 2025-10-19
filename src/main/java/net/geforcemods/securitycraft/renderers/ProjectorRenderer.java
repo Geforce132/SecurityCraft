@@ -9,13 +9,12 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.renderers.state.ProjectorRenderState;
-import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -40,7 +39,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 
 			pose.pushPose();
 			pose.translate(positionalOffset.getX(), positionalOffset.getY(), positionalOffset.getZ());
-			collector.submitBlock(pose, state.projectedState, projectionInfo.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+			collector.submitMovingBlock(pose, projectionInfo.movingBlockRenderState);
 			ClientHandler.PROJECTOR_RENDER_DELEGATE.trySubmitDelegate(state.projectedBlockEntityRenderState, pose, collector, camera);
 			pose.popPose();
 		}
@@ -56,12 +55,12 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		state.projectedBlockEntityRenderState = ClientHandler.PROJECTOR_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
-		state.projectedState = be.getProjectedState();
 
 		List<ProjectionInfo> renderPositions = new ArrayList<>();
 
 		if (be.isActive() && !be.isEmpty()) {
 			Level level = be.getLevel();
+			BlockPos pos = be.getBlockPos();
 			boolean hanging = be.getBlockState().getValue(ProjectorBlock.HANGING);
 			Direction direction = be.getBlockState().getValue(ProjectorBlock.FACING);
 			int projectionHeight = be.getProjectionHeight();
@@ -78,8 +77,17 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 
 					BlockPos renderPos = be.getBlockPos().offset(positionalOffset);
 
-					if (positionalOffset != null && (be.isOverridingBlocks() || level.isEmptyBlock(renderPos)))
-						renderPositions.add(new ProjectionInfo(positionalOffset, LevelRenderer.getLightColor(be.getLevel(), renderPos)));
+					if (positionalOffset != null && (be.isOverridingBlocks() || level.isEmptyBlock(renderPos))) {
+						MovingBlockRenderState movingBlockRenderState = new MovingBlockRenderState();
+						BlockPos projectionPos = pos.offset(positionalOffset);
+
+						movingBlockRenderState.randomSeedPos = projectionPos;
+						movingBlockRenderState.blockPos = projectionPos;
+						movingBlockRenderState.blockState = be.getProjectedState();
+						movingBlockRenderState.biome = level.getBiome(projectionPos);
+						movingBlockRenderState.level = level;
+						renderPositions.add(new ProjectionInfo(positionalOffset, movingBlockRenderState));
+					}
 				}
 			}
 		}
@@ -120,5 +128,5 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 		return new AABB(be.getBlockPos()).inflate(RENDER_DISTANCE);
 	}
 
-	public record ProjectionInfo(Vec3i positionalOffset, int lightCoords) {}
+	public record ProjectionInfo(Vec3i positionalOffset, MovingBlockRenderState movingBlockRenderState) {}
 }
