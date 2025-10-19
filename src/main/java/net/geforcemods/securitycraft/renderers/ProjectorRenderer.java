@@ -60,7 +60,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 
 		List<ProjectionInfo> renderPositions = new ArrayList<>();
 
-		if (be.isActive() && !be.isContainerEmpty()) {
+		if (be.isActive() && !be.isEmpty()) {
 			Level level = be.getLevel();
 			boolean hanging = be.getBlockState().getValue(ProjectorBlock.HANGING);
 			Direction direction = be.getBlockState().getValue(ProjectorBlock.FACING);

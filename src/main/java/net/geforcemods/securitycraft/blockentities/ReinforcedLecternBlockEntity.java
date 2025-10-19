@@ -45,7 +45,7 @@ public class ReinforcedLecternBlockEntity extends LecternBlockEntity implements 
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 		owner.load(tag);
-		modules = readModuleInventory(tag);
+		readModuleInventory(modules, tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 	}

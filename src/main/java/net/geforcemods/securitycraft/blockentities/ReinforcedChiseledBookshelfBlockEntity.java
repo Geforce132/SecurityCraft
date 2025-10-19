@@ -58,7 +58,7 @@ public class ReinforcedChiseledBookshelfBlockEntity extends ChiseledBookShelfBlo
 		super.loadAdditional(tag);
 
 		owner.load(tag);
-		modules = readModuleInventory(tag);
+		readModuleInventory(modules, tag);
 		moduleStates = readModuleStates(tag);
 	}
 

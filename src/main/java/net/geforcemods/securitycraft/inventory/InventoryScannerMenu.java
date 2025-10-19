@@ -4,7 +4,9 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blocks.InventoryScannerBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,18 +24,18 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 		super(SCContent.INVENTORY_SCANNER_MENU.get(), windowId);
 		be = (InventoryScannerBlockEntity) level.getBlockEntity(pos);
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
-		BlockEntityInventoryWrapper<InventoryScannerBlockEntity> wrapper = new BlockEntityInventoryWrapper<>(be, this);
+		Container container = Utils.createContainerFromList(be.getContents());
 
 		//prohibited items 0-9
 		for (int i = 0; i < 10; i++) {
-			addSlot(new OwnerRestrictedSlot(wrapper, be, i, (6 + (i * 18)), 16, true));
+			addSlot(new OwnerRestrictedSlot(container, be, i, (6 + (i * 18)), 16, true));
 		}
 
 		//inventory scanner storage 10-36
 		if (be.isOwnedBy(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
-					addSlot(new Slot(wrapper, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
+					addSlot(new Slot(container, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));
 				}
 			}
 		}

@@ -89,12 +89,9 @@ public class Utils {
 	}
 
 	public static Container createContainerFromList(NonNullList<ItemStack> list) {
-		Container container = new SimpleContainer(list.size());
+		SimpleContainer container = new SimpleContainer(list.size());
 
-		for (int i = 0; i < list.size(); i++) {
-			container.setItem(i, list.get(i));
-		}
-
+		container.items = list;
 		return container;
 	}
 }

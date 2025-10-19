@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.inventory;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.core.BlockPos;
@@ -25,8 +24,8 @@ public class BlockChangeDetectorMenu extends AbstractContainerMenu {
 		containerLevelAccess = ContainerLevelAccess.create(level, pos);
 		be = level.getBlockEntity(pos);
 
-		if (be instanceof IOwnable ownable && ownable.isOwnedBy(inventory.player)) {
-			addSlot(new Slot(new BlockEntityInventoryWrapper<>((BlockChangeDetectorBlockEntity) be, this), 36, 175, 44) {
+		if (be instanceof BlockChangeDetectorBlockEntity blockChangeDetector && blockChangeDetector.isOwnedBy(inventory.player)) {
+			addSlot(new Slot(blockChangeDetector, 36, 175, 44) {
 				@Override
 				public boolean mayPlace(ItemStack stack) {
 					return ((BlockChangeDetectorBlockEntity) be).isModuleEnabled(ModuleType.SMART) && stack.getItem() instanceof BlockItem;

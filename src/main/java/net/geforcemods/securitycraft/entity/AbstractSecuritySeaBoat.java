@@ -318,8 +318,11 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	protected void readAdditionalSaveData(ValueInput tag) {
+		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+
 		super.readAdditionalSaveData(tag);
-		entityData.set(MODULES, readModuleInventory(tag));
+		readModuleInventory(modules, tag);
+		entityData.set(MODULES, modules);
 		entityData.set(MODULE_STATES, readModuleStates(tag));
 		readOptions(tag);
 		entityData.set(COOLDOWN_END, System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0));

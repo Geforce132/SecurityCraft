@@ -12,9 +12,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
 
 public class BlockPocketManagerMenu extends AbstractContainerMenu {
 	public final BlockPocketManagerBlockEntity be;
@@ -41,12 +38,16 @@ public class BlockPocketManagerMenu extends AbstractContainerMenu {
 				addSlot(new Slot(inventory, x, 8 + x * 18, 142 + 74));
 			}
 
-			ResourceHandler<ItemResource> resourceHandler = new BlockPocketManagerBlockEntity.ValidityCheckResourceHandler(new ItemStacksResourceHandler(be.getStorage()));
 			int slotId = 0;
 
 			for (int y = 0; y < 8; y++) {
 				for (int x = 0; x < 7; x++) {
-					addSlot(new Slot(Utils.createContainerFromList(be.getStorage()), slotId++, 124 + x * 18, 8 + y * 18));
+					addSlot(new Slot(Utils.createContainerFromList(be.getStorage()), slotId++, 124 + x * 18, 8 + y * 18) {
+						@Override
+						public boolean mayPlace(ItemStack stack) {
+							return BlockPocketManagerBlockEntity.isItemValid(stack);
+						}
+					});
 				}
 			}
 		}

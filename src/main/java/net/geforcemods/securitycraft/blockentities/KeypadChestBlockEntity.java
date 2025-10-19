@@ -109,7 +109,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		modules = readModuleInventory(tag);
+		readModuleInventory(modules, tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
@@ -188,16 +188,6 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 			return VanillaContainerWrapper.of(this);
 		else
 			return null;
-	}
-
-	@Override
-	public boolean enableHack() {
-		return true;
-	}
-
-	@Override
-	public ItemStack getItem(int slot) {
-		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
 	}
 
 	@Override

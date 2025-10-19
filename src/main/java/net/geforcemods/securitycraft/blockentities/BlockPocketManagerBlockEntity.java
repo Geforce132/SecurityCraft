@@ -53,7 +53,8 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.DelegatingResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
+import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
 public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable {
 	private static final int BLOCK_PLACEMENTS_PER_TICK = 4;
@@ -593,7 +594,7 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	}
 
 	public static ResourceHandler<ItemResource> getCapability(BlockPocketManagerBlockEntity be, Direction side) {
-		ResourceHandler<ItemResource> resourceHandler = new ItemStacksResourceHandler(be.storage);
+		ResourceHandler<ItemResource> resourceHandler = VanillaContainerWrapper.of(Utils.createContainerFromList(be.storage));
 
 		//prevent extracting while auto building the block pocket
 		if (!be.isPlacingBlocks() && BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
@@ -783,6 +784,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		}
 
 		@Override
+		public int insert(ItemResource resource, int amount, TransactionContext transaction) {
+			if (isValid(0, resource))
+				return super.insert(resource, amount, transaction);
+
+			return 0;
+		}
+
+		@Override
 		public boolean isValid(int slot, ItemResource resource) {
 			return BlockPocketManagerBlockEntity.isItemValid(resource.toStack());
 		}
@@ -791,6 +800,14 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 	public static class ValidityCheckResourceHandler extends DelegatingResourceHandler<ItemResource> {
 		public ValidityCheckResourceHandler(ResourceHandler<ItemResource> delegate) {
 			super(delegate);
+		}
+
+		@Override
+		public int insert(ItemResource resource, int amount, TransactionContext transaction) {
+			if (isValid(0, resource))
+				return super.insert(resource, amount, transaction);
+
+			return 0;
 		}
 
 		@Override

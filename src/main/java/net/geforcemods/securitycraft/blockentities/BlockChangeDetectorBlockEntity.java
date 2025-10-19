@@ -9,7 +9,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IModuleInventoryWithContainer;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
@@ -26,6 +25,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -39,9 +39,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 
-public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ILockable, ITickingBlockEntity {
+public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
 	private IntOption range = new IntOption("range", 5, 1, 15, 1);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -233,25 +232,22 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public int getContainerStackSize() {
+	public int getMaxStackSize() {
 		return 1;
 	}
 
 	@Override
-	public boolean isContainerEmpty() {
+	public boolean isEmpty() {
 		return filter.isEmpty();
 	}
 
 	@Override
-	public ItemStack removeContainerItem(int index, int count, boolean simulate) {
+	public ItemStack removeItem(int index, int count) {
 		ItemStack stack = filter;
 
 		if (count >= 1) {
-			if (simulate) {
-				filter = ItemStack.EMPTY;
-				setChanged();
-			}
-
+			filter = ItemStack.EMPTY;
+			setChanged();
 			return stack.copy();
 		}
 
@@ -259,10 +255,25 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public void setContainerItem(int index, ItemStack stack) {
+	public ItemStack removeItemNoUpdate(int index) {
+		ItemStack stack = filter;
+
+		filter = ItemStack.EMPTY;
+		setChanged();
+		return stack.copy();
+	}
+
+	@Override
+	public void clearContent() {
+		filter = ItemStack.EMPTY;
+		setChanged();
+	}
+
+	@Override
+	public void setItem(int index, ItemStack stack) {
 		if (stack.getItem() instanceof BlockItem) {
-			if (!stack.isEmpty() && stack.getCount() > getContainerStackSize())
-				stack = new ItemStack(stack.getItem(), getContainerStackSize());
+			if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+				stack = new ItemStack(stack.getItem(), getMaxStackSize());
 
 			filter = stack;
 			setChanged();
@@ -273,19 +284,6 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
 		MenuProvider.super.writeClientSideData(menu, buffer);
 		buffer.writeBlockPos(worldPosition);
-	}
-
-	@Override
-	public boolean enableHack() {
-		return true;
-	}
-
-	@Override
-	public ItemResource getResource(int slot) {
-		if (!isContainer(slot))
-			return getResource(slot);
-		else
-			return slot == 36 ? ItemResource.of(filter) : ItemResource.EMPTY;
 	}
 
 	public void showHighlights(boolean showHighlights) {
@@ -334,12 +332,12 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	@Override
-	public boolean isItemValidForContainer(int slot, ItemStack stack) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 
 	@Override
-	public ItemStack getStackInContainer(int slot) {
+	public ItemStack getItem(int slot) {
 		return filter;
 	}
 }

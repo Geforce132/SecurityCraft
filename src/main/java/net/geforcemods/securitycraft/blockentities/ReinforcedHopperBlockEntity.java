@@ -55,7 +55,7 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 		super.loadAdditional(tag);
 
 		owner.load(tag);
-		modules = readModuleInventory(tag);
+		readModuleInventory(modules, tag);
 		moduleStates = readModuleStates(tag);
 	}
 
@@ -128,16 +128,6 @@ public class ReinforcedHopperBlockEntity extends HopperBlockEntity implements IO
 	public void setOwner(String uuid, String name) {
 		owner.set(uuid, name);
 		setChanged();
-	}
-
-	@Override
-	public boolean enableHack() {
-		return true;
-	}
-
-	@Override
-	public ItemStack getItem(int slot) {
-		return slot >= 100 ? getModuleInSlot(slot) : super.getItem(slot);
 	}
 
 	@Override

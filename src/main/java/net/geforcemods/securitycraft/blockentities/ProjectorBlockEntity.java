@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.blockentities;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IModuleInventoryWithContainer;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -11,6 +10,7 @@ import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
-public class ProjectorBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ILockable {
+public class ProjectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable {
 	public static final int MIN_WIDTH = 1; //also for height
 	public static final int MAX_WIDTH = 10; //also for height
 	public static final int MIN_RANGE = 1;
@@ -208,19 +208,31 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	}
 
 	@Override
-	public ItemStack removeContainerItem(int index, int count, boolean simulate) {
+	public ItemStack removeItem(int index, int count) {
 		ItemStack stack = projectedBlock;
 
 		if (count >= 1) {
-			if (!simulate) {
-				projectedBlock = ItemStack.EMPTY;
-				resetSavedState();
-			}
-
+			projectedBlock = ItemStack.EMPTY;
+			resetSavedState();
 			return stack;
 		}
 
 		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack removeItemNoUpdate(int index) {
+		ItemStack stack = projectedBlock;
+
+		projectedBlock = ItemStack.EMPTY;
+		resetSavedState();
+		return stack;
+	}
+
+	@Override
+	public void clearContent() {
+		projectedBlock = ItemStack.EMPTY;
+		resetSavedState();
 	}
 
 	@Override
@@ -229,19 +241,19 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	}
 
 	@Override
-	public int getContainerStackSize() {
+	public int getMaxStackSize() {
 		return 1;
 	}
 
 	@Override
-	public ItemStack getStackInContainer(int slot) {
-		return !isContainer(slot) ? getModuleInSlot(slot) : (slot == 36 ? projectedBlock : ItemStack.EMPTY);
+	public ItemStack getItem(int slot) {
+		return slot == 36 ? projectedBlock : ItemStack.EMPTY;
 	}
 
 	@Override
-	public void setContainerItem(int index, ItemStack stack) {
-		if (!stack.isEmpty() && stack.getCount() > getContainerStackSize())
-			stack = new ItemStack(stack.getItem(), getContainerStackSize());
+	public void setItem(int index, ItemStack stack) {
+		if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+			stack = new ItemStack(stack.getItem(), getMaxStackSize());
 
 		ItemStack old = projectedBlock;
 
@@ -252,11 +264,6 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 
 		if (level != null && !level.isClientSide())
 			level.sendBlockUpdated(worldPosition, blockState, blockState, 2);
-	}
-
-	@Override
-	public boolean enableHack() {
-		return true;
 	}
 
 	@Override
@@ -312,12 +319,12 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements IMod
 	}
 
 	@Override
-	public boolean isItemValidForContainer(int slot, ItemStack stack) {
+	public boolean stillValid(Player player) {
 		return true;
 	}
 
 	@Override
-	public boolean isContainerEmpty() {
+	public boolean isEmpty() {
 		return projectedBlock.isEmpty();
 	}
 }

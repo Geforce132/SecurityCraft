@@ -9,7 +9,6 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
-import net.geforcemods.securitycraft.api.IModuleInventoryWithContainer;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -26,6 +25,7 @@ import net.geforcemods.securitycraft.inventory.LensContainer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -50,10 +50,10 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.transfer.EmptyResourceHandler;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.item.ItemStacksResourceHandler;
+import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements IModuleInventoryWithContainer, MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
+public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -120,7 +120,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
 		if (level != null) {
 			//first 10 slots (0-9) are the prohibited slots
-			for (int i = 10; i < getContainerSize(); i++) {
+			for (int i = 10; i < inventoryContents.size(); i++) {
 				Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), getContents().get(i));
 			}
 
@@ -131,59 +131,9 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	}
 
 	@Override
-	public int getContainerSize() {
-		return 37;
-	}
-
-	@Override
-	public ItemStack removeContainerItem(int index, int count, boolean simulate) {
-		if (!inventoryContents.get(index).isEmpty()) {
-			ItemStack stack;
-
-			if (inventoryContents.get(index).getCount() <= count) {
-				stack = inventoryContents.get(index);
-
-				if (!simulate) {
-					inventoryContents.set(index, ItemStack.EMPTY);
-					setChanged();
-				}
-
-				return stack.copy();
-			}
-			else {
-				stack = inventoryContents.get(index).split(count);
-
-				if (!simulate && inventoryContents.get(index).getCount() == 0) {
-					inventoryContents.set(index, ItemStack.EMPTY);
-					setChanged();
-				}
-
-				return stack.copy();
-			}
-		}
-		else
-			return ItemStack.EMPTY;
-	}
-
-	@Override
 	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
 		MenuProvider.super.writeClientSideData(menu, buffer);
 		buffer.writeBlockPos(worldPosition);
-	}
-
-	@Override
-	public boolean enableHack() {
-		return true;
-	}
-
-	@Override
-	public ItemResource getResource(int slot) {
-		return !isContainer(slot) ? super.getResource(slot) : ItemResource.of(getStackInContainer(slot));
-	}
-
-	@Override
-	public ItemStack getStackInContainer(int index) {
-		return inventoryContents.get(index);
 	}
 
 	public List<ItemStack> getAllProhibitedItems() {
@@ -195,16 +145,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		return stacks;
-	}
-
-	@Override
-	public void setContainerItem(int index, ItemStack stack) {
-		inventoryContents.set(index, stack);
-
-		if (!stack.isEmpty() && stack.getCount() > getContainerStackSize())
-			stack.setCount(getContainerStackSize());
-
-		setChanged();
 	}
 
 	public ItemStack addItemToStorage(ItemStack stack) {
@@ -224,11 +164,11 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		if (stackToInsert.isEmpty() || slot < 0 || slot >= getContents().size())
 			return stackToInsert;
 
-		ItemStack slotStack = getStackInContainer(slot);
+		ItemStack slotStack = getContents().get(slot);
 		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
 
 		if (slotStack.isEmpty()) {
-			setContainerItem(slot, stackToInsert);
+			getContents().set(slot, stackToInsert);
 			setChanged();
 			return ItemStack.EMPTY;
 		}
@@ -271,7 +211,7 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	public static ResourceHandler<ItemResource> getCapability(InventoryScannerBlockEntity be, Direction side) {
 		if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be)) {
-			return new ExtractOnlyResourceHandler<>(new ItemStacksResourceHandler(be.inventoryContents)) {
+			return new ExtractOnlyResourceHandler<>(VanillaContainerWrapper.of(Utils.createContainerFromList(be.inventoryContents))) {
 				@Override
 				public int extract(int index, ItemResource resource, int amount, TransactionContext transaction) {
 					return index < 10 ? 0 : super.extract(index, resource, amount, transaction); //don't allow extracting from the prohibited item slots
@@ -280,11 +220,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 		else
 			return EmptyResourceHandler.instance(); //disallow inserting
-	}
-
-	@Override
-	public boolean isItemValidForContainer(int index, ItemStack stack) {
-		return false;
 	}
 
 	public boolean isProvidingPower() {
@@ -351,13 +286,13 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 		if (module == ModuleType.STORAGE) {
 			//first 10 slots (0-9) are the prohibited slots
-			for (int i = 10; i < getContainerSize(); i++) {
-				Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
+			for (int i = 10; i < inventoryContents.size(); i++) {
+				Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), inventoryContents.get(i));
 			}
 
 			if (connectedScanner != null) {
-				for (int i = 10; i < connectedScanner.getContainerSize(); i++) {
-					connectedScanner.getContents().set(i, ItemStack.EMPTY);
+				for (int i = 10; i < connectedScanner.inventoryContents.size(); i++) {
+					connectedScanner.inventoryContents.set(i, ItemStack.EMPTY);
 				}
 			}
 		}
@@ -532,10 +467,5 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public Component getDisplayName() {
 		return super.getDisplayName();
-	}
-
-	@Override
-	public boolean isContainerEmpty() {
-		return inventoryContents.isEmpty();
 	}
 }

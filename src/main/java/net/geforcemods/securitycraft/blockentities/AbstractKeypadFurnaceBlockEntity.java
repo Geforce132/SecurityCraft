@@ -134,7 +134,7 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 		super.loadAdditional(tag);
 		fixBurnTimeData(tag);
 
-		modules = readModuleInventory(tag);
+		readModuleInventory(modules, tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		cooldownEnd = System.currentTimeMillis() + tag.getLongOr("cooldownLeft", 0);
@@ -195,16 +195,6 @@ public abstract class AbstractKeypadFurnaceBlockEntity extends AbstractFurnaceBl
 	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
 		super.writeClientSideData(menu, buffer);
 		buffer.writeBlockPos(worldPosition);
-	}
-
-	@Override
-	public boolean enableHack() {
-		return true;
-	}
-
-	@Override
-	public ItemStack getItem(int slot) {
-		return slot >= 100 ? getModuleInSlot(slot) : items.get(slot);
 	}
 
 	@Override

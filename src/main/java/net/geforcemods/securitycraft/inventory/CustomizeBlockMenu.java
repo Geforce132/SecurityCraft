@@ -5,7 +5,6 @@ import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
 import net.geforcemods.securitycraft.items.ModuleItem;
-import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -52,10 +51,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 			addSlot(new Slot(inventory, i, 8 + i * 18, 142));
 		}
 
-		if (moduleInv.enableHack())
-			slotId = 100;
-
-		Container moduleContainer = Utils.createContainerFromList(moduleInv.getInventory());
+		Container moduleContainer = new ModuleContainer(moduleInv);
 
 		if (moduleInv.getMaxNumberOfModules() == 1)
 			addSlot(new CustomSlot(moduleContainer, slotId, 80, 20));
@@ -180,6 +176,11 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 				broadcastChanges();
 
 			return stack;
+		}
+
+		@Override
+		public boolean mayPlace(ItemStack stack) {
+			return getItem().isEmpty() && stack.getItem() instanceof ModuleItem module && moduleInv.acceptsModule(module.getModuleType()) && !moduleInv.hasModule(module.getModuleType());
 		}
 	}
 }

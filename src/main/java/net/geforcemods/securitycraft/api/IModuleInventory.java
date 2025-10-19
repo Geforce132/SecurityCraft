@@ -26,8 +26,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 
 import static com.mojang.serialization.codecs.RecordCodecBuilder.create;
 
@@ -36,7 +34,7 @@ import static com.mojang.serialization.codecs.RecordCodecBuilder.create;
  *
  * @author bl4ckscor3
  */
-public interface IModuleInventory extends ResourceHandler<ItemResource> {
+public interface IModuleInventory {
 	Codec<ItemStackWithSlot> MODULE_SLOT_CODEC = create(i -> i.group(
 					ExtraCodecs.UNSIGNED_BYTE.fieldOf("ModuleSlot").orElse(0).forGetter(ItemStackWithSlot::slot),
 					ItemStack.MAP_CODEC.forGetter(ItemStackWithSlot::stack))
@@ -120,27 +118,6 @@ public interface IModuleInventory extends ResourceHandler<ItemResource> {
 	}
 
 	/**
-	 * Used for enabling differentiation between module slots and slots that are handled by IInventory. This is needed because of
-	 * the duplicate getStackInSlot method.
-	 *
-	 * @return true if the slot ids are not starting with 0, false otherwise
-	 */
-	public default boolean enableHack() {
-		return false;
-	}
-
-	/**
-	 * Only override if enableHack returns true and your ids don't start at 100. Used to convert the slot ids to inventory
-	 * indices
-	 *
-	 * @param id The slot id to convert
-	 * @return The inventory index corresponding to the slot id
-	 */
-	public default int fixSlotId(int id) {
-		return id >= 100 ? id - 100 : id;
-	}
-
-	/**
 	 * Drops all modules in this inventory at the position in the world
 	 */
 	public default void dropAllModules() {
@@ -157,127 +134,8 @@ public interface IModuleInventory extends ResourceHandler<ItemResource> {
 		getInventory().clear();
 	}
 
-	@Override
-	default long getAmountAsLong(int index) {
-		return getResource(index).isEmpty() ? 0 : 1;
-	}
-
-	@Override
-	public default int size() {
+	public default int getSlots() {
 		return acceptedModules().length;
-	}
-
-	@Override
-	public default ItemResource getResource(int slot) {
-		return ItemResource.of(getModuleInSlot(slot));
-	}
-
-	public default ItemStack getModuleInSlot(int slot) {
-		slot = fixSlotId(slot);
-		return slot < 0 || slot >= size() ? ItemStack.EMPTY : getInventory().get(slot);
-	}
-
-	@Override
-	public default ItemStack extractItem(int slot, int amount, boolean simulate) {
-		slot = fixSlotId(slot);
-
-		ItemStack stack = getModuleInSlot(slot).copy();
-
-		if (stack.isEmpty())
-			return ItemStack.EMPTY;
-		else {
-			if (!simulate) {
-				getInventory().set(slot, ItemStack.EMPTY);
-
-				if (stack.getItem() instanceof ModuleItem module) {
-					onModuleRemoved(stack, module.getModuleType(), false);
-
-					if (this instanceof LinkableBlockEntity be)
-						be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) stack.getItem()).getModuleType(), false), be);
-				}
-
-				return stack;
-			}
-			else
-				return stack.copy();
-		}
-	}
-
-	@Override
-	public default ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-		slot = fixSlotId(slot);
-
-		if (!getModuleInSlot(slot).isEmpty())
-			return stack;
-		else {
-			int returnSize = 0;
-
-			//the max stack size is one, so in order to provide the correct return value, the count after insertion is calculated here
-			if (stack.getCount() > 1)
-				returnSize = stack.getCount() - 1;
-
-			if (!simulate) {
-				ItemStack copy = stack.copy();
-
-				copy.setCount(1);
-				getInventory().set(slot, copy);
-
-				if (stack.getItem() instanceof ModuleItem module) {
-					onModuleInserted(stack, module.getModuleType(), false);
-
-					if (this instanceof LinkableBlockEntity be)
-						be.propagate(new ILinkedAction.ModuleInserted(copy, (ModuleItem) copy.getItem(), false), be);
-				}
-			}
-
-			if (returnSize != 0) {
-				ItemStack toReturn = stack.copy();
-
-				toReturn.setCount(returnSize);
-				return toReturn;
-			}
-			else
-				return ItemStack.EMPTY;
-		}
-	}
-
-	@Override
-	public default void setStackInSlot(int slot, ItemStack stack) {
-		slot = fixSlotId(slot);
-
-		ItemStack previous = getModuleInSlot(slot);
-
-		//Prevent module from being removed and re-added when the slot initializes
-		if (ItemStack.matches(previous, stack))
-			return;
-
-		//call the correct methods, should there have been a module in the slot previously
-		if (!previous.isEmpty()) {
-			onModuleRemoved(previous, ((ModuleItem) previous.getItem()).getModuleType(), false);
-
-			if (this instanceof LinkableBlockEntity be)
-				be.propagate(new ILinkedAction.ModuleRemoved(((ModuleItem) previous.getItem()).getModuleType(), false), be);
-		}
-
-		getInventory().set(slot, stack);
-
-		if (stack.getItem() instanceof ModuleItem module) {
-			onModuleInserted(stack, module.getModuleType(), false);
-
-			if (this instanceof LinkableBlockEntity be)
-				be.propagate(new ILinkedAction.ModuleInserted(stack, (ModuleItem) stack.getItem(), false), be);
-		}
-	}
-
-	@Override
-	public default long getCapacityAsLong(int slot, ItemResource resource) {
-		return 1;
-	}
-
-	@Override
-	public default boolean isValid(int slot, ItemResource resource) {
-		slot = fixSlotId(slot);
-		return getModuleInSlot(slot).isEmpty() && !resource.isEmpty() && resource.getItem() instanceof ModuleItem module && acceptsModule(module.getModuleType()) && !hasModule(module.getModuleType());
 	}
 
 	/**
@@ -406,18 +264,14 @@ public interface IModuleInventory extends ResourceHandler<ItemResource> {
 	/**
 	 * Used for reading the module inventory from a tag. Use in conjunction with writeModuleInventory.
 	 *
+	 * @param modules The list of modules to be updated from the tag
 	 * @param tag The tag to read the inventory from
-	 * @return A NonNullList of ItemStacks that were read from the given tag
 	 */
-	public default NonNullList<ItemStack> readModuleInventory(ValueInput tag) {
-		NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
-
+	public default void readModuleInventory(NonNullList<ItemStack> modules, ValueInput tag) {
 		for (ItemStackWithSlot itemstackwithslot : tag.listOrEmpty("Modules", MODULE_SLOT_CODEC)) {
 			if (itemstackwithslot.isValidInContainer(modules.size()))
 				modules.set(itemstackwithslot.slot(), itemstackwithslot.stack());
 		}
-
-		return modules;
 	}
 
 	/**

@@ -20,7 +20,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * @author Geforce
  */
 public abstract class CustomizableBlockEntity extends NamedBlockEntity implements IModuleInventory, ICustomizable {
-	private NonNullList<ItemStack> modules = NonNullList.<ItemStack>withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
+	private final NonNullList<ItemStack> modules = NonNullList.withSize(getMaxNumberOfModules(), ItemStack.EMPTY);
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
 
 	protected CustomizableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -34,7 +34,7 @@ public abstract class CustomizableBlockEntity extends NamedBlockEntity implement
 	@Override
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
-		modules = readModuleInventory(tag);
+		readModuleInventory(modules, tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 	}

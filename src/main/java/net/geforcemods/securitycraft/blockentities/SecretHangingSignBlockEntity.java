@@ -71,7 +71,7 @@ public class SecretHangingSignBlockEntity extends HangingSignBlockEntity impleme
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		modules = readModuleInventory(tag);
+		readModuleInventory(modules, tag);
 		moduleStates = readModuleStates(tag);
 		readOptions(tag);
 		owner.load(tag);
