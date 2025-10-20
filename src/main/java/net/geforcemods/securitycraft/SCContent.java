@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
@@ -405,107 +404,107 @@ public class SCContent {
 	//blocks
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<AlarmBlock> ALARM = BLOCKS.registerBlock("alarm", AlarmBlock::new, prop(MapColor.COLOR_RED, 3.5F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0));
+	public static final DeferredBlock<AlarmBlock> ALARM = BLOCKS.registerBlock("alarm", AlarmBlock::new, () -> prop(MapColor.COLOR_RED, 3.5F).sound(SoundType.METAL).lightLevel(state -> state.getValue(AlarmBlock.LIT) ? 15 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = BLOCKS.registerBlock("block_change_detector", BlockChangeDetectorBlock::new, propDisguisable(3.5F));
+	public static final DeferredBlock<BlockChangeDetectorBlock> BLOCK_CHANGE_DETECTOR = BLOCKS.registerBlock("block_change_detector", BlockChangeDetectorBlock::new, () -> propDisguisable(3.5F));
 	@HasManualPage(designedBy = "Henzoid")
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, prop(MapColor.COLOR_CYAN, 3.5F));
+	public static final DeferredBlock<BlockPocketManagerBlock> BLOCK_POCKET_MANAGER = BLOCKS.registerBlock("block_pocket_manager", BlockPocketManagerBlock::new, () -> prop(MapColor.COLOR_CYAN, 3.5F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, prop(MapColor.COLOR_CYAN, 0.8F).noCollision().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
+	public static final DeferredBlock<BlockPocketWallBlock> BLOCK_POCKET_WALL = BLOCKS.registerBlock("block_pocket_wall", BlockPocketWallBlock::new, () -> prop(MapColor.COLOR_CYAN, 0.8F).noCollision().isRedstoneConductor(SCContent::never).isSuffocating(BlockPocketWallBlock::causesSuffocation).isViewBlocking(BlockPocketWallBlock::causesSuffocation).isValidSpawn(SCContent::never));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.registerBlock("bouncing_betty", BouncingBettyBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<BouncingBettyBlock> BOUNCING_BETTY = BLOCKS.registerBlock("bouncing_betty", BouncingBettyBlock::new, () -> prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<CageTrapBlock> CAGE_TRAP = BLOCKS.registerBlock("cage_trap", CageTrapBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).noCollision());
+	public static final DeferredBlock<CageTrapBlock> CAGE_TRAP = BLOCKS.registerBlock("cage_trap", CageTrapBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).noCollision());
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<ClaymoreBlock> CLAYMORE = BLOCKS.registerBlock("claymore", ClaymoreBlock::new, prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<ClaymoreBlock> CLAYMORE = BLOCKS.registerBlock("claymore", ClaymoreBlock::new, () -> prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
-	public static final DeferredBlock<DisplayCaseBlock> DISPLAY_CASE = BLOCKS.registerBlock(DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, false), prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<DisplayCaseBlock> DISPLAY_CASE = BLOCKS.registerBlock(DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, false), () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<FloorTrapBlock> FLOOR_TRAP = BLOCKS.registerBlock("floor_trap", FloorTrapBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
+	public static final DeferredBlock<FloorTrapBlock> FLOOR_TRAP = BLOCKS.registerBlock("floor_trap", FloorTrapBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.METAL));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<FrameBlock> FRAME = BLOCKS.registerBlock("keypad_frame", FrameBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<FrameBlock> FRAME = BLOCKS.registerBlock("keypad_frame", FrameBlock::new, () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
 	@HasManualPage(PageGroup.DISPLAY_CASES)
-	public static final DeferredBlock<DisplayCaseBlock> GLOW_DISPLAY_CASE = BLOCKS.registerBlock(GLOW_DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, true), prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<DisplayCaseBlock> GLOW_DISPLAY_CASE = BLOCKS.registerBlock(GLOW_DISPLAY_CASE_PATH, p -> new DisplayCaseBlock(p, true), () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
 	@HasManualPage
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<IMSBlock> IMS = BLOCKS.registerBlock("ims", IMSBlock::new, prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL));
+	public static final DeferredBlock<IMSBlock> IMS = BLOCKS.registerBlock("ims", IMSBlock::new, () -> prop(MapColor.TERRACOTTA_GREEN, 3.5F).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<InventoryScannerBlock> INVENTORY_SCANNER = BLOCKS.registerBlock("inventory_scanner", InventoryScannerBlock::new, propDisguisable(3.5F));
-	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.registerBlock("inventory_scanner_field", InventoryScannerFieldBlock::new, prop(MapColor.NONE, -1.0F).noLootTable());
+	public static final DeferredBlock<InventoryScannerBlock> INVENTORY_SCANNER = BLOCKS.registerBlock("inventory_scanner", InventoryScannerBlock::new, () -> propDisguisable(3.5F));
+	public static final DeferredBlock<InventoryScannerFieldBlock> INVENTORY_SCANNER_FIELD = BLOCKS.registerBlock("inventory_scanner_field", InventoryScannerFieldBlock::new, () -> prop(MapColor.NONE, -1.0F).noLootTable());
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = BLOCKS.registerBlock("electrified_iron_fence", ElectrifiedIronFenceBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
-	public static final DeferredBlock<KeyPanelBlock> KEY_PANEL_BLOCK = BLOCKS.registerBlock("key_panel", KeyPanelBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.IRON));
+	public static final DeferredBlock<ElectrifiedIronFenceBlock> ELECTRIFIED_IRON_FENCE = BLOCKS.registerBlock("electrified_iron_fence", ElectrifiedIronFenceBlock::new, () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<KeyPanelBlock> KEY_PANEL_BLOCK = BLOCKS.registerBlock("key_panel", KeyPanelBlock::new, () -> prop(MapColor.METAL, 3.5F).sound(SoundType.IRON));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<KeycardLockBlock> KEYCARD_LOCK = BLOCKS.registerBlock("keycard_lock", KeycardLockBlock::new, prop(2.0F));
+	public static final DeferredBlock<KeycardLockBlock> KEYCARD_LOCK = BLOCKS.registerBlock("keycard_lock", KeycardLockBlock::new, () -> prop(2.0F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<KeycardReaderBlock> KEYCARD_READER = BLOCKS.registerBlock("keycard_reader", KeycardReaderBlock::new, propDisguisable(3.5F));
+	public static final DeferredBlock<KeycardReaderBlock> KEYCARD_READER = BLOCKS.registerBlock("keycard_reader", KeycardReaderBlock::new, () -> propDisguisable(3.5F));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadBlock> KEYPAD = BLOCKS.registerBlock("keypad", KeypadBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<KeypadBlock> KEYPAD = BLOCKS.registerBlock("keypad", KeypadBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadBarrelBlock> KEYPAD_BARREL = BLOCKS.registerBlock("keypad_barrel", KeypadBarrelBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<KeypadBarrelBlock> KEYPAD_BARREL = BLOCKS.registerBlock("keypad_barrel", KeypadBarrelBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final DeferredBlock<KeypadChestBlock> KEYPAD_CHEST = BLOCKS.registerBlock(KEYPAD_CHEST_PATH, KeypadChestBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
-	public static final DeferredBlock<KeypadDoorBlock> KEYPAD_DOOR = BLOCKS.registerBlock("keypad_door", p -> new KeypadDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).pushReaction(PushReaction.BLOCK));
-	@HasManualPage(hasRecipeDescription = true)
-	@RegisterItemBlock
-	public static final DeferredBlock<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.registerBlock("keypad_trapdoor", p -> new KeypadTrapDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).isValidSpawn(SCContent::never));
+	public static final DeferredBlock<KeypadChestBlock> KEYPAD_CHEST = BLOCKS.registerBlock(KEYPAD_CHEST_PATH, KeypadChestBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<KeypadDoorBlock> KEYPAD_DOOR = BLOCKS.registerBlock("keypad_door", p -> new KeypadDoorBlock(p, BlockSetType.IRON), () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).pushReaction(PushReaction.BLOCK));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.registerBlock("keypad_furnace", KeypadFurnaceBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	public static final DeferredBlock<KeypadTrapDoorBlock> KEYPAD_TRAPDOOR = BLOCKS.registerBlock("keypad_trapdoor", p -> new KeypadTrapDoorBlock(p, BlockSetType.IRON), () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).isValidSpawn(SCContent::never));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadSmokerBlock> KEYPAD_SMOKER = BLOCKS.registerBlock("keypad_smoker", KeypadSmokerBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	public static final DeferredBlock<KeypadFurnaceBlock> KEYPAD_FURNACE = BLOCKS.registerBlock("keypad_furnace", KeypadFurnaceBlock::new, () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
 	@HasManualPage(hasRecipeDescription = true)
 	@RegisterItemBlock
-	public static final DeferredBlock<KeypadBlastFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.registerBlock("keypad_blast_furnace", KeypadBlastFurnaceBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	public static final DeferredBlock<KeypadSmokerBlock> KEYPAD_SMOKER = BLOCKS.registerBlock("keypad_smoker", KeypadSmokerBlock::new, () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
+	@HasManualPage(hasRecipeDescription = true)
+	@RegisterItemBlock
+	public static final DeferredBlock<KeypadBlastFurnaceBlock> KEYPAD_BLAST_FURNACE = BLOCKS.registerBlock("keypad_blast_furnace", KeypadBlastFurnaceBlock::new, () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).lightLevel(state -> state.getValue(AbstractKeypadFurnaceBlock.LIT) ? 13 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<LaserBlock> LASER_BLOCK = BLOCKS.registerBlock("laser_block", LaserBlock::new, propDisguisable(3.5F));
-	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.registerBlock("laser", LaserFieldBlock::new, prop(MapColor.NONE, -1.0F).noLootTable());
+	public static final DeferredBlock<LaserBlock> LASER_BLOCK = BLOCKS.registerBlock("laser_block", LaserBlock::new, () -> propDisguisable(3.5F));
+	public static final DeferredBlock<LaserFieldBlock> LASER_FIELD = BLOCKS.registerBlock("laser", LaserFieldBlock::new, () -> prop(MapColor.NONE, -1.0F).noLootTable());
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<MotionActivatedLightBlock> MOTION_ACTIVATED_LIGHT = BLOCKS.registerBlock("motion_activated_light", MotionActivatedLightBlock::new, prop(MapColor.NONE, 5.0F).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0));
+	public static final DeferredBlock<MotionActivatedLightBlock> MOTION_ACTIVATED_LIGHT = BLOCKS.registerBlock("motion_activated_light", MotionActivatedLightBlock::new, () -> prop(MapColor.NONE, 5.0F).sound(SoundType.GLASS).lightLevel(state -> state.getValue(MotionActivatedLightBlock.LIT) ? 15 : 0));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.registerBlock("panic_button", p -> new PanicButtonBlock(p, BlockSetType.STONE, -1), prop(3.5F).lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
+	public static final DeferredBlock<PanicButtonBlock> PANIC_BUTTON = BLOCKS.registerBlock("panic_button", p -> new PanicButtonBlock(p, BlockSetType.STONE, -1), () -> prop(3.5F).lightLevel(state -> state.getValue(ButtonBlock.POWERED) ? 4 : 0));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.COLOR_BLACK, 5.0F));
+	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, () -> prop(MapColor.COLOR_BLACK, 5.0F));
 	@HasManualPage
 	@OwnableBE
-	public static final DeferredBlock<ProjectorBlock> PROJECTOR = BLOCKS.registerBlock("projector", ProjectorBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<ProjectorBlock> PROJECTOR = BLOCKS.registerBlock("projector", ProjectorBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ProtectoBlock> PROTECTO = BLOCKS.registerBlock("protecto", ProtectoBlock::new, propDisguisable(MapColor.METAL, 10.0F).sound(SoundType.METAL).lightLevel(state -> 7));
+	public static final DeferredBlock<ProtectoBlock> PROTECTO = BLOCKS.registerBlock("protecto", ProtectoBlock::new, () -> propDisguisable(MapColor.METAL, 10.0F).sound(SoundType.METAL).lightLevel(state -> 7));
 	@OwnableBE
-	public static final DeferredBlock<ReinforcedDoorBlock> REINFORCED_DOOR = BLOCKS.registerBlock("iron_door_reinforced", ReinforcedDoorBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).noOcclusion().pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<ReinforcedDoorBlock> REINFORCED_DOOR = BLOCKS.registerBlock("iron_door_reinforced", ReinforcedDoorBlock::new, () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).noOcclusion().pushReaction(PushReaction.BLOCK));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ElectrifiedIronFenceGateBlock> ELECTRIFIED_IRON_FENCE_GATE = BLOCKS.registerBlock("reinforced_fence_gate", ElectrifiedIronFenceGateBlock::new, prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).forceSolidOn());
+	public static final DeferredBlock<ElectrifiedIronFenceGateBlock> ELECTRIFIED_IRON_FENCE_GATE = BLOCKS.registerBlock("reinforced_fence_gate", ElectrifiedIronFenceGateBlock::new, () -> prop(MapColor.METAL, 5.0F).sound(SoundType.IRON).forceSolidOn());
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.registerBlock("retinal_scanner", RetinalScannerBlock::new, propDisguisable(3.5F));
-	public static final DeferredBlock<RiftStabilizerBlock> RIFT_STABILIZER = BLOCKS.registerBlock("rift_stabilizer", RiftStabilizerBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
-	public static final DeferredBlock<ScannerDoorBlock> SCANNER_DOOR = BLOCKS.registerBlock("scanner_door", p -> new ScannerDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<RetinalScannerBlock> RETINAL_SCANNER = BLOCKS.registerBlock("retinal_scanner", RetinalScannerBlock::new, () -> propDisguisable(3.5F));
+	public static final DeferredBlock<RiftStabilizerBlock> RIFT_STABILIZER = BLOCKS.registerBlock("rift_stabilizer", RiftStabilizerBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
+	public static final DeferredBlock<ScannerDoorBlock> SCANNER_DOOR = BLOCKS.registerBlock("scanner_door", p -> new ScannerDoorBlock(p, BlockSetType.IRON), () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).pushReaction(PushReaction.BLOCK));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.registerBlock("scanner_trapdoor", p -> new ScannerTrapDoorBlock(p, BlockSetType.IRON), propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).isValidSpawn(SCContent::never));
+	public static final DeferredBlock<ScannerTrapDoorBlock> SCANNER_TRAPDOOR = BLOCKS.registerBlock("scanner_trapdoor", p -> new ScannerTrapDoorBlock(p, BlockSetType.IRON), () -> propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON).isValidSpawn(SCContent::never));
 	public static final DeferredBlock<SecretStandingSignBlock> SECRET_OAK_SIGN = secretStandingSign("secret_sign_standing", Blocks.OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_sign"));
 	public static final DeferredBlock<SecretWallSignBlock> SECRET_OAK_WALL_SIGN = secretWallSign("secret_sign_wall", Blocks.OAK_SIGN, p -> p.overrideDescription("block.securitycraft.secret_sign"));
 	public static final DeferredBlock<SecretStandingSignBlock> SECRET_SPRUCE_SIGN = secretStandingSign("secret_spruce_sign_standing", Blocks.SPRUCE_SIGN, p -> p.overrideDescription("block.securitycraft.secret_spruce_sign"));
@@ -526,26 +525,26 @@ public class SCContent {
 	public static final DeferredBlock<SecretWallSignBlock> SECRET_WARPED_WALL_SIGN = secretWallSign("secret_warped_sign_wall", Blocks.WARPED_SIGN, p -> p.overrideDescription("block.securitycraft.secret_warped_sign"));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
+	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, () -> propDisguisable(3.5F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollision());
+	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F, false).noCollision());
 	@HasManualPage
-	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL).noCollision());
+	public static final DeferredBlock<SonicSecuritySystemBlock> SONIC_SECURITY_SYSTEM = BLOCKS.registerBlock("sonic_security_system", SonicSecuritySystemBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL).noCollision());
 	@RegisterItemBlock(SCItemGroup.EXPLOSIVES)
-	public static final DeferredBlock<TrackMineBlock> TRACK_MINE = BLOCKS.registerBlock("track_mine", TrackMineBlock::new, prop(MapColor.METAL, 0.7F).noCollision().sound(SoundType.METAL));
+	public static final DeferredBlock<TrackMineBlock> TRACK_MINE = BLOCKS.registerBlock("track_mine", TrackMineBlock::new, () -> prop(MapColor.METAL, 0.7F).noCollision().sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<TrophySystemBlock> TROPHY_SYSTEM = BLOCKS.registerBlock("trophy_system", TrophySystemBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL));
+	public static final DeferredBlock<TrophySystemBlock> TROPHY_SYSTEM = BLOCKS.registerBlock("trophy_system", TrophySystemBlock::new, () -> propDisguisable(MapColor.METAL, 5.0F, false).sound(SoundType.METAL));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<UsernameLoggerBlock> USERNAME_LOGGER = BLOCKS.registerBlock("username_logger", UsernameLoggerBlock::new, propDisguisable(3.5F));
+	public static final DeferredBlock<UsernameLoggerBlock> USERNAME_LOGGER = BLOCKS.registerBlock("username_logger", UsernameLoggerBlock::new, () -> propDisguisable(3.5F));
 	@HasManualPage
 	@OwnableBE
 	@RegisterItemBlock
-	public static final DeferredBlock<MineBlock> MINE = BLOCKS.registerBlock("mine", MineBlock::new, prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
-	public static final DeferredBlock<FakeWaterBlock> FAKE_WATER_BLOCK = BLOCKS.registerBlock("fake_water_block", p -> new FakeWaterBlock(p, FAKE_WATER.get()), reinforcedCopy(Blocks.WATER));
-	public static final DeferredBlock<FakeLavaBlock> FAKE_LAVA_BLOCK = BLOCKS.registerBlock("fake_lava_block", p -> new FakeLavaBlock(p, FAKE_LAVA.get()), reinforcedCopy(Blocks.LAVA));
+	public static final DeferredBlock<MineBlock> MINE = BLOCKS.registerBlock("mine", MineBlock::new, () -> prop(MapColor.METAL, 3.5F).sound(SoundType.METAL).forceSolidOn().pushReaction(PushReaction.NORMAL));
+	public static final DeferredBlock<FakeWaterBlock> FAKE_WATER_BLOCK = BLOCKS.registerBlock("fake_water_block", p -> new FakeWaterBlock(p, FAKE_WATER.get()), () -> reinforcedCopy(Blocks.WATER));
+	public static final DeferredBlock<FakeLavaBlock> FAKE_LAVA_BLOCK = BLOCKS.registerBlock("fake_lava_block", p -> new FakeLavaBlock(p, FAKE_LAVA.get()), () -> reinforcedCopy(Blocks.LAVA));
 
 	//block mines
 	@HasManualPage(PageGroup.BLOCK_MINES)
@@ -2838,61 +2837,61 @@ public class SCContent {
 
 	//misc
 	@RegisterItemBlock
-	public static final DeferredBlock<SlabBlock> CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("crystal_quartz_slab", SlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<SlabBlock> CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("crystal_quartz_slab", SlabBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("smooth_crystal_quartz", BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<Block> SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("smooth_crystal_quartz", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("chiseled_crystal_quartz", BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<Block> CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerSimpleBlock("chiseled_crystal_quartz", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CHISELED_QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerSimpleBlock("crystal_quartz", BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerSimpleBlock("crystal_quartz", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerSimpleBlock("crystal_quartz_bricks", BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<Block> CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerSimpleBlock("crystal_quartz_bricks", () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BRICKS).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<RotatedPillarBlock> CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("crystal_quartz_pillar", RotatedPillarBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_PILLAR).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<RotatedPillarBlock> CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("crystal_quartz_pillar", RotatedPillarBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_PILLAR).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("crystal_quartz_stairs", p -> new StairBlock(CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<StairBlock> CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("crystal_quartz_stairs", p -> new StairBlock(CRYSTAL_QUARTZ_BLOCK.get().defaultBlockState(), p), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("smooth_crystal_quartz_stairs", p -> new StairBlock(SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), p), BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<StairBlock> SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("smooth_crystal_quartz_stairs", p -> new StairBlock(SMOOTH_CRYSTAL_QUARTZ.get().defaultBlockState(), p), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@RegisterItemBlock
-	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("smooth_crystal_quartz_slab", SlabBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<SlabBlock> SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("smooth_crystal_quartz_slab", SlabBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SMOOTH_QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.CRYSTAL_QUARTZ_SLAB), reinforcedCopy(Blocks.QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.CRYSTAL_QUARTZ_SLAB), () -> reinforcedCopy(Blocks.QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz", p -> new BaseReinforcedBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ), reinforcedCopy(Blocks.SMOOTH_QUARTZ).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz", p -> new BaseReinforcedBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ), () -> reinforcedCopy(Blocks.SMOOTH_QUARTZ).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_chiseled_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CHISELED_CRYSTAL_QUARTZ), reinforcedCopy(Blocks.CHISELED_QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CHISELED_CRYSTAL_QUARTZ = BLOCKS.registerBlock("reinforced_chiseled_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CHISELED_CRYSTAL_QUARTZ), () -> reinforcedCopy(Blocks.CHISELED_QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerBlock("reinforced_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CRYSTAL_QUARTZ_BLOCK), reinforcedCopy(Blocks.QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BlockPocketBlock> REINFORCED_CRYSTAL_QUARTZ_BLOCK = BLOCKS.registerBlock("reinforced_crystal_quartz_block", p -> new BlockPocketBlock(p, SCContent.CRYSTAL_QUARTZ_BLOCK), () -> reinforcedCopy(Blocks.QUARTZ_BLOCK).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerBlock("reinforced_crystal_quartz_bricks", p -> new BaseReinforcedBlock(p, SCContent.CRYSTAL_QUARTZ_BRICKS), reinforcedCopy(Blocks.QUARTZ_BRICKS).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CRYSTAL_QUARTZ_BRICKS = BLOCKS.registerBlock("reinforced_crystal_quartz_bricks", p -> new BaseReinforcedBlock(p, SCContent.CRYSTAL_QUARTZ_BRICKS), () -> reinforcedCopy(Blocks.QUARTZ_BRICKS).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedRotatedCrystalQuartzPillar> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("reinforced_crystal_quartz_pillar", p -> new ReinforcedRotatedCrystalQuartzPillar(p, SCContent.CRYSTAL_QUARTZ_PILLAR), reinforcedCopy(Blocks.QUARTZ_PILLAR).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedRotatedCrystalQuartzPillar> REINFORCED_CRYSTAL_QUARTZ_PILLAR = BLOCKS.registerBlock("reinforced_crystal_quartz_pillar", p -> new ReinforcedRotatedCrystalQuartzPillar(p, SCContent.CRYSTAL_QUARTZ_PILLAR), () -> reinforcedCopy(Blocks.QUARTZ_PILLAR).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.CRYSTAL_QUARTZ_STAIRS), reinforcedCopy(Blocks.QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.CRYSTAL_QUARTZ_STAIRS), () -> reinforcedCopy(Blocks.QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS), reinforcedCopy(Blocks.SMOOTH_QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_STAIRS = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_stairs", p -> new ReinforcedStairsBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS), () -> reinforcedCopy(Blocks.SMOOTH_QUARTZ_STAIRS).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(customTint = CRYSTAL_QUARTZ_TINT, itemGroup = SCItemGroup.MANUAL)
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB), reinforcedCopy(Blocks.SMOOTH_QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SMOOTH_CRYSTAL_QUARTZ_SLAB = BLOCKS.registerBlock("reinforced_smooth_crystal_quartz_slab", p -> new ReinforcedSlabBlock(p, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB), () -> reinforcedCopy(Blocks.SMOOTH_QUARTZ_SLAB).mapColor(MapColor.COLOR_CYAN));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
-	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.registerBlock("horizontal_reinforced_iron_bars", HorizontalReinforcedIronBars::new, reinforcedCopy(Blocks.IRON_BARS).noLootTable().overrideDescription("block.securitycraft.reinforced_iron_bars"));
+	public static final DeferredBlock<HorizontalReinforcedIronBars> HORIZONTAL_REINFORCED_IRON_BARS = BLOCKS.registerBlock("horizontal_reinforced_iron_bars", HorizontalReinforcedIronBars::new, () -> reinforcedCopy(Blocks.IRON_BARS).noLootTable().overrideDescription("block.securitycraft.reinforced_iron_bars"));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2902,175 +2901,175 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedPistonHeadBlock> REINFORCED_PISTON_HEAD = reinforcedBlock("reinforced_piston_head", Blocks.PISTON_HEAD, (p, b) -> new ReinforcedPistonHeadBlock(p));
-	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.registerBlock("sentry_disguise", SometimesVisibleBlock::new, propDisguisable(-1.0F).noLootTable().pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<SometimesVisibleBlock> SENTRY_DISGUISE = BLOCKS.registerBlock("sentry_disguise", SometimesVisibleBlock::new, () -> propDisguisable(-1.0F).noLootTable().pushReaction(PushReaction.BLOCK));
 
 	//items
 	@HasManualPage(hasRecipeDescription = true)
-	public static final DeferredItem<AdminToolItem> ADMIN_TOOL = ITEMS.registerItem("admin_tool", AdminToolItem::new, itemProp(1).rarity(Rarity.EPIC));
-	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerSimpleBlockItem(SCContent.ANCIENT_DEBRIS_MINE, itemProp().fireResistant());
+	public static final DeferredItem<AdminToolItem> ADMIN_TOOL = ITEMS.registerItem("admin_tool", AdminToolItem::new, p -> p.stacksTo(1).rarity(Rarity.EPIC));
+	public static final DeferredItem<BlockItem> ANCIENT_DEBRIS_MINE_ITEM = ITEMS.registerSimpleBlockItem(SCContent.ANCIENT_DEBRIS_MINE, p -> p.fireResistant());
 	@HasManualPage
-	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.registerItem("briefcase", BriefcaseItem::new, itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY).component(DataComponents.TOOLTIP_DISPLAY, BriefcaseItem.DEFAULT_TOOLTIP_DISPLAY));
+	public static final DeferredItem<BriefcaseItem> BRIEFCASE = ITEMS.registerItem("briefcase", BriefcaseItem::new, p -> p.stacksTo(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY).component(DataComponents.TOOLTIP_DISPLAY, BriefcaseItem.DEFAULT_TOOLTIP_DISPLAY));
 	@HasManualPage
-	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = registerItem("camera_monitor", CameraMonitorItem::new, () -> itemProp(1).component(BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS));
+	public static final DeferredItem<CameraMonitorItem> CAMERA_MONITOR = ITEMS.registerItem("camera_monitor", CameraMonitorItem::new, p -> p.stacksTo(1).component(BOUND_CAMERAS, CameraMonitorItem.DEFAULT_NAMED_POSITIONS));
 	@HasManualPage
-	public static final DeferredItem<CodebreakerItem> CODEBREAKER = registerItem("codebreaker", CodebreakerItem::new, () -> itemProp().durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT).component(SUCCESS_CHANCE, 0.33D).component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+	public static final DeferredItem<CodebreakerItem> CODEBREAKER = ITEMS.registerItem("codebreaker", CodebreakerItem::new, p -> p.durability(5).rarity(Rarity.RARE).component(CODEBREAKER_DATA, CodebreakerData.DEFAULT).component(SUCCESS_CHANCE, 0.33D).component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
 	@HasManualPage
 	public static final DeferredItem<Item> CRYSTAL_QUARTZ_ITEM = ITEMS.registerSimpleItem("crystal_quartz_item");
-	public static final DeferredItem<BlockItem> DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(DISPLAY_CASE_PATH, SCContent.DISPLAY_CASE, itemProp());
+	public static final DeferredItem<BlockItem> DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(DISPLAY_CASE_PATH, SCContent.DISPLAY_CASE, UnaryOperator.identity());
 	@HasManualPage(hasRecipeDescription = true)
-	public static final DeferredItem<FakeLiquidBucketItem> FAKE_LAVA_BUCKET = ITEMS.registerItem("bucket_f_lava", p -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA.get(), p), itemProp(1));
+	public static final DeferredItem<FakeLiquidBucketItem> FAKE_LAVA_BUCKET = ITEMS.registerItem("bucket_f_lava", p -> new FakeLiquidBucketItem(SCContent.FAKE_LAVA.get(), p), p -> p.stacksTo(1));
 	@HasManualPage(hasRecipeDescription = true)
-	public static final DeferredItem<FakeLiquidBucketItem> FAKE_WATER_BUCKET = ITEMS.registerItem("bucket_f_water", p -> new FakeLiquidBucketItem(SCContent.FAKE_WATER.get(), p), itemProp(1));
-	public static final DeferredItem<BlockItem> GLOW_DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(GLOW_DISPLAY_CASE_PATH, SCContent.GLOW_DISPLAY_CASE, itemProp());
+	public static final DeferredItem<FakeLiquidBucketItem> FAKE_WATER_BUCKET = ITEMS.registerItem("bucket_f_water", p -> new FakeLiquidBucketItem(SCContent.FAKE_WATER.get(), p), p -> p.stacksTo(1));
+	public static final DeferredItem<BlockItem> GLOW_DISPLAY_CASE_ITEM = ITEMS.registerSimpleBlockItem(GLOW_DISPLAY_CASE_PATH, SCContent.GLOW_DISPLAY_CASE, UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<Item> INCOGNITO_MASK = ITEMS.registerSimpleItem("incognito_mask", itemProp(1).component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD).setDispensable(false).setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, SecurityCraft.resLoc("incognito_mask"))).build()));
+	public static final DeferredItem<Item> INCOGNITO_MASK = ITEMS.registerSimpleItem("incognito_mask", p -> p.stacksTo(1).component(DataComponents.EQUIPPABLE, Equippable.builder(EquipmentSlot.HEAD).setDispensable(false).setAsset(ResourceKey.create(EquipmentAssets.ROOT_ID, SecurityCraft.resLoc("incognito_mask"))).build()));
 	@HasManualPage
-	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.registerItem("keycard_holder", KeycardHolderItem::new, itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
+	public static final DeferredItem<KeycardHolderItem> KEYCARD_HOLDER = ITEMS.registerItem("keycard_holder", KeycardHolderItem::new, p -> p.stacksTo(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_1 = ITEMS.registerItem("keycard_lv1", p -> new KeycardItem(p, 0), itemProp());
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_1 = ITEMS.registerItem("keycard_lv1", p -> new KeycardItem(p, 0), UnaryOperator.identity());
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_2 = ITEMS.registerItem("keycard_lv2", p -> new KeycardItem(p, 1), itemProp());
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_2 = ITEMS.registerItem("keycard_lv2", p -> new KeycardItem(p, 1), UnaryOperator.identity());
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_3 = ITEMS.registerItem("keycard_lv3", p -> new KeycardItem(p, 2), itemProp());
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_3 = ITEMS.registerItem("keycard_lv3", p -> new KeycardItem(p, 2), UnaryOperator.identity());
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_4 = ITEMS.registerItem("keycard_lv4", p -> new KeycardItem(p, 3), itemProp());
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_4 = ITEMS.registerItem("keycard_lv4", p -> new KeycardItem(p, 3), UnaryOperator.identity());
 	@HasManualPage(PageGroup.KEYCARDS)
-	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.registerItem("keycard_lv5", p -> new KeycardItem(p, 4), itemProp());
+	public static final DeferredItem<KeycardItem> KEYCARD_LVL_5 = ITEMS.registerItem("keycard_lv5", p -> new KeycardItem(p, 4), UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<KeyPanelItem> KEY_PANEL = ITEMS.registerItem("keypad_item", KeyPanelItem::new, itemProp());
-	public static final DeferredItem<BlockItem> KEYPAD_CHEST_ITEM = ITEMS.registerSimpleBlockItem(KEYPAD_CHEST_PATH, SCContent.KEYPAD_CHEST, itemProp());
+	public static final DeferredItem<KeyPanelItem> KEY_PANEL = ITEMS.registerItem("keypad_item", KeyPanelItem::new, UnaryOperator.identity());
+	public static final DeferredItem<BlockItem> KEYPAD_CHEST_ITEM = ITEMS.registerSimpleBlockItem(KEYPAD_CHEST_PATH, SCContent.KEYPAD_CHEST, UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<DoubleHighBlockItem> KEYPAD_DOOR_ITEM = ITEMS.registerItem("keypad_door_item", p -> new DoubleHighBlockItem(KEYPAD_DOOR.get(), p), itemProp());
+	public static final DeferredItem<DoubleHighBlockItem> KEYPAD_DOOR_ITEM = ITEMS.registerItem("keypad_door_item", p -> new DoubleHighBlockItem(KEYPAD_DOOR.get(), p), UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<LensItem> LENS = ITEMS.registerItem("lens", LensItem::new, itemProp());
+	public static final DeferredItem<LensItem> LENS = ITEMS.registerItem("lens", LensItem::new, UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<KeycardItem> LIMITED_USE_KEYCARD = ITEMS.registerItem("limited_use_keycard", p -> new KeycardItem(p, -1), itemProp());
+	public static final DeferredItem<KeycardItem> LIMITED_USE_KEYCARD = ITEMS.registerItem("limited_use_keycard", p -> new KeycardItem(p, -1), UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<PortableTunePlayerItem> PORTABLE_TUNE_PLAYER = ITEMS.registerItem("portable_tune_player", PortableTunePlayerItem::new, itemProp());
+	public static final DeferredItem<PortableTunePlayerItem> PORTABLE_TUNE_PLAYER = ITEMS.registerItem("portable_tune_player", PortableTunePlayerItem::new, UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<DoubleHighBlockItem> REINFORCED_DOOR_ITEM = ITEMS.registerItem("door_indestructible_iron_item", p -> new DoubleHighBlockItem(REINFORCED_DOOR.get(), p), itemProp());
+	public static final DeferredItem<DoubleHighBlockItem> REINFORCED_DOOR_ITEM = ITEMS.registerItem("door_indestructible_iron_item", p -> new DoubleHighBlockItem(REINFORCED_DOOR.get(), p), UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = registerItem("remote_access_mine", MineRemoteAccessToolItem::new, () -> itemProp(1).component(BOUND_MINES, MineRemoteAccessToolItem.DEFAULT_POSITIONS));
+	public static final DeferredItem<MineRemoteAccessToolItem> MINE_REMOTE_ACCESS_TOOL = ITEMS.registerItem("remote_access_mine", MineRemoteAccessToolItem::new, p -> p.stacksTo(1).component(BOUND_MINES, MineRemoteAccessToolItem.DEFAULT_POSITIONS));
 	@HasManualPage
-	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = registerItem("remote_access_sentry", SentryRemoteAccessToolItem::new, () -> itemProp(1).component(BOUND_SENTRIES, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS));
+	public static final DeferredItem<SentryRemoteAccessToolItem> SENTRY_REMOTE_ACCESS_TOOL = ITEMS.registerItem("remote_access_sentry", SentryRemoteAccessToolItem::new, p -> p.stacksTo(1).component(BOUND_SENTRIES, SentryRemoteAccessToolItem.DEFAULT_NAMED_POSITIONS));
 	@HasManualPage
-	public static final DeferredItem<ProjectorItem> PROJECTOR_ITEM = ITEMS.registerItem("projector", ProjectorItem::new, itemProp().useBlockDescriptionPrefix());
+	public static final DeferredItem<ProjectorItem> PROJECTOR_ITEM = ITEMS.registerItem("projector", ProjectorItem::new, p -> p.useBlockDescriptionPrefix());
 	@HasManualPage
-	public static final DeferredItem<DoubleHighBlockItem> RIFT_STABILIZER_ITEM = ITEMS.registerItem("rift_stabilizer", p -> new DoubleHighBlockItem(RIFT_STABILIZER.get(), p), itemProp().useBlockDescriptionPrefix());
+	public static final DeferredItem<DoubleHighBlockItem> RIFT_STABILIZER_ITEM = ITEMS.registerItem("rift_stabilizer", p -> new DoubleHighBlockItem(RIFT_STABILIZER.get(), p), p -> p.useBlockDescriptionPrefix());
 	@HasManualPage
-	public static final DeferredItem<DoubleHighBlockItem> SCANNER_DOOR_ITEM = ITEMS.registerItem("scanner_door_item", p -> new DoubleHighBlockItem(SCANNER_DOOR.get(), p), itemProp());
+	public static final DeferredItem<DoubleHighBlockItem> SCANNER_DOOR_ITEM = ITEMS.registerItem("scanner_door_item", p -> new DoubleHighBlockItem(SCANNER_DOOR.get(), p), UnaryOperator.identity());
 	@HasManualPage
-	public static final DeferredItem<SCManualItem> SC_MANUAL = ITEMS.registerItem("sc_manual", SCManualItem::new, itemProp(1));
+	public static final DeferredItem<SCManualItem> SC_MANUAL = ITEMS.registerItem("sc_manual", SCManualItem::new, p -> p.stacksTo(1));
 	@HasManualPage(PageGroup.REINFORCED)
-	public static final DeferredItem<ReinforcedScaffoldingBlockItem> REINFORCED_SCAFFOLDING_ITEM = ITEMS.registerItem("reinforced_scaffolding", ReinforcedScaffoldingBlockItem::new, itemProp().useBlockDescriptionPrefix());
+	public static final DeferredItem<ReinforcedScaffoldingBlockItem> REINFORCED_SCAFFOLDING_ITEM = ITEMS.registerItem("reinforced_scaffolding", ReinforcedScaffoldingBlockItem::new, p -> p.useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_OAK_SIGN_ITEM = ITEMS.registerItem("secret_sign_item", p -> new SignItem(SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_sign"));
+	public static final DeferredItem<SignItem> SECRET_OAK_SIGN_ITEM = ITEMS.registerItem("secret_sign_item", p -> new SignItem(SCContent.SECRET_OAK_SIGN.get(), SCContent.SECRET_OAK_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_SPRUCE_SIGN_ITEM = ITEMS.registerItem("secret_spruce_sign_item", p -> new SignItem(SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_spruce_sign"));
+	public static final DeferredItem<SignItem> SECRET_SPRUCE_SIGN_ITEM = ITEMS.registerItem("secret_spruce_sign_item", p -> new SignItem(SCContent.SECRET_SPRUCE_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_spruce_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_BIRCH_SIGN_ITEM = ITEMS.registerItem("secret_birch_sign_item", p -> new SignItem(SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_birch_sign"));
+	public static final DeferredItem<SignItem> SECRET_BIRCH_SIGN_ITEM = ITEMS.registerItem("secret_birch_sign_item", p -> new SignItem(SCContent.SECRET_BIRCH_SIGN.get(), SCContent.SECRET_BIRCH_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_birch_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_JUNGLE_SIGN_ITEM = ITEMS.registerItem("secret_jungle_sign_item", p -> new SignItem(SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_jungle_sign"));
+	public static final DeferredItem<SignItem> SECRET_JUNGLE_SIGN_ITEM = ITEMS.registerItem("secret_jungle_sign_item", p -> new SignItem(SCContent.SECRET_JUNGLE_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_jungle_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_ACACIA_SIGN_ITEM = ITEMS.registerItem("secret_acacia_sign_item", p -> new SignItem(SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_acacia_sign"));
+	public static final DeferredItem<SignItem> SECRET_ACACIA_SIGN_ITEM = ITEMS.registerItem("secret_acacia_sign_item", p -> new SignItem(SCContent.SECRET_ACACIA_SIGN.get(), SCContent.SECRET_ACACIA_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_acacia_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.registerItem("secret_dark_oak_sign_item", p -> new SignItem(SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_dark_oak_sign"));
+	public static final DeferredItem<SignItem> SECRET_DARK_OAK_SIGN_ITEM = ITEMS.registerItem("secret_dark_oak_sign_item", p -> new SignItem(SCContent.SECRET_DARK_OAK_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_dark_oak_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_MANGROVE_SIGN_ITEM = ITEMS.registerItem("secret_mangrove_sign_item", p -> new SignItem(SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_mangrove_sign"));
+	public static final DeferredItem<SignItem> SECRET_MANGROVE_SIGN_ITEM = ITEMS.registerItem("secret_mangrove_sign_item", p -> new SignItem(SCContent.SECRET_MANGROVE_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_mangrove_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_CHERRY_SIGN_ITEM = ITEMS.registerItem("secret_cherry_sign_item", p -> new SignItem(SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_cherry_sign"));
+	public static final DeferredItem<SignItem> SECRET_CHERRY_SIGN_ITEM = ITEMS.registerItem("secret_cherry_sign_item", p -> new SignItem(SCContent.SECRET_CHERRY_SIGN.get(), SCContent.SECRET_CHERRY_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_cherry_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_PALE_OAK_SIGN_ITEM = ITEMS.registerItem("secret_pale_oak_sign_item", p -> new SignItem(SCContent.SECRET_PALE_OAK_SIGN.get(), SCContent.SECRET_PALE_OAK_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_pale_oak_sign"));
+	public static final DeferredItem<SignItem> SECRET_PALE_OAK_SIGN_ITEM = ITEMS.registerItem("secret_pale_oak_sign_item", p -> new SignItem(SCContent.SECRET_PALE_OAK_SIGN.get(), SCContent.SECRET_PALE_OAK_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_pale_oak_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_BAMBOO_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_sign_item", p -> new SignItem(SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_bamboo_sign"));
+	public static final DeferredItem<SignItem> SECRET_BAMBOO_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_sign_item", p -> new SignItem(SCContent.SECRET_BAMBOO_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_bamboo_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_CRIMSON_SIGN_ITEM = ITEMS.registerItem("secret_crimson_sign_item", p -> new SignItem(SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_crimson_sign"));
+	public static final DeferredItem<SignItem> SECRET_CRIMSON_SIGN_ITEM = ITEMS.registerItem("secret_crimson_sign_item", p -> new SignItem(SCContent.SECRET_CRIMSON_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_crimson_sign"));
 	@HasManualPage(PageGroup.SECRET_SIGNS)
-	public static final DeferredItem<SignItem> SECRET_WARPED_SIGN_ITEM = ITEMS.registerItem("secret_warped_sign_item", p -> new SignItem(SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), p), itemProp(16).overrideDescription("block.securitycraft.secret_warped_sign"));
+	public static final DeferredItem<SignItem> SECRET_WARPED_SIGN_ITEM = ITEMS.registerItem("secret_warped_sign_item", p -> new SignItem(SCContent.SECRET_WARPED_SIGN.get(), SCContent.SECRET_WARPED_WALL_SIGN.get(), p), p -> p.stacksTo(16).overrideDescription("block.securitycraft.secret_warped_sign"));
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_OAK_HANGING_SIGN.get(), SCContent.SECRET_OAK_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_OAK_HANGING_SIGN.get(), SCContent.SECRET_OAK_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_SPRUCE_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_spruce_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_SPRUCE_HANGING_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_SPRUCE_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_spruce_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_SPRUCE_HANGING_SIGN.get(), SCContent.SECRET_SPRUCE_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_BIRCH_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_birch_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_BIRCH_HANGING_SIGN.get(), SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_BIRCH_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_birch_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_BIRCH_HANGING_SIGN.get(), SCContent.SECRET_BIRCH_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_JUNGLE_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_jungle_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_JUNGLE_HANGING_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_JUNGLE_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_jungle_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_JUNGLE_HANGING_SIGN.get(), SCContent.SECRET_JUNGLE_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_ACACIA_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_acacia_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_ACACIA_HANGING_SIGN.get(), SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_ACACIA_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_acacia_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_ACACIA_HANGING_SIGN.get(), SCContent.SECRET_ACACIA_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_dark_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_DARK_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_dark_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_DARK_OAK_HANGING_SIGN.get(), SCContent.SECRET_DARK_OAK_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_mangrove_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_MANGROVE_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_mangrove_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_MANGROVE_HANGING_SIGN.get(), SCContent.SECRET_MANGROVE_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_CHERRY_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_cherry_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_CHERRY_HANGING_SIGN.get(), SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_CHERRY_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_cherry_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_CHERRY_HANGING_SIGN.get(), SCContent.SECRET_CHERRY_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_PALE_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_pale_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_PALE_OAK_HANGING_SIGN.get(), SCContent.SECRET_PALE_OAK_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_PALE_OAK_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_pale_oak_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_PALE_OAK_HANGING_SIGN.get(), SCContent.SECRET_PALE_OAK_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_BAMBOO_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_bamboo_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_BAMBOO_HANGING_SIGN.get(), SCContent.SECRET_BAMBOO_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_crimson_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_CRIMSON_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_crimson_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_CRIMSON_HANGING_SIGN.get(), SCContent.SECRET_CRIMSON_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECRET_HANGING_SIGNS)
-	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_warped_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), p), itemProp(16).useBlockDescriptionPrefix());
+	public static final DeferredItem<HangingSignItem> SECRET_WARPED_HANGING_SIGN_ITEM = ITEMS.registerItem("secret_warped_hanging_sign", p -> new HangingSignItem(SCContent.SECRET_WARPED_HANGING_SIGN.get(), SCContent.SECRET_WARPED_WALL_HANGING_SIGN.get(), p), p -> p.stacksTo(16).useBlockDescriptionPrefix());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> OAK_SECURITY_SEA_BOAT = ITEMS.registerItem("oak_security_sea_boat", p -> new SecuritySeaBoatItem(getOakSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> OAK_SECURITY_SEA_BOAT = ITEMS.registerItem("oak_security_sea_boat", p -> new SecuritySeaBoatItem(getOakSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> SPRUCE_SECURITY_SEA_BOAT = ITEMS.registerItem("spruce_security_sea_boat", p -> new SecuritySeaBoatItem(getSpruceSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> SPRUCE_SECURITY_SEA_BOAT = ITEMS.registerItem("spruce_security_sea_boat", p -> new SecuritySeaBoatItem(getSpruceSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> BIRCH_SECURITY_SEA_BOAT = ITEMS.registerItem("birch_security_sea_boat", p -> new SecuritySeaBoatItem(getBirchSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> BIRCH_SECURITY_SEA_BOAT = ITEMS.registerItem("birch_security_sea_boat", p -> new SecuritySeaBoatItem(getBirchSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> JUNGLE_SECURITY_SEA_BOAT = ITEMS.registerItem("jungle_security_sea_boat", p -> new SecuritySeaBoatItem(getJungleSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> JUNGLE_SECURITY_SEA_BOAT = ITEMS.registerItem("jungle_security_sea_boat", p -> new SecuritySeaBoatItem(getJungleSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> ACACIA_SECURITY_SEA_BOAT = ITEMS.registerItem("acacia_security_sea_boat", p -> new SecuritySeaBoatItem(getAcaciaSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> ACACIA_SECURITY_SEA_BOAT = ITEMS.registerItem("acacia_security_sea_boat", p -> new SecuritySeaBoatItem(getAcaciaSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> DARK_OAK_SECURITY_SEA_BOAT = ITEMS.registerItem("dark_oak_security_sea_boat", p -> new SecuritySeaBoatItem(getDarkOakSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> DARK_OAK_SECURITY_SEA_BOAT = ITEMS.registerItem("dark_oak_security_sea_boat", p -> new SecuritySeaBoatItem(getDarkOakSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.registerItem("mangrove_security_sea_boat", p -> new SecuritySeaBoatItem(getMangroveSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> MANGROVE_SECURITY_SEA_BOAT = ITEMS.registerItem("mangrove_security_sea_boat", p -> new SecuritySeaBoatItem(getMangroveSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.registerItem("cherry_security_sea_boat", p -> new SecuritySeaBoatItem(getCherrySecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> CHERRY_SECURITY_SEA_BOAT = ITEMS.registerItem("cherry_security_sea_boat", p -> new SecuritySeaBoatItem(getCherrySecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> PALE_OAK_SECURITY_SEA_BOAT = ITEMS.registerItem("pale_oak_security_sea_boat", p -> new SecuritySeaBoatItem(getPaleOakSecuritySeaBoat(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> PALE_OAK_SECURITY_SEA_BOAT = ITEMS.registerItem("pale_oak_security_sea_boat", p -> new SecuritySeaBoatItem(getPaleOakSecuritySeaBoat(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(PageGroup.SECURITY_SEA_BOATS)
-	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.registerItem("bamboo_security_sea_raft", p -> new SecuritySeaBoatItem(getBambooSecuritySeaRaft(), p), itemProp(1).fireResistant());
+	public static final DeferredItem<SecuritySeaBoatItem> BAMBOO_SECURITY_SEA_RAFT = ITEMS.registerItem("bamboo_security_sea_raft", p -> new SecuritySeaBoatItem(getBambooSecuritySeaRaft(), p), p -> p.stacksTo(1).fireResistant());
 	@HasManualPage(designedBy = "Henzoid")
-	public static final DeferredItem<SentryItem> SENTRY = ITEMS.registerItem("sentry", SentryItem::new, itemProp());
-	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = registerItem("sonic_security_system", SonicSecuritySystemItem::new, () -> itemProp(1).component(SSS_LINKED_BLOCKS, SonicSecuritySystemItem.DEFAULT_POSITIONS).useBlockDescriptionPrefix());
+	public static final DeferredItem<SentryItem> SENTRY = ITEMS.registerItem("sentry", SentryItem::new, UnaryOperator.identity());
+	public static final DeferredItem<SonicSecuritySystemItem> SONIC_SECURITY_SYSTEM_ITEM = ITEMS.registerItem("sonic_security_system", SonicSecuritySystemItem::new, p -> p.stacksTo(1).component(SSS_LINKED_BLOCKS, SonicSecuritySystemItem.DEFAULT_POSITIONS).useBlockDescriptionPrefix());
 	@HasManualPage
-	public static final DeferredItem<TaserItem> TASER = ITEMS.registerItem("taser", p -> new TaserItem(p, false), itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultEffects()));
-	public static final DeferredItem<TaserItem> TASER_POWERED = ITEMS.registerItem("taser_powered", p -> new TaserItem(p, true), itemProp().durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultPoweredEffects()));
+	public static final DeferredItem<TaserItem> TASER = ITEMS.registerItem("taser", p -> new TaserItem(p, false), p -> p.durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultEffects()));
+	public static final DeferredItem<TaserItem> TASER_POWERED = ITEMS.registerItem("taser_powered", p -> new TaserItem(p, true), p -> p.durability(151).component(DataComponents.POTION_CONTENTS, TaserItem.getDefaultPoweredEffects()));
 	@HasManualPage
-	public static final DeferredItem<UniversalBlockModifierItem> UNIVERSAL_BLOCK_MODIFIER = ITEMS.registerItem("universal_block_modifier", UniversalBlockModifierItem::new, itemProp(1));
+	public static final DeferredItem<UniversalBlockModifierItem> UNIVERSAL_BLOCK_MODIFIER = ITEMS.registerItem("universal_block_modifier", UniversalBlockModifierItem::new, p -> p.stacksTo(1));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.registerItem("universal_block_reinforcer_lvl1", UniversalBlockReinforcerItem::new, itemProp().durability(300));
+	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_1 = ITEMS.registerItem("universal_block_reinforcer_lvl1", UniversalBlockReinforcerItem::new, p -> p.durability(300));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.registerItem("universal_block_reinforcer_lvl2", UniversalBlockReinforcerItem::new, itemProp().durability(2700));
+	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_2 = ITEMS.registerItem("universal_block_reinforcer_lvl2", UniversalBlockReinforcerItem::new, p -> p.durability(2700));
 	@HasManualPage(PageGroup.BLOCK_REINFORCERS)
-	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_3 = ITEMS.registerItem("universal_block_reinforcer_lvl3", UniversalBlockReinforcerItem::new, itemProp(1).rarity(Rarity.RARE));
+	public static final DeferredItem<UniversalBlockReinforcerItem> UNIVERSAL_BLOCK_REINFORCER_LVL_3 = ITEMS.registerItem("universal_block_reinforcer_lvl3", UniversalBlockReinforcerItem::new, p -> p.stacksTo(1).rarity(Rarity.RARE));
 	@HasManualPage
-	public static final DeferredItem<UniversalBlockRemoverItem> UNIVERSAL_BLOCK_REMOVER = ITEMS.registerItem("universal_block_remover", UniversalBlockRemoverItem::new, itemProp().durability(476));
+	public static final DeferredItem<UniversalBlockRemoverItem> UNIVERSAL_BLOCK_REMOVER = ITEMS.registerItem("universal_block_remover", UniversalBlockRemoverItem::new, p -> p.durability(476));
 	@HasManualPage
-	public static final DeferredItem<UniversalKeyChangerItem> UNIVERSAL_KEY_CHANGER = ITEMS.registerItem("universal_key_changer", UniversalKeyChangerItem::new, itemProp(1));
+	public static final DeferredItem<UniversalKeyChangerItem> UNIVERSAL_KEY_CHANGER = ITEMS.registerItem("universal_key_changer", UniversalKeyChangerItem::new, p -> p.stacksTo(1));
 	@HasManualPage
-	public static final DeferredItem<UniversalOwnerChangerItem> UNIVERSAL_OWNER_CHANGER = ITEMS.registerItem("universal_owner_changer", UniversalOwnerChangerItem::new, itemProp().durability(48));
+	public static final DeferredItem<UniversalOwnerChangerItem> UNIVERSAL_OWNER_CHANGER = ITEMS.registerItem("universal_owner_changer", UniversalOwnerChangerItem::new, p -> p.durability(48));
 	@HasManualPage
-	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.registerItem("wire_cutters", WireCuttersItem::new, itemProp().durability(476));
+	public static final DeferredItem<Item> WIRE_CUTTERS = ITEMS.registerItem("wire_cutters", WireCuttersItem::new, p -> p.durability(476));
 
 	//modules
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> DENYLIST_MODULE = registerItem("blacklist_module", p -> new ModuleItem(p, ModuleType.DENYLIST, true, true), () -> itemProp(1).component(LIST_MODULE_DATA, ListModuleData.EMPTY));
+	public static final DeferredItem<ModuleItem> DENYLIST_MODULE = ITEMS.registerItem("blacklist_module", p -> new ModuleItem(p, ModuleType.DENYLIST, true, true), p -> p.stacksTo(1).component(LIST_MODULE_DATA, ListModuleData.EMPTY));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> DISGUISE_MODULE = registerItem("disguise_module", p -> new ModuleItem(p, ModuleType.DISGUISE, false, true), () -> itemProp(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY).component(SAVED_BLOCK_STATE, SavedBlockState.EMPTY));
+	public static final DeferredItem<ModuleItem> DISGUISE_MODULE = ITEMS.registerItem("disguise_module", p -> new ModuleItem(p, ModuleType.DISGUISE, false, true), p -> p.stacksTo(1).component(DataComponents.CONTAINER, ItemContainerContents.EMPTY).component(SAVED_BLOCK_STATE, SavedBlockState.EMPTY));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> HARMING_MODULE = ITEMS.registerItem("harming_module", p -> new ModuleItem(p, ModuleType.HARMING, false), itemProp(1));
+	public static final DeferredItem<ModuleItem> HARMING_MODULE = ITEMS.registerItem("harming_module", p -> new ModuleItem(p, ModuleType.HARMING, false), p -> p.stacksTo(1));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> REDSTONE_MODULE = ITEMS.registerItem("redstone_module", p -> new ModuleItem(p, ModuleType.REDSTONE, false), itemProp(1));
+	public static final DeferredItem<ModuleItem> REDSTONE_MODULE = ITEMS.registerItem("redstone_module", p -> new ModuleItem(p, ModuleType.REDSTONE, false), p -> p.stacksTo(1));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> SMART_MODULE = ITEMS.registerItem("smart_module", p -> new ModuleItem(p, ModuleType.SMART, false), itemProp(1));
+	public static final DeferredItem<ModuleItem> SMART_MODULE = ITEMS.registerItem("smart_module", p -> new ModuleItem(p, ModuleType.SMART, false), p -> p.stacksTo(1));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> STORAGE_MODULE = ITEMS.registerItem("storage_module", p -> new ModuleItem(p, ModuleType.STORAGE, false), itemProp(1));
+	public static final DeferredItem<ModuleItem> STORAGE_MODULE = ITEMS.registerItem("storage_module", p -> new ModuleItem(p, ModuleType.STORAGE, false), p -> p.stacksTo(1));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> ALLOWLIST_MODULE = registerItem("whitelist_module", p -> new ModuleItem(p, ModuleType.ALLOWLIST, true, true), () -> itemProp(1).component(LIST_MODULE_DATA, ListModuleData.EMPTY));
+	public static final DeferredItem<ModuleItem> ALLOWLIST_MODULE = ITEMS.registerItem("whitelist_module", p -> new ModuleItem(p, ModuleType.ALLOWLIST, true, true), p -> p.stacksTo(1).component(LIST_MODULE_DATA, ListModuleData.EMPTY));
 	@HasManualPage
-	public static final DeferredItem<ModuleItem> SPEED_MODULE = ITEMS.registerItem("speed_module", p -> new ModuleItem(p, ModuleType.SPEED, false), itemProp(1));
+	public static final DeferredItem<ModuleItem> SPEED_MODULE = ITEMS.registerItem("speed_module", p -> new ModuleItem(p, ModuleType.SPEED, false), p -> p.stacksTo(1));
 
 	//block entity types
 	//@formatter:off
@@ -3439,14 +3438,6 @@ public class SCContent {
 		return properties.noOcclusion().dynamicShape().isRedstoneConductor(DisguisableBlock::isNormalCube).isSuffocating(DisguisableBlock::isSuffocating);
 	}
 
-	private static final Item.Properties itemProp() {
-		return new Item.Properties();
-	}
-
-	private static final Item.Properties itemProp(int stackSize) {
-		return itemProp().stacksTo(stackSize);
-	}
-
 	private static boolean never(BlockState state, BlockGetter level, BlockPos pos) {
 		return false;
 	}
@@ -3468,7 +3459,7 @@ public class SCContent {
 	}
 
 	private static DeferredBlock<BaseReinforcedBlock> reinforcedBlock(String name, Block vanillaBlock, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
-		return BLOCKS.registerBlock(name, p -> new BaseReinforcedBlock(p, vanillaBlock), reinforcedCopy(vanillaBlock, propertyEditor));
+		return BLOCKS.registerBlock(name, p -> new BaseReinforcedBlock(p, vanillaBlock), () -> reinforcedCopy(vanillaBlock, propertyEditor));
 	}
 
 	private static <B extends Block> DeferredBlock<B> reinforcedBlock(String name, Block vanillaBlock, BiFunction<BlockBehaviour.Properties, Block, B> constructor) {
@@ -3476,7 +3467,7 @@ public class SCContent {
 	}
 
 	private static <B extends Block> DeferredBlock<B> reinforcedBlock(String name, Block vanillaBlock, BiFunction<BlockBehaviour.Properties, Block, B> constructor, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
-		return BLOCKS.registerBlock(name, p -> constructor.apply(p, vanillaBlock), reinforcedCopy(vanillaBlock, propertyEditor));
+		return BLOCKS.registerBlock(name, p -> constructor.apply(p, vanillaBlock), () -> reinforcedCopy(vanillaBlock, propertyEditor));
 	}
 
 	private static DeferredBlock<BaseFullMineBlock> blockMine(String name, Block vanillaBlock) {
@@ -3520,11 +3511,7 @@ public class SCContent {
 	}
 
 	private static <T extends SignBlock> DeferredBlock<T> secretSign(String id, BiFunction<BlockBehaviour.Properties, WoodType, T> signConstructor, Block baseSign, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
-		return BLOCKS.registerBlock(id, p -> signConstructor.apply(p, SignBlock.getWoodType(baseSign)), propertyEditor.apply(reinforcedCopy(baseSign)));
-	}
-
-	private static <I extends Item> DeferredItem<I> registerItem(String name, Function<Item.Properties, ? extends I> func, Supplier<Item.Properties> props) {
-		return ITEMS.register(name, key -> func.apply(props.get().setId(ResourceKey.create(Registries.ITEM, key))));
+		return BLOCKS.registerBlock(id, p -> signConstructor.apply(p, SignBlock.getWoodType(baseSign)), () -> propertyEditor.apply(reinforcedCopy(baseSign)));
 	}
 
 	public static Item.Properties setId(String id, Item.Properties properties, boolean useBlockDescriptionPrefix) {
