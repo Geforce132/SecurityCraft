@@ -36,4 +36,4 @@
 - Fix: Crash when teleporting or respawning near Security Cameras
 - Fix: Crash when trying to change the owner of a Reinforced Button or Reinforced Lever
 - Fix: Bad client performance when looking at many reinforced blocks at once
-- Misc.: The minimum required NeoForge version is now 21.10.8-beta
+- Misc.: The minimum required NeoForge version is 21.10.19-beta
