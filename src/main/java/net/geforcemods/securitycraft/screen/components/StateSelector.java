@@ -136,8 +136,10 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 		guiGraphics.drawString(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, CommonColors.DARK_GRAY, false);
 
-		if (dragHoverChecker.checkHover(mouseX, mouseY))
-			guiGraphics.requestCursor(clickedInDragRegion ? CursorTypes.RESIZE_ALL : CursorTypes.POINTING_HAND);
+		if (clickedInDragRegion)
+			guiGraphics.requestCursor(CursorTypes.RESIZE_ALL);
+		else if (dragHoverChecker.checkHover(mouseX, mouseY))
+			guiGraphics.requestCursor(CursorTypes.POINTING_HAND);
 	}
 
 	@Override

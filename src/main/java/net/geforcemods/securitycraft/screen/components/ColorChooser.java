@@ -144,8 +144,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		guiGraphics.drawString(font, bText, colorFieldRight + 5, colorFieldTop + 31, CommonColors.DARK_GRAY, false);
 		guiGraphics.drawString(font, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, CommonColors.DARK_GRAY, false);
 
-		if (colorFieldHovered)
-			guiGraphics.requestCursor(clickedInDragRegion ? CursorTypes.RESIZE_ALL : CursorTypes.POINTING_HAND);
+		if (clickedInDragRegion)
+			guiGraphics.requestCursor(CursorTypes.RESIZE_ALL);
+		else if (colorFieldHovered)
+			guiGraphics.requestCursor(CursorTypes.POINTING_HAND);
 	}
 
 	@Override
