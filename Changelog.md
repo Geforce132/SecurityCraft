@@ -34,6 +34,7 @@
 - Fix: The Rift Stabilizer does not keep its custom name as an item when the bottom half is mined
 - Fix: Crash when teleporting or respawning near Security Cameras
 - Fix: Crash when trying to change the owner of a Reinforced Button or Reinforced Lever
+- Fix: Bad client performance when looking at many reinforced blocks at once
 - Misc.: The minimum required NeoForge version is now 21.8.10
 
 --------------------------Changelog for v1.10-beta1 of SecurityCraft--------------------------
