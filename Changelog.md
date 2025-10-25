@@ -1,4 +1,4 @@
---------------------------Changelog for the next version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
 - New: Incognito Mask
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
