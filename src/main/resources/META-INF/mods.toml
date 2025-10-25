@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[1,)"
 logoFile="sc_banner.png"
-license="MIT https://github.com/Geforce132/SecurityCraft/blob/1.20.4/LICENSE"
+license="MIT https://github.com/Geforce132/SecurityCraft/blob/master/LICENSE"
 issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 
 [[mods]]
