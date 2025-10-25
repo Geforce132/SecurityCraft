@@ -1,4 +1,4 @@
---------------------------Changelog for the next version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.1-beta1 of SecurityCraft--------------------------
 
 - New: Reinforced blocks: All types of Reinforced Lightning Rod, Reinforced Copper Chain, Reinforced Copper Bars, Reinforced Copper Lantern, Reinforced Shelf
 - New: Incognito Mask
