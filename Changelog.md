@@ -31,6 +31,7 @@
 - Fix: Crash when teleporting or respawning near Security Cameras
 - Fix: Crash when trying to change the owner of a Reinforced Button or Reinforced Lever
 - Fix: Bad client performance when looking at many reinforced blocks at once
+- Misc.: The minimum required Forge version is now 40.3.6
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------
 
