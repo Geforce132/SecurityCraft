@@ -1,9 +1,9 @@
---------------------------Changelog for the next version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
+- New: Reinforced Lightning Rod
 - New: Incognito Mask
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
-- New: Reinforced Lightning Rod
 - New: Configuration option for limiting the amount of chunks that may be forceloaded by frame feeds
 - Change: The model and texture of the Motion-Activated Light have been updated
 - Change: The Trophy System now shows its targeting laser even when disguised
