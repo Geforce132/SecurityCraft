@@ -1,4 +1,4 @@
-name: General Issue (not for suggestions)
+name: Bug report (not for suggestions)
 description: Report a bug or problem with SecurityCraft
 body:
   - type: markdown
@@ -22,16 +22,12 @@ body:
     id: minecraft-version
     attributes:
       label: Minecraft version
-      description: What version of Minecraft are you using?
+      description: Which version of Minecraft are you using? If your version is not listed here, we do not support it.
       options:
+        - 1.21.10
+        - 1.21.8
         - 1.21.1
-        - 1.20.6
-        - 1.20.4
         - 1.20.1
-        - 1.19.4
-        - 1.18.2
-        - 1.16.5
-        - 1.12.2
     validations:
       required: true
   - type: input
@@ -45,12 +41,10 @@ body:
     id: securitycraft-version
     attributes:
       label: SecurityCraft version
-      description: What version of SecurityCraft are you using?
+      description: Which version of SecurityCraft are you using?
       options:
-        - v1.9.12
-        - v1.9.11-beta2
-        - v1.9.11-beta1
-        - v1.9.11
+        - v1.10.1
+        - v1.10
         - Older (update the mod and try again with the new version before continuing.)
     validations:
       required: true
