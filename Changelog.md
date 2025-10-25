@@ -1,4 +1,4 @@
---------------------------Changelog for the next version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
 - New: Reinforced Lightning Rod
 - New: Incognito Mask
