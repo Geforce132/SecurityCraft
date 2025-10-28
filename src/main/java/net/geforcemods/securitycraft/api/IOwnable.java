@@ -102,7 +102,7 @@ public interface IOwnable {
 	 * @return true if the given owner owns this IOwnable, false otherwise
 	 */
 	public default boolean isOwnedBy(Owner otherOwner) {
-		return getOwner().isEquivalent(otherOwner);
+		return getOwner().isTreatedTheSameAs(otherOwner);
 	}
 
 	/**

@@ -78,7 +78,7 @@ public class BriefcaseItem extends Item {
 		if (ownerData != null) {
 			Owner briefcaseOwner = ownerData.toOwner();
 
-			return ownerData.name().isEmpty() || (briefcaseOwner.isEquivalent(new Owner(player)) && briefcaseOwner.isEquivalent(PlayerUtils.getOwnerFromPlayerOrMask(player)));
+			return ownerData.name().isEmpty() || (briefcaseOwner.isTreatedTheSameAs(new Owner(player)) && briefcaseOwner.isTreatedTheSameAs(PlayerUtils.getOwnerFromPlayerOrMask(player)));
 		}
 
 		return false;

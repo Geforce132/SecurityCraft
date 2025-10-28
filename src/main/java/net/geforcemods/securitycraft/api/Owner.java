@@ -107,7 +107,7 @@ public class Owner {
 	/**
 	 * @return Whether everything owned by this owner is also owned by the other owner
 	 */
-	public boolean isEquivalent(Owner otherOwner) {
+	public boolean isTreatedTheSameAs(Owner otherOwner) {
 		if (TeamUtils.areOnSameTeam(this, otherOwner))
 			return true;
 
