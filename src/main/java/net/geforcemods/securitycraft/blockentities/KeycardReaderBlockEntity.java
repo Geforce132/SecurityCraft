@@ -184,7 +184,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 		KeycardData keycardData = stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
 
 		//the name of the player who can use the keycard does not match the one of the player trying to use it
-		if (!keycardData.usableBy().map(player.getGameProfile().getName()::equals).orElse(true))
+		if (!keycardData.usableBy().map(name -> player.getGameProfile().getName().equals(name) && PlayerUtils.getNameFromPlayerOrMask(player).equals(name)).orElse(true))
 			return Component.translatable("messages.securitycraft:keycardReader.cantUse");
 
 		//the keycard's signature does not match this keycard reader's

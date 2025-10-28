@@ -64,9 +64,8 @@ public class UniversalBlockRemoverItem extends Item {
 
 				IOwnable ownable = (IOwnable) be;
 				Owner owner = ownable.getOwner();
-				boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
 
-				if (!ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() && !(isDefault && state.is(SCContent.FRAME.get())) && !ownable.isOwnedBy(player)) {
+				if (!ConfigHandler.SERVER.allowBreakingNonOwnedBlocks.get() && !(owner.isDefaultOwner() && state.is(SCContent.FRAME.get())) && !ownable.isOwnedBy(player)) {
 					if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof IDisguisable db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable)))
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(getDescriptionId()), Utils.localize("messages.securitycraft:notOwned", PlayerUtils.getOwnerComponent(owner)), ChatFormatting.RED);
 
