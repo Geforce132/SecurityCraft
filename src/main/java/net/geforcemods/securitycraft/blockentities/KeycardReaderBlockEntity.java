@@ -186,7 +186,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 			return Component.translatable("messages.securitycraft:keycardReader.differentOwner");
 
 		//the name of the player who can use the keycard does not match the one of the player trying to use it
-		if (!usableBy.isBlank() && !usableBy.equals(player.getGameProfile().getName()))
+		if (!usableBy.isBlank() && (!usableBy.equals(player.getGameProfile().getName()) || !usableBy.equals(PlayerUtils.getNameFromPlayerOrMask(player))))
 			return Component.translatable("messages.securitycraft:keycardReader.cantUse");
 
 		//the keycard's signature does not match this keycard reader's

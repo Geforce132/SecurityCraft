@@ -6,11 +6,13 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.misc.SaltData;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -118,9 +120,9 @@ public class BriefcaseItem extends Item implements DyeableLeatherItem {
 			return true;
 
 		String ownerName = getOwnerName(briefcase);
-		String ownerUUID = getOwnerUUID(briefcase);
+		Owner briefcaseOwner = new Owner(ownerName, getOwnerUUID(briefcase));
 
-		return ownerName.isEmpty() || ownerUUID.equals(player.getUUID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
+		return ownerName.isEmpty() || (briefcaseOwner.isTreatedTheSameAs(new Owner(player)) && briefcaseOwner.isTreatedTheSameAs(PlayerUtils.getOwnerFromPlayerOrMask(player)));
 	}
 
 	public static String getOwnerName(ItemStack briefcase) {

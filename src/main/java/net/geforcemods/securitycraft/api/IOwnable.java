@@ -100,21 +100,7 @@ public interface IOwnable {
 	 * @return true if the given owner owns this IOwnable, false otherwise
 	 */
 	public default boolean isOwnedBy(Owner otherOwner) {
-		Owner self = getOwner();
-
-		if (TeamUtils.areOnSameTeam(self, otherOwner))
-			return true;
-
-		String selfUUID = self.getUUID();
-		String otherUUID = otherOwner.getUUID();
-		String otherName = otherOwner.getName();
-
-		// Check the player's UUID first.
-		if (otherUUID != null && otherUUID.equals(selfUUID))
-			return true;
-
-		// If the BlockEntity doesn't have a UUID saved, use the player's name instead.
-		return otherName != null && (selfUUID.equals("ownerUUID") || otherUUID.equals("ownerUUID")) && otherName.equals(self.getName());
+		return getOwner().isTreatedTheSameAs(otherOwner);
 	}
 
 	/**
