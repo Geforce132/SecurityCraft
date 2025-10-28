@@ -58,7 +58,7 @@ public class UniversalOwnerChangerItem extends Item {
 			return InteractionResult.PASS;
 
 		Owner owner = ownable.getOwner();
-		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
+		boolean isDefault = owner.isDefaultOwner();
 
 		if (!ownable.isOwnedBy(player) && !isDefault) {
 			if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof IDisguisable db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable))) {
