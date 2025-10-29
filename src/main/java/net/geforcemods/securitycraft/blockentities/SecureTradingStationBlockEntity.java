@@ -297,6 +297,10 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		return payment;
 	}
 
+	public boolean hasPaymentReferenceStacks() {
+		return !getItem(0).isEmpty() || !getItem(1).isEmpty();
+	}
+
 	public boolean hasRewardReferenceStacks() {
 		return !getItem(2).isEmpty() || !getItem(3).isEmpty();
 	}

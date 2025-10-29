@@ -56,7 +56,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		super.init();
 
 		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 43, 50, 16, payButtonText, this::sendTransactionRequest, Button.DEFAULT_NARRATION));
-		payButton.active = skipPaymentCheck;
+		payButton.active = skipPaymentCheck || !be.hasPaymentReferenceStacks();
 
 		if (storageVisible) {
 			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 112, topPos + 93, 26, 16, Component.empty()));

@@ -34,6 +34,9 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE);
 		withStorageAccess = hasStorageModule && isOwner;
 
+		if (!be.hasPaymentReferenceStacks()) //If no payment items are set, default to 1 transaction per button push
+			paymentLimitedTransactions = 1;
+
 		//payment item ghost slots: 0-1
 		for (int i = 0; i < 2; i++) {
 			addSlot(new OwnerRestrictedSlot(this, be, be, i, 65 + i * 18, 18, isOwner, true));
