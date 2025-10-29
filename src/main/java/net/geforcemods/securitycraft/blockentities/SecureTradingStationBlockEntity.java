@@ -72,8 +72,13 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 	@Override
 	public void setChanged() {
 		boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
+		boolean hasReward = hasRewardReferenceStacks();
 
 		rewardLimitedTransactions = getReferenceLimitedTransactions(this, 4, getContainerSize() - 1, getRewardPerTransaction(hasSmartModule), hasSmartModule);
+
+		if (hasReward != blockState.getValue(SecureTradingStation.HAS_REWARD))
+			level.setBlockAndUpdate(worldPosition, blockState.setValue(SecureTradingStation.HAS_REWARD, hasReward));
+
 		super.setChanged();
 	}
 
@@ -156,7 +161,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
 				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE, ModuleType.STORAGE, ModuleType.SMART
-		}; //TODO: Once the block has a block model, add the field to the list of disguisable blocks in ClientHandler
+		};
 	}
 
 	@Override

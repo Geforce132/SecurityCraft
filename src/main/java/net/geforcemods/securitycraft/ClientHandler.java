@@ -221,6 +221,7 @@ public class ClientHandler {
 			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SCANNER_DOOR.get(),
 			SCContent.SCANNER_TRAPDOOR.get(),
+			SCContent.SECURE_TRADING_STATION.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			//Excluded because it has its own custom baked model
 			//SCContent.SECURE_REDSTONE_INTERFACE.get(),

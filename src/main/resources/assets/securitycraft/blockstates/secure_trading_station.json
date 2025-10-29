@@ -1,0 +1,20 @@
+{
+    "variants": {
+		"facing=north,powered=false,has_reward=false": { "model": "securitycraft:block/secure_trading_station" },
+		"facing=south,powered=false,has_reward=false": { "model": "securitycraft:block/secure_trading_station", "y": 180 },
+		"facing=west,powered=false,has_reward=false":  { "model": "securitycraft:block/secure_trading_station", "y": 270 },
+		"facing=east,powered=false,has_reward=false":  { "model": "securitycraft:block/secure_trading_station", "y": 90 },
+        "facing=north,powered=false,has_reward=true": { "model": "securitycraft:block/secure_trading_station_reward" },
+        "facing=south,powered=false,has_reward=true": { "model": "securitycraft:block/secure_trading_station_reward", "y": 180 },
+        "facing=west,powered=false,has_reward=true":  { "model": "securitycraft:block/secure_trading_station_reward", "y": 270 },
+        "facing=east,powered=false,has_reward=true":  { "model": "securitycraft:block/secure_trading_station_reward", "y": 90 },
+        "facing=north,powered=true,has_reward=false": { "model": "securitycraft:block/secure_trading_station_powered" },
+        "facing=south,powered=true,has_reward=false": { "model": "securitycraft:block/secure_trading_station_powered", "y": 180 },
+        "facing=west,powered=true,has_reward=false":  { "model": "securitycraft:block/secure_trading_station_powered", "y": 270 },
+        "facing=east,powered=true,has_reward=false":  { "model": "securitycraft:block/secure_trading_station_powered", "y": 90 },
+		"facing=north,powered=true,has_reward=true": { "model": "securitycraft:block/secure_trading_station_reward_powered" },
+		"facing=south,powered=true,has_reward=true": { "model": "securitycraft:block/secure_trading_station_reward_powered", "y": 180 },
+		"facing=west,powered=true,has_reward=true":  { "model": "securitycraft:block/secure_trading_station_reward_powered", "y": 270 },
+		"facing=east,powered=true,has_reward=true":  { "model": "securitycraft:block/secure_trading_station_reward_powered", "y": 90 }
+	}
+}

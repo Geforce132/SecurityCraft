@@ -1,0 +1,6 @@
+{
+	"parent": "securitycraft:block/template_secure_trading_station",
+	"textures": {
+		"0": "securitycraft:block/secure_trading_station_off_closed"
+	}
+}

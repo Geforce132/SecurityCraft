@@ -28,13 +28,15 @@ public class SecureTradingStation extends DisguisableBlock {
 	/*TODO: Figure out recipe, dependent on how the texture will end up
 	- Original recipe suggestion from the Discord post: SHS IEI III with S = r. smooth stone slab, H = r. hopper, I = r. iron block, e. = emerald (potentially more expensive?)
 	*/
+	//TODO Fix xray through neighboring blocks in the final model
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	public static final BooleanProperty HAS_REWARD = BooleanProperty.create("has_reward");
 
 	public SecureTradingStation(Properties properties) {
 		super(properties);
 
-		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(HAS_REWARD, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -96,7 +98,7 @@ public class SecureTradingStation extends DisguisableBlock {
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(POWERED, FACING, WATERLOGGED);
+		builder.add(POWERED, HAS_REWARD, FACING, WATERLOGGED);
 	}
 
 	@Override
