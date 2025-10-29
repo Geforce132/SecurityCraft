@@ -70,16 +70,6 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	@Override
-	public void setRemoved() {
-		for (LinkedBlock block : linkedBlocks) {
-			if (level.isLoaded(block.getPos()))
-				LinkableBlockEntity.unlink(block.asBlockEntity(level), this);
-		}
-
-		super.setRemoved();
-	}
-
-	@Override
 	public <T> void onOptionChanged(Option<T> option) {
 		propagate(new ILinkedAction.OptionChanged<>(option), this);
 		super.onOptionChanged(option);
@@ -135,6 +125,25 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 			blockEntity1.linkedBlocks.remove(block);
 			blockEntity1.setChanged();
 		}
+	}
+
+	/**
+	 * Unlinks the block entity from all blocks that it is linked to.
+	 *
+	 * @param blockEntity The block entity to unlink from all blocks that it is linked to
+	 */
+	public static void unlinkFromAllLinked(LinkableBlockEntity blockEntity) {
+		if (blockEntity == null)
+			return;
+
+		Level level = blockEntity.level;
+
+		for (LinkedBlock block : blockEntity.linkedBlocks) {
+			if (level.isLoaded(block.getPos()))
+				LinkableBlockEntity.unlink(block.asBlockEntity(level), blockEntity);
+		}
+
+		blockEntity.setChanged();
 	}
 
 	/**

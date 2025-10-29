@@ -1,11 +1,18 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
+- API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
+- Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
+
+--------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
+
+- New: Reinforced Lightning Rod
 - New: Incognito Mask
 - New: In-game notification message that informs players that an error occurred while capturing a frame feed
 - New: Debug feature to help identify other mods preventing players from viewing a Security Camera
-- New: Reinforced Lightning Rod
 - New: Configuration option for limiting the amount of chunks that may be forceloaded by frame feeds
-- Change: Reworked the model and texture of the Motion-Activated Light
+- Change: The model and texture of the Motion-Activated Light have been updated
+- Change: The Trophy System now shows its targeting laser even when disguised
+- Change: The signature of a Keycard Reader can now be changed through a text box
 - API: New IOwnable#isOwnedBy overload taking a Player and a boolean for checking ownership respecting the new Incognito Mask
 - API: New method Owner#isDefaultOwner to check if the Owner object has no player data associated with it
 - API: New method IPasscodeConvertible#getRequiredKeyPanels to control how many key panel items are consumed when converting this block
@@ -26,6 +33,10 @@
 - Fix: Tricking Retinal Scanners, Scanner Doors and Scanner Trapdoors with player heads does not work
 - Fix: The Mine and Sentry Remote Access Tool appear to be able to interact with mines/sentries that are not owned by the player, even though they can't
 - Fix: Players viewing a Security Camera are invisible for players in spectator mode
+- Fix: The Rift Stabilizer does not keep its custom name as an item when the bottom half is mined
+- Fix: Crash when teleporting or respawning near Security Cameras
+- Fix: Crash when trying to change the owner of a Reinforced Button or Reinforced Lever
+- Fix: Bad client performance when looking at many reinforced blocks at once
 - Misc.: The minimum required NeoForge version is now 21.1.206
 
 --------------------------Changelog for v1.10 of SecurityCraft--------------------------

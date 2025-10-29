@@ -3129,6 +3129,7 @@ public class SCContent {
 			SCContent.REINFORCED_MOVING_PISTON.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> BlockEntityType.Builder.of(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FrameBlockEntity>> FRAME_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("frame", () -> BlockEntityType.Builder.of(FrameBlockEntity::new, SCContent.FRAME.get()).build(null));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedObserverBlockEntity>> OBSERVER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("observer", () -> BlockEntityType.Builder.of(ReinforcedObserverBlockEntity::new, SCContent.REINFORCED_OBSERVER.get()).build(null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureTradingStationBlockEntity>> SECURE_TRADING_STATION_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_trading_station", () -> BlockEntityType.Builder.of(SecureTradingStationBlockEntity::new, SCContent.SECURE_TRADING_STATION.get()).build(null));
 
 	//entity types

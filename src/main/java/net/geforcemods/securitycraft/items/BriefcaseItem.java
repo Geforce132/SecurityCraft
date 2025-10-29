@@ -1,12 +1,14 @@
 package net.geforcemods.securitycraft.items;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.components.PasscodeData;
 import net.geforcemods.securitycraft.inventory.BriefcaseMenu;
 import net.geforcemods.securitycraft.inventory.ItemContainer;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.util.PasscodeUtils;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -67,13 +69,12 @@ public class BriefcaseItem extends Item {
 	}
 
 	public static boolean isOwnedBy(ItemStack briefcase, Player player) {
-		OwnerData owner = briefcase.get(SCContent.OWNER_DATA);
+		OwnerData ownerData = briefcase.get(SCContent.OWNER_DATA);
 
-		if (owner != null) {
-			String ownerName = owner.name();
-			String ownerUUID = owner.uuid();
+		if (ownerData != null) {
+			Owner briefcaseOwner = ownerData.toOwner();
 
-			return ownerName.isEmpty() || ownerUUID.equals(player.getUUID().toString()) || (ownerUUID.equals("ownerUUID") && ownerName.equals(player.getName().getString()));
+			return ownerData.name().isEmpty() || (briefcaseOwner.isTreatedTheSameAs(new Owner(player)) && briefcaseOwner.isTreatedTheSameAs(PlayerUtils.getOwnerFromPlayerOrMask(player)));
 		}
 
 		return false;
