@@ -144,7 +144,7 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 	@Override
 	public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
 		if (slotId >= 0 && slotId <= 8 && clickType != ClickType.CLONE && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot()) {
-			if (be.isOwnedBy(player)) {
+			if (!player.isSpectator() && be.isOwnedBy(player)) {
 				ItemStack pickedUpStack = getCarried().copy();
 
 				be.getContents().set(slotId >= 7 ? slotId - 5 : slotId, pickedUpStack);
