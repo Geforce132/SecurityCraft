@@ -71,6 +71,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
+import net.geforcemods.securitycraft.renderers.SecureTradingStationRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraItemRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
@@ -436,6 +437,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_PISTON_BLOCK_ENTITY.get(), ReinforcedPistonHeadRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RETINAL_SCANNER_BLOCK_ENTITY.get(), RetinalScannerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), SecureRedstoneInterfaceRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SECURE_TRADING_STATION_BLOCK_ENTITY.get(), SecureTradingStationRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECRET_HANGING_SIGN_BLOCK_ENTITY.get(), SecretHangingSignRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECRET_SIGN_BLOCK_ENTITY.get(), SecretSignRenderer::new);

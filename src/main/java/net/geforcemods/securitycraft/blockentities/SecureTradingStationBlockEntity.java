@@ -14,6 +14,7 @@ import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.InventoryUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -43,16 +44,33 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
-public class SecureTradingStationBlockEntity extends DisguisableBlockEntity implements WorldlyContainer, MenuProvider {
+public class SecureTradingStationBlockEntity extends DisguisableBlockEntity implements WorldlyContainer, MenuProvider, ITickingBlockEntity {
 	private static final int[] SLOTS_FOR_UP_AND_SIDES = new int[] {12, 13, 14, 15, 16, 17, 18, 19};
 	private static final int[] SLOTS_FOR_DOWN = new int[] {4, 5, 6, 7, 8, 9, 10, 11};
 	private IntOption signalLength = new SignalLengthOption(60);
 	private final DisabledOption disabled = new DisabledOption(false);
 	private final NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(20, ItemStack.EMPTY); //2 for payment reference, 2 for reward reference, 8 for payment storage, 8 for reward storage
+	private int paymentDisplayIndex = -1;
+	private int rewardDisplayIndex = -1;
 	public int rewardLimitedTransactions = 0;
 
 	public SecureTradingStationBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.SECURE_TRADING_STATION_BLOCK_ENTITY.get(), pos, state);
+	}
+
+	@Override
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		if (level.getGameTime() % 40L == 0L) {
+			if ((paymentDisplayIndex == 1 || paymentDisplayIndex == -1) && !inventoryContents.get(0).isEmpty())
+				paymentDisplayIndex = 0;
+			else if ((paymentDisplayIndex == 0 || paymentDisplayIndex == -1) && !inventoryContents.get(1).isEmpty())
+				paymentDisplayIndex = 1;
+
+			if ((rewardDisplayIndex == 3 || rewardDisplayIndex == -1) && !inventoryContents.get(2).isEmpty())
+				rewardDisplayIndex = 2;
+			else if ((rewardDisplayIndex == 2 || rewardDisplayIndex == -1) && !inventoryContents.get(3).isEmpty())
+				rewardDisplayIndex = 3;
+		}
 	}
 
 	@Override
@@ -281,6 +299,14 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 	public boolean hasRewardReferenceStacks() {
 		return !getItem(2).isEmpty() || !getItem(3).isEmpty();
+	}
+
+	public ItemStack getPaymentDisplay() {
+		return paymentDisplayIndex >= 0 ? getItem(paymentDisplayIndex).copyWithCount(1) : ItemStack.EMPTY;
+	}
+
+	public ItemStack getRewardDisplay() {
+		return rewardDisplayIndex >= 0 ? getItem(rewardDisplayIndex).copyWithCount(1) : ItemStack.EMPTY;
 	}
 
 	@Override
