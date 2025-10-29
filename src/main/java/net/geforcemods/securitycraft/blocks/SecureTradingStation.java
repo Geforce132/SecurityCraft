@@ -23,12 +23,21 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SecureTradingStation extends DisguisableBlock {
 	/*TODO: Figure out recipe, dependent on how the texture will end up
 	- Original recipe suggestion from the Discord post: SHS IEI III with S = r. smooth stone slab, H = r. hopper, I = r. iron block, e. = emerald (potentially more expensive?)
 	*/
-	//TODO Fix xray through neighboring blocks in the final model
+	private static final VoxelShape BASE_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D);
+	private static final VoxelShape[] OCCLUSION_SHAPES = {
+			Shapes.or(BASE_SHAPE, Block.box(0.0D, 6.0D, 0.0D, 16.0D, 9.0D, 6.0D)), //south
+			Shapes.or(BASE_SHAPE, Block.box(10.0D, 6.0D, 0.0D, 16.0D, 9.0D, 16.0D)), //west
+			Shapes.or(BASE_SHAPE, Block.box(0.0D, 6.0D, 10.0D, 16.0D, 9.0D, 16.0D)), //north
+			Shapes.or(BASE_SHAPE, Block.box(0.0D, 6.0D, 0.0D, 6.0D, 9.0D, 16.0D)) //east
+	};
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty HAS_REWARD = BooleanProperty.create("has_reward");
@@ -94,6 +103,16 @@ public class SecureTradingStation extends DisguisableBlock {
 	@Override
 	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return state.getValue(POWERED) ? 15 : 0;
+	}
+
+	@Override
+	public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos) {
+		return OCCLUSION_SHAPES[state.getValue(FACING).get2DDataValue()];
+	}
+
+	@Override
+	public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		return OCCLUSION_SHAPES[state.getValue(FACING).get2DDataValue()];
 	}
 
 	@Override
