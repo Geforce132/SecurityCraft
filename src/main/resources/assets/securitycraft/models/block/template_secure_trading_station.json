@@ -1,7 +1,7 @@
 {
 	"parent": "block/block",
 	"credit": "Made with Blockbench",
-	"render_type": "minecraft:translucent",
+	"render_type": "minecraft:cutout",
 	"textures": {
 		"1": "securitycraft:block/reinforced_glass",
 		"particle": "#0"

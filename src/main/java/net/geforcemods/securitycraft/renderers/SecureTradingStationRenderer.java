@@ -51,7 +51,7 @@ public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureT
 	}
 
 	public static void renderItem(Level level, PoseStack pose, ItemStack stack, Direction facing, float sideOffset, MultiBufferSource buffer, int packedLight, ItemRenderer itemRenderer) {
-		BakedModel model = itemRenderer.getModel(stack, level, null, 0); //TODO When a translucent item is rendered, you can view through the block. I don't know how to fix that
+		BakedModel model = itemRenderer.getModel(stack, level, null, 0);
 		float verticalSize = model.getTransforms().getTransform(ItemDisplayContext.GROUND).scale.y();
 
 		pose.pushPose();
