@@ -32,9 +32,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class SecureTradingStation extends DisguisableBlock {
-	/*TODO: Figure out recipe, dependent on how the texture will end up
-	- Original recipe suggestion from the Discord post: SHS IEI III with S = r. smooth stone slab, H = r. hopper, I = r. iron block, e. = emerald (potentially more expensive?)
-	*/
 	private static final VoxelShape BASE_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D);
 	private static final VoxelShape[] OCCLUSION_SHAPES = {
 			Shapes.or(BASE_SHAPE, Block.box(0.0D, 6.0D, 0.0D, 16.0D, 9.0D, 6.0D)), //south
