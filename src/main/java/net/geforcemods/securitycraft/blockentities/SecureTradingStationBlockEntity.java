@@ -124,13 +124,14 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 			if (hasRewardReferenceStacks()) {
 				Map<ItemStack, Integer> rewardItems = getRewardPerTransaction(hasSmartModule);
+				Vec3 itemSpawningPos = Vec3.atCenterOf(getBlockPos()).subtract(0.0D, 0.3D, 0.0D).relative(blockState.getValue(SecureTradingStation.FACING), 0.7);
 
 				for (Map.Entry<ItemStack, Integer> rewardEntry : rewardItems.entrySet()) {
 					ItemStack rewardStackToMatch = rewardEntry.getKey();
 					int quantityPerTransaction = rewardEntry.getValue();
 					int totalQuantity = quantityPerTransaction * transactions;
 
-					InventoryUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(SecureTradingStation.FACING), 0.7)), inventoryContents::set);
+					InventoryUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 0, Direction.DOWN, itemSpawningPos), inventoryContents::set);
 				}
 			}
 
@@ -149,7 +150,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 			remainder = InventoryUtils.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
 		if (!remainder.isEmpty())
-			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).relative(blockState.getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
+			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).subtract(0.0D, 0.3D, 0.0D).relative(blockState.getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
 	}
 
 	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {
