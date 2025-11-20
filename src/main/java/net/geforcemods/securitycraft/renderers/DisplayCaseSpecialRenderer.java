@@ -12,8 +12,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.Identifier;

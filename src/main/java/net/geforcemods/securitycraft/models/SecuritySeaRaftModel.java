@@ -6,8 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.minecraft.client.model.RaftModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.object.boat.RaftModel;
 
 public class SecuritySeaRaftModel extends RaftModel {
 	public SecuritySeaRaftModel(ModelPart modelPart) {

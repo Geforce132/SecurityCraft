@@ -11,10 +11,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer.WrappingGeometryRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.SubmitNodeCollector.CustomGeometryRenderer;
 import net.minecraft.client.renderer.feature.CustomFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 @Mixin(CustomFeatureRenderer.class)
 public class CustomFeatureRendererMixin {

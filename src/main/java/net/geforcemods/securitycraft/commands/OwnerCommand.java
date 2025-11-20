@@ -21,9 +21,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.FillCommand;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.NameAndId;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public class OwnerCommand {

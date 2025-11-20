@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 
 public class SecurityCameraModel extends Model<SecurityCameraRenderState> {
 	public static final float DEFAULT_X_ROT = 0.2617993877991494F;

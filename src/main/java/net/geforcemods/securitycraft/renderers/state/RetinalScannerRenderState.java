@@ -1,6 +1,6 @@
 package net.geforcemods.securitycraft.renderers.state;
 
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.core.Direction;
 
 public class RetinalScannerRenderState extends DisguisableBlockEntityRenderState {

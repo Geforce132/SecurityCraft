@@ -6,8 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.ClientHandler;
-import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.object.boat.BoatModel;
 
 public class SecuritySeaBoatModel extends BoatModel {
 	public SecuritySeaBoatModel(ModelPart modelPart) {

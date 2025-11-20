@@ -6,12 +6,12 @@ import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.renderers.state.BlockPocketManagerRenderState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
