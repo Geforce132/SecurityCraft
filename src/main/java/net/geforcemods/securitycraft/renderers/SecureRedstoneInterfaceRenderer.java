@@ -16,12 +16,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<SecureRedstoneInterfaceBlockEntity, SecureRedstoneInterfaceRenderState> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/secure_redstone_interface_dish.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/block/secure_redstone_interface_dish.png");
 	private final SecureRedstoneInterfaceDishModel model;
 
 	public SecureRedstoneInterfaceRenderer(BlockEntityRendererProvider.Context ctx) {

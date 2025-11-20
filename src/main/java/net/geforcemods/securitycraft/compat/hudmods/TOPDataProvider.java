@@ -18,7 +18,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +57,7 @@ public class TOPDataProvider extends HudModHandler implements Function<ITheOnePr
 		});
 		theOneProbe.registerProvider(new IProbeInfoProvider() {
 			@Override
-			public ResourceLocation getID() {
+			public Identifier getID() {
 				return SecurityCraft.resLoc(SecurityCraft.MODID);
 			}
 

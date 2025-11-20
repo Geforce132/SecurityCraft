@@ -13,11 +13,11 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 
 public class SentryRenderer extends EntityRenderer<Sentry, SentryRenderState> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/sentry.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/entity/sentry.png");
 	private final SentryModel model;
 
 	public SentryRenderer(EntityRendererProvider.Context ctx) {

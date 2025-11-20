@@ -16,13 +16,13 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 
 public class ToggleScrollList<T> extends ScrollPanel {
-	private static final ResourceLocation CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
-	private static final ResourceLocation CANCEL_SPRITE = SecurityCraft.mcResLoc("container/beacon/cancel");
+	private static final Identifier CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
+	private static final Identifier CANCEL_SPRITE = SecurityCraft.mcResLoc("container/beacon/cancel");
 	private static final int SLOT_HEIGHT = 12;
 	private final int listLength;
 	private final List<T> orderedFilterList;

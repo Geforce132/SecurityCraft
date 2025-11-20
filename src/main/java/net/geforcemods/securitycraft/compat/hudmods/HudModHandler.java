@@ -21,7 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -32,9 +32,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class HudModHandler {
-	protected static final ResourceLocation SHOW_OWNER = SecurityCraft.resLoc("showowner");
-	protected static final ResourceLocation SHOW_MODULES = SecurityCraft.resLoc("showmodules");
-	protected static final ResourceLocation SHOW_CUSTOM_NAME = SecurityCraft.resLoc("showcustomname");
+	protected static final Identifier SHOW_OWNER = SecurityCraft.resLoc("showowner");
+	protected static final Identifier SHOW_MODULES = SecurityCraft.resLoc("showmodules");
+	protected static final Identifier SHOW_CUSTOM_NAME = SecurityCraft.resLoc("showcustomname");
 	protected static final Style MOD_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.BLUE).withItalic(true);
 	protected static final Style ITEM_NAME_STYLE = Style.EMPTY.applyFormat(ChatFormatting.WHITE);
 	protected static final MutableComponent EQUIPPED = Utils.localize("waila.securitycraft:equipped").withStyle(ChatFormatting.GRAY);
@@ -44,7 +44,7 @@ public class HudModHandler {
 
 	protected HudModHandler() {}
 
-	public void addDisguisedOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+	public void addDisguisedOwnerModuleNameInfo(Level level, BlockPos pos, BlockState state, Block block, BlockEntity be, Player player, Consumer<Component> lineAdder, Predicate<Identifier> configGetter) {
 		if (be == null)
 			return;
 
@@ -68,12 +68,12 @@ public class HudModHandler {
 			addOwnerModuleNameInfo(be, player, lineAdder, configGetter);
 	}
 
-	public void addOwnerInfo(Object obj, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+	public void addOwnerInfo(Object obj, Consumer<Component> lineAdder, Predicate<Identifier> configGetter) {
 		if (configGetter.test(SHOW_OWNER) && obj instanceof IOwnable ownable)
 			lineAdder.accept(Utils.localize("waila.securitycraft:owner", PlayerUtils.getOwnerComponent(ownable.getOwner())).withStyle(ChatFormatting.GRAY));
 	}
 
-	public void addOwnerModuleNameInfo(Object obj, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+	public void addOwnerModuleNameInfo(Object obj, Player player, Consumer<Component> lineAdder, Predicate<Identifier> configGetter) {
 		addOwnerInfo(obj, lineAdder, configGetter);
 
 		//if the object is ownable, show modules only when it's owned, otherwise always show
@@ -100,7 +100,7 @@ public class HudModHandler {
 		}
 	}
 
-	public void addEntityInfo(Entity entity, Player player, Consumer<Component> lineAdder, Predicate<ResourceLocation> configGetter) {
+	public void addEntityInfo(Entity entity, Player player, Consumer<Component> lineAdder, Predicate<Identifier> configGetter) {
 		if (entity instanceof Sentry sentry) {
 			SentryMode mode = sentry.getMode();
 

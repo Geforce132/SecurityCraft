@@ -49,7 +49,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,12 +57,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity, FrameRenderState> {
-	private static final ResourceLocation CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
-	private static final ResourceLocation INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
-	private static final ResourceLocation NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
+	private static final Identifier CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
+	private static final Identifier INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
+	private static final Identifier NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
 	private static final Material NOISE_BACKGROUND = new Material(TextureAtlas.LOCATION_BLOCKS, SecurityCraft.resLoc("entity/frame/noise_background"));
-	private static final ResourceLocation SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
-	private static final ResourceLocation WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
+	private static final Identifier SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
+	private static final Identifier WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
 	//@formatter:off
 	public static final RenderPipeline FRAME_PIPELINE = RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
 			.withLocation(SecurityCraft.resLoc("pipeline/frame_draw_fb_in_area"))
@@ -249,11 +249,11 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 	}
 
-	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, ResourceLocation texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
 		submitTexture(pose, collector, RenderType.entitySolid(texture), vertices, packedLight, normal, margin);
 	}
 
-	private void submitCutoutTexture(PoseStack pose, SubmitNodeCollector collector, ResourceLocation texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+	private void submitCutoutTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
 		submitTexture(pose, collector, RenderType.entityCutout(texture), vertices, packedLight, normal, margin);
 	}
 

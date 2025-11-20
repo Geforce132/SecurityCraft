@@ -6,11 +6,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SingleLensScreen extends AbstractContainerScreen<SingleLensMenu> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/single_lens.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/gui/container/single_lens.png");
 
 	public SingleLensScreen(SingleLensMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);

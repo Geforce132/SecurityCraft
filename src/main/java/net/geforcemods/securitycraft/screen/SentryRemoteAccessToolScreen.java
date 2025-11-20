@@ -28,7 +28,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,13 +36,13 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class SentryRemoteAccessToolScreen extends Screen {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/srat.png");
-	private static final ResourceLocation CAMOUFLAGE_SPRITE = SecurityCraft.resLoc("sentry/camouflage");
-	private static final ResourceLocation AGGRESSIVE_SPRITE = SecurityCraft.resLoc("sentry/aggressive");
-	private static final ResourceLocation IDLE_SPRITE = SecurityCraft.resLoc("sentry/idle");
-	private static final ResourceLocation ATTACK_HOSTILE_AND_PLAYERS_SPRITE = SecurityCraft.resLoc("sentry/attack_hostile_and_players");
-	private static final ResourceLocation ATTACK_HOSTILE_SPRITE = SecurityCraft.resLoc("sentry/attack_hostile");
-	private static final ResourceLocation ATTACK_PLAYERS_SPRITE = SecurityCraft.resLoc("sentry/attack_players");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/gui/container/srat.png");
+	private static final Identifier CAMOUFLAGE_SPRITE = SecurityCraft.resLoc("sentry/camouflage");
+	private static final Identifier AGGRESSIVE_SPRITE = SecurityCraft.resLoc("sentry/aggressive");
+	private static final Identifier IDLE_SPRITE = SecurityCraft.resLoc("sentry/idle");
+	private static final Identifier ATTACK_HOSTILE_AND_PLAYERS_SPRITE = SecurityCraft.resLoc("sentry/attack_hostile_and_players");
+	private static final Identifier ATTACK_HOSTILE_SPRITE = SecurityCraft.resLoc("sentry/attack_hostile");
+	private static final Identifier ATTACK_PLAYERS_SPRITE = SecurityCraft.resLoc("sentry/attack_players");
 	private final Component modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private Button[][] guiButtons = new Button[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)

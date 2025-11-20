@@ -51,7 +51,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.context.ContextMap;
@@ -69,31 +69,31 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 
 public class SCManualScreen extends Screen {
-	private static final ResourceLocation PAGE = SecurityCraft.resLoc("textures/gui/info_book_texture.png");
-	private static final ResourceLocation PAGE_WITH_SCROLL = SecurityCraft.resLoc("textures/gui/info_book_texture_special.png"); //for items without a recipe
-	private static final ResourceLocation TITLE_PAGE = SecurityCraft.resLoc("textures/gui/info_book_title_page.png");
-	private static final ResourceLocation OWNABLE_SPRITE = SecurityCraft.resLoc("sc_manual/ownable");
-	private static final ResourceLocation OWNABLE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/ownable_highlighted");
-	private static final ResourceLocation PASSCODE_PROTECTED_SPRITE = SecurityCraft.resLoc("sc_manual/passcode_protected");
-	private static final ResourceLocation PASSCODE_PROTECTED_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/passcode_protected_highlighted");
-	private static final ResourceLocation VIEW_ACTIVATED_SPRITE = SecurityCraft.resLoc("sc_manual/view_activated");
-	private static final ResourceLocation VIEW_ACTIVATED_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/view_activated_highlighted");
-	private static final ResourceLocation EXPLOSIVE_SPRITE = SecurityCraft.resLoc("sc_manual/explosive");
-	private static final ResourceLocation EXPLOSIVE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/explosive_highlighted");
-	private static final ResourceLocation HAS_OPTIONS_SPRITE = SecurityCraft.resLoc("sc_manual/has_options");
-	private static final ResourceLocation HAS_OPTIONS_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/has_options_highlighted");
-	private static final ResourceLocation HAS_MODULES_SPRITE = SecurityCraft.resLoc("sc_manual/has_modules");
-	private static final ResourceLocation HAS_MODULES_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/has_modules_highlighted");
-	private static final ResourceLocation LOCKABLE_SPRITE = SecurityCraft.resLoc("sc_manual/lockable");
-	private static final ResourceLocation LOCKABLE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/lockable_highlighted");
-	private static final ResourceLocation CUSTOMIZABLE_SPRITE = SecurityCraft.resLoc("sc_manual/customizable");
-	private static final ResourceLocation CUSTOMIZABLE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/customizable_highlighted");
-	private static final ResourceLocation LINK_OUT_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/link_out_highlighted");
-	private static final ResourceLocation LINK_OUT_SPRITE = SecurityCraft.resLoc("sc_manual/link_out");
-	private static final ResourceLocation PAGE_FORWARD_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("widget/page_forward_highlighted");
-	private static final ResourceLocation PAGE_FORWARD_SPRITE = SecurityCraft.mcResLoc("widget/page_forward");
-	private static final ResourceLocation PAGE_BACKWARD_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("widget/page_backward_highlighted");
-	private static final ResourceLocation PAGE_BACKWARD_SPRITE = SecurityCraft.mcResLoc("widget/page_backward");
+	private static final Identifier PAGE = SecurityCraft.resLoc("textures/gui/info_book_texture.png");
+	private static final Identifier PAGE_WITH_SCROLL = SecurityCraft.resLoc("textures/gui/info_book_texture_special.png"); //for items without a recipe
+	private static final Identifier TITLE_PAGE = SecurityCraft.resLoc("textures/gui/info_book_title_page.png");
+	private static final Identifier OWNABLE_SPRITE = SecurityCraft.resLoc("sc_manual/ownable");
+	private static final Identifier OWNABLE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/ownable_highlighted");
+	private static final Identifier PASSCODE_PROTECTED_SPRITE = SecurityCraft.resLoc("sc_manual/passcode_protected");
+	private static final Identifier PASSCODE_PROTECTED_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/passcode_protected_highlighted");
+	private static final Identifier VIEW_ACTIVATED_SPRITE = SecurityCraft.resLoc("sc_manual/view_activated");
+	private static final Identifier VIEW_ACTIVATED_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/view_activated_highlighted");
+	private static final Identifier EXPLOSIVE_SPRITE = SecurityCraft.resLoc("sc_manual/explosive");
+	private static final Identifier EXPLOSIVE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/explosive_highlighted");
+	private static final Identifier HAS_OPTIONS_SPRITE = SecurityCraft.resLoc("sc_manual/has_options");
+	private static final Identifier HAS_OPTIONS_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/has_options_highlighted");
+	private static final Identifier HAS_MODULES_SPRITE = SecurityCraft.resLoc("sc_manual/has_modules");
+	private static final Identifier HAS_MODULES_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/has_modules_highlighted");
+	private static final Identifier LOCKABLE_SPRITE = SecurityCraft.resLoc("sc_manual/lockable");
+	private static final Identifier LOCKABLE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/lockable_highlighted");
+	private static final Identifier CUSTOMIZABLE_SPRITE = SecurityCraft.resLoc("sc_manual/customizable");
+	private static final Identifier CUSTOMIZABLE_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/customizable_highlighted");
+	private static final Identifier LINK_OUT_HIGHLIGHTED_SPRITE = SecurityCraft.resLoc("sc_manual/link_out_highlighted");
+	private static final Identifier LINK_OUT_SPRITE = SecurityCraft.resLoc("sc_manual/link_out");
+	private static final Identifier PAGE_FORWARD_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("widget/page_forward_highlighted");
+	private static final Identifier PAGE_FORWARD_SPRITE = SecurityCraft.mcResLoc("widget/page_forward");
+	private static final Identifier PAGE_BACKWARD_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("widget/page_backward_highlighted");
+	private static final Identifier PAGE_BACKWARD_SPRITE = SecurityCraft.mcResLoc("widget/page_backward");
 	private static final int SUBPAGE_LENGTH = 1285;
 	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.withUnderlined(true));
 	private final Component ourPatrons = Utils.localize("gui.securitycraft:scManual.patreon.title");
@@ -697,9 +697,9 @@ public class SCManualScreen extends Screen {
 	}
 
 	static class ChangePageButton extends Button {
-		private final ResourceLocation normalSprite, highlightedSprite;
+		private final Identifier normalSprite, highlightedSprite;
 
-		public ChangePageButton(int xPos, int yPos, ResourceLocation normalSprite, ResourceLocation highlightedSprite, OnPress onPress) {
+		public ChangePageButton(int xPos, int yPos, Identifier normalSprite, Identifier highlightedSprite, OnPress onPress) {
 			super(xPos, yPos, 23, 13, Component.empty(), onPress, DEFAULT_NARRATION);
 			this.normalSprite = normalSprite;
 			this.highlightedSprite = highlightedSprite;

@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
@@ -62,19 +62,19 @@ public class Utils {
 		return tag;
 	}
 
-	public static ResourceLocation getRegistryName(Block block) {
+	public static Identifier getRegistryName(Block block) {
 		return BuiltInRegistries.BLOCK.getKey(block);
 	}
 
-	public static ResourceLocation getRegistryName(EntityType<?> entityType) {
+	public static Identifier getRegistryName(EntityType<?> entityType) {
 		return BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
 	}
 
-	public static ResourceLocation getRegistryName(Item item) {
+	public static Identifier getRegistryName(Item item) {
 		return BuiltInRegistries.ITEM.getKey(item);
 	}
 
-	public static ResourceLocation getRegistryName(Potion potion) {
+	public static Identifier getRegistryName(Potion potion) {
 		return BuiltInRegistries.POTION.getKey(potion);
 	}
 

@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.SecurityCraft;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 
 public enum SCSounds {
@@ -17,7 +17,7 @@ public enum SCSounds {
 	DISPLAY_CASE_CLOSE("display_case_close");
 
 	public final String path;
-	public final ResourceLocation location;
+	public final Identifier location;
 	public final SoundEvent event;
 
 	private SCSounds(String path) {

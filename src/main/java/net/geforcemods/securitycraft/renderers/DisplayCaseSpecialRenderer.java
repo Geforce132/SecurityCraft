@@ -16,10 +16,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 
-public record DisplayCaseSpecialRenderer(DisplayCaseModel model, ResourceLocation texture, float openness, Optional<Integer> light) implements NoDataSpecialModelRenderer {
+public record DisplayCaseSpecialRenderer(DisplayCaseModel model, Identifier texture, float openness, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
 	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector collector, int packedLight, int packedOverlay, boolean glint, int outlineColor) {
 		collector.submitModel(model, openness, pose, RenderType.entityCutout(texture), light.orElse(packedLight), packedOverlay, outlineColor, null);
@@ -33,12 +33,12 @@ public record DisplayCaseSpecialRenderer(DisplayCaseModel model, ResourceLocatio
 		model.root().getExtentsForGui(poseStack, extents);
 	}
 
-	public static record Unbaked(ResourceLocation texture, float openness, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {
+	public static record Unbaked(Identifier texture, float openness, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {
 
 		//@formatter:off
 		public static final MapCodec<DisplayCaseSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
 				i -> i.group(
-						ResourceLocation.CODEC.fieldOf("texture").forGetter(DisplayCaseSpecialRenderer.Unbaked::texture),
+						Identifier.CODEC.fieldOf("texture").forGetter(DisplayCaseSpecialRenderer.Unbaked::texture),
 						Codec.FLOAT.optionalFieldOf("openness", 0.0F).forGetter(DisplayCaseSpecialRenderer.Unbaked::openness),
 						Codec.INT.optionalFieldOf("light").forGetter(DisplayCaseSpecialRenderer.Unbaked::light))
 				.apply(i, DisplayCaseSpecialRenderer.Unbaked::new));

@@ -14,10 +14,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.ArrowRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class BulletRenderer extends EntityRenderer<Bullet, ArrowRenderState> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/bullet.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/entity/bullet.png");
 	private final BulletModel model;
 
 	public BulletRenderer(EntityRendererProvider.Context ctx) {

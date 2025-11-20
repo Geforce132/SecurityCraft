@@ -7,7 +7,7 @@ import net.geforcemods.securitycraft.api.ICodebreakable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs.LateBoundIdMapper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
@@ -18,8 +18,8 @@ import net.minecraft.world.phys.Vec3;
 
 @FunctionalInterface
 public interface HitCheck {
-	public static final LateBoundIdMapper<ResourceLocation, HitCheck> ID_MAPPER = new LateBoundIdMapper<>();
-	public static final Codec<HitCheck> CODEC = ID_MAPPER.codec(ResourceLocation.CODEC);
+	public static final LateBoundIdMapper<Identifier, HitCheck> ID_MAPPER = new LateBoundIdMapper<>();
+	public static final Codec<HitCheck> CODEC = ID_MAPPER.codec(Identifier.CODEC);
 	public static final HitCheck SECURITY_CAMERA = (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof SecurityCameraBlockEntity;
 	public static final HitCheck EXPLOSIVE_BLOCK = (level, hitResult) -> level.getBlockState(hitResult.getBlockPos()).getBlock() instanceof IExplosive;
 	public static final HitCheck LOCKABLE = (level, hitResult) -> level.getBlockEntity(hitResult.getBlockPos()) instanceof ILockable;

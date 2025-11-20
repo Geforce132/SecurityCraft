@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class IMSBombRenderer extends EntityRenderer<IMSBomb, EntityRenderState> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/entity/ims_bomb.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/entity/ims_bomb.png");
 	private final IMSBombModel model;
 
 	public IMSBombRenderer(EntityRendererProvider.Context ctx) {

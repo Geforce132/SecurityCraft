@@ -20,13 +20,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 
 public class AlarmOptionsScreen extends Screen {
-	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/alarm_options.png");
-	private static final ResourceLocation RESET_SPRITE = SecurityCraft.resLoc("widget/reset");
-	private static final ResourceLocation RESET_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/reset_inactive");
+	private static final Identifier GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/alarm_options.png");
+	private static final Identifier RESET_SPRITE = SecurityCraft.resLoc("widget/reset");
+	private static final Identifier RESET_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/reset_inactive");
 	private final Component soundLengthText = Component.translatable("gui.securitycraft:alarm.sound_length").withStyle(ChatFormatting.UNDERLINE);
 	private final AlarmScreen alarmScreen;
 	private int imageWidth = 226, imageHeight = 112, leftPos, topPos;

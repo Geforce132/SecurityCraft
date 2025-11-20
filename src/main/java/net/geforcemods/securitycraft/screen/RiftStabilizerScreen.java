@@ -13,11 +13,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 
 public class RiftStabilizerScreen extends Screen {
-	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
+	private static final Identifier GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	public final Component scrollListTitle, smartModuleTooltip;
 	private int imageWidth = 176;
 	private int imageHeight = 166;

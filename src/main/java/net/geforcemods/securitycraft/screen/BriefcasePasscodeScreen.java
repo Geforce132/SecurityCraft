@@ -15,7 +15,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -24,7 +24,7 @@ public class BriefcasePasscodeScreen extends Screen {
 	public static final String UP_ARROW = "\u2191";
 	public static final String RIGHT_ARROW = "\u2192";
 	public static final String DOWN_ARROW = "\u2193";
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final boolean isSetup;
 	private int imageWidth = 176;
 	private int imageHeight = 166;

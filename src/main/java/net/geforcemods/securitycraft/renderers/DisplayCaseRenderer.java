@@ -20,14 +20,14 @@ import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlockEntity, DisplayCaseRenderState> {
-	private final ResourceLocation texture = SecurityCraft.resLoc("textures/entity/display_case/normal.png");
-	private final ResourceLocation glowTexture = SecurityCraft.resLoc("textures/entity/display_case/glow.png");
+	private final Identifier texture = SecurityCraft.resLoc("textures/entity/display_case/normal.png");
+	private final Identifier glowTexture = SecurityCraft.resLoc("textures/entity/display_case/glow.png");
 	private final DisplayCaseModel model;
 	private final ItemModelResolver itemModelResolver;
 	private final boolean glowing;

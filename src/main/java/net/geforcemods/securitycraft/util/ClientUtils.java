@@ -11,11 +11,11 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class ClientUtils {
 	//@formatter:off
-	private static final ResourceLocation[] MODULE_TEXTURES = {
+	private static final Identifier[] MODULE_TEXTURES = {
 			SecurityCraft.resLoc("textures/item/module_background.png"),
 			SecurityCraft.resLoc("textures/item/whitelist_module.png"),
 			SecurityCraft.resLoc("textures/item/blacklist_module.png"),
@@ -26,8 +26,8 @@ public class ClientUtils {
 			SecurityCraft.resLoc("textures/item/module_background.png")
 	};
 	//@formatter:on
-	private static final ResourceLocation REDSTONE_TEXTURE = SecurityCraft.mcResLoc("textures/item/redstone.png");
-	private static final ResourceLocation SUGAR_TEXTURE = SecurityCraft.mcResLoc("textures/item/sugar.png");
+	private static final Identifier REDSTONE_TEXTURE = SecurityCraft.mcResLoc("textures/item/redstone.png");
+	private static final Identifier SUGAR_TEXTURE = SecurityCraft.mcResLoc("textures/item/sugar.png");
 
 	private ClientUtils() {}
 
@@ -48,7 +48,7 @@ public class ClientUtils {
 			guiGraphics.setComponentTooltipForNextFrame(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
-	private static void drawTexture(GuiGraphics guiGraphics, ResourceLocation texture, int moduleLeft, int moduleTop, int color) {
+	private static void drawTexture(GuiGraphics guiGraphics, Identifier texture, int moduleLeft, int moduleTop, int color) {
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, moduleLeft, moduleTop, 0.0F, 0.0F, 16, 16, 16, 16, color);
 	}
 

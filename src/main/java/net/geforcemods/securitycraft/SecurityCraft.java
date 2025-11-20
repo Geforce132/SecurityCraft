@@ -41,7 +41,7 @@ import net.geforcemods.securitycraft.util.HasManualPage;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -228,11 +228,11 @@ public class SecurityCraft {
 		return "v" + ModList.get().getModContainerById(MODID).get().getModInfo().getVersion().toString();
 	}
 
-	public static ResourceLocation resLoc(String path) {
-		return ResourceLocation.fromNamespaceAndPath(MODID, path);
+	public static Identifier resLoc(String path) {
+		return Identifier.fromNamespaceAndPath(MODID, path);
 	}
 
-	public static ResourceLocation mcResLoc(String path) {
-		return ResourceLocation.withDefaultNamespace(path);
+	public static Identifier mcResLoc(String path) {
+		return Identifier.withDefaultNamespace(path);
 	}
 }

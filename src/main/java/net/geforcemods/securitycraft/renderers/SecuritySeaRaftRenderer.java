@@ -8,10 +8,10 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.RaftRenderer;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class SecuritySeaRaftRenderer extends RaftRenderer {
-	private final ResourceLocation texture;
+	private final Identifier texture;
 	private final EntityModel<BoatRenderState> model;
 
 	public SecuritySeaRaftRenderer(EntityRendererProvider.Context ctx, ModelLayerLocation location) {

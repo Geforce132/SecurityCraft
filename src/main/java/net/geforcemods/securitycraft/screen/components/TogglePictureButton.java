@@ -6,17 +6,17 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 public class TogglePictureButton extends Button implements IToggleableButton {
-	private final ResourceLocation[] sprites;
+	private final Identifier[] sprites;
 	private final int toggleCount;
 	private final int drawOffset;
 	private final int drawWidth;
 	private final int drawHeight;
 	private int currentIndex = 0;
 
-	public TogglePictureButton(int xPos, int yPos, int width, int height, int drawOffset, int drawWidth, int drawHeight, int toggleCount, OnPress onPress, ResourceLocation... sprites) {
+	public TogglePictureButton(int xPos, int yPos, int width, int height, int drawOffset, int drawWidth, int drawHeight, int toggleCount, OnPress onPress, Identifier... sprites) {
 		super(xPos, yPos, width, height, Component.empty(), onPress, DEFAULT_NARRATION);
 
 		if (sprites.length != toggleCount)
@@ -33,7 +33,7 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.renderWidget(guiGraphics, mouseX, mouseX, partialTicks);
 
-		ResourceLocation sprite = getCurrentSprite();
+		Identifier sprite = getCurrentSprite();
 
 		if (sprite != null)
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, sprite, getX() + drawOffset, getY() + drawOffset, drawWidth, drawHeight);
@@ -66,7 +66,7 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 		currentIndex = Math.floorMod(newIndex, toggleCount);
 	}
 
-	public ResourceLocation getCurrentSprite() {
+	public Identifier getCurrentSprite() {
 		return sprites[getCurrentIndex()];
 	}
 }

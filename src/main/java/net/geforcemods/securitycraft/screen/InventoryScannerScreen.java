@@ -13,13 +13,13 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
 
 public class InventoryScannerScreen extends AbstractContainerScreen<InventoryScannerMenu> {
-	private static final ResourceLocation REGULAR_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_gui.png");
-	private static final ResourceLocation ENHANCED_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_enhanced_gui.png");
+	private static final Identifier REGULAR_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_gui.png");
+	private static final Identifier ENHANCED_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_enhanced_gui.png");
 	public final InventoryScannerBlockEntity be;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;

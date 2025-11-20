@@ -16,7 +16,7 @@ import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -81,12 +81,12 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 		cooldown = tag.getIntOr("cooldown", 0);
 		isPowered = tag.getBooleanOr("isPowered", false);
-		setSound(tag.getString("sound").map(ResourceLocation::parse).orElse(SCSounds.ALARM.location));
+		setSound(tag.getString("sound").map(Identifier::parse).orElse(SCSounds.ALARM.location));
 		pitch = tag.getFloatOr("pitch", 1.0F);
 		soundLength = tag.getIntOr("delay", 2);
 	}
 
-	public void setSound(ResourceLocation soundEvent) {
+	public void setSound(Identifier soundEvent) {
 		sound = SoundEvent.createVariableRangeEvent(soundEvent);
 		setChanged();
 	}

@@ -17,11 +17,11 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemDisplayContext;
 
-public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceLocation texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements NoDataSpecialModelRenderer {
+public record SecurityCameraSpecialRenderer(SecurityCameraModel model, Identifier texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
 	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector collector, int packedLight, int packedOverlay, boolean glint, int outlineColor) {
 		SecurityCameraRenderState state = new SecurityCameraRenderState();
@@ -42,12 +42,12 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, ResourceL
 		model.root().getExtentsForGui(poseStack, extents);
 	}
 
-	public static record Unbaked(ResourceLocation texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {
+	public static record Unbaked(Identifier texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {
 
 		//@formatter:off
 		public static final MapCodec<SecurityCameraSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
 				i -> i.group(
-						ResourceLocation.CODEC.fieldOf("texture").forGetter(SecurityCameraSpecialRenderer.Unbaked::texture),
+						Identifier.CODEC.fieldOf("texture").forGetter(SecurityCameraSpecialRenderer.Unbaked::texture),
 						Codec.FLOAT.optionalFieldOf("rotation", 0.0F).forGetter(SecurityCameraSpecialRenderer.Unbaked::rotation),
 						ExtraCodecs.RGB_COLOR_CODEC.optionalFieldOf("lens_color").forGetter(SecurityCameraSpecialRenderer.Unbaked::lensColor),
 						Codec.INT.optionalFieldOf("light").forGetter(SecurityCameraSpecialRenderer.Unbaked::light))

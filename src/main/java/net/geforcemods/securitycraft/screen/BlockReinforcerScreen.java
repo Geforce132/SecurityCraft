@@ -11,15 +11,15 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer.png");
-	private static final ResourceLocation TEXTURE_LVL1 = SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer_lvl1.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer.png");
+	private static final Identifier TEXTURE_LVL1 = SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer_lvl1.png");
 	private final Component output = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private CallbackCheckbox unreinforceCheckbox;
 

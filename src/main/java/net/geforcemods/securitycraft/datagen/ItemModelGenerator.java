@@ -23,13 +23,13 @@ import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
 public class ItemModelGenerator {
 	private static ItemModelGenerators itemModels;
-	private static BiConsumer<ResourceLocation, ModelInstance> modelOutput;
+	private static BiConsumer<Identifier, ModelInstance> modelOutput;
 	private static ItemModelOutput itemInfo;
 
 	private ItemModelGenerator() {}
@@ -108,10 +108,10 @@ public class ItemModelGenerator {
 	}
 
 	public static void generateCodebreaker(Item item) {
-		ResourceLocation decodingModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.DECODING, ModelTemplates.FLAT_ITEM);
-		ResourceLocation failureModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.FAILURE, ModelTemplates.FLAT_ITEM);
-		ResourceLocation successModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.SUCCESS, ModelTemplates.FLAT_ITEM);
-		ResourceLocation defaultModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
+		Identifier decodingModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.DECODING, ModelTemplates.FLAT_ITEM);
+		Identifier failureModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.FAILURE, ModelTemplates.FLAT_ITEM);
+		Identifier successModel = itemModels.createFlatItemModel(item, "_" + CodebreakerState.SUCCESS, ModelTemplates.FLAT_ITEM);
+		Identifier defaultModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
 
 		//@formatter:off
 		itemInfo.accept(item,
@@ -124,8 +124,8 @@ public class ItemModelGenerator {
 	}
 
 	public static void generateKeycardHolder(Item item) {
-		ResourceLocation normalModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
-		ResourceLocation fullModel = itemModels.createFlatItemModel(item, "_full", ModelTemplates.FLAT_ITEM);
+		Identifier normalModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
+		Identifier fullModel = itemModels.createFlatItemModel(item, "_full", ModelTemplates.FLAT_ITEM);
 
 		//@formatter:off
 		itemInfo.register(item, new ClientItem(
@@ -138,9 +138,9 @@ public class ItemModelGenerator {
 	}
 
 	public static void generateLens(Item item) {
-		ResourceLocation coloredLens = ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("colored_lens").toString());
-		ResourceLocation coloredModel = ModelTemplates.FLAT_ITEM.create(coloredLens, TextureMapping.layer0(coloredLens), modelOutput);
-		ResourceLocation normalModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
+		Identifier coloredLens = ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("colored_lens").toString());
+		Identifier coloredModel = ModelTemplates.FLAT_ITEM.create(coloredLens, TextureMapping.layer0(coloredLens), modelOutput);
+		Identifier normalModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
 
 		//@formatter:off
 		itemInfo.accept(item,
@@ -154,10 +154,10 @@ public class ItemModelGenerator {
 	}
 
 	public static void generateLinkingStateItem(Item item, SelectItemModelProperty<String> property) {
-		ResourceLocation noPositionsModel = itemModels.createFlatItemModel(item, "_idle", ModelTemplates.FLAT_ITEM);
-		ResourceLocation notLinkedModel = itemModels.createFlatItemModel(item, "_" + BlockLinked.NOT_LINKED, ModelTemplates.FLAT_ITEM);
-		ResourceLocation linkedModel = itemModels.createFlatItemModel(item, "_" + BlockLinked.LINKED, ModelTemplates.FLAT_ITEM);
-		ResourceLocation unknownModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
+		Identifier noPositionsModel = itemModels.createFlatItemModel(item, "_idle", ModelTemplates.FLAT_ITEM);
+		Identifier notLinkedModel = itemModels.createFlatItemModel(item, "_" + BlockLinked.NOT_LINKED, ModelTemplates.FLAT_ITEM);
+		Identifier linkedModel = itemModels.createFlatItemModel(item, "_" + BlockLinked.LINKED, ModelTemplates.FLAT_ITEM);
+		Identifier unknownModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
 
 		//@formatter:off
 		itemInfo.accept(item,

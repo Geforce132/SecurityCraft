@@ -22,18 +22,18 @@ import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TexturedModel;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.data.BlockFamily;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	private final TextureMapping mapping;
-	private final Map<ModelTemplate, ResourceLocation> models = Maps.newHashMap();
+	private final Map<ModelTemplate, Identifier> models = Maps.newHashMap();
 	private final BlockFamily family;
 	private Variant fullBlock;
 	private final Set<Block> skipGeneratingModelsFor = new HashSet<>();
 	private final BlockModelGenerators blockModelGenerators = BlockModelAndStateGenerator.blockModelGenerators;
-	private final BiConsumer<ResourceLocation, ModelInstance> modelOutput = BlockModelAndStateGenerator.modelOutput;
+	private final BiConsumer<Identifier, ModelInstance> modelOutput = BlockModelAndStateGenerator.modelOutput;
 
 	public ReinforcedBlockFamilyProvider(BlockFamily family, Block reinforcedBaseBlock, TexturedModel texturedModel) {
 		BlockModelAndStateGenerator.blockModelGenerators.super(texturedModel.getMapping());
@@ -119,7 +119,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 		if (fullBlock == null)
 			throw new IllegalStateException("Full block not generated yet");
 		else {
-			ResourceLocation bottomModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_BOTTOM, slabBlock);
+			Identifier bottomModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_BOTTOM, slabBlock);
 			MultiVariant bottomModel = BlockModelGenerators.plainVariant(bottomModelLocation);
 			MultiVariant topModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_TOP, slabBlock));
 
@@ -132,7 +132,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	@Override
 	public ReinforcedBlockFamilyProvider stairs(Block stairsBlock) {
 		MultiVariant innerModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_INNER, stairsBlock));
-		ResourceLocation straightModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_STRAIGHT, stairsBlock);
+		Identifier straightModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_STRAIGHT, stairsBlock);
 		MultiVariant straightModel = BlockModelGenerators.plainVariant(straightModelLocation);
 		MultiVariant outerModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_OUTER, stairsBlock));
 
@@ -163,7 +163,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	}
 
 	@Override
-	public ResourceLocation getOrCreateModel(ModelTemplate modelTemplate, Block block) {
+	public Identifier getOrCreateModel(ModelTemplate modelTemplate, Block block) {
 		return models.computeIfAbsent(modelTemplate, mt -> mt.create(block, mapping, modelOutput));
 	}
 

@@ -6,7 +6,7 @@
 //import net.geforcemods.securitycraft.SecurityCraft;
 //import net.geforcemods.securitycraft.blocks.reinforced.IReinforcedBlock;
 //import net.minecraft.data.DataGenerator;
-//import net.minecraft.resources.ResourceLocation;
+//import net.minecraft.resources.Identifier;
 //import net.minecraft.world.item.Items;
 //
 //public class ProjectECompatConversionProvider extends CustomConversionProvider {

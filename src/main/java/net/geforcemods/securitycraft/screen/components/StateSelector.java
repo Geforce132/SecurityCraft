@@ -28,7 +28,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerListener;
@@ -47,7 +47,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 
 public class StateSelector extends Screen implements GuiEventListener, NarratableEntry, ContainerListener {
-	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/state_selector.png");
+	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/gui/container/state_selector.png");
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (-1.0D / Math.sqrt(2)));

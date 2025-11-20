@@ -35,7 +35,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -94,7 +94,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 	private SmartModuleCooldownOption smartModuleCooldown = new SmartModuleCooldownOption();
 	private long cooldownEnd = 0;
 	private Map<ModuleType, Boolean> moduleStates = new EnumMap<>(ModuleType.class);
-	private ResourceLocation previousBarrel;
+	private Identifier previousBarrel;
 
 	public KeypadBarrelBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.KEYPAD_BARREL_BLOCK_ENTITY.get(), pos, state);
@@ -142,7 +142,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		String savedPreviousBarrel = tag.getStringOr("previous_barrel", "");
 
 		if (!savedPreviousBarrel.isBlank()) {
-			ResourceLocation parsedPreviousBarrel = ResourceLocation.parse(savedPreviousBarrel);
+			Identifier parsedPreviousBarrel = Identifier.parse(savedPreviousBarrel);
 
 			if (parsedPreviousBarrel.getPath() != null && !parsedPreviousBarrel.getPath().isBlank())
 				previousBarrel = parsedPreviousBarrel;
@@ -405,7 +405,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		this.previousBarrel = Utils.getRegistryName(previousBarrel);
 	}
 
-	public ResourceLocation getPreviousBarrel() {
+	public Identifier getPreviousBarrel() {
 		return previousBarrel;
 	}
 

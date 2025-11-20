@@ -10,12 +10,12 @@ import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
 public class ReinforcedWoodProvider {
 	private final TextureMapping mapping;
-	private final BiConsumer<ResourceLocation, ModelInstance> modelOutput = BlockModelAndStateGenerator.modelOutput;
+	private final BiConsumer<Identifier, ModelInstance> modelOutput = BlockModelAndStateGenerator.modelOutput;
 
 	private ReinforcedWoodProvider(TextureMapping mapping) {
 		this.mapping = mapping;
@@ -35,7 +35,7 @@ public class ReinforcedWoodProvider {
 
 	public ReinforcedWoodProvider wood(Block woodBlock) {
 		TextureMapping textureMapping = mapping.copyAndUpdate(TextureSlot.END, mapping.get(TextureSlot.SIDE));
-		ResourceLocation modelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN.create(woodBlock, textureMapping, modelOutput);
+		Identifier modelLocation = SCModelTemplates.REINFORCED_CUBE_COLUMN.create(woodBlock, textureMapping, modelOutput);
 
 		BlockModelAndStateGenerator.generate(woodBlock, BlockModelGenerators.createAxisAlignedPillarBlock(woodBlock, BlockModelGenerators.plainVariant(modelLocation)));
 		BlockModelAndStateGenerator.registerReinforcedItemModel(woodBlock);

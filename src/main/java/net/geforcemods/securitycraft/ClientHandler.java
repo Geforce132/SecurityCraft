@@ -143,7 +143,7 @@ import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.Nameable;
@@ -196,7 +196,7 @@ public class ClientHandler {
 	public static final ModelLayerLocation SONIC_SECURITY_SYSTEM_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("sonic_security_system"), "main");
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
-	public static final ResourceLocation CAMERA_LAYER = SecurityCraft.resLoc("camera_overlay");
+	public static final Identifier CAMERA_LAYER = SecurityCraft.resLoc("camera_overlay");
 	private static Map<Block, Integer> blocksWithReinforcedTint = new HashMap<>();
 	private static Map<Block, Integer> blocksWithCustomTint = new HashMap<>();
 	//@formatter:off
@@ -234,9 +234,9 @@ public class ClientHandler {
 			SCContent.USERNAME_LOGGER.get()
 	});
 	//@formatter:on
-	private static final ResourceLocation SRI_BASE_MODEL_LOCATION = SecurityCraft.resLoc("block/secure_redstone_interface");
-	private static final ResourceLocation SRI_SENDER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_sender_on");
-	private static final ResourceLocation SRI_RECEIVER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_receiver_on");
+	private static final Identifier SRI_BASE_MODEL_LOCATION = SecurityCraft.resLoc("block/secure_redstone_interface");
+	private static final Identifier SRI_SENDER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_sender_on");
+	private static final Identifier SRI_RECEIVER_ON_MODEL_LOCATION = SRI_BASE_MODEL_LOCATION.withSuffix("_receiver_on");
 	private static final Map<SRIKey, StandaloneModelKey<BlockStateModel>> SRI_MODEL_KEYS = Util.make(new HashMap<>(), map -> {
 		Arrays.stream(Direction.values()).forEach(direction -> {
 			map.put(new SRIKey(true, direction), new StandaloneModelKey<>(() -> SRI_SENDER_ON_MODEL_LOCATION + "$" + direction.getName()));
@@ -792,7 +792,7 @@ public class ClientHandler {
 	}
 
 	private record SRIKey(boolean sender, Direction direction) {
-		public ResourceLocation location() {
+		public Identifier location() {
 			return sender ? SRI_SENDER_ON_MODEL_LOCATION : SRI_RECEIVER_ON_MODEL_LOCATION;
 		}
 

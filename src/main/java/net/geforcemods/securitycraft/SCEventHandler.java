@@ -59,7 +59,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -147,7 +147,7 @@ public class SCEventHandler {
 
 						if (note != null) {
 							NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
-							SoundEvent sound = instrument.hasCustomSound() && !note.customSound().isEmpty() ? SoundEvent.createVariableRangeEvent(ResourceLocation.parse(note.customSound())) : instrument.getSoundEvent().value();
+							SoundEvent sound = instrument.hasCustomSound() && !note.customSound().isEmpty() ? SoundEvent.createVariableRangeEvent(Identifier.parse(note.customSound())) : instrument.getSoundEvent().value();
 							float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.id() - 12) / 12.0D) : 1.0F;
 
 							player.level().playSound(null, player.blockPosition(), sound, SoundSource.RECORDS, 3.0F, pitch);
@@ -621,7 +621,7 @@ public class SCEventHandler {
 
 		// If no custom sound id is given, check if a custom sound was played, and if so, store its id
 		if (customSoundId.isEmpty() && instrument.hasCustomSound() && level.getBlockEntity(pos.above()) instanceof SkullBlockEntity be) {
-			ResourceLocation noteBlockSound = be.getNoteBlockSound();
+			Identifier noteBlockSound = be.getNoteBlockSound();
 
 			if (noteBlockSound != null)
 				customSoundId = noteBlockSound.toString();
