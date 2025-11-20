@@ -121,7 +121,7 @@ public class RegistrationHandler {
 						SCItemGroup group = field.getAnnotation(Reinforced.class).itemGroup();
 						DeferredBlock<Block> deferredBlock = (DeferredBlock<Block>) field.get(null);
 						Block block = deferredBlock.get();
-						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().location().getPath(), new Item.Properties().fireResistant(), true));
+						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().identifier().getPath(), new Item.Properties().fireResistant(), true));
 
 						helper.register(Utils.getRegistryName(block), blockItem);
 
@@ -132,7 +132,7 @@ public class RegistrationHandler {
 						SCItemGroup group = field.getAnnotation(RegisterItemBlock.class).value();
 						DeferredBlock<Block> deferredBlock = (DeferredBlock<Block>) field.get(null);
 						Block block = deferredBlock.get();
-						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().location().getPath(), new Item.Properties(), true));
+						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().identifier().getPath(), new Item.Properties(), true));
 
 						helper.register(Utils.getRegistryName(block), blockItem);
 

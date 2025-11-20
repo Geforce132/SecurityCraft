@@ -49,7 +49,7 @@ public class LevelUtils {
 		int zPos = Integer.parseInt(coordinates[2]);
 		Identifier dim = SecurityCraft.mcResLoc(coordinates.length == 4 ? coordinates[3] : "");
 
-		return pos.pos().getX() == xPos && pos.pos().getY() == yPos && pos.pos().getZ() == zPos && pos.dimension().location().equals(dim);
+		return pos.pos().getX() == xPos && pos.pos().getY() == yPos && pos.pos().getZ() == zPos && pos.dimension().identifier().equals(dim);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class LevelUtils {
 	 * @return A formatted string of the GlobalPos' location. Format: "*X* *Y* *Z* *dimension ID*"
 	 */
 	public static String toNBTString(GlobalPos pos) {
-		return pos.pos().getX() + " " + pos.pos().getY() + " " + pos.pos().getZ() + " " + pos.dimension().location();
+		return pos.pos().getX() + " " + pos.pos().getY() + " " + pos.pos().getZ() + " " + pos.dimension().identifier();
 	}
 
 	public static void blockEntityTicker(Level level, BlockPos pos, BlockState state, BlockEntity blockEntity) {
