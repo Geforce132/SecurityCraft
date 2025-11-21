@@ -15,13 +15,15 @@ import net.minecraft.util.datafix.fixes.GameRuleRegistryFix;
  */
 @Mixin(GameRuleRegistryFix.class)
 public class GameRuleRegistryFixMixin {
+	@Shadow
+	private static Dynamic<?> convertBoolean(Dynamic<?> gameRule) {
+		throw new UnsupportedOperationException("Shadowing convertBoolean method failed!");
+	}
+
 	@ModifyReturnValue(method = "lambda$makeRule$9", at = @At("RETURN"))
 	private static Dynamic<?> securitycraft$datafixSCGameRules(Dynamic<?> original) {
 		return original
 				.renameAndFixField("fakeWaterSourceConversion", "securitycraft:fake_water_source_conversion", GameRuleRegistryFixMixin::convertBoolean)
 				.renameAndFixField("fakeLavaSourceConversion", "securitycraft:fake_lava_source_conversion", GameRuleRegistryFixMixin::convertBoolean);
 	}
-
-	@Shadow
-	private static Dynamic<?> convertBoolean(Dynamic<?> gameRule) {}
 }

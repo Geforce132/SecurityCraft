@@ -35,7 +35,7 @@ public class OwnerCommand {
 	public static ArgumentBuilder<CommandSourceStack, ?> register() {
 		//@formatter:off
 		return Commands.literal("owner")
-                .requires(ctx -> ctx.hasPermission(2))
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("set")
                 		.then(Commands.argument("pos", BlockPosArgument.blockPos())
                 				.then(Commands.literal("reset")
@@ -102,10 +102,10 @@ public class OwnerCommand {
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
 		int blockCount = area.getXSpan() * area.getYSpan() * area.getZSpan();
-		int commandModificationBlockLimit = level.getGameRules().getInt(GameRules.RULE_COMMAND_MODIFICATION_BLOCK_LIMIT);
+		int maxBlockModifications = level.getGameRules().get(GameRules.MAX_BLOCK_MODIFICATIONS);
 
-		if (blockCount > commandModificationBlockLimit)
-			throw FillCommand.ERROR_AREA_TOO_LARGE.create(commandModificationBlockLimit, blockCount);
+		if (blockCount > maxBlockModifications)
+			throw FillCommand.ERROR_AREA_TOO_LARGE.create(maxBlockModifications, blockCount);
 		else {
 			List<OwnerChange> modifiedBlocks = new ArrayList<>();
 
