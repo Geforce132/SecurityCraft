@@ -80,7 +80,7 @@ public class MineRemoteAccessToolScreen extends Screen {
 					case DETONATE ->
 							guiButtons[i][j] = new PictureButton(btnX, btnY, 20, 20, EXPLOSIVE_SPRITE, 0, 1, 18, 18, b -> buttonClicked(mine, action));
 					case UNBIND ->
-							guiButtons[i][j] = new Button(btnX, btnY, 20, 20, Component.literal("X"), b -> buttonClicked(mine, action), Button.DEFAULT_NARRATION);
+							guiButtons[i][j] = Button.builder(Component.literal("X"), b -> buttonClicked(mine, action)).pos(btnX, btnY).size(20, 20).build();
 					default -> throw new IllegalArgumentException("Mine actions can only range from 0-3 (inclusive)");
 				}
 

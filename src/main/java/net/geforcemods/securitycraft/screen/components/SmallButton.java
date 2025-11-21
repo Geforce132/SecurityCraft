@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 
-public class SmallButton extends Button {
+public class SmallButton extends Button.Plain {
 	private SmallButton(int xPos, int yPos, Component text, OnPress handler) {
 		super(xPos, yPos, 8, 8, text, handler, DEFAULT_NARRATION);
 	}

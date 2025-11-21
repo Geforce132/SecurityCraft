@@ -57,18 +57,18 @@ public class CheckPasscodeScreen extends Screen {
 		cooldownText1XPos = width / 2 - font.width(COOLDOWN_TEXT_1) / 2;
 
 		addRenderableWidget(new CallbackCheckbox(width / 2 - 37, height / 2 - 55, 12, 12, Component.translatable("gui.securitycraft:passcode.showPasscode"), false, newState -> keycodeTextbox.setCensoring(!newState), CommonColors.DARK_GRAY));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 35, 20, 20, Component.literal("1"), b -> addNumberToString(1), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 35, 20, 20, Component.literal("2"), b -> addNumberToString(2), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 35, 20, 20, Component.literal("3"), b -> addNumberToString(3), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 - 10, 20, 20, Component.literal("4"), b -> addNumberToString(4), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 - 10, 20, 20, Component.literal("5"), b -> addNumberToString(5), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 - 10, 20, 20, Component.literal("6"), b -> addNumberToString(6), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 15, 20, 20, Component.literal("7"), b -> addNumberToString(7), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 15, 20, 20, Component.literal("8"), b -> addNumberToString(8), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 15, 20, 20, Component.literal("9"), b -> addNumberToString(9), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 33, height / 2 + 40, 20, 20, Component.literal("←"), b -> removeLastCharacter(), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 - 8, height / 2 + 40, 20, 20, Component.literal("0"), b -> addNumberToString(0), Button.DEFAULT_NARRATION));
-		addRenderableWidget(new Button(width / 2 + 17, height / 2 + 40, 20, 20, Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue()), Button.DEFAULT_NARRATION));
+		addRenderableWidget(Button.builder(Component.literal("1"), b -> addNumberToString(1)).pos(width / 2 - 33, height / 2 - 35).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("2"), b -> addNumberToString(2)).pos(width / 2 - 8, height / 2 - 35).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("3"), b -> addNumberToString(3)).pos(width / 2 + 17, height / 2 - 35).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("4"), b -> addNumberToString(4)).pos(width / 2 - 33, height / 2 - 10).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("5"), b -> addNumberToString(5)).pos(width / 2 - 8, height / 2 - 10).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("6"), b -> addNumberToString(6)).pos(width / 2 + 17, height / 2 - 10).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("7"), b -> addNumberToString(7)).pos(width / 2 - 33, height / 2 + 15).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("8"), b -> addNumberToString(8)).pos(width / 2 - 8, height / 2 + 15).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("9"), b -> addNumberToString(9)).pos(width / 2 + 17, height / 2 + 15).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("←"), b -> removeLastCharacter()).pos(width / 2 - 33, height / 2 + 40).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("0"), b -> addNumberToString(0)).pos(width / 2 - 8, height / 2 + 40).size(20, 20).build());
+		addRenderableWidget(Button.builder(Component.literal("✔"), b -> checkCode(keycodeTextbox.getValue())).pos(width / 2 + 17, height / 2 + 40).size(20, 20).build());
 
 		keycodeTextbox = addRenderableWidget(new CensoringEditBox(font, width / 2 - 37, height / 2 - 72, 77, 12, Component.empty()) {
 			@Override

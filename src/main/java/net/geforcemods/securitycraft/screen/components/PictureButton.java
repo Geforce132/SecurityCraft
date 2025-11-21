@@ -11,7 +11,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 
-public class PictureButton extends Button {
+public class PictureButton extends Button.Plain {
 	private ItemStack blockToRender = ItemStack.EMPTY;
 	private ItemStack itemToRender = ItemStack.EMPTY;
 	private Identifier sprite;
@@ -43,12 +43,13 @@ public class PictureButton extends Button {
 		this.drawHeight = drawHeight;
 	}
 
+	//TODO: Test
 	@Override
-	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		Font font = mc.font;
 
-		super.renderWidget(guiGraphics, mouseX, mouseX, partialTicks);
+		super.renderContents(guiGraphics, mouseX, mouseX, partialTicks);
 
 		if (!blockToRender.isEmpty()) {
 			guiGraphics.renderItem(blockToRender, getX() + 2, getY() + 3);

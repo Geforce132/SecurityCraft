@@ -6,7 +6,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
 
-public class ColorChooserButton extends Button {
+public class ColorChooserButton extends Button.Plain {
 	private final ColorChooser colorChooser;
 
 	public ColorChooserButton(int x, int y, int width, int height, ColorChooser colorChooser) {
@@ -15,11 +15,12 @@ public class ColorChooserButton extends Button {
 		this.colorChooser = colorChooser;
 	}
 
+	//TODO: Test
 	@Override
-	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		int color = colorChooser.getRGBColor();
 
-		super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+		super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.fillGradient(getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color);
 	}
 

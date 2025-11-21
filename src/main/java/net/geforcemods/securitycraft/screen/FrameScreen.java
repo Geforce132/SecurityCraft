@@ -18,7 +18,7 @@ public class FrameScreen extends CameraSelectScreen {
 	public void init() {
 		super.init();
 
-		Button stopViewingButton = addRenderableWidget(new Button(width / 2 - 55, height / 2 + 57, 20, 20, Component.literal("x"), b -> viewCamera(null), Button.DEFAULT_NARRATION));
+		Button stopViewingButton = addRenderableWidget(Button.builder(Component.literal("x"), b -> viewCamera(null)).pos(width / 2 - 55, height / 2 + 57).size(20, 20).build());
 
 		if (be.getCurrentCamera() == null)
 			stopViewingButton.active = false;

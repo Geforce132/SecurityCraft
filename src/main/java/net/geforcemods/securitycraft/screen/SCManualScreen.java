@@ -16,8 +16,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import com.mojang.blaze3d.platform.cursor.CursorTypes;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
@@ -696,7 +694,7 @@ public class SCManualScreen extends Screen {
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 
-	static class ChangePageButton extends Button {
+	static class ChangePageButton extends Button.Plain {
 		private final Identifier normalSprite, highlightedSprite;
 
 		public ChangePageButton(int xPos, int yPos, Identifier normalSprite, Identifier highlightedSprite, OnPress onPress) {
@@ -705,27 +703,23 @@ public class SCManualScreen extends Screen {
 			this.highlightedSprite = highlightedSprite;
 		}
 
+		//TODO: Test
 		@Override
-		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
-
-			if (isHovered())
-				guiGraphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
 		}
 	}
 
-	static class HyperlinkButton extends Button {
+	static class HyperlinkButton extends Button.Plain {
 		public HyperlinkButton(int xPos, int yPos, int width, int height, Component displayString, OnPress handler) {
 			super(xPos, yPos, width, height, displayString, handler, s -> Component.empty());
 		}
 
+		//TODO: Test
 		@Override
-		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isHoveredOrFocused() ? LINK_OUT_HIGHLIGHTED_SPRITE : LINK_OUT_SPRITE, getX(), getY(), 16, 16);
-
-			if (isHovered())
-				guiGraphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
 		}
 	}
 

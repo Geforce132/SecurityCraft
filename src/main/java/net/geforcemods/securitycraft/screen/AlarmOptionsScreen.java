@@ -56,13 +56,13 @@ public class AlarmOptionsScreen extends Screen {
 		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
 		soundLengthEditBox = addRenderableWidget(new SoundLengthEditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()));
 		soundLengthEditBox.setFilter(string -> string.matches("[0-9:]*"));
-		minusMinute = addRenderableWidget(new Button(buttonsX, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(-60), Button.DEFAULT_NARRATION));
-		minusTenSeconds = addRenderableWidget(new Button(buttonsX + 34, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(-10), Button.DEFAULT_NARRATION));
-		minusSecond = addRenderableWidget(new Button(buttonsX + 68, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(-1), Button.DEFAULT_NARRATION));
+		minusMinute = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(-60)).pos(buttonsX, buttonY).size(32, buttonHeight).build());
+		minusTenSeconds = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(-10)).pos(buttonsX + 34, buttonY).size(32, buttonHeight).build());
+		minusSecond = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(-1)).pos(buttonsX + 68, buttonY).size(32, buttonHeight).build());
 		reset = addRenderableWidget(new ActiveBasedTextureButton(buttonsX + 102, buttonY, 12, buttonHeight, RESET_SPRITE, RESET_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSoundLength(0)));
-		plusSecond = addRenderableWidget(new Button(buttonsX + 116, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_second"), b -> changeSoundLength(1), Button.DEFAULT_NARRATION));
-		plusTenSeconds = addRenderableWidget(new Button(buttonsX + 150, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(10), Button.DEFAULT_NARRATION));
-		plusMinute = addRenderableWidget(new Button(buttonsX + 184, buttonY, 32, buttonHeight, Component.translatable("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(60), Button.DEFAULT_NARRATION));
+		plusSecond = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.plus_one_second"), b -> changeSoundLength(1)).pos(buttonsX + 116, buttonY).size(32, buttonHeight).build());
+		plusTenSeconds = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(10)).pos(buttonsX + 150, buttonY).size(32, buttonHeight).build());
+		plusMinute = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(60)).pos(buttonsX + 184, buttonY).size(32, buttonHeight).build());
 		setSoundLength(alarmScreen.soundLength);
 		addRenderableWidget(new CallbackSlider(leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", ""), Component.empty(), 0.5D, 2.0D, alarmScreen.pitch, 0.05D, 0, true, slider -> alarmScreen.pitch = (float) slider.getValue())).setFGColor(0xE0E0E0);
 	}

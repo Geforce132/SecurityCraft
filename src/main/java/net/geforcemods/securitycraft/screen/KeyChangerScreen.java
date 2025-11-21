@@ -49,7 +49,7 @@ public class KeyChangerScreen extends Screen {
 		leftPos = (width - imageWidth) / 2;
 		topPos = (height - imageHeight) / 2;
 
-		confirmButton = addRenderableWidget(new Button(width / 2 - 52, height / 2 + 52, 100, 20, Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked, Button.DEFAULT_NARRATION));
+		confirmButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked).pos(width / 2 - 52, height / 2 + 52).size(100, 20).build());
 		confirmButton.active = false;
 
 		textboxNewPasscode = addRenderableWidget(new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, Component.empty()));

@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
-public class TogglePictureButton extends Button implements IToggleableButton {
+public class TogglePictureButton extends Button.Plain implements IToggleableButton {
 	private final Identifier[] sprites;
 	private final int toggleCount;
 	private final int drawOffset;
@@ -29,9 +29,10 @@ public class TogglePictureButton extends Button implements IToggleableButton {
 		this.drawHeight = drawHeight;
 	}
 
+	//TODO: Test
 	@Override
-	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderWidget(guiGraphics, mouseX, mouseX, partialTicks);
+	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.renderContents(guiGraphics, mouseX, mouseX, partialTicks);
 
 		Identifier sprite = getCurrentSprite();
 

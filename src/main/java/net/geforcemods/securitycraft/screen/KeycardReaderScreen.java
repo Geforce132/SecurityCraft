@@ -144,27 +144,27 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		signatureTextField.setFilter(s -> s.matches("\\d*"));
 		signatureTextField.setMaxLength(5);
 		signatureTextField.setResponder(this::changeSignature);
-		minusThree = addRenderableWidget(new Button(leftPos + 22, buttonY, 24, buttonHeight, Component.literal("---"), b -> changeSignature(signature - 100), Button.DEFAULT_NARRATION));
-		minusTwo = addRenderableWidget(new Button(leftPos + 48, buttonY, 18, buttonHeight, Component.literal("--"), b -> changeSignature(signature - 10), Button.DEFAULT_NARRATION));
-		minusOne = addRenderableWidget(new Button(leftPos + 68, buttonY, 12, buttonHeight, Component.literal("-"), b -> changeSignature(signature - 1), Button.DEFAULT_NARRATION));
+		minusThree = addRenderableWidget(Button.builder(Component.literal("---"), b -> changeSignature(signature - 100)).pos(leftPos + 22, buttonY).size(24, buttonHeight).build());
+		minusTwo = addRenderableWidget(Button.builder(Component.literal("--"), b -> changeSignature(signature - 10)).pos(leftPos + 48, buttonY).size(18, buttonHeight).build());
+		minusOne = addRenderableWidget(Button.builder(Component.literal("-"), b -> changeSignature(signature - 1)).pos(leftPos + 68, buttonY).size(12, buttonHeight).build());
 		reset = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 82, buttonY, 12, buttonHeight, RESET_SPRITE, RESET_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSignature(previousSignature)));
-		plusOne = addRenderableWidget(new Button(leftPos + 96, buttonY, 12, buttonHeight, Component.literal("+"), b -> changeSignature(signature + 1), Button.DEFAULT_NARRATION));
-		plusTwo = addRenderableWidget(new Button(leftPos + 110, buttonY, 18, buttonHeight, Component.literal("++"), b -> changeSignature(signature + 10), Button.DEFAULT_NARRATION));
-		plusThree = addRenderableWidget(new Button(leftPos + 130, buttonY, 24, buttonHeight, Component.literal("+++"), b -> changeSignature(signature + 100), Button.DEFAULT_NARRATION));
+		plusOne = addRenderableWidget(Button.builder(Component.literal("+"), b -> changeSignature(signature + 1)).pos(leftPos + 96, buttonY).size(12, buttonHeight).build());
+		plusTwo = addRenderableWidget(Button.builder(Component.literal("++"), b -> changeSignature(signature + 10)).pos(leftPos + 110, buttonY).size(18, buttonHeight).build());
+		plusThree = addRenderableWidget(Button.builder(Component.literal("+++"), b -> changeSignature(signature + 100)).pos(leftPos + 130, buttonY).size(24, buttonHeight).build());
 		randomizeButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 156, buttonY, 12, buttonHeight, RANDOM_SPRITE, RANDOM_INACTIVE_SPRITE, 1, 2, 10, 10, b -> changeSignature(SecurityCraft.RANDOM.nextInt(MAX_SIGNATURE))));
 		randomizeButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:keycard_reader.randomize_signature")));
 		randomizeButton.active = isOwner;
 		//set correct signature
 		changeSignature(signature);
 		//link button
-		linkButton = addRenderableWidget(new Button(leftPos + 8, topPos + 126, 70, 20, linkText, b -> {
+		linkButton = addRenderableWidget(Button.builder(linkText, b -> {
 			previousSignature = signature;
 			changeSignature(signature);
 			ClientPacketDistributor.sendToServer(new SyncKeycardSettings(be.getBlockPos(), acceptedLevels, signature, true, getUsableBy()));
 
 			if (menu.keycardSlot.getItem().getHoverName().getString().equalsIgnoreCase("Zelda"))
 				minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SCSounds.GET_ITEM.event, 1.0F, 1.25F));
-		}, Button.DEFAULT_NARRATION));
+		}).pos(leftPos + 8, topPos + 126).size(70, 20).build());
 		linkButton.active = false;
 		//text field for setting the player the keycard can be used by
 		usableByTextField = addRenderableWidget(new EditBox(font, leftPos + 8, topPos + 66, 70, 15, Component.empty()));
@@ -203,7 +203,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				}
 			}
 
-			addRenderableWidget(new Button(leftPos + 135, topPos + 67, 18, 18, isExactLevel ? EQUALS : GREATER_THAN_EQUALS, b -> {
+			addRenderableWidget(Button.builder(isExactLevel ? EQUALS : GREATER_THAN_EQUALS, b -> {
 				boolean change = false;
 
 				isExactLevel = !isExactLevel;
@@ -217,7 +217,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 				}
 
 				b.setMessage(isExactLevel ? EQUALS : GREATER_THAN_EQUALS);
-			}, Button.DEFAULT_NARRATION)).active = isOwner;
+			}).pos(leftPos + 135, topPos + 67).size(18, 18).build()).active = isOwner;
 		}
 	}
 

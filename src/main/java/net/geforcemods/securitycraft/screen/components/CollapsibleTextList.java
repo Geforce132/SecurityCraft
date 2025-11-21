@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiPredicate;
 
-import com.mojang.blaze3d.platform.cursor.CursorTypes;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,7 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 
-public class CollapsibleTextList extends Button {
+public class CollapsibleTextList extends Button.Plain {
 	private static final Component PLUS = Component.literal("+ ");
 	private static final Component MINUS = Component.literal("- ");
 	private final int threeDotsWidth = Minecraft.getInstance().font.width("...");
@@ -61,8 +59,9 @@ public class CollapsibleTextList extends Button {
 			currentHeight = Math.max(height, currentHeight - 40);
 	}
 
+	//TODO: Test
 	@Override
-	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		isHovered &= extraHoverCheck.test(mouseX, mouseY);
 
 		Font font = Minecraft.getInstance().font;
@@ -75,9 +74,6 @@ public class CollapsibleTextList extends Button {
 		int interpolatedHeight = (int) Mth.lerp(partialTick, previousHeight, currentHeight);
 
 		guiGraphics.fillGradient(getX(), getY() + height, getX() + width, getY() + interpolatedHeight, 0xC0101010, 0xD0101010);
-
-		if (isHovered())
-			guiGraphics.requestCursor(isActive() ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
 
 		for (int i = 0; i < textLines.size(); i++) {
 			int textY = getY() + 2 + height + renderedLines * font.lineHeight + (i * 12);

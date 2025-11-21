@@ -54,14 +54,14 @@ public class CameraSelectScreen extends Screen {
 		leftPos = (width - xSize) / 2;
 		topPos = (height - ySize) / 2;
 
-		Button prevPageButton = addRenderableWidget(new Button(width / 2 - 25, height / 2 + 57, 20, 20, Component.literal("<"), b -> {
+		Button prevPageButton = addRenderableWidget(Button.builder(Component.literal("<"), b -> {
 			page--;
 			rebuildWidgets();
-		}, Button.DEFAULT_NARRATION));
-		Button nextPageButton = addRenderableWidget(new Button(width / 2 + 5, height / 2 + 57, 20, 20, Component.literal(">"), b -> {
+		}).pos(width / 2 - 25, height / 2 + 57).size(20, 20).build());
+		Button nextPageButton = addRenderableWidget(Button.builder(Component.literal(">"), b -> {
 			page++;
 			rebuildWidgets();
-		}, Button.DEFAULT_NARRATION));
+		}).pos(width / 2 + 5, height / 2 + 57).size(20, 20).build());
 		Level level = Minecraft.getInstance().level;
 		LocalPlayer player = Minecraft.getInstance().player;
 
@@ -72,7 +72,7 @@ public class CameraSelectScreen extends Screen {
 			int y = topPos + 30 + (i / 5) * 55;
 			int aboveCameraButton = y - 8;
 			NamedPositions.Entry view = cameras.get(camID - 1);
-			Button cameraButton = addRenderableWidget(new Button(x, y, 20, 20, Component.empty(), button -> cameraButtonClicked(button, view.globalPos()), Button.DEFAULT_NARRATION));
+			Button cameraButton = addRenderableWidget(Button.builder(Component.empty(), button -> cameraButtonClicked(button, view.globalPos())).pos(x, y).size(20, 20).build());
 
 			if (!readOnly)
 				addRenderableWidget(SmallButton.createWithX(x + 19, aboveCameraButton, button -> unbindButtonClicked(button, view.globalPos(), camID))).active = view != null;

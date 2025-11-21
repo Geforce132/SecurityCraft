@@ -99,10 +99,10 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		int colorChooserX = colorChooserButtonX + (hasStorageModule ? -145 : 20);
 		Button toggleButton, sizeButton;
 
-		toggleButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.isEnabled() ? "activate" : "deactivate")), this::toggleButtonClicked, Button.DEFAULT_NARRATION));
+		toggleButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:blockPocketManager." + (!be.isEnabled() ? "activate" : "deactivate")), this::toggleButtonClicked).pos(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0]).size(widgetWidth, 20).build());
 		sizeButton = addRenderableWidget(new ToggleComponentButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
-		outlineButton = addRenderableWidget(new Button(outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showsOutline() ? "show" : "hide")), this::outlineButtonClicked, Button.DEFAULT_NARRATION));
-		assembleButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked, Button.DEFAULT_NARRATION));
+		outlineButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showsOutline() ? "show" : "hide")), this::outlineButtonClicked).pos(outlineButtonX, outlineY).size(outlineButtonWidth, 20).build());
+		assembleButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked).pos(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3]).size(widgetWidth, 20).build());
 		offsetSlider = addRenderableWidget(new CallbackSlider(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), Component.empty(), (-size + 2) / 2, (size - 2) / 2, be.getAutoBuildOffset(), true, this::offsetSliderReleased));
 		colorChooser = new ColorChooser(Component.empty(), colorChooserX, outlineY, be.getColor()) {
 			@Override

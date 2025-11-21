@@ -96,7 +96,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 						guiButtons[i][j].active = false;
 						break;
 					case UNBIND:
-						guiButtons[i][j] = new Button(btnX, btnY, 20, 20, Component.literal("X"), b -> unbindButtonClicked(index), Button.DEFAULT_NARRATION);
+						guiButtons[i][j] = Button.builder(Component.literal("X"), b -> unbindButtonClicked(index)).pos(btnX, btnY).size(20, 20).build();
 						guiButtons[i][j].active = false;
 						break;
 					default:
@@ -171,7 +171,7 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		//Add buttons for global operation (all sentries)
 		guiButtonsGlobal[0] = new TogglePictureButton(startX + 260, startY + 188, 20, 20, 2, 16, 16, 3, this::globalModeButtonClicked, CAMOUFLAGE_SPRITE, AGGRESSIVE_SPRITE, IDLE_SPRITE);
 		guiButtonsGlobal[1] = new TogglePictureButton(startX + 22 + 260, startY + 188, 20, 20, 2, 16, 16, 3, this::globalTargetsButtonClicked, ATTACK_HOSTILE_AND_PLAYERS_SPRITE, ATTACK_HOSTILE_SPRITE, ATTACK_PLAYERS_SPRITE);
-		guiButtonsGlobal[2] = new Button(startX + 44 + 260, startY + 188, 20, 20, Component.literal("X"), this::globalUnbindButtonClicked, Button.DEFAULT_NARRATION);
+		guiButtonsGlobal[2] = Button.builder(Component.literal("X"), this::globalUnbindButtonClicked).pos(startX + 44 + 260, startY + 188).size(20, 20).build();
 
 		for (int j = 0; j < 3; j++) {
 			guiButtonsGlobal[j].active = foundSentry;

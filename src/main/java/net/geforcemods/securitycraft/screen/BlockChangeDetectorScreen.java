@@ -386,7 +386,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 	}
 
-	class ModeButton extends Button implements IToggleableButton {
+	class ModeButton extends Button.Plain implements IToggleableButton {
 		private final ItemStack ironPickaxe = new ItemStack(Items.IRON_PICKAXE);
 		private final ItemStack grassBlock = new ItemStack(Blocks.GRASS_BLOCK);
 		private final int toggleCount;
@@ -398,9 +398,10 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			currentIndex = initialIndex;
 		}
 
+		//TODO: Test
 		@Override
-		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-			super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
 
 			if (currentIndex == DetectionMode.BREAK.ordinal())
 				guiGraphics.renderItem(ironPickaxe, getX() + 2, getY() + 2);
