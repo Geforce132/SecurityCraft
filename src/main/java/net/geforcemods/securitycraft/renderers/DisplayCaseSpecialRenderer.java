@@ -13,7 +13,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.Identifier;
@@ -22,7 +22,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 public record DisplayCaseSpecialRenderer(DisplayCaseModel model, Identifier texture, float openness, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
 	public void submit(ItemDisplayContext ctx, PoseStack pose, SubmitNodeCollector collector, int packedLight, int packedOverlay, boolean glint, int outlineColor) {
-		collector.submitModel(model, openness, pose, RenderType.entityCutout(texture), light.orElse(packedLight), packedOverlay, outlineColor, null);
+		collector.submitModel(model, openness, pose, RenderTypes.entityCutout(texture), light.orElse(packedLight), packedOverlay, outlineColor, null);
 	}
 
 	@Override

@@ -41,6 +41,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -112,7 +113,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				float zStartO = outerVertices.z;
 				float zEndO = outerVertices.w;
 
-				submitOverlay(pose, collector, RenderType.entityShadow(WHITE), ARGB.colorFromFloat(1.0F, backgroundColor.x, backgroundColor.y, backgroundColor.z), xStart, xEnd, zStart, zEnd, margin, lightCoords, normal);
+				submitOverlay(pose, collector, RenderTypes.entityShadow(WHITE), ARGB.colorFromFloat(1.0F, backgroundColor.x, backgroundColor.y, backgroundColor.z), xStart, xEnd, zStart, zEnd, margin, lightCoords, normal);
 
 				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
 					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -230,7 +231,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		int ny = normal.getY();
 		int nz = normal.getZ();
 
-		collector.submitCustomGeometry(poseStack, RenderType.entitySolid(NOISE_BACKGROUND.texture()), new WrappingGeometryRenderer(NOISE_BACKGROUND) {
+		collector.submitCustomGeometry(poseStack, RenderTypes.entitySolid(NOISE_BACKGROUND.texture()), new WrappingGeometryRenderer(NOISE_BACKGROUND) {
 			@Override
 			public void render(Pose pose, VertexConsumer builder) {
 				builder.addVertex(pose, xStart, margin, zStart).setUv(1, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
@@ -250,11 +251,11 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
-		submitTexture(pose, collector, RenderType.entitySolid(texture), vertices, packedLight, normal, margin);
+		submitTexture(pose, collector, RenderTypes.entitySolid(texture), vertices, packedLight, normal, margin);
 	}
 
 	private void submitCutoutTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
-		submitTexture(pose, collector, RenderType.entityCutout(texture), vertices, packedLight, normal, margin);
+		submitTexture(pose, collector, RenderTypes.entityCutout(texture), vertices, packedLight, normal, margin);
 	}
 
 	private void submitTexture(PoseStack poseStack, SubmitNodeCollector collector, RenderType renderType, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
@@ -276,7 +277,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	private void submitOverlay(PoseStack pose, SubmitNodeCollector collector, int color, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight, Vec3i normal) {
-		submitOverlay(pose, collector, RenderType.entityTranslucent(WHITE), color, xStart, xEnd, zStart, zEnd, margin, packedLight, normal);
+		submitOverlay(pose, collector, RenderTypes.entityTranslucent(WHITE), color, xStart, xEnd, zStart, zEnd, margin, packedLight, normal);
 	}
 
 	private void submitOverlay(PoseStack poseStack, SubmitNodeCollector collector, RenderType renderType, int color, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight, Vec3i normal) {

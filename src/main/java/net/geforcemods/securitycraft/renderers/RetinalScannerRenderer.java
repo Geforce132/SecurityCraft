@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -112,6 +113,6 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		if (ConfigHandler.SERVER.retinalScannerFace.get() && profile != null)
 			return playerSkinRenderCache.getOrDefault(profile).renderType();
 		else
-			return RenderType.entityCutout(DefaultPlayerSkin.getDefaultTexture());
+			return RenderTypes.entityCutout(DefaultPlayerSkin.getDefaultTexture());
 	}
 }

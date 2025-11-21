@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 public class SecurityCameraModel extends Model<SecurityCameraRenderState> {
 	public static final float DEFAULT_X_ROT = 0.2617993877991494F;
@@ -23,7 +23,7 @@ public class SecurityCameraModel extends Model<SecurityCameraRenderState> {
 	private final ModelPart cameraLens;
 
 	public SecurityCameraModel(ModelPart modelPart) {
-		super(modelPart, RenderType::entitySolid);
+		super(modelPart, RenderTypes::entitySolid);
 		attachment = modelPart.getChild("attachment");
 		stickTop = modelPart.getChild("stick_top");
 		stickTop.xRot = -(DEFAULT_X_ROT * 2);

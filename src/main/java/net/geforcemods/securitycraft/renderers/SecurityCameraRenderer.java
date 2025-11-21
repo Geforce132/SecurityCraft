@@ -19,7 +19,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -66,7 +66,7 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 				pose.mulPose(NEGATIVE_Y_90);
 
 			pose.mulPose(POSITIVE_X_180);
-			collector.submitModel(model, state, pose, RenderType.entitySolid(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, state.lensColor, null, 0, state.breakProgress);
+			collector.submitModel(model, state, pose, RenderTypes.entitySolid(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, state.lensColor, null, 0, state.breakProgress);
 		}
 	}
 

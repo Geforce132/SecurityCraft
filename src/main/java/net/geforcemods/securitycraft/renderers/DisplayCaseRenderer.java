@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -92,7 +93,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 				break;
 		}
 
-		RenderType renderType = RenderType.entityCutout(state.isGlowing ? glowTexture : texture);
+		RenderType renderType = RenderTypes.entityCutout(state.isGlowing ? glowTexture : texture);
 
 		pose.scale(-1.0F, 1.0F, -1.0F);
 		collector.submitModel(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);

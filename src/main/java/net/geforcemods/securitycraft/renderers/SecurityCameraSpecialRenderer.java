@@ -14,7 +14,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.renderers.state.SecurityCameraRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.special.NoDataSpecialModelRenderer;
 import net.minecraft.client.renderer.special.SpecialModelRenderer;
 import net.minecraft.resources.Identifier;
@@ -31,7 +31,7 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, Identifie
 			state.lensColor = color;
 		}, () -> state.lensColor = 0x70FFFF);
 		state.cameraYRot = rotation;
-		collector.submitModel(model, state, pose, RenderType.entitySolid(texture), light.orElse(packedLight), packedOverlay, outlineColor, null);
+		collector.submitModel(model, state, pose, RenderTypes.entitySolid(texture), light.orElse(packedLight), packedOverlay, outlineColor, null);
 	}
 
 	@Override

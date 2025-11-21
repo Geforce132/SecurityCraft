@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ARGB;
@@ -28,7 +28,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		if (!state.showsOutline || !state.ownedByPlayer)
 			return;
 
-		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, builder) -> {
+		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {
 			ShapeRenderer.renderLineBox(pose, builder, state.leftX, 0, state.frontZ, state.rightX, state.size, state.backZ, state.r, state.g, state.b, 1.0F);
 		});
 	}

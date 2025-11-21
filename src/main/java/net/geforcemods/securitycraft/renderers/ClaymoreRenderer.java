@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -29,7 +29,7 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 		poseStack.mulPose(state.rotation);
 		poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-		collector.submitCustomGeometry(poseStack, RenderType.lines(), (pose, builder) -> {
+		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {
 			Vec3i normal = state.normal;
 			float multiplier = 0.0625F;
 			float xzStart = 9.0F * multiplier;

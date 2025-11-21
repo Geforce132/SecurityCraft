@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
@@ -28,7 +29,7 @@ public class SentryRenderer extends EntityRenderer<Sentry, SentryRenderState> {
 
 	@Override
 	public void submit(SentryRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		RenderType renderType = RenderType.entitySolid(TEXTURE);
+		RenderType renderType = RenderTypes.entitySolid(TEXTURE);
 		float scale = state.scale;
 
 		pose.pushPose();

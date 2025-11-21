@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
@@ -36,7 +36,7 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 			pose.translate(0.5D, 0.5D, 0.5D);
 			pose.mulPose(state.modelRotation);
 			pose.translate(0.0D, -0.49999D, 0.0D);
-			collector.submitModel(model, state.dishRotation, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+			collector.submitModel(model, state.dishRotation, pose, RenderTypes.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
 		}
 	}
 

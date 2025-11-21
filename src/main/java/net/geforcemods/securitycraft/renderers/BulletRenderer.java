@@ -11,7 +11,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.ArrowRenderState;
-import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
@@ -29,7 +29,7 @@ public class BulletRenderer extends EntityRenderer<Bullet, ArrowRenderState> {
 	@Override
 	public void submit(ArrowRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
 		pose.mulPose(Axis.YP.rotationDegrees(state.yRot));
-		collector.submitModel(model, state, pose, RenderType.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+		collector.submitModel(model, state, pose, RenderTypes.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
 	}
 
 	@Override
