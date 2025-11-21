@@ -14,9 +14,9 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.Direction;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 
 public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPocketManagerBlockEntity, BlockPocketManagerRenderState> {
 	public static final int RENDER_DISTANCE = 100;
@@ -29,7 +29,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 			return;
 
 		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {
-			ShapeRenderer.renderLineBox(pose, builder, state.leftX, 0, state.frontZ, state.rightX, state.size, state.backZ, state.r, state.g, state.b, 1.0F);
+			ShapeRenderer.renderShape(poseStack, builder, Shapes.block(), state.leftX, 0, state.frontZ, state.color, 1.0F); //TODO test position and line width
 		});
 	}
 
@@ -67,9 +67,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		state.rightX = rightX;
 		state.frontZ = frontZ;
 		state.backZ = backZ;
-		state.r = ARGB.redFloat(packedColor);
-		state.g = ARGB.greenFloat(packedColor);
-		state.b = ARGB.blueFloat(packedColor);
+		state.color = packedColor;
 	}
 
 	@Override

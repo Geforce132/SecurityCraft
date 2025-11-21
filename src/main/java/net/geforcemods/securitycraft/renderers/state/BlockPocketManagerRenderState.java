@@ -10,7 +10,5 @@ public class BlockPocketManagerRenderState extends BlockEntityRenderState {
 	public int rightX;
 	public int frontZ;
 	public int backZ;
-	public float r;
-	public float g;
-	public float b;
+	public int color;
 }
