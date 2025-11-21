@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 
@@ -48,7 +47,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.gamerules.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.InterModComms;
@@ -75,8 +73,6 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 public class SecurityCraft {
 	public static final Logger LOGGER = LogUtils.getLogger();
 	public static final String MODID = "securitycraft";
-	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_WATER_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)));
-	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_LAVA_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false)));
 	public static final Random RANDOM = new Random();
 	public static final TicketController CAMERA_TICKET_CONTROLLER = new TicketController(resLoc("camera_chunks"), (level, ticketHelper) -> { //this will only check against SecurityCraft's camera chunks, so no need to add an (instanceof SecurityCamera) somewhere
 		ticketHelper.getEntityTickets().forEach(((uuid, chunk) -> {

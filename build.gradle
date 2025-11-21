@@ -44,7 +44,7 @@ repositories {
     }
 }
 neoForge {
-	version = "21.11.0-alpha.1.21.11-pre1.20251120.220058"
+	version = "21.11.0-alpha.1.21.11-pre2.20251121.222413"
 	validateAccessTransformers = true
 
 	runs {

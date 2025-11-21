@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.fluids;
 import javax.annotation.Nullable;
 
 import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -62,7 +61,7 @@ public abstract class FakeWaterFluid extends BaseFlowingFluid {
 
 	@Override
 	protected boolean canConvertToSource(ServerLevel level) {
-		return level.getGameRules().getBoolean(SecurityCraft.RULE_FAKE_WATER_SOURCE_CONVERSION.get());
+		return level.getGameRules().get(SCContent.FAKE_WATER_SOURCE_CONVERSION.get());
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import com.google.common.base.Predicates;
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 
@@ -295,6 +296,7 @@ import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
@@ -324,6 +326,10 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
+import net.minecraft.world.level.gamerules.GameRule;
+import net.minecraft.world.level.gamerules.GameRuleCategory;
+import net.minecraft.world.level.gamerules.GameRuleType;
+import net.minecraft.world.level.gamerules.GameRuleTypeVisitor;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -345,6 +351,7 @@ public class SCContent {
 	public static final DeferredRegister<EntityDataSerializer<?>> DATA_SERIALIZERS = DeferredRegister.create(Keys.ENTITY_DATA_SERIALIZERS, SecurityCraft.MODID);
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, SecurityCraft.MODID);
+	public static final DeferredRegister<GameRule<?>> GAME_RULES = DeferredRegister.create(Registries.GAME_RULE, SecurityCraft.MODID);
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(SecurityCraft.MODID);
 	public static final DeferredRegister<LootItemConditionType> LOOT_ITEM_CONDITION_TYPES = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, SecurityCraft.MODID);
 	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, SecurityCraft.MODID);
@@ -362,6 +369,10 @@ public class SCContent {
 
 	//loot item condition types
 	public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(BlockEntityNBTCondition.CODEC));
+
+	//game rules
+	public static final DeferredHolder<GameRule<?>, GameRule<Boolean>> FAKE_WATER_SOURCE_CONVERSION = GAME_RULES.register("fake_water_source_conversion", () -> createBooleanGameRule(GameRuleCategory.UPDATES, true));
+	public static final DeferredHolder<GameRule<?>, GameRule<Boolean>> FAKE_LAVA_SOURCE_CONVERSION = GAME_RULES.register("fake_lava_source_conversion", () -> createBooleanGameRule(GameRuleCategory.UPDATES, false));
 
 	//data components
 	public static final DeferredHolder<DataComponentType<?>, DataComponentType<KeycardData>> KEYCARD_DATA = DATA_COMPONENTS.registerComponentType("keycard_data", builder -> builder.persistent(KeycardData.CODEC).networkSynchronized(KeycardData.STREAM_CODEC).cacheEncoding());
@@ -3592,6 +3603,10 @@ public class SCContent {
 
 	public static EntityType<SecuritySeaBoat> getPaleOakSecuritySeaBoat() {
 		return PALE_OAK_SECURITY_SEA_BOAT_ENTITY.get();
+	}
+
+	public static GameRule<Boolean> createBooleanGameRule(GameRuleCategory category, boolean defaultValue) {
+		return new GameRule<>(category, GameRuleType.BOOL, BoolArgumentType.bool(), GameRuleTypeVisitor::visitBoolean, Codec.BOOL, value -> value ? 1 : 0, defaultValue, FeatureFlagSet.of());
 	}
 
 	private SCContent() {}
