@@ -59,7 +59,7 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 			BlockEntityRenderState beRenderState = beRenderer.createRenderState();
 			FeatureRenderDispatcher featureRenderDispatcher = mc.gameRenderer.getFeatureRenderDispatcher();
 
-			beRenderer.extractRenderState(guiRenderState.be(), beRenderState, mc.getDeltaTracker().getGameTimeDeltaPartialTick(true), mc.gameRenderer.getMainCamera().getPosition(), null);
+			beRenderer.extractRenderState(guiRenderState.be(), beRenderState, mc.getDeltaTracker().getGameTimeDeltaPartialTick(true), mc.gameRenderer.getMainCamera().position(), null);
 			beRenderState.lightCoords = LightTexture.FULL_BRIGHT;
 			beRenderer.submit(beRenderState, pose, featureRenderDispatcher.getSubmitNodeStorage(), mc.levelRenderer.levelRenderState.cameraRenderState);
 			featureRenderDispatcher.renderAllFeatures();
