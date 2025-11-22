@@ -398,7 +398,6 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 			currentIndex = initialIndex;
 		}
 
-		//TODO: Test
 		@Override
 		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 			super.renderContents(guiGraphics, mouseX, mouseY, partialTick);

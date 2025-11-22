@@ -109,7 +109,7 @@ public class SCClientEventHandler {
 					BlockPos pos = changeEntry.pos();
 
 					pose.pushPose();
-					ShapeRenderer.renderShape(pose, consumer, Shapes.block(), pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z, packedColor, 1.0F); //TODO: Check correctness
+					ShapeRenderer.renderShape(pose, consumer, Shapes.block(), pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z, packedColor, 1.0F);
 					pose.popPose();
 				}
 			}

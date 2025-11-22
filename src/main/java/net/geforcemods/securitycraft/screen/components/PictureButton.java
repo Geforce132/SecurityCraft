@@ -43,7 +43,6 @@ public class PictureButton extends Button.Plain {
 		this.drawHeight = drawHeight;
 	}
 
-	//TODO: Test
 	@Override
 	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		Minecraft mc = Minecraft.getInstance();

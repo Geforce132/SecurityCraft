@@ -33,7 +33,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		Vec3 cameraPos = camera.pos;
 
 		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {
-			ShapeRenderer.renderShape(poseStack, builder, state.shape, blockPos.getX() - cameraPos.x, blockPos.getY() - cameraPos.y, blockPos.getZ() - cameraPos.z, state.color, 1.0F); //TODO test position and line width
+			ShapeRenderer.renderShape(poseStack, builder, state.shape, blockPos.getX() - cameraPos.x, blockPos.getY() - cameraPos.y, blockPos.getZ() - cameraPos.z, state.color, 1.0F);
 		});
 	}
 

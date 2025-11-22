@@ -15,7 +15,6 @@ public class ColorChooserButton extends Button.Plain {
 		this.colorChooser = colorChooser;
 	}
 
-	//TODO: Test
 	@Override
 	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		int color = colorChooser.getRGBColor();

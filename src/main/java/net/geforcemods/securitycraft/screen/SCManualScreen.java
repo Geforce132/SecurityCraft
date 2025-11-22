@@ -702,7 +702,6 @@ public class SCManualScreen extends Screen {
 			this.highlightedSprite = highlightedSprite;
 		}
 
-		//TODO: Test
 		@Override
 		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
@@ -714,7 +713,6 @@ public class SCManualScreen extends Screen {
 			super(xPos, yPos, width, height, displayString, handler, s -> Component.empty());
 		}
 
-		//TODO: Test
 		@Override
 		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;

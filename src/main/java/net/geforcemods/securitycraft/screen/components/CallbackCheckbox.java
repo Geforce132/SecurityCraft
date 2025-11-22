@@ -37,7 +37,6 @@ public class CallbackCheckbox extends AbstractButton {
 		setSelected(!selected);
 	}
 
-	//TODO: Test
 	@Override
 	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		Minecraft minecraft = Minecraft.getInstance();

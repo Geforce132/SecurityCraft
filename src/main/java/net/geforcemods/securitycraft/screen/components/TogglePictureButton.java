@@ -29,7 +29,6 @@ public class TogglePictureButton extends Button.Plain implements IToggleableButt
 		this.drawHeight = drawHeight;
 	}
 
-	//TODO: Test
 	@Override
 	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		super.renderContents(guiGraphics, mouseX, mouseX, partialTicks);

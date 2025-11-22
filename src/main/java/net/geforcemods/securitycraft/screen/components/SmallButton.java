@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.gui.ActiveTextCollector;
+import net.minecraft.client.gui.TextAlignment;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
@@ -19,6 +20,6 @@ public class SmallButton extends Button.Plain {
 
 	@Override
 	public void renderDefaultLabel(ActiveTextCollector textCollector) {
-		textCollector.accept(getX() + width / 2, getY() + (height - 8) / 2, getMessage().getVisualOrderText()); //TODO Check positioning and color
+		textCollector.accept(TextAlignment.CENTER, getX() + width / 2, getY() + (height - 8) / 2, getMessage().getVisualOrderText());
 	}
 }

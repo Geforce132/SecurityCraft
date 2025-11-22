@@ -59,7 +59,6 @@ public class CollapsibleTextList extends Button.Plain {
 			currentHeight = Math.max(height, currentHeight - 40);
 	}
 
-	//TODO: Test
 	@Override
 	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		isHovered &= extraHoverCheck.test(mouseX, mouseY);
