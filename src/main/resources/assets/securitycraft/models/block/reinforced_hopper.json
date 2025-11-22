@@ -1,6 +1,6 @@
 {
     "ambientocclusion": false,
-    "render_type": "minecraft:cutout_mipped",
+    "render_type": "minecraft:cutout",
     "textures": {
         "particle": "block/hopper_outside",
         "top": "block/hopper_top",

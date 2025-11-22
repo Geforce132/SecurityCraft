@@ -1,6 +1,6 @@
 {
     "parent": "block/block",
-    "render_type": "minecraft:cutout_mipped",
+    "render_type": "minecraft:cutout",
     "textures": {
         "overlay": "block/grass_block_side_overlay",
         "particle": "block/dirt",

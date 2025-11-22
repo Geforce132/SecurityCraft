@@ -1,6 +1,6 @@
 {
     "ambientocclusion": false,
-    "render_type": "minecraft:cutout_mipped",
+    "render_type": "minecraft:cutout",
     "textures": {
         "particle": "securitycraft:block/reinforced_iron_bars",
         "bars": "securitycraft:block/reinforced_iron_bars",
