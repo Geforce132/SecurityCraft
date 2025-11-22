@@ -253,7 +253,7 @@ public class ClientHandler {
 					.setOutputTarget(OutputTarget.OUTLINE_TARGET)
 					.createRenderSetup());
 	//@formatter:on
-	public static final EnumProxy<ArmPose> TASER_ARM_POSE_PARAMS = new EnumProxy<>(ArmPose.class, true, (IArmPoseTransformer) (model, entity, arm) -> {
+	public static final EnumProxy<ArmPose> TASER_ARM_POSE_PARAMS = new EnumProxy<>(ArmPose.class, true, true, (IArmPoseTransformer) (model, entity, arm) -> {
 		ModelPart leftArm = model.leftArm;
 		ModelPart rightArm = model.rightArm;
 
