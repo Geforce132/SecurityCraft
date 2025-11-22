@@ -134,7 +134,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 			if (moduleInv instanceof BlockEntity be && !level.getBlockState(pos).is(be.getBlockState().getBlock()))
 				return false;
 
-			return player.canInteractWithBlock(pos, 4.0D);
+			return player.isWithinBlockInteractionRange(pos, 4.0D);
 		}, true);
 	}
 

@@ -43,7 +43,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
@@ -123,7 +122,7 @@ public class SCManualScreen extends Screen {
 		startX = (width - 256) / 2;
 		patreonLinkButton = addRenderableWidget(new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> {
 			try {
-				handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(new URI("https://www.patreon.com/Geforce"))));
+				clickUrlAction(minecraft, this, new URI("https://www.patreon.com/Geforce"));
 			}
 			catch (URISyntaxException e) {}
 		}));

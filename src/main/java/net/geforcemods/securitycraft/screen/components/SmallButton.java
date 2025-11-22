@@ -1,9 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.ActiveTextCollector;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 
 public class SmallButton extends Button.Plain {
@@ -20,7 +18,7 @@ public class SmallButton extends Button.Plain {
 	}
 
 	@Override
-	public void renderString(GuiGraphics guiGraphics, Font font, int color) {
-		guiGraphics.drawCenteredString(font, Language.getInstance().getVisualOrder(getMessage()), getX() + width / 2, getY() + (height - 8) / 2, color);
+	public void renderDefaultLabel(ActiveTextCollector textCollector) {
+		textCollector.accept(getX() + width / 2, getY() + (height - 8) / 2, getMessage().getVisualOrderText()); //TODO Check positioning and color
 	}
 }
