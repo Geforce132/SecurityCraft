@@ -26,6 +26,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.PanoramicScreenshotParameters;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -94,13 +95,14 @@ public class FrameFeedHandler {
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
+		PanoramicScreenshotParameters oldPanoramicScreenshotParameters = mc.gameRenderer.getPanoramicScreenshotParameters();
 
+		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
 		mc.gameRenderer.setRenderBlockOutline(false);
-		mc.gameRenderer.setPanoramicMode(true);
+		mc.gameRenderer.setPanoramicScreenshotParameters(new PanoramicScreenshotParameters(camera.forwardVector()));
 		window.setWidth(100);
 		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
-		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
 		mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
 
 		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
@@ -172,7 +174,7 @@ public class FrameFeedHandler {
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
-		mc.gameRenderer.setPanoramicMode(false);
+		mc.gameRenderer.setPanoramicScreenshotParameters(oldPanoramicScreenshotParameters);
 		mc.mainRenderTarget = oldMainRenderTarget;
 		currentlyCapturedCamera = null;
 	}
