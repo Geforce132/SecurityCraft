@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.OptionalDouble;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -12,6 +11,7 @@ import java.util.function.UnaryOperator;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.OctahedralGroup;
 
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
@@ -129,12 +129,14 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.ShelfRenderer;
 import net.minecraft.client.renderer.chunk.ChunkSectionLayer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.minecraft.client.renderer.rendertype.LayeringTransform;
+import net.minecraft.client.renderer.rendertype.OutputTarget;
+import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.core.BlockPos;
@@ -244,15 +246,12 @@ public class ClientHandler {
 		});
 	});
 	//@formatter:off
-    public static final RenderType.CompositeRenderType OVERLAY_LINES = RenderType.create(
+    public static final RenderType OVERLAY_LINES = RenderType.create(
 			"overlay_lines",
-			1536,
-			RenderPipelines.LINES,
-			RenderType.CompositeState.builder()
-				.setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty()))
-				.setLayeringState(RenderStateShard.VIEW_OFFSET_Z_LAYERING)
-				.setOutputState(RenderStateShard.OUTLINE_TARGET)
-				.createCompositeState(false));
+			RenderSetup.builder(RenderPipelines.LINES)
+					.setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
+					.setOutputTarget(OutputTarget.OUTLINE_TARGET)
+					.createRenderSetup());
 	//@formatter:on
 	public static final EnumProxy<ArmPose> TASER_ARM_POSE_PARAMS = new EnumProxy<>(ArmPose.class, true, (IArmPoseTransformer) (model, entity, arm) -> {
 		ModelPart leftArm = model.leftArm;
@@ -322,18 +321,17 @@ public class ClientHandler {
 	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event) {
 		ChunkSectionLayer cutout = ChunkSectionLayer.CUTOUT;
-		ChunkSectionLayer cutoutMipped = ChunkSectionLayer.CUTOUT_MIPPED;
 		ChunkSectionLayer translucent = ChunkSectionLayer.TRANSLUCENT;
 
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_COPPER_BARS.get(), cutoutMipped);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get(), cutoutMipped);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get(), cutoutMipped);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get(), cutoutMipped);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), cutoutMipped);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutoutMipped);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_COPPER_BARS.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get(), cutout);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), translucent);
+		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHTNING_ROD.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(), cutout);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(), cutout);
@@ -797,14 +795,14 @@ public class ClientHandler {
 		}
 
 		public BlockModelRotation modelRotation() {
-			return switch (direction) {
-				case DOWN -> BlockModelRotation.X180_Y0;
-				case UP -> BlockModelRotation.X0_Y0;
-				case NORTH -> BlockModelRotation.X90_Y0;
-				case SOUTH -> BlockModelRotation.X90_Y180;
-				case WEST -> BlockModelRotation.X90_Y270;
-				case EAST -> BlockModelRotation.X90_Y90;
-			};
+			return BlockModelRotation.get(switch (direction) {
+				case DOWN -> OctahedralGroup.BLOCK_ROT_X_180;
+				case UP -> OctahedralGroup.IDENTITY;
+				case NORTH -> OctahedralGroup.BLOCK_ROT_X_90;
+				case SOUTH -> OctahedralGroup.BLOCK_ROT_X_90.compose(OctahedralGroup.BLOCK_ROT_Y_180);
+				case WEST -> OctahedralGroup.BLOCK_ROT_X_90.compose(OctahedralGroup.BLOCK_ROT_Y_270);
+				case EAST -> OctahedralGroup.BLOCK_ROT_X_90.compose(OctahedralGroup.BLOCK_ROT_Y_90);
+			});
 		}
 	}
 }
