@@ -31,7 +31,6 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
@@ -46,6 +45,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -104,16 +104,12 @@ public class SCClientEventHandler {
 
 			if (be instanceof BlockChangeDetectorBlockEntity bcd && bcd.isShowingHighlights() && bcd.isOwnedBy(mc.player)) {
 				int packedColor = bcd.getColor();
-				float r = ARGB.red(packedColor) / 255.0F;
-				float g = ARGB.green(packedColor) / 255.0F;
-				float b = ARGB.blue(packedColor) / 255.0F;
 
 				for (ChangeEntry changeEntry : bcd.getFilteredEntries()) {
 					BlockPos pos = changeEntry.pos();
 
 					pose.pushPose();
-					pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z);
-					ShapeRenderer.renderLineBox(pose.last(), consumer, 0, 0, 0, 1, 1, 1, r, g, b, 1.0F);
+					ShapeRenderer.renderShape(pose, consumer, Shapes.block(), pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z, packedColor, 1.0F); //TODO: Check correctness
 					pose.popPose();
 				}
 			}

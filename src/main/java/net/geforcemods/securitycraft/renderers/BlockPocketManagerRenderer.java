@@ -13,7 +13,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -28,8 +30,11 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		if (!state.showsOutline || !state.ownedByPlayer)
 			return;
 
+		BlockPos blockPos = state.blockPos;
+		Vec3 cameraPos = camera.pos;
+		
 		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {
-			ShapeRenderer.renderShape(poseStack, builder, Shapes.block(), state.leftX, 0, state.frontZ, state.color, 1.0F); //TODO test position and line width
+			ShapeRenderer.renderShape(poseStack, builder, Shapes.block(), blockPos.getX() - cameraPos.x, blockPos.getY() - cameraPos.y, blockPos.getZ() - cameraPos.z, state.color, 1.0F); //TODO test position and line width
 		});
 	}
 
@@ -62,11 +67,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 
 		state.showsOutline = be.showsOutline();
 		state.ownedByPlayer = be.isOwnedBy(Minecraft.getInstance().player);
-		state.size = size;
-		state.leftX = leftX;
-		state.rightX = rightX;
-		state.frontZ = frontZ;
-		state.backZ = backZ;
+		state.shape = Block.box(leftX, 0, frontZ, rightX, size, backZ);
 		state.color = packedColor;
 	}
 
