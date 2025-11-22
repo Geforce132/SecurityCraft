@@ -1,33 +1,7 @@
 package net.geforcemods.securitycraft.compat.hudmods;
 
-import java.util.function.Function;
-
-import javax.annotation.Nullable;
-
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeHitEntityData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.IProbeInfoEntityProvider;
-import mcjty.theoneprobe.api.IProbeInfoProvider;
-import mcjty.theoneprobe.api.ITheOneProbe;
-import mcjty.theoneprobe.api.ProbeMode;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IDisguisable;
-import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.fml.ModList;
-
-public class TOPDataProvider extends HudModHandler implements Function<ITheOneProbe, Void> {
-	@Nullable
+public class TOPDataProvider extends HudModHandler /*implements Function<ITheOneProbe, Void>*/ {
+	/*@Nullable
 	@Override
 	public Void apply(ITheOneProbe theOneProbe) {
 		theOneProbe.registerBlockDisplayOverride((mode, probeInfo, player, level, state, data) -> {
@@ -80,5 +54,5 @@ public class TOPDataProvider extends HudModHandler implements Function<ITheOnePr
 			}
 		});
 		return null;
-	}
+	}*/
 }

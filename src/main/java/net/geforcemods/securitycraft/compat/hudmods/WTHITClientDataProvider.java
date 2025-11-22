@@ -1,34 +1,7 @@
 package net.geforcemods.securitycraft.compat.hudmods;
 
-import java.awt.Rectangle;
-
-import mcp.mobius.waila.api.IBlockAccessor;
-import mcp.mobius.waila.api.IBlockComponentProvider;
-import mcp.mobius.waila.api.IClientRegistrar;
-import mcp.mobius.waila.api.ICommonAccessor;
-import mcp.mobius.waila.api.IEntityAccessor;
-import mcp.mobius.waila.api.IEntityComponentProvider;
-import mcp.mobius.waila.api.IEventListener;
-import mcp.mobius.waila.api.IPluginConfig;
-import mcp.mobius.waila.api.ITooltip;
-import mcp.mobius.waila.api.ITooltipComponent;
-import mcp.mobius.waila.api.IWailaClientPlugin;
-import mcp.mobius.waila.api.WailaConstants;
-import mcp.mobius.waila.api.component.ItemComponent;
-import net.geforcemods.securitycraft.ClientHandler;
-import net.geforcemods.securitycraft.api.IOwnable;
-import net.geforcemods.securitycraft.compat.IOverlayDisplay;
-import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
-import net.geforcemods.securitycraft.entity.sentry.Sentry;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModList;
-
-public final class WTHITClientDataProvider extends HudModHandler implements IWailaClientPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener {
-	@Override
+public final class WTHITClientDataProvider extends HudModHandler /*implements IWailaClientPlugin, IBlockComponentProvider, IEntityComponentProvider, IEventListener*/ {
+	/*@Override
 	public void register(IClientRegistrar registrar) {
 		registrar.eventListener(this);
 		registrar.head((IBlockComponentProvider) this, IOverlayDisplay.class);
@@ -79,5 +52,5 @@ public final class WTHITClientDataProvider extends HudModHandler implements IWai
 	public void onBeforeTooltipRender(GuiGraphics guiGraphics, Rectangle rectangle, ICommonAccessor accessor, IPluginConfig config, Canceller canceller) {
 		if (ClientHandler.isPlayerMountedOnCamera())
 			canceller.cancel();
-	}
+	}*/
 }

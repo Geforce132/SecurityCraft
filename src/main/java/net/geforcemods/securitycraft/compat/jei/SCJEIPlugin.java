@@ -1,32 +1,8 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-import mezz.jei.api.IModPlugin;
-import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.recipe.types.IRecipeType;
-import mezz.jei.api.recipe.types.IRecipeType.JeiRecipeType;
-import mezz.jei.api.registration.IGuiHandlerRegistration;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import net.geforcemods.securitycraft.SCContent;
-import net.geforcemods.securitycraft.SecurityCraft;
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
-import net.geforcemods.securitycraft.screen.BlockChangeDetectorScreen;
-import net.geforcemods.securitycraft.screen.BlockPocketManagerScreen;
-import net.geforcemods.securitycraft.screen.CustomizeBlockScreen;
-import net.geforcemods.securitycraft.screen.DisguiseModuleScreen;
-import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
-import net.geforcemods.securitycraft.screen.ProjectorScreen;
-import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-
-@JeiPlugin
-public class SCJEIPlugin implements IModPlugin {
-	public static final IRecipeType<ReinforcerRecipe> VTS = new JeiRecipeType<>(SecurityCraft.resLoc("vanilla_to_securitycraft"), ReinforcerRecipe.class);
+//@JeiPlugin
+public class SCJEIPlugin /*implements IModPlugin*/ {
+	/*public static final IRecipeType<ReinforcerRecipe> VTS = new JeiRecipeType<>(SecurityCraft.resLoc("vanilla_to_securitycraft"), ReinforcerRecipe.class);
 	public static final IRecipeType<ReinforcerRecipe> STV = new JeiRecipeType<>(SecurityCraft.resLoc("securitycraft_to_vanilla"), ReinforcerRecipe.class);
 
 	@Override
@@ -81,5 +57,5 @@ public class SCJEIPlugin implements IModPlugin {
 	@Override
 	public Identifier getPluginUid() {
 		return SecurityCraft.resLoc(SecurityCraft.MODID);
-	}
+	}*/
 }
