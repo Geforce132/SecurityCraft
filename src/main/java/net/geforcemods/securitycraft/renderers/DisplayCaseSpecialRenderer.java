@@ -1,9 +1,9 @@
 package net.geforcemods.securitycraft.renderers;
 
 import java.util.Optional;
-import java.util.Set;
+import java.util.function.Consumer;
 
-import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.Codec;
@@ -26,7 +26,7 @@ public record DisplayCaseSpecialRenderer(DisplayCaseModel model, Identifier text
 	}
 
 	@Override
-	public void getExtents(Set<Vector3f> extents) {
+	public void getExtents(Consumer<Vector3fc> extents) {
 		PoseStack poseStack = new PoseStack();
 
 		model.setupAnim(openness);
