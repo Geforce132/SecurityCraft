@@ -1,5 +1,6 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import util.ExtractNestedJar
 
 plugins {
 	id("net.neoforged.moddev") version "2.0.107"
@@ -78,6 +79,9 @@ repositories {
 	}
 }
 
+fun Project.deps(name: String): String? = findProperty("deps.${name}") as String?
+fun Project.deps(name: String, consumer: (prop: String) -> Unit) = deps(name)?.let(consumer)
+
 dependencies {
 	compileOnly("curse.maven:architectury-api-419699:5553800") //ftb teams dependency
 	compileOnly("curse.maven:ftb-library-forge-404465:5557408") //ftb teams dependency
@@ -90,8 +94,29 @@ dependencies {
 	implementation("curse.maven:wthit-forge-455982:7095465")
 	implementation("curse.maven:badpackets-615134:7066076") //wthit dependency
 	compileOnly("curse.maven:projecte-226410:3955047")
-	compileOnly("curse.maven:embeddium-908741:6116910")
-	compileOnly("maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge") //incompatible with embeddium
+	compileOnly("curse.maven:embeddium-908741:6116910") //incompatible with sodium
+
+	deps("sodium_internal") {
+		val sodiumArtifact = "maven.modrinth:sodium:${deps("sodium")}"
+		listOf(
+			"sodium-neo-jar" to "META-INF/jarjar/net.caffeinemc.sodium-$it-mod.jar",
+			"sodium-fapi-jar" to "META-INF/jarjar/fabric-api-base-${deps("sodium_fabric_api_base")}.jar",
+			"sodium-frapi-jar" to "META-INF/jarjar/fabric-renderer-api-${deps("sodium_fabric_renderer")}.jar"
+		).forEach { (attrName, nestedPath) ->
+			registerTransform(ExtractNestedJar::class.java) {
+				from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+				to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, attrName)
+				parameters { nestedJarPath.set(nestedPath) }
+			}
+			compileOnly(sodiumArtifact) {
+				attributes { attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, attrName) }
+			}
+		}
+	}
+
+	deps("sodium") {
+		compileOnly("maven.modrinth:sodium:$it")
+	}
 }
 
 tasks.withType<Jar> {
