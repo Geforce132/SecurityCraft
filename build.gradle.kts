@@ -28,7 +28,7 @@ sourceSets {
 
 val minecraftVersion: String = "1.21.10"
 neoForge {
-	version = "21.10.28-beta"
+	version = "21.10.63"
 	validateAccessTransformers = true
 
 	runs {
