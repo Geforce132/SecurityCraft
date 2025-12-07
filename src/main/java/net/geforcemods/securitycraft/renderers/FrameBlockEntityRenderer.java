@@ -128,17 +128,17 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
 
 						GpuDevice device = RenderSystem.getDevice();
-						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", 32, meshData.vertexBuffer());
-						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", 72, meshData.indexBuffer());
+						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
+						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
 						RenderTarget mainRenderTarget = Minecraft.getInstance().getMainRenderTarget();
 						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(), new Vector3f(), new Matrix4f());
 
 						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, mainRenderTarget.getColorTextureView(), OptionalInt.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
+							RenderSystem.bindDefaultUniforms(pass);
 							pass.setPipeline(FRAME_PIPELINE);
 							pass.setVertexBuffer(0, vertexBuffer);
 							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
 							pass.setUniform("DynamicTransforms", dynamicTransforms);
-							pass.setUniform("Projection", RenderSystem.getProjectionMatrixBuffer());
 							pass.bindTexture("InSampler", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getClampToEdge(FilterMode.NEAREST));
 							pass.drawIndexed(0, 0, 6, 1);
 						}
