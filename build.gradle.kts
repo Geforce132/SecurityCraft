@@ -88,8 +88,8 @@ dependencies {
 	implementation("curse.maven:jei-238222:7090453")
 	compileOnly("curse.maven:the-one-probe-245211:5502323")
 	implementation("curse.maven:jade-324717:7056468")
-	compileOnly("curse.maven:betterf3-401648:6685252")
-	compileOnly("curse.maven:cloth-config-348521:6669837") //betterf3 dependency
+    implementation("curse.maven:betterf3-401648:7180976")
+    implementation("curse.maven:cloth-config-348521:7151182") //betterf3 dependency
 	implementation("curse.maven:wthit-forge-455982:7095465")
 	implementation("curse.maven:badpackets-615134:7066076") //wthit dependency
 	compileOnly("curse.maven:projecte-226410:3955047")
