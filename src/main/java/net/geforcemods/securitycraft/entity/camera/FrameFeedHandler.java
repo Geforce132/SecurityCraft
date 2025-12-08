@@ -131,6 +131,7 @@ public class FrameFeedHandler {
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
 					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
+					mc.gameRenderer.updateCamera(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
 					mc.mainRenderTarget = feed.renderTarget();
 
 					try {
@@ -165,11 +166,11 @@ public class FrameFeedHandler {
 		player.xRotO = oldXRotO;
 		player.setYRot(oldYRot);
 		player.yRotO = oldYRotO;
-		camera.setup(level, oldCamEntity == null ? player : oldCamEntity, !mc.options.getCameraType().isFirstPerson(), mc.options.getCameraType().isMirrored(), level.tickRateManager().isEntityFrozen(oldCamEntity) ? 1.0F : partialTick.getGameTimeDeltaPartialTick(true));
 		camera.eyeHeight = oldEyeHeight;
 		camera.eyeHeightOld = oldEyeHeightO;
 		mc.options.setCameraType(oldCameraType);
 		mc.gameRenderer.setRenderBlockOutline(true);
+		mc.gameRenderer.updateCamera(mc.getDeltaTracker());
 		mc.levelRenderer.visibleSections.clear();
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		window.setWidth(oldWidth);
