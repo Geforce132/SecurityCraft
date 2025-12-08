@@ -41,8 +41,8 @@ public class TrophySystemRenderer implements BlockEntityRenderer<TrophySystemBlo
 				int b = state.b;
 
 				//draws a line between the trophy system and the projectile that it's targeting
-				builder.addVertex(pose, 0.5F, 0.75F, 0.5F).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
-				builder.addVertex(pose, (float) (target.x() - pos.getX()), (float) (target.y() - pos.getY()), (float) (target.z() - pos.getZ())).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F);
+				builder.addVertex(pose, 0.5F, 0.75F, 0.5F).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F).setLineWidth(2.0F);
+				builder.addVertex(pose, (float) (target.x() - pos.getX()), (float) (target.y() - pos.getY()), (float) (target.z() - pos.getZ())).setColor(r, g, b, 255).setNormal(1.0F, 1.0F, 1.0F).setLineWidth(2.0F);
 			});
 		}
 	}

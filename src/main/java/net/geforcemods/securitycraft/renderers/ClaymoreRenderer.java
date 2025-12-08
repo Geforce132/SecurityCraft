@@ -37,10 +37,10 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 			int r = state.r;
 			int g = state.g;
 			int b = state.b;
-			builder.addVertex(pose, xzStart, y, xzStart).setColor(r, g, b, 255).setNormal(normal.getX(), normal.getY(), normal.getZ());
-			builder.addVertex(pose, 11.0F * multiplier, y, 1.0F).setColor(r, g, b, 0).setNormal(normal.getX(), normal.getY(), normal.getZ());
-			builder.addVertex(pose, 7.0F * multiplier, y, xzStart).setColor(r, g, b, 255).setNormal(normal.getX(), normal.getY(), normal.getZ());
-			builder.addVertex(pose, 5.0F * multiplier, y, 1.0F).setColor(r, g, b, 0).setNormal(normal.getX(), normal.getY(), normal.getZ());
+			builder.addVertex(pose, xzStart, y, xzStart).setColor(r, g, b, 255).setNormal(normal.getX(), normal.getY(), normal.getZ()).setLineWidth(2.0F);
+			builder.addVertex(pose, 11.0F * multiplier, y, 1.0F).setColor(r, g, b, 0).setNormal(normal.getX(), normal.getY(), normal.getZ()).setLineWidth(2.0F);
+			builder.addVertex(pose, 7.0F * multiplier, y, xzStart).setColor(r, g, b, 255).setNormal(normal.getX(), normal.getY(), normal.getZ()).setLineWidth(2.0F);
+			builder.addVertex(pose, 5.0F * multiplier, y, 1.0F).setColor(r, g, b, 0).setNormal(normal.getX(), normal.getY(), normal.getZ()).setLineWidth(2.0F);
 		});
 		poseStack.popPose();
 	}
