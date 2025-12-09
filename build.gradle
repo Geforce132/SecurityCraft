@@ -33,18 +33,9 @@ processResources {
 sourceSets.main.resources {
 	srcDir 'src/generated/resources' //include generated files
 }
-repositories {
-    maven {
-        name = "Maven for PR #2815" // https://github.com/neoforged/NeoForge/pull/2815
-        url = uri("https://prmaven.neoforged.net/NeoForge/pr2815")
-        content {
-            includeModule("net.neoforged", "neoforge")
-            includeModule("net.neoforged", "testframework")
-        }
-    }
-}
+
 neoForge {
-	version = "21.11.0-alpha.1.21.11-pre2.20251121.222413"
+	version = "21.11.0-beta"
 	validateAccessTransformers = true
 
 	runs {
@@ -108,11 +99,11 @@ dependencies {
 	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
     //compileOnly "curse.maven:jei-238222:7090453" //Incompatible at compile time because of ResourceLocation -> Identifier
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
-    //compileOnly "curse.maven:jade-324717:7056468" //Incompatible at compile time because of ResourceLocation -> Identifier
+    implementation "curse.maven:jade-324717:7313008" //Incompatible at compile time because of ResourceLocation -> Identifier
 	compileOnly "curse.maven:betterf3-401648:6685252"
 	compileOnly "curse.maven:cloth-config-348521:6669837" //betterf3 dependency
-    //compileOnly "curse.maven:wthit-forge-455982:7095465" //Incompatible at compile time because of ResourceLocation -> Identifier
-    compileOnly "curse.maven:badpackets-615134:7066076" //wthit dependency
+    implementation "curse.maven:wthit-forge-455982:7312784" //Incompatible at compile time because of ResourceLocation -> Identifier
+    implementation "curse.maven:badpackets-615134:7312679" //wthit dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
 	compileOnly "curse.maven:embeddium-908741:6116910"
     compileOnly "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium

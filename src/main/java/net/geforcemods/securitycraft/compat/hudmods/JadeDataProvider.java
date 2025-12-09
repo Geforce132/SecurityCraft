@@ -1,8 +1,31 @@
 package net.geforcemods.securitycraft.compat.hudmods;
 
-//@WailaPlugin(SecurityCraft.MODID)
-public final class JadeDataProvider extends HudModHandler /*implements IWailaPlugin*/ {
-	/*@Override
+import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.blocks.FakeLavaBlock;
+import net.geforcemods.securitycraft.blocks.FakeWaterBlock;
+import net.geforcemods.securitycraft.compat.IOverlayDisplay;
+import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
+import net.geforcemods.securitycraft.entity.sentry.Sentry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import snownee.jade.api.BlockAccessor;
+import snownee.jade.api.EntityAccessor;
+import snownee.jade.api.IBlockComponentProvider;
+import snownee.jade.api.IEntityComponentProvider;
+import snownee.jade.api.ITooltip;
+import snownee.jade.api.IWailaClientRegistration;
+import snownee.jade.api.IWailaPlugin;
+import snownee.jade.api.WailaPlugin;
+import snownee.jade.api.config.IPluginConfig;
+
+@WailaPlugin(SecurityCraft.MODID)
+public final class JadeDataProvider extends HudModHandler implements IWailaPlugin {
+	@Override
 	public void registerClient(IWailaClientRegistration registration) {
 		registration.addConfig(SHOW_OWNER, true);
 		registration.addConfig(SHOW_MODULES, true);
@@ -57,5 +80,5 @@ public final class JadeDataProvider extends HudModHandler /*implements IWailaPlu
 		public Identifier getUid() {
 			return SecurityCraft.resLoc("entity_info");
 		}
-	}*/
+	}
 }
