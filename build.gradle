@@ -91,22 +91,28 @@ repositories {
 			includeGroup "maven.modrinth"
 		}
 	}
+
+	maven {
+		url = "https://maven.caffeinemc.net/releases"
+	}
 }
 
 dependencies {
-	compileOnly "curse.maven:architectury-api-419699:5553800" //ftb teams dependency
-	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //ftb teams dependency
+	compileOnly "curse.maven:architectury-api-419699:5553800" //FTB Teams dependency
+	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //FTB Teams dependency
 	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
     //compileOnly "curse.maven:jei-238222:7090453" //Incompatible at compile time because of ResourceLocation -> Identifier
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
-    implementation "curse.maven:jade-324717:7313008" //Incompatible at compile time because of ResourceLocation -> Identifier
+    implementation "curse.maven:jade-324717:7313008"
 	compileOnly "curse.maven:betterf3-401648:6685252"
-	compileOnly "curse.maven:cloth-config-348521:6669837" //betterf3 dependency
-    implementation "curse.maven:wthit-forge-455982:7312784" //Incompatible at compile time because of ResourceLocation -> Identifier
-    implementation "curse.maven:badpackets-615134:7312679" //wthit dependency
+	compileOnly "curse.maven:cloth-config-348521:6669837" //BetterF3 dependency
+    implementation "curse.maven:wthit-forge-455982:7312784"
+    implementation "curse.maven:badpackets-615134:7312679" //WTHIT dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
-	compileOnly "curse.maven:embeddium-908741:6116910"
-    compileOnly "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium
+	compileOnly "curse.maven:embeddium-908741:6116910" //Incompatible with Sodium
+	// The actual mod jar is jarjar'd into the Modrinth jar, but NeoForge doesn't load it, so the mod has to be added from CaffeineMCs' maven separately
+	runtimeOnly "maven.modrinth:sodium:mc1.21.11-0.8.0-neoforge"
+	implementation "net.caffeinemc:sodium-neoforge-mod:0.8.0+mc1.21.11"
 }
 
 tasks.named('jar', Jar).configure {
