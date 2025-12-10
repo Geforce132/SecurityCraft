@@ -4,10 +4,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -34,41 +32,15 @@ public abstract class LevelRendererMixin {
 	private SectionRenderDispatcher sectionRenderDispatcher;
 	@Shadow
 	private ClientLevel level;
-	@Unique
-	private boolean securitycraft$entityOutlineRendered;
 
 	/**
-	 * The first purpose of this mixin is to allow entities to render in the first frame of a render section being rendered when
-	 * Sodium is installed. This needs to be done because entities would never render at all in the first frame not render due
-	 * to a bug within Sodium. To allow entities to render in such circumstances, it is attempted to collect all renderable
-	 * entities a second time after LevelRenderer#setupRender has been called, since this is required for Sodium's entity
-	 * culling logic to work properly. Note: Only allowing this mixin to work when the first collection of renderable entities
-	 * has found 0 entities does not work correctly, since some entities, like ones with the Glowing effect, are unaffected by
-	 * Sodium entity culling and thus always rendered.
-	 * The second purpose of this mixin is to capture the fog color used when rendering a frame world, to be able to render it
-	 * in the background of a frame feed.
+	 * This mixin captures the fog color used when rendering a frame world, to be able to render it in the background of a
+	 * frame feed.
 	 */
-	//TODO check if that sodium bug (mentioned in the javadoc) is fixed without extra modification by SC being needed, now that the method calls have been rearranged
 	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"))
 	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, Matrix4f frustumMatrix, Matrix4f projectionMatrix, Matrix4f cullingMatrix, GpuBufferSlice bufferSlice, Vector4f fogColor, boolean renderSky, CallbackInfo ci, @Local Frustum frustum) {
 		if (FrameFeedHandler.isCapturingCamera())
 			FrameFeedHandler.getCurrentlyCapturedFeed().setBackgroundColor(fogColor);
-	}
-
-	/**
-	 * If the collection of renderable entities within the mixin above returned that one or more entities should be rendered with
-	 * an outline, correctly modify the respective flag in LevelRenderer#renderLevel so the shader post chain respects the
-	 * outline.
-	 * TODO see above, check if that bug is fixed without this mixin
-	 */
-	@ModifyVariable(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"), ordinal = 3)
-	private boolean securitycraft$modifyEntityOutlineRendered(boolean original) {
-		if (IumCompat.isActive() && securitycraft$entityOutlineRendered) {
-			securitycraft$entityOutlineRendered = false;
-			return true;
-		}
-
-		return original;
 	}
 
 	/**
