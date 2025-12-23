@@ -1,7 +1,21 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-public class InventoryScannerGhostIngredientHandler /*implements IGhostIngredientHandler<InventoryScannerScreen>*/ {
-	/*@Override
+import java.util.ArrayList;
+import java.util.List;
+
+import mezz.jei.api.gui.handlers.IGhostIngredientHandler;
+import mezz.jei.api.ingredients.ITypedIngredient;
+import net.geforcemods.securitycraft.inventory.OwnerRestrictedSlot;
+import net.geforcemods.securitycraft.network.server.SetGhostSlot;
+import net.geforcemods.securitycraft.screen.InventoryScannerScreen;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+
+public class InventoryScannerGhostIngredientHandler implements IGhostIngredientHandler<InventoryScannerScreen> {
+	@Override
 	public <I> List<Target<I>> getTargetsTyped(InventoryScannerScreen screen, ITypedIngredient<I> ingredient, boolean doStart) {
 		if (!screen.be.isOwnedBy(Minecraft.getInstance().player))
 			return List.of();
@@ -31,5 +45,5 @@ public class InventoryScannerGhostIngredientHandler /*implements IGhostIngredien
 	}
 
 	@Override
-	public void onComplete() {}*/
+	public void onComplete() {}
 }

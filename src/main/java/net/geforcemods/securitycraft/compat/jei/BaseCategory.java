@@ -1,7 +1,19 @@
 package net.geforcemods.securitycraft.compat.jei;
 
-public abstract class BaseCategory /*implements IRecipeCategory<ReinforcerRecipe>*/ {
-	/*protected static final Component OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output");
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.category.IRecipeCategory;
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+
+public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> {
+	protected static final Component OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private final IDrawable background;
 	private final IDrawable icon;
 	private final int width = 126, height = 43;
@@ -29,5 +41,5 @@ public abstract class BaseCategory /*implements IRecipeCategory<ReinforcerRecipe
 	@Override
 	public int getHeight() {
 		return height;
-	}*/
+	}
 }
