@@ -104,7 +104,12 @@ public class SCManualItem extends Item {
 
 	private static ItemStack safeAssemble(CraftingRecipe recipe, CraftingInput dummyInput, HolderLookup.Provider registryAccess) {
 		try {
-			return recipe.assemble(dummyInput, registryAccess);
+			ItemStack res = recipe.assemble(dummyInput, registryAccess);
+
+			if (res == null)
+				new NullPointerException("Recipe#assemble unexpectedly returned null").printStackTrace();
+			else
+				return res;
 		}
 		catch (Exception e) {
 			//If an exception is thrown, it's safe to assume that recipe assembling failed for some reason that means the recipe is not relevant for one of SC's items
