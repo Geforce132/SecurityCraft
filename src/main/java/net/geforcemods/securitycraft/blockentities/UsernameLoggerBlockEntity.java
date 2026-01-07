@@ -111,7 +111,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public void syncLoggedPlayersToClient() {
 		for (int i = 0; i < getPlayers().length; i++) {
 			if (getPlayers()[i] != null)
-				PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new UpdateLogger(worldPosition, i, getPlayers()[i], getUuids()[i], getTimestamps()[i]));
+				PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, ChunkPos.containing(worldPosition), new UpdateLogger(worldPosition, i, getPlayers()[i], getUuids()[i], getTimestamps()[i]));
 		}
 	}
 

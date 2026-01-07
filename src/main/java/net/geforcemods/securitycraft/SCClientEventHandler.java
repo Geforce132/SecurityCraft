@@ -144,7 +144,7 @@ public class SCClientEventHandler {
 		if (event.getLevel().isClientSide()) {
 			ChunkPos pos = event.getChunk().getPos();
 
-			CameraViewAreaExtension.onChunkUnload(pos.x, pos.z);
+			CameraViewAreaExtension.onChunkUnload(pos.x(), pos.z());
 		}
 	}
 

@@ -258,7 +258,7 @@ public class FrameFeedHandler {
 
 	public static boolean shouldAddChunk(ChunkPos pos, int renderDistance) {
 		for (GlobalPos cameraPos : FRAME_CAMERA_FEEDS.keySet()) {
-			if (pos.getChessboardDistance(new ChunkPos(cameraPos.pos())) <= (renderDistance + 1))
+			if (pos.getChessboardDistance(ChunkPos.containing(cameraPos.pos())) <= (renderDistance + 1))
 				return true;
 		}
 

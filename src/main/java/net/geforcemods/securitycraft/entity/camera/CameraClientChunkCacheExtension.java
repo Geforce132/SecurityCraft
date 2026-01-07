@@ -231,20 +231,20 @@ public class CameraClientChunkCacheExtension {
 
 	public static void drop(ClientLevel level, ChunkPos chunkPos) {
 		if (Minecraft.getInstance().isSameThread()) {
-			long chunkPosLong = chunkPos.toLong();
+			long chunkPosLong = chunkPos.pack();
 			LevelChunk chunk = CHUNK_MAP.get(chunkPosLong);
 
 			if (chunk != null) {
 				modifyChunkMaps(map -> map.remove(chunkPosLong));
 				NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
 				level.unload(chunk);
-				IumCompat.get().onChunkStatusRemoved(level, chunkPos.x, chunkPos.z);
+				IumCompat.get().onChunkStatusRemoved(level, chunkPos.x(), chunkPos.z());
 			}
 		}
 	}
 
 	public static LevelChunk getChunk(int x, int z) {
-		long chunkPos = ChunkPos.asLong(x, z);
+		long chunkPos = ChunkPos.pack(x, z);
 
 		if (Minecraft.getInstance().isSameThread())
 			return CHUNK_MAP.get(chunkPos);
@@ -260,7 +260,7 @@ public class CameraClientChunkCacheExtension {
 			throw new UnsupportedOperationException("replaceWithPacketData called off-thread, this shouldn't happen!");
 
 		ChunkPos chunkPos = new ChunkPos(x, z);
-		long longChunkPos = chunkPos.toLong();
+		long longChunkPos = chunkPos.pack();
 		LevelChunk chunk = CHUNK_MAP.get(longChunkPos);
 
 		if (chunk == null) {

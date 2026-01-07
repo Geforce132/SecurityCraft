@@ -50,7 +50,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		int newLight = IDisguisable.getDisguisedBlockStateFromStack(stack).map(s -> s.getLightEmission(level, worldPosition)).orElse(0);
 
 		if (!level.isClientSide()) {
-			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
+			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, ChunkPos.containing(worldPosition), new RefreshDisguisableModel(worldPosition, true, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));
@@ -82,7 +82,7 @@ public class DisguisableBlockEntity extends CustomizableBlockEntity {
 		BlockPos worldPosition = be.getBlockPos();
 
 		if (!level.isClientSide()) {
-			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
+			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, ChunkPos.containing(worldPosition), new RefreshDisguisableModel(worldPosition, false, stack, toggled));
 
 			if (state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED)) {
 				level.scheduleTick(worldPosition, Fluids.WATER, Fluids.WATER.getTickDelay(level));

@@ -222,7 +222,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		setChanged();
 
 		if (!level.isClientSide())
-			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, new ChunkPos(worldPosition), new SetTrophySystemTarget(worldPosition, target.getId()));
+			PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, ChunkPos.containing(worldPosition), new SetTrophySystemTarget(worldPosition, target.getId()));
 	}
 
 	/**
