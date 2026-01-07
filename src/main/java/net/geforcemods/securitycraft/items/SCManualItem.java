@@ -107,7 +107,7 @@ public class SCManualItem extends Item {
 			ItemStack res = recipe.assemble(dummyInput, registryAccess);
 
 			if (res == null)
-				new NullPointerException("Recipe#assemble unexpectedly returned null").printStackTrace();
+				new NullPointerException("Recipe#assemble unexpectedly returned null for type " + recipe.getType()).printStackTrace();
 			else
 				return res;
 		}
