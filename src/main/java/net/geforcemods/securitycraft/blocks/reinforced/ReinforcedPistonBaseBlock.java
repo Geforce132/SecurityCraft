@@ -145,7 +145,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				return false;
 
 			level.setBlock(pos, extendedState, 67);
-			level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.25F + 0.6F);
+			level.playSound(null, pos, SoundEvents.PISTON_EXTEND, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.25F + 0.6F);
 			level.gameEvent(GameEvent.BLOCK_ACTIVATE, pos, GameEvent.Context.of(extendedState));
 		}
 		else if (id == 1 || id == 2) {
@@ -183,7 +183,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 			else
 				level.removeBlock(pos.relative(direction), false);
 
-			level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.15F + 0.6F);
+			level.playSound(null, pos, SoundEvents.PISTON_CONTRACT, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.15F + 0.6F);
 			level.gameEvent(GameEvent.BLOCK_DEACTIVATE, pos, GameEvent.Context.of(movingPiston));
 		}
 

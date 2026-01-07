@@ -58,11 +58,9 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 	private final int previousColor;
 
 	public BlockChangeDetectorScreen(BlockChangeDetectorMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
+		super(menu, inv, title, 200, 256);
 		menu.addSlotListener(this);
 		be = (BlockChangeDetectorBlockEntity) menu.be;
-		imageWidth = 200;
-		imageHeight = 256;
 		previousMode = be.getMode();
 		wasShowingHighlights = be.isShowingHighlights();
 		previousColor = be.getColor();

@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.components.SavedBlockState;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -67,9 +67,9 @@ public class DisguiseModuleMenu extends StateSelectorAccessMenu {
 	}
 
 	@Override
-	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
+	public void clicked(int slot, int dragType, ContainerInput containerInput, Player player) {
 		if (!(slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() == SCContent.DISGUISE_MODULE.get()))
-			super.clicked(slot, dragType, clickType, player);
+			super.clicked(slot, dragType, containerInput, player);
 	}
 
 	@Override

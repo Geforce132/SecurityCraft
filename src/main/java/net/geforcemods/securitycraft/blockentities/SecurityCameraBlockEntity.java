@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SimpleListenerContainer.ContainerListener;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu.SingleLensContainer;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -42,7 +43,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerListener;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -84,7 +84,7 @@ public class SecurityCameraBlockEntity extends DisguisableBlockEntity implements
 
 	public SecurityCameraBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), pos, state);
-		lens.addListener(this);
+		lens.setListener(this);
 	}
 
 	@Override

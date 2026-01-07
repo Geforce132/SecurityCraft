@@ -37,7 +37,7 @@ public class FloorTrapCloudParticle extends SingleQuadParticle {
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, RandomSource random) {
 			FloorTrapCloudParticle particle = new FloorTrapCloudParticle(spriteSet.get(random), level, x, y, z, random.nextGaussian() * 0.0075D, 0.005D, random.nextGaussian() * 0.0075D);
 
-			particle.lifetime = Mth.randomBetweenInclusive(level.random, 10, 40);
+			particle.lifetime = Mth.randomBetweenInclusive(level.getRandom(), 10, 40);
 			particle.gravity = 0.0F;
 			return particle;
 		}

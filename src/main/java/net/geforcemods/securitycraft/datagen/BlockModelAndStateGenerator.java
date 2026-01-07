@@ -44,7 +44,6 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
@@ -54,6 +53,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -408,7 +408,7 @@ public class BlockModelAndStateGenerator {
 						new DisplayCaseSpecialRenderer.Unbaked(
 								SecurityCraft.resLoc("glow"),
 								0.0F,
-								Optional.of(LightTexture.FULL_BRIGHT))));
+								Optional.of(LightCoordsUtil.FULL_BRIGHT))));
 		//@formatter:on
 		generatedBlocks.add(normal);
 		generatedBlocks.add(glow);

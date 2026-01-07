@@ -41,9 +41,8 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 	private int sliderWidth = 120;
 
 	public ProjectorScreen(ProjectorMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
+		super(menu, inv, title, 176, 235);
 		this.be = menu.be;
-		imageHeight = 235;
 	}
 
 	@Override

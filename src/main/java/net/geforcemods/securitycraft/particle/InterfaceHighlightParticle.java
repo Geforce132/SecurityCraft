@@ -7,8 +7,8 @@ import net.minecraft.client.particle.DustParticleBase;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.util.RandomSource;
 
 public class InterfaceHighlightParticle extends DustParticleBase<InterfaceHighlightParticleOptions> {
@@ -34,8 +34,8 @@ public class InterfaceHighlightParticle extends DustParticleBase<InterfaceHighli
 	}
 
 	@Override
-	protected int getLightColor(float partialTicks) {
-		return LightTexture.FULL_BRIGHT;
+	protected int getLightCoords(float partialTicks) {
+		return LightCoordsUtil.FULL_BRIGHT;
 	}
 
 	public static class Provider implements ParticleProvider<InterfaceHighlightParticleOptions> {

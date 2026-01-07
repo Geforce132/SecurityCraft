@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blocks.RetinalScannerBlock;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.renderers.state.RetinalScannerRenderState;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.PlayerSkinRenderCache;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -24,6 +23,7 @@ import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.Vec3;
@@ -106,7 +106,7 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		state.renderType = getRenderType(be.getPlayerProfile());
 		state.direction = direction;
 		state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE) && ModuleItem.getBlockAddon(be.getModule(ModuleType.DISGUISE)) != null;
-		state.combinedSkinLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
+		state.combinedSkinLight = LightCoordsUtil.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
 	}
 
 	private RenderType getRenderType(ResolvableProfile profile) {

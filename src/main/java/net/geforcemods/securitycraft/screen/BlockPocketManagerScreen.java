@@ -31,7 +31,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -67,17 +67,13 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private final int previousColor;
 
 	public BlockPocketManagerScreen(BlockPocketManagerMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
+		boolean hasStorageModule = menu.hasStorageModule;
+		super(menu, inv, title, hasStorageModule ? 256 : 176, !hasStorageModule ? 194 : 240);
 
 		be = menu.be;
 		size = be.getSize();
 		isOwner = menu.isOwner;
-		hasStorageModule = menu.hasStorageModule;
-
-		if (hasStorageModule)
-			imageWidth = 256;
-
-		imageHeight = !hasStorageModule ? 194 : 240;
+		this.hasStorageModule = hasStorageModule;
 		previousColor = be.getColor();
 	}
 
@@ -205,9 +201,9 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	}
 
 	@Override
-	protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
+	protected void slotClicked(Slot slot, int slotId, int mouseButton, ContainerInput containerInput) {
 		//the super call needs to be before calculating the stored materials, as it is responsible for putting the stack inside the slot
-		super.slotClicked(slot, slotId, mouseButton, type);
+		super.slotClicked(slot, slotId, mouseButton, containerInput);
 		//every time items are added/removed, the mouse is clicking a slot and these values are recomputed
 		//not the best place, as this code will run when an empty slot is clicked while not holding any item, but it's good enough
 		updateMaterialInformation(true);

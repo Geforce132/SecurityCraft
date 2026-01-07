@@ -19,6 +19,7 @@ import net.geforcemods.securitycraft.entity.sentry.Bullet;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SimpleListenerContainer.ContainerListener;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
@@ -34,7 +35,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerListener;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -75,7 +75,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 
 	public TrophySystemBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.TROPHY_SYSTEM_BLOCK_ENTITY.get(), pos, state);
-		lens.addListener(this);
+		lens.setListener(this);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in ToggleListScreen based on the user's current language
 		projectileFilter.put(SCContent.BULLET_ENTITY.get(), true);

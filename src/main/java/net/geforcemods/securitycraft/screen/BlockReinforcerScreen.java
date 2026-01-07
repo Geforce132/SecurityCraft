@@ -24,8 +24,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	private CallbackCheckbox unreinforceCheckbox;
 
 	public BlockReinforcerScreen(BlockReinforcerMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
-		imageHeight = 186;
+		super(menu, inv, title, 176, 186);
 	}
 
 	@Override

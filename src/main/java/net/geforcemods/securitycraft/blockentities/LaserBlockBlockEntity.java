@@ -24,6 +24,7 @@ import net.geforcemods.securitycraft.blocks.LaserFieldBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
 import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.LensContainer;
+import net.geforcemods.securitycraft.inventory.SimpleListenerContainer.ContainerListener;
 import net.geforcemods.securitycraft.items.ModuleItem;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
@@ -37,7 +38,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Util;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerListener;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
@@ -80,7 +80,7 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 
 	public LaserBlockBlockEntity(BlockPos pos, BlockState state) {
 		super(SCContent.LASER_BLOCK_BLOCK_ENTITY.get(), pos, state);
-		lenses.addListener(LaserBlockBlockEntity.this);
+		lenses.setListener(LaserBlockBlockEntity.this);
 	}
 
 	@Override
@@ -163,15 +163,15 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	@Override
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
 		switch (action) {
-			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(disabled.getName()) -> {
+			case ILinkedAction.OptionChanged(Option<?> option) when option instanceof BooleanOption && option.getName().equals(disabled.getName()) -> {
 				disabled.copy(option);
 				setLasersAccordingToDisabledOption();
 			}
-			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(ignoreOwner.getName()) ->
+			case ILinkedAction.OptionChanged(Option<?> option) when option instanceof BooleanOption && option.getName().equals(ignoreOwner.getName()) ->
 					ignoreOwner.copy(option);
-			case ILinkedAction.OptionChanged(BooleanOption option) when option.getName().equals(respectInvisibility.getName()) ->
+			case ILinkedAction.OptionChanged(Option<?> option) when option instanceof BooleanOption && option.getName().equals(respectInvisibility.getName()) ->
 					respectInvisibility.copy(option);
-			case ILinkedAction.OptionChanged(IntOption option) when option.getName().equals(signalLength.getName()) -> {
+			case ILinkedAction.OptionChanged(Option<?> option) when option instanceof IntOption && option.getName().equals(signalLength.getName()) -> {
 				signalLength.copy(option);
 				turnOffRedstoneOutput();
 			}

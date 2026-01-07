@@ -18,6 +18,10 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 		super(menu, inventory, title);
 	}
 
+	protected ItemInventoryScreen(T menu, Inventory inventory, Component title, int imageWidth, int imageHeight) {
+		super(menu, inventory, title, imageWidth, imageHeight);
+	}
+
 	@Override
 	protected void init() {
 		super.init();
@@ -45,9 +49,8 @@ public abstract class ItemInventoryScreen<T extends AbstractContainerMenu> exten
 
 	public static class KeycardHolder extends ItemInventoryScreen<KeycardHolderMenu> {
 		public KeycardHolder(KeycardHolderMenu menu, Inventory inventory, Component title) {
-			super(menu, inventory, title);
+			super(menu, inventory, title, 176, 133);
 			texture = SecurityCraft.resLoc("textures/gui/container/keycard_holder.png");
-			imageHeight = 133;
 		}
 	}
 }

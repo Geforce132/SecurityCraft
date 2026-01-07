@@ -6,14 +6,12 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.context.ContextKey;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 
 public record BlockEntityNBTCondition(String key, boolean value) implements LootItemCondition {
 	//@formatter:off
@@ -43,8 +41,8 @@ public record BlockEntityNBTCondition(String key, boolean value) implements Loot
 	}
 
 	@Override
-	public LootItemConditionType getType() {
-		return SCContent.BLOCK_ENTITY_NBT.get();
+	public MapCodec<BlockEntityNBTCondition> codec() {
+		return CODEC;
 	}
 
 	public static LootItemCondition.Builder nbt(String key, boolean value) {

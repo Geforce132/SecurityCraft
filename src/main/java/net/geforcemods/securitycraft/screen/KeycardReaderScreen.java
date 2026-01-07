@@ -78,7 +78,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private boolean firstTick = true;
 
 	public KeycardReaderScreen(KeycardReaderMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
+		super(menu, inv, title, 176, 249);
 
 		be = menu.be;
 		previousSignature = Mth.clamp(be.getSignature(), 0, MAX_SIGNATURE);
@@ -86,7 +86,6 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		acceptedLevels = be.getAcceptedLevels();
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		isOwner = be.isOwnedBy(inv.player);
-		imageHeight = 249;
 
 		if (hasSmartModule)
 			smartModuleTooltip = Utils.localize("gui.securitycraft:keycard_reader.smartModule");

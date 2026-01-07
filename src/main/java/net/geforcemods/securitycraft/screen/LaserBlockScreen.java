@@ -33,12 +33,11 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	private Map<Direction, Boolean> sideConfig;
 
 	public LaserBlockScreen(LaserBlockMenu menu, Inventory playerInventory, Component title) {
-		super(menu, playerInventory, title);
+		super(menu, playerInventory, title, 176, 256);
 
 		be = menu.be;
 		sideConfig = menu.sideConfig;
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
-		imageHeight = 256;
 	}
 
 	@Override

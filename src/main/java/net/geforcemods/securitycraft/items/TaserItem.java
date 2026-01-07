@@ -62,7 +62,7 @@ public class TaserItem extends Item {
 					return InteractionResult.SUCCESS_SERVER;
 				}
 				else if (player.getInventory().contains(oneRedstone)) {
-					int redstoneSlot = player.getInventory().findSlotMatchingCraftingIngredient(oneRedstone.getItemHolder(), ItemStack.EMPTY);
+					int redstoneSlot = player.getInventory().findSlotMatchingCraftingIngredient(oneRedstone.typeHolder(), ItemStack.EMPTY);
 					ItemStack redstoneStack;
 
 					if (redstoneSlot == -1) {

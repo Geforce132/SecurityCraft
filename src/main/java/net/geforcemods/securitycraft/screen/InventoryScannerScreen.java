@@ -33,25 +33,20 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	private Component storageModuleTooltip = null;
 
 	public InventoryScannerScreen(InventoryScannerMenu menu, Inventory inv, Component title) {
-		super(menu, inv, title);
+		boolean hasStorageModule = menu.be.isModuleEnabled(ModuleType.STORAGE);
+		super(menu, inv, title, hasStorageModule ? 246 : 190, 196);
+
 		be = menu.be;
 		owns = be.isOwnedBy(inv.player);
 		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);
-		hasStorageModule = be.isModuleEnabled(ModuleType.STORAGE);
 		infoStringRedstone = Utils.localize("gui.securitycraft:invScan.emit_redstone", Utils.localize("gui.securitycraft:invScan." + (hasRedstoneModule ? "yes" : "no")));
 		infoStringStorage = Utils.localize("gui.securitycraft:invScan.check_inv", Utils.localize("gui.securitycraft:invScan." + (hasStorageModule ? "yes" : "no")));
 
 		if (!hasRedstoneModule)
 			redstoneModuleTooltip = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.REDSTONE_MODULE.get().getDescriptionId()));
 
-		if (hasStorageModule)
-			imageWidth = 246;
-		else {
-			imageWidth = 190;
+		if (!hasStorageModule)
 			storageModuleTooltip = Utils.localize("gui.securitycraft:invScan.notInstalled", Utils.localize(SCContent.STORAGE_MODULE.get().getDescriptionId()));
-		}
-
-		imageHeight = 196;
 	}
 
 	@Override

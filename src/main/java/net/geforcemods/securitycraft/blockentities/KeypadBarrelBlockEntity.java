@@ -398,7 +398,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 		double y = worldPosition.getY() + 0.5D + facingNormal.getY() / 2.0D;
 		double z = worldPosition.getZ() + 0.5D + facingNormal.getZ() / 2.0D;
 
-		level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F);
+		level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, level.getRandom().nextFloat() * 0.1F + 0.9F);
 	}
 
 	public void setPreviousBarrel(Block previousBarrel) {

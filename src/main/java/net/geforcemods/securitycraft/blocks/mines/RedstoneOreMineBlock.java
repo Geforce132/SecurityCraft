@@ -78,7 +78,7 @@ public class RedstoneOreMineBlock extends BaseFullMineBlock {
 	}
 
 	private static void spawnParticles(Level level, BlockPos pos) {
-		RandomSource random = level.random;
+		RandomSource random = level.getRandom();
 
 		for (Direction direction : Direction.values()) {
 			BlockPos offsetPos = pos.relative(direction);

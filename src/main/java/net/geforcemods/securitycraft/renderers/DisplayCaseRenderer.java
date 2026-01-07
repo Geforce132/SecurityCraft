@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
 import net.geforcemods.securitycraft.renderers.state.DisplayCaseRenderState;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -22,6 +21,7 @@ import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -69,7 +69,7 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 					break;
 			}
 
-			int lightCoords = state.isGlowing ? LightTexture.FULL_BRIGHT : state.lightCoords;
+			int lightCoords = state.isGlowing ? LightCoordsUtil.FULL_BRIGHT : state.lightCoords;
 
 			pose.scale(0.5F, 0.5F, 0.5F);
 			state.stack.submit(pose, collector, lightCoords, OverlayTexture.NO_OVERLAY, 0);

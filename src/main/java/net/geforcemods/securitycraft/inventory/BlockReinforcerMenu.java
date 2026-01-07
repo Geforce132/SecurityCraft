@@ -9,7 +9,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -198,9 +198,9 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 	}
 
 	@Override
-	public void clicked(int slot, int dragType, ClickType clickType, Player player) {
+	public void clicked(int slot, int dragType, ContainerInput containerInput, Player player) {
 		if (!(slot >= 0 && getSlot(slot) != null && getSlot(slot).getItem().getItem() instanceof UniversalBlockReinforcerItem))
-			super.clicked(slot, dragType, clickType, player);
+			super.clicked(slot, dragType, containerInput, player);
 	}
 
 	public class SlotBlockReinforcer extends Slot {

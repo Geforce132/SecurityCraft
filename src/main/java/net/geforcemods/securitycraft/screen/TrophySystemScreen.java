@@ -29,9 +29,8 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	private ToggleScrollList<EntityType<?>> scrollList;
 
 	public TrophySystemScreen(TrophySystemMenu menu, Inventory playerInventory, Component title) {
-		super(menu, playerInventory, title);
+		super(menu, playerInventory, title, 176, 248);
 
-		imageHeight = 248;
 		this.be = menu.be;
 		hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		hasRedstoneModule = be.isModuleEnabled(ModuleType.REDSTONE);

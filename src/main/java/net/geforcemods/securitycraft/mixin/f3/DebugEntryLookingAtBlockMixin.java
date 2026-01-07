@@ -3,23 +3,23 @@ package net.geforcemods.securitycraft.mixin.f3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 import net.geforcemods.securitycraft.misc.F3Spoofer;
-import net.minecraft.client.gui.components.debug.DebugEntryLookingAtBlock;
+import net.minecraft.client.gui.components.debug.DebugEntryLookingAt.BlockStateInfo;
+import net.minecraft.client.gui.components.debug.DebugEntryLookingAt.BlockTagInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Changes the targeted block text on the right side of the screen to the disguised block/fluid, so that the player cannot
+ * Changes the targeted block text on the right side of the screen to the disguised block, so that the player cannot
  * see the actual block (sand mine, inventory scanner (if disguised))
  */
-@Mixin(DebugEntryLookingAtBlock.class)
+@Mixin({BlockStateInfo.class, BlockTagInfo.class})
 public class DebugEntryLookingAtBlockMixin {
-	@WrapOperation(method = "display", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-	private BlockState securitycraft$spoofBlockState(Level level, BlockPos pos, Operation<BlockState> original) {
-		return F3Spoofer.spoofBlockState(original.call(level, pos), pos);
+	@ModifyReturnValue(method = "getInstance", at = @At("RETURN"))
+	private BlockState securitycraft$spoofBlockState(BlockState original, Level level, BlockPos pos) {
+		return F3Spoofer.spoofBlockState(original, pos);
 	}
 }

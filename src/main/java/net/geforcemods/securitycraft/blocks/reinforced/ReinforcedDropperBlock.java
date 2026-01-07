@@ -40,7 +40,7 @@ public class ReinforcedDropperBlock extends ReinforcedDispenserBlock {
 	protected void dispenseFrom(ServerLevel level, BlockState state, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof ReinforcedDropperBlockEntity be) {
 			BlockSource source = new BlockSource(level, pos, state, be);
-			int randomSlot = be.getRandomSlot(level.random);
+			int randomSlot = be.getRandomSlot(level.getRandom());
 
 			if (randomSlot < 0)
 				level.levelEvent(LevelEvent.SOUND_DISPENSER_FAIL, pos, 0);
