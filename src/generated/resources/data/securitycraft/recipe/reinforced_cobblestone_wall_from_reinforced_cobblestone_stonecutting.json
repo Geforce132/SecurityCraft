@@ -2,7 +2,6 @@
   "type": "minecraft:stonecutting",
   "ingredient": "securitycraft:reinforced_cobblestone",
   "result": {
-    "count": 1,
     "id": "securitycraft:reinforced_cobblestone_wall"
   }
 }

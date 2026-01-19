@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.misc;
 import java.util.List;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
 public enum PageGroup {
 	NONE(false, "", ""), //ignored anyway
@@ -22,7 +23,7 @@ public enum PageGroup {
 	private final boolean hasRecipeGrid;
 	private final String title;
 	private final String specialInfoKey;
-	private List<ItemStack> items = null;
+	private List<ItemStackTemplate> items = null;
 
 	PageGroup(boolean hasRecipeGrid, String title, String specialInfoKey) {
 		this.hasRecipeGrid = hasRecipeGrid;
@@ -43,10 +44,10 @@ public enum PageGroup {
 	}
 
 	public List<ItemStack> getItems() {
-		return items;
+		return items.stream().map(ItemStackTemplate::create).toList();
 	}
 
-	public void setItems(List<ItemStack> list) {
+	public void setItems(List<ItemStackTemplate> list) {
 		items = list;
 	}
 }

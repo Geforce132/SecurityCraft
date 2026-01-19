@@ -108,7 +108,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 	}
 
 	@Override
-	public InteractionResult interact(Player player, InteractionHand hand) {
+	public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
 		ItemStack stack = player.getItemInHand(hand);
 		Level level = player.level();
 
@@ -195,7 +195,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 			return InteractionResult.SUCCESS;
 		}
 
-		return super.interact(player, hand);
+		return super.interact(player, hand, location);
 	}
 
 	@Override

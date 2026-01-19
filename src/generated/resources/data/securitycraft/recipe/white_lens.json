@@ -12,9 +12,8 @@
   ],
   "result": {
     "components": {
-      "minecraft:dyed_color": 16383998
+      "minecraft:dyed_color": -393218
     },
-    "count": 1,
     "id": "securitycraft:lens"
   }
 }

@@ -27,9 +27,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
+	private static final Set<Block> BASE_BLOCKS = new HashSet<>();
 	private final TextureMapping mapping;
 	private final Map<ModelTemplate, Identifier> models = Maps.newHashMap();
 	private final BlockFamily family;
+	private final Block reinforcedBaseBlock;
+	private final TexturedModel texturedModel;
 	private Variant fullBlock;
 	private final Set<Block> skipGeneratingModelsFor = new HashSet<>();
 	private final BlockModelGenerators blockModelGenerators = BlockModelAndStateGenerator.blockModelGenerators;
@@ -39,7 +42,9 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 		BlockModelAndStateGenerator.blockModelGenerators.super(texturedModel.getMapping());
 		this.mapping = texturedModel.getMapping();
 		this.family = family;
-		fullBlock(reinforcedBaseBlock, texturedModel.getTemplate());
+		this.reinforcedBaseBlock = reinforcedBaseBlock;
+		this.texturedModel = texturedModel;
+		BASE_BLOCKS.add(reinforcedBaseBlock);
 	}
 
 	@Override
@@ -143,6 +148,11 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 
 	@Override
 	public ReinforcedBlockFamilyProvider fullBlockVariant(Block block) {
+		// Some vanilla families contain base blocks of other families.
+		// Base blocks must always be generated, so do not generate them as part of other families here.
+		if (BASE_BLOCKS.contains(block))
+			return this;
+
 		Block vanillaBlock = ((IReinforcedBlock) block).getVanillaBlock();
 		TexturedModel texturedModel = BlockModelAndStateGenerator.TEXTURED_MODELS.getOrDefault(vanillaBlock, SCTexturedModels.REINFORCED_CUBE.get(vanillaBlock));
 		MultiVariant model = BlockModelGenerators.plainVariant(texturedModel.create(block, modelOutput));
@@ -169,6 +179,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 
 	@Override
 	public ReinforcedBlockFamilyProvider generateFor(BlockFamily family) {
+		fullBlock(reinforcedBaseBlock, texturedModel.getTemplate());
 		getVariants().forEach((variant, block) -> {
 			if (!skipGeneratingModelsFor.contains(block)) {
 				BiConsumer<BlockFamilyProvider, Block> shapeConsumer = BlockModelGenerators.SHAPE_CONSUMERS.get(variant);

@@ -38,6 +38,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipDisplay;
@@ -68,7 +69,7 @@ public class SCClientEventHandler {
 	public static final Identifier REDSTONE_MODULE_NOT_PRESENT_SPRITE = SecurityCraft.resLoc("hud/camera/redstone_module_not_present");
 	public static final Identifier REDSTONE_MODULE_PRESENT_SPRITE = SecurityCraft.resLoc("hud/camera/redstone_module_present");
 	public static final Identifier NIGHT_VISION = SecurityCraft.mcResLoc("textures/mob_effect/night_vision.png");
-	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
+	public static final ItemStackTemplate REDSTONE = new ItemStackTemplate(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final Component SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");
 	//@formatter:off
@@ -95,7 +96,7 @@ public class SCClientEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRenderLevelStage(RenderLevelStageEvent.AfterTripwireBlocks event) {
+	public static void onRenderLevelStage(RenderLevelStageEvent.AfterTranslucentBlocks event) {
 		Vec3 camPos = event.getLevelRenderState().cameraRenderState.pos;
 		PoseStack pose = event.getPoseStack();
 		Minecraft mc = Minecraft.getInstance();
@@ -198,7 +199,7 @@ public class SCClientEventHandler {
 		Font font = Minecraft.getInstance().font;
 		Options options = Minecraft.getInstance().options;
 		BlockState state = level.getBlockState(pos);
-		long dayTime = Minecraft.getInstance().level.getDayTime();
+		long dayTime = Minecraft.getInstance().level.getOverworldClockTime();
 		int hours24 = (int) ((float) dayTime / 1000L + 6L) % 24;
 		int hours = hours24 % 12;
 		int minutes = (int) (dayTime / 16.666666F % 60.0F);

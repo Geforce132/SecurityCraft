@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
+import java.util.stream.Stream;
 
 import net.geforcemods.securitycraft.api.IBlockMine;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.util.SCItemGroup;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -24,13 +26,14 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class SCCreativeModeTabs {
-	public static final Map<SCItemGroup, List<ItemStack>> STACKS_FOR_ITEM_GROUPS = Util.make(new EnumMap<>(SCItemGroup.class), map -> Arrays.stream(SCItemGroup.values()).forEach(key -> map.put(key, new ArrayList<>())));
+	public static final Map<SCItemGroup, List<ItemStackTemplate>> STACKS_FOR_ITEM_GROUPS = Util.make(new EnumMap<>(SCItemGroup.class), map -> Arrays.stream(SCItemGroup.values()).forEach(key -> map.put(key, new ArrayList<>())));
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, SecurityCraft.MODID);
 	//@formatter:off
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TECHNICAL_TAB = CREATIVE_MODE_TABS.register("technical", () -> CreativeModeTab.builder()
@@ -147,8 +150,9 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.MANGROVE_SECURITY_SEA_BOAT.get()));
 				output.accept(new ItemStack(SCContent.CHERRY_SECURITY_SEA_BOAT.get()));
 				output.accept(new ItemStack(SCContent.BAMBOO_SECURITY_SEA_RAFT.get()));
-				output.acceptAll(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.TECHNICAL));
+				output.acceptAll(getStackList(SCItemGroup.TECHNICAL));
 			}).build());
+
 	//@formatter:off
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MINE_TAB = CREATIVE_MODE_TABS.register("mine", () -> CreativeModeTab.builder()
 			.withTabsBefore(TECHNICAL_TAB.getKey())
@@ -157,7 +161,7 @@ public class SCCreativeModeTabs {
 			.displayItems((itemDisplayParameters, output) -> {
 				//@formatter:on
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
-				List<ItemStack> mineGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES));
+				List<ItemStack> mineGroupItems = new ArrayList<>(getStackList(SCItemGroup.EXPLOSIVES));
 
 				mineGroupItems.sort(stackComparator(item -> {
 					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IBlockMine blockMine)
@@ -183,7 +187,7 @@ public class SCCreativeModeTabs {
 			.displayItems((itemDisplayParameters, output) -> {
 				//@formatter:on
 				List<Item> vanillaOrderedItems = getVanillaOrderedItems();
-				List<ItemStack> decorationGroupItems = new ArrayList<>(STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION));
+				List<ItemStack> decorationGroupItems = new ArrayList<>(getStackList(SCItemGroup.DECORATION));
 
 				decorationGroupItems.sort(stackComparator(item -> {
 					if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof IReinforcedBlock reinforcedBlock)
@@ -264,6 +268,18 @@ public class SCCreativeModeTabs {
 
 	private static List<Item> getCreativeTabItems(ResourceKey<CreativeModeTab> tabKey) {
 		return BuiltInRegistries.CREATIVE_MODE_TAB.get(tabKey).get().value().getDisplayItems().stream().map(ItemStack::getItem).toList();
+	}
+
+	private static List<ItemStack> getStackList(SCItemGroup group) {
+		return getTemplateStream(group).map(ItemStackTemplate::create).toList();
+	}
+
+	public static List<Holder<Item>> getItemList(SCItemGroup group) {
+		return STACKS_FOR_ITEM_GROUPS.get(group).stream().map(ItemStackTemplate::item).toList();
+	}
+
+	private static Stream<ItemStackTemplate> getTemplateStream(SCItemGroup group) {
+		return STACKS_FOR_ITEM_GROUPS.get(group).stream();
 	}
 
 	private SCCreativeModeTabs() {}

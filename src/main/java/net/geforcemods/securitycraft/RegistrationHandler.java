@@ -84,6 +84,7 @@ import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
@@ -126,7 +127,7 @@ public class RegistrationHandler {
 						helper.register(Utils.getRegistryName(block), blockItem);
 
 						if (group != SCItemGroup.MANUAL)
-							SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStack(blockItem));
+							SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStackTemplate(blockItem));
 					}
 					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 						SCItemGroup group = field.getAnnotation(RegisterItemBlock.class).value();
@@ -137,7 +138,7 @@ public class RegistrationHandler {
 						helper.register(Utils.getRegistryName(block), blockItem);
 
 						if (group != SCItemGroup.MANUAL)
-							SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStack(blockItem));
+							SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStackTemplate(blockItem));
 					}
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {

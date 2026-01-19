@@ -1,7 +1,8 @@
 {
   "values": [
+    "#securitycraft:reinforced/dirt",
     "#securitycraft:reinforced/sand",
     "#securitycraft:reinforced/terracotta",
-    "#securitycraft:reinforced/dirt"
+    "securitycraft:reinforced_snow_block"
   ]
 }

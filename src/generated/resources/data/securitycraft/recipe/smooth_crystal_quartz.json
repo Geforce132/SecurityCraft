@@ -5,7 +5,6 @@
   "experience": 0.1,
   "ingredient": "securitycraft:crystal_quartz",
   "result": {
-    "count": 1,
     "id": "securitycraft:smooth_crystal_quartz"
   }
 }

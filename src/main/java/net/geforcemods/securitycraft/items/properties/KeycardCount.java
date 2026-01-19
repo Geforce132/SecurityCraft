@@ -21,7 +21,7 @@ public record KeycardCount() implements RangeSelectItemModelProperty {
 		if (size == 0)
 			return 0.0F;
 		else {
-			long cardCount = containerContents.stream().filter(item -> item.getItem() instanceof KeycardItem).count();
+			long cardCount = containerContents.allItemsCopyStream().filter(item -> item.getItem() instanceof KeycardItem).count();
 
 			return cardCount / (float) size;
 		}

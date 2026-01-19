@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
+import net.geforcemods.securitycraft.SCTags.Blocks;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
@@ -121,15 +122,15 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_STRIPPED_DARK_OAK_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get());
 		tag(SCTags.Blocks.REINFORCED_DIRT).add(
-				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_DIRT.get(),
-				SCContent.REINFORCED_COARSE_DIRT.get(),
-				SCContent.REINFORCED_MUD.get(),
+				SCContent.REINFORCED_GRASS_BLOCK.get(),
 				SCContent.REINFORCED_PODZOL.get(),
-				SCContent.REINFORCED_MOSS_BLOCK.get(),
+				SCContent.REINFORCED_COARSE_DIRT.get(),
 				SCContent.REINFORCED_MYCELIUM.get(),
+				SCContent.REINFORCED_ROOTED_DIRT.get(),
+				SCContent.REINFORCED_MOSS_BLOCK.get(),
 				SCContent.REINFORCED_PALE_MOSS_BLOCK.get(),
-				SCContent.REINFORCED_ROOTED_DIRT.get());
+				SCContent.REINFORCED_MUD.get());
 		tag(SCTags.Blocks.REINFORCED_END_STONES).add(
 				SCContent.REINFORCED_END_STONE.get());
 		tag(SCTags.Blocks.REINFORCED_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES).add(
@@ -430,7 +431,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 
 		//minecraft tags
 		tag(BlockTags.ALL_SIGNS).addTag(SCTags.Blocks.ALL_SECRET_SIGNS);
-		tag(BlockTags.BAMBOO_PLANTABLE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_DIRT).add(SCContent.REINFORCED_GRAVEL.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get());
 		tag(BlockTags.BARS).addTag(SCTags.Blocks.REINFORCED_BARS);
 		tag(BlockTags.BEACON_BASE_BLOCKS).add(
 				SCContent.REINFORCED_DIAMOND_BLOCK.get(),
@@ -438,15 +438,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GOLD_BLOCK.get(),
 				SCContent.REINFORCED_IRON_BLOCK.get(),
 				SCContent.REINFORCED_NETHERITE_BLOCK.get());
-		tag(BlockTags.BIG_DRIPLEAF_PLACEABLE).add(
-				SCContent.REINFORCED_DIRT.get(),
-				SCContent.REINFORCED_GRASS_BLOCK.get(),
-				SCContent.REINFORCED_PODZOL.get(),
-				SCContent.REINFORCED_COARSE_DIRT.get(),
-				SCContent.REINFORCED_MYCELIUM.get(),
-				SCContent.REINFORCED_ROOTED_DIRT.get(),
-				SCContent.REINFORCED_MOSS_BLOCK.get(),
-				SCContent.REINFORCED_MUD.get());
 		tag(BlockTags.BUTTONS).addTag(SCTags.Blocks.REINFORCED_BUTTONS);
 		tag(BlockTags.CAMEL_SAND_STEP_SOUND_BLOCKS).addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.CAULDRONS).add(
@@ -460,7 +451,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_SCAFFOLDING.get());
 		tag(BlockTags.CRYSTAL_SOUND_BLOCKS).add(SCContent.REINFORCED_AMETHYST_BLOCK.get());
 		tag(BlockTags.DAMPENS_VIBRATIONS).addTag(SCTags.Blocks.REINFORCED_WOOL);
-		tag(BlockTags.DRY_VEGETATION_MAY_PLACE_ON).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_DIRT);
 		tag(BlockTags.DOORS).add(SCContent.KEYPAD_DOOR.get(), SCContent.REINFORCED_DOOR.get(), SCContent.SCANNER_DOOR.get());
 		tag(BlockTags.ENCHANTMENT_POWER_PROVIDER).add(SCContent.REINFORCED_BOOKSHELF.get());
 		tag(BlockTags.FALL_DAMAGE_RESETTING).add(SCContent.REINFORCED_LADDER.get());
@@ -496,11 +486,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_RED_STAINED_GLASS.get(),
 				SCContent.REINFORCED_BLACK_STAINED_GLASS.get());
 		tag(BlockTags.INFINIBURN_OVERWORLD).add(SCContent.REINFORCED_NETHERRACK.get(), SCContent.REINFORCED_MAGMA_BLOCK.get());
-		tag(BlockTags.MUSHROOM_GROW_BLOCK).add(
-				SCContent.REINFORCED_MYCELIUM.get(),
-				SCContent.REINFORCED_PODZOL.get(),
-				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
-				SCContent.REINFORCED_WARPED_NYLIUM.get());
 		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(SCContent.ANCIENT_DEBRIS_MINE.get());
 		tag(BlockTags.NEEDS_IRON_TOOL).add(
 				SCContent.GOLD_ORE_MINE.get(),
@@ -519,7 +504,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.LAPIS_ORE_MINE.get(),
 				SCContent.DEEPSLATE_LAPIS_ORE_MINE.get());
 		tag(BlockTags.NYLIUM).addTag(SCTags.Blocks.REINFORCED_NYLIUM);
-		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).addTags(SCTags.Blocks.REINFORCED_WOOL);
+		tag(BlockTags.OCCLUDES_VIBRATION_SIGNALS).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.PIGLIN_REPELLENTS).add(SCContent.REINFORCED_SOUL_LANTERN.get());
 		tag(BlockTags.TRIGGERS_AMBIENT_DESERT_SAND_BLOCK_SOUNDS).add(SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_RED_SAND.get());
 		tag(BlockTags.TRIGGERS_AMBIENT_DESERT_DRY_VEGETATION_BLOCK_SOUNDS).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(SCContent.REINFORCED_SAND.get(), SCContent.REINFORCED_RED_SAND.get());
@@ -527,7 +512,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.get());
 		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get());
 		tag(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
-		tag(BlockTags.SMALL_DRIPLEAF_PLACEABLE).add(SCContent.REINFORCED_CLAY.get(), SCContent.REINFORCED_MOSS_BLOCK.get());
 		tag(BlockTags.SNAPS_GOAT_HORN).add(
 				SCContent.REINFORCED_ACACIA_LOG.get(),
 				SCContent.REINFORCED_BIRCH_LOG.get(),
@@ -555,8 +539,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_PALE_MOSS_BLOCK.get());
 		tag(BlockTags.SNIFFER_EGG_HATCH_BOOST).add(SCContent.REINFORCED_MOSS_BLOCK.get());
 		tag(BlockTags.SNOW).add(SCContent.REINFORCED_SNOW_BLOCK.get());
-		tag(BlockTags.SNOW_LAYER_CAN_SURVIVE_ON).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_MUD.get());
-		tag(BlockTags.SNOW_LAYER_CANNOT_SURVIVE_ON).add(SCContent.REINFORCED_ICE.get(), SCContent.REINFORCED_PACKED_ICE.get());
 		tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.SOUL_SPEED_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
 		tag(BlockTags.STAIRS).addTag(SCTags.Blocks.REINFORCED_STAIRS).add(SCContent.CRYSTAL_QUARTZ_STAIRS.get(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get());
@@ -575,6 +557,43 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.WOODEN_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES);
 		tag(BlockTags.WOOL).addTag(SCTags.Blocks.REINFORCED_WOOL);
 		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
+		tag(BlockTags.ENABLES_BUBBLE_COLUMN_DRAG_DOWN).add(SCContent.REINFORCED_MAGMA_BLOCK.get());
+		tag(BlockTags.ENABLES_BUBBLE_COLUMN_PUSH_UP).add(SCContent.REINFORCED_SOUL_SAND.get());
+		tag(BlockTags.SUPPORTS_DRY_VEGETATION).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA);
+		tag(BlockTags.SUPPORTS_SUGAR_CANE).addTag(SCTags.Blocks.REINFORCED_DIRT).add(SCContent.REINFORCED_SAND.get());
+		tag(BlockTags.SUPPORTS_BAMBOO)
+			.addTag(SCTags.Blocks.REINFORCED_SAND)
+			.addTag(SCTags.Blocks.REINFORCED_DIRT)
+			.add(SCContent.REINFORCED_GRAVEL.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get());
+		tag(BlockTags.SUPPORTS_SMALL_DRIPLEAF).add(SCContent.REINFORCED_CLAY.get()).add(SCContent.REINFORCED_MOSS_BLOCK.get());
+		tag(BlockTags.SUPPORTS_BIG_DRIPLEAF).add(
+				SCContent.REINFORCED_DIRT.get(),
+				SCContent.REINFORCED_GRASS_BLOCK.get(),
+				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_COARSE_DIRT.get(),
+				SCContent.REINFORCED_MYCELIUM.get(),
+				SCContent.REINFORCED_ROOTED_DIRT.get(),
+				SCContent.REINFORCED_MOSS_BLOCK.get(),
+				SCContent.REINFORCED_MUD.get());
+		tag(BlockTags.SUPPORTS_CACTUS).addTag(SCTags.Blocks.REINFORCED_SAND);
+		tag(BlockTags.SUPPORTS_CHORUS_PLANT).add(SCContent.REINFORCED_END_STONE.get());
+		tag(BlockTags.SUPPORTS_CHORUS_FLOWER).add(SCContent.REINFORCED_END_STONE.get());
+		tag(BlockTags.SUPPORTS_NETHER_SPROUTS).addTag(SCTags.Blocks.REINFORCED_NYLIUM).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.SUPPORTS_AZALEA).add(SCContent.REINFORCED_CLAY.get());
+		tag(BlockTags.SUPPORTS_WARPED_FUNGUS).addTag(SCTags.Blocks.REINFORCED_NYLIUM).add(SCContent.REINFORCED_MYCELIUM.get()).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.SUPPORTS_MANGROVE_PROPAGULE).add(SCContent.REINFORCED_CLAY.get());
+		tag(BlockTags.SUPPORTS_NETHER_WART).add(SCContent.REINFORCED_SOUL_SAND.get());
+		tag(BlockTags.SUPPORTS_WARPED_ROOTS).addTag(SCTags.Blocks.REINFORCED_NYLIUM).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.SUPPORTS_WITHER_ROSE).add(SCContent.REINFORCED_NETHERRACK.get()).add(SCContent.REINFORCED_SOUL_SAND.get()).add(SCContent.REINFORCED_SOUL_SOIL.get());
+		tag(BlockTags.SUPPORTS_COCOA).addTag(SCTags.Blocks.REINFORCED_JUNGLE_LOGS);
+		tag(BlockTags.SUPPORTS_LILY_PAD).add(SCContent.REINFORCED_ICE.get());
+		tag(BlockTags.SUPPORT_OVERRIDE_SNOW_LAYER).add(SCContent.REINFORCED_SOUL_SAND.get()).add(SCContent.REINFORCED_MUD.get());
+		tag(BlockTags.CANNOT_SUPPORT_SEAGRASS).add(SCContent.REINFORCED_MAGMA_BLOCK.get());
+		tag(BlockTags.CANNOT_SUPPORT_KELP).add(SCContent.REINFORCED_MAGMA_BLOCK.get());
+		tag(BlockTags.CANNOT_SUPPORT_SNOW_LAYER).add(SCContent.REINFORCED_ICE.get()).add(SCContent.REINFORCED_PACKED_ICE.get());
+		tag(BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT).add(SCContent.REINFORCED_MYCELIUM.get()).add(SCContent.REINFORCED_PODZOL.get()).add(SCContent.REINFORCED_CRIMSON_NYLIUM.get()).add(SCContent.REINFORCED_WARPED_NYLIUM.get());
+		tag(BlockTags.AZALEA_GROWS_ON).addTag(SCTags.Blocks.REINFORCED_DIRT).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(SCContent.REINFORCED_SNOW_BLOCK.get());
+		tag(BlockTags.SUPPORTS_VEGETATION).addTag(Blocks.REINFORCED_DIRT);
 		//@formatter:on
 		miningRelatedTags();
 
@@ -598,8 +617,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 			}
 
 			switch (block) {
-				case ReinforcedSlabBlock slab when !woodenSlabs.contains(block) -> tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
-				case ReinforcedStairsBlock stairs when !woodenStairs.contains(block) -> tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
+				case ReinforcedSlabBlock slab when !woodenSlabs.contains(block) ->
+						tag(SCTags.Blocks.REINFORCED_SLABS).add(block);
+				case ReinforcedStairsBlock stairs when !woodenStairs.contains(block) ->
+						tag(SCTags.Blocks.REINFORCED_STAIRS).add(block);
 				case ReinforcedWallBlock wall -> tag(SCTags.Blocks.REINFORCED_WALLS).add(block);
 				default -> {
 				}

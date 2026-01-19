@@ -43,7 +43,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -154,7 +155,7 @@ public class SecurityCraft {
 		if (addPages && server == null)
 			return;
 
-		Map<PageGroup, List<ItemStack>> groupStacks = new EnumMap<>(PageGroup.class);
+		Map<PageGroup, List<ItemStackTemplate>> groupStacks = new EnumMap<>(PageGroup.class);
 
 		IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.clear();
 		IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.clear();
@@ -178,7 +179,7 @@ public class SecurityCraft {
 					Item item = ((ItemLike) o).asItem();
 					PageGroup group = hmp.value();
 					boolean wasNotAdded = false;
-					Component title = Component.translatable("");
+					Component title = Component.empty();
 					String key = "help.";
 
 					if (group != PageGroup.NONE) {
@@ -189,7 +190,8 @@ public class SecurityCraft {
 							wasNotAdded = true;
 						}
 
-						groupStacks.get(group).add(new ItemStack(item));
+						if (item != Items.AIR)
+							groupStacks.get(group).add(new ItemStackTemplate(item));
 					}
 					else {
 						title = Utils.localize(item.getDescriptionId());
@@ -205,7 +207,7 @@ public class SecurityCraft {
 			}
 		}
 
-		groupStacks.forEach((group, list) -> group.setItems(list.stream().filter(stack -> !stack.isEmpty()).toList()));
+		groupStacks.forEach(PageGroup::setItems);
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {

@@ -6,7 +6,6 @@
     "securitycraft:retinal_scanner"
   ],
   "result": {
-    "count": 1,
     "id": "securitycraft:scanner_door_item"
   }
 }

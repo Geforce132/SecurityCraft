@@ -247,7 +247,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 							Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
 
 						items.remove(i);
-						item.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(items));
+						item.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(items.stream().map(ItemStack::toTemplate).toList()));
 					}
 
 					if (hasRedstoneModule)

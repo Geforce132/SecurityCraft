@@ -49,6 +49,8 @@ import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.client.renderer.special.ChestSpecialRenderer;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
@@ -56,7 +58,6 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -111,6 +112,7 @@ public class BlockModelAndStateGenerator {
 			.put(Blocks.CHISELED_TUFF, SCTexturedModels.REINFORCED_COLUMN_WITH_WALL.get(Blocks.CHISELED_TUFF))
 			.build();
 	//@formatter:on
+	private static final Set<ReinforcedBlockFamilyProvider> REINFORCED_FAMILIES = new HashSet<>();
 	static BlockModelGenerators blockModelGenerators;
 	static Consumer<BlockModelDefinitionGenerator> blockStateOutput;
 	static BiConsumer<Identifier, ModelInstance> modelOutput;
@@ -120,8 +122,8 @@ public class BlockModelAndStateGenerator {
 	private BlockModelAndStateGenerator() {}
 
 	protected static void run(BlockModelGenerators blockModelGenerators) {
-		List<Item> mineTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.EXPLOSIVES).stream().map(ItemStack::getItem).toList();
-		List<Item> decorationTabItems = SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(SCItemGroup.DECORATION).stream().map(ItemStack::getItem).toList();
+		List<Holder<Item>> mineTabItems = SCCreativeModeTabs.getItemList(SCItemGroup.EXPLOSIVES);
+		List<Holder<Item>> decorationTabItems = SCCreativeModeTabs.getItemList(SCItemGroup.DECORATION);
 		List<BlockFamily> excludedFamilies = List.of();
 
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
@@ -306,10 +308,11 @@ public class BlockModelAndStateGenerator {
 		reinforcedFamily(BlockFamilies.WEATHERED_CUT_COPPER);
 		reinforcedFamily(BlockFamilies.OXIDIZED_COPPER);
 		reinforcedFamily(BlockFamilies.OXIDIZED_CUT_COPPER);
+		REINFORCED_FAMILIES.forEach(family -> family.generateFor(null));
 		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(), "reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 		createCrystalQuartzBlocks();
 		SCContent.BLOCKS.getEntries().stream().map(DeferredHolder::get).filter(b -> !generatedBlocks.contains(b)).forEach(block -> {
-			Item item = block.asItem();
+			Reference<Item> item = block.asItem().builtInRegistryHolder();
 
 			if (decorationTabItems.contains(item)) {
 				switch (block) {
@@ -787,7 +790,7 @@ public class BlockModelAndStateGenerator {
 
 		TexturedModel texturedModel = TEXTURED_MODELS.getOrDefault(vanillaBlock, SCTexturedModels.REINFORCED_CUBE.get(vanillaBlock));
 
-		new ReinforcedBlockFamilyProvider(family, reinforcedBlock, texturedModel).generateFor(null);
+		REINFORCED_FAMILIES.add(new ReinforcedBlockFamilyProvider(family, reinforcedBlock, texturedModel));
 	}
 
 	public static void generate(Block block, BlockModelDefinitionGenerator generator) {

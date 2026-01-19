@@ -2,7 +2,6 @@
   "type": "minecraft:stonecutting",
   "ingredient": "securitycraft:reinforced_crystal_quartz_block",
   "result": {
-    "count": 1,
     "id": "securitycraft:reinforced_crystal_quartz_pillar"
   }
 }

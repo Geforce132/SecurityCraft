@@ -133,7 +133,7 @@ public class ModuleItem extends Item {
 		if (!moduleStack.has(DataComponents.CONTAINER))
 			return null;
 
-		List<ItemStack> stacks = moduleStack.get(DataComponents.CONTAINER).nonEmptyStream().toList();
+		List<ItemStack> stacks = moduleStack.get(DataComponents.CONTAINER).nonEmptyItemCopyStream().toList();
 
 		if (!stacks.isEmpty() && stacks.getFirst().getItem() instanceof BlockItem blockItem)
 			return blockItem.getBlock();

@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.recipe;
 import java.util.Map;
 
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -61,7 +60,7 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput inv, HolderLookup.Provider lookupProvider) {
+	public ItemStack assemble(CraftingInput inv) {
 		for (int i = 0; i < inv.size(); i++) {
 			if (inv.getItem(i).getItem() instanceof BlockItem blockItem)
 				return new ItemStack(getBlockMap().get(blockItem.getBlock()));

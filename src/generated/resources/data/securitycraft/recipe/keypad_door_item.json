@@ -6,7 +6,6 @@
     "securitycraft:keypad"
   ],
   "result": {
-    "count": 1,
     "id": "securitycraft:keypad_door_item"
   }
 }
