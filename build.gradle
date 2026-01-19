@@ -104,8 +104,8 @@ dependencies {
 	implementation "curse.maven:jei-238222:7428957"
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
     implementation "curse.maven:jade-324717:7313008"
-	compileOnly "curse.maven:betterf3-401648:6685252"
-	compileOnly "curse.maven:cloth-config-348521:6669837" //BetterF3 dependency
+	implementation "curse.maven:betterf3-401648:7436342"
+	implementation "curse.maven:cloth-config-348521:7361439" //BetterF3 dependency
     implementation "curse.maven:wthit-forge-455982:7421538"
     implementation "curse.maven:badpackets-615134:7324636" //WTHIT dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
