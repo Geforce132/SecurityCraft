@@ -19,6 +19,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.BlockGetter;
@@ -247,7 +248,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 							Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
 
 						items.remove(i);
-						item.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(items.stream().map(ItemStack::toTemplate).toList()));
+						item.set(DataComponents.BUNDLE_CONTENTS, new BundleContents(items.stream().map(ItemStackTemplate::fromNonEmptyStack).toList()));
 					}
 
 					if (hasRedstoneModule)

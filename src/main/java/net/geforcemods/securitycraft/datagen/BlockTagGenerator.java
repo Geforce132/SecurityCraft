@@ -560,7 +560,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.ENABLES_BUBBLE_COLUMN_DRAG_DOWN).add(SCContent.REINFORCED_MAGMA_BLOCK.get());
 		tag(BlockTags.ENABLES_BUBBLE_COLUMN_PUSH_UP).add(SCContent.REINFORCED_SOUL_SAND.get());
 		tag(BlockTags.SUPPORTS_DRY_VEGETATION).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA);
-		tag(BlockTags.SUPPORTS_SUGAR_CANE).addTag(SCTags.Blocks.REINFORCED_DIRT).add(SCContent.REINFORCED_SAND.get());
+		tag(BlockTags.SUPPORTS_SUGAR_CANE).addTag(SCTags.Blocks.REINFORCED_DIRT).addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.SUPPORTS_BAMBOO)
 			.addTag(SCTags.Blocks.REINFORCED_SAND)
 			.addTag(SCTags.Blocks.REINFORCED_DIRT)
