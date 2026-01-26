@@ -30,6 +30,7 @@ public class CommonDoorActivator implements IDoorActivator {
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SECURITY_CAMERA.get(),
+			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get()));
 	//@formatter:on
 
@@ -80,3 +81,4 @@ public class CommonDoorActivator implements IDoorActivator {
 		return BLOCKS;
 	}
 }
+
