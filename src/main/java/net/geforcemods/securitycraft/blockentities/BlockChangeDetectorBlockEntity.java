@@ -39,6 +39,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
+import net.geforcemods.securitycraft.api.IDoorActivator;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.entity.BlockEntity;
+
 
 public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
 	private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
@@ -188,7 +192,8 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 		return disabled.get();
 	}
 
-	@Override
+
+    @Override
 	public boolean ignoresOwner() {
 		return ignoreOwner.get();
 	}
@@ -338,6 +343,19 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	@Override
 	public ItemStack getItem(int slot) {
-		return filter;
-	}
+        return filter;
+    }
+    public static class DoorActivator implements IDoorActivator {
+        private final List<Block> blocks = List.of(SCContent.BLOCK_CHANGE_DETECTOR.get());
+
+        @Override
+        public boolean isPowering(Level level, BlockPos pos, BlockState state, BlockEntity blockEntity, Direction direction, int distance) {
+            return state.getValue(BlockStateProperties.POWERED); // or your own logic
+        }
+
+        @Override
+        public List<Block> getBlocks() {
+            return blocks;
+        }
+    }
 }
