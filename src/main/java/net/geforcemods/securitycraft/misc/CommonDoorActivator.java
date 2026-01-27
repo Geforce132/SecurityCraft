@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 public class CommonDoorActivator implements IDoorActivator {
 	//@formatter:off
 	private static final List<Block> BLOCKS = new ArrayList<>(List.of(
+			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.KEYCARD_LOCK.get(),
 			SCContent.KEYCARD_READER.get(),
 			SCContent.KEYPAD.get(),
@@ -30,7 +31,6 @@ public class CommonDoorActivator implements IDoorActivator {
 			SCContent.RETINAL_SCANNER.get(),
 			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SECURITY_CAMERA.get(),
-			SCContent.BLOCK_CHANGE_DETECTOR.get(),
 			SCContent.SONIC_SECURITY_SYSTEM.get()));
 	//@formatter:on
 
@@ -81,4 +81,3 @@ public class CommonDoorActivator implements IDoorActivator {
 		return BLOCKS;
 	}
 }
-
