@@ -40,7 +40,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
 
-public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
+	public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable, ITickingBlockEntity {
     private IntOption signalLength = new IntOption("signalLength", 60, 0, 400, 5); //20 seconds max
     private IntOption range = new IntOption("range", 5, 1, 15, 1);
     private DisabledOption disabled = new DisabledOption(false);
