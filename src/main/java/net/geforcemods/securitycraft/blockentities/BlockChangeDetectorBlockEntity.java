@@ -340,4 +340,4 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	public ItemStack getItem(int slot) {
 		return filter;
 	}
-}	
+}
