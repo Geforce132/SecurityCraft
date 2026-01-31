@@ -240,8 +240,6 @@ public class ClientHandler {
 	});
 	public static final ResourceLocation LINKING_STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "linking_state");
 	private static ShaderInstance frameFeedShader;
-	private static ModelBakery modelBakery;
-	private static Map<ResourceLocation, AtlasSet.StitchResult> atlasPreperations;
 	private static BiFunction<ResourceLocation, Material, TextureAtlasSprite> textureGetter;
 
 	private ClientHandler() {}
@@ -297,6 +295,7 @@ public class ClientHandler {
 		ResourceLocation modelBase = sriName.withPrefix("block/");
 		ResourceLocation poweredSriSenderLocation = modelBase.withSuffix("_sender_on");
 		ResourceLocation poweredSriReceiverLocation = modelBase.withSuffix("_receiver_on");
+		ModelBakery modelBakery = event.getModelBakery();
 
 		for (Block block : disguisableBlocks.get()) {
 			for (BlockState state : block.getStateDefinition().getPossibleStates()) {
@@ -306,9 +305,9 @@ public class ClientHandler {
 
 		for (BlockState state : sri.getStateDefinition().getPossibleStates()) {
 			if (state.getValue(SecureRedstoneInterfaceBlock.SENDER))
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(poweredSriSenderLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(modelBakery, poweredSriSenderLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
 			else
-				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(poweredSriReceiverLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
+				registerDisguisedModel(modelRegistry, state, oldModel -> new SecureRedstoneInterfaceBakedModel(bakeDirectionalModel(modelBakery, poweredSriReceiverLocation, state.getValue(SecureRedstoneInterfaceBlock.FACING)), oldModel));
 		}
 
 		for (String mine : mines) {
@@ -316,9 +315,6 @@ public class ClientHandler {
 		}
 
 		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
-		modelBakery = null;
-		atlasPreperations = null;
-		textureGetter = null;
 	}
 
 	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, BlockState state, Function<BakedModel, IDynamicBakedModel> modelFunction) {
@@ -329,7 +325,7 @@ public class ClientHandler {
 		modelRegistry.put(mrl, modelFunction.apply(modelRegistry.get(mrl)));
 	}
 
-	private static BakedModel bakeDirectionalModel(ResourceLocation location, Direction facing) {
+	private static BakedModel bakeDirectionalModel(ModelBakery modelBakery, ResourceLocation location, Direction facing) {
 		try {
 			return modelBakery.new ModelBakerImpl(textureGetter(), location).bake(location, modelRotationFromDirection(facing));
 		}
@@ -925,12 +921,16 @@ public class ClientHandler {
 		return frameFeedShader;
 	}
 
-	public static void setModelBakery(ModelBakery modelBakery) {
-		ClientHandler.modelBakery = modelBakery;
-	}
+	public static void setTextureGetter(Map<ResourceLocation, StitchResult> stitchResults) {
+		textureGetter = (debugName, material) -> {
+			AtlasSet.StitchResult stitchResult = stitchResults.get(material.atlasLocation());
+			TextureAtlasSprite sprite = stitchResult.getSprite(material.texture());
 
-	public static void setAtlasPreperations(Map<ResourceLocation, StitchResult> atlasPreperations) {
-		ClientHandler.atlasPreperations = atlasPreperations;
+			if (sprite != null)
+				return sprite;
+			else
+				return stitchResult.missing();
+		};
 	}
 
 	private static BlockModelRotation modelRotationFromDirection(Direction direction) {
@@ -945,19 +945,6 @@ public class ClientHandler {
 	}
 
 	private static BiFunction<ResourceLocation, Material, TextureAtlasSprite> textureGetter() {
-		if (textureGetter == null) {
-			textureGetter = (debugName, material) -> {
-				AtlasSet.StitchResult stitchResult = atlasPreperations.get(material.atlasLocation());
-				TextureAtlasSprite sprite = stitchResult.getSprite(material.texture());
-
-				if (sprite != null)
-					return sprite;
-				else
-					return stitchResult.missing();
-			};
-
-		}
-
 		return textureGetter;
 	}
 }
