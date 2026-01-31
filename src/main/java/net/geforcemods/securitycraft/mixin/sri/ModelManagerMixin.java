@@ -25,9 +25,8 @@ import net.minecraft.util.profiling.ProfilerFiller;
 @Mixin(ModelManager.class)
 public class ModelManagerMixin {
 	@WrapOperation(method = "loadModels", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/HashMultimap;create()Lcom/google/common/collect/HashMultimap;"))
-	private static HashMultimap<ModelResourceLocation, Material> securitycraft$captureAtlasPreparations(Operation<HashMultimap<ModelResourceLocation, Material>> original, ProfilerFiller profiler, Map<ResourceLocation, StitchResult> atlasPreperations, ModelBakery modelBakery) {
-		ClientHandler.setModelBakery(modelBakery);
-		ClientHandler.setAtlasPreperations(atlasPreperations);
+	private static HashMultimap<ModelResourceLocation, Material> securitycraft$captureAtlasPreparations(Operation<HashMultimap<ModelResourceLocation, Material>> original, ProfilerFiller profiler, Map<ResourceLocation, StitchResult> stitchResults, ModelBakery modelBakery) {
+		ClientHandler.setTextureGetter(stitchResults);
 		return original.call();
 	}
 }
