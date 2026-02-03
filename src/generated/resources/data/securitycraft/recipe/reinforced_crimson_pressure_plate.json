@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "group": "securitycraft:wooden_pressure_plates",
+  "key": {
+    "S": "securitycraft:reinforced_crimson_planks"
+  },
+  "pattern": [
+    "SS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_crimson_pressure_plate"
+  }
+}

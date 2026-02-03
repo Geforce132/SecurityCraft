@@ -1,0 +1,52 @@
+{
+	"multipart": [
+		{
+			"when": { "facing": "north" },
+			"apply": { "model": "securitycraft:block/retinal_scanner" }
+		},
+		{
+			"when": { "facing": "south" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "y": 180 }
+		},
+		{
+			"when": { "facing": "east" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "y": 90 }
+		},
+		{
+			"when": { "facing": "west" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "y": 270 }
+		},
+		{
+			"when": { "facing": "up", "rotation": "north" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": -90, "y": 0 }
+		},
+		{
+			"when": { "facing": "up", "rotation": "south" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": -90, "y": 180 }
+		},
+		{
+			"when": { "facing": "up", "rotation": "east" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": -90, "y": 270 }
+		},
+		{
+			"when": { "facing": "up", "rotation": "west" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": -90, "y": 90 }
+		},
+		{
+			"when": { "facing": "down", "rotation": "north" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": 90, "y": 0 }
+		},
+		{
+			"when": { "facing": "down", "rotation": "south" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": 90, "y": 180 }
+		},
+		{
+			"when": { "facing": "down", "rotation": "east" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": 90, "y": 270 }
+		},
+		{
+			"when": { "facing": "down", "rotation": "west" },
+			"apply": { "model": "securitycraft:block/retinal_scanner", "x": 90, "y": 90 }
+		}
+	]
+}

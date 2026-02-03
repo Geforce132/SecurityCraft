@@ -1,0 +1,58 @@
+package net.geforcemods.securitycraft.api;
+
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+
+/**
+ * Implement this to be able to add options to the object
+ *
+ * @author bl4ckscor3
+ */
+public interface ICustomizable {
+	/**
+	 * @return An array of what custom {@link Option}s this object has.
+	 */
+	public Option<?>[] customOptions();
+
+	/**
+	 * Called whenever an {@link Option} in this object changes its value
+	 *
+	 * @param <T> The type the Option stores
+	 * @param option The changed Option
+	 */
+	public default <T> void onOptionChanged(Option<T> option) {
+		if (this instanceof BlockEntity be)
+			be.setChanged();
+	}
+
+	/**
+	 * Used for reading the options from a tag. Use in conjunction with writeOptions.
+	 *
+	 * @param tag The tag to read the options from
+	 */
+	public default void readOptions(ValueInput tag) {
+		Option<?>[] customOptions = customOptions();
+
+		if (customOptions.length > 0) {
+			for (Option<?> option : customOptions) {
+				option.load(tag);
+			}
+		}
+	}
+
+	/**
+	 * Used for writing the options to a tag. Use in conjunction with readOptions.
+	 *
+	 * @param tag The tag to write the options to
+	 */
+	public default void writeOptions(ValueOutput tag) {
+		Option<?>[] customOptions = customOptions();
+
+		if (customOptions.length > 0) {
+			for (Option<?> option : customOptions) {
+				option.save(tag);
+			}
+		}
+	}
+}

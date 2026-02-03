@@ -1,0 +1,7 @@
+{
+    "parent": "securitycraft:block/orientable_vertical_tinted",
+    "textures": {
+        "front": "minecraft:block/dispenser_front_vertical",
+        "side": "minecraft:block/furnace_top"
+    }
+}

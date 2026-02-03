@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "S": "securitycraft:reinforced_polished_blackstone"
+  },
+  "pattern": [
+    "SS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_polished_blackstone_pressure_plate"
+  }
+}

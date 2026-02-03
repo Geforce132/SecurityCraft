@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_smooth_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:reinforced_smooth_stone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_stone_slab_from_reinforced_smooth_stone_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_smooth_stone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_stone_slab_from_reinforced_smooth_stone_stonecutting"
+    ]
+  }
+}

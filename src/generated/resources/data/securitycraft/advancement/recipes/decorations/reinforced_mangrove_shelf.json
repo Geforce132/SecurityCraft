@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_stripped_mangrove_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:reinforced_stripped_mangrove_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_mangrove_shelf"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_stripped_mangrove_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_mangrove_shelf"
+    ]
+  }
+}

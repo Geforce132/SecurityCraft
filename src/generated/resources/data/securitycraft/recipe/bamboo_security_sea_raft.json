@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:security_sea_boats",
+  "key": {
+    "C": "securitycraft:keypad_chest",
+    "P": "securitycraft:reinforced_bamboo_planks"
+  },
+  "pattern": [
+    "PCP",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:bamboo_security_sea_raft"
+  }
+}

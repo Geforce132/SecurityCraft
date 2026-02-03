@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:reinforced_carpets",
+  "ingredients": [
+    "#c:dyes/light_gray",
+    "#securitycraft:reinforced/wool_carpets"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_light_gray_carpet"
+  }
+}

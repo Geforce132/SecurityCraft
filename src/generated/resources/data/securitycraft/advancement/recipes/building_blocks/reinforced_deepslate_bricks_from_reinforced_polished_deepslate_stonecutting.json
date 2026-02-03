@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_polished_deepslate": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:reinforced_polished_deepslate"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_deepslate_bricks_from_reinforced_polished_deepslate_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_polished_deepslate"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_deepslate_bricks_from_reinforced_polished_deepslate_stonecutting"
+    ]
+  }
+}

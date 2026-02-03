@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:daylight_detector",
+    "E": "minecraft:ender_eye",
+    "O": "securitycraft:reinforced_obsidian"
+  },
+  "pattern": [
+    "ODO",
+    "OEO",
+    "OOO"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:protecto"
+  }
+}

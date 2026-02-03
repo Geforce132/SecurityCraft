@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:reinforced_carpets",
+  "key": {
+    "M": "securitycraft:reinforced_green_wool"
+  },
+  "pattern": [
+    "MM"
+  ],
+  "result": {
+    "count": 3,
+    "id": "securitycraft:reinforced_green_carpet"
+  }
+}

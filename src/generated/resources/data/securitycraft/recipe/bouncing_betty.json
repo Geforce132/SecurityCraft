@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "#c:gunpowders",
+    "I": "#c:ingots/iron",
+    "P": "minecraft:heavy_weighted_pressure_plate"
+  },
+  "pattern": [
+    " P ",
+    "IGI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:bouncing_betty"
+  }
+}

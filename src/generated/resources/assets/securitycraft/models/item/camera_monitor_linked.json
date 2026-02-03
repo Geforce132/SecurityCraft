@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "securitycraft:item/camera_monitor_linked"
+  }
+}

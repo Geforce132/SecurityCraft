@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": "minecraft:bow",
+    "G": "#c:ingots/gold",
+    "I": "#c:ingots/iron",
+    "R": "#c:dusts/redstone",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "BGI",
+    "RSG",
+    "  S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:taser"
+  }
+}

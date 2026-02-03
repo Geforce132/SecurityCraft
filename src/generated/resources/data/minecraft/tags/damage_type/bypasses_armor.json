@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "securitycraft:fake_water",
+      "required": false
+    },
+    {
+      "id": "securitycraft:electricity",
+      "required": false
+    },
+    {
+      "id": "securitycraft:in_reinforced_wall",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "securitycraft:bouncing_betty",
+    "G": "#c:gunpowders",
+    "H": "minecraft:tripwire_hook",
+    "R": "#c:dusts/redstone",
+    "S": "#c:strings"
+  },
+  "pattern": [
+    "HSH",
+    "SBS",
+    "RGR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:claymore"
+  }
+}

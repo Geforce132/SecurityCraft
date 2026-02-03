@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "snowy=false": [
+      { "model": "securitycraft:block/reinforced_mycelium" },
+      { "model": "securitycraft:block/reinforced_mycelium", "y": 90 },
+      { "model": "securitycraft:block/reinforced_mycelium", "y": 180 },
+      { "model": "securitycraft:block/reinforced_mycelium", "y": 270 }
+    ],
+    "snowy=true": { "model": "securitycraft:block/reinforced_grass_block_snow" }
+  }
+}

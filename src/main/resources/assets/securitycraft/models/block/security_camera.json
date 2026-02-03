@@ -1,0 +1,6 @@
+{
+	"parent": "block/block",
+    "textures": {
+        "particle": "securitycraft:block/security_camera_particle_texture"
+    }
+}

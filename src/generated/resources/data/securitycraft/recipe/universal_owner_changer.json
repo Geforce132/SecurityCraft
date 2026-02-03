@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "securitycraft:universal_block_modifier",
+    "minecraft:name_tag"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:universal_owner_changer"
+  }
+}

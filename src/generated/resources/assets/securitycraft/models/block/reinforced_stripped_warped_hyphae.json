@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/reinforced_cube_column",
+  "textures": {
+    "end": "minecraft:block/stripped_warped_stem",
+    "side": "minecraft:block/stripped_warped_stem"
+  }
+}

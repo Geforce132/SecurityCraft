@@ -1,0 +1,9 @@
+{
+  "values": [
+    "securitycraft:reinforced_iron_bars",
+    "securitycraft:reinforced_copper_bars",
+    "securitycraft:reinforced_exposed_copper_bars",
+    "securitycraft:reinforced_weathered_copper_bars",
+    "securitycraft:reinforced_oxidized_copper_bars"
+  ]
+}

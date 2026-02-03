@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "securitycraft:reinforced_resin_bricks",
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_resin_brick_wall"
+  }
+}

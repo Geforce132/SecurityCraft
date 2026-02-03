@@ -1,0 +1,12 @@
+{
+    "parent": "securitycraft:block/reinforced_block",
+    "textures": {
+        "particle": "#side",
+        "down": "#bottom",
+        "up": "#top",
+        "north": "#side",
+        "east": "#side",
+        "south": "#side",
+        "west": "#side"
+    }
+}

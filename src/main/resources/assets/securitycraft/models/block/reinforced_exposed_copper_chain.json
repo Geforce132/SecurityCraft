@@ -1,0 +1,6 @@
+{
+	"parent": "securitycraft:block/template_reinforced_chain",
+	"textures": {
+		"texture": "minecraft:block/exposed_copper_chain"
+	}
+}

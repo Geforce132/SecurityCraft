@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "minecraft:glow_item_frame",
+    "G": "securitycraft:reinforced_glass_pane",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    "III",
+    "IFG",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:glow_display_case"
+  }
+}

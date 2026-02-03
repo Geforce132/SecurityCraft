@@ -1,0 +1,58 @@
+{
+	"parent": "block/block",
+    "__createdwith": "opl's Model Creator",
+    "ambientocclusion": false,
+    "textures": {
+        "portableRadarSides": "securitycraft:block/portable_radar_sides",
+        "particle": "securitycraft:block/portable_radar_sides",
+        "portableRadarTop": "securitycraft:block/portable_radar_top1"
+    },
+    "elements": [
+        {
+            "from": [5,0,5],
+            "to": [11,7,11],
+            "faces": {
+                "up": {
+                    "texture": "#portableRadarTop"
+                },
+                "down": {
+                    "texture": "#portableRadarTop"
+                },
+                "west": {
+                    "texture": "#portableRadarSides"
+                },
+                "east": {
+                    "texture": "#portableRadarSides"
+                },
+                "north": {
+                    "texture": "#portableRadarSides"
+                },
+                "south": {
+                    "texture": "#portableRadarSides"
+                }
+            }
+        }
+    ],
+	"display": {
+	    "thirdperson_righthand": {
+	        "rotation": [ 90, -90, 55 ],
+	        "translation": [ 0, 4.0, 1 ],
+	        "scale": [ 0.5, 0.5, 0.5 ]
+	    },
+	    "thirdperson_lefthand": {
+	        "rotation": [ 90, 90, -55 ],
+	        "translation": [ 0, 4.0, 1 ],
+	        "scale": [ 0.5, 0.5, 0.5 ]
+	    },
+	    "firstperson_righthand": {
+	        "rotation": [ 0, -90, 25 ],
+	        "translation": [ 1.13, 3.2, 1.13 ],
+	        "scale": [ 0.68, 0.68, 0.68 ]
+	    },
+	    "firstperson_lefthand": {
+	        "rotation": [ 0, 90, -25 ],
+	        "translation": [ 1.13, 3.2, 1.13 ],
+	        "scale": [ 0.68, 0.68, 0.68 ]
+	    }
+	}
+}

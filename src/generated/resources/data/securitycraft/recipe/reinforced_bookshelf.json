@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": "minecraft:book",
+    "P": "#securitycraft:reinforced/planks"
+  },
+  "pattern": [
+    "PPP",
+    "BBB",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_bookshelf"
+  }
+}

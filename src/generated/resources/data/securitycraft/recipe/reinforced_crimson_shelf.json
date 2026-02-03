@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:reinforced_shelves",
+  "key": {
+    "L": "securitycraft:reinforced_stripped_crimson_stem"
+  },
+  "pattern": [
+    "LLL",
+    "   ",
+    "LLL"
+  ],
+  "result": {
+    "count": 6,
+    "id": "securitycraft:reinforced_crimson_shelf"
+  }
+}

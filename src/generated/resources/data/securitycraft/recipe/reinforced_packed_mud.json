@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "securitycraft:reinforced_mud",
+    "minecraft:wheat"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_packed_mud"
+  }
+}

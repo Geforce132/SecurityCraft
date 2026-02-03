@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:iron_door",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    "III",
+    "IDI",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:door_indestructible_iron_item"
+  }
+}

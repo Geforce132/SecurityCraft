@@ -1,0 +1,28 @@
+{
+    "ambientocclusion": false,
+    "render_type": "minecraft:translucent",
+    "textures": {
+        "laserTexture": "securitycraft:block/ani_laser",
+        "particle": "securitycraft:block/ani_laser"
+    },
+    "elements": [
+        {
+            "from": [0,0,6],
+            "to": [16,16,10],
+            "faces": {
+                "north": {
+                    "texture": "#laserTexture", "rotation": 180, "tintindex": 0
+                },
+                "south": {
+                    "texture": "#laserTexture", "tintindex": 0
+                },
+                "up": {
+                    "texture": "#laserTexture", "cullface": "up", "tintindex": 0
+                },
+                "down": {
+                    "texture": "#laserTexture", "cullface": "down", "tintindex": 0
+                }
+            }
+        }
+    ]
+}

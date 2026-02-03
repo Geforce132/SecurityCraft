@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "securitycraft:reinforced_cobblestone",
+    "I": "#c:ingots/iron",
+    "P": "#securitycraft:reinforced/planks",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    "PPP",
+    "CIC",
+    "CRC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_piston"
+  }
+}

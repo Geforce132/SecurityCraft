@@ -1,0 +1,9 @@
+{
+    "parent": "block/orientable",
+    "render_type": "minecraft:cutout",
+    "textures": {
+        "top": "block/furnace_top",
+        "front": "securitycraft:block/retinal_scanner_front_frame",
+        "side": "block/furnace_side"
+    }
+}

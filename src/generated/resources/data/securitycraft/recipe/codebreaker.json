@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": "#c:gems/diamond",
+    "E": "#c:gems/emerald",
+    "G": "#c:ingots/gold",
+    "R": "#c:dusts/redstone",
+    "S": "#c:nether_stars",
+    "T": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    "DTD",
+    "GSG",
+    "RER"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:codebreaker"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "P": "#securitycraft:reinforced/planks",
+    "S": "#securitycraft:reinforced/wooden_slabs"
+  },
+  "pattern": [
+    "PPP",
+    "SSS",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_chiseled_bookshelf"
+  }
+}

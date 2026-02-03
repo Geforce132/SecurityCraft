@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "securitycraft:block/reinforced_chiseled_quartz_block",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -15354974
+      }
+    ]
+  }
+}

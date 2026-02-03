@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "securitycraft:block/reinforced_green_stained_glass"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": [
+      "securitycraft:reinforced_crystal_quartz_block",
+      "securitycraft:reinforced_crystal_quartz_pillar",
+      "securitycraft:reinforced_chiseled_crystal_quartz_block"
+    ]
+  },
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "result": {
+    "count": 4,
+    "id": "securitycraft:reinforced_crystal_quartz_stairs"
+  }
+}

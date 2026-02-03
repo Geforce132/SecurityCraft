@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "securitycraft:reinforced_iron_block",
+    "S": "#c:rods/wooden",
+    "T": "securitycraft:sentry"
+  },
+  "pattern": [
+    " T ",
+    " B ",
+    "S S"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:trophy_system"
+  }
+}

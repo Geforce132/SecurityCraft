@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "dusted=0,safe=false": {
+      "model": "minecraft:block/suspicious_sand_0"
+    },
+    "dusted=0,safe=true": {
+      "model": "minecraft:block/suspicious_sand_0"
+    },
+    "dusted=1,safe=false": {
+      "model": "minecraft:block/suspicious_sand_1"
+    },
+    "dusted=1,safe=true": {
+      "model": "minecraft:block/suspicious_sand_1"
+    },
+    "dusted=2,safe=false": {
+      "model": "minecraft:block/suspicious_sand_2"
+    },
+    "dusted=2,safe=true": {
+      "model": "minecraft:block/suspicious_sand_2"
+    },
+    "dusted=3,safe=false": {
+      "model": "minecraft:block/suspicious_sand_3"
+    },
+    "dusted=3,safe=true": {
+      "model": "minecraft:block/suspicious_sand_3"
+    }
+  }
+}

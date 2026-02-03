@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "#c:gunpowders",
+    "I": "#c:ingots/iron"
+  },
+  "pattern": [
+    " I ",
+    "IGI"
+  ],
+  "result": {
+    "count": 3,
+    "id": "securitycraft:mine"
+  }
+}

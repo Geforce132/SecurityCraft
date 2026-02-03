@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": "securitycraft:reinforced_weathered_copper"
+  },
+  "pattern": [
+    " C ",
+    "C C",
+    " C "
+  ],
+  "result": {
+    "count": 4,
+    "id": "securitycraft:reinforced_weathered_copper_grate"
+  }
+}

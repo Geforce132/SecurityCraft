@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": "#c:gems/diamond",
+    "I": "#c:ingots/iron",
+    "S": "#c:rods/wooden",
+    "T": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    "ITI",
+    "IDI",
+    "ISI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:remote_access_sentry"
+  }
+}

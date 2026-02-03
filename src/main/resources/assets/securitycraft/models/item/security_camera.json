@@ -1,0 +1,43 @@
+{
+	"parent": "securitycraft:block/security_camera",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [-90, 180, 0],
+			"translation": [-4, 0, 5],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [-90, 180, 0],
+			"translation": [4, 0, 5],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 0, 180],
+			"translation": [0, 8, 3],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 0, 180],
+			"translation": [9.75, 8.5, 4],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"ground": {
+			"rotation": [0, 0, 180],
+			"translation": [-4, 0, 2],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"head": {
+			"rotation": [0, 0, 180],
+			"translation": [-2, 7, -6.25],
+			"scale": [0.25, 0.25, 0.25]
+		},
+		"fixed": {
+			"rotation": [0, 0, 180],
+			"translation": [-8, 8, 0.5]
+		},
+		"gui": {
+			"rotation": [0, 225, 180],
+			"translation": [1.5, 8, 0]
+		}
+	}
+}

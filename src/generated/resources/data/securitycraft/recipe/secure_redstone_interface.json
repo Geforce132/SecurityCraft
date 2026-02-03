@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": "minecraft:bowl",
+    "C": "minecraft:comparator",
+    "R": "securitycraft:portable_radar",
+    "S": "securitycraft:reinforced_smooth_stone",
+    "T": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    "TRB",
+    "SCS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:secure_redstone_interface"
+  }
+}

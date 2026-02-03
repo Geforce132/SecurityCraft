@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "securitycraft:block/reinforced_light_gray_stained_glass"
+  }
+}

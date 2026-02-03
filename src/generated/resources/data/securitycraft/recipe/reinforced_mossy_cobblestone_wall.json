@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "securitycraft:reinforced_mossy_cobblestone"
+  },
+  "pattern": [
+    "BBB",
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "id": "securitycraft:reinforced_mossy_cobblestone_wall"
+  }
+}

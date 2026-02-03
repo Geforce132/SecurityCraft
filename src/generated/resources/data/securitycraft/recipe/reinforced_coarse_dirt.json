@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "D": "securitycraft:reinforced_dirt",
+    "G": "securitycraft:reinforced_gravel"
+  },
+  "pattern": [
+    "DG",
+    "GD"
+  ],
+  "result": {
+    "count": 4,
+    "id": "securitycraft:reinforced_coarse_dirt"
+  }
+}

@@ -1,0 +1,146 @@
+import util.ExtractNestedJar
+import util.MinifyJsonTask
+
+plugins {
+	id("net.neoforged.moddev") version "2.0.107"
+}
+
+base {
+	archivesName.set("securitycraft")
+	group = "net.geforcemods.securitycraft"
+	version = "1.10.1-beta1"
+}
+
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+
+tasks.processResources {
+	exclude(".cache")
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+sourceSets {
+	main {
+		resources {
+			srcDir("src/generated/resources") //include generated files
+		}
+	}
+}
+
+val minecraftVersion: String = "1.21.10"
+neoForge {
+	version = "21.10.63"
+	validateAccessTransformers = true
+
+	runs {
+		configureEach {
+			logLevel = org.slf4j.event.Level.DEBUG
+			gameDirectory = file("run/" + name)
+			ideName = "SC $minecraftVersion " + ideName.get()
+		}
+
+		register("client") {
+			client()
+		}
+
+		register("client2") {
+			client()
+			gameDirectory = file("run/client")
+			programArguments.addAll("--username", "Dev2")
+		}
+
+		register("server") {
+			server()
+			programArgument("-nogui")
+		}
+
+		register("data") {
+			clientData()
+			programArguments.addAll("--mod", "securitycraft", "--all", "--output", file("src/generated/resources/").absolutePath)
+		}
+	}
+
+	mods {
+		create("securitycraft") {
+			sourceSet(sourceSets.main.get())
+		}
+	}
+}
+
+repositories {
+	exclusiveContent {
+		forRepository { maven("https://www.cursemaven.com") }
+		filter { includeGroup("curse.maven") }
+	}
+
+	exclusiveContent {
+		forRepository { maven("https://api.modrinth.com/maven") }
+		filter { includeGroup("maven.modrinth") }
+	}
+}
+
+fun Project.deps(name: String): String? = findProperty("deps.${name}") as String?
+fun Project.deps(name: String, consumer: (prop: String) -> Unit) = deps(name)?.let(consumer)
+
+dependencies {
+	compileOnly("curse.maven:architectury-api-419699:5553800") //ftb teams dependency
+	compileOnly("curse.maven:ftb-library-forge-404465:5557408") //ftb teams dependency
+	compileOnly("curse.maven:ftb-teams-forge-404468:5448371")
+	implementation("curse.maven:jei-238222:7090453")
+	compileOnly("curse.maven:the-one-probe-245211:5502323")
+	implementation("curse.maven:jade-324717:7056468")
+    implementation("curse.maven:betterf3-401648:7180976")
+    implementation("curse.maven:cloth-config-348521:7151182") //betterf3 dependency
+	implementation("curse.maven:wthit-forge-455982:7095465")
+	implementation("curse.maven:badpackets-615134:7066076") //wthit dependency
+	compileOnly("curse.maven:projecte-226410:3955047")
+	compileOnly("curse.maven:embeddium-908741:6116910") //incompatible with sodium
+
+	deps("sodium_internal") {
+		val sodiumArtifact = "maven.modrinth:sodium:${deps("sodium")}"
+		listOf(
+			"sodium-neo-jar" to "META-INF/jarjar/net.caffeinemc.sodium-$it-mod.jar",
+			"sodium-fapi-jar" to "META-INF/jarjar/fabric-api-base-${deps("sodium_fabric_api_base")}.jar",
+			"sodium-frapi-jar" to "META-INF/jarjar/fabric-renderer-api-${deps("sodium_fabric_renderer")}.jar"
+		).forEach { (attrName, nestedPath) ->
+			registerTransform(ExtractNestedJar::class.java) {
+				from.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, ArtifactTypeDefinition.JAR_TYPE)
+				to.attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, attrName)
+				parameters { nestedJarPath.set(nestedPath) }
+			}
+			compileOnly(sodiumArtifact) {
+				attributes { attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, attrName) }
+			}
+		}
+	}
+
+	deps("sodium") {
+		compileOnly("maven.modrinth:sodium:$it")
+	}
+}
+
+tasks.withType<Jar> {
+	exclude("net/geforcemods/securitycraft/datagen/**") //exclude files from the built jar that are only used to generate the assets & data
+	archiveFileName = "[$minecraftVersion] SecurityCraft v$version.jar"
+	manifest {
+		attributes(mapOf("Specification-Title" to "SecurityCraft",
+				"Specification-Vendor" to "Geforce, bl4ckscor3, Redstone_Dubstep",
+				"Specification-Version" to "$version",
+				"Implementation-Title" to "SecurityCraft",
+				"Implementation-Version" to "$version",
+				"Implementation-Vendor" to "Geforce, bl4ckscor3, Redstone_Dubstep"))
+	}
+}
+
+tasks.withType<JavaCompile> {
+	options.compilerArgs.addAll(listOf("-Xmaxerrs", "10000"))
+	options.encoding = "UTF-8"
+	options.release.set(21)
+}
+
+tasks.register<MinifyJsonTask>("minifyJson") {
+	dir.set(layout.buildDirectory.dir("resources/main"))
+}
+
+tasks.named<ProcessResources>("processResources") {
+	finalizedBy("minifyJson")
+}

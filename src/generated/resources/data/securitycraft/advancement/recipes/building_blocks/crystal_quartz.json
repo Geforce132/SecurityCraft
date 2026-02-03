@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crystal_quartz_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:crystal_quartz_item"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:crystal_quartz"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_crystal_quartz_item"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:crystal_quartz"
+    ]
+  }
+}

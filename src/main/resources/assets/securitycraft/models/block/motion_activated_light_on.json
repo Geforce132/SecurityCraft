@@ -1,0 +1,7 @@
+{
+	"parent": "securitycraft:block/template_motion_activated_light",
+	"textures": {
+		"0": "securitycraft:block/motion_activated_light_on",
+		"particle": "securitycraft:block/motion_activated_light_on"
+	}
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_block_pocket_wall": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:block_pocket_wall"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_crystal_quartz_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_block_pocket_wall"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_crystal_quartz_block"
+    ]
+  }
+}

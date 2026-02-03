@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "securitycraft:crystal_quartz",
+  "result": {
+    "count": 1,
+    "id": "securitycraft:chiseled_crystal_quartz"
+  }
+}

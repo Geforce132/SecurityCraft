@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:block",
+  "functions": [
+    {
+      "function": "minecraft:copy_components",
+      "include": [
+        "minecraft:custom_name"
+      ],
+      "source": "block_entity"
+    }
+  ],
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "securitycraft:rift_stabilizer",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ],
+          "name": "securitycraft:rift_stabilizer"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "securitycraft:blocks/rift_stabilizer"
+}

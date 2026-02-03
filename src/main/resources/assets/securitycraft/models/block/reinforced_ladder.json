@@ -1,0 +1,18 @@
+{
+    "ambientocclusion": false,
+    "render_type": "cutout",
+    "textures": {
+        "particle": "block/ladder",
+        "texture": "block/ladder"
+    },
+    "elements": [
+        {   "from": [ 0, 0, 15.2 ],
+            "to": [ 16, 16, 15.2 ],
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#texture", "tintindex": 0 },
+                "south": { "uv": [ 16, 0, 0, 16 ], "texture": "#texture", "tintindex": 0 }
+            }
+        }
+    ]
+}

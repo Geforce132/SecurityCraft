@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "securitycraft:tile_entity_nbt",
+              "key": "canDrop",
+              "value": true
+            }
+          ],
+          "name": "securitycraft:reinforced_iron_bars"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "securitycraft:blocks/reinforced_iron_bars"
+}

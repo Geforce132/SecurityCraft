@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=down": { "model": "securitycraft:block/reinforced_hopper" },
+        "facing=north": { "model": "securitycraft:block/reinforced_hopper_side" },
+        "facing=south": { "model": "securitycraft:block/reinforced_hopper_side", "y": 180 },
+        "facing=west": { "model": "securitycraft:block/reinforced_hopper_side", "y": 270 },
+        "facing=east": { "model": "securitycraft:block/reinforced_hopper_side", "y": 90 }
+    }
+}

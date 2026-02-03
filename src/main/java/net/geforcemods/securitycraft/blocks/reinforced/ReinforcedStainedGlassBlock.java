@@ -1,0 +1,36 @@
+package net.geforcemods.securitycraft.blocks.reinforced;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.BeaconBeamBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+
+public class ReinforcedStainedGlassBlock extends ReinforcedGlassBlock implements BeaconBeamBlock {
+	public ReinforcedStainedGlassBlock(BlockBehaviour.Properties properties, Block vB) {
+		super(properties, vB);
+	}
+
+	@Override
+	public boolean propagatesSkylightDown(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public DyeColor getColor() {
+		return getVanillaBlock() instanceof BeaconBeamBlock beaconBeamBlock ? beaconBeamBlock.getColor() : DyeColor.WHITE;
+	}
+
+	@Override
+	public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+		return 1.0F;
+	}
+
+	@Override
+	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction side) {
+		return adjacentBlockState.getBlock() == this || super.skipRendering(state, adjacentBlockState, side);
+	}
+}

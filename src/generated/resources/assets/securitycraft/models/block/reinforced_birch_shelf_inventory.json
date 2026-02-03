@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/template_reinforced_shelf_inventory",
+  "textures": {
+    "all": "minecraft:block/birch_shelf",
+    "particle": "minecraft:block/stripped_birch_log"
+  }
+}

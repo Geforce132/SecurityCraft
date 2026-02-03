@@ -1,0 +1,19 @@
+{
+	"variants": {
+		"facing=east": {
+			"model": "securitycraft:block/reinforced_light_blue_glazed_terracotta",
+			"y": 270
+		},
+		"facing=north": {
+			"model": "securitycraft:block/reinforced_light_blue_glazed_terracotta",
+			"y": 180
+		},
+		"facing=south": {
+			"model": "securitycraft:block/reinforced_light_blue_glazed_terracotta"
+		},
+		"facing=west": {
+			"model": "securitycraft:block/reinforced_light_blue_glazed_terracotta",
+			"y": 90
+		}
+	}
+}

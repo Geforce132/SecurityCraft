@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "bottom=false": {
+      "model": "securitycraft:block/reinforced_scaffolding_stable"
+    },
+    "bottom=true": {
+      "model": "securitycraft:block/reinforced_scaffolding_unstable"
+    }
+  }
+}

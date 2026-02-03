@@ -1,0 +1,9 @@
+{
+	"securitycraft:plugin": {
+		"entrypoints": {
+			"client": "net.geforcemods.securitycraft.compat.hudmods.WTHITClientDataProvider",
+			"common": "net.geforcemods.securitycraft.compat.hudmods.WTHITCommonDataProvider"
+		},
+		"side": "*"
+	}
+}

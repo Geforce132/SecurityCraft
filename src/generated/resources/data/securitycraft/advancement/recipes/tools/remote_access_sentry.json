@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sentry": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:sentry"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:remote_access_sentry"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sentry"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:remote_access_sentry"
+    ]
+  }
+}

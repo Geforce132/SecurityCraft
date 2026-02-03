@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_tuff_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_tuff"
+    },
+    "type=top": {
+      "model": "securitycraft:block/reinforced_tuff_slab_top"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mine": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:mine"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:creaking_heart_mine"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_mine"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:creaking_heart_mine"
+    ]
+  }
+}

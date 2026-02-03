@@ -1,0 +1,34 @@
+logoFile="sc_banner.png"
+license="MIT https://github.com/Geforce132/SecurityCraft/blob/master/LICENSE"
+issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
+
+[[mods]]
+	modId="securitycraft"
+	version="${file.jarVersion}"
+	displayName="SecurityCraft"
+	updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
+	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.'''
+	displayURL="https://discord.gg/U8DvBAW"
+	credits="Thanks to all of you guys for your support!"
+	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
+	enumExtensions="META-INF/enum_extensions.json"
+
+[[mixins]]
+    config="securitycraft.mixins.json"
+
+[[dependencies.securitycraft]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.10.19-beta,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.securitycraft]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.10,1.22)"
+    ordering="NONE"
+    side="BOTH"
+
+[modproperties.securitycraft]
+    catalogueImageIcon="sc_logo.png"

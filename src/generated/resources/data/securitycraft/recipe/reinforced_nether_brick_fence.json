@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "securitycraft:reinforced_nether_bricks",
+    "S": "#c:bricks/nether"
+  },
+  "pattern": [
+    "MSM",
+    "MSM"
+  ],
+  "result": {
+    "count": 6,
+    "id": "securitycraft:reinforced_nether_brick_fence"
+  }
+}

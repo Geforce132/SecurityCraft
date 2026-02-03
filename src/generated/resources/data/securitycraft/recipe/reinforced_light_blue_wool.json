@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "securitycraft:reinforced_wool",
+  "ingredients": [
+    "#c:dyes/light_blue",
+    "#securitycraft:reinforced/wool"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_light_blue_wool"
+  }
+}

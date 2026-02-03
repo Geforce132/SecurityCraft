@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "extended=false,facing=down": { "model": "securitycraft:block/reinforced_piston", "x": 90 },
+    "extended=false,facing=up": { "model": "securitycraft:block/reinforced_piston", "x": 270 },
+    "extended=false,facing=north": { "model": "securitycraft:block/reinforced_piston" },
+    "extended=false,facing=south": { "model": "securitycraft:block/reinforced_piston", "y": 180 },
+    "extended=false,facing=west": { "model": "securitycraft:block/reinforced_piston", "y": 270 },
+    "extended=false,facing=east": { "model": "securitycraft:block/reinforced_piston", "y": 90 },
+    "extended=true,facing=down": { "model": "securitycraft:block/reinforced_piston_base", "x": 90 },
+    "extended=true,facing=up": { "model": "securitycraft:block/reinforced_piston_base", "x": 270 },
+    "extended=true,facing=north": { "model": "securitycraft:block/reinforced_piston_base" },
+    "extended=true,facing=south": { "model": "securitycraft:block/reinforced_piston_base", "y": 180 },
+    "extended=true,facing=west": { "model": "securitycraft:block/reinforced_piston_base", "y": 270 },
+    "extended=true,facing=east": { "model": "securitycraft:block/reinforced_piston_base", "y": 90 }
+  }
+}

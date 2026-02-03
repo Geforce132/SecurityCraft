@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:reinforced_fences",
+  "key": {
+    "M": "securitycraft:reinforced_pale_oak_planks",
+    "S": "#c:rods/wooden"
+  },
+  "pattern": [
+    "MSM",
+    "MSM"
+  ],
+  "result": {
+    "count": 3,
+    "id": "securitycraft:reinforced_pale_oak_fence"
+  }
+}

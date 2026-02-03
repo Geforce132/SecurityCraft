@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": "#c:gems/emerald",
+    "I": "#c:ingots/iron",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    " RE",
+    " IR",
+    "I  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:universal_block_modifier"
+  }
+}

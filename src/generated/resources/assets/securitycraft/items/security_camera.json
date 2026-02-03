@@ -1,0 +1,10 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "securitycraft:item/security_camera",
+    "model": {
+      "type": "securitycraft:security_camera",
+      "texture": "securitycraft:security_camera"
+    }
+  }
+}

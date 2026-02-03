@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "securitycraft:reinforced_diorite",
+    "#c:gems/quartz"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_granite"
+  }
+}

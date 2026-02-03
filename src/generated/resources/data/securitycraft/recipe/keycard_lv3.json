@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "securitycraft:keycards",
+  "key": {
+    "I": "#c:ingots/iron",
+    "S": "#c:bricks/nether"
+  },
+  "pattern": [
+    "III",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:keycard_lv3"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/custom_fence_post",
+  "textures": {
+    "particle": "securitycraft:block/electrified_iron_fence_particle",
+    "texture": "securitycraft:block/electrified_iron_fence"
+  }
+}

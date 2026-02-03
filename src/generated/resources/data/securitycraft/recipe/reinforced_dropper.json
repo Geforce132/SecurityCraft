@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": "securitycraft:reinforced_cobblestone",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    "CCC",
+    "C C",
+    "CRC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_dropper"
+  }
+}

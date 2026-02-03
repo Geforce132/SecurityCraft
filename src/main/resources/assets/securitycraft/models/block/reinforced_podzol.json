@@ -1,0 +1,12 @@
+{
+  "parent": "securitycraft:block/reinforced_block",
+  "textures": {
+    "particle": "block/podzol_side",
+    "down": "block/dirt",
+    "up": "block/podzol_top",
+    "north": "block/podzol_side",
+    "west": "block/podzol_side",
+    "south": "block/podzol_side",
+    "east": "block/podzol_side"
+  }
+}

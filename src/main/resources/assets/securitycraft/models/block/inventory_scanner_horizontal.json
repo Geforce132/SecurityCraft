@@ -1,0 +1,8 @@
+{
+    "parent": "block/orientable",
+    "textures": {
+        "top": "block/furnace_top",
+        "front": "securitycraft:block/inventory_scanner_horizontal",
+        "side": "block/furnace_side"
+    }
+}

@@ -1,0 +1,11 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "securitycraft:item/display_case",
+    "model": {
+      "type": "securitycraft:display_case",
+      "light": 15728880,
+      "texture": "securitycraft:glow"
+    }
+  }
+}

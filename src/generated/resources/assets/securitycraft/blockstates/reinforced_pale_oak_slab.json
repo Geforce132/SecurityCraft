@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_pale_oak_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_pale_oak_planks"
+    },
+    "type=top": {
+      "model": "securitycraft:block/reinforced_pale_oak_slab_top"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_stripped_warped_stem": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:reinforced_stripped_warped_stem"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_warped_shelf"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_stripped_warped_stem"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_warped_shelf"
+    ]
+  }
+}

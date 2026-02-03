@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_bamboo_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_bamboo_planks"
+    },
+    "type=top": {
+      "model": "securitycraft:block/reinforced_bamboo_slab_top"
+    }
+  }
+}

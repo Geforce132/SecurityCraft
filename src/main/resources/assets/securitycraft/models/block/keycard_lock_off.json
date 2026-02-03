@@ -1,0 +1,7 @@
+{
+	"parent": "securitycraft:block/keycard_lock",
+	"textures": {
+		"0": "securitycraft:block/keycard_lock_off",
+		"particle": "securitycraft:block/keycard_lock_off"
+	}
+}

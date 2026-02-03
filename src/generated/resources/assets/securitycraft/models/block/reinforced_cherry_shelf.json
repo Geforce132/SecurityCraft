@@ -1,0 +1,7 @@
+{
+  "parent": "securitycraft:block/template_reinforced_shelf_body",
+  "textures": {
+    "all": "minecraft:block/cherry_shelf",
+    "particle": "minecraft:block/stripped_cherry_log"
+  }
+}

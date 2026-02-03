@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "G": "securitycraft:reinforced_glowstone",
+    "R": "#c:dusts/redstone"
+  },
+  "pattern": [
+    " R ",
+    "RGR",
+    " R "
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_redstone_lamp"
+  }
+}

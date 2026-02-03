@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "securitycraft:reinforced_diorite",
+  "result": {
+    "count": 1,
+    "id": "securitycraft:reinforced_diorite_stairs"
+  }
+}

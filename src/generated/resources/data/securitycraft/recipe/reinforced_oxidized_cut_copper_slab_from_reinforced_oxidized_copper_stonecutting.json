@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "securitycraft:reinforced_oxidized_copper",
+  "result": {
+    "count": 8,
+    "id": "securitycraft:reinforced_oxidized_cut_copper_slab"
+  }
+}

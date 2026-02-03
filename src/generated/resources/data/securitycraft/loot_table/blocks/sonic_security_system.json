@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "securitycraft:sss_linked_blocks",
+                "securitycraft:notes",
+                "minecraft:custom_name"
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "securitycraft:sonic_security_system"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "securitycraft:blocks/sonic_security_system"
+}

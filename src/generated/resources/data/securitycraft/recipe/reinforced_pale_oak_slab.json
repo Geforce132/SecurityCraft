@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:wooden_slab",
+  "key": {
+    "B": "securitycraft:reinforced_pale_oak_planks"
+  },
+  "pattern": [
+    "BBB"
+  ],
+  "result": {
+    "count": 6,
+    "id": "securitycraft:reinforced_pale_oak_slab"
+  }
+}

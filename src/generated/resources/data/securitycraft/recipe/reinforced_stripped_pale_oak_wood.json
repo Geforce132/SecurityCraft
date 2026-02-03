@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "securitycraft:bark",
+  "key": {
+    "L": "securitycraft:reinforced_stripped_pale_oak_log"
+  },
+  "pattern": [
+    "LL",
+    "LL"
+  ],
+  "result": {
+    "count": 3,
+    "id": "securitycraft:reinforced_stripped_pale_oak_wood"
+  }
+}

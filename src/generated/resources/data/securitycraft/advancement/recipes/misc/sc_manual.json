@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:sc_manual"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wood": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:logs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_wood"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:sc_manual"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "securitycraft:block/reinforced_stripped_crimson_stem",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "securitycraft:block/reinforced_stripped_crimson_stem"
+    },
+    "axis=z": {
+      "model": "securitycraft:block/reinforced_stripped_crimson_stem",
+      "x": 90
+    }
+  }
+}

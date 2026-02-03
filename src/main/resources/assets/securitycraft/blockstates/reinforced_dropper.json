@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "facing=down": { "model": "securitycraft:block/reinforced_dropper_vertical", "x": 180 },
+        "facing=east": { "model": "securitycraft:block/reinforced_dropper", "y": 90 },
+        "facing=north": { "model": "securitycraft:block/reinforced_dropper" },
+        "facing=south": { "model": "securitycraft:block/reinforced_dropper", "y": 180 },
+        "facing=up": { "model": "securitycraft:block/reinforced_dropper_vertical" },
+        "facing=west": { "model": "securitycraft:block/reinforced_dropper", "y": 270 }
+    }
+}

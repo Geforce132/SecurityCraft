@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "axis=x":  { "model": "securitycraft:block/reinforced_quartz_pillar", "x": 90, "y": 90 },
+        "axis=y":   { "model": "securitycraft:block/reinforced_quartz_pillar"  },
+        "axis=z":   { "model": "securitycraft:block/reinforced_quartz_pillar", "x": 90 }
+    }
+}

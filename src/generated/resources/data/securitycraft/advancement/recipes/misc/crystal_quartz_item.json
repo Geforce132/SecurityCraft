@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_prismarine_crystals": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:gems/prismarine"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:crystal_quartz_item"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_prismarine_crystals"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:crystal_quartz_item"
+    ]
+  }
+}

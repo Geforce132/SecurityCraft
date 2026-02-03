@@ -1,0 +1,147 @@
+package net.geforcemods.securitycraft.blocks;
+
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IModuleInventory;
+import net.geforcemods.securitycraft.blockentities.MotionActivatedLightBlockEntity;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.LevelUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.redstone.Orientation;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
+public class MotionActivatedLightBlock extends OwnableBlock implements SimpleWaterloggedBlock {
+	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty LIT = BlockStateProperties.LIT;
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	private static final VoxelShape SHAPE_NORTH = Shapes.or(Block.box(5, 3, 15, 11, 10, 16), Block.box(6, 5, 13, 10, 9, 15));
+	private static final VoxelShape SHAPE_EAST = Shapes.or(Block.box(0, 3, 5, 1, 10, 11), Block.box(1, 5, 6, 3, 9, 10));
+	private static final VoxelShape SHAPE_SOUTH = Shapes.or(Block.box(5, 3, 0, 11, 10, 1), Block.box(6, 5, 1, 10, 9, 3));
+	private static final VoxelShape SHAPE_WEST = Shapes.or(Block.box(15, 3, 5, 16, 10, 11), Block.box(13, 5, 6, 15, 9, 10));
+
+	public MotionActivatedLightBlock(BlockBehaviour.Properties properties) {
+		super(properties);
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx) {
+		return switch (state.getValue(FACING)) {
+			case NORTH -> SHAPE_NORTH;
+			case EAST -> SHAPE_EAST;
+			case SOUTH -> SHAPE_SOUTH;
+			case WEST -> SHAPE_WEST;
+			default -> Shapes.block();
+		};
+	}
+
+	@Override
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+		Direction side = state.getValue(FACING);
+
+		return side != Direction.UP && side != Direction.DOWN && BlockUtils.isSideSolid(level, pos.relative(side.getOpposite()), side);
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+		Level level = ctx.getLevel();
+		BlockPos pos = ctx.getClickedPos();
+		Direction facing = ctx.getClickedFace();
+
+		return facing != Direction.UP && facing != Direction.DOWN && BlockUtils.isSideSolid(level, pos.relative(facing.getOpposite()), facing) ? defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER) : null;
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess, BlockPos pos, Direction facing, BlockPos facingPos, BlockState facingState, RandomSource random) {
+		if (state.getValue(WATERLOGGED))
+			tickAccess.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+
+		return super.updateShape(state, level, tickAccess, pos, facing, facingPos, facingState, random);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean flag) {
+		if (!canSurvive(state, level, pos))
+			level.destroyBlock(pos, true);
+	}
+
+	@Override
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		//prevents dropping twice the amount of modules when breaking the block in creative mode
+		if (player.isCreative() && level.getBlockEntity(pos) instanceof IModuleInventory inv)
+			inv.getInventory().clear();
+
+		return super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
+		builder.add(FACING, LIT, WATERLOGGED);
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new MotionActivatedLightBlockEntity(pos, state);
+	}
+
+	@Override
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		return level.isClientSide() ? null : BaseEntityBlock.createTickerHelper(type, SCContent.MOTION_LIGHT_BLOCK_ENTITY.get(), LevelUtils::blockEntityTicker);
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot) {
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		Direction facing = state.getValue(FACING);
+
+		switch (mirror) {
+			case LEFT_RIGHT:
+				if (facing.getAxis() == Axis.Z)
+					return state.setValue(FACING, facing.getOpposite());
+				break;
+			case FRONT_BACK:
+				if (facing.getAxis() == Axis.X)
+					return state.setValue(FACING, facing.getOpposite());
+				break;
+			case NONE:
+				break;
+		}
+
+		return state;
+	}
+}

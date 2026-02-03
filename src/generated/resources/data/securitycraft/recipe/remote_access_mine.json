@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": "#c:gems/diamond",
+    "G": "#c:ingots/gold",
+    "I": "#c:ingots/iron",
+    "T": "minecraft:redstone_torch"
+  },
+  "pattern": [
+    "T  ",
+    "GDG",
+    "III"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:remote_access_mine"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_reinforced_basalt": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:reinforced_basalt"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "securitycraft:reinforced_polished_basalt_from_reinforced_basalt_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_reinforced_basalt"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "securitycraft:reinforced_polished_basalt_from_reinforced_basalt_stonecutting"
+    ]
+  }
+}

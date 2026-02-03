@@ -1,0 +1,45 @@
+{
+	"parent": "securitycraft:block/display_case",
+    "display": {
+        "gui": {
+            "rotation": [ 30, 30, 180 ],
+            "translation": [ 0, -1, 0 ],
+            "scale":[ 0.75, 0.75, 0.75 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 180 ],
+            "translation": [ -2, 5, 2 ],
+            "scale":[ 0.25, 0.25, 0.25 ]
+        },
+        "head": {
+            "rotation": [ 180, 0, 0 ],
+            "translation": [ 8, 8, -21 ],
+            "scale":[ 1, 1, 1]
+        },
+        "fixed": {
+            "rotation": [ 180, 0, 0 ],
+            "translation": [ 4, 4, -7 ],
+            "scale":[ 0.5, 0.5, 0.5 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 135, 180 ],
+            "translation": [ 4.25, 3.25, 3 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 75, 135, 180 ],
+            "translation": [ -0.25, 7.35, 1.75 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 135, 180 ],
+            "translation": [ 4, 3.5, 0.5 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 135, 180 ],
+            "translation": [ 0, 3.5, -4.25 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        }
+    }
+}

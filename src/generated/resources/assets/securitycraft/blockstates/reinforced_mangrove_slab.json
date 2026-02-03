@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_mangrove_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_mangrove_planks"
+    },
+    "type=top": {
+      "model": "securitycraft:block/reinforced_mangrove_slab_top"
+    }
+  }
+}

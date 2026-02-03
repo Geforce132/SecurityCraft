@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_mud_brick_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_mud_bricks"
+    },
+    "type=top": {
+      "model": "securitycraft:block/reinforced_mud_brick_slab_top"
+    }
+  }
+}

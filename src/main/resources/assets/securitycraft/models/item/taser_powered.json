@@ -1,0 +1,7 @@
+{
+    "ambientocclusion": false,
+    "parent": "securitycraft:item/taser",
+    "textures": {
+        "taser": "securitycraft:item/taser_powered"
+    }
+}
