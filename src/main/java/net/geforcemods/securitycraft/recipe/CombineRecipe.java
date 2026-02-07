@@ -1,19 +1,28 @@
 package net.geforcemods.securitycraft.recipe;
 
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 
 public abstract class CombineRecipe extends CustomRecipe {
-	protected CombineRecipe(CraftingBookCategory craftingBookCategory) {
-		super(craftingBookCategory);
+	private final Ingredient first;
+	private final Ingredient second;
+	private final ItemStackTemplate result;
+
+	protected CombineRecipe(Ingredient first, Ingredient second, ItemStackTemplate result) {
+		this.first = first;
+		this.second = second;
+		this.result = result;
 	}
 
 	@Override
 	public boolean matches(CraftingInput inv, Level level) {
-		ItemStack firstItem = ItemStack.EMPTY;
+ 		ItemStack firstItem = ItemStack.EMPTY;
 		ItemStack secondItem = ItemStack.EMPTY;
 
 		for (int i = 0; i < inv.size(); ++i) {
@@ -41,27 +50,44 @@ public abstract class CombineRecipe extends CustomRecipe {
 	@Override
 	public ItemStack assemble(CraftingInput inv) {
 		ItemStack firstItem = ItemStack.EMPTY;
-		ItemStack secondItem = ItemStack.EMPTY;
 
 		for (int i = 0; i < inv.size(); ++i) {
 			ItemStack stack = inv.getItem(i);
 
-			if (matchesFirstItem(stack))
+			if (matchesFirstItem(stack)) {
 				firstItem = stack;
-			else if (matchesSecondItem(stack))
-				secondItem = stack;
+				break;
+			}
 		}
 
-		return combine(firstItem, secondItem);
+		return result.apply(firstItem.getComponentsPatch());
 	}
 
-	public abstract boolean matchesFirstItem(ItemStack stack);
+	public boolean matchesFirstItem(ItemStack stack) {
+		return first.test(stack);
+	}
 
-	public abstract boolean matchesSecondItem(ItemStack stack);
+	public boolean matchesSecondItem(ItemStack stack) {
+		return second.test(stack);
+	}
 
 	public boolean canBeCombined(ItemStack firstItem, ItemStack secondItem) {
 		return !firstItem.isEmpty() && !secondItem.isEmpty();
 	}
 
-	public abstract ItemStack combine(ItemStack firstItem, ItemStack secondItem);
+	public Ingredient first() {
+		return first;
+	}
+
+	public Ingredient second() {
+		return second;
+	}
+
+	public ItemStackTemplate result() {
+		return result;
+	}
+
+	public Holder<Item> resultItem() {
+		return result.item();
+	}
 }

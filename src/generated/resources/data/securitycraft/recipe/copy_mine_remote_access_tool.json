@@ -1,4 +1,6 @@
 {
-  "type": "securitycraft:copy_mine_remote_access_tool_recipe",
-  "category": "misc"
+  "type": "securitycraft:copy_position_component_item_recipe",
+  "component_type": "securitycraft:bound_mines",
+  "input": "securitycraft:remote_access_mine",
+  "result": "securitycraft:remote_access_mine"
 }

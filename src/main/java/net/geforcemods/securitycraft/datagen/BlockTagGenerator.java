@@ -6,7 +6,6 @@ import java.util.concurrent.CompletableFuture;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
-import net.geforcemods.securitycraft.SCTags.Blocks;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStairsBlock;
@@ -123,14 +122,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get());
 		tag(SCTags.Blocks.REINFORCED_DIRT).add(
 				SCContent.REINFORCED_DIRT.get(),
-				SCContent.REINFORCED_GRASS_BLOCK.get(),
-				SCContent.REINFORCED_PODZOL.get(),
 				SCContent.REINFORCED_COARSE_DIRT.get(),
-				SCContent.REINFORCED_MYCELIUM.get(),
-				SCContent.REINFORCED_ROOTED_DIRT.get(),
-				SCContent.REINFORCED_MOSS_BLOCK.get(),
-				SCContent.REINFORCED_PALE_MOSS_BLOCK.get(),
-				SCContent.REINFORCED_MUD.get());
+				SCContent.REINFORCED_ROOTED_DIRT.get());
 		tag(SCTags.Blocks.REINFORCED_END_STONES).add(
 				SCContent.REINFORCED_END_STONE.get());
 		tag(SCTags.Blocks.REINFORCED_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES).add(
@@ -170,6 +163,10 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_PURPLE_GLAZED_TERRACOTTA.get(),
 				SCContent.REINFORCED_MAGENTA_GLAZED_TERRACOTTA.get(),
 				SCContent.REINFORCED_PINK_GLAZED_TERRACOTTA.get());
+		tag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS).add(
+				SCContent.REINFORCED_GRASS_BLOCK.get(),
+				SCContent.REINFORCED_PODZOL.get(),
+				SCContent.REINFORCED_MYCELIUM.get());
 		tag(SCTags.Blocks.REINFORCED_ICE).add(
 				SCContent.REINFORCED_ICE.get(),
 				SCContent.REINFORCED_PACKED_ICE.get(),
@@ -196,6 +193,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_MANGROVE_WOOD.get(),
 				SCContent.REINFORCED_STRIPPED_MANGROVE_LOG.get(),
 				SCContent.REINFORCED_STRIPPED_MANGROVE_WOOD.get());
+		tag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS).add(SCContent.REINFORCED_MOSS_BLOCK.get(), SCContent.REINFORCED_PALE_MOSS_BLOCK.get());
+		tag(SCTags.Blocks.REINFORCED_MUD).add(SCContent.REINFORCED_MUD.get());
 		tag(SCTags.Blocks.REINFORCED_NYLIUM).add(
 				SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
 				SCContent.REINFORCED_WARPED_NYLIUM.get());
@@ -459,6 +458,17 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.FENCES).add(
 				SCContent.ELECTRIFIED_IRON_FENCE.get(),
 				SCContent.REINFORCED_NETHER_BRICK_FENCE.get());
+		tag(BlockTags.FOREST_ROCK_CAN_PLACE_ON)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS)
+				.add(SCContent.REINFORCED_STONE.get(),
+						SCContent.REINFORCED_GRANITE.get(),
+						SCContent.REINFORCED_DIORITE.get(),
+						SCContent.REINFORCED_ANDESITE.get(),
+						SCContent.REINFORCED_TUFF.get(),
+						SCContent.REINFORCED_DEEPSLATE.get());
 		tag(BlockTags.GUARDED_BY_PIGLINS).add(
 				SCContent.DEEPSLATE_GOLD_ORE_MINE.get(),
 				SCContent.GILDED_BLACKSTONE_MINE.get(),
@@ -466,6 +476,24 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.NETHER_GOLD_ORE_MINE.get(),
 				SCContent.REINFORCED_GOLD_BLOCK.get(),
 				SCContent.REINFORCED_RAW_GOLD_BLOCK.get());
+		tag(BlockTags.HUGE_BROWN_MUSHROOM_CAN_PLACE_ON)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS)
+				.add(SCContent.REINFORCED_MYCELIUM.get(),
+						SCContent.REINFORCED_PODZOL.get(),
+						SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
+						SCContent.REINFORCED_WARPED_NYLIUM.get());
+		tag(BlockTags.HUGE_RED_MUSHROOM_CAN_PLACE_ON)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS)
+				.add(SCContent.REINFORCED_MYCELIUM.get(),
+						SCContent.REINFORCED_PODZOL.get(),
+						SCContent.REINFORCED_CRIMSON_NYLIUM.get(),
+						SCContent.REINFORCED_WARPED_NYLIUM.get());
 		tag(BlockTags.IMPERMEABLE).add(
 				SCContent.REINFORCED_GLASS.get(),
 				SCContent.REINFORCED_TINTED_GLASS.get(),
@@ -528,15 +556,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.COAL_ORE_MINE.get(),
 				SCContent.COPPER_ORE_MINE.get(),
 				SCContent.EMERALD_ORE_MINE.get());
-		tag(BlockTags.SNIFFER_DIGGABLE_BLOCK).add(
-				SCContent.REINFORCED_DIRT.get(),
-				SCContent.REINFORCED_GRASS_BLOCK.get(),
-				SCContent.REINFORCED_PODZOL.get(),
-				SCContent.REINFORCED_COARSE_DIRT.get(),
-				SCContent.REINFORCED_ROOTED_DIRT.get(),
-				SCContent.REINFORCED_MOSS_BLOCK.get(),
-				SCContent.REINFORCED_MUD.get(),
-				SCContent.REINFORCED_PALE_MOSS_BLOCK.get());
+		tag(BlockTags.SNIFFER_DIGGABLE_BLOCK)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.add(SCContent.REINFORCED_GRASS_BLOCK.get(), SCContent.REINFORCED_PODZOL.get());
 		tag(BlockTags.SNIFFER_EGG_HATCH_BOOST).add(SCContent.REINFORCED_MOSS_BLOCK.get());
 		tag(BlockTags.SNOW).add(SCContent.REINFORCED_SNOW_BLOCK.get());
 		tag(BlockTags.SOUL_FIRE_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.get(), SCContent.REINFORCED_SOUL_SOIL.get());
@@ -560,11 +584,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.ENABLES_BUBBLE_COLUMN_DRAG_DOWN).add(SCContent.REINFORCED_MAGMA_BLOCK.get());
 		tag(BlockTags.ENABLES_BUBBLE_COLUMN_PUSH_UP).add(SCContent.REINFORCED_SOUL_SAND.get());
 		tag(BlockTags.SUPPORTS_DRY_VEGETATION).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA);
-		tag(BlockTags.SUPPORTS_SUGAR_CANE).addTag(SCTags.Blocks.REINFORCED_DIRT).addTag(SCTags.Blocks.REINFORCED_SAND);
+		tag(BlockTags.SUPPORTS_SUGAR_CANE)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.SUPPORTS_BAMBOO)
-			.addTag(SCTags.Blocks.REINFORCED_SAND)
-			.addTag(SCTags.Blocks.REINFORCED_DIRT)
-			.add(SCContent.REINFORCED_GRAVEL.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get());
+				.addTag(SCTags.Blocks.REINFORCED_SAND)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS)
+				.add(SCContent.REINFORCED_GRAVEL.get(), SCContent.SUSPICIOUS_GRAVEL_MINE.get());
 		tag(BlockTags.SUPPORTS_SMALL_DRIPLEAF).add(SCContent.REINFORCED_CLAY.get()).add(SCContent.REINFORCED_MOSS_BLOCK.get());
 		tag(BlockTags.SUPPORTS_BIG_DRIPLEAF).add(
 				SCContent.REINFORCED_DIRT.get(),
@@ -592,8 +624,19 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.CANNOT_SUPPORT_KELP).add(SCContent.REINFORCED_MAGMA_BLOCK.get());
 		tag(BlockTags.CANNOT_SUPPORT_SNOW_LAYER).add(SCContent.REINFORCED_ICE.get()).add(SCContent.REINFORCED_PACKED_ICE.get());
 		tag(BlockTags.OVERRIDES_MUSHROOM_LIGHT_REQUIREMENT).add(SCContent.REINFORCED_MYCELIUM.get()).add(SCContent.REINFORCED_PODZOL.get()).add(SCContent.REINFORCED_CRIMSON_NYLIUM.get()).add(SCContent.REINFORCED_WARPED_NYLIUM.get());
-		tag(BlockTags.AZALEA_GROWS_ON).addTag(SCTags.Blocks.REINFORCED_DIRT).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(SCContent.REINFORCED_SNOW_BLOCK.get());
-		tag(BlockTags.SUPPORTS_VEGETATION).addTag(Blocks.REINFORCED_DIRT);
+		tag(BlockTags.AZALEA_GROWS_ON)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_SAND)
+				.addTag(SCTags.Blocks.REINFORCED_TERRACOTTA)
+				.add(SCContent.REINFORCED_SNOW_BLOCK.get());
+		tag(BlockTags.SUPPORTS_VEGETATION)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_MUD)
+				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS);
 		//@formatter:on
 		miningRelatedTags();
 

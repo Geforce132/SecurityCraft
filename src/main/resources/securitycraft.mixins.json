@@ -22,6 +22,7 @@
 		"camera.ServerPlayerMixin",
 		"camera.TrackedEntityMixin",
 		"datafix.BoatSplitFixMixin",
+		"datafix.DimensionStorageFileFixMixin",
 		"datafix.GameRuleRegistryFixMixin",
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin",

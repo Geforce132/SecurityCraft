@@ -23,7 +23,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -109,11 +108,11 @@ public class SCCreativeModeTabs {
 				output.accept(new ItemStack(SCContent.LENS.get()));
 
 				int colorAmount = SecurityCraft.RANDOM.nextInt(1, 4);
-				List<DyeItem> list = new ArrayList<>();
-				ItemStack coloredLens = ItemStack.EMPTY;
+				List<DyeColor> list = new ArrayList<>();
+				ItemStack coloredLens;
 
 				for (int i = 0; i < colorAmount; i++) {
-					list.add(DyeItem.byColor(DyeColor.byId(SecurityCraft.RANDOM.nextInt(16))));
+					list.add(DyeColor.byId(SecurityCraft.RANDOM.nextInt(16)));
 				}
 
 				coloredLens = DyedItemColor.applyDyes(new ItemStack(SCContent.LENS.get()), list);

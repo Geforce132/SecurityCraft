@@ -9,8 +9,9 @@ import java.util.stream.Collectors;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.UUIDUtil;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
@@ -34,7 +35,7 @@ public class SaltData extends SavedData {
 			.fieldOf("Salts").forGetter(SaltData::saltMap)
 			).apply(i, SaltData::new));
 	//@formatter:on
-	public static final SavedDataType<SaltData> TYPE = new SavedDataType<>("securitycraft-salts", SaltData::new, CODEC, DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
+	public static final SavedDataType<SaltData> TYPE = new SavedDataType<>(SecurityCraft.resLoc("salts"), SaltData::new, CODEC, DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 	private static final Object DUMMY = new Object();
 	private static SaltData instance;
 	private final ConcurrentHashMap<UUID, byte[]> saltMap;
@@ -48,8 +49,8 @@ public class SaltData extends SavedData {
 		this.saltMap = saltMap;
 	}
 
-	public static void refreshLevel(ServerLevel level) {
-		instance = level.getDataStorage().computeIfAbsent(TYPE);
+	public static void loadSalts(MinecraftServer server) {
+		instance = server.getDataStorage().computeIfAbsent(TYPE);
 	}
 
 	public static void invalidate() {

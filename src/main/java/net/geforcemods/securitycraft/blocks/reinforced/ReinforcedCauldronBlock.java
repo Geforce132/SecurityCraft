@@ -253,7 +253,7 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 			}
 		};
 		CauldronInteraction DYED_ITEM = (state, level, pos, player, hand, stack) -> {
-			if (!stack.is(ItemTags.DYEABLE))
+			if (!stack.is(ItemTags.CAULDRON_CAN_REMOVE_DYE))
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
 			else if (!stack.has(DataComponents.DYED_COLOR))
 				return InteractionResult.TRY_WITH_EMPTY_HAND;

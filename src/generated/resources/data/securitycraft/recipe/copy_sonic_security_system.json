@@ -1,4 +1,6 @@
 {
-  "type": "securitycraft:copy_sonic_security_system_recipe",
-  "category": "misc"
+  "type": "securitycraft:copy_position_component_item_recipe",
+  "component_type": "securitycraft:sss_linked_blocks",
+  "input": "securitycraft:sonic_security_system",
+  "result": "securitycraft:sonic_security_system"
 }

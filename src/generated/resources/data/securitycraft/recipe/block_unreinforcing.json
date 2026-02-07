@@ -1,4 +1,7 @@
 {
   "type": "securitycraft:block_unreinforcing_recipe",
-  "category": "misc"
+  "reinforcer": [
+    "securitycraft:universal_block_reinforcer_lvl2",
+    "securitycraft:universal_block_reinforcer_lvl3"
+  ]
 }

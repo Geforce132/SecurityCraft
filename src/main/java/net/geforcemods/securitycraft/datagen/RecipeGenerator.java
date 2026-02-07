@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.components.KeycardData;
 import net.geforcemods.securitycraft.recipe.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
@@ -27,7 +28,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.DyeItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
@@ -47,15 +48,19 @@ public class RecipeGenerator extends RecipeProvider {
 	@Override
 	protected final void buildRecipes() {
 		//Combine block with universal block reinforcer to unreinforce/reinforce it (depending on the reinforcer's mode), reducing the reinforcer's durability
-		SpecialRecipeBuilder.special(BlockReinforcingRecipe::new).save(output, scRecipeId("block_reinforcing"));
-		SpecialRecipeBuilder.special(BlockUnreinforcingRecipe::new).save(output, scRecipeId("block_unreinforcing"));
+		SpecialRecipeBuilder.special(() -> new BlockReinforcingRecipe(Ingredient.of(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3))).save(output, scRecipeId("block_reinforcing"));
+		SpecialRecipeBuilder.special(() -> new BlockUnreinforcingRecipe(Ingredient.of(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2, SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3))).save(output, scRecipeId("block_unreinforcing"));
 		//tool copying
 		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::cameraMonitor).save(output, scRecipeId("copy_camera_monitor"));
 		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::mineRemoteAccessTool).save(output, scRecipeId("copy_mine_remote_access_tool"));
 		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::sentryRemoteAccessTool).save(output, scRecipeId("copy_sentry_remote_access_tool"));
 		SpecialRecipeBuilder.special(CopyPositionComponentItemRecipe::sonicSecuritySystem).save(output, scRecipeId("copy_sonic_security_system"));
 		//combine keycard with limited use keycard to get keycards with a configurable limited amount of uses
-		SpecialRecipeBuilder.special(LimitedUseKeycardRecipe::new).save(output, scRecipeId("limited_use_keycards"));
+		limitedUseKeycard(SCContent.KEYCARD_LVL_1);
+		limitedUseKeycard(SCContent.KEYCARD_LVL_2);
+		limitedUseKeycard(SCContent.KEYCARD_LVL_3);
+		limitedUseKeycard(SCContent.KEYCARD_LVL_4);
+		limitedUseKeycard(SCContent.KEYCARD_LVL_5);
 
 		//@formatter:off
 		//shaped recipes
@@ -776,8 +781,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addBlockMineRecipe(Blocks.SUSPICIOUS_GRAVEL, SCContent.SUSPICIOUS_GRAVEL_MINE);
 		addButtonRecipe(SCContent.REINFORCED_STONE, SCContent.REINFORCED_STONE_BUTTON);
 		addButtonRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON);
-		addCarpetRecipe(SCContent.REINFORCED_MOSS_BLOCK, SCContent.REINFORCED_MOSS_CARPET, SCTags.Items.REINFORCED_MOSS);
-		addCarpetRecipe(SCContent.REINFORCED_PALE_MOSS_BLOCK, SCContent.REINFORCED_PALE_MOSS_CARPET, SCTags.Items.REINFORCED_PALE_MOSS);
+		addCarpetRecipe(SCContent.REINFORCED_MOSS_BLOCK, SCContent.REINFORCED_MOSS_CARPET, SCContent.REINFORCED_MOSS_BLOCK);
+		addCarpetRecipe(SCContent.REINFORCED_PALE_MOSS_BLOCK, SCContent.REINFORCED_PALE_MOSS_CARPET, SCContent.REINFORCED_PALE_MOSS_BLOCK);
 		addColoredCarpetRecipes(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL, SCContent.REINFORCED_BLACK_CARPET);
 		addColoredCarpetRecipes(Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL, SCContent.REINFORCED_BLUE_CARPET);
 		addColoredCarpetRecipes(Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL, SCContent.REINFORCED_BROWN_CARPET);
@@ -811,22 +816,22 @@ public class RecipeGenerator extends RecipeProvider {
 		addChiselingRecipe(SCContent.REINFORCED_TUFF_BRICK_SLAB, SCContent.REINFORCED_CHISELED_TUFF_BRICKS);
 		addChiselingRecipe(SCContent.REINFORCED_TUFF_SLAB, SCContent.REINFORCED_CHISELED_TUFF);
 		addChiselingRecipe(SCContent.REINFORCED_RESIN_BRICK_SLAB, SCContent.REINFORCED_CHISELED_RESIN_BRICKS);
-		addColoredLensRecipe(Items.BLACK_DYE, SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.BLUE_DYE, SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.BROWN_DYE, SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.CYAN_DYE, SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.GRAY_DYE, SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.GREEN_DYE, SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.LIGHT_BLUE_DYE, SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.LIGHT_GRAY_DYE, SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.LIME_DYE, SCContent.REINFORCED_LIME_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.MAGENTA_DYE, SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.ORANGE_DYE, SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.PINK_DYE, SCContent.REINFORCED_PINK_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.PURPLE_DYE, SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.RED_DYE, SCContent.REINFORCED_RED_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.YELLOW_DYE, SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE);
-		addColoredLensRecipe(Items.WHITE_DYE, SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.BLACK, SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.BLUE, SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.BROWN, SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.CYAN, SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.GRAY, SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.GREEN, SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.LIME, SCContent.REINFORCED_LIME_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.MAGENTA, SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.ORANGE, SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.PINK, SCContent.REINFORCED_PINK_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.PURPLE, SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.RED, SCContent.REINFORCED_RED_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.YELLOW, SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE);
+		addColoredLensRecipe(DyeColor.WHITE, SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE);
 		addColoredWoolRecipe(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL);
 		addColoredWoolRecipe(Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL);
 		addColoredWoolRecipe(Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL);
@@ -1534,6 +1539,17 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addCarpetRecipe(ItemLike carpetMaterial, ItemLike carpet, ItemLike unlockedBy) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, carpet, 3)
+		.group("securitycraft:reinforced_carpets")
+		.pattern("MM")
+		.define('M', carpetMaterial)
+		.unlockedBy("has_item", has(unlockedBy))
+		.save(output);
+		//@formatter:on
+	}
+
 	protected final void addColoredCarpetRecipes(TagKey<Item> dye, ItemLike wool, ItemLike carpet) {
 		addCarpetRecipe(wool, carpet, SCTags.Items.REINFORCED_WOOL);
 		//@formatter:off
@@ -1546,16 +1562,16 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addColoredLensRecipe(Item dye, ItemLike pane) {
+	protected final void addColoredLensRecipe(DyeColor dyeColor, ItemLike pane) {
 		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, applyDye(SCContent.LENS.get(), (DyeItem) dye))
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, applyDye(SCContent.LENS.get(), dyeColor))
 		.group("securitycraft:lens")
 		.pattern(" P")
 		.pattern("P ")
 		.pattern(" P")
 		.define('P', pane)
 		.unlockedBy("has_lens", has(SCContent.LENS))
-		.save(output, scRecipeId(((DyeItem) dye).getDyeColor().getName() + "_lens"));
+		.save(output, scRecipeId(dyeColor.getName() + "_lens"));
 		//@formatter:on
 	}
 
@@ -1988,8 +2004,17 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	public static ItemStackTemplate applyDye(Item item, DyeItem dye) {
-		DataComponentPatch patch = DataComponentPatch.builder().set(DataComponents.DYED_COLOR, new DyedItemColor(dye.getDyeColor().getTextureDiffuseColor())).build();
+	protected final void limitedUseKeycard(ItemLike keycard) {
+		DataComponentPatch components = DataComponentPatch.builder().set(SCContent.KEYCARD_DATA.get(), KeycardData.DEFAULT.setLimitedAndUsesLeft(true, 0)).build();
+		SpecialRecipeBuilder.special(() -> new LimitedUseKeycardRecipe(
+				Ingredient.of(keycard),
+				Ingredient.of(SCContent.LIMITED_USE_KEYCARD.get()),
+				new ItemStackTemplate(keycard.asItem(), 2, components))
+		).save(output, scRecipeId("limited_use_" + Utils.getRegistryName(keycard.asItem()).getPath()));
+	}
+
+	public static ItemStackTemplate applyDye(Item item, DyeColor dye) {
+		DataComponentPatch patch = DataComponentPatch.builder().set(DataComponents.DYED_COLOR, new DyedItemColor(dye.getTextureDiffuseColor())).build();
 		return new ItemStackTemplate(item.builtInRegistryHolder(), 1, patch);
 	}
 

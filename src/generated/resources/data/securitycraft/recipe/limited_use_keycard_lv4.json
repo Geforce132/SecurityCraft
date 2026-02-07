@@ -1,0 +1,16 @@
+{
+  "type": "securitycraft:limited_use_keycard_recipe",
+  "first": "securitycraft:keycard_lv4",
+  "result": {
+    "components": {
+      "securitycraft:keycard_data": {
+        "limited": true,
+        "signature": 0,
+        "uses_left": 0
+      }
+    },
+    "count": 2,
+    "id": "securitycraft:keycard_lv4"
+  },
+  "second": "securitycraft:limited_use_keycard"
+}

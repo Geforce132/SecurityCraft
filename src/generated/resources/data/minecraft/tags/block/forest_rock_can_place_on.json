@@ -1,0 +1,14 @@
+{
+  "values": [
+    "#securitycraft:reinforced/dirt",
+    "#securitycraft:reinforced/mud",
+    "#securitycraft:reinforced/moss_blocks",
+    "#securitycraft:reinforced/grass_blocks",
+    "securitycraft:reinforced_stone",
+    "securitycraft:reinforced_granite",
+    "securitycraft:reinforced_diorite",
+    "securitycraft:reinforced_andesite",
+    "securitycraft:reinforced_tuff",
+    "securitycraft:reinforced_deepslate"
+  ]
+}

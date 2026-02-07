@@ -57,6 +57,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -207,28 +208,17 @@ public class SCEventHandler {
 
 	@SubscribeEvent
 	public static void onServerAboutToStart(ServerAboutToStartEvent event) {
-		PasscodeUtils.startHashingThread(event.getServer());
-	}
+		MinecraftServer server = event.getServer();
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onLevelLoad(LevelEvent.Load event) {
-		if (event.getLevel() instanceof ServerLevel level && level.dimension() == Level.OVERWORLD)
-			SaltData.refreshLevel(level);
-	}
-
-	@SubscribeEvent
-	public static void onLevelUnload(LevelEvent.Unload event) {
-		LevelAccessor level = event.getLevel();
-
-		if (level instanceof ServerLevel serverLevel && serverLevel.dimension() == Level.OVERWORLD) {
-			SaltData.invalidate();
-			BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
-		}
+		PasscodeUtils.startHashingThread(server);
+		SaltData.loadSalts(server);
 	}
 
 	@SubscribeEvent
 	public static void onServerStop(ServerStoppedEvent event) {
 		PasscodeUtils.stopHashingThread();
+		SaltData.invalidate();
+		BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.clear();
 	}
 
 	@SubscribeEvent

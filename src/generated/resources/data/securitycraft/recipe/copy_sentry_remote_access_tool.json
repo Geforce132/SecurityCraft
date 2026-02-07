@@ -1,4 +1,6 @@
 {
-  "type": "securitycraft:copy_sentry_remote_access_tool_recipe",
-  "category": "misc"
+  "type": "securitycraft:copy_position_component_item_recipe",
+  "component_type": "securitycraft:bound_sentries",
+  "input": "securitycraft:remote_access_sentry",
+  "result": "securitycraft:remote_access_sentry"
 }

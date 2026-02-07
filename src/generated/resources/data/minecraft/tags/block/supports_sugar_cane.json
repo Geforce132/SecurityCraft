@@ -1,6 +1,9 @@
 {
   "values": [
     "#securitycraft:reinforced/dirt",
+    "#securitycraft:reinforced/mud",
+    "#securitycraft:reinforced/moss_blocks",
+    "#securitycraft:reinforced/grass_blocks",
     "#securitycraft:reinforced/sand"
   ]
 }

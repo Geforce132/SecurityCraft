@@ -46,8 +46,6 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 				SCContent.SMART_MODULE.get(),
 				SCContent.SPEED_MODULE.get(),
 				SCContent.STORAGE_MODULE.get());
-		tag(SCTags.Items.REINFORCED_MOSS).add(SCContent.REINFORCED_MOSS_BLOCK.get().asItem());
-		tag(SCTags.Items.REINFORCED_PALE_MOSS).add(SCContent.REINFORCED_PALE_MOSS_BLOCK.get().asItem());
 		tag(SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS).add(
 				SCContent.REINFORCED_COBBLESTONE.get().asItem(),
 				SCContent.REINFORCED_BLACKSTONE.get().asItem(),
@@ -93,10 +91,13 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 		copy(SCTags.Blocks.REINFORCED_FENCES, SCTags.Items.REINFORCED_FENCES);
 		copy(SCTags.Blocks.REINFORCED_GLASS_PANES, SCTags.Items.REINFORCED_GLASS_PANES);
 		copy(SCTags.Blocks.REINFORCED_GLAZED_TERRACOTTA, SCTags.Items.REINFORCED_GLAZED_TERRACOTTA);
+		copy(SCTags.Blocks.REINFORCED_GRASS_BLOCKS, SCTags.Items.REINFORCED_GRASS_BLOCKS);
 		copy(SCTags.Blocks.REINFORCED_ICE, SCTags.Items.REINFORCED_ICE);
 		copy(SCTags.Blocks.REINFORCED_JUNGLE_LOGS, SCTags.Items.REINFORCED_JUNGLE_LOGS);
 		copy(SCTags.Blocks.REINFORCED_LOGS, SCTags.Items.REINFORCED_LOGS);
 		copy(SCTags.Blocks.REINFORCED_MANGROVE_LOGS, SCTags.Items.REINFORCED_MANGROVE_LOGS);
+		copy(SCTags.Blocks.REINFORCED_MOSS_BLOCKS, SCTags.Items.REINFORCED_MOSS_BLOCKS);
+		copy(SCTags.Blocks.REINFORCED_MUD, SCTags.Items.REINFORCED_MUD);
 		copy(SCTags.Blocks.REINFORCED_NYLIUM, SCTags.Items.REINFORCED_NYLIUM);
 		copy(SCTags.Blocks.REINFORCED_OAK_LOGS, SCTags.Items.REINFORCED_OAK_LOGS);
 		copy(SCTags.Blocks.REINFORCED_PALE_OAK_LOGS, SCTags.Items.REINFORCED_PALE_OAK_LOGS);
@@ -130,7 +131,7 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.get(),
 				SCContent.UNIVERSAL_BLOCK_REMOVER.get(),
 				SCContent.UNIVERSAL_OWNER_CHANGER.get());
-		tag(ItemTags.DYEABLE).add(SCContent.BRIEFCASE.get(), SCContent.LENS.get());
+		tag(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(SCContent.BRIEFCASE.get(), SCContent.LENS.get());
 		tag(ItemTags.FENCE_GATES).add(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get().asItem());
 		tag(ItemTags.FENCES).add(SCContent.ELECTRIFIED_IRON_FENCE.get().asItem());
 		tag(ItemTags.HANGING_SIGNS).addTag(SCTags.Items.SECRET_HANGING_SIGNS);

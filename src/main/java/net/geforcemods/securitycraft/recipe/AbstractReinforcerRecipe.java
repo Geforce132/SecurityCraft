@@ -2,24 +2,25 @@ package net.geforcemods.securitycraft.recipe;
 
 import java.util.Map;
 
-import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public abstract class AbstractReinforcerRecipe extends CustomRecipe {
-	protected AbstractReinforcerRecipe(CraftingBookCategory category) {
-		super(category);
+	private final Ingredient reinforcer;
+
+	protected AbstractReinforcerRecipe(Ingredient reinforcer) {
+		this.reinforcer = reinforcer;
 	}
 
 	public abstract Map<Block, Block> getBlockMap();
@@ -46,7 +47,7 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 				else
 					return false;
 			}
-			else if (item instanceof UniversalBlockReinforcerItem) {
+			else if (reinforcer.test(stack)) {
 				if (hasReinforcer || !isCorrectReinforcer(stack))
 					return false;
 
@@ -76,7 +77,7 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 		for (int i = 0; i < newInv.size(); i++) {
 			ItemStack stack = inv.getItem(i);
 
-			if (stack.getItem() instanceof UniversalBlockReinforcerItem) {
+			if (reinforcer.test(stack)) {
 				Player player = CommonHooks.getCraftingPlayer();
 				Level level = player != null ? player.level() : ServerLifecycleHooks.getCurrentServer().overworld();
 
@@ -88,5 +89,9 @@ public abstract class AbstractReinforcerRecipe extends CustomRecipe {
 		}
 
 		return newInv;
+	}
+
+	public Ingredient reinforcer() {
+		return reinforcer;
 	}
 }

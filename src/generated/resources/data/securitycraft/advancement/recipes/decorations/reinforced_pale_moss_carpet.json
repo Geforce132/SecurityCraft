@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#securitycraft:reinforced/pale_moss"
+            "items": "securitycraft:reinforced_pale_moss_block"
           }
         ]
       },
