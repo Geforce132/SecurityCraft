@@ -14,7 +14,9 @@ import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntit
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
+import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
@@ -49,6 +51,7 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.level.ChunkEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -141,6 +144,13 @@ public class SCClientEventHandler {
 
 			CameraViewAreaExtension.onChunkUnload(pos.x, pos.z);
 		}
+	}
+
+	@SubscribeEvent
+	public static void onLevelUnload(LevelEvent.Unload event) {
+		FrameFeedHandler.removeAllFeeds();
+		CameraClientChunkCacheExtension.clear();
+		CameraViewAreaExtension.clear();
 	}
 
 	public static void cameraOverlay(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
