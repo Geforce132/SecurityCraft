@@ -39,25 +39,20 @@ import net.minecraft.world.phys.Vec3;
 
 public class KeycardReaderBlock extends DisguisableBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
-	public static final EnumProperty<Direction> ROTATION =
-			EnumProperty.create("rotation", Direction.class,
-					Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+	public static final EnumProperty<Direction> ROTATION = EnumProperty.create("rotation", Direction.class, Direction.Plane.HORIZONTAL);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public KeycardReaderBlock(BlockBehaviour.Properties properties) {
 		super(properties);
 		registerDefaultState(
-				stateDefinition.any()
-						.setValue(FACING, Direction.NORTH)
-						.setValue(ROTATION, Direction.NORTH)
-						.setValue(POWERED, false)
-						.setValue(WATERLOGGED, false)
+				stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ROTATION, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false)
 		);
 	}
 
 	@Override
 	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		return useItemOn(stack, state, level, pos, player, hand, be -> {
+			//only allow the owner and players on the allowlist to open the gui
 			if (be.isOwnedBy(player) || be.isAllowed(player))
 				player.openMenu(be);
 		});
@@ -78,9 +73,10 @@ public class KeycardReaderBlock extends DisguisableBlock {
 				boolean isCodebreaker = item == SCContent.CODEBREAKER.get();
 				boolean isKeycardHolder = item == SCContent.KEYCARD_HOLDER.get();
 
+				//either no keycard, or an unlinked keycard, or an admin tool
 				if (!isKeycardHolder && (!(item instanceof KeycardItem) || !stack.has(SCContent.KEYCARD_DATA)) && !isCodebreaker)
 					noKeycardRightclick.accept(be);
-				else if (item != SCContent.LIMITED_USE_KEYCARD.get())
+				else if (item != SCContent.LIMITED_USE_KEYCARD.get()) //limited use keycards are only crafting components now
 					return be.onRightClickWithActionItem(stack, hand, player, isCodebreaker, isKeycardHolder);
 			}
 		}

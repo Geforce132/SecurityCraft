@@ -34,7 +34,7 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 	public RetinalScannerRenderer(BlockEntityRendererProvider.Context ctx) {
 		playerSkinRenderCache = ctx.playerSkinRenderCache();
 	}
-	
+
 	@Override
 	public void submit(RetinalScannerRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
 		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera))
@@ -88,16 +88,16 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			collector.submitCustomGeometry(poseStack, state.renderType, (pose, builder) -> {
 				Vec3i normalVector = facing.getUnitVec3i();
 				int combinedLight = state.combinedSkinLight;
-
-				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
-				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
-				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.25F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
-				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
-
-				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
-				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
-				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.75F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
-				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.75F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, (float) normalVector.getX(), (float) normalVector.getY(), (float) normalVector.getZ());
+				// face
+				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				// helmet
+				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0F).setColor(255, 255, 255, 255).setUv(0.75F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.75F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 			});
 			poseStack.popPose();
 		}
