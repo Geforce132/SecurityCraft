@@ -50,7 +50,6 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			poseStack.pushPose();
 
 			if (facing.getAxis().isHorizontal()) {
-
 				switch (facing) {
 					case NORTH:
 						poseStack.translate(0.25F, 1.0F / 16.0F, 0.0F);
@@ -71,16 +70,18 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 						break;
 				}
 			}
-			else if (facing == Direction.DOWN) {
+			else {
 				poseStack.translate(0.5D, 0.5D, 0.5D);
-				poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-				poseStack.mulPose(Axis.ZP.rotationDegrees(rotation.toYRot() + 180.0F));
-				poseStack.translate(-0.25D, -0.4375D, -0.501D);
-			}
-			else if (facing == Direction.UP) {
-				poseStack.translate(0.5D, 0.5D, 0.5D);
-				poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-				poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F - rotation.toYRot()));
+
+				if (facing == Direction.DOWN) {
+					poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+					poseStack.mulPose(Axis.ZP.rotationDegrees(rotation.toYRot() + 180.0F));
+				}
+				else if (facing == Direction.UP) {
+					poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+					poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F - rotation.toYRot()));
+				}
+
 				poseStack.translate(-0.25D, -0.4375D, -0.501D);
 			}
 
@@ -88,11 +89,13 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			collector.submitCustomGeometry(poseStack, state.renderType, (pose, builder) -> {
 				Vec3i normalVector = facing.getUnitVec3i();
 				int combinedLight = state.combinedSkinLight;
+
 				// face
 				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+
 				// helmet
 				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());

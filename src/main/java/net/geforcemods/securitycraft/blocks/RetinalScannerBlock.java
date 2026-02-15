@@ -33,7 +33,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 public class RetinalScannerBlock extends DisguisableBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
-	public static final EnumProperty<Direction> ROTATION = EnumProperty.create("rotation", Direction.class, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST);
+	public static final EnumProperty<Direction> ROTATION = EnumProperty.create("rotation", Direction.class, Direction.Plane.HORIZONTAL);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public RetinalScannerBlock(BlockBehaviour.Properties properties) {
@@ -92,25 +92,18 @@ public class RetinalScannerBlock extends DisguisableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		Direction facing = ctx.getNearestLookingDirection().getOpposite();
-		BlockState state = super.getStateForPlacement(ctx)
-				.setValue(FACING, facing)
-				.setValue(POWERED, false)
-				.setValue(WATERLOGGED, ctx.getLevel().getFluidState(ctx.getClickedPos()).getType() == net.minecraft.world.level.material.Fluids.WATER);
+		BlockState state = super.getStateForPlacement(ctx).setValue(FACING, facing);
 
 		if (facing == Direction.UP || facing == Direction.DOWN) {
 			Direction horizontalDir = ctx.getHorizontalDirection();
-			if (horizontalDir == Direction.NORTH || horizontalDir == Direction.SOUTH) {
-				state = state.setValue(ROTATION, horizontalDir.getOpposite());
-			}
-			else {
-				state = state.setValue(ROTATION, horizontalDir);
-			}
-		}
-		else {
-			state = state.setValue(ROTATION, facing);
-		}
 
-		return state;
+			if (horizontalDir == Direction.NORTH || horizontalDir == Direction.SOUTH)
+				return state.setValue(ROTATION, horizontalDir.getOpposite());
+			else
+				return state.setValue(ROTATION, horizontalDir);
+		}
+		else
+			return state.setValue(ROTATION, facing);
 	}
 
 	@Override
@@ -130,8 +123,7 @@ public class RetinalScannerBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)))
-				.setValue(ROTATION, rot.rotate(state.getValue(ROTATION)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING))).setValue(ROTATION, rot.rotate(state.getValue(ROTATION)));
 	}
 
 	@Override

@@ -44,9 +44,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	public KeycardReaderBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(
-				stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ROTATION, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false)
-		);
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ROTATION, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -139,23 +137,17 @@ public class KeycardReaderBlock extends DisguisableBlock {
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		Direction facing = ctx.getNearestLookingDirection().getOpposite();
-		BlockState state = super.getStateForPlacement(ctx)
-				.setValue(FACING, facing)
-				.setValue(POWERED, false);
+		BlockState state = super.getStateForPlacement(ctx).setValue(FACING, facing);
 
-		if (facing == Direction.UP || facing == Direction.DOWN) {
-			state = state.setValue(ROTATION, ctx.getHorizontalDirection().getOpposite());
-		}
-		else {
-			state = state.setValue(ROTATION, facing);
-		}
-
-		return state;
+		if (facing == Direction.UP || facing == Direction.DOWN)
+			return state.setValue(ROTATION, ctx.getHorizontalDirection().getOpposite());
+		else
+			return state.setValue(ROTATION, facing);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, WATERLOGGED, ROTATION);
+		builder.add(FACING, ROTATION, POWERED, WATERLOGGED);
 	}
 
 	@Override
@@ -165,7 +157,7 @@ public class KeycardReaderBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING))).setValue(ROTATION, rot.rotate(state.getValue(ROTATION)));
 	}
 
 	@Override
