@@ -16,10 +16,14 @@ import net.minecraft.client.renderer.SubmitNodeCollector.CustomGeometryRenderer;
 import net.minecraft.client.renderer.feature.CustomFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 
+/**
+ * CustomFeatureRenderer does not render the animations of textures. This mixin fixes that for
+ * the cases where SecurityCraft uses a specific geometry renderer
+ */
 @Mixin(CustomFeatureRenderer.class)
 public class CustomFeatureRendererMixin {
 	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector$CustomGeometryRenderer;render(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
-	private void render(CustomGeometryRenderer renderer, Pose pose, VertexConsumer vertexConsumer, Operation<Void> original, SubmitNodeCollection collection, BufferSource buffer) {
+	private void securitycraft$renderAnimation(CustomGeometryRenderer renderer, Pose pose, VertexConsumer vertexConsumer, Operation<Void> original, SubmitNodeCollection collection, BufferSource buffer) {
 		if (renderer instanceof WrappingGeometryRenderer wrapper)
 			renderer.render(pose, wrapper.material.buffer(Minecraft.getInstance().getAtlasManager(), buffer, RenderTypes::entitySolid));
 		else
