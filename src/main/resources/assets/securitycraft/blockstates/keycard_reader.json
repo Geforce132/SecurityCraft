@@ -4,9 +4,25 @@
         "facing=south,powered=true": { "model": "securitycraft:block/keycard_reader_on", "y": 180 },
         "facing=west,powered=true":  { "model": "securitycraft:block/keycard_reader_on", "y": 270 },
         "facing=east,powered=true":  { "model": "securitycraft:block/keycard_reader_on", "y": 90 },
+        "facing=up,rotation=north,powered=true": { "model": "securitycraft:block/keycard_reader_on", "x": -90 },
+        "facing=up,rotation=south,powered=true": { "model": "securitycraft:block/keycard_reader_on", "x": -90, "y": 180 },
+        "facing=up,rotation=west,powered=true":  { "model": "securitycraft:block/keycard_reader_on", "x": -90, "y": 270 },
+        "facing=up,rotation=east,powered=true":  { "model": "securitycraft:block/keycard_reader_on", "x": -90, "y": 90 },
+        "facing=down,rotation=north,powered=true": { "model": "securitycraft:block/keycard_reader_on", "x": 90 },
+        "facing=down,rotation=south,powered=true": { "model": "securitycraft:block/keycard_reader_on", "x": 90, "y": 180 },
+        "facing=down,rotation=west,powered=true":  { "model": "securitycraft:block/keycard_reader_on", "x": 90, "y": 270 },
+        "facing=down,rotation=east,powered=true":  { "model": "securitycraft:block/keycard_reader_on", "x": 90, "y": 90 },
         "facing=north,powered=false": { "model": "securitycraft:block/keycard_reader_off" },
         "facing=south,powered=false": { "model": "securitycraft:block/keycard_reader_off", "y": 180 },
         "facing=west,powered=false":  { "model": "securitycraft:block/keycard_reader_off", "y": 270 },
-        "facing=east,powered=false":  { "model": "securitycraft:block/keycard_reader_off", "y": 90 }
+        "facing=east,powered=false":  { "model": "securitycraft:block/keycard_reader_off", "y": 90 },
+        "facing=up,rotation=north,powered=false": { "model": "securitycraft:block/keycard_reader_off", "x": -90 },
+        "facing=up,rotation=south,powered=false": { "model": "securitycraft:block/keycard_reader_off", "x": -90, "y": 180 },
+        "facing=up,rotation=west,powered=false":  { "model": "securitycraft:block/keycard_reader_off", "x": -90, "y": 270 },
+        "facing=up,rotation=east,powered=false":  { "model": "securitycraft:block/keycard_reader_off", "x": -90, "y": 90 },
+        "facing=down,rotation=north,powered=false": { "model": "securitycraft:block/keycard_reader_off", "x": 90 },
+        "facing=down,rotation=south,powered=false": { "model": "securitycraft:block/keycard_reader_off", "x": 90, "y": 180 },
+        "facing=down,rotation=west,powered=false":  { "model": "securitycraft:block/keycard_reader_off", "x": 90, "y": 270 },
+        "facing=down,rotation=east,powered=false":  { "model": "securitycraft:block/keycard_reader_off", "x": 90, "y": 90 }
     }
 }
