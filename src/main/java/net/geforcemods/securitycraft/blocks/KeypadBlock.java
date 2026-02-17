@@ -37,12 +37,13 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class KeypadBlock extends DisguisableBlock {
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = BlockStateProperties.FACING;
+	public static final DirectionProperty ROTATION = DirectionProperty.create("rotation", Direction.Plane.HORIZONTAL);
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	public KeypadBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ROTATION, Direction.NORTH).setValue(POWERED, false).setValue(WATERLOGGED, false));
 	}
 
 	@Override
@@ -124,12 +125,18 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return super.getStateForPlacement(ctx).setValue(FACING, ctx.getHorizontalDirection().getOpposite()).setValue(POWERED, false);
+		Direction facing = ctx.getNearestLookingDirection().getOpposite();
+		BlockState state = super.getStateForPlacement(ctx).setValue(FACING, facing);
+
+		if (facing == Direction.UP || facing == Direction.DOWN)
+			return state.setValue(ROTATION, ctx.getHorizontalDirection().getOpposite());
+		else
+			return state.setValue(ROTATION, facing);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-		builder.add(FACING, POWERED, WATERLOGGED);
+		builder.add(FACING, ROTATION, POWERED, WATERLOGGED);
 	}
 
 	@Override
@@ -139,7 +146,7 @@ public class KeypadBlock extends DisguisableBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING))).setValue(ROTATION, rot.rotate(state.getValue(ROTATION)));
 	}
 
 	@Override

@@ -34,6 +34,7 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScannerBlockEntity> {
 	private static final float CORRECT_FACTOR = 1 / 550F;
@@ -45,32 +46,50 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay))
 			return;
 
-		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
+		BlockState state = be.getBlockState();
+		Direction facing = state.getValue(RetinalScannerBlock.FACING);
+		Direction rotation = state.getValue(RetinalScannerBlock.ROTATION);
 
-		if (direction != null) {
+		if (facing != null && rotation != null) {
 			if (be.isModuleEnabled(ModuleType.DISGUISE) && ModuleItem.getBlockAddon(be.getModule(ModuleType.DISGUISE)) != null)
 				return;
 
 			pose.pushPose();
 
-			switch (direction) {
-				case NORTH:
-					pose.translate(0.25F, 1.0F / 16.0F, 0.0F);
-					break;
-				case SOUTH:
-					pose.translate(0.75F, 1.0F / 16.0F, 1.0F);
-					pose.mulPose(Axis.YP.rotationDegrees(180.0F));
-					break;
-				case WEST:
-					pose.translate(0.0F, 1.0F / 16.0F, 0.75F);
-					pose.mulPose(Axis.YP.rotationDegrees(90.0F));
-					break;
-				case EAST:
-					pose.translate(1.0F, 1.0F / 16.0F, 0.25F);
-					pose.mulPose(Axis.YP.rotationDegrees(270.0F));
-					break;
-				default:
-					break;
+			if (facing.getAxis().isHorizontal()) {
+				switch (facing) {
+					case NORTH:
+						pose.translate(0.25F, 1.0F / 16.0F, 0.0F);
+						break;
+					case SOUTH:
+						pose.translate(0.75F, 1.0F / 16.0F, 1.0F);
+						pose.mulPose(Axis.YP.rotationDegrees(180.0F));
+						break;
+					case WEST:
+						pose.translate(0.0F, 1.0F / 16.0F, 0.75F);
+						pose.mulPose(Axis.YP.rotationDegrees(90.0F));
+						break;
+					case EAST:
+						pose.translate(1.0F, 1.0F / 16.0F, 0.25F);
+						pose.mulPose(Axis.YP.rotationDegrees(270.0F));
+						break;
+					default:
+						break;
+				}
+			}
+			else {
+				pose.translate(0.5D, 0.5D, 0.5D);
+
+				if (facing == Direction.DOWN) {
+					pose.mulPose(Axis.XP.rotationDegrees(-90.0F));
+					pose.mulPose(Axis.ZP.rotationDegrees(rotation.toYRot() + 180.0F));
+				}
+				else if (facing == Direction.UP) {
+					pose.mulPose(Axis.XP.rotationDegrees(90.0F));
+					pose.mulPose(Axis.ZP.rotationDegrees(180.0F - rotation.toYRot()));
+				}
+
+				pose.translate(-0.25D, -0.4375D, -0.501D);
 			}
 
 			pose.scale(-1.0F, -1.0F, 1.0F);
@@ -78,21 +97,21 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 			VertexConsumer vertexBuilder = buffer.getBuffer(RenderType.entityCutout(getSkinTexture(be.getPlayerProfile())));
 			Matrix4f positionMatrix = pose.last().pose();
 			Matrix3f normalMatrix = pose.last().normal();
-			Vec3i normalVector = direction.getNormal();
-			BlockPos offsetPos = be.getBlockPos().relative(direction);
+			Vec3i normalVector = facing.getNormal();
+			BlockPos offsetPos = be.getBlockPos().relative(facing);
 
 			combinedLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
 
 			// face
 			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).color(255, 255, 255, 255).uv(0.125F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).color(255, 255, 255, 255).uv(0.25F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0F).color(255, 255, 255, 255).uv(0.25F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.25F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 
 			// helmet
 			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.625F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 			vertexBuilder.vertex(positionMatrix, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).color(255, 255, 255, 255).uv(0.625F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
-			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).color(255, 255, 255, 255).uv(0.75F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
+			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0F).color(255, 255, 255, 255).uv(0.75F, 0.125F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 			vertexBuilder.vertex(positionMatrix, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).color(255, 255, 255, 255).uv(0.75F, 0.25F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(combinedLight).normal(normalMatrix, normalVector.getX(), normalVector.getY(), normalVector.getZ()).endVertex();
 
 			pose.popPose();
