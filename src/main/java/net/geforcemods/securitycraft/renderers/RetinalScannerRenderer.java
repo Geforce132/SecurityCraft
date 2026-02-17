@@ -40,49 +40,66 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 		if (ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, poseStack, collector, camera))
 			return;
 
-		Direction direction = state.direction;
+		Direction facing = state.direction;
+		Direction rotation = state.rotation;
 
-		if (direction != null) {
+		if (facing != null && rotation != null) {
 			if (state.isDisguised)
 				return;
 
 			poseStack.pushPose();
 
-			switch (direction) {
-				case NORTH:
-					poseStack.translate(0.25F, 1.0F / 16.0F, 0.0F);
-					break;
-				case SOUTH:
-					poseStack.translate(0.75F, 1.0F / 16.0F, 1.0F);
-					poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
-					break;
-				case WEST:
-					poseStack.translate(0.0F, 1.0F / 16.0F, 0.75F);
-					poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-					break;
-				case EAST:
-					poseStack.translate(1.0F, 1.0F / 16.0F, 0.25F);
-					poseStack.mulPose(Axis.YP.rotationDegrees(270.0F));
-					break;
-				default:
-					break;
+			if (facing.getAxis().isHorizontal()) {
+				switch (facing) {
+					case NORTH:
+						poseStack.translate(0.25F, 1.0F / 16.0F, 0.0F);
+						break;
+					case SOUTH:
+						poseStack.translate(0.75F, 1.0F / 16.0F, 1.0F);
+						poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+						break;
+					case WEST:
+						poseStack.translate(0.0F, 1.0F / 16.0F, 0.75F);
+						poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+						break;
+					case EAST:
+						poseStack.translate(1.0F, 1.0F / 16.0F, 0.25F);
+						poseStack.mulPose(Axis.YP.rotationDegrees(270.0F));
+						break;
+					default:
+						break;
+				}
+			}
+			else {
+				poseStack.translate(0.5D, 0.5D, 0.5D);
+
+				if (facing == Direction.DOWN) {
+					poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
+					poseStack.mulPose(Axis.ZP.rotationDegrees(rotation.toYRot() + 180.0F));
+				}
+				else if (facing == Direction.UP) {
+					poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+					poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F - rotation.toYRot()));
+				}
+
+				poseStack.translate(-0.25D, -0.4375D, -0.501D);
 			}
 
 			poseStack.scale(-1.0F, -1.0F, 1.0F);
 			collector.submitCustomGeometry(poseStack, state.renderType, (pose, builder) -> {
-				Vec3i normalVector = direction.getUnitVec3i();
+				Vec3i normalVector = facing.getUnitVec3i();
 				int combinedLight = state.combinedSkinLight;
 
 				// face
 				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.125F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.25F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.25F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 
 				// helmet
 				builder.addVertex(pose, CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2F, 0F).setColor(255, 255, 255, 255).setUv(0.625F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
-				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0).setColor(255, 255, 255, 255).setUv(0.75F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
+				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, -0.5F - CORRECT_FACTOR / 2, 0F).setColor(255, 255, 255, 255).setUv(0.75F, 0.125F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 				builder.addVertex(pose, -0.5F - CORRECT_FACTOR, CORRECT_FACTOR * 1.5F, 0F).setColor(255, 255, 255, 255).setUv(0.75F, 0.25F).setOverlay(OverlayTexture.NO_OVERLAY).setLight(combinedLight).setNormal(pose, normalVector.getX(), normalVector.getY(), normalVector.getZ());
 			});
 			poseStack.popPose();
@@ -98,12 +115,13 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 	public void extractRenderState(RetinalScannerBlockEntity be, RetinalScannerRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 
-		Direction direction = be.getBlockState().getValue(RetinalScannerBlock.FACING);
-		BlockPos offsetPos = be.getBlockPos().relative(direction);
+		Direction facing = be.getBlockState().getValue(RetinalScannerBlock.FACING);
+		BlockPos offsetPos = be.getBlockPos().relative(facing);
 
 		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
 		state.renderType = getRenderType(be.getPlayerProfile());
-		state.direction = direction;
+		state.direction = facing;
+		state.rotation = be.getBlockState().getValue(RetinalScannerBlock.ROTATION);
 		state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE) && ModuleItem.getBlockAddon(be.getModule(ModuleType.DISGUISE)) != null;
 		state.combinedSkinLight = LightTexture.pack(be.getLevel().getBrightness(LightLayer.BLOCK, offsetPos), be.getLevel().getBrightness(LightLayer.SKY, offsetPos));
 	}
