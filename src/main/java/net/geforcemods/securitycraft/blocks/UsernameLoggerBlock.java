@@ -42,7 +42,7 @@ public class UsernameLoggerBlock extends DisguisableBlock {
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && (be.isOwnedBy(player) || be.isAllowed(player))) {
 			if (be.isDisabled())
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 			else
 				PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.USERNAME_LOGGER, pos));
 		}

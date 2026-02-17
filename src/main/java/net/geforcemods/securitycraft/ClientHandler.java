@@ -159,7 +159,7 @@ import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SnowyDirtBlock;
+import net.minecraft.world.level.block.SnowyBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
@@ -320,56 +320,10 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onFMLClientSetup(FMLClientSetupEvent event) {
-		ChunkSectionLayer cutout = ChunkSectionLayer.CUTOUT;
 		ChunkSectionLayer translucent = ChunkSectionLayer.TRANSLUCENT;
 
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FAKE_WATER.get(), translucent);
 		ItemBlockRenderTypes.setRenderLayer(SCContent.FLOWING_FAKE_WATER.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_COPPER_BARS.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_IRON_BARS.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHTNING_ROD.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get(), translucent);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.REINFORCED_PALE_MOSS_CARPET.get(), cutout);
-		ItemBlockRenderTypes.setRenderLayer(SCContent.TRACK_MINE.get(), cutout);
 	}
 
 	@SubscribeEvent
@@ -593,7 +547,7 @@ public class ClientHandler {
 		event.register(disguisableBlockColor, disguisableBlocks.get());
 		event.register(disguisableBlockColor, SCContent.SECURE_REDSTONE_INTERFACE.get());
 		event.register((state, level, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
+			if (tintIndex == 1 && !state.getValue(SnowyBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
 
 				return mixWithReinforcedTintIfEnabled(grassTint);

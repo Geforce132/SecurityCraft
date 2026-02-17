@@ -22,10 +22,22 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
  */
 @Mixin(CustomFeatureRenderer.class)
 public class CustomFeatureRendererMixin {
-	@WrapOperation(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector$CustomGeometryRenderer;render(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
-	private void securitycraft$renderAnimation(CustomGeometryRenderer renderer, Pose pose, VertexConsumer vertexConsumer, Operation<Void> original, SubmitNodeCollection collection, BufferSource buffer) {
+	@WrapOperation(method = "renderSolid", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector$CustomGeometryRenderer;render(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
+	private void securitycraft$renderSolidAnimation(CustomGeometryRenderer renderer, Pose pose, VertexConsumer vertexConsumer, Operation<Void> original, SubmitNodeCollection collection, BufferSource buffer) {
 		if (renderer instanceof WrappingGeometryRenderer wrapper)
-			renderer.render(pose, wrapper.material.buffer(Minecraft.getInstance().getAtlasManager(), buffer, RenderTypes::entitySolid));
+			renderer.render(pose, wrapper.spriteId.buffer(Minecraft.getInstance().getAtlasManager(), buffer, RenderTypes::entitySolid));
+		else
+			original.call(renderer, pose, vertexConsumer);
+	}
+
+	/**
+	 * Technically not needed because SecurityCraft does not have any translucent textures it needs to render with
+	 * animations, however it is here for completeness
+	 */
+	@WrapOperation(method = "renderTranslucent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector$CustomGeometryRenderer;render(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
+	private void securitycraft$renderTranslucentAnimation(CustomGeometryRenderer renderer, Pose pose, VertexConsumer vertexConsumer, Operation<Void> original, SubmitNodeCollection collection, BufferSource buffer) {
+		if (renderer instanceof WrappingGeometryRenderer wrapper)
+			renderer.render(pose, wrapper.spriteId.buffer(Minecraft.getInstance().getAtlasManager(), buffer, RenderTypes::entityTranslucent));
 		else
 			original.call(renderer, pose, vertexConsumer);
 	}

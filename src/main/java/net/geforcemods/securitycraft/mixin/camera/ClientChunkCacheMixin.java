@@ -33,10 +33,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 @Mixin(value = ClientChunkCache.class, priority = 1100)
 public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	@Shadow
-	volatile ClientChunkCache.Storage storage;
+	private volatile ClientChunkCache.Storage storage;
 	@Shadow
 	@Final
-	ClientLevel level;
+	private ClientLevel level;
 
 	/**
 	 * Removes dropped chunks from the camera client chunk cache, unless the chunk is in range of a currently mounted camera or a

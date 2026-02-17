@@ -110,7 +110,7 @@ public class FrameBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 			boolean ownedByUser = be.isOwnedBy(player);
 
 			if (be.isDisabled())
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 			else if (!ConfigHandler.SERVER.frameFeedViewingEnabled.get())
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.disabled"), ChatFormatting.RED);
 			else if (!level.isClientSide() && (ownedByUser || be.isAllowed(player)) && !be.getCameraPositions().isEmpty())

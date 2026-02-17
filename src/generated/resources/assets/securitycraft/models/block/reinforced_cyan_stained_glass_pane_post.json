@@ -1,7 +1,13 @@
 {
   "parent": "minecraft:block/template_glass_pane_post",
   "textures": {
-    "edge": "securitycraft:block/reinforced_cyan_stained_glass_pane_top",
-    "pane": "securitycraft:block/reinforced_cyan_stained_glass"
+    "edge": {
+      "force_translucent": true,
+      "sprite": "securitycraft:block/reinforced_cyan_stained_glass_pane_top"
+    },
+    "pane": {
+      "force_translucent": true,
+      "sprite": "securitycraft:block/reinforced_cyan_stained_glass"
+    }
   }
 }

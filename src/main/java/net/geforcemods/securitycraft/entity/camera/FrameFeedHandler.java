@@ -27,7 +27,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.TextureFilteringMethod;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.PanoramicScreenshotParameters;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -96,11 +95,11 @@ public class FrameFeedHandler {
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
-		PanoramicScreenshotParameters oldPanoramicScreenshotParameters = mc.gameRenderer.getPanoramicScreenshotParameters();
+		boolean oldIsPanoramicMode = camera.isPanoramicMode();
 
 		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
 		mc.gameRenderer.setRenderBlockOutline(false);
-		mc.gameRenderer.setPanoramicScreenshotParameters(new PanoramicScreenshotParameters(camera.forwardVector()));
+		camera.enablePanoramicMode();
 		window.setWidth(100);
 		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
@@ -132,8 +131,9 @@ public class FrameFeedHandler {
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
 					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
-					mc.gameRenderer.updateCamera(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
+					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
 					mc.gameRenderer.getGlobalSettingsUniform().update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera, mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
+					mc.levelRenderer.update(camera); //Queues uncompiled visible sections for compilation
 					mc.mainRenderTarget = feed.renderTarget();
 
 					try {
@@ -172,12 +172,17 @@ public class FrameFeedHandler {
 		camera.eyeHeightOld = oldEyeHeightO;
 		mc.options.setCameraType(oldCameraType);
 		mc.gameRenderer.setRenderBlockOutline(true);
-		mc.gameRenderer.updateCamera(mc.getDeltaTracker());
+
+		if (oldIsPanoramicMode)
+			camera.enablePanoramicMode();
+		else
+			camera.disablePanoramicMode();
+
+		camera.update(mc.getDeltaTracker());
 		mc.levelRenderer.visibleSections.clear();
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
-		mc.gameRenderer.setPanoramicScreenshotParameters(oldPanoramicScreenshotParameters);
 		mc.mainRenderTarget = oldMainRenderTarget;
 		currentlyCapturedCamera = null;
 	}

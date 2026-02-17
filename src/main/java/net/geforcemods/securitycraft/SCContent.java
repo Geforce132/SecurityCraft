@@ -189,7 +189,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRotatedPillarBl
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedScaffoldingBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedShelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyDirtBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSnowyBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSoulSandBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedStainedGlassPaneBlock;
@@ -731,7 +731,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_PODZOL = reinforcedBlock("reinforced_podzol", Blocks.PODZOL, ReinforcedSnowyDirtBlock::new);
+	public static final DeferredBlock<ReinforcedSnowyBlock> REINFORCED_PODZOL = reinforcedBlock("reinforced_podzol", Blocks.PODZOL, ReinforcedSnowyBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1382,7 +1382,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSnowyDirtBlock> REINFORCED_MYCELIUM = reinforcedBlock("reinforced_mycelium", Blocks.MYCELIUM, ReinforcedSnowyDirtBlock::new);
+	public static final DeferredBlock<ReinforcedSnowyBlock> REINFORCED_MYCELIUM = reinforcedBlock("reinforced_mycelium", Blocks.MYCELIUM, ReinforcedSnowyBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced

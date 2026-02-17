@@ -70,7 +70,7 @@ public class KeypadDoorBlockEntity extends SpecialDoorBlockEntity implements IPa
 	@Override
 	public boolean shouldAttemptCodebreak(Player player) {
 		if (isDisabled()) {
-			player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+			player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 			return false;
 		}
 

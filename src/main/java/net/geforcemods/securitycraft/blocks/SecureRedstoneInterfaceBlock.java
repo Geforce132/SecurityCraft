@@ -78,7 +78,7 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 		if (level.getBlockEntity(pos) instanceof SecureRedstoneInterfaceBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide()) {
 				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 				else if (be.getOwner().isValidated())
 					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.SECURE_REDSTONE_INTERFACE, pos));
 				else

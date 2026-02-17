@@ -4,6 +4,7 @@
 	"compatibilityLevel": "JAVA_21",
 	"refmap": "securitycraft.refmap.json",
 	"client": [
+		"camera.CameraMixin",
 		"camera.ClientChunkCacheMixin",
 		"camera.CustomFeatureRendererMixin",
 		"camera.GameRendererMixin",

@@ -46,7 +46,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.SpriteId;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
@@ -62,7 +62,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final Identifier CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
 	private static final Identifier INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final Identifier NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
-	private static final Material NOISE_BACKGROUND = new Material(TextureAtlas.LOCATION_BLOCKS, SecurityCraft.resLoc("entity/frame/noise_background"));
+	private static final SpriteId NOISE_BACKGROUND = new SpriteId(TextureAtlas.LOCATION_BLOCKS, SecurityCraft.resLoc("entity/frame/noise_background"));
 	private static final Identifier SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	private static final Identifier WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
 	//@formatter:off
@@ -236,10 +236,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	public abstract class WrappingGeometryRenderer implements CustomGeometryRenderer {
-		public final Material material;
+		public final SpriteId spriteId;
 
-		public WrappingGeometryRenderer(Material material) {
-			this.material = material;
+		public WrappingGeometryRenderer(SpriteId spriteId) {
+			this.spriteId = spriteId;
 		}
 	}
 

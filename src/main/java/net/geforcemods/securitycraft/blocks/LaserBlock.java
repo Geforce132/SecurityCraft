@@ -59,7 +59,7 @@ public class LaserBlock extends DisguisableBlock {
 		if (be.isOwnedBy(player)) {
 			if (!level.isClientSide()) {
 				if (!be.isEnabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 				else
 					player.openMenu(be);
 			}

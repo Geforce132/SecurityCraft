@@ -16,21 +16,21 @@ import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.renderer.blockentity.state.ChestRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
-import net.minecraft.client.resources.model.Material;
+import net.minecraft.client.resources.model.SpriteId;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.Vec3;
 
 public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
-	private static final Material ACTIVE = createMaterial("active");
-	private static final Material INACTIVE = createMaterial("inactive");
-	private static final Material LEFT_ACTIVE = createMaterial("left_active");
-	private static final Material LEFT_INACTIVE = createMaterial("left_inactive");
-	private static final Material RIGHT_ACTIVE = createMaterial("right_active");
-	private static final Material RIGHT_INACTIVE = createMaterial("right_inactive");
-	private static final Material CHRISTMAS = createMaterial("christmas");
-	private static final Material CHRISTMAS_LEFT = createMaterial("christmas_left");
-	private static final Material CHRISTMAS_RIGHT = createMaterial("christmas_right");
+	private static final SpriteId ACTIVE = createMaterial("active");
+	private static final SpriteId INACTIVE = createMaterial("inactive");
+	private static final SpriteId LEFT_ACTIVE = createMaterial("left_active");
+	private static final SpriteId LEFT_INACTIVE = createMaterial("left_inactive");
+	private static final SpriteId RIGHT_ACTIVE = createMaterial("right_active");
+	private static final SpriteId RIGHT_INACTIVE = createMaterial("right_inactive");
+	private static final SpriteId CHRISTMAS = createMaterial("christmas");
+	private static final SpriteId CHRISTMAS_LEFT = createMaterial("christmas_left");
+	private static final SpriteId CHRISTMAS_RIGHT = createMaterial("christmas_right");
 	protected boolean isChristmas;
 
 	public KeypadChestRenderer(BlockEntityRendererProvider.Context ctx) {
@@ -67,14 +67,14 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 		}
 
 		if (isChristmas)
-			state.customMaterial = getMaterialForType(state.type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
+			state.customSprite = getMaterialForType(state.type, CHRISTMAS_LEFT, CHRISTMAS_RIGHT, CHRISTMAS);
 		else if (be.getOpenNess(0.0F) >= 0.9F)
-			state.customMaterial = getMaterialForType(state.type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
+			state.customSprite = getMaterialForType(state.type, LEFT_ACTIVE, RIGHT_ACTIVE, ACTIVE);
 		else
-			state.customMaterial = getMaterialForType(state.type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);
+			state.customSprite = getMaterialForType(state.type, LEFT_INACTIVE, RIGHT_INACTIVE, INACTIVE);
 	}
 
-	private Material getMaterialForType(ChestType type, Material left, Material right, Material single) {
+	private SpriteId getMaterialForType(ChestType type, SpriteId left, SpriteId right, SpriteId single) {
 		return switch (type) {
 			case LEFT -> left;
 			case RIGHT -> right;
@@ -82,7 +82,7 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 		};
 	}
 
-	private static Material createMaterial(String name) {
-		return new Material(Sheets.CHEST_SHEET, SecurityCraft.resLoc("entity/chest/" + name));
+	private static SpriteId createMaterial(String name) {
+		return new SpriteId(Sheets.CHEST_SHEET, SecurityCraft.resLoc("entity/chest/" + name));
 	}
 }

@@ -39,7 +39,7 @@ public abstract class ChunkMapMixin {
 	private static void dropChunk(ServerPlayer player, ChunkPos chunkPos) {}
 
 	@Shadow
-	abstract int getPlayerViewDistance(ServerPlayer player);
+	protected abstract int getPlayerViewDistance(ServerPlayer player);
 
 	/**
 	 * Sends chunks loaded by mounted cameras or frame cameras to the client. Also drops chunks that were near a dismounted

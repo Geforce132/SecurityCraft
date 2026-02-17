@@ -44,6 +44,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.client.renderer.item.properties.select.DisplayContext;
@@ -76,8 +77,8 @@ public class BlockModelAndStateGenerator {
 	static final Map<Block, TexturedModel> TEXTURED_MODELS = ImmutableMap.<Block, TexturedModel>builder()
 			.put(Blocks.SANDSTONE, SCTexturedModels.REINFORCED_TOP_BOTTOM_WITH_WALL.get(Blocks.SANDSTONE))
 			.put(Blocks.RED_SANDSTONE, SCTexturedModels.REINFORCED_TOP_BOTTOM_WITH_WALL.get(Blocks.RED_SANDSTONE))
-			.put(Blocks.SMOOTH_SANDSTONE, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.SANDSTONE, "_top")))
-			.put(Blocks.SMOOTH_RED_SANDSTONE, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.RED_SANDSTONE, "_top")))
+			.put(Blocks.SMOOTH_SANDSTONE, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.SANDSTONE, "_top").sprite()))
+			.put(Blocks.SMOOTH_RED_SANDSTONE, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.RED_SANDSTONE, "_top").sprite()))
 			.put(
 				Blocks.CUT_SANDSTONE,
 				SCTexturedModels.REINFORCED_COLUMN
@@ -91,7 +92,7 @@ public class BlockModelAndStateGenerator {
 					.updateTextures(textureMapping -> textureMapping.put(TextureSlot.SIDE, TextureMapping.getBlockTexture(Blocks.CUT_RED_SANDSTONE)))
 			)
 			.put(Blocks.QUARTZ_BLOCK, SCTexturedModels.REINFORCED_COLUMN.get(Blocks.QUARTZ_BLOCK))
-			.put(Blocks.SMOOTH_QUARTZ, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.QUARTZ_BLOCK, "_bottom")))
+			.put(Blocks.SMOOTH_QUARTZ, SCTexturedModels.createAllSame(TextureMapping.getBlockTexture(Blocks.QUARTZ_BLOCK, "_bottom").sprite()))
 			.put(Blocks.BLACKSTONE, SCTexturedModels.REINFORCED_COLUMN_WITH_WALL.get(Blocks.BLACKSTONE))
 			.put(Blocks.DEEPSLATE, SCTexturedModels.REINFORCED_COLUMN_WITH_WALL.get(Blocks.DEEPSLATE))
 			.put(
@@ -148,7 +149,7 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModel(SCContent.CLAYMORE.get());
 		createDisplayCases();
 		createElectrifiedFenceAndGate();
-		createTrivialBlockWithRenderType(SCContent.FLOOR_TRAP.get(), "translucent");
+		createFloorTrap();
 		registerSimpleItemModel(SCContent.FRAME.get());
 		registerSimpleItemModelFromItem(SCContent.IMS.get());
 		registerSimpleItemModel(SCContent.INVENTORY_SCANNER.get());
@@ -629,7 +630,7 @@ public class BlockModelAndStateGenerator {
 	}
 
 	public static void createTintedSlab(Block block, MultiVariant doubleSlab, Identifier side, Identifier bottom, Identifier top) {
-		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.BOTTOM, bottom).put(TextureSlot.SIDE, side).put(TextureSlot.TOP, top);
+		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.BOTTOM, new Material(bottom)).put(TextureSlot.SIDE, new Material(side)).put(TextureSlot.TOP, new Material(top));
 		MultiVariant bottomModel = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_SLAB_BOTTOM.create(block, textureMapping, modelOutput));
 		MultiVariant topModel = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_SLAB_TOP.create(block, textureMapping, modelOutput));
 
@@ -688,7 +689,7 @@ public class BlockModelAndStateGenerator {
 	}
 
 	public static void createTintedStairs(Block block, Identifier side, Identifier bottom, Identifier top) {
-		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.BOTTOM, bottom).put(TextureSlot.SIDE, side).put(TextureSlot.TOP, top);
+		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.BOTTOM, new Material(bottom)).put(TextureSlot.SIDE, new Material(side)).put(TextureSlot.TOP, new Material(top));
 		MultiVariant innerModel = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_STAIRS_INNER.create(block, textureMapping, modelOutput));
 		MultiVariant straightModel = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_STAIRS_STRAIGHT.create(block, textureMapping, modelOutput));
 		MultiVariant outerModel = BlockModelGenerators.plainVariant(SCModelTemplates.REINFORCED_STAIRS_OUTER.create(block, textureMapping, modelOutput));
@@ -708,8 +709,8 @@ public class BlockModelAndStateGenerator {
 
 	public static void createSecureRedstoneInterface() {
 		Block block = SCContent.SECURE_REDSTONE_INTERFACE.get();
-		MultiVariant senderModel = BlockModelGenerators.plainVariant(TextureMapping.getBlockTexture(block, "_sender"));
-		MultiVariant receiverModel = BlockModelGenerators.plainVariant(TextureMapping.getBlockTexture(block, "_receiver"));
+		MultiVariant senderModel = BlockModelGenerators.plainVariant(TextureMapping.getBlockTexture(block, "_sender").sprite());
+		MultiVariant receiverModel = BlockModelGenerators.plainVariant(TextureMapping.getBlockTexture(block, "_receiver").sprite());
 
 		//@formatter:off
 		generate(block, MultiVariantGenerator.dispatch(block)
@@ -735,14 +736,10 @@ public class BlockModelAndStateGenerator {
 		generate(wallSign, BlockModelGenerators.createSimpleBlock(wallSign, blockModel));
 	}
 
-	public static void createTrivialBlockWithRenderType(Block block, String renderType) {
-		//@formatter:off
-		blockModelGenerators.createTrivialBlock(block, TexturedModel.CUBE
-				.updateTemplate(template -> template
-						.extend()
-						.renderType(renderType)
-						.build()));
-		//@formatter:on
+	public static void createFloorTrap() {
+		Block block = SCContent.FLOOR_TRAP.get();
+
+		blockModelGenerators.createTrivialCube(block);
 		itemInfo.accept(block.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(block)));
 		generatedBlocks.add(block);
 	}

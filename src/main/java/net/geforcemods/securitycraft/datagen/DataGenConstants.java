@@ -5,6 +5,7 @@ import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.resources.Identifier;
 
 public class DataGenConstants {
@@ -78,7 +79,7 @@ public class DataGenConstants {
 		public static final TexturedModel.Provider REINFORCED_TOP_BOTTOM_WITH_WALL = TexturedModel.createDefault(TextureMapping::cubeBottomTopWithWall, SCModelTemplates.REINFORCED_CUBE_BOTTOM_TOP);
 
 		public static TexturedModel createAllSame(Identifier location) {
-			return new TexturedModel(TextureMapping.cube(location), SCModelTemplates.REINFORCED_CUBE_ALL);
+			return new TexturedModel(TextureMapping.cube(new Material(location)), SCModelTemplates.REINFORCED_CUBE_ALL);
 		}
 
 		private SCTexturedModels() {}

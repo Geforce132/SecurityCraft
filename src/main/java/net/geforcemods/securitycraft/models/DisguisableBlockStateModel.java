@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BlockModelPart;
 import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.model.Material.Baked;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -57,7 +57,7 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 	}
 
 	@Override
-	public TextureAtlasSprite particleIcon(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+	public Baked particleMaterial(BlockAndTintGetter level, BlockPos pos, BlockState state) {
 		ModelData modelData = level.getModelData(pos);
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
@@ -68,19 +68,47 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
 
 				if (model != this)
-					return model.particleIcon(level, pos, state);
+					return model.particleMaterial(level, pos, state);
 			}
 		}
 
-		return oldParticleIcon(modelData, level, pos, state);
+		return oldParticleMaterial(modelData, level, pos, state);
 	}
 
-	public TextureAtlasSprite oldParticleIcon(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
-		return oldModel.particleIcon(level, pos, state);
+	public Baked oldParticleMaterial(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return oldModel.particleMaterial(level, pos, state);
 	}
 
 	@Override
-	public TextureAtlasSprite particleIcon() {
-		return oldModel.particleIcon();
+	public Baked particleMaterial() {
+		return oldModel.particleMaterial();
+	}
+
+	@Override
+	public boolean hasTranslucency(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		ModelData modelData = level.getModelData(pos);
+		BlockState disguisedState = modelData.get(DISGUISED_STATE);
+
+		if (disguisedState != null) {
+			Block block = disguisedState.getBlock();
+
+			if (block != Blocks.AIR) {
+				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+
+				if (model != this)
+					return model.hasTranslucency(level, pos, state);
+			}
+		}
+
+		return oldHasTranslucency(modelData, level, pos, state);
+	}
+
+	public boolean oldHasTranslucency(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return oldModel.hasTranslucency(level, pos, state);
+	}
+
+	@Override
+	public boolean hasTranslucency() {
+		return oldModel.hasTranslucency();
 	}
 }

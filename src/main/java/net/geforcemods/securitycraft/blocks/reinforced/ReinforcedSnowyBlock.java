@@ -1,0 +1,77 @@
+package net.geforcemods.securitycraft.blocks.reinforced;
+
+import java.util.function.BiConsumer;
+
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.api.OwnableBlockEntity;
+import net.geforcemods.securitycraft.blocks.OwnableBlock;
+import net.geforcemods.securitycraft.misc.OwnershipEvent;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.TriState;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.SnowyBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.neoforged.neoforge.common.NeoForge;
+
+public class ReinforcedSnowyBlock extends SnowyBlock implements IReinforcedBlock, EntityBlock {
+	private Block vanillaBlock;
+	private final float destroyTimeForOwner;
+
+	public ReinforcedSnowyBlock(BlockBehaviour.Properties properties, Block vB) {
+		super(OwnableBlock.withReinforcedDestroyTime(properties));
+		this.vanillaBlock = vB;
+		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		return BlockUtils.getDestroyProgress(super::getDestroyProgress, destroyTimeForOwner, state, player, level, pos);
+	}
+
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource rand) {
+		if (this == SCContent.REINFORCED_MYCELIUM.get())
+			Blocks.MYCELIUM.animateTick(state, level, pos, rand);
+	}
+
+	@Override
+	public TriState canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction facing, BlockState plant) {
+		return SCContent.REINFORCED_DIRT.get().canSustainPlant(state, level, pos, facing, plant);
+	}
+
+	@Override
+	public boolean onTreeGrow(BlockState state, WorldGenLevel level, BiConsumer<BlockPos, BlockState> placeFunction, RandomSource randomSource, BlockPos pos, TreeConfiguration config) {
+		return true; //Do not allow trees to replace reinforced blocks with dirt when growing
+	}
+
+	@Override
+	public Block getVanillaBlock() {
+		return vanillaBlock;
+	}
+
+	@Override
+	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		if (placer instanceof Player player)
+			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new OwnableBlockEntity(pos, state);
+	}
+}

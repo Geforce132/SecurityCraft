@@ -84,7 +84,7 @@ public class IMSBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof IMSBlockEntity be) {
 			if (be.isDisabled())
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 			else if (be.isOwnedBy(player)) {
 				int mines = state.getValue(MINES);
 

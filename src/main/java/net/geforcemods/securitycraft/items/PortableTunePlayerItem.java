@@ -35,10 +35,10 @@ public class PortableTunePlayerItem extends Item {
 			if (be.isOwnedBy(player) || be.isAllowed(player)) {
 				if (be.getNumberOfNotes() > 0) {
 					ctx.getItemInHand().set(SCContent.NOTES, new Notes(new ArrayList<>(be.getRecordedNotes())));
-					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"), true);
+					player.sendOverlayMessage(Utils.localize("messages.securitycraft:portable_tune_player.tune_saved"));
 				}
 				else
-					player.displayClientMessage(Utils.localize("messages.securitycraft:portable_tune_player.no_tune"), true);
+					player.sendOverlayMessage(Utils.localize("messages.securitycraft:portable_tune_player.no_tune"));
 
 				return InteractionResult.SUCCESS;
 			}

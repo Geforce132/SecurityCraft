@@ -48,7 +48,7 @@ public class Tips {
 			if (TIPS_WITH_LINK.containsKey(tipKey.split("\\.")[2]))
 				message = message.append(CommonHooks.newChatWithLinks(TIPS_WITH_LINK.get(tipKey.split("\\.")[2])));
 
-			ClientHandler.getClientPlayer().displayClientMessage(message, false);
+			ClientHandler.getClientPlayer().sendSystemMessage(message);
 		}
 	}
 

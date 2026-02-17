@@ -65,7 +65,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 		if (level.getBlockEntity(pos) instanceof AlarmBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide()) {
 				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 				else
 					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.ALARM, pos));
 			}
@@ -133,7 +133,7 @@ public class AlarmBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader levelReader, BlockPos pos, BlockPos neighbor) {
 		if (levelReader.isClientSide() || !(levelReader instanceof Level level))
-		return;
+			return;
 
 		playSoundAndUpdate(level, pos);
 

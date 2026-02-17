@@ -61,7 +61,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		if (isFacingAnotherScanner(level, pos) && player instanceof ServerPlayer serverPlayer) {
 			if (!level.isClientSide() && level.getBlockEntity(pos) instanceof InventoryScannerBlockEntity be) {
 				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 				else
 					serverPlayer.openMenu(be);
 			}

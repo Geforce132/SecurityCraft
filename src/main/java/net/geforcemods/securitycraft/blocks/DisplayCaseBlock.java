@@ -155,7 +155,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 			}
 			else {
 				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 				else if (be.verifyPasscodeSet(level, pos, be, player)) {
 					if (be.isDenied(player)) {
 						if (be.sendsDenylistMessage())

@@ -33,16 +33,16 @@ public record SetDefaultCameraViewingDirection(int id, float initialXRotation, f
 
 		if (!player.isSpectator() && player.getCamera() instanceof SecurityCamera camera && camera.getId() == id && camera.level().getBlockEntity(camera.blockPosition()) instanceof SecurityCameraBlockEntity be) {
 			if (!be.isOwnedBy(player)) {
-				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.no_permission"), true);
+				player.sendOverlayMessage(Utils.localize("messages.securitycraft:security_camera.no_permission"));
 				return;
 			}
 
 			if (be.isModuleEnabled(ModuleType.SMART)) {
 				be.setDefaultViewingDirection(initialXRotation, initialYRotation, initialZoom);
-				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.direction_set"), true);
+				player.sendOverlayMessage(Utils.localize("messages.securitycraft:security_camera.direction_set"));
 			}
 			else
-				player.displayClientMessage(Utils.localize("messages.securitycraft:security_camera.smart_module_needed"), true);
+				player.sendOverlayMessage(Utils.localize("messages.securitycraft:security_camera.smart_module_needed"));
 		}
 	}
 }

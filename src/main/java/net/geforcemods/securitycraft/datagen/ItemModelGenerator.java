@@ -19,6 +19,7 @@ import net.minecraft.client.data.models.model.ModelInstance;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.client.renderer.item.ClientItem;
 import net.minecraft.client.renderer.item.properties.select.SelectItemModelProperty;
 import net.minecraft.core.Holder;
@@ -139,7 +140,7 @@ public class ItemModelGenerator {
 
 	public static void generateLens(Item item) {
 		Identifier coloredLens = ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("colored_lens").toString());
-		Identifier coloredModel = ModelTemplates.FLAT_ITEM.create(coloredLens, TextureMapping.layer0(coloredLens), modelOutput);
+		Identifier coloredModel = ModelTemplates.FLAT_ITEM.create(coloredLens, TextureMapping.layer0(new Material(coloredLens)), modelOutput);
 		Identifier normalModel = itemModels.createFlatItemModel(item, ModelTemplates.FLAT_ITEM);
 
 		//@formatter:off
@@ -175,7 +176,7 @@ public class ItemModelGenerator {
 				ItemModelUtils.plainModel(
 						itemModels.generateLayeredItem(
 								module,
-								ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("module_background").toString()),
+								new Material(ModelLocationUtils.decorateItemModelLocation(SecurityCraft.resLoc("module_background").toString())),
 								TextureMapping.getItemTexture(overlay))));
 		//@formatter:on
 	}

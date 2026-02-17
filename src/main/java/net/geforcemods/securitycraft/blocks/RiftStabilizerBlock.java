@@ -70,7 +70,7 @@ public class RiftStabilizerBlock extends DisguisableBlock {
 		if (level.getBlockEntity(pos) instanceof RiftStabilizerBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide()) {
 				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 				else
 					PacketDistributor.sendToPlayer((ServerPlayer) player, new OpenScreen(DataType.RIFT_STABILIZER, pos));
 			}

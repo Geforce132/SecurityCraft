@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -30,17 +29,6 @@ public class GameRendererMixin {
 	@Shadow
 	@Final
 	private Minecraft minecraft;
-
-	/**
-	 * Makes sure camera zooming works, because the fov is only updated when the camera entity is the player itself
-	 */
-	@ModifyExpressionValue(method = "tickFov", at = @At(value = "CONSTANT", args = "floatValue=1.0F"))
-	private float securitycraft$modifyInitialFValue(float original) {
-		if (minecraft.getCameraEntity() instanceof SecurityCamera cam)
-			return cam.getZoomAmount();
-		else
-			return original;
-	}
 
 	/**
 	 * Renders the camera tint if a lens is installed. This cannot be done in a standard overlay, as the tint needs to exist even

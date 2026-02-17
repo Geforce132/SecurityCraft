@@ -68,7 +68,7 @@ public class TrophySystemBlock extends DisguisableBlock {
 		if (level.getBlockEntity(pos) instanceof TrophySystemBlockEntity be && be.isOwnedBy(player)) {
 			if (!level.isClientSide()) {
 				if (be.isDisabled())
-					player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+					player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 				else
 					player.openMenu(be);
 			}

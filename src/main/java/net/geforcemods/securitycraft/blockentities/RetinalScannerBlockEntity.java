@@ -103,7 +103,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
 			}
 			else if (isDisabled())
-				player.displayClientMessage(Utils.localize("gui.securitycraft:scManual.disabled"), true);
+				player.sendOverlayMessage(Utils.localize("gui.securitycraft:scManual.disabled"));
 
 			return true;
 		}
