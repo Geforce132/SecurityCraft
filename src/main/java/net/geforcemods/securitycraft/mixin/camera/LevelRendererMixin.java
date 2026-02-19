@@ -25,6 +25,7 @@ import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.util.Util;
 
 @Mixin(value = LevelRenderer.class, priority = 1100)
 public abstract class LevelRendererMixin {
@@ -67,13 +68,13 @@ public abstract class LevelRendererMixin {
 	 * If rendering a frame camera, makes sure that all compiled sections within the camera view area extension are properly
 	 * treated as compiled (e.g. for the purpose of entity rendering)
 	 */
-	@Inject(method = "isSectionCompiled", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "isSectionCompiledAndVisible", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onIsSectionCompiled(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
 		if (FrameFeedHandler.isCapturingCamera()) {
 			SectionPos sectionPos = SectionPos.of(pos);
 			SectionRenderDispatcher.RenderSection renderSection = CameraViewAreaExtension.rawFetch(sectionPos.x(), sectionPos.y(), sectionPos.z(), false);
 
-			if (renderSection != null && renderSection.sectionMesh.get() != CompiledSectionMesh.UNCOMPILED)
+			if (renderSection != null && renderSection.sectionMesh.get() != CompiledSectionMesh.UNCOMPILED && renderSection.getVisibility(Util.getMillis()) >= 0.3F)
 				cir.setReturnValue(true);
 		}
 	}
