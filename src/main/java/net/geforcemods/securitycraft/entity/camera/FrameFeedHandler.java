@@ -24,6 +24,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.TextureFilteringMethod;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.PanoramicScreenshotParameters;
@@ -132,6 +133,7 @@ public class FrameFeedHandler {
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
 					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
 					mc.gameRenderer.updateCamera(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
+					mc.gameRenderer.getGlobalSettingsUniform().update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera, mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
 					mc.mainRenderTarget = feed.renderTarget();
 
 					try {
