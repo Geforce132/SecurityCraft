@@ -142,7 +142,6 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedAmethystBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedButtonBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock.IReinforcedCauldronInteraction;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChainBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedChiseledBookshelfBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCobwebBlock;
@@ -267,6 +266,7 @@ import net.geforcemods.securitycraft.misc.ModuleStatesSerializer;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnerDataSerializer;
 import net.geforcemods.securitycraft.misc.PageGroup;
+import net.geforcemods.securitycraft.misc.ReinforcedCauldronInteractions;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
 import net.geforcemods.securitycraft.recipe.BlockReinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
@@ -2376,13 +2376,13 @@ public class SCContent {
 
 	//ordered by vanilla <1.19.3 brewing tab order
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCauldronBlock> REINFORCED_CAULDRON = reinforcedBlock("reinforced_cauldron", Blocks.CAULDRON, (p, b) -> new ReinforcedCauldronBlock(p, IReinforcedCauldronInteraction.EMPTY));
+	public static final DeferredBlock<ReinforcedCauldronBlock> REINFORCED_CAULDRON = reinforcedBlock("reinforced_cauldron", Blocks.CAULDRON, (p, b) -> new ReinforcedCauldronBlock(p, ReinforcedCauldronInteractions.EMPTY));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_WATER_CAULDRON = reinforcedBlock("reinforced_water_cauldron", Blocks.WATER_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.RAIN, IReinforcedCauldronInteraction.WATER, p, b));
+	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_WATER_CAULDRON = reinforcedBlock("reinforced_water_cauldron", Blocks.WATER_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.RAIN, ReinforcedCauldronInteractions.WATER, p, b));
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedLavaCauldronBlock> REINFORCED_LAVA_CAULDRON = reinforcedBlock("reinforced_lava_cauldron", Blocks.LAVA_CAULDRON, (p, b) -> new ReinforcedLavaCauldronBlock(p));
 	@Reinforced(registerBlockItem = false)
-	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_POWDER_SNOW_CAULDRON = reinforcedBlock("reinforced_powder_snow_cauldron", Blocks.POWDER_SNOW_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.SNOW, IReinforcedCauldronInteraction.POWDER_SNOW, p, b));
+	public static final DeferredBlock<ReinforcedLayeredCauldronBlock> REINFORCED_POWDER_SNOW_CAULDRON = reinforcedBlock("reinforced_powder_snow_cauldron", Blocks.POWDER_SNOW_CAULDRON, (p, b) -> new ReinforcedLayeredCauldronBlock(Biome.Precipitation.SNOW, ReinforcedCauldronInteractions.POWDER_SNOW, p, b));
 
 	//1.19.3+ content
 	@HasManualPage(PageGroup.REINFORCED)

@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.misc.ReinforcedCauldronInteractions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -17,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ReinforcedLavaCauldronBlock extends ReinforcedCauldronBlock {
 	public ReinforcedLavaCauldronBlock(BlockBehaviour.Properties properties) {
-		super(properties, IReinforcedCauldronInteraction.LAVA);
+		super(properties, ReinforcedCauldronInteractions.LAVA);
 	}
 
 	@Override

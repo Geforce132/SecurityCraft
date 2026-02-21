@@ -6,7 +6,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedCauldronBlockEntity
 import net.geforcemods.securitycraft.blocks.OwnableBlock;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.cauldron.CauldronInteraction.Dispatcher;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -33,8 +33,8 @@ public class ReinforcedLayeredCauldronBlock extends LayeredCauldronBlock impleme
 	private final Block vanillaBlock;
 	private final float destroyTimeForOwner;
 
-	public ReinforcedLayeredCauldronBlock(Precipitation precipitation, CauldronInteraction.InteractionMap interactions, BlockBehaviour.Properties properties, Block vanillaBlock) {
-		super(precipitation, interactions, OwnableBlock.withReinforcedDestroyTime(properties));
+	public ReinforcedLayeredCauldronBlock(Precipitation precipitation, Dispatcher dispatcher, BlockBehaviour.Properties properties, Block vanillaBlock) {
+		super(precipitation, dispatcher, OwnableBlock.withReinforcedDestroyTime(properties));
 		this.vanillaBlock = vanillaBlock;
 		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
 	}
