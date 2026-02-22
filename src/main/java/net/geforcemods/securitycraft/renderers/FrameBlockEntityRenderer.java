@@ -9,7 +9,6 @@ import org.joml.Vector4f;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.buffers.Std140SizeCalculator;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -36,7 +35,6 @@ import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.renderers.state.FrameRenderState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.DynamicUniforms;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.SubmitNodeCollector.CustomGeometryRenderer;
@@ -61,7 +59,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity, FrameRenderState> {
-	private static final int VEC_3_SIZE = new Std140SizeCalculator().putFloat().putFloat().putFloat().get();
 	private static final Identifier CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
 	private static final Identifier INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final Identifier NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
@@ -127,8 +124,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
 						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
 						RenderTarget mainRenderTarget = Minecraft.getInstance().getMainRenderTarget();
-						DynamicUniforms dynamicUniforms = RenderSystem.getDynamicUniforms();
-						GpuBufferSlice dynamicTransforms = dynamicUniforms.writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(), new Vector3f(), new Matrix4f());
+						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(), new Vector3f(), new Matrix4f());
 
 						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, mainRenderTarget.getColorTextureView(), OptionalInt.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
 							RenderSystem.bindDefaultUniforms(pass);
