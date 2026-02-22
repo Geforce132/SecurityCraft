@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
-import org.joml.Matrix4f;
-import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,15 +7,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.llamalad7.mixinextras.sugar.Local;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.resource.GraphicsResourceAllocator;
-
 import net.geforcemods.securitycraft.compat.ium.IumCompat;
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.Camera;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.chunk.CompiledSectionMesh;
@@ -32,16 +25,6 @@ public abstract class LevelRendererMixin {
 	private SectionRenderDispatcher sectionRenderDispatcher;
 	@Shadow
 	private ClientLevel level;
-
-	/**
-	 * This mixin captures the fog color used when rendering a frame world, to be able to render it in the background of a
-	 * frame feed.
-	 */
-	@Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;compileSections(Lnet/minecraft/client/Camera;)V"))
-	private void securitycraft$afterSetupRender(GraphicsResourceAllocator graphicsResourceAllocator, DeltaTracker deltaTracker, boolean renderBlockOutline, Camera camera, Matrix4f frustumMatrix, Matrix4f projectionMatrix, Matrix4f cullingMatrix, GpuBufferSlice bufferSlice, Vector4f fogColor, boolean renderSky, CallbackInfo ci, @Local Frustum frustum) {
-		if (FrameFeedHandler.isCapturingCamera())
-			FrameFeedHandler.getCurrentlyCapturedFeed().setBackgroundColor(fogColor);
-	}
 
 	/**
 	 * When rendering the world in a frame, the necessary visible sections are captured manually within SecurityCraft. Vanilla

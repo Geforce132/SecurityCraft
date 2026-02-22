@@ -1,23 +1,18 @@
 package net.geforcemods.securitycraft.renderers;
 
-import java.nio.ByteBuffer;
 import java.util.OptionalDouble;
 import java.util.OptionalInt;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.lwjgl.system.MemoryUtil;
 
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.buffers.Std140Builder;
-import com.mojang.blaze3d.buffers.Std140SizeCalculator;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.DepthTestFunction;
-import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -39,7 +34,6 @@ import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.renderers.state.FrameRenderState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.DynamicUniforms;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -63,7 +57,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity, FrameRenderState> {
-	private static final int VEC_3_SIZE = new Std140SizeCalculator().putFloat().putFloat().putFloat().get();
 	private static final ResourceLocation CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
 	private static final ResourceLocation INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final ResourceLocation NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
@@ -77,7 +70,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			.withFragmentShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
 			.withVertexFormat(DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS)
 			.withSampler("InSampler")
-			.withUniform("BackgroundColor", UniformType.UNIFORM_BUFFER)
 			.withBlend(BlendFunction.TRANSLUCENT)
 			.withDepthTestFunction(DepthTestFunction.LEQUAL_DEPTH_TEST)
 			.build();
@@ -110,7 +102,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (!state.isCameraPresent)
 				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal, margin);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
-				Vector3f backgroundColor = state.backgroundColor;
 				float xStartO = outerVertices.x;
 				float xEndO = outerVertices.y;
 				float zStartO = outerVertices.z;
@@ -130,11 +121,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						GpuDevice device = RenderSystem.getDevice();
 						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
 						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
-						ByteBuffer backgroundColorByteBuffer = Std140Builder.intoBuffer(MemoryUtil.memAlloc(VEC_3_SIZE)).putFloat(backgroundColor.x).putFloat(backgroundColor.y).putFloat(backgroundColor.z).get();
-						GpuBuffer backgroundColorBuffer = device.createBuffer(() -> "Background Color", GpuBuffer.USAGE_UNIFORM, backgroundColorByteBuffer);
 						RenderTarget mainRenderTarget = Minecraft.getInstance().getMainRenderTarget();
-						DynamicUniforms dynamicUniforms = RenderSystem.getDynamicUniforms();
-						GpuBufferSlice dynamicTransforms = dynamicUniforms.writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(), new Vector3f(), new Matrix4f(), 0.0F);
+						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(), new Vector3f(), new Matrix4f(), 0.0F);
 
 						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, mainRenderTarget.getColorTextureView(), OptionalInt.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
 							pass.setPipeline(FRAME_PIPELINE);
@@ -142,7 +130,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
 							pass.setUniform("DynamicTransforms", dynamicTransforms);
 							pass.setUniform("Projection", RenderSystem.getProjectionMatrixBuffer());
-							pass.setUniform("BackgroundColor", backgroundColorBuffer);
 							pass.bindSampler("InSampler", state.renderTargetColorTexture);
 							pass.drawIndexed(0, 0, 6, 1);
 						}
@@ -210,7 +197,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (feed != null && feed.isFrameLinked(be) && level.isLoaded(securityCameraPos.pos()) && level.getBlockEntity(securityCameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity) {
 				state.isCameraPresent = true;
 				state.renderTargetColorTexture = feed.renderTarget().getColorTextureView();
-				state.backgroundColor = feed.backgroundColor();
 
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
 
