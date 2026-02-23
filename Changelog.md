@@ -7,6 +7,7 @@
 - Fix: The Frame feed is sometimes rendered with partly transparent pixels
 - Fix: Server crash involving display cases
 - Fix: Redstone Wire cannot be placed on top of reinforced hoppers
+- Fix: Lecterns and Chiseled Bookshelves display their content incorrectly when they are reinforced using /sc convert
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
