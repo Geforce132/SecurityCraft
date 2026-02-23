@@ -485,7 +485,6 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<PortableRadarBlock> PORTABLE_RADAR = BLOCKS.registerBlock("portable_radar", PortableRadarBlock::new, prop(MapColor.COLOR_BLACK, 5.0F));
-	@HasManualPage
 	@OwnableBE
 	public static final DeferredBlock<ProjectorBlock> PROJECTOR = BLOCKS.registerBlock("projector", ProjectorBlock::new, propDisguisable(MapColor.METAL, 5.0F).sound(SoundType.IRON));
 	@HasManualPage
