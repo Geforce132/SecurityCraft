@@ -6,6 +6,7 @@
 - Fix: The Block Change Detector cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces (Thanks CYB3RCA4T!)
 - Fix: The Frame feed is sometimes rendered with partly transparent pixels
 - Fix: Server crash involving display cases
+- Fix: Redstone Wire cannot be placed on top of reinforced hoppers
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
