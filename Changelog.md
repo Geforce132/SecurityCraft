@@ -6,5 +6,6 @@
 - Fix: The Block Change Detector cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces (Thanks CYB3RCA4T!)
 - Fix: Server crash involving display cases
 - Fix: Redstone Wire cannot be placed on top of reinforced hoppers
+- Fix: Lecterns and Chiseled Bookshelves display their content incorrectly when they are reinforced using /sc convert
 
 --------------------------Changelog for v1.10.1-beta2 of SecurityCraft--------------------------
