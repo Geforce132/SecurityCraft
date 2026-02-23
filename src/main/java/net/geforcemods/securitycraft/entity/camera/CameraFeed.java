@@ -7,9 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
@@ -35,7 +32,6 @@ public class CameraFeed {
 	private final List<RenderSection> visibleSections = new ArrayList<>();
 	private final List<RenderSection> compilingSectionsQueue = new ArrayList<>();
 	private final RenderTarget renderTarget;
-	private final Vector3f backgroundColor = new Vector3f();
 	private Frustum cameraFrustum;
 	private boolean requiresFrustumUpdate = false;
 	private boolean hasFrameInFrustum = false;
@@ -167,14 +163,6 @@ public class CameraFeed {
 
 	public RenderTarget renderTarget() {
 		return renderTarget;
-	}
-
-	public void setBackgroundColor(Vector4f backgroundColor) {
-		backgroundColor.xyz(this.backgroundColor);
-	}
-
-	public Vector3f backgroundColor() {
-		return backgroundColor;
 	}
 
 	public void setCameraFrustum(Frustum cameraFrustum) {

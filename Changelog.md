@@ -5,4 +5,10 @@
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
 - Fix: The Block Change Detector cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces (Thanks CYB3RCA4T!)
 
---------------------------Changelog for v1.10.1-beta1 of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.1-beta3 of SecurityCraft--------------------------
+
+- Fix: The Frame feed is sometimes rendered with partly transparent pixels
+
+--------------------------Changelog for v1.10.1-beta2 of SecurityCraft--------------------------
+
+- Fix: The Frame feed doesn't display correctly

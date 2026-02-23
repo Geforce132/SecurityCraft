@@ -104,17 +104,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (!state.isCameraPresent)
 				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal, margin);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
-				Vector3f backgroundColor = state.backgroundColor;
-				float xStart = innerVertices.x;
-				float xEnd = innerVertices.y;
-				float zStart = innerVertices.z;
-				float zEnd = innerVertices.w;
 				float xStartO = outerVertices.x;
 				float xEndO = outerVertices.y;
 				float zStartO = outerVertices.z;
 				float zEndO = outerVertices.w;
-
-				submitOverlay(pose, collector, RenderTypes.entityShadow(WHITE), ARGB.colorFromFloat(1.0F, backgroundColor.x, backgroundColor.y, backgroundColor.z), xStart, xEnd, zStart, zEnd, margin, lightCoords, normal);
 
 				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
 					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
@@ -206,7 +199,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (feed != null && feed.isFrameLinked(be) && level.isLoaded(securityCameraPos.pos()) && level.getBlockEntity(securityCameraPos.pos()) instanceof SecurityCameraBlockEntity cameraBlockEntity) {
 				state.isCameraPresent = true;
 				state.renderTargetColorTexture = feed.renderTarget().getColorTextureView();
-				state.backgroundColor = feed.backgroundColor();
 
 				ItemStack lens = cameraBlockEntity.getLensContainer().getItem(0);
 
