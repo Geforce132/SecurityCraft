@@ -10,6 +10,7 @@
 - Fix: Redstone Wire cannot be placed on top of reinforced hoppers
 - Fix: Lecterns and Chiseled Bookshelves display their content incorrectly when they are reinforced using /sc convert
 - Fix: There are two identical SecurityCraft Manual pages of the Projector
+- Fix: Reinforced Lanterns and Reinforced Chains cannot be waterlogged by placing water into them using a bucket 
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
