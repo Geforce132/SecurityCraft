@@ -1,7 +1,9 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
 - New: The Keycard Reader, Keypad, and Retinal Scanner can now be placed facing up or down (Thanks CYB3RCA4T!)
+- New: The "/sc owner" subcommand now has an optional "resetSettings" mode to force affected blocks to reset sensible data like passcodes
 - Change: Several entries within the SecurityCraft manual have been updated to remove outdated descriptions
+- Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
 - Fix: The Block Change Detector cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces (Thanks CYB3RCA4T!)
