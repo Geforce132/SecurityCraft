@@ -5,22 +5,22 @@ import com.mojang.math.Axis;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.entity.BouncingBetty;
-import net.geforcemods.securitycraft.renderers.state.BouncingBettyRenderState;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.TntMinecartRenderer;
+import net.minecraft.client.renderer.entity.state.TntRenderState;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.util.Mth;
 
-public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, BouncingBettyRenderState> {
+public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, TntRenderState> {
 	public BouncingBettyRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
 		shadowRadius = 0.5F;
 	}
 
 	@Override
-	public void submit(BouncingBettyRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
+	public void submit(TntRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
 		pose.pushPose();
 		pose.translate(0.0F, 0.5F, 0.0F);
 
@@ -43,12 +43,12 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, Bouncin
 	}
 
 	@Override
-	public BouncingBettyRenderState createRenderState() {
-		return new BouncingBettyRenderState();
+	public TntRenderState createRenderState() {
+		return new TntRenderState();
 	}
 
 	@Override
-	public void extractRenderState(BouncingBetty entity, BouncingBettyRenderState state, float partialTicks) {
+	public void extractRenderState(BouncingBetty entity, TntRenderState state, float partialTicks) {
 		super.extractRenderState(entity, state, partialTicks);
 		state.fuseRemainingInTicks = entity.getFuse() - partialTicks + 1.0F;
 	}
