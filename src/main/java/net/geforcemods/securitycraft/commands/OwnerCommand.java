@@ -38,45 +38,45 @@ public class OwnerCommand {
                 		.then(Commands.argument("pos", BlockPosArgument.blockPos())
                 				.then(Commands.literal("reset")
                 						.executes(ctx -> setOwner(ctx, "ownerUUID", "owner", false))
-										.then(Commands.literal("retainData")
+										.then(Commands.literal("resetSettings")
 												.executes(ctx -> setOwner(ctx, "ownerUUID", "owner", true))))
                 				.then(Commands.literal("random")
                 						.executes(ctx -> setRandomOwner(ctx, false))
-										.then(Commands.literal("retainData")
+										.then(Commands.literal("resetSettings")
 												.executes(ctx -> setRandomOwner(ctx, true))))
                 				.then(Commands.literal("player")
                 						.then(Commands.argument("owner", SingleGameProfileArgument.singleGameProfile())
                 								.executes(ctx -> setOwner(ctx, SingleGameProfileArgument.getGameProfile(ctx, "owner"), false))
-												.then(Commands.literal("retainData")
+												.then(Commands.literal("resetSettings")
 														.executes(ctx -> setOwner(ctx, SingleGameProfileArgument.getGameProfile(ctx, "owner"), true)))))))
                 .then(Commands.literal("fill")
                 		.then(Commands.argument("from", BlockPosArgument.blockPos())
                 				.then(Commands.argument("to", BlockPosArgument.blockPos())
                 						.then(Commands.literal("reset")
                         						.executes(ctx -> fillOwner(ctx, "ownerUUID", "owner", false))
-												.then(Commands.literal("retainData")
+												.then(Commands.literal("resetSettings")
 														.executes(ctx -> fillOwner(ctx, "ownerUUID", "owner", true))))
                         				.then(Commands.literal("random")
                         						.executes(ctx -> fillRandomOwner(ctx, false))
-												.then(Commands.literal("retainData")
+												.then(Commands.literal("resetSettings")
 														.executes(ctx -> fillRandomOwner(ctx, true))))
                         				.then(Commands.literal("player")
                         						.then(Commands.argument("owner", SingleGameProfileArgument.singleGameProfile())
                         								.executes(ctx -> fillOwner(ctx, SingleGameProfileArgument.getGameProfile(ctx, "owner"), false))
-														.then(Commands.literal("retainData")
+														.then(Commands.literal("resetSettings")
 																.executes(ctx -> fillOwner(ctx, SingleGameProfileArgument.getGameProfile(ctx, "owner"), true))))))));
 		//@formatter:on
 	}
 
-	private static int setRandomOwner(CommandContext<CommandSourceStack> ctx, boolean retainData) throws CommandSyntaxException {
-		return setOwner(ctx, UUID.randomUUID().toString(), RandomStringUtils.randomAlphanumeric(10), retainData);
+	private static int setRandomOwner(CommandContext<CommandSourceStack> ctx, boolean resetSettings) throws CommandSyntaxException {
+		return setOwner(ctx, UUID.randomUUID().toString(), RandomStringUtils.randomAlphanumeric(10), resetSettings);
 	}
 
-	private static int setOwner(CommandContext<CommandSourceStack> ctx, NameAndId gameProfile, boolean retainData) throws CommandSyntaxException {
-		return setOwner(ctx, gameProfile.id().toString(), gameProfile.name(), retainData);
+	private static int setOwner(CommandContext<CommandSourceStack> ctx, NameAndId gameProfile, boolean resetSettings) throws CommandSyntaxException {
+		return setOwner(ctx, gameProfile.id().toString(), gameProfile.name(), resetSettings);
 	}
 
-	private static int setOwner(CommandContext<CommandSourceStack> ctx, String uuid, String name, boolean retainData) throws CommandSyntaxException {
+	private static int setOwner(CommandContext<CommandSourceStack> ctx, String uuid, String name, boolean resetSettings) throws CommandSyntaxException {
 		BlockPos pos = BlockPosArgument.getLoadedBlockPos(ctx, "pos");
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
@@ -92,7 +92,7 @@ public class OwnerCommand {
 
 			ownable.setOwner(uuid, name);
 
-			if (!retainData)
+			if (resetSettings)
 				ownable.onOwnerChanged(state, level, pos, null, oldOwner, ownable.getOwner());
 
 			level.sendBlockUpdated(pos, state, state, 3);
@@ -103,15 +103,15 @@ public class OwnerCommand {
 			throw ERROR_SET_FAILED.create();
 	}
 
-	private static int fillRandomOwner(CommandContext<CommandSourceStack> ctx, boolean retainData) throws CommandSyntaxException {
-		return fillOwner(ctx, UUID.randomUUID().toString(), RandomStringUtils.randomAlphanumeric(10), retainData);
+	private static int fillRandomOwner(CommandContext<CommandSourceStack> ctx, boolean resetSettings) throws CommandSyntaxException {
+		return fillOwner(ctx, UUID.randomUUID().toString(), RandomStringUtils.randomAlphanumeric(10), resetSettings);
 	}
 
-	private static int fillOwner(CommandContext<CommandSourceStack> ctx, NameAndId gameProfile, boolean retainData) throws CommandSyntaxException {
-		return fillOwner(ctx, gameProfile.id().toString(), gameProfile.name(), retainData);
+	private static int fillOwner(CommandContext<CommandSourceStack> ctx, NameAndId gameProfile, boolean resetSettings) throws CommandSyntaxException {
+		return fillOwner(ctx, gameProfile.id().toString(), gameProfile.name(), resetSettings);
 	}
 
-	private static int fillOwner(CommandContext<CommandSourceStack> ctx, String uuid, String name, boolean retainData) throws CommandSyntaxException {
+	private static int fillOwner(CommandContext<CommandSourceStack> ctx, String uuid, String name, boolean resetSettings) throws CommandSyntaxException {
 		BoundingBox area = BoundingBox.fromCorners(BlockPosArgument.getLoadedBlockPos(ctx, "from"), BlockPosArgument.getLoadedBlockPos(ctx, "to"));
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
@@ -135,7 +135,7 @@ public class OwnerCommand {
 
 						ownable.setOwner(uuid, name);
 
-						if (!retainData)
+						if (resetSettings)
 							ownable.onOwnerChanged(state, level, pos, null, oldOwner, ownable.getOwner());
 
 						level.sendBlockUpdated(pos, state, state, 3);
