@@ -7,7 +7,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -40,7 +40,7 @@ public class FakeLavaBlock extends LiquidBlock {
 	}
 
 	@Override
-	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+	public BlockState getAppearance(BlockState state, BlockAndLightGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
 		return Blocks.LAVA.defaultBlockState().setValue(LEVEL, state.getValue(LEVEL));
 	}
 }

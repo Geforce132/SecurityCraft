@@ -12,7 +12,7 @@ import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -74,7 +74,7 @@ public class FurnaceMineBlock extends BaseFullMineBlock {
 	}
 
 	@Override
-	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+	public BlockState getAppearance(BlockState state, BlockAndLightGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
 		return getBlockDisguisedAs().defaultBlockState().setValue(FACING, state.getValue(FACING));
 	}
 

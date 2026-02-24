@@ -3,7 +3,7 @@ package net.geforcemods.securitycraft.blocks.mines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.BlockAndLightGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -38,7 +38,7 @@ public class DeepslateMineBlock extends BaseFullMineBlock {
 	}
 
 	@Override
-	public BlockState getAppearance(BlockState state, BlockAndTintGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
+	public BlockState getAppearance(BlockState state, BlockAndLightGetter level, BlockPos pos, Direction side, BlockState queryState, BlockPos queryPos) {
 		return getBlockDisguisedAs().defaultBlockState().setValue(AXIS, state.getValue(AXIS));
 	}
 

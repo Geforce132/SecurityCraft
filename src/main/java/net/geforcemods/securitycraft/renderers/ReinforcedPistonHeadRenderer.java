@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -13,7 +14,6 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.piston.PistonBaseBlock;
@@ -54,9 +54,8 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 		renderState.base = null;
 
 		BlockState state = be.getMovedState();
-		Level level = be.getLevel();
 
-		if (level != null && !state.isAir()) {
+		if (be.getLevel() instanceof ClientLevel level && !state.isAir()) {
 			BlockPos oppositePos = be.getBlockPos().relative(be.getMovementDirection().getOpposite());
 			Holder<Biome> biome = level.getBiome(oppositePos);
 

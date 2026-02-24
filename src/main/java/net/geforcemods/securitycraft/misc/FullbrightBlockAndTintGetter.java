@@ -1,8 +1,8 @@
 package net.geforcemods.securitycraft.misc;
 
+import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.CardinalLighting;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
@@ -20,8 +20,8 @@ public class FullbrightBlockAndTintGetter implements BlockAndTintGetter {
 	}
 
 	@Override
-	public float getShade(Direction direction, boolean shade) {
-		return original.getShade(direction, shade);
+	public CardinalLighting cardinalLighting() {
+		return original.cardinalLighting();
 	}
 
 	@Override

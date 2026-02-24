@@ -9,6 +9,7 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.ProjectorBlockEntity;
 import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.renderers.state.ProjectorRenderState;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.MovingBlockRenderState;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -19,7 +20,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.TriPredicate;
@@ -58,8 +58,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 
 		List<ProjectionInfo> renderPositions = new ArrayList<>();
 
-		if (be.isActive() && !be.isEmpty()) {
-			Level level = be.getLevel();
+		if (be.isActive() && !be.isEmpty() && be.getLevel() instanceof ClientLevel level) {
 			BlockPos pos = be.getBlockPos();
 			boolean hanging = be.getBlockState().getValue(ProjectorBlock.HANGING);
 			Direction direction = be.getBlockState().getValue(ProjectorBlock.FACING);
@@ -75,18 +74,21 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					else
 						positionalOffset = getPositionalOffset(direction, x, projectionRange - 16, y + 1, projectionOffset);
 
-					BlockPos renderPos = be.getBlockPos().offset(positionalOffset);
+					if (positionalOffset != null) {
+						BlockPos renderPos = be.getBlockPos().offset(positionalOffset);
 
-					if (positionalOffset != null && (be.isOverridingBlocks() || level.isEmptyBlock(renderPos))) {
-						MovingBlockRenderState movingBlockRenderState = new MovingBlockRenderState();
-						BlockPos projectionPos = pos.offset(positionalOffset);
+						if (be.isOverridingBlocks() || level.isEmptyBlock(renderPos)) {
+							MovingBlockRenderState movingBlockRenderState = new MovingBlockRenderState();
+							BlockPos projectionPos = pos.offset(positionalOffset);
 
-						movingBlockRenderState.randomSeedPos = projectionPos;
-						movingBlockRenderState.blockPos = projectionPos;
-						movingBlockRenderState.blockState = be.getProjectedState();
-						movingBlockRenderState.biome = level.getBiome(projectionPos);
-						movingBlockRenderState.level = level;
-						renderPositions.add(new ProjectionInfo(positionalOffset, movingBlockRenderState));
+							movingBlockRenderState.randomSeedPos = projectionPos;
+							movingBlockRenderState.blockPos = projectionPos;
+							movingBlockRenderState.blockState = be.getProjectedState();
+							movingBlockRenderState.biome = level.getBiome(projectionPos);
+							movingBlockRenderState.cardinalLighting = level.cardinalLighting();
+							movingBlockRenderState.lightEngine = level.getLightEngine();
+							renderPositions.add(new ProjectionInfo(positionalOffset, movingBlockRenderState));
+						}
 					}
 				}
 			}
