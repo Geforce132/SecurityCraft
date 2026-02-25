@@ -97,6 +97,7 @@ public class SecurityCraft {
 		SCContent.DATA_SERIALIZERS.register(modEventBus);
 		SCContent.ENTITY_TYPES.register(modEventBus);
 		SCContent.FLUIDS.register(modEventBus);
+		SCContent.GAME_RULES.register(modEventBus);
 		SCContent.ITEMS.register(modEventBus);
 		SCContent.LOOT_ITEM_CONDITION_TYPES.register(modEventBus);
 		SCContent.MENU_TYPES.register(modEventBus);
