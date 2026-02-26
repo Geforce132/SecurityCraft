@@ -44,7 +44,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, TntRend
 		pose.mulPose(Axis.YP.rotationDegrees(90.0F));
 
 		if (!state.blockState.isEmpty())
-			TntMinecartRenderer.submitWhiteSolidBlock(state.blockState, pose, collector, state.lightCoords, state.fuseRemainingInTicks / 5 % 2 == 0, state.outlineColor);
+			TntMinecartRenderer.submitWhiteSolidBlock(state.blockState, pose, collector, state.lightCoords, (int) state.fuseRemainingInTicks / 5 % 2 == 0, state.outlineColor);
 
 		pose.popPose();
 		super.submit(state, pose, collector, camera);
