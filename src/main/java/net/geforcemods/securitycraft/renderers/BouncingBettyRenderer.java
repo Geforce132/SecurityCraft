@@ -37,7 +37,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, TntRend
 		pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
 		pose.translate(-0.5F, -0.5F, 0.5F);
 		pose.mulPose(Axis.YP.rotationDegrees(90.0F));
-		TntMinecartRenderer.submitWhiteSolidBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, collector, state.lightCoords, state.fuseRemainingInTicks / 5 % 2 == 0, state.outlineColor);
+		TntMinecartRenderer.submitWhiteSolidBlock(SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, collector, state.lightCoords, (int) state.fuseRemainingInTicks / 5 % 2 == 0, state.outlineColor);
 		pose.popPose();
 		super.submit(state, pose, collector, camera);
 	}
