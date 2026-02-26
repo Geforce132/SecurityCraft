@@ -10,9 +10,10 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.TntMinecartRenderer;
+import net.minecraft.client.renderer.entity.state.TntRenderState;
 import net.minecraft.util.Mth;
 
-public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, BouncingBettyRenderState> {
+public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, TntRenderState> {
 	private final BlockRenderDispatcher blockRenderer;
 
 	public BouncingBettyRenderer(EntityRendererProvider.Context ctx) {
@@ -22,7 +23,7 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, Bouncin
 	}
 
 	@Override
-	public void render(BouncingBettyRenderState state, PoseStack pose, MultiBufferSource buffer, int packedLight) {
+	public void render(TntRenderState state, PoseStack pose, MultiBufferSource buffer, int packedLight) {
 		pose.pushPose();
 		pose.translate(0.0F, 0.5F, 0.0F);
 
@@ -39,18 +40,18 @@ public class BouncingBettyRenderer extends EntityRenderer<BouncingBetty, Bouncin
 		pose.mulPose(Axis.YP.rotationDegrees(-90.0F));
 		pose.translate(-0.5F, -0.5F, 0.5F);
 		pose.mulPose(Axis.YP.rotationDegrees(90.0F));
-		TntMinecartRenderer.renderWhiteSolidBlock(blockRenderer, SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, buffer, packedLight, state.fuseRemainingInTicks / 5 % 2 == 0);
+		TntMinecartRenderer.renderWhiteSolidBlock(blockRenderer, SCContent.BOUNCING_BETTY.get().defaultBlockState(), pose, buffer, packedLight, (int) state.fuseRemainingInTicks / 5 % 2 == 0);
 		pose.popPose();
 		super.render(state, pose, buffer, packedLight);
 	}
 
 	@Override
-	public BouncingBettyRenderState createRenderState() {
-		return new BouncingBettyRenderState();
+	public TntRenderState createRenderState() {
+		return new TntRenderState();
 	}
 
 	@Override
-	public void extractRenderState(BouncingBetty entity, BouncingBettyRenderState state, float partialTicks) {
+	public void extractRenderState(BouncingBetty entity, TntRenderState state, float partialTicks) {
 		super.extractRenderState(entity, state, partialTicks);
 		state.fuseRemainingInTicks = entity.getFuse() - partialTicks + 1.0F;
 	}
