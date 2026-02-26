@@ -75,18 +75,19 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					else
 						positionalOffset = getPositionalOffset(direction, x, projectionRange - 16, y + 1, projectionOffset);
 
-					BlockPos renderPos = be.getBlockPos().offset(positionalOffset);
-
-					if (positionalOffset != null && (be.isOverridingBlocks() || level.isEmptyBlock(renderPos))) {
-						MovingBlockRenderState movingBlockRenderState = new MovingBlockRenderState();
+					if (positionalOffset != null) {
 						BlockPos projectionPos = pos.offset(positionalOffset);
 
-						movingBlockRenderState.randomSeedPos = projectionPos;
-						movingBlockRenderState.blockPos = projectionPos;
-						movingBlockRenderState.blockState = be.getProjectedState();
-						movingBlockRenderState.biome = level.getBiome(projectionPos);
-						movingBlockRenderState.level = level;
-						renderPositions.add(new ProjectionInfo(positionalOffset, movingBlockRenderState));
+						if (be.isOverridingBlocks() || level.isEmptyBlock(projectionPos)) {
+							MovingBlockRenderState movingBlockRenderState = new MovingBlockRenderState();
+
+							movingBlockRenderState.randomSeedPos = projectionPos;
+							movingBlockRenderState.blockPos = projectionPos;
+							movingBlockRenderState.blockState = be.getProjectedState();
+							movingBlockRenderState.biome = level.getBiome(projectionPos);
+							movingBlockRenderState.level = level;
+							renderPositions.add(new ProjectionInfo(positionalOffset, movingBlockRenderState));
+						}
 					}
 				}
 			}
