@@ -9,7 +9,8 @@
 - Fix: The Block Change Detector cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces (Thanks CYB3RCA4T!)
 - Fix: Redstone Wire cannot be placed on top of reinforced hoppers
 - Fix: Lecterns and Chiseled Bookshelves display their content incorrectly when they are reinforced using /sc convert
-- Fix: Reinforced Lanterns and Reinforced Chains cannot be waterlogged by placing water into them using a bucket 
+- Fix: Reinforced Lanterns and Reinforced Chains cannot be waterlogged by placing water into them using a bucket
+- Fix: Some messages that are sent from a Keycard Lock mention a Keycard Reader as the source block
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
