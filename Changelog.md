@@ -14,5 +14,7 @@
 - Fix: Reinforced Lanterns and Reinforced Chains cannot be waterlogged by placing water into them using a Bucket
 - Fix: Some messages that are sent from a Keycard Lock mention a Keycard Reader as the source block
 - Fix: Triggered Bouncing Betties do not flash white and increase in size before exploding
+- Fix: Severe lag when joining a superflat world with a layer of Secure Redstone Interfaces
+- Fix: Placing a Secure Redstone Interface using /setblock places it in its waterlogged state
 
 --------------------------Changelog for v1.10.1-beta2 of SecurityCraft--------------------------
