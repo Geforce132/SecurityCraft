@@ -20,6 +20,7 @@
 - Fix: Severe lag when joining a superflat world with a layer of Secure Redstone Interfaces
 - Fix: Placing a Secure Redstone Interface using /setblock places it in its waterlogged state
 - Fix: The two halves of Keypad Doors and Scanner Doors can sometimes become unlinked, making modules and options no longer synchronize between them
+- Fix: Players mounted to Security Cameras are not affected by gravity and cannot be moved by other players
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
