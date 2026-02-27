@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -15,7 +17,6 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.level.storage.ValueOutput.TypedOutputList;
 
 public abstract class LinkableBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
-	protected List<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private TypedInputList<LinkedBlock> nbtTagStorage = null;
 
 	protected LinkableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -35,23 +36,20 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		if (!hasLevel()) {
-			nbtTagStorage = tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC);
-			return;
-		}
+		TypedInputList<LinkedBlock> savedLinkedBlocks = tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC);
 
-		readLinkedBlocks(tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC));
+		if (!savedLinkedBlocks.isEmpty()) {
+			if (!hasLevel())
+				nbtTagStorage = savedLinkedBlocks;
+			else
+				readLinkedBlocks(savedLinkedBlocks);
+		}
 	}
 
 	@Override
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
-
-		if (!linkedBlocks.isEmpty()) {
-			TypedOutputList<LinkedBlock> tagList = tag.list("linkedBlocks", LinkedBlock.CODEC);
-
-			linkedBlocks.forEach(tagList::add);
-		}
+		saveLinkedBlocks(tag);
 	}
 
 	@Override
@@ -67,6 +65,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	private void readLinkedBlocks(TypedInputList<LinkedBlock> list) {
+		ImmutableList<LinkedBlock> linkedBlocks = getLinkedBlocks();
 		for (LinkedBlock block : list) {
 			if (hasLevel() && level.isLoaded(block.pos()) && block.validate(level) && !linkedBlocks.contains(block))
 				link(this, block.asBlockEntity(level));
@@ -83,13 +82,13 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 		LinkedBlock block1 = new LinkedBlock(blockEntity1);
 		LinkedBlock block2 = new LinkedBlock(blockEntity2);
 
-		if (!blockEntity1.linkedBlocks.contains(block2)) {
-			blockEntity1.linkedBlocks.add(block2);
+		if (!blockEntity1.getLinkedBlocks().contains(block2)) {
+			blockEntity1.addLinkedBlock(block2);
 			blockEntity1.setChanged();
 		}
 
-		if (!blockEntity2.linkedBlocks.contains(block1)) {
-			blockEntity2.linkedBlocks.add(block1);
+		if (!blockEntity2.getLinkedBlocks().contains(block1)) {
+			blockEntity2.addLinkedBlock(block1);
 			blockEntity2.setChanged();
 		}
 	}
@@ -106,8 +105,8 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 		LinkedBlock block = new LinkedBlock(blockEntity2);
 
-		if (blockEntity1.linkedBlocks.contains(block)) {
-			blockEntity1.linkedBlocks.remove(block);
+		if (blockEntity1.getLinkedBlocks().contains(block)) {
+			blockEntity1.removeLinkedBlock(block);
 			blockEntity1.setChanged();
 		}
 	}
@@ -123,7 +122,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 
 		Level level = blockEntity.level;
 
-		for (LinkedBlock block : blockEntity.linkedBlocks) {
+		for (LinkedBlock block : blockEntity.getLinkedBlocks()) {
 			if (level.isLoaded(block.pos()))
 				LinkableBlockEntity.unlink(block.asBlockEntity(level), blockEntity);
 		}
@@ -135,7 +134,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 * @return Are the two blocks linked together?
 	 */
 	public static boolean isLinkedWith(LinkableBlockEntity blockEntity1, LinkableBlockEntity blockEntity2) {
-		return blockEntity1.linkedBlocks.contains(new LinkedBlock(blockEntity2)) && blockEntity2.linkedBlocks.contains(new LinkedBlock(blockEntity1));
+		return blockEntity1.getLinkedBlocks().contains(new LinkedBlock(blockEntity2)) && blockEntity2.getLinkedBlocks().contains(new LinkedBlock(blockEntity1));
 	}
 
 	/**
@@ -161,7 +160,7 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            loops. Always add your block entity to the list whenever using this method
 	 */
 	public void propagate(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
-		Iterator<LinkedBlock> linkedBlockIterator = linkedBlocks.iterator();
+		Iterator<LinkedBlock> linkedBlockIterator = getLinkedBlocks().iterator();
 
 		while (linkedBlockIterator.hasNext()) {
 			LinkedBlock block = linkedBlockIterator.next();
@@ -180,6 +179,27 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
+	 * Gives access to the list of blocks that this block entity is linked to.
+	 *
+	 * @return The list of blocks that this block entity is linked to
+	 */
+	protected abstract ImmutableList<LinkedBlock> getLinkedBlocks();
+
+	/**
+	 * Adds a block to the list of blocks that this block entity is linked to.
+	 *
+	 * @param block The linked block to add to the list
+	 */
+	protected abstract void addLinkedBlock(LinkedBlock block);
+
+	/**
+	 * Removes a block from the list of blocks that this block entity is linked to.
+	 *
+	 * @param block The linked block to remove from the list
+	 */
+	protected abstract void removeLinkedBlock(LinkedBlock block);
+
+	/**
 	 * Called whenever certain actions occur in blocks this block entity is linked to. See {@link ILinkedAction} for parameter
 	 * descriptions. <p>
 	 *
@@ -189,4 +209,19 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            like Laser Blocks)
 	 */
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {}
+
+	/**
+	 * Saves all linked blocks to the given tag.
+	 *
+	 * @param tag The tag that the linked blocks will be saved to
+	 */
+	protected void saveLinkedBlocks(ValueOutput tag) {
+		List<LinkedBlock> linkedBlocks = getLinkedBlocks();
+
+		if (!linkedBlocks.isEmpty()) {
+			TypedOutputList<LinkedBlock> tagList = tag.list("linkedBlocks", LinkedBlock.CODEC);
+
+			linkedBlocks.forEach(tagList::add);
+		}
+	}
 }
