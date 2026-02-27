@@ -5,6 +5,7 @@
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
 - Fix: The Block Change Detector cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces (Thanks CYB3RCA4T!)
 - Fix: Redstone Wire cannot be placed on top of reinforced hoppers
+- Fix: Lecterns and Chiseled Bookshelves display their content incorrectly when they are reinforced using /sc convert
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
