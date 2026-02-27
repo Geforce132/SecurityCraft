@@ -6,6 +6,7 @@
 - Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
 - Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
+- API: New methods within LinkableBlockEntity for better control over how the list of linked blocks is modified and stored
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
 - Fix: The Block Change Detector cannot open Reinforced Doors/Trapdoors/etc. or interact with Secure Redstone Interfaces (Thanks CYB3RCA4T!)
 - Fix: The Frame feed is sometimes rendered with partly transparent pixels
@@ -18,6 +19,7 @@
 - Fix: Triggered Bouncing Betties do not flash white and increase in size before exploding
 - Fix: Severe lag when joining a superflat world with a layer of Secure Redstone Interfaces
 - Fix: Placing a Secure Redstone Interface using /setblock places it in its waterlogged state
+- Fix: The two halves of Keypad Doors and Scanner Doors can sometimes become unlinked, making modules and options no longer synchronize between them
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
