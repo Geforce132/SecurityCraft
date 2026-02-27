@@ -9,6 +9,7 @@
 		"camera.CustomFeatureRendererMixin",
 		"camera.GameRendererMixin",
 		"camera.LevelRendererMixin",
+		"camera.LocalPlayerMixin",
 		"camera.MinecraftMixin",
 		"camera.ViewAreaMixin",
 		"datagen.BlockStateGeneratorCollectorMixin",
