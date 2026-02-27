@@ -175,7 +175,6 @@ public class PlayerUtils {
 			ResolvableProfile profile = stack.get(DataComponents.PROFILE);
 
 			if (profile != null) {
-				//TODO: correct?
 				UUID profileUUID = profile.partialProfile().id();
 
 				return new Owner(profile.name().orElse("ownerName"), profileUUID.toString());
