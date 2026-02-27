@@ -4,6 +4,7 @@
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
 - Fix: The Block Change Detector cannot open reinforced doors/trapdoors/etc. or interact with secure redstone interfaces (Thanks CYB3RCA4T!)
+- Fix: Redstone Wire cannot be placed on top of reinforced hoppers
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 

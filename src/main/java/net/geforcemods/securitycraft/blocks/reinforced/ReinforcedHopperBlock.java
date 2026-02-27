@@ -35,6 +35,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
@@ -110,6 +111,16 @@ public class ReinforcedHopperBlock extends HopperBlock implements IReinforcedBlo
 			return disguisedState.getShape(level, pos, ctx);
 		else
 			return super.getShape(state, level, pos, ctx);
+	}
+
+	@Override
+	protected VoxelShape getBlockSupportShape(BlockState state, BlockGetter level, BlockPos pos) {
+		BlockState disguisedState = IDisguisable.getDisguisedBlockState(level.getBlockEntity(pos)).orElse(state);
+
+		if (disguisedState.getBlock() != this)
+			return disguisedState.getBlockSupportShape(level, pos);
+		else //Fill in the hopper's top hole, to allow redstone to be placed on top of reinforced hoppers. The vanilla hopper currently doesn't need this because of hardcoding within RedStoneWireBlock
+			return Shapes.or(super.getBlockSupportShape(state, level, pos), INSIDE);
 	}
 
 	@Override
