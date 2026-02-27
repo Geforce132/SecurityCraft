@@ -1,10 +1,12 @@
 package net.geforcemods.securitycraft.blockentities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.LinkedBlock;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.neoforged.neoforge.model.data.ModelData;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
+	protected List<LinkedBlock> linkedBlock = new ArrayList<>();
 	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
@@ -35,7 +38,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
 
-		if (level.getBlockEntity(pos) instanceof SpecialDoorBlockEntity be && isLinkedWith(this, be)) {
+		if (level.getBlockEntity(pos) instanceof SpecialDoorBlockEntity be && be.isOwnedBy(oldOwner)) {
 			be.setOwner(getOwner().getUUID(), getOwner().getName());
 
 			if (!level.isClientSide())
@@ -43,6 +46,20 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 		}
 
 		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
+	}
+
+	@Override
+	protected List<LinkedBlock> getLinkedBlocks() {
+		if (linkedBlock.isEmpty()) {
+			BlockState state = getBlockState();
+			BlockPos thisPos = getBlockPos();
+			BlockPos otherPos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? thisPos.below() : thisPos.above();
+
+			if (level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity be && be.isOwnedBy(getOwner()))
+				linkedBlock.add(new LinkedBlock(be));
+		}
+
+		return linkedBlock;
 	}
 
 	@Override
@@ -65,6 +82,11 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 			default -> {
 			}
 		}
+	}
+
+	@Override
+	protected boolean shouldSyncLinkedBlocksWithNBT() {
+		return false;
 	}
 
 	@Override
