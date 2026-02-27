@@ -10,6 +10,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.geforcemods.securitycraft.api.IPasscodeConvertible;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.api.SecurityCraftAPI;
+import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
@@ -90,7 +91,7 @@ public class ConvertCommand {
 			Block block = state.getBlock();
 
 			if (IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.containsKey(block)) {
-				level.setBlockAndUpdate(pos, ((IReinforcedBlock) IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block)).convertToReinforced(level, pos, state));
+				UniversalBlockReinforcerItem.convertStateWhileRetainingData(level, pos, ((IReinforcedBlock) IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.get(block)).convertToReinforced(level, pos, state));
 				return true;
 			}
 
@@ -100,7 +101,7 @@ public class ConvertCommand {
 			Block block = state.getBlock();
 
 			if (IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.containsKey(block)) {
-				level.setBlockAndUpdate(pos, ((IReinforcedBlock) block).convertToVanilla(level, pos, state));
+				UniversalBlockReinforcerItem.convertStateWhileRetainingData(level, pos, ((IReinforcedBlock) block).convertToVanilla(level, pos, state));
 				return true;
 			}
 

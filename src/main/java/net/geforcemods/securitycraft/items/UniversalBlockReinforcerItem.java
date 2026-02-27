@@ -16,7 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.Container;
+import net.minecraft.world.Clearable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
@@ -32,7 +32,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.LecternBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -114,41 +113,41 @@ public class UniversalBlockReinforcerItem extends Item {
 			convertedState = rb.convertToVanilla(level, pos, state);
 
 		if (convertedState != null) {
-			BlockEntity be = level.getBlockEntity(pos);
-			CompoundTag tag = null;
-
-			if (be instanceof IOwnable ownable && ((player != null && !ownable.isOwnedBy(player)) || !ownable.isOwnedBy(owner)))
+			if (level.getBlockEntity(pos) instanceof IOwnable ownable && ((player != null && !ownable.isOwnedBy(player)) || !ownable.isOwnedBy(owner)))
 				return false;
 
 			if (!level.isClientSide) {
-				if (be != null) {
-					tag = be.saveWithoutMetadata();
+				convertStateWhileRetainingData(level, pos, convertedState);
 
-					if (be instanceof IModuleInventory inv)
-						inv.dropAllModules();
-
-					if (be instanceof Container container)
-						container.clearContent();
-					else if (be instanceof LecternBlockEntity lectern)
-						lectern.clearContent();
-				}
-
-				level.setBlockAndUpdate(pos, convertedState);
-				be = level.getBlockEntity(pos);
-
-				if (be != null) { //in case the converted block gets removed immediately after it's set
-					if (tag != null)
-						be.load(tag);
-
-					if (isReinforcing)
-						((IOwnable) be).setOwner(owner.getUUID(), owner.getName());
-				}
+				if (isReinforcing && level.getBlockEntity(pos) instanceof IOwnable ownable)
+					ownable.setOwner(owner.getUUID(), owner.getName());
 			}
 
 			return true;
 		}
 
 		return false;
+	}
+
+	public static void convertStateWhileRetainingData(Level level, BlockPos pos, BlockState convertedState) {
+		BlockEntity be = level.getBlockEntity(pos);
+		CompoundTag tag = null;
+
+		if (be != null) {
+			tag = be.saveWithoutMetadata();
+
+			if (be instanceof IModuleInventory inv)
+				inv.dropAllModules();
+
+			if (be instanceof Clearable clearable)
+				clearable.clearContent();
+		}
+
+		level.setBlockAndUpdate(pos, convertedState);
+		be = level.getBlockEntity(pos);
+
+		if (be != null && tag != null) //In case the converted block gets removed immediately after it's set
+			be.load(tag);
 	}
 
 	public static boolean isReinforcing(ItemStack stack) {
