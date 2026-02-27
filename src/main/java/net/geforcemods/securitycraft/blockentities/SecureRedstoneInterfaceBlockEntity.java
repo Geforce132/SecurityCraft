@@ -62,13 +62,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 				level.setBlockAndUpdate(pos, state.setValue(SecureRedstoneInterfaceBlock.SENDER, isSender()));
 				refreshPower();
 
-				if (isSender()) {
-					BlockEntityTracker.SECURE_REDSTONE_INTERFACE_SENDER.track(this);
+				if (isSender())
 					tellSimilarReceiversToRefresh();
-				}
-				else
-					BlockEntityTracker.SECURE_REDSTONE_INTERFACE_RECEIVER.track(this);
 
+				getTracker().track(this);
 				tracked = true;
 			}
 
@@ -145,7 +142,7 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		super.setRemoved();
 
 		if (!level.isClientSide())
-			(isSender() ? BlockEntityTracker.SECURE_REDSTONE_INTERFACE_SENDER : BlockEntityTracker.SECURE_REDSTONE_INTERFACE_RECEIVER).stopTracking(this);
+			getTracker().stopTracking(this);
 	}
 
 	@Override
@@ -228,6 +225,10 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		ClientHandler.refreshModelData(this);
 	}
 
+	public final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> getTracker() {
+		return isSender() ? BlockEntityTracker.SECURE_REDSTONE_INTERFACE_SENDER : BlockEntityTracker.SECURE_REDSTONE_INTERFACE_RECEIVER;
+	}
+
 	public boolean isSender() {
 		return sender;
 	}
@@ -236,20 +237,15 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 		if (isSender() == sender || !getOwner().isValidated())
 			return;
 
+		if (!level.isClientSide())
+			getTracker().stopTracking(this);
+
 		this.sender = sender;
 
 		if (!level.isClientSide()) {
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureRedstoneInterfaceBlock.SENDER, sender));
 			setChanged();
-
-			if (sender) {
-				BlockEntityTracker.SECURE_REDSTONE_INTERFACE_RECEIVER.stopTracking(this);
-				BlockEntityTracker.SECURE_REDSTONE_INTERFACE_SENDER.track(this);
-			}
-			else {
-				BlockEntityTracker.SECURE_REDSTONE_INTERFACE_SENDER.stopTracking(this);
-				BlockEntityTracker.SECURE_REDSTONE_INTERFACE_RECEIVER.track(this);
-			}
+			getTracker().track(this);
 
 			if (!isDisabled())
 				tellSimilarReceiversToRefresh();
