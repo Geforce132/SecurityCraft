@@ -1469,6 +1469,8 @@
 	"securitycraft.configuration.mineExplodesWhenInCreative.tooltip": "Should mines explode if broken while in Creative mode?",
 	"securitycraft.configuration.mineExplosionsBreakBlocks": "Mine explosions break blocks",
 	"securitycraft.configuration.mineExplosionsBreakBlocks.tooltip": "Set this to false if you want mines to not break blocks when they explode. If this is enabled, the \"blockExplosionDropDecay\" gamerule will be respected",
+	"securitycraft.configuration.more_performant_sri_rendering": "More performant SRI rendering",
+	"securitycraft.configuration.more_performant_sri_rendering.tooltip": "Should Secure Redstone Interfaces in \"Receiver\" mode be rendered without the spinning disk? This may lead to slight clientside performance gains.",
 	"securitycraft.configuration.non_owned_breaking_slowdown": "Non-owned block breaking slowdown",
 	"securitycraft.configuration.non_owned_breaking_slowdown.tooltip": "How much slower it should be to break a block that is not owned by the player breaking it.\nThe value is calculated as the normal block breaking speed divided by the non-owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.\nThis only applies when \"Allow breaking non-owned blocks\" and \"Vanilla tool block breaking\" are enabled.",
 	"securitycraft.configuration.passcode_check_cooldown": "Passcode check cooldown",

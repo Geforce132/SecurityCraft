@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
@@ -29,7 +30,7 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 	public void render(SecureRedstoneInterfaceBlockEntity be, float partialTicks, PoseStack pose, MultiBufferSource buffer, int combinedLight, int combinedOverlay, Vec3 cameraPos) {
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryRenderDelegate(be, partialTicks, pose, buffer, combinedLight, combinedOverlay, cameraPos);
 
-		if (!be.isModuleEnabled(ModuleType.DISGUISE) && !be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER)) {
+		if (!ConfigHandler.CLIENT.morePerformantSRIRendering.get() && !be.isModuleEnabled(ModuleType.DISGUISE) && !be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER)) {
 			pose.translate(0.5D, 0.5D, 0.5D);
 			pose.mulPose(be.getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getRotation());
 			pose.translate(0.0D, -0.49999D, 0.0D);
