@@ -61,11 +61,11 @@ public class SecureRedstoneInterfaceBlockEntity extends DisguisableBlockEntity i
 			if (!tracked) {
 				level.setBlockAndUpdate(pos, state.setValue(SecureRedstoneInterfaceBlock.SENDER, isSender()));
 				refreshPower();
+				getTracker().track(this);
 
 				if (isSender())
 					tellSimilarReceiversToRefresh();
 
-				getTracker().track(this);
 				tracked = true;
 			}
 
