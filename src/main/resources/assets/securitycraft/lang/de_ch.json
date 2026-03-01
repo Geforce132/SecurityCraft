@@ -1427,6 +1427,8 @@
 	"securitycraft.configuration.mineExplodesWhenInCreative.tooltip": "Sollen Minen explodieren, wenn sie im Kreativmodus zerbrochen werden?",
 	"securitycraft.configuration.mineExplosionsBreakBlocks": "Minenexplosionen zerstören Blöcke",
 	"securitycraft.configuration.mineExplosionsBreakBlocks.tooltip": "Wenn deaktiviert, zerstören Minenexplosionen keine Blöcke. Wenn aktiviert, wird die \"blockExplosionDropDecay\"-Spielregel beachtet.",
+	"securitycraft.configuration.more_performant_sri_rendering": "Effizienteres SRS-Rendering",
+	"securitycraft.configuration.more_performant_sri_rendering.tooltip": "Sollen Sichere Redstone-Schnittstellen im \"Empfänger\"-Modus ohne die rotierende Schüssel gerendert werden? Dies kann zu einer leichten Performance-Steigerung führen.",
 	"securitycraft.configuration.non_owned_breaking_slowdown": "Verzögerung beim Zerbrechen von Blöcken anderer Besitzer",
 	"securitycraft.configuration.non_owned_breaking_slowdown.tooltip": "Wie viel langsamer das Zerbrechen eines Blockes, der einem nicht selbst gehört, sein soll.\nDer Wert wird wie folgt berechnet: Normale Zerbrechgeschwindigkeit geteilt durch den Verzögerungswert. Beispiel: Ein Wert von 2.0 bedeutet, dass es doppelt so viel Zeit braucht, den Block zu zerbrechen.\nDiese Wert hat nur eine Auswirkung, wenn \"Erlauben, Blöcke anderer Besitzer zu zerbrechen\" und \"Blöcke mit Vanilla-Werkzeugen zerbrechen\" aktiviert sind.",
 	"securitycraft.configuration.passcode_check_cooldown": "Abklingzeit nach Passwortüberprüfung",
