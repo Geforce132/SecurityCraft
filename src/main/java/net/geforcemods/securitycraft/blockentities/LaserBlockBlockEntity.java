@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.collect.ImmutableList;
+
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.LinkedBlock;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IgnoreOwnerOption;
@@ -54,6 +57,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.PacketDistributor;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuProvider, ContainerListener {
+	protected List<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private DisabledOption disabled = new DisabledOption(false) {
 		@Override
 		public void toggle() {
@@ -122,6 +126,21 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		}
 
 		return sideConfig;
+	}
+
+	@Override
+	protected ImmutableList<LinkedBlock> getLinkedBlocks() {
+		return ImmutableList.copyOf(linkedBlocks);
+	}
+
+	@Override
+	protected void addLinkedBlock(LinkedBlock block) {
+		linkedBlocks.add(block);
+	}
+
+	@Override
+	protected void removeLinkedBlock(LinkedBlock block) {
+		linkedBlocks.remove(block);
 	}
 
 	@Override
