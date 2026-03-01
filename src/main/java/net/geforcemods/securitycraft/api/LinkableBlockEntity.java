@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -34,29 +36,20 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
 
-		if (shouldSyncLinkedBlocksWithNBT()) {
-			if (!hasLevel()) {
-				nbtTagStorage = tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC);
-				return;
-			}
+		TypedInputList<LinkedBlock> savedLinkedBlocks = tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC);
 
-			readLinkedBlocks(tag.listOrEmpty("linkedBlocks", LinkedBlock.NEW_OR_LEGACY_CODEC));
+		if (!savedLinkedBlocks.isEmpty()) {
+			if (!hasLevel())
+				nbtTagStorage = savedLinkedBlocks;
+			else
+				readLinkedBlocks(savedLinkedBlocks);
 		}
 	}
 
 	@Override
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
-
-		if (shouldSyncLinkedBlocksWithNBT()) {
-			List<LinkedBlock> linkedBlocks = getLinkedBlocks();
-
-			if (!linkedBlocks.isEmpty()) {
-				TypedOutputList<LinkedBlock> tagList = tag.list("linkedBlocks", LinkedBlock.CODEC);
-
-				linkedBlocks.forEach(tagList::add);
-			}
-		}
+		saveLinkedBlocks(tag);
 	}
 
 	@Override
@@ -72,8 +65,9 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	private void readLinkedBlocks(TypedInputList<LinkedBlock> list) {
+		ImmutableList<LinkedBlock> linkedBlocks = getLinkedBlocks();
 		for (LinkedBlock block : list) {
-			if (hasLevel() && level.isLoaded(block.pos()) && block.validate(level) && !getLinkedBlocks().contains(block))
+			if (hasLevel() && level.isLoaded(block.pos()) && block.validate(level) && !linkedBlocks.contains(block))
 				link(this, block.asBlockEntity(level));
 		}
 	}
@@ -185,26 +179,25 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	}
 
 	/**
-	 * Gives access to the list of blocks that this block entity is linked to. This view of the linked blocks should not be
-	 * modified, for modification use addLinkedBlock and removeLinkedBlock below.
+	 * Gives access to the list of blocks that this block entity is linked to.
 	 *
 	 * @return The list of blocks that this block entity is linked to
 	 */
-	protected abstract List<LinkedBlock> getLinkedBlocks();
+	protected abstract ImmutableList<LinkedBlock> getLinkedBlocks();
 
 	/**
 	 * Adds a block to the list of blocks that this block entity is linked to.
 	 *
 	 * @param block The linked block to add to the list
 	 */
-	protected void addLinkedBlock(LinkedBlock block) {}
+	protected abstract void addLinkedBlock(LinkedBlock block);
 
 	/**
 	 * Removes a block from the list of blocks that this block entity is linked to.
 	 *
 	 * @param block The linked block to remove from the list
 	 */
-	protected void removeLinkedBlock(LinkedBlock block) {}
+	protected abstract void removeLinkedBlock(LinkedBlock block);
 
 	/**
 	 * Called whenever certain actions occur in blocks this block entity is linked to. See {@link ILinkedAction} for parameter
@@ -218,9 +211,17 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	protected void onLinkedBlockAction(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {}
 
 	/**
-	 * @return true if the block entity should write and read its linked blocks to/from NBT
+	 * Saves all linked blocks to the given tag.
+	 *
+	 * @param tag The tag that the linked blocks will be saved to
 	 */
-	protected boolean shouldSyncLinkedBlocksWithNBT() {
-		return true;
+	protected void saveLinkedBlocks(ValueOutput tag) {
+		List<LinkedBlock> linkedBlocks = getLinkedBlocks();
+
+		if (!linkedBlocks.isEmpty()) {
+			TypedOutputList<LinkedBlock> tagList = tag.list("linkedBlocks", LinkedBlock.CODEC);
+
+			linkedBlocks.forEach(tagList::add);
+		}
 	}
 }

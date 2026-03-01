@@ -1,7 +1,8 @@
 package net.geforcemods.securitycraft.blockentities;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -23,10 +24,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.model.data.ModelData;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
-	protected List<LinkedBlock> linkedBlock = new ArrayList<>();
+	protected LinkedBlock linkedBlock;
 	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
@@ -49,17 +51,17 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	protected List<LinkedBlock> getLinkedBlocks() {
-		if (linkedBlock.isEmpty()) {
+	protected ImmutableList<LinkedBlock> getLinkedBlocks() {
+		if (linkedBlock == null) {
 			BlockState state = getBlockState();
 			BlockPos thisPos = getBlockPos();
 			BlockPos otherPos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? thisPos.below() : thisPos.above();
 
 			if (level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity be && be.isOwnedBy(getOwner()))
-				linkedBlock.add(new LinkedBlock(be));
+				addLinkedBlock(new LinkedBlock(be));
 		}
 
-		return linkedBlock;
+		return ImmutableList.of(linkedBlock);
 	}
 
 	@Override
@@ -85,9 +87,18 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	}
 
 	@Override
-	protected boolean shouldSyncLinkedBlocksWithNBT() {
-		return false;
+	protected void addLinkedBlock(LinkedBlock block) {
+		linkedBlock = block;
 	}
+
+	@Override
+	protected void removeLinkedBlock(LinkedBlock block) {
+		if (linkedBlock.equals(block))
+			linkedBlock = null;
+	}
+
+	@Override
+	protected void saveLinkedBlocks(ValueOutput tag) {}
 
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {
