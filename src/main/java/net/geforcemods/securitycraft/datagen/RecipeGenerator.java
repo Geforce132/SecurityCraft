@@ -10,7 +10,6 @@ import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
 import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
@@ -40,12 +39,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 
 public class RecipeGenerator extends RecipeProvider {
-	//TODO: Remove when the field in the super class is protected
-	private final HolderGetter<Item> items;
-
 	public RecipeGenerator(HolderLookup.Provider lookupProvider, RecipeOutput output) {
 		super(lookupProvider, output);
-		items = lookupProvider.lookupOrThrow(Registries.ITEM);
 	}
 
 	@Override
