@@ -45,6 +45,7 @@ public class ConfigHandler {
 		public final BooleanValue sayThanksMessage;
 		public final BooleanValue reinforcedBlockTint;
 		public final BooleanValue debugCameraResetTracing;
+		public final BooleanValue morePerformantSRIRendering;
 		public final IntValue reinforcedBlockTintColor;
 		public final IntValue frameFeedRenderDistance;
 		public final IntValue frameFeedResolution;
@@ -63,6 +64,10 @@ public class ConfigHandler {
 			debugCameraResetTracing = builder
 					.comment("If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working when they immediately reset the player's camera entity.")
 					.define("debug_camera_reset_tracing", false);
+
+			morePerformantSRIRendering = builder
+					.comment("Should Secure Redstone Interfaces in \"Receiver\" mode be rendered without the spinning disk? This may lead to slight clientside performance gains.")
+					.define("more_performant_sri_rendering", false);
 
 			reinforcedBlockTintColor = builder
 					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
