@@ -24,6 +24,7 @@ body:
       label: Minecraft version
       description: Which version of Minecraft are you using? If your version is not listed here, we do not support it.
       options:
+        - 1.21.11
         - 1.21.10
         - 1.21.8
         - 1.21.1
