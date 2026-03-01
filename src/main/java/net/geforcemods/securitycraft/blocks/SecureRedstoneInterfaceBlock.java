@@ -61,7 +61,7 @@ public class SecureRedstoneInterfaceBlock extends DisguisableBlock {
 
 	public SecureRedstoneInterfaceBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(SENDER, true).setValue(FACING, Direction.UP));
+		registerDefaultState(defaultBlockState().setValue(SENDER, true).setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
 	}
 
 	@Override
