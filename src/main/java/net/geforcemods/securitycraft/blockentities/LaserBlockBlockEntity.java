@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.collect.ImmutableList;
+
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
@@ -163,8 +165,8 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 	}
 
 	@Override
-	protected List<LinkedBlock> getLinkedBlocks() {
-		return linkedBlocks;
+	protected ImmutableList<LinkedBlock> getLinkedBlocks() {
+		return ImmutableList.copyOf(linkedBlocks);
 	}
 
 	@Override
