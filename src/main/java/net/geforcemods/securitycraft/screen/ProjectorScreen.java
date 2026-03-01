@@ -72,13 +72,12 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		horizontalToggleButton = addRenderableWidget(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, 2, 16, 16, 2, button -> {
 			//@formatter:on
 			boolean horizontal = !be.isHorizontal();
-			int rangeSliderValue = projectionRangeSlider.getValueInt();
 
 			be.setHorizontal(horizontal);
 			updateHorizontalToggleButtonTooltip();
 			projectionRangeSlider.setMinValue(projectionRangeSlider.getMinValue() - (horizontal ? 16 : -16));
 			projectionRangeSlider.setMaxValue(projectionRangeSlider.getMaxValue() - (horizontal ? 16 : -16));
-			projectionRangeSlider.setValue(rangeSliderValue);
+			projectionRangeSlider.setValue(projectionRangeSlider.getValue() - (horizontal ? 16 : -16));
 			applySliderValue(projectionRangeSlider);
 			ClientPacketDistributor.sendToServer(new SyncProjector(be.getBlockPos(), be.isHorizontal() ? 1 : 0, DataType.HORIZONTAL));
 		}, SecurityCraft.resLoc("projector/vertical"), SecurityCraft.resLoc("projector/horizontal")));
