@@ -62,7 +62,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 				addLinkedBlock(new LinkedBlock(be));
 		}
 
-		return ImmutableList.of(linkedBlock);
+		return linkedBlock != null ? ImmutableList.of(linkedBlock) : ImmutableList.of(); //The linked block can be null if the other door half is missing, e.g. when breaking the door
 	}
 
 	@Override
