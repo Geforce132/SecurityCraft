@@ -21,6 +21,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.server.level.ServerLevel;
 
 /**
  * This mixin makes sure that chunks near cameras are properly sent to the player viewing it, as well as fixing block updates
@@ -90,12 +91,13 @@ public abstract class ChunkMapMixin {
 	 * Allows chunks that are forceloaded near a currently active camera to be sent to the player mounting the camera or viewing
 	 * the camera feed in a frame.
 	 */
-	@Inject(method = "onChunkReadyToSend", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getChunkTrackingView()Lnet/minecraft/server/level/ChunkTrackingView;"))
-	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo ci, @Local ServerPlayer player) {
+	@Inject(method = "onChunkReadyToSend", at = @At("HEAD"))
+	private void securitycraft$sendChunksToCameras(LevelChunk chunk, CallbackInfo ci) {
 		ChunkPos pos = chunk.getPos();
-
-		if ((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(pos)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), camera -> camera.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
-			markChunkPendingToSend(player, chunk);
+		for (ServerPlayer player : ((ServerLevel) chunk.getLevel()).players()) {
+			if ((player.getCamera() instanceof SecurityCamera camera && camera.getCameraChunks().contains(pos)) || !BlockEntityTracker.FRAME_VIEWED_SECURITY_CAMERAS.getBlockEntitiesWithCondition(player.level(), c -> c.shouldKeepChunkTracked(player, pos.x, pos.z)).isEmpty())
+				markChunkPendingToSend(player, chunk);
+		}
 	}
 
 	/**
