@@ -4,6 +4,7 @@
 - New: The "/sc owner" subcommand now has an optional "resetSettings" mode to force affected blocks to reset sensible data like passcodes
 - New: Configuration option to control whether to render the spinning disk of Secure Redstone Interfaces
 - New: Configuration option to control the breaking speed of owned blocks
+- New: Option for the Portable Radar to control whether it should send messages if players are in its radius
 - Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
 - Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
