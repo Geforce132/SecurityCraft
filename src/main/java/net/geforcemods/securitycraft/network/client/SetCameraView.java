@@ -45,7 +45,9 @@ public record SetCameraView(int id) implements CustomPacketPayload {
 				mc.options.setCameraType(CameraType.FIRST_PERSON);
 				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
 				LayerToggleHandler.disable(VanillaGuiLayers.CONTEXTUAL_INFO_BAR);
+				LayerToggleHandler.disable(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND);
 				LayerToggleHandler.disable(VanillaGuiLayers.EFFECTS);
+				LayerToggleHandler.disable(VanillaGuiLayers.EXPERIENCE_LEVEL);
 				LayerToggleHandler.enable(ClientHandler.CAMERA_LAYER);
 				SCClientEventHandler.resetCameraInfoMessageTime();
 			}

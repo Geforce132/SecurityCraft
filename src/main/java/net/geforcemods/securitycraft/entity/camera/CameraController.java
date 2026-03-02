@@ -110,7 +110,9 @@ public class CameraController {
 			resetOverlaysAfterDismount = false;
 			LayerToggleHandler.disable(ClientHandler.CAMERA_LAYER);
 			LayerToggleHandler.enable(VanillaGuiLayers.CONTEXTUAL_INFO_BAR);
+			LayerToggleHandler.enable(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND);
 			LayerToggleHandler.enable(VanillaGuiLayers.EFFECTS);
+			LayerToggleHandler.enable(VanillaGuiLayers.EXPERIENCE_LEVEL);
 		}
 	}
 
