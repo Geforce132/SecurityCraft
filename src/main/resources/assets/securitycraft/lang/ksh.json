@@ -1370,6 +1370,8 @@
 	"option.securitycraft.portable_radar.searchDelay.description": "Der Intervall in dem der Radar den Radius scant.",
 	"option.securitycraft.portable_radar.searchRadius": "Suchradius: %s",
 	"option.securitycraft.portable_radar.searchRadius.description": "Der Radius, in dem der Radar sucht.",
+	"option.securitycraft.portable_radar.sendMessage": "Nachricht senden: %s",
+	"option.securitycraft.portable_radar.sendMessage.description": "Soll der Radar Nachrichten senden, wenn Spieler in dessen Radius sind?",
 	"option.securitycraft.portable_radar.sendToTeamMembers": "Team benachrichtigen: %s",
 	"option.securitycraft.portable_radar.sendToTeamMembers.description": "Ob Benachrichtigungen allen Teammitgliedern gesendet werden sollen, oder nur dem Besitzer.",
 	"option.securitycraft.reinforced_cauldron.isPublic": "Öffentlich: %s",
