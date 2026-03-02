@@ -119,6 +119,7 @@ public class ConfigHandler {
 		public final BooleanValue alwaysDrop;
 		public final BooleanValue allowBreakingNonOwnedBlocks;
 		public final DoubleValue nonOwnedBreakingSlowdown;
+		public final DoubleValue ownedBreakingSlowdown;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
@@ -272,6 +273,12 @@ public class ConfigHandler {
 							"The value is calculated as the normal block breaking speed divided by the non-owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
 							"This only applies when \"allow_breaking_non_owned_blocks\" and \"vanilla_tool_block_breaking\" are set to true.")
 					.defineInRange("non_owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
+
+			ownedBreakingSlowdown = builder
+					.comment("How much slower it should be to break a block that is owned by the player breaking it.",
+							"The value is calculated as the normal block breaking speed divided by the owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
+							"This only applies when \"vanilla_tool_block_breaking\" is set to true.")
+					.defineInRange("owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
