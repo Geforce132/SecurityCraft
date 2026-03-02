@@ -1473,6 +1473,8 @@
 	"securitycraft.configuration.more_performant_sri_rendering.tooltip": "˙suᴉɐᵷ ǝɔuɐɯɹoɟɹǝd ǝpᴉsʇuǝᴉꞁɔ ʇɥᵷᴉꞁs oʇ pɐǝꞁ ʎɐɯ sᴉɥ⟘ ¿ʞsᴉp ᵷuᴉuuᴉds ǝɥʇ ʇnoɥʇᴉʍ pǝɹǝpuǝɹ ǝq ǝpoɯ ,,ɹǝʌᴉǝɔǝᴚ,, uᴉ sǝɔɐɟɹǝʇuI ǝuoʇspǝᴚ ǝɹnɔǝS pꞁnoɥS",
 	"securitycraft.configuration.non_owned_breaking_slowdown": "uʍopʍoꞁs ᵷuᴉʞɐǝɹq ʞɔoꞁq pǝuʍo-uoN",
 	"securitycraft.configuration.non_owned_breaking_slowdown.tooltip": "˙pǝꞁqɐuǝ ǝɹɐ ,,ᵷuᴉʞɐǝɹq ʞɔoꞁq ꞁooʇ ɐꞁꞁᴉuɐɅ,, puɐ ,,sʞɔoꞁq pǝuʍo-uou ᵷuᴉʞɐǝɹq ʍoꞁꞁⱯ,, uǝɥʍ sǝᴉꞁddɐ ʎꞁuo sᴉɥ⟘\n˙ʞɔoꞁq ǝɥʇ ʞɐǝɹq oʇ ᵷuoꞁ sɐ ǝɔᴉʍʇ sǝʞɐʇ ʇᴉ suɐǝɯ 0˙ᘔ ɟo ǝnꞁɐʌ Ɐ :ǝꞁdɯɐxƎ ˙uʍopʍoꞁs ᵷuᴉʞɐǝɹq ʞɔoꞁq pǝuʍo-uou ǝɥʇ ʎq pǝpᴉʌᴉp pǝǝds ᵷuᴉʞɐǝɹq ʞɔoꞁq ꞁɐɯɹou ǝɥʇ sɐ pǝʇɐꞁnɔꞁɐɔ sᴉ ǝnꞁɐʌ ǝɥ⟘\n˙ʇᴉ ᵷuᴉʞɐǝɹq ɹǝʎɐꞁd ǝɥʇ ʎq pǝuʍo ʇou sᴉ ʇɐɥʇ ʞɔoꞁq ɐ ʞɐǝɹq oʇ ǝq pꞁnoɥs ʇᴉ ɹǝʍoꞁs ɥɔnɯ ʍoH",
+	"securitycraft.configuration.owned_breaking_slowdown": "uʍopʍoꞁs ᵷuᴉʞɐǝɹq ʞɔoꞁq pǝuʍO",
+	"securitycraft.configuration.owned_breaking_slowdown.tooltip": "˙pǝꞁqɐuǝ sᴉ ,,ᵷuᴉʞɐǝɹq ʞɔoꞁq ꞁooʇ ɐꞁꞁᴉuɐɅ,, uǝɥʍ sǝᴉꞁddɐ ʎꞁuo sᴉɥ⟘\n˙ʞɔoꞁq ǝɥʇ ʞɐǝɹq oʇ ᵷuoꞁ sɐ ǝɔᴉʍʇ sǝʞɐʇ ʇᴉ suɐǝɯ 0˙ᘔ ɟo ǝnꞁɐʌ Ɐ :ǝꞁdɯɐxƎ ˙uʍopʍoꞁs ᵷuᴉʞɐǝɹq ʞɔoꞁq pǝuʍo ǝɥʇ ʎq pǝpᴉʌᴉp pǝǝds ᵷuᴉʞɐǝɹq ʞɔoꞁq ꞁɐɯɹou ǝɥʇ sɐ pǝʇɐꞁnɔꞁɐɔ sᴉ ǝnꞁɐʌ ǝɥ⟘\n˙ʇᴉ ᵷuᴉʞɐǝɹq ɹǝʎɐꞁd ǝɥʇ ʎq pǝuʍo sᴉ ʇɐɥʇ ʞɔoꞁq ɐ ʞɐǝɹq oʇ ǝq pꞁnoɥs ʇᴉ ɹǝʍoꞁs ɥɔnɯ ʍoH",
 	"securitycraft.configuration.passcode_check_cooldown": "uʍopꞁooɔ ʞɔǝɥɔ ǝpoɔssɐԀ",
 	"securitycraft.configuration.passcode_check_cooldown.tooltip": "˙ǝpoɔssɐd ɐ ɹǝʇuǝ oʇ ɹǝʎɐꞁd ɐ ɯoɹɟ sʇdɯǝʇʇɐ ǝʇɐɹɐdǝs oʍʇ uǝǝʍʇǝq ssɐd oʇ spǝǝu ʇɐɥʇ spuoɔǝsᴉꞁꞁᴉɯ uᴉ ǝɯᴉʇ ɟo ʇunoɯɐ ǝɥʇ sǝuᴉɟǝᗡ",
 	"securitycraft.configuration.passcode_spam_log_warning": "ᵷuᴉuɹɐʍ ᵷoꞁ ɯɐds ǝpoɔssɐԀ",
