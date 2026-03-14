@@ -7,7 +7,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
@@ -17,7 +16,6 @@ import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
-import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
 import net.geforcemods.securitycraft.network.server.ClearChangeDetectorServer;
@@ -143,7 +141,6 @@ public class RegistrationHandler {
 		int id = 0;
 
 		//client
-		registerPacket(id++, BlockPocketManagerFailedActivation.class, BlockPocketManagerFailedActivation::encode, BlockPocketManagerFailedActivation::new, BlockPocketManagerFailedActivation::handle);
 		registerPacket(id++, InteractWithFrame.class, InteractWithFrame::encode, InteractWithFrame::new, InteractWithFrame::handle);
 		registerPacket(id++, OpenScreen.class, OpenScreen::encode, OpenScreen::new, OpenScreen::handle);
 		registerPacket(id++, PlayAlarmSound.class, PlayAlarmSound::encode, PlayAlarmSound::new, PlayAlarmSound::handle);
@@ -154,7 +151,6 @@ public class RegistrationHandler {
 		registerPacket(id++, UpdateLaserColors.class, UpdateLaserColors::encode, UpdateLaserColors::new, UpdateLaserColors::handle);
 		registerPacket(id++, UpdateLogger.class, UpdateLogger::encode, UpdateLogger::new, UpdateLogger::handle);
 		//server
-		registerPacket(id++, AssembleBlockPocket.class, AssembleBlockPocket::encode, AssembleBlockPocket::new, AssembleBlockPocket::handle);
 		registerPacket(id++, CheckBriefcasePasscode.class, CheckBriefcasePasscode::encode, CheckBriefcasePasscode::new, CheckBriefcasePasscode::handle);
 		registerPacket(id++, CheckPasscode.class, CheckPasscode::encode, CheckPasscode::new, CheckPasscode::handle);
 		registerPacket(id++, ClearChangeDetectorServer.class, ClearChangeDetectorServer::encode, ClearChangeDetectorServer::new, ClearChangeDetectorServer::handle);

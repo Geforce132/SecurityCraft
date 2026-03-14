@@ -8,7 +8,6 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity;
 import net.geforcemods.securitycraft.inventory.BlockPocketManagerMenu;
-import net.geforcemods.securitycraft.network.server.AssembleBlockPocket;
 import net.geforcemods.securitycraft.network.server.SyncBlockPocketManager;
 import net.geforcemods.securitycraft.network.server.ToggleBlockPocketManager;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
@@ -50,7 +49,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 	private final int[] allowedSizes = {
 			5, 9, 13, 17, 21, 25
 	};
-	private Button assembleButton;
+	private Button manageStructureButton;
 	private Button outlineButton;
 	private CallbackSlider offsetSlider;
 	private StackHoverChecker[] hoverCheckers = new StackHoverChecker[3];
@@ -93,12 +92,13 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		int outlineButtonX = colorChooserButtonX + (hasStorageModule ? 23 : -widgetWidth - 3);
 		int outlineButtonWidth = widgetWidth - (hasStorageModule ? 23 : 0);
 		int colorChooserX = colorChooserButtonX + (hasStorageModule ? -145 : 20);
+		boolean enabled = be.isEnabled();
 		Button toggleButton, sizeButton;
 
-		toggleButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!be.isEnabled() ? "activate" : "deactivate")), this::toggleButtonClicked, Button.DEFAULT_NARRATION));
+		toggleButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager." + (!enabled ? "activate" : "deactivate")), this::toggleButtonClicked, Button.DEFAULT_NARRATION));
 		sizeButton = addRenderableWidget(new ToggleComponentButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
 		outlineButton = addRenderableWidget(new Button(outlineButtonX, outlineY, outlineButtonWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showsOutline() ? "show" : "hide")), this::outlineButtonClicked, Button.DEFAULT_NARRATION));
-		assembleButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked, Button.DEFAULT_NARRATION));
+		manageStructureButton = addRenderableWidget(new Button(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3], widgetWidth, 20, enabled ? Utils.localize("gui.securitycraft:blockPocketManager.disassemble") : Utils.localize("gui.securitycraft:blockPocketManager.assemble"), enabled ? this::disassembleButtonClicked : this::assembleButtonClicked, Button.DEFAULT_NARRATION));
 		offsetSlider = addRenderableWidget(new CallbackSlider(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), Component.empty(), (-size + 2) / 2, (size - 2) / 2, be.getAutoBuildOffset(), true, this::offsetSliderReleased));
 		colorChooser = addRenderableWidget(new ColorChooser(Component.empty(), colorChooserX, outlineY, be.getColor()) {
 			@Override
@@ -110,10 +110,10 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(colorChooserButtonX, outlineY, 20, 20, colorChooser));
 
 		if (!be.isOwnedBy(Minecraft.getInstance().player))
-			sizeButton.active = toggleButton.active = assembleButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
+			sizeButton.active = toggleButton.active = manageStructureButton.active = outlineButton.active = offsetSlider.active = colorChooserButton.active = false;
 		else {
 			updateMaterialInformation(true);
-			sizeButton.active = offsetSlider.active = !be.isEnabled();
+			sizeButton.active = offsetSlider.active = !enabled;
 		}
 
 		if (!hasStorageModule) {
@@ -127,7 +127,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 			hoverCheckers[2] = new StackHoverChecker(REINFORCED_CHISELED_CRYSTAL_QUARTZ, topPos + imageHeight - 27, topPos + imageHeight - 9, leftPos + 174, leftPos + 191);
 		}
 
-		updateAssembleButtonTooltip();
+		updateStructureButtonTooltip();
 		colorChooserButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:choose_outline_color_tooltip")));
 	}
 
@@ -274,15 +274,15 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		wallsStillNeeded = wallsNeededOverall - materialCounts[0];
 		pillarsStillNeeded = pillarsNeededOverall - materialCounts[1];
 		chiseledStillNeeded = CHISELED_NEEDED_OVERALL - materialCounts[2];
-		//the assemble button should always be active when the player is in creative mode
-		assembleButton.active = isOwner && (minecraft.player.isCreative() || (!be.isEnabled() && hasStorageModule && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
-		updateAssembleButtonTooltip();
+		//the structure button should always be active when the player is in creative mode
+		manageStructureButton.active = isOwner && (minecraft.player.isCreative() || be.isEnabled() || (!be.isEnabled() && hasStorageModule && wallsStillNeeded <= 0 && pillarsStillNeeded <= 0 && chiseledStillNeeded <= 0));
+		updateStructureButtonTooltip();
 	}
 
 	public void toggleButtonClicked(Button button) {
 		be.setSize(size);
 		be.setEnabled(!be.isEnabled());
-		SecurityCraft.CHANNEL.send(PacketDistributor.SERVER.noArg(), new ToggleBlockPocketManager(be, be.isEnabled()));
+		SecurityCraft.CHANNEL.send(PacketDistributor.SERVER.noArg(), new ToggleBlockPocketManager(be, be.isEnabled() ? ToggleBlockPocketManager.Action.ENABLE : ToggleBlockPocketManager.Action.DISABLE));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
@@ -316,15 +316,22 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	public void assembleButtonClicked(Button button) {
 		be.setSize(size);
-		SecurityCraft.CHANNEL.send(PacketDistributor.SERVER.noArg(), new AssembleBlockPocket(be));
+		SecurityCraft.CHANNEL.send(PacketDistributor.SERVER.noArg(), new ToggleBlockPocketManager(be, ToggleBlockPocketManager.Action.ASSEMBLE));
 		Minecraft.getInstance().player.closeContainer();
 	}
 
-	public void updateAssembleButtonTooltip() {
-		if (!assembleButton.isActive())
-			assembleButton.setTooltip(Tooltip.create(!hasStorageModule ? Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule") : Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
+	public void disassembleButtonClicked(Button button) {
+		SecurityCraft.CHANNEL.send(PacketDistributor.SERVER.noArg(), new ToggleBlockPocketManager(be, ToggleBlockPocketManager.Action.DISASSEMBLE));
+		Minecraft.getInstance().player.closeContainer();
+	}
+
+	public void updateStructureButtonTooltip() {
+		if (be.isEnabled() && manageStructureButton.isActive())
+			manageStructureButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:blockPocketManager.disassemble.tooltip")));
+		else if (!be.isEnabled() && !manageStructureButton.isActive())
+			manageStructureButton.setTooltip(Tooltip.create(!hasStorageModule ? Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule") : Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
 		else
-			assembleButton.setTooltip(null);
+			manageStructureButton.setTooltip(null);
 	}
 
 	public void outlineButtonClicked(Button button) {

@@ -34,7 +34,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isPlacingBlocks())
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isModifyingBlocks())
 			NetworkHooks.openScreen((ServerPlayer) player, be, pos);
 
 		return InteractionResult.SUCCESS;
