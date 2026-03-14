@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
+import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -49,5 +50,15 @@ public class MinecraftMixin {
 			exception.setStackTrace(stacktrace);
 			exception.printStackTrace();
 		}
+	}
+
+	/**
+	 * Prevents {@link Minecraft#hitResult} from being modified while the mod is capturing a Frame feed. This resolves issues
+	 * like the wrong teleport position sometimes being suggested when using /tp
+	 */
+	@Inject(method = "pick", at = @At("HEAD"), cancellable = true)
+	private void securitycraft$preventFramePick(float partialTicks, CallbackInfo ci) {
+		if (FrameFeedHandler.isCapturingCamera())
+			ci.cancel();
 	}
 }

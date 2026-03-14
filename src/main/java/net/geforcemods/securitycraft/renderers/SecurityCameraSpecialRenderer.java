@@ -42,7 +42,7 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, Identifie
 		model.root().getExtentsForGui(poseStack, extents);
 	}
 
-	public static record Unbaked(Identifier texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {
+	public record Unbaked(Identifier texture, float rotation, Optional<Integer> lensColor, Optional<Integer> light) implements SpecialModelRenderer.Unbaked<Void> {
 
 		//@formatter:off
 		public static final MapCodec<SecurityCameraSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
@@ -59,7 +59,7 @@ public record SecurityCameraSpecialRenderer(SecurityCameraModel model, Identifie
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(BakingContext ctx) {
+		public SecurityCameraSpecialRenderer bake(BakingContext ctx) {
 			SecurityCameraModel model = new SecurityCameraModel(ctx.entityModelSet().bakeLayer(ClientHandler.SECURITY_CAMERA_LOCATION));
 
 			return new SecurityCameraSpecialRenderer(model, texture.withPrefix("textures/entity/security_camera/").withSuffix(".png"), rotation, lensColor, light);

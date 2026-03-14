@@ -33,7 +33,7 @@ public record DisplayCaseSpecialRenderer(DisplayCaseModel model, Identifier text
 		model.root().getExtentsForGui(poseStack, extents);
 	}
 
-	public static record Unbaked(Identifier texture, float openness, Optional<Integer> light) implements SpecialModelRenderer.Unbaked {
+	public record Unbaked(Identifier texture, float openness, Optional<Integer> light) implements SpecialModelRenderer.Unbaked<Void> {
 
 		//@formatter:off
 		public static final MapCodec<DisplayCaseSpecialRenderer.Unbaked> MAP_CODEC = RecordCodecBuilder.mapCodec(
@@ -50,7 +50,7 @@ public record DisplayCaseSpecialRenderer(DisplayCaseModel model, Identifier text
 		}
 
 		@Override
-		public SpecialModelRenderer<?> bake(BakingContext ctx) {
+		public SpecialModelRenderer<Void> bake(BakingContext ctx) {
 			DisplayCaseModel model = new DisplayCaseModel(ctx.entityModelSet().bakeLayer(ClientHandler.DISPLAY_CASE_LOCATION));
 
 			return new DisplayCaseSpecialRenderer(model, texture.withPrefix("textures/entity/display_case/").withSuffix(".png"), openness, light);

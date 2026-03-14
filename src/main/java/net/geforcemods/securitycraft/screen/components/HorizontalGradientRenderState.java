@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.gui.render.state.GuiElementRenderState;
+import net.minecraft.client.renderer.state.gui.GuiElementRenderState;
 
 public record HorizontalGradientRenderState(RenderPipeline pipeline, TextureSetup textureSetup, Matrix3x2f pose, int left, int top, int right, int bottom, int fromColor, int toColor, ScreenRectangle scissorArea, ScreenRectangle bounds) implements GuiElementRenderState {
 	public HorizontalGradientRenderState(RenderPipeline pipeline, TextureSetup textureSetup, Matrix3x2f pose, int left, int top, int right, int bottom, int fromColor, int toColor, ScreenRectangle scissorArea) {

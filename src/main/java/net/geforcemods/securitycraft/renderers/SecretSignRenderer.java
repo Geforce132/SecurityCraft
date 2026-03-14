@@ -8,34 +8,35 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.client.renderer.blockentity.state.SignRenderState;
+import net.minecraft.client.renderer.blockentity.StandingSignRenderer;
+import net.minecraft.client.renderer.blockentity.state.StandingSignRenderState;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignText;
 import net.minecraft.world.phys.Vec3;
 
-public class SecretSignRenderer extends SignRenderer {
+public class SecretSignRenderer extends StandingSignRenderer {
 	public SecretSignRenderer(BlockEntityRendererProvider.Context ctx) {
 		super(ctx);
 	}
 
 	@Override
-	public void submitSignText(SignRenderState state, PoseStack pose, SubmitNodeCollector collector, boolean isFrontText) {
+	public void submitSignText(StandingSignRenderState state, PoseStack pose, SubmitNodeCollector collector, SignText signText) {
 		if (state instanceof SecretSignRenderState secretSignRenderState) {
-			boolean isSecret = isFrontText ? secretSignRenderState.isFrontSecret : secretSignRenderState.isBackSecret;
+			boolean isSecret = signText == state.frontText ? secretSignRenderState.isFrontSecret : secretSignRenderState.isBackSecret;
 
 			if (!isSecret)
-				super.submitSignText(state, pose, collector, isFrontText);
+				super.submitSignText(state, pose, collector, signText);
 		}
 	}
 
 	@Override
-	public SignRenderState createRenderState() {
+	public StandingSignRenderState createRenderState() {
 		return new SecretSignRenderState();
 	}
 
 	@Override
-	public void extractRenderState(SignBlockEntity be, SignRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+	public void extractRenderState(SignBlockEntity be, StandingSignRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 
 		if (be instanceof SecretSignBlockEntity secretSignBlockEntity && state instanceof SecretSignRenderState secretSignRenderState) {

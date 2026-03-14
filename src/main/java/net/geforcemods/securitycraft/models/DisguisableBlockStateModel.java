@@ -1,12 +1,13 @@
 package net.geforcemods.securitycraft.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
-import net.minecraft.client.renderer.block.model.Material.Baked;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.sprite.Material.Baked;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +25,7 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 	}
 
 	@Override
-	public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockModelPart> parts) {
+	public void collectParts(BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
 		ModelData modelData = level.getModelData(pos);
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
@@ -35,7 +36,11 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
 
 				if (model != this) {
-					for (BlockModelPart disguisedPart : model.collectParts(level, pos, state, random)) {
+					List<BlockStateModelPart> modelParts = new ArrayList<>();
+
+					model.collectParts(level, pos, state, random, modelParts);
+
+					for (BlockStateModelPart disguisedPart : modelParts) {
 						parts.add(new DisguisableBlockModelPart(disguisedPart, disguisedState));
 					}
 
@@ -47,13 +52,13 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 		collectOldParts(modelData, level, pos, state, random, parts);
 	}
 
-	public void collectOldParts(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockModelPart> parts) {
-		parts.addAll(oldModel.collectParts(level, pos, state, random));
+	public void collectOldParts(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state, RandomSource random, List<BlockStateModelPart> parts) {
+		oldModel.collectParts(level, pos, state, random, parts);
 	}
 
 	@Override
-	public void collectParts(RandomSource random, List<BlockModelPart> modelList) {
-		modelList.addAll(oldModel.collectParts(random));
+	public void collectParts(RandomSource random, List<BlockStateModelPart> parts) {
+		oldModel.collectParts(random, parts);
 	}
 
 	@Override

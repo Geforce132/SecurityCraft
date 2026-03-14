@@ -3,7 +3,9 @@ package net.geforcemods.securitycraft;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -118,7 +120,8 @@ import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderer;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.color.block.BlockTintSource;
+import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.gui.screens.inventory.HangingSignEditScreen;
 import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
@@ -126,10 +129,10 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
-import net.minecraft.client.renderer.block.model.BlockStateModel;
+import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.ShelfRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -137,7 +140,6 @@ import net.minecraft.client.renderer.rendertype.LayeringTransform;
 import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.resources.model.BlockModelRotation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
@@ -154,12 +156,11 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
-import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SnowyBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -501,65 +502,74 @@ public class ClientHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+	public static void onRegisterBlockColorHandlers(RegisterColorHandlersEvent.BlockTintSources event) {
 		initTint();
-		blocksWithReinforcedTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
-			if (tintIndex == 0)
-				return mixWithReinforcedTintIfEnabled(tint);
-			else
-				return 0xFFFFFFFF;
-		}, block));
-		blocksWithCustomTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
-			if (tintIndex == 0)
-				return tint;
-			else
-				return 0xFFFFFFFF;
-		}, block));
+		final Map<Integer, List<BlockTintSource>> mixCache = new HashMap<>();
+		blocksWithReinforcedTint.forEach((block, tint) -> event.register(mixCache.computeIfAbsent(tint, t -> List.of(mixedReinforcedTintSource(t))), block));
+		blocksWithCustomTint.forEach((block, tint) -> event.register(List.of(BlockTintSources.constant(tint)), block));
 
-		BlockColor disguisableBlockColor = (state, level, pos, tintIndex) -> {
-			Block block = state.getBlock();
+		List<BlockTintSource> hackyDisguisableTintSourceList = List.of(disguisableTintSource(0), disguisableTintSource(1), disguisableTintSource(2), disguisableTintSource(3));
 
-			if (block instanceof IDisguisable disguisedBlock) {
-				Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(level, pos).getItem());
-				BlockState defaultBlockState = blockFromItem.defaultBlockState();
+		event.register(hackyDisguisableTintSourceList, disguisableBlocks.get());
+		event.register(hackyDisguisableTintSourceList, SCContent.SECURE_REDSTONE_INTERFACE.get());
+		event.register(List.of(reinforcedTintSource(), mixTintSourceWithReinforcedTint(BlockTintSources.grassBlock())), SCContent.REINFORCED_GRASS_BLOCK.get());
+		event.register(List.of(reinforcedTintSource(), mixTintSourceWithReinforcedTint(BlockTintSources.water())), SCContent.REINFORCED_WATER_CAULDRON.get());
+		event.register(List.of(laserFieldTintSource()), SCContent.LASER_FIELD.get());
+		event.register(List.of(inventoryScannerFieldTintSource()), SCContent.INVENTORY_SCANNER_FIELD.get());
+	}
 
-				if (!defaultBlockState.isAir() && !(blockFromItem instanceof IDisguisable))
-					return Minecraft.getInstance().getBlockColors().getColor(defaultBlockState, level, pos, tintIndex);
+	public static BlockTintSource disguisableTintSource(int layer) {
+		return new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return 0;
 			}
 
-			if (block instanceof IReinforcedBlock)
-				return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
-			else
-				return 0xFFFFFFFF;
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				BlockTintSource tintSource = findDelegate(state, level, pos);
+
+				if (tintSource != this)
+					return tintSource.colorInWorld(state, level, pos);
+
+				return fallbackTint(state.getBlock());
+			}
+
+			@Override
+			public int colorAsTerrainParticle(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				BlockTintSource tintSource = findDelegate(state, level, pos);
+
+				if (tintSource != this)
+					return tintSource.colorAsTerrainParticle(state, level, pos);
+
+				return fallbackTint(state.getBlock());
+			}
+
+			private BlockTintSource findDelegate(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				Block block = state.getBlock();
+
+				if (block instanceof IDisguisable disguisedBlock) {
+					Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(level, pos).getItem());
+					BlockState defaultBlockState = blockFromItem.defaultBlockState();
+
+					if (!defaultBlockState.isAir() && !(blockFromItem instanceof IDisguisable)) {
+						BlockTintSource tintSource = Minecraft.getInstance().getBlockColors().getTintSource(defaultBlockState, layer);
+
+						if (tintSource != null)
+							return tintSource;
+					}
+				}
+
+				return this;
+			}
+
+			private int fallbackTint(Block block) {
+				if (block instanceof IReinforcedBlock)
+					return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
+				else
+					return 0xFFFFFFFF;
+			}
 		};
-
-		event.register(disguisableBlockColor, disguisableBlocks.get());
-		event.register(disguisableBlockColor, SCContent.SECURE_REDSTONE_INTERFACE.get());
-		event.register((state, level, pos, tintIndex) -> {
-			if (tintIndex == 1 && !state.getValue(SnowyBlock.SNOWY)) {
-				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
-
-				return mixWithReinforcedTintIfEnabled(grassTint);
-			}
-
-			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
-		}, SCContent.REINFORCED_GRASS_BLOCK.get());
-		event.register((state, level, pos, tintIndex) -> {
-			if (tintIndex == 1)
-				return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
-
-			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
-		}, SCContent.REINFORCED_WATER_CAULDRON.get());
-		event.register((state, level, pos, tintIndex) -> {
-			Direction direction = LaserFieldBlock.getFieldDirection(state);
-
-			return iterateFields(level, pos, direction, ConfigHandler.SERVER.laserBlockRange.get(), SCContent.LASER_BLOCK.get(), LaserBlockBlockEntity.class::isInstance, be -> ((LaserBlockBlockEntity) be).getLensContainer().getItem(direction.getOpposite().ordinal()));
-		}, SCContent.LASER_FIELD.get());
-		event.register((state, level, pos, tintIndex) -> {
-			Direction direction = state.getValue(InventoryScannerFieldBlock.FACING);
-
-			return iterateFields(level, pos, direction, ConfigHandler.SERVER.inventoryScannerRange.get(), SCContent.INVENTORY_SCANNER.get(), InventoryScannerBlockEntity.class::isInstance, be -> ((InventoryScannerBlockEntity) be).getLensContainer().getItem(0));
-		}, SCContent.INVENTORY_SCANNER_FIELD.get());
 	}
 
 	public static int iterateFields(BlockAndTintGetter level, BlockPos pos, Direction direction, int range, Block block, Predicate<BlockEntity> beTest, Function<BlockEntity, ItemStack> lensGetter) {
@@ -599,6 +609,70 @@ public class ClientHandler {
 		}
 
 		return -1;
+	}
+
+	private static BlockTintSource reinforcedTintSource() {
+		return mixedReinforcedTintSource(0xFFFFFFFF);
+	}
+
+	private static BlockTintSource mixedReinforcedTintSource(int tint) {
+		return BlockTintSources.constant(mixWithReinforcedTintIfEnabled(tint));
+	}
+
+	public static BlockTintSource mixTintSourceWithReinforcedTint(BlockTintSource parent) {
+		return new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return mixWithReinforcedTintIfEnabled(parent.color(state));
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				return mixWithReinforcedTintIfEnabled(parent.colorInWorld(state, level, pos));
+			}
+
+			@Override
+			public int colorAsTerrainParticle(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				return mixWithReinforcedTintIfEnabled(parent.colorAsTerrainParticle(state, level, pos));
+			}
+
+			@Override
+			public Set<Property<?>> relevantProperties() {
+				return parent.relevantProperties();
+			}
+		};
+	}
+
+	public static BlockTintSource laserFieldTintSource() {
+		return new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return -1;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				Direction direction = LaserFieldBlock.getFieldDirection(state);
+
+				return iterateFields(level, pos, direction, ConfigHandler.SERVER.laserBlockRange.get(), SCContent.LASER_BLOCK.get(), LaserBlockBlockEntity.class::isInstance, be -> ((LaserBlockBlockEntity) be).getLensContainer().getItem(direction.getOpposite().ordinal()));
+			}
+		};
+	}
+
+	public static BlockTintSource inventoryScannerFieldTintSource() {
+		return new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return -1;
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				Direction direction = state.getValue(InventoryScannerFieldBlock.FACING);
+
+				return iterateFields(level, pos, direction, ConfigHandler.SERVER.inventoryScannerRange.get(), SCContent.INVENTORY_SCANNER.get(), InventoryScannerBlockEntity.class::isInstance, be -> ((InventoryScannerBlockEntity) be).getLensContainer().getItem(0));
+			}
+		};
 	}
 
 	public static int mixWithReinforcedTintIfEnabled(int tint) {

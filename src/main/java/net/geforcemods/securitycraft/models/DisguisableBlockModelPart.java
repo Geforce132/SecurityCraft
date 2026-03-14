@@ -2,13 +2,13 @@ package net.geforcemods.securitycraft.models;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.BlockModelPart;
-import net.minecraft.client.renderer.block.model.Material.Baked;
+import net.minecraft.client.renderer.block.dispatch.BlockStateModelPart;
+import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.sprite.Material.Baked;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-public record DisguisableBlockModelPart(BlockModelPart disguisedModelPart, BlockState disguisedState) implements BlockModelPart {
+public record DisguisableBlockModelPart(BlockStateModelPart disguisedModelPart, BlockState disguisedState) implements BlockStateModelPart {
 	@Override
 	public List<BakedQuad> getQuads(Direction direction) {
 		return disguisedModelPart.getQuads(direction);

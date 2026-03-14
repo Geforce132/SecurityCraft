@@ -34,8 +34,8 @@ public class GameRendererMixin {
 	 * Renders the camera tint if a lens is installed. This cannot be done in a standard overlay, as the tint needs to exist even
 	 * when the GUI is hidden with F1
 	 */
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V"))
-	private void securitycraft$renderCameraTint(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci, @Local GuiGraphics guiGraphics) {
+	@Inject(method = "extractGui", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;render(Lnet/minecraft/client/gui/GuiGraphics;Lnet/minecraft/client/DeltaTracker;)V"))
+	private void securitycraft$renderCameraTint(DeltaTracker deltaTracker, boolean shouldRenderLevel, boolean resourcesLoaded, CallbackInfo ci, @Local GuiGraphics guiGraphics) {
 		if (minecraft.getCameraEntity() instanceof SecurityCamera) {
 			Level level = minecraft.level;
 			BlockPos pos = minecraft.getCameraEntity().blockPosition();
@@ -69,15 +69,5 @@ public class GameRendererMixin {
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;tryTakeScreenshotIfNeeded()V"))
 	private void securitycraft$afterLevelRendering(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
 		FrameFeedHandler.captureFrameFeeds(deltaTracker);
-	}
-
-	/**
-	 * Prevents {@link Minecraft#hitResult} from being modified while the mod is capturing a Frame feed. This resolves issues
-	 * like the wrong teleport position sometimes being suggested when using /tp
-	 */
-	@Inject(method = "pick", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$preventFramePick(float partialTicks, CallbackInfo ci) {
-		if (FrameFeedHandler.isCapturingCamera())
-			ci.cancel();
 	}
 }

@@ -72,6 +72,7 @@ public class FrameFeedHandler {
 		lastFrameRendered = currentTime;
 		profiler.popPush("securitycraft:frame_level");
 
+		boolean resourcesLoaded = mc.isGameLoadFinished();
 		Level level = player.level();
 		Camera camera = mc.gameRenderer.getMainCamera();
 		Entity oldCamEntity = mc.getCameraEntity();
@@ -132,11 +133,12 @@ public class FrameFeedHandler {
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
 					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
 					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
-					mc.gameRenderer.getGlobalSettingsUniform().update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera, mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
+					mc.gameRenderer.getGlobalSettingsUniform().update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
 					mc.levelRenderer.update(camera); //Queues uncompiled visible sections for compilation
 					mc.mainRenderTarget = feed.renderTarget();
 
 					try {
+						mc.gameRenderer.extract(DeltaTracker.ONE, true);
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}
 					catch (Exception e) {
@@ -185,6 +187,9 @@ public class FrameFeedHandler {
 		window.setHeight(oldHeight);
 		mc.mainRenderTarget = oldMainRenderTarget;
 		currentlyCapturedCamera = null;
+		//These two lines ensure that GUI rendering, which happens after frame feed capture, is done with the correct parameters
+		mc.gameRenderer.extractGui(partialTick, resourcesLoaded, resourcesLoaded);
+		mc.gameRenderer.extractWindow();
 	}
 
 	@SubscribeEvent
