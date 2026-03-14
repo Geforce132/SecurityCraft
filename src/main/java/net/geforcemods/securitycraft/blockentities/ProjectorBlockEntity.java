@@ -4,11 +4,13 @@ import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.blocks.ProjectorBlock;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -26,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 public class ProjectorBlockEntity extends DisguisableBlockEntity implements Container, MenuProvider, ILockable {
 	public static final int MIN_WIDTH = 1; //also for height
@@ -34,6 +37,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 	public static final int MAX_RANGE = 30;
 	public static final int MIN_OFFSET = -10;
 	public static final int MAX_OFFSET = 10;
+	private AABB projectedBlocksArea;
 	private int projectionWidth = 1;
 	private int projectionHeight = 1;
 	private int projectionRange = 5;
@@ -85,6 +89,49 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 			resetSavedState();
 		else
 			setProjectedState(NbtUtils.readBlockState(level != null ? level.holderLookup(Registries.BLOCK) : BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("SavedState")));
+	}
+
+	@Override
+	public void setChanged() {
+		super.setChanged();
+		projectedBlocksArea = calculateProjectedBlockArea();
+	}
+
+	public AABB calculateProjectedBlockArea() {
+		BlockState state = getBlockState();
+		boolean hanging = state.getValue(ProjectorBlock.HANGING);
+		Direction direction = state.getValue(ProjectorBlock.FACING);
+		int projectionHeight = getProjectionHeight();
+		int projectionOffset = getProjectionOffset();
+		int projectionWidth = projectionOffset + getProjectionWidth();
+		int minRange = getProjectionRange();
+		int maxRange = minRange + 1;
+		int minHeight = hanging ? 1 : 0;
+		int maxHeight = minHeight + (hanging ? -projectionHeight : projectionHeight);
+
+		if (isHorizontal()) {
+			int oldMinHeight = minHeight;
+
+			maxRange = maxHeight + 1;
+			minHeight = minRange - 16;
+			maxHeight = minHeight + 1;
+			minRange = oldMinHeight + 1;
+		}
+
+		return switch (direction) {
+			case NORTH -> new AABB(projectionOffset, minHeight, minRange, projectionWidth, maxHeight, maxRange);
+			case SOUTH -> new AABB(projectionOffset, minHeight, -minRange + 1, projectionWidth, maxHeight, -maxRange + 1);
+			case WEST -> new AABB(minRange, minHeight, projectionOffset, maxRange, maxHeight, projectionWidth);
+			case EAST -> new AABB(-minRange + 1, minHeight, projectionOffset, -maxRange + 1, maxHeight, projectionWidth);
+			default -> null;
+		};
+	}
+
+	public AABB getProjectedBlocksArea() {
+		if (projectedBlocksArea == null && !isEmpty())
+			projectedBlocksArea = calculateProjectedBlockArea();
+
+		return projectedBlocksArea;
 	}
 
 	public int getProjectionWidth() {
