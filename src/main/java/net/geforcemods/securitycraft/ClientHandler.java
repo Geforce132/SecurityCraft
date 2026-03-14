@@ -49,7 +49,6 @@ import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
-import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
 import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
@@ -487,7 +486,6 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onRegisterClientPayloadsHandlers(RegisterClientPayloadHandlersEvent event) {
-		event.register(BlockPocketManagerFailedActivation.TYPE, BlockPocketManagerFailedActivation::handle);
 		event.register(InteractWithFrame.TYPE, InteractWithFrame::handle);
 		event.register(OpenScreen.TYPE, OpenScreen::handle);
 		event.register(PlayAlarmSound.TYPE, PlayAlarmSound::handle);
