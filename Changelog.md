@@ -20,6 +20,7 @@
 - Fix: Players mounted to Security Cameras are not affected by gravity and cannot be moved by other players
 - Fix: Projected blocks are rendered even if they are outside the player's field of view
 - Fix: The value of the Projector's "Range" option changes unexpectedly when toggling the Horizontal mode
+- Fix: The experience level is visible while mounted to a Security Camera
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
