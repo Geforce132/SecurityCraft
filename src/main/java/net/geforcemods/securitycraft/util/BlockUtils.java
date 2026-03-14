@@ -146,8 +146,15 @@ public class BlockUtils {
 					float newDestroyProgress;
 
 					state.destroySpeed = destroyTimeForOwner;
-					newDestroyProgress = destroyProgress.get(state, player, level, pos) / (float) (isOwned || isBlockMine ? 1.0F : ConfigHandler.SERVER.nonOwnedBreakingSlowdown.get());
+					newDestroyProgress = destroyProgress.get(state, player, level, pos);
 					state.destroySpeed = -1.0F;
+
+					if (!isBlockMine) {
+						double slowdownModifier = isOwned ? ConfigHandler.SERVER.ownedBreakingSlowdown.get() : ConfigHandler.SERVER.nonOwnedBreakingSlowdown.get();
+
+						return newDestroyProgress / (float) slowdownModifier;
+					}
+
 					return newDestroyProgress;
 				}
 			}
