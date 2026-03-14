@@ -31,7 +31,7 @@ public class BlockPocketManagerBlock extends OwnableBlock {
 
 	@Override
 	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isPlacingBlocks())
+		if (!level.isClientSide && level.getBlockEntity(pos) instanceof BlockPocketManagerBlockEntity be && !be.isModifyingBlocks())
 			player.openMenu(be);
 
 		return InteractionResult.SUCCESS;
