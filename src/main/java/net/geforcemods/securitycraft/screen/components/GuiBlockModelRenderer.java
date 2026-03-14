@@ -69,12 +69,12 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 
 	private void renderBlockModel(Minecraft mc, BlockAndTintGetter blockAndTintGetter, BlockState state, PoseStack pose, MultiBufferSource.BufferSource bufferSource) {
 		if (state.getRenderShape() == RenderShape.MODEL) {
-			BlockQuadOutput output = (x, y, z, quad, instance) -> BlockFeatureRenderer.putBakedQuad(pose, bufferSource, x, y, z, quad, instance, quad.spriteInfo().layer());
+			BlockQuadOutput output = (x, y, z, quad, instance) -> BlockFeatureRenderer.putBakedQuad(pose, bufferSource, x, y, z, quad, instance, quad.materialInfo().layer());
 			BlockQuadOutput solidOutput = (x, y, z, quad, instance) -> BlockFeatureRenderer.putBakedQuad(pose, bufferSource, x, y, z, quad, instance, ChunkSectionLayer.SOLID);
 			boolean ambientOcclusion = mc.options.ambientOcclusion().get();
 			boolean cutoutLeaves = mc.options.cutoutLeaves().get();
 			ModelBlockRenderer blockRenderer = new ModelBlockRenderer(ambientOcclusion, false, mc.getBlockColors());
-			BlockStateModel blockModel = mc.getBlockRenderer().getBlockModel(state);
+			BlockStateModel blockModel = mc.getModelManager().getBlockStateModelSet().get(state);
 			BlockQuadOutput blockOutput = ModelBlockRenderer.forceOpaque(cutoutLeaves, state) ? solidOutput : output;
 
 			blockRenderer.tesselateBlock(blockOutput, 0.0F, 0.0F, 0.0F, blockAndTintGetter, BlockPos.ZERO, state, blockModel, 42L);

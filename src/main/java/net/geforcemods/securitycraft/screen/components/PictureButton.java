@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
@@ -44,19 +44,19 @@ public class PictureButton extends Button.Plain {
 	}
 
 	@Override
-	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+	public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		Minecraft mc = Minecraft.getInstance();
 		Font font = mc.font;
 
-		super.renderContents(guiGraphics, mouseX, mouseX, partialTicks);
+		super.extractContents(guiGraphics, mouseX, mouseX, partialTicks);
 
 		if (!blockToRender.isEmpty()) {
-			guiGraphics.renderItem(blockToRender, getX() + 2, getY() + 3);
-			guiGraphics.renderItemDecorations(font, blockToRender, getX() + 2, getY() + 3, "");
+			guiGraphics.item(blockToRender, getX() + 2, getY() + 3);
+			guiGraphics.itemDecorations(font, blockToRender, getX() + 2, getY() + 3, "");
 		}
 		else if (!itemToRender.isEmpty()) {
-			guiGraphics.renderItem(itemToRender, getX() + 2, getY() + 2);
-			guiGraphics.renderItemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
+			guiGraphics.item(itemToRender, getX() + 2, getY() + 2);
+			guiGraphics.itemDecorations(font, itemToRender, getX() + 2, getY() + 2, "");
 		}
 		else if (getSpriteLocation() != null)
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, getSpriteLocation(), getX() + drawOffsetX, getY() + drawOffsetY, drawWidth, drawHeight);

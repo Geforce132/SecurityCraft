@@ -12,7 +12,7 @@ import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.SmallButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -59,14 +59,14 @@ public class UsernameLoggerScreen extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, logged, width / 2 - font.width(logged) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.text(font, logged, width / 2 - font.width(logged) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		renderTransparentBackground(guiGraphics);
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		extractTransparentBackground(guiGraphics);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
@@ -120,13 +120,13 @@ public class UsernameLoggerScreen extends Screen {
 		}
 
 		@Override
-		protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
+		protected void drawBackground(GuiGraphicsExtractor guiGraphics, float partialTick) {
 			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 		}
 
 		@Override
-		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-			super.render(guiGraphics, mouseX, mouseY, partialTicks);
+		public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+			super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 
 			if (be.isOwnedBy(minecraft.player)) {
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
@@ -142,14 +142,14 @@ public class UsernameLoggerScreen extends Screen {
 						if (uuids[slotIndex] != null && !uuids[slotIndex].isEmpty())
 							guiGraphics.setTooltipForNextFrame(font, Component.literal(be.getUuids()[slotIndex]), mouseX, mouseY);
 
-						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, CommonColors.DARK_GRAY, false);
+						guiGraphics.text(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, CommonColors.DARK_GRAY, false);
 					}
 				}
 			}
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphicsExtractor guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 			int baseY = top + border - (int) scrollDistance;
 			int slotBuffer = SLOT_HEIGHT - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - border);
@@ -172,7 +172,7 @@ public class UsernameLoggerScreen extends Screen {
 			//draw entry strings
 			for (int i = 0; i < be.getPlayers().length; i++) {
 				if (be.getPlayers()[i] != null && !be.getPlayers()[i].equals(""))
-					guiGraphics.drawString(font, be.getPlayers()[i], left + width / 2 - font.width(be.getPlayers()[i]) / 2, relativeY + (SLOT_HEIGHT * i), 0xFFC6C6C6, false);
+					guiGraphics.text(font, be.getPlayers()[i], left + width / 2 - font.width(be.getPlayers()[i]) / 2, relativeY + (SLOT_HEIGHT * i), 0xFFC6C6C6, false);
 			}
 		}
 

@@ -25,7 +25,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.core.BlockPos;
@@ -182,7 +182,7 @@ public class SCClientEventHandler {
 		}
 	}
 
-	public static void cameraOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
+	public static void cameraOverlay(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos pos = mc.getCameraEntity().blockPosition();
@@ -209,11 +209,11 @@ public class SCClientEventHandler {
 		if (be.hasCustomName()) {
 			Component cameraName = be.getCustomName();
 
-			guiGraphics.drawString(font, cameraName, scaledWidth - font.width(cameraName) - 8, 25, CommonColors.WHITE, true);
+			guiGraphics.text(font, cameraName, scaledWidth - font.width(cameraName) - 8, 25, CommonColors.WHITE, true);
 			timeY += 10;
 		}
 
-		guiGraphics.drawString(font, time, scaledWidth - font.width(time) - 4, timeY, CommonColors.WHITE, true);
+		guiGraphics.text(font, time, scaledWidth - font.width(time) - 4, timeY, CommonColors.WHITE, true);
 
 		if (cameraInfoMessageTime >= 0) {
 			float fadeOutPartialTick = Math.max(cameraInfoMessageTime + 1.0F - deltaTracker.getGameTimeDeltaPartialTick(false), 1.0F);
@@ -240,12 +240,12 @@ public class SCClientEventHandler {
 
 		if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
 			if (!be.isModuleEnabled(ModuleType.REDSTONE))
-				CameraRedstoneModuleState.NOT_INSTALLED.render(guiGraphics, 12, 2);
+				CameraRedstoneModuleState.NOT_INSTALLED.extractRenderState(guiGraphics, 12, 2);
 			else
-				CameraRedstoneModuleState.DEACTIVATED.render(guiGraphics, 12, 2);
+				CameraRedstoneModuleState.DEACTIVATED.extractRenderState(guiGraphics, 12, 2);
 		}
 		else
-			CameraRedstoneModuleState.ACTIVATED.render(guiGraphics, 12, 2);
+			CameraRedstoneModuleState.ACTIVATED.extractRenderState(guiGraphics, 12, 2);
 	}
 
 	public static void resetCameraInfoMessageTime() {
@@ -253,11 +253,11 @@ public class SCClientEventHandler {
 	}
 
 	public record CameraKeyInfoEntry(Supplier<Boolean> enabled, Function<Options, Component> text, Predicate<SecurityCameraBlockEntity> whiteText) {
-		public void drawString(Options options, GuiGraphics guiGraphics, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be, int alpha) {
+		public void drawString(Options options, GuiGraphicsExtractor guiGraphics, Font font, int scaledWidth, int scaledHeight, int heightOffset, SecurityCameraBlockEntity be, int alpha) {
 			Component text = text().apply(options);
 			int textColor = whiteText().test(be) ? 0xFFFFFF : 0xFF3377;
 
-			guiGraphics.drawString(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, textColor + (alpha << 24), true);
+			guiGraphics.text(font, text, scaledWidth - font.width(text) - 8, scaledHeight - heightOffset, textColor + (alpha << 24), true);
 		}
 	}
 }

@@ -11,7 +11,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -91,17 +91,17 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.text(font, title, width / 2 - font.width(title) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
 
 		if (passcodeProtected.isOnCooldown()) {
 			long cooldownEnd = passcodeProtected.getCooldownEnd();
 			long secondsLeft = Math.max(cooldownEnd - System.currentTimeMillis(), 0) / 1000 + 1; //+1 so that the text doesn't say "0 seconds left" for a whole second
 			Component text = Component.translatable("gui.securitycraft:passcode.cooldown2", secondsLeft);
 
-			guiGraphics.drawString(font, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, CommonColors.DARK_GRAY, false);
-			guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, height / 2 + 75, CommonColors.DARK_GRAY, false);
+			guiGraphics.text(font, COOLDOWN_TEXT_1, cooldownText1XPos, height / 2 + 65, CommonColors.DARK_GRAY, false);
+			guiGraphics.text(font, text, width / 2 - font.width(text) / 2, height / 2 + 75, CommonColors.DARK_GRAY, false);
 
 			if (!wasOnCooldownLastRenderTick)
 				wasOnCooldownLastRenderTick = true;
@@ -113,8 +113,8 @@ public class CheckPasscodeScreen extends Screen {
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		renderTransparentBackground(guiGraphics);
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		extractTransparentBackground(guiGraphics);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
@@ -212,11 +212,11 @@ public class CheckPasscodeScreen extends Screen {
 		}
 
 		@Override
-		public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		public void extractWidgetRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
 			String originalValue = value;
 
 			value = renderedText;
-			super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
+			super.extractWidgetRenderState(guiGraphics, mouseX, mouseY, partialTick);
 			value = originalValue;
 		}
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.world.item.ItemStack;
 
@@ -22,12 +22,12 @@ public class ItemStacksDisplay implements Renderable {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (stacks == null)
 			return;
 
 		if (currentRenderingStack >= 0 && currentRenderingStack < stacks.size())
-			guiGraphics.renderItem(stacks.get(currentRenderingStack), x, y);
+			guiGraphics.item(stacks.get(currentRenderingStack), x, y);
 	}
 
 	public void tick() {

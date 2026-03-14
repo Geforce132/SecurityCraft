@@ -33,7 +33,7 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
-				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+				BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(disguisedState);
 
 				if (model != this) {
 					List<BlockStateModelPart> modelParts = new ArrayList<>();
@@ -70,7 +70,7 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
-				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+				BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(disguisedState);
 
 				if (model != this)
 					return model.particleMaterial(level, pos, state);
@@ -90,7 +90,7 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 	}
 
 	@Override
-	public boolean hasTranslucency(BlockAndTintGetter level, BlockPos pos, BlockState state) {
+	public int materialFlags(BlockAndTintGetter level, BlockPos pos, BlockState state) {
 		ModelData modelData = level.getModelData(pos);
 		BlockState disguisedState = modelData.get(DISGUISED_STATE);
 
@@ -98,22 +98,22 @@ public class DisguisableBlockStateModel implements BlockStateModel {
 			Block block = disguisedState.getBlock();
 
 			if (block != Blocks.AIR) {
-				BlockStateModel model = Minecraft.getInstance().getBlockRenderer().getBlockModel(disguisedState);
+				BlockStateModel model = Minecraft.getInstance().getModelManager().getBlockStateModelSet().get(disguisedState);
 
 				if (model != this)
-					return model.hasTranslucency(level, pos, state);
+					return model.materialFlags(level, pos, state);
 			}
 		}
 
-		return oldHasTranslucency(modelData, level, pos, state);
+		return oldMaterialFlags(modelData, level, pos, state);
 	}
 
-	public boolean oldHasTranslucency(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
-		return oldModel.hasTranslucency(level, pos, state);
+	public int oldMaterialFlags(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
+		return oldModel.materialFlags(level, pos, state);
 	}
 
 	@Override
-	public boolean hasTranslucency() {
-		return oldModel.hasTranslucency();
+	public int materialFlags() {
+		return oldModel.materialFlags();
 	}
 }

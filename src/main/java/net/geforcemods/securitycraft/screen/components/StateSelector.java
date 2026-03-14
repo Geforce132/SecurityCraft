@@ -15,7 +15,7 @@ import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
@@ -118,23 +118,23 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
 		int x = xStart + previewXTranslation;
 		int y = yStart + previewYTranslation;
 		int wh = 120;
 
-		super.render(guiGraphics, mouseX, mouseY, partialTick);
-		previousPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
-		nextPageButton.render(guiGraphics, mouseX, mouseY, partialTick);
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
+		previousPageButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
+		nextPageButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, dragRotation, x, y, x + wh, y + wh, 1.0F, guiGraphics.peekScissorStack()));
 
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
 
-			guiGraphics.drawString(font, propertyName, xStart + 91 - font.width(propertyName) - 2, yStart + i * 23 + 10, CommonColors.DARK_GRAY, false);
+			guiGraphics.text(font, propertyName, xStart + 91 - font.width(propertyName) - 2, yStart + i * 23 + 10, CommonColors.DARK_GRAY, false);
 		}
 
-		guiGraphics.drawString(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, CommonColors.DARK_GRAY, false);
+		guiGraphics.text(font, page + "/" + amountOfPages, xStart + 100, yStart + 130, CommonColors.DARK_GRAY, false);
 
 		if (clickedInDragRegion)
 			guiGraphics.requestCursor(CursorTypes.RESIZE_ALL);
@@ -143,7 +143,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, xStart, yStart, 0.0F, 0.0F, 193, 150, 256, 256);
 	}
 

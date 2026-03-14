@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -31,7 +31,7 @@ public class ClientUtils {
 
 	private ClientUtils() {}
 
-	public static void renderModuleInfo(GuiGraphics guiGraphics, Font font, ModuleType module, Component moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int mouseX, int mouseY) {
+	public static void renderModuleInfo(GuiGraphicsExtractor guiGraphics, Font font, ModuleType module, Component moduleTooltip, boolean isModuleInstalled, int moduleLeft, int moduleTop, int mouseX, int mouseY) {
 		Minecraft mc = Minecraft.getInstance();
 		int color = isModuleInstalled ? 0xFFFFFFFF : 0x7FFFFFFF;
 		int moduleRight = moduleLeft + 16;
@@ -48,7 +48,7 @@ public class ClientUtils {
 			guiGraphics.setComponentTooltipForNextFrame(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
-	private static void drawTexture(GuiGraphics guiGraphics, Identifier texture, int moduleLeft, int moduleTop, int color) {
+	private static void drawTexture(GuiGraphicsExtractor guiGraphics, Identifier texture, int moduleLeft, int moduleTop, int color) {
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, moduleLeft, moduleTop, 0.0F, 0.0F, 16, 16, 16, 16, color);
 	}
 

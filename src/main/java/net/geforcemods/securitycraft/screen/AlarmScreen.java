@@ -18,7 +18,7 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -84,17 +84,17 @@ public class AlarmScreen extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, width / 2 - font.width(title) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
-		guiGraphics.drawString(font, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, CommonColors.DARK_GRAY, false);
-		guiGraphics.drawString(font, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, CommonColors.DARK_GRAY, false);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.text(font, title, width / 2 - font.width(title) / 2, topPos + 6, CommonColors.DARK_GRAY, false);
+		guiGraphics.text(font, currentlySelectedText, width / 2 - font.width(currentlySelectedText) / 2, topPos + imageHeight - 62, CommonColors.DARK_GRAY, false);
+		guiGraphics.text(font, selectedSoundEventText, width / 2 - font.width(selectedSoundEventText) / 2, topPos + imageHeight - 49, CommonColors.DARK_GRAY, false);
 		ClientUtils.renderModuleInfo(guiGraphics, font, ModuleType.SMART, smartModuleTooltip, hasSmartModule, leftPos + 5, topPos + 5, mouseX, mouseY);
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		renderTransparentBackground(guiGraphics);
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		extractTransparentBackground(guiGraphics);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
@@ -196,13 +196,13 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
+		protected void drawBackground(GuiGraphicsExtractor guiGraphics, float partialTick) {
 			drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 		}
 
 		@Override
-		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-			super.render(guiGraphics, mouseX, mouseY, partialTick);
+		public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+			super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
 			int baseY = top + border - (int) scrollDistance;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -218,7 +218,7 @@ public class AlarmScreen extends Screen {
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int baseY, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphicsExtractor guiGraphics, int entryRight, int baseY, int mouseX, int mouseY) {
 			Font font = Minecraft.getInstance().font;
 			int slotBuffer = SLOT_HEIGHT - 4;
 			int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -245,7 +245,7 @@ public class AlarmScreen extends Screen {
 				Identifier soundEvent = filteredSoundEvents.get(i);
 				Component name = getSoundEventComponent(soundEvent);
 
-				guiGraphics.drawString(font, name, left + TEXT_OFFSET, yStart, 0xFFC6C6C6, false);
+				guiGraphics.text(font, name, left + TEXT_OFFSET, yStart, 0xFFC6C6C6, false);
 				guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, i == slotIndex && mouseX >= left && mouseX < min && mouseY >= top && mouseY <= bottom ? PLAY_SOUND_HIGHLIGHTED_SPRITE : PLAY_SOUND_SPRITE, left, yStart - 1, 10, 10);
 			}
 		}
@@ -254,7 +254,7 @@ public class AlarmScreen extends Screen {
 			return soundEventKeys.computeIfAbsent(soundEvent, t -> Utils.localize(soundEvent.toLanguageKey()));
 		}
 
-		private void renderHighlightBox(int entryRight, GuiGraphics guiGraphics, int baseY, int slotBuffer, int slotIndex, int min) {
+		private void renderHighlightBox(int entryRight, GuiGraphicsExtractor guiGraphics, int baseY, int slotBuffer, int slotIndex, int min) {
 			int max = entryRight - 6;
 			int slotTop = baseY + slotIndex * SLOT_HEIGHT;
 

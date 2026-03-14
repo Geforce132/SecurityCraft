@@ -6,7 +6,7 @@ import java.util.function.BiPredicate;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.InputWithModifiers;
@@ -60,14 +60,14 @@ public class CollapsibleTextList extends Button.Plain {
 	}
 
 	@Override
-	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
 		isHovered &= extraHoverCheck.test(mouseX, mouseY);
 
 		Font font = Minecraft.getInstance().font;
 		int heightOffset = (height - 8) / 2;
 
 		guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, SPRITES.get(active, isHoveredOrFocused()), getX(), getY(), getWidth(), getHeight());
-		guiGraphics.drawCenteredString(font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
+		guiGraphics.centeredText(font, getMessage(), getX() + font.width(getMessage()) / 2 + 3, getY() + heightOffset, getFGColor());
 
 		int renderedLines = 0;
 		int interpolatedHeight = (int) Mth.lerp(partialTick, previousHeight, currentHeight);
@@ -88,14 +88,14 @@ public class CollapsibleTextList extends Button.Plain {
 				if (lineY + font.lineHeight > getY() + interpolatedHeight)
 					return;
 
-				guiGraphics.drawString(font, linesToDraw.get(lineIndex), getX() + 2, lineY, getFGColor(), false);
+				guiGraphics.text(font, linesToDraw.get(lineIndex), getX() + 2, lineY, getFGColor(), false);
 			}
 
 			renderedLines += linesToDraw.size() - 1;
 		}
 	}
 
-	public void renderLongMessageTooltip(GuiGraphics guiGraphics, Font font) {
+	public void renderLongMessageTooltip(GuiGraphicsExtractor guiGraphics, Font font) {
 		if (isMessageTooLong && isHoveredOrFocused()) {
 			Screen currentScreen = Minecraft.getInstance().screen;
 

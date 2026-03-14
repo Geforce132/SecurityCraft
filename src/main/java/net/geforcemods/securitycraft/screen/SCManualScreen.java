@@ -35,7 +35,7 @@ import net.geforcemods.securitycraft.screen.components.ItemStacksDisplay;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -150,26 +150,26 @@ public class SCManualScreen extends Screen {
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		renderTransparentBackground(guiGraphics);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		extractTransparentBackground(guiGraphics);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, currentPage == -1 ? TITLE_PAGE : (recipe != null && !recipe.isEmpty() ? PAGE : PAGE_WITH_SCROLL), startX, 5, 0.0F, 0.0F, 256, 250, 256, 256);
 
 		for (Renderable renderable : renderables) {
-			renderable.render(guiGraphics, mouseX, mouseY, partialTicks);
+			renderable.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 		}
 
 		if (currentPage > -1) {
 			String pageNumberText = (currentPage + 2) + "/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
 			if (subpages.size() > 1)
-				guiGraphics.drawString(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 100, 0xFF8E8270, false);
+				guiGraphics.text(font, (currentSubpage + 1) + "/" + subpages.size(), startX + 205, 100, 0xFF8E8270, false);
 
 			if (designedBy != null)
-				guiGraphics.drawWordWrap(font, designedBy, startX + 18, 150, 75, CommonColors.BLACK, false);
+				guiGraphics.textWithWordWrap(font, designedBy, startX + 18, 150, 75, CommonColors.BLACK, false);
 
-			guiGraphics.drawString(font, pageTitle, startX + 39, 27, CommonColors.BLACK, false);
-			guiGraphics.drawWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, CommonColors.BLACK, false);
-			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0xFF8E8270, false);
+			guiGraphics.text(font, pageTitle, startX + 39, 27, CommonColors.BLACK, false);
+			guiGraphics.textWithWordWrap(font, subpages.get(currentSubpage), startX + 18, 45, 225, CommonColors.BLACK, false);
+			guiGraphics.text(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0xFF8E8270, false);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, ownable ? OWNABLE_HIGHLIGHTED_SPRITE : OWNABLE_SPRITE, startX + 29, 118, 16, 16);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, passcodeProtected ? PASSCODE_PROTECTED_HIGHLIGHTED_SPRITE : PASSCODE_PROTECTED_SPRITE, startX + 56, 118, 16, 16);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, viewActivated ? VIEW_ACTIVATED_HIGHLIGHTED_SPRITE : VIEW_ACTIVATED_SPRITE, startX + 82, 118, 16, 16);
@@ -197,22 +197,22 @@ public class SCManualScreen extends Screen {
 		else { //"welcome" page
 			String pageNumberText = "1/" + (SCManualItem.PAGES.size() + 1); //+1 because the "welcome" page is not included
 
-			guiGraphics.drawString(font, intro1, width / 2 - font.width(intro1) / 2, 22, CommonColors.BLACK, false);
+			guiGraphics.text(font, intro1, width / 2 - font.width(intro1) / 2, 22, CommonColors.BLACK, false);
 
 			for (int i = 0; i < intro2.size(); i++) {
 				FormattedCharSequence text = intro2.get(i);
 
-				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 150 + 10 * i, CommonColors.BLACK, false);
+				guiGraphics.text(font, text, width / 2 - font.width(text) / 2, 150 + 10 * i, CommonColors.BLACK, false);
 			}
 
 			for (int i = 0; i < author.size(); i++) {
 				FormattedCharSequence text = author.get(i);
 
-				guiGraphics.drawString(font, text, width / 2 - font.width(text) / 2, 180 + 10 * i, CommonColors.BLACK, false);
+				guiGraphics.text(font, text, width / 2 - font.width(text) / 2, 180 + 10 * i, CommonColors.BLACK, false);
 			}
 
-			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0xFF8E8270, false);
-			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, CommonColors.BLACK, false);
+			guiGraphics.text(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0xFF8E8270, false);
+			guiGraphics.text(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, CommonColors.BLACK, false);
 		}
 	}
 
@@ -605,10 +605,10 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			if (currentPage == -1) {
 				if (patronsAvailable) {
-					super.render(guiGraphics, mouseX, mouseY, partialTicks);
+					super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 
 					//draw tooltip for long patron names
 					int mouseListY = (int) (mouseY - top + scrollDistance - border);
@@ -627,7 +627,7 @@ public class SCManualScreen extends Screen {
 						for (int i = 0; i < noPatronsLines.size(); i++) {
 							FormattedCharSequence line = noPatronsLines.get(i);
 
-							guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333, false);
+							guiGraphics.text(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFF333333, false);
 						}
 					}
 				}
@@ -635,7 +635,7 @@ public class SCManualScreen extends Screen {
 					for (int i = 0; i < fetchErrorLines.size(); i++) {
 						FormattedCharSequence line = fetchErrorLines.get(i);
 
-						guiGraphics.drawString(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101, false);
+						guiGraphics.text(font, line, left + width / 2 - font.width(line) / 2, top + 30 + i * 10, 0xFFB00101, false);
 					}
 				}
 				else if (patronRequestFuture != null && patronRequestFuture.isDone()) {
@@ -649,18 +649,18 @@ public class SCManualScreen extends Screen {
 					}
 				}
 				else
-					guiGraphics.drawString(font, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, CommonColors.BLACK, false);
+					guiGraphics.text(font, loadingText, left + width / 2 - font.width(loadingText) / 2, top + 30, CommonColors.BLACK, false);
 			}
 		}
 
 		@Override
-		protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
+		protected void drawPanel(GuiGraphicsExtractor guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 			//draw entry strings
 			for (int i = 0; i < patrons.size(); i++) {
 				String patron = patrons.get(i);
 
 				if (patron != null && !patron.isEmpty())
-					guiGraphics.drawString(font, patron, left + 2, relativeY + (SLOT_HEIGHT * i), CommonColors.BLACK, false);
+					guiGraphics.text(font, patron, left + 2, relativeY + (SLOT_HEIGHT * i), CommonColors.BLACK, false);
 			}
 		}
 
@@ -704,7 +704,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isHoveredOrFocused() ? highlightedSprite : normalSprite, getX(), getY(), 23, 13);
 		}
 	}
@@ -715,7 +715,7 @@ public class SCManualScreen extends Screen {
 		}
 
 		@Override
-		public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+		public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partial) {
 			isHovered = mouseX >= getX() && mouseY >= getY() && mouseX < getX() + width && mouseY < getY() + height;
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, isHoveredOrFocused() ? LINK_OUT_HIGHLIGHTED_SPRITE : LINK_OUT_SPRITE, getX(), getY(), 16, 16);
 		}

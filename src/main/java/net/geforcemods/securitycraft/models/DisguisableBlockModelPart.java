@@ -25,7 +25,7 @@ public record DisguisableBlockModelPart(BlockStateModelPart disguisedModelPart, 
 	}
 
 	@Override
-	public boolean hasTranslucency() {
-		return disguisedModelPart.hasTranslucency();
+	public int materialFlags() {
+		return disguisedModelPart.materialFlags();
 	}
 }

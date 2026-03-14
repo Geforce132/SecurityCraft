@@ -13,7 +13,7 @@ import net.geforcemods.securitycraft.screen.components.SSSConnectionList.Connect
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
@@ -151,18 +151,18 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		int textWidth = font.width(title);
 		int soundTextLength = font.width(SOUND_TEXT);
 
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		guiGraphics.drawString(font, title, leftPos + xSize / 2 - textWidth / 2, topPos + 6, CommonColors.DARK_GRAY, false);
-		guiGraphics.drawString(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, topPos + 141, CommonColors.DARK_GRAY, false);
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+		guiGraphics.text(font, title, leftPos + xSize / 2 - textWidth / 2, topPos + 6, CommonColors.DARK_GRAY, false);
+		guiGraphics.text(font, SOUND_TEXT, soundButton.getX() - soundTextLength - 5, topPos + 141, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override
-	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		renderTransparentBackground(guiGraphics);
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		extractTransparentBackground(guiGraphics);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, leftPos, topPos, 0.0F, 0.0F, xSize, ySize, 512, 512);
 	}
 

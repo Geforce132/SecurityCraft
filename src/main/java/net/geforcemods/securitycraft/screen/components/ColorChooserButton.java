@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.network.chat.Component;
@@ -16,10 +16,10 @@ public class ColorChooserButton extends Button.Plain {
 	}
 
 	@Override
-	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+	public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
 		int color = colorChooser.getRGBColor();
 
-		super.renderContents(guiGraphics, mouseX, mouseY, partialTick);
+		super.extractContents(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.fillGradient(getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color);
 	}
 

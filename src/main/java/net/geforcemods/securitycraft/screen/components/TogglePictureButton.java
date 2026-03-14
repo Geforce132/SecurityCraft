@@ -1,7 +1,7 @@
 package net.geforcemods.securitycraft.screen.components;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -30,8 +30,8 @@ public class TogglePictureButton extends Button.Plain implements IToggleableButt
 	}
 
 	@Override
-	public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		super.renderContents(guiGraphics, mouseX, mouseX, partialTicks);
+	public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractContents(guiGraphics, mouseX, mouseX, partialTicks);
 
 		Identifier sprite = getCurrentSprite();
 

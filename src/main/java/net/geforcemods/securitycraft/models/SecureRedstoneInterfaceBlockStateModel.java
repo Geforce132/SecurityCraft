@@ -42,12 +42,12 @@ public class SecureRedstoneInterfaceBlockStateModel extends DisguisableBlockStat
 	}
 
 	@Override
-	public boolean oldHasTranslucency(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
+	public int oldMaterialFlags(ModelData modelData, BlockAndTintGetter level, BlockPos pos, BlockState state) {
 		Boolean powered = modelData.get(POWERED);
 
 		if (powered != null && powered)
-			return poweredModel.hasTranslucency(level, pos, state);
+			return poweredModel.materialFlags(level, pos, state);
 
-		return super.oldHasTranslucency(modelData, level, pos, state);
+		return super.oldMaterialFlags(modelData, level, pos, state);
 	}
 }

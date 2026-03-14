@@ -8,7 +8,7 @@ import net.geforcemods.securitycraft.screen.components.SSSConnectionList.Connect
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -72,12 +72,12 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 	}
 
 	@Override
-	protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
+	protected void drawBackground(GuiGraphicsExtractor guiGraphics, float partialTick) {
 		drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 	}
 
 	@Override
-	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
+	protected void drawPanel(GuiGraphicsExtractor guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 		int baseY = top + border - (int) scrollDistance;
 		int slotBuffer = SLOT_HEIGHT - 4;
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -99,13 +99,13 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 		for (ConnectionInfo info : connectionInfo) {
 			int yStart = relativeY + (SLOT_HEIGHT * i++);
 
-			guiGraphics.drawString(font, info.blockName, left + 13, yStart, 0xFFC6C6C6, false);
+			guiGraphics.text(font, info.blockName, left + 13, yStart, 0xFFC6C6C6, false);
 		}
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
 
 		//draw tooltip for long block names
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -119,7 +119,7 @@ public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends Sc
 			if (length + 13 >= width - 6) //6 = barWidth
 				guiGraphics.setTooltipForNextFrame(font, blockName, left + 1, baseY + (SLOT_HEIGHT * slotIndex + SLOT_HEIGHT));
 
-			guiGraphics.drawString(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).globalPos.pos()), left + 13, top + height + 5, CommonColors.DARK_GRAY, false);
+			guiGraphics.text(font, Utils.getFormattedCoordinates(connectionInfo.get(slotIndex).globalPos.pos()), left + 13, top + height + 5, CommonColors.DARK_GRAY, false);
 		}
 	}
 

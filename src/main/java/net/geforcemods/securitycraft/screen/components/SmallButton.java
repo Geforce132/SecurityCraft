@@ -19,7 +19,7 @@ public class SmallButton extends Button.Plain {
 	}
 
 	@Override
-	public void renderDefaultLabel(ActiveTextCollector textCollector) {
+	public void extractDefaultLabel(ActiveTextCollector textCollector) {
 		textCollector.accept(TextAlignment.CENTER, getX() + width / 2, getY() + (height - 8) / 2, getMessage().getVisualOrderText());
 	}
 }

@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -81,13 +81,13 @@ public class ToggleScrollList<T> extends ScrollPanel {
 	}
 
 	@Override
-	protected void drawBackground(GuiGraphics guiGraphics, float partialTick) {
+	protected void drawBackground(GuiGraphicsExtractor guiGraphics, float partialTick) {
 		drawGradientRect(guiGraphics, left, top, right, bottom, 0xC0101010, 0xD0101010);
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		super.render(guiGraphics, mouseX, mouseY, partialTick);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 
 		int baseY = top + border - (int) scrollDistance;
 		int mouseListY = (int) (mouseY - top + scrollDistance - (border / 2));
@@ -103,7 +103,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 	}
 
 	@Override
-	protected void drawPanel(GuiGraphics guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
+	protected void drawPanel(GuiGraphicsExtractor guiGraphics, int entryRight, int relativeY, int mouseX, int mouseY) {
 		Font font = Minecraft.getInstance().font;
 		int baseY = top + border - (int) scrollDistance;
 		int slotBuffer = SLOT_HEIGHT - 4;
@@ -127,7 +127,7 @@ public class ToggleScrollList<T> extends ScrollPanel {
 			Component name = typeNames.computeIfAbsent(type, t -> Utils.localize(t == be.getDefaultType() ? be.getDefaultTypeName() : t.toString()));
 			int yStart = relativeY + (SLOT_HEIGHT * i);
 
-			guiGraphics.drawString(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xFFC6C6C6, false);
+			guiGraphics.text(font, name, left + width / 2 - font.width(name) / 2, yStart, 0xFFC6C6C6, false);
 			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, be.getFilter(type) ? CONFIRM_SPRITE : CANCEL_SPRITE, left + 1, yStart - 3, 12, 12);
 			i++;
 		}

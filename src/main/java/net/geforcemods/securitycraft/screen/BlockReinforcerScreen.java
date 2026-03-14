@@ -5,7 +5,7 @@ import net.geforcemods.securitycraft.inventory.BlockReinforcerMenu;
 import net.geforcemods.securitycraft.network.server.SyncBlockReinforcer;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -45,31 +45,31 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	}
 
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		renderTooltip(guiGraphics, mouseX, mouseY);
+	public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTicks) {
+		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTicks);
+		extractTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+	protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
 		NonNullList<ItemStack> inv = menu.getItems();
 
-		guiGraphics.drawString(font, title, (imageWidth - font.width(title)) / 2, 5, CommonColors.DARK_GRAY, false);
-		guiGraphics.drawString(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, CommonColors.DARK_GRAY, false);
+		guiGraphics.text(font, title, (imageWidth - font.width(title)) / 2, 5, CommonColors.DARK_GRAY, false);
+		guiGraphics.text(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, CommonColors.DARK_GRAY, false);
 
 		if (!inv.get(36).isEmpty()) {
-			guiGraphics.drawString(font, output, 50, 25, CommonColors.DARK_GRAY, false);
-			guiGraphics.renderItem(menu.reinforcingSlot.getOutput(), 116, 20);
-			guiGraphics.renderItemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
+			guiGraphics.text(font, output, 50, 25, CommonColors.DARK_GRAY, false);
+			guiGraphics.item(menu.reinforcingSlot.getOutput(), 116, 20);
+			guiGraphics.itemDecorations(minecraft.font, menu.reinforcingSlot.getOutput(), 116, 20, null);
 
 			if (mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 17 && mouseY < topPos + 39)
 				guiGraphics.setTooltipForNextFrame(font, menu.reinforcingSlot.getOutput(), mouseX, mouseY);
 		}
 
 		if (!menu.isLvl1 && !inv.get(37).isEmpty()) {
-			guiGraphics.drawString(font, output, 50, 50, CommonColors.DARK_GRAY, false);
-			guiGraphics.renderItem(menu.unreinforcingSlot.getOutput(), 116, 46);
-			guiGraphics.renderItemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
+			guiGraphics.text(font, output, 50, 50, CommonColors.DARK_GRAY, false);
+			guiGraphics.item(menu.unreinforcingSlot.getOutput(), 116, 46);
+			guiGraphics.itemDecorations(minecraft.font, menu.unreinforcingSlot.getOutput(), 116, 46, null);
 
 			if (mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 43 && mouseY < topPos + 64)
 				guiGraphics.setTooltipForNextFrame(font, menu.unreinforcingSlot.getOutput(), mouseX, mouseY);
@@ -77,7 +77,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	}
 
 	@Override
-	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
+	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, menu.isLvl1 ? TEXTURE_LVL1 : TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
