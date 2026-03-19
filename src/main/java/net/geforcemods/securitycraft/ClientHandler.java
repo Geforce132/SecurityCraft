@@ -131,6 +131,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
+import net.minecraft.client.renderer.block.FluidStateModelSet;
 import net.minecraft.client.renderer.block.dispatch.BlockModelRotation;
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.renderer.blockentity.LecternRenderer;
@@ -169,6 +170,7 @@ import net.neoforged.neoforge.client.IArmPoseTransformer;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
@@ -291,6 +293,14 @@ public class ClientHandler {
 
 	private static void registerDisguisedModel(Map<BlockState, BlockStateModel> modelRegistry, BlockState state, UnaryOperator<BlockStateModel> modelFunction) {
 		modelRegistry.put(state, modelFunction.apply(modelRegistry.get(state)));
+	}
+
+	@SubscribeEvent
+	public static void onRegisterFluidModels(RegisterFluidModelsEvent event) {
+		event.register(FluidStateModelSet.WATER_MODEL, SCContent.FAKE_WATER.get());
+		event.register(FluidStateModelSet.WATER_MODEL, SCContent.FLOWING_FAKE_WATER.get());
+		event.register(FluidStateModelSet.LAVA_MODEL, SCContent.FAKE_LAVA.get());
+		event.register(FluidStateModelSet.LAVA_MODEL, SCContent.FLOWING_FAKE_LAVA.get());
 	}
 
 	@SubscribeEvent
