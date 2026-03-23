@@ -10,14 +10,15 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.OctahedralGroup;
 
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
@@ -179,6 +180,7 @@ import net.neoforged.neoforge.client.event.RegisterRangeSelectItemModelPropertyE
 import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 import net.neoforged.neoforge.client.event.RegisterSelectItemModelPropertyEvent;
 import net.neoforged.neoforge.client.event.RegisterSpecialModelRendererEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneModel;
@@ -464,6 +466,23 @@ public class ClientHandler {
 				return TASER_ARM_POSE;
 			}
 		}, SCContent.TASER.get(), SCContent.TASER_POWERED.get());
+		event.registerBlock(new IClientBlockExtensions() {
+			@Override
+			public void collectDynamicTintValues(BlockState state, BlockAndTintGetter level, BlockPos pos, IntList tintValues) {
+				Block block = state.getBlock();
+
+				if (block instanceof IDisguisable disguisedBlock) {
+					Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(level, pos).getItem());
+					BlockState defaultBlockState = blockFromItem.defaultBlockState();
+
+					if (!defaultBlockState.isAir() && !(blockFromItem instanceof IDisguisable)) {
+						List<BlockTintSource> tintSources = Minecraft.getInstance().getBlockColors().getTintSources(defaultBlockState);
+
+						tintSources.stream().map(tintSource -> tintSource.colorInWorld(state, level, pos)).forEach(tintValues::add);
+					}
+				}
+			}
+		}, Stream.concat(Arrays.stream(disguisableBlocks.get()), Stream.of(SCContent.SECURE_REDSTONE_INTERFACE.get())).toArray(Block[]::new));
 	}
 
 	@SubscribeEvent
@@ -518,68 +537,10 @@ public class ClientHandler {
 		blocksWithReinforcedTint.forEach((block, tint) -> event.register(mixCache.computeIfAbsent(tint, t -> List.of(mixedReinforcedTintSource(t))), block));
 		blocksWithCustomTint.forEach((block, tint) -> event.register(List.of(BlockTintSources.constant(tint)), block));
 
-		List<BlockTintSource> hackyDisguisableTintSourceList = List.of(disguisableTintSource(0), disguisableTintSource(1), disguisableTintSource(2), disguisableTintSource(3));
-
-		event.register(hackyDisguisableTintSourceList, disguisableBlocks.get());
-		event.register(hackyDisguisableTintSourceList, SCContent.SECURE_REDSTONE_INTERFACE.get());
 		event.register(List.of(reinforcedTintSource(), mixTintSourceWithReinforcedTint(BlockTintSources.grassBlock())), SCContent.REINFORCED_GRASS_BLOCK.get());
 		event.register(List.of(reinforcedTintSource(), mixTintSourceWithReinforcedTint(BlockTintSources.water())), SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register(List.of(laserFieldTintSource()), SCContent.LASER_FIELD.get());
 		event.register(List.of(inventoryScannerFieldTintSource()), SCContent.INVENTORY_SCANNER_FIELD.get());
-	}
-
-	public static BlockTintSource disguisableTintSource(int layer) {
-		return new BlockTintSource() {
-			@Override
-			public int color(BlockState state) {
-				return 0;
-			}
-
-			@Override
-			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				BlockTintSource tintSource = findDelegate(state, level, pos);
-
-				if (tintSource != this)
-					return tintSource.colorInWorld(state, level, pos);
-
-				return fallbackTint(state.getBlock());
-			}
-
-			@Override
-			public int colorAsTerrainParticle(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				BlockTintSource tintSource = findDelegate(state, level, pos);
-
-				if (tintSource != this)
-					return tintSource.colorAsTerrainParticle(state, level, pos);
-
-				return fallbackTint(state.getBlock());
-			}
-
-			private BlockTintSource findDelegate(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				Block block = state.getBlock();
-
-				if (block instanceof IDisguisable disguisedBlock) {
-					Block blockFromItem = Block.byItem(disguisedBlock.getDisguisedStack(level, pos).getItem());
-					BlockState defaultBlockState = blockFromItem.defaultBlockState();
-
-					if (!defaultBlockState.isAir() && !(blockFromItem instanceof IDisguisable)) {
-						BlockTintSource tintSource = Minecraft.getInstance().getBlockColors().getTintSource(defaultBlockState, layer);
-
-						if (tintSource != null)
-							return tintSource;
-					}
-				}
-
-				return this;
-			}
-
-			private int fallbackTint(Block block) {
-				if (block instanceof IReinforcedBlock)
-					return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
-				else
-					return 0xFFFFFFFF;
-			}
-		};
 	}
 
 	public static int iterateFields(BlockAndTintGetter level, BlockPos pos, Direction direction, int range, Block block, Predicate<BlockEntity> beTest, Function<BlockEntity, ItemStack> lensGetter) {
