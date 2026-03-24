@@ -7,6 +7,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.FluidTagsProvider;
+import net.minecraft.tags.FluidTags;
 import net.neoforged.neoforge.common.Tags;
 
 public class FluidTagGenerator extends FluidTagsProvider {
@@ -16,6 +17,11 @@ public class FluidTagGenerator extends FluidTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
+		//vanilla tags
+		tag(FluidTags.LAVA).add(SCContent.FAKE_LAVA.get(), SCContent.FLOWING_FAKE_LAVA.get());
+		tag(FluidTags.WATER).add(SCContent.FAKE_WATER.get(), SCContent.FLOWING_FAKE_WATER.get());
+
+		//neoforge tags
 		tag(Tags.Fluids.LAVA).add(SCContent.FAKE_LAVA.get());
 		tag(Tags.Fluids.WATER).add(SCContent.FAKE_WATER.get());
 	}
