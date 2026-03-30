@@ -184,6 +184,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 
 	@Override
 	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
+		super.extractBackground(guiGraphics, mouseX, mouseY, a);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, hasStorageModule ? TEXTURE_STORAGE : TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
