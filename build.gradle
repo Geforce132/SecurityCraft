@@ -101,7 +101,7 @@ dependencies {
 	compileOnly "curse.maven:architectury-api-419699:5553800" //FTB Teams dependency
 	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //FTB Teams dependency
 	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
-	compileOnly "curse.maven:jei-238222:7428957"
+	compileOnly "curse.maven:jei-238222:7861613"
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
     compileOnly "curse.maven:jade-324717:7313008"
 	compileOnly "curse.maven:betterf3-401648:7436342"
