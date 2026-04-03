@@ -103,7 +103,7 @@ dependencies {
 	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
 	compileOnly "curse.maven:jei-238222:7861613"
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
-    compileOnly "curse.maven:jade-324717:7313008"
+    compileOnly "curse.maven:jade-324717:7817285"
 	compileOnly "curse.maven:betterf3-401648:7436342"
 	compileOnly "curse.maven:cloth-config-348521:7361439" //BetterF3 dependency
     compileOnly "curse.maven:wthit-forge-455982:7546202"
