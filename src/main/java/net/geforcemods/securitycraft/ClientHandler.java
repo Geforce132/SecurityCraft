@@ -538,7 +538,7 @@ public class ClientHandler {
 		blocksWithCustomTint.forEach((block, tint) -> event.register(List.of(BlockTintSources.constant(tint)), block));
 
 		event.register(List.of(reinforcedTintSource(), mixTintSourceWithReinforcedTint(BlockTintSources.grassBlock())), SCContent.REINFORCED_GRASS_BLOCK.get());
-		event.register(List.of(reinforcedTintSource(), mixTintSourceWithReinforcedTint(BlockTintSources.water())), SCContent.REINFORCED_WATER_CAULDRON.get());
+		event.register(List.of(reinforcedTintSource(), BlockTintSources.water()), SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register(List.of(laserFieldTintSource()), SCContent.LASER_FIELD.get());
 		event.register(List.of(inventoryScannerFieldTintSource()), SCContent.INVENTORY_SCANNER_FIELD.get());
 	}
