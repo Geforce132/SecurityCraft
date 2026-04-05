@@ -106,8 +106,8 @@ dependencies {
     compileOnly "curse.maven:jade-324717:7817285"
 	compileOnly "curse.maven:betterf3-401648:7436342"
 	compileOnly "curse.maven:cloth-config-348521:7361439" //BetterF3 dependency
-    compileOnly "curse.maven:wthit-forge-455982:7546202"
-    compileOnly "curse.maven:badpackets-615134:7324636" //WTHIT dependency
+    compileOnly "curse.maven:wthit-forge-455982:7880673"
+    compileOnly "curse.maven:badpackets-615134:7878544" //WTHIT dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
 	compileOnly "curse.maven:embeddium-908741:6116910" //Incompatible with Sodium
 	// The actual mod jar is jarjar'd into the Modrinth jar, but NeoForge doesn't load it, so the mod has to be added from CaffeineMCs' maven separately
