@@ -552,7 +552,8 @@ public class BlockPocketManagerBlockEntity extends CustomizableBlockEntity imple
 		if (isEnabled()) {
 			setEnabled(false);
 
-			for (BlockPos pos : blocks) {
+			for (int i = blocks.size() - 1; i >= 0; i--) { //Reverse order to disassemble the block pocket from top to bottom
+				BlockPos pos = blocks.get(i);
 				BlockEntity be = level.getBlockEntity(pos);
 				BlockState state = be.getBlockState();
 
