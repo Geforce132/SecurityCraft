@@ -94,7 +94,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		int colorChooserX = colorChooserButtonX + (hasStorageModule ? -145 : 20);
 		boolean enabled = be.isEnabled();
 		Button toggleButton, sizeButton;
-		Button.Builder manageStructureButtonBuilder = enabled ? Button.builder(Utils.localize("gui.securitycraft:blockPocketManager.disassemble"), this::disassembleButtonClicked) : Button.builder(Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked);
+		Button.Builder manageStructureButtonBuilder = enabled ? Button.builder(Utils.localize("gui.securitycraft:blockPocketManager.disassemble"), b-> Minecraft.getInstance().pushGuiLayer(new BlockPocketManagerConfirmScreen(be))) : Button.builder(Utils.localize("gui.securitycraft:blockPocketManager.assemble"), this::assembleButtonClicked);
 
 		toggleButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:blockPocketManager." + (!enabled ? "activate" : "deactivate")), this::toggleButtonClicked).pos(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[0]).size(widgetWidth, 20).build());
 		sizeButton = addRenderableWidget(new ToggleComponentButton(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[1], widgetWidth, 20, this::updateSizeButtonText, ArrayUtils.indexOf(allowedSizes, size), allowedSizes.length, this::sizeButtonClicked));
@@ -298,15 +298,8 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		Minecraft.getInstance().player.closeContainer();
 	}
 
-	public void disassembleButtonClicked(Button button) {
-		ClientPacketDistributor.sendToServer(new ToggleBlockPocketManager(be.getBlockPos(), be.getSize(), ToggleBlockPocketManager.Action.DISASSEMBLE));
-		Minecraft.getInstance().player.closeContainer();
-	}
-
 	public void updateStructureButtonTooltip() {
-		if (be.isEnabled() && manageStructureButton.isActive())
-			manageStructureButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:blockPocketManager.disassemble.tooltip")));
-		else if (!be.isEnabled() && !manageStructureButton.isActive())
+		if (!be.isEnabled() && !manageStructureButton.isActive())
 			manageStructureButton.setTooltip(Tooltip.create(!hasStorageModule ? Utils.localize("gui.securitycraft:blockPocketManager.needStorageModule") : Utils.localize("messages.securitycraft:blockpocket.notEnoughItems")));
 		else
 			manageStructureButton.setTooltip(null);
