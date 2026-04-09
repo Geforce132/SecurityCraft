@@ -98,9 +98,9 @@ repositories {
 }
 
 dependencies {
-	compileOnly "curse.maven:architectury-api-419699:5553800" //FTB Teams dependency
-	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //FTB Teams dependency
-	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
+	implementation "curse.maven:architectury-api-419699:7339257" //FTB Teams dependency
+	implementation "curse.maven:ftb-library-forge-404465:7718926" //FTB Teams dependency
+	implementation "curse.maven:ftb-teams-forge-404468:7700339"
 	implementation "curse.maven:jei-238222:7428957"
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
     implementation "curse.maven:jade-324717:7313008"
