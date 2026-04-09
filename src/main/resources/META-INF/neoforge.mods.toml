@@ -19,14 +19,14 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 [[dependencies.securitycraft]]
     modId="neoforge"
     type="required"
-    versionRange="[21,)"
+    versionRange="[26.1.1.8-beta,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.securitycraft]]
     modId="minecraft"
     type="required"
-    versionRange="[1.21.11,)"
+    versionRange="[26.1,)"
     ordering="NONE"
     side="BOTH"
 

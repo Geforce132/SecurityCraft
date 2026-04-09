@@ -73,6 +73,7 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 
 	@Override
 	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
+		super.extractBackground(guiGraphics, mouseX, mouseY, a);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight + 30, 256, 256);
 	}
 }

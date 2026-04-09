@@ -3,12 +3,14 @@ package net.geforcemods.securitycraft.misc;
 import java.util.function.Predicate;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCauldronBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedLayeredCauldronBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.cauldron.CauldronInteractions;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -31,16 +33,39 @@ import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraft.world.level.block.entity.BannerPatternLayers;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterCauldronInteractionEvent;
+import net.neoforged.neoforge.event.RegisterCauldronInteractionEvent.Dispatcher;
 
+@EventBusSubscriber
 public class ReinforcedCauldronInteractions {
-	public static final CauldronInteraction.Dispatcher EMPTY = CauldronInteractions.newDispatcher("reinforced_empty");
-	public static final CauldronInteraction.Dispatcher WATER = CauldronInteractions.newDispatcher("reinforced_water");
-	public static final CauldronInteraction.Dispatcher LAVA = CauldronInteractions.newDispatcher("reinforced_lava");
-	public static final CauldronInteraction.Dispatcher POWDER_SNOW = CauldronInteractions.newDispatcher("reinforced_powder_snow");
+	public static final IdentifiableDispatcher EMPTY = new IdentifiableDispatcher("reinforced_empty");
+	public static final IdentifiableDispatcher WATER = new IdentifiableDispatcher("reinforced_water");
+	public static final IdentifiableDispatcher LAVA = new IdentifiableDispatcher("reinforced_lava");
+	public static final IdentifiableDispatcher POWDER_SNOW = new IdentifiableDispatcher("reinforced_powder_snow");
 
-	public static void bootstrap() {
-		addDefaultInteractions(EMPTY);
-		EMPTY.put(Items.POTION, (_, level, pos, player, hand, stack) -> {
+	@SubscribeEvent
+	public static void onRegisterCauldronInteractionDispatchers(RegisterCauldronInteractionEvent.Dispatcher event) {
+		register(event, EMPTY);
+		register(event, WATER);
+		register(event, LAVA);
+		register(event, POWDER_SNOW);
+	}
+
+	private static void register(Dispatcher event, IdentifiableDispatcher dispatcher) {
+		event.register(dispatcher.id(), dispatcher);
+	}
+
+	@SubscribeEvent
+	public static void onRegisterCauldronInteractionInteractions(RegisterCauldronInteractionEvent.Interaction event) {
+		Identifier empty = ReinforcedCauldronInteractions.EMPTY.id();
+		Identifier water = ReinforcedCauldronInteractions.WATER.id();
+		Identifier lava = ReinforcedCauldronInteractions.LAVA.id();
+		Identifier powderSnow = ReinforcedCauldronInteractions.POWDER_SNOW.id();
+
+		addDefaultInteractions(event, empty);
+		event.register(empty, Items.POTION, (_, level, pos, player, hand, stack) -> {
 			PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
 
 			if (potionContents != null && potionContents.is(Potions.WATER)) {
@@ -60,9 +85,9 @@ public class ReinforcedCauldronInteractions {
 			else
 				return InteractionResult.TRY_WITH_EMPTY_HAND;
 		});
-		addDefaultInteractions(WATER);
-		WATER.put(Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET), s -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL));
-		WATER.put(Items.GLASS_BOTTLE, (state, level, pos, player, hand, stack) -> {
+		addDefaultInteractions(event, water);
+		event.register(water, Items.BUCKET, (state, level, pos, player, hand, stack) -> fillBucket(state, level, pos, player, hand, stack, new ItemStack(Items.WATER_BUCKET), s -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL));
+		event.register(water, Items.GLASS_BOTTLE, (state, level, pos, player, hand, stack) -> {
 			if (!level.isClientSide()) {
 				Item item = stack.getItem();
 
@@ -76,7 +101,7 @@ public class ReinforcedCauldronInteractions {
 
 			return InteractionResult.SUCCESS;
 		});
-		WATER.put(Items.POTION, (state, level, pos, player, hand, stack) -> {
+		event.register(water, Items.POTION, (state, level, pos, player, hand, stack) -> {
 			if (state.getValue(LayeredCauldronBlock.LEVEL) != 3) {
 				PotionContents potionContents = stack.get(DataComponents.POTION_CONTENTS);
 
@@ -96,49 +121,49 @@ public class ReinforcedCauldronInteractions {
 
 			return InteractionResult.TRY_WITH_EMPTY_HAND;
 		});
-		WATER.put(ItemTags.CAULDRON_CAN_REMOVE_DYE, ReinforcedCauldronInteractions::dyedItemInteraction);
-		WATER.put(Items.WHITE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.GRAY_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.BLACK_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.BLUE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.BROWN_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.CYAN_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.GREEN_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.LIGHT_BLUE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.LIGHT_GRAY_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.LIME_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.MAGENTA_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.ORANGE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.PINK_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.PURPLE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.RED_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.YELLOW_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
-		WATER.put(Items.WHITE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.GRAY_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.BLACK_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.BLUE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.BROWN_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.CYAN_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.GREEN_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.LIGHT_BLUE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.LIGHT_GRAY_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.LIME_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.MAGENTA_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.ORANGE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.PINK_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.PURPLE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.RED_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		WATER.put(Items.YELLOW_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
-		LAVA.put(Items.BUCKET, (state, level, pos, player, hand, itemInHand) -> fillBucket(state, level, pos, player, hand, itemInHand, new ItemStack(Items.LAVA_BUCKET), _ -> true, SoundEvents.BUCKET_FILL_LAVA));
-		addDefaultInteractions(LAVA);
-		POWDER_SNOW.put(Items.BUCKET, (state, level, pos, player, hand, itemInHand) -> fillBucket(state, level, pos, player, hand, itemInHand, new ItemStack(Items.POWDER_SNOW_BUCKET), s -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL_POWDER_SNOW));
-		addDefaultInteractions(POWDER_SNOW);
+		event.register(water, ItemTags.CAULDRON_CAN_REMOVE_DYE, ReinforcedCauldronInteractions::dyedItemInteraction);
+		event.register(water, Items.WHITE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.GRAY_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.BLACK_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.BLUE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.BROWN_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.CYAN_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.GREEN_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.LIGHT_BLUE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.LIGHT_GRAY_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.LIME_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.MAGENTA_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.ORANGE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.PINK_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.PURPLE_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.RED_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.YELLOW_BANNER, ReinforcedCauldronInteractions::bannerInteraction);
+		event.register(water, Items.WHITE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.GRAY_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.BLACK_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.BLUE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.BROWN_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.CYAN_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.GREEN_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.LIGHT_BLUE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.LIGHT_GRAY_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.LIME_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.MAGENTA_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.ORANGE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.PINK_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.PURPLE_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.RED_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(water, Items.YELLOW_SHULKER_BOX, ReinforcedCauldronInteractions::shulkerBoxInteraction);
+		event.register(lava, Items.BUCKET, (state, level, pos, player, hand, itemInHand) -> fillBucket(state, level, pos, player, hand, itemInHand, new ItemStack(Items.LAVA_BUCKET), _ -> true, SoundEvents.BUCKET_FILL_LAVA));
+		addDefaultInteractions(event, lava);
+		event.register(powderSnow, Items.BUCKET, (state, level, pos, player, hand, itemInHand) -> fillBucket(state, level, pos, player, hand, itemInHand, new ItemStack(Items.POWDER_SNOW_BUCKET), s -> s.getValue(LayeredCauldronBlock.LEVEL) == 3, SoundEvents.BUCKET_FILL_POWDER_SNOW));
+		addDefaultInteractions(event, powderSnow);
 	}
 
-	static void addDefaultInteractions(CauldronInteraction.Dispatcher dispatcher) {
-		dispatcher.put(Items.LAVA_BUCKET, ReinforcedCauldronInteractions::fillLavaInteraction);
-		dispatcher.put(Items.WATER_BUCKET, ReinforcedCauldronInteractions::fillWaterInteraction);
-		dispatcher.put(Items.POWDER_SNOW_BUCKET, ReinforcedCauldronInteractions::fillPowderSnowInteraction);
+	static void addDefaultInteractions(RegisterCauldronInteractionEvent.Interaction event, Identifier dispatcher) {
+		event.register(dispatcher, Items.LAVA_BUCKET, ReinforcedCauldronInteractions::fillLavaInteraction);
+		event.register(dispatcher, Items.WATER_BUCKET, ReinforcedCauldronInteractions::fillWaterInteraction);
+		event.register(dispatcher, Items.POWDER_SNOW_BUCKET, ReinforcedCauldronInteractions::fillPowderSnowInteraction);
 	}
 
 	static InteractionResult fillBucket(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, ItemStack bucket, Predicate<BlockState> fillPredicate, SoundEvent sound) {
@@ -239,6 +264,19 @@ public class ReinforcedCauldronInteractions {
 			}
 
 			return InteractionResult.SUCCESS;
+		}
+	}
+
+	public static class IdentifiableDispatcher extends CauldronInteraction.Dispatcher {
+		private final Identifier id;
+
+		public IdentifiableDispatcher(String path) {
+			super();
+			this.id = SecurityCraft.resLoc(path);
+		}
+
+		public Identifier id() {
+			return id;
 		}
 	}
 }
