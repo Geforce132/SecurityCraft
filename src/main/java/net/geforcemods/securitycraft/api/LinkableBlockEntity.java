@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.api;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -161,11 +160,9 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 	 *            loops. Always add your block entity to the list whenever using this method
 	 */
 	public void propagate(ILinkedAction action, List<LinkableBlockEntity> excludedBEs) {
-		Iterator<LinkedBlock> linkedBlockIterator = getLinkedBlocks().iterator();
+		List<LinkedBlock> blocksToRemove = new ArrayList<>();
 
-		while (linkedBlockIterator.hasNext()) {
-			LinkedBlock block = linkedBlockIterator.next();
-
+		for (LinkedBlock block : getLinkedBlocks()) {
 			if (level.isLoaded(block.getPos()) && !excludedBEs.contains(block.asBlockEntity(level))) {
 				if (block.validate(level)) {
 					BlockState state = level.getBlockState(block.getPos());
@@ -174,8 +171,12 @@ public abstract class LinkableBlockEntity extends CustomizableBlockEntity implem
 					level.sendBlockUpdated(block.getPos(), state, state, 3);
 				}
 				else
-					linkedBlockIterator.remove();
+					blocksToRemove.add(block);
 			}
+		}
+
+		for (LinkedBlock blockToRemove : blocksToRemove) {
+			removeLinkedBlock(blockToRemove);
 		}
 	}
 
