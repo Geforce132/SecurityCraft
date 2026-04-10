@@ -26,6 +26,7 @@
 - Fix: Projected blocks are rendered even if they are outside the player's field of view
 - Fix: The value of the Projector's "Range" option changes unexpectedly when toggling the Horizontal mode
 - Fix: The experience level and the background of the locator bar are visible while mounted to a Security Camera 
+- Fix: Crash related to linking and unlinking Laser Blocks
 
 --------------------------Changelog for v1.10.1-beta2 of SecurityCraft--------------------------
 
