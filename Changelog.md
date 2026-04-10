@@ -1,6 +1,7 @@
 --------------------------Changelog for v1.10.1-beta3 of SecurityCraft--------------------------
 
 - Fix: Briefcases and Lenses cannot be dyed in a Crafting Table
+- Fix: The fields of Laser Blocks and Inventory Scanners become invisible when they are dyed using a Colored Lens
 
 --------------------------Changelog for v1.10.1-beta2 of SecurityCraft--------------------------
 
