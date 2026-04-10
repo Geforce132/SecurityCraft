@@ -455,12 +455,14 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			List<ModuleType> thatInsertedModules = that.getInsertedModules();
 
 			for (ModuleType type : thisInsertedModules) {
-				ItemStack thisModule = getModule(type);
-
-				if (thatInsertedModules.contains(type) && !thisModule.areShareTagsEqual(that.getModule(type)))
+				if (thatInsertedModules.contains(type) && !getModule(type).areShareTagsEqual(that.getModule(type)))
 					return type;
+			}
 
-				bothInsertedModules.put(thisModule.copy(), isModuleEnabled(type));
+			LinkableBlockEntity.link(this, that); //At this point, synchronizing will always succeed. Linking the block entities here prevents laser updating recursion during the module shuffling below
+
+			for (ModuleType type : thisInsertedModules) {
+				bothInsertedModules.put(getModule(type).copy(), isModuleEnabled(type));
 				removeModule(type, false);
 			}
 
@@ -471,7 +473,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			}
 
 			readOptions(that.writeOptions(new CompoundTag()));
-			LinkableBlockEntity.link(this, that);
 
 			for (Entry<ItemStack, Boolean> entry : bothInsertedModules.entrySet()) {
 				ItemStack module = entry.getKey();

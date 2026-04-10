@@ -54,7 +54,9 @@ public class LaserBlock extends DisguisableBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, entity, stack);
-		setLaser(level, pos, entity instanceof Player player ? player : null);
+
+		if (!level.isClientSide())
+			setLaser(level, pos, entity instanceof Player player ? player : null);
 	}
 
 	@Override
