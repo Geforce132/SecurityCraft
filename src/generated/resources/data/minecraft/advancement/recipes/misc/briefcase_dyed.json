@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_briefcase": {
+      "conditions": {
+        "items": [
+          {
+            "items": "securitycraft:briefcase"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:briefcase_dyed"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_briefcase"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:briefcase_dyed"
+    ]
+  }
+}

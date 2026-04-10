@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.10.1-beta3 of SecurityCraft--------------------------
+
+- Fix: Briefcases and Lenses cannot be dyed in a Crafting Table
+
 --------------------------Changelog for v1.10.1-beta2 of SecurityCraft--------------------------
 
 - Fix: Screens that contain item slots do not darken the world in the background
