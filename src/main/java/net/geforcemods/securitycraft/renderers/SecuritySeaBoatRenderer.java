@@ -7,10 +7,8 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.BoatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.BoatRenderState;
-import net.minecraft.resources.Identifier;
 
 public class SecuritySeaBoatRenderer extends BoatRenderer {
-	private final Identifier texture;
 	private final EntityModel<BoatRenderState> model;
 
 	public SecuritySeaBoatRenderer(EntityRendererProvider.Context ctx, ModelLayerLocation location) {
