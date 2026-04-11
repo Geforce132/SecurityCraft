@@ -25,6 +25,7 @@
 - Fix: The value of the Projector's "Range" option changes unexpectedly when toggling the Horizontal mode
 - Fix: The experience level is visible while mounted to a Security Camera
 - Fix: Crash related to linking and unlinking Laser Blocks
+- Fix: Projected blocks stop rendering when standing too far away
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 

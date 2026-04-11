@@ -17,6 +17,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.model.data.ModelData;
 
 public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEntity> {
@@ -63,6 +64,11 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	@Override
 	public boolean shouldRenderOffScreen(ProjectorBlockEntity be) {
 		return true;
+	}
+
+	@Override
+	public boolean shouldRender(ProjectorBlockEntity be, Vec3 cameraPosition) {
+		return true; //Projected blocks should always render, regardless of distance
 	}
 
 	@Override
