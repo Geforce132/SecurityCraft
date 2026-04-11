@@ -18,6 +18,7 @@ import com.mojang.math.OctahedralGroup;
 
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.geforcemods.securitycraft.api.IDisguisable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
@@ -40,6 +41,7 @@ import net.geforcemods.securitycraft.items.properties.KeycardCount;
 import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
 import net.geforcemods.securitycraft.items.properties.SentryLinked;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
+import net.geforcemods.securitycraft.misc.TintMode;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableBlockStateModel;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
@@ -118,6 +120,7 @@ import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderState;
 import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderer;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSource;
@@ -585,24 +588,34 @@ public class ClientHandler {
 	}
 
 	private static BlockTintSource mixedReinforcedTintSource(int tint) {
-		return BlockTintSources.constant(mixWithReinforcedTintIfEnabled(tint));
+		return new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return mixWithReinforcedTintIfEnabled(tint, null);
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				return mixWithReinforcedTintIfEnabled(tint, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
+			}
+		};
 	}
 
 	public static BlockTintSource mixTintSourceWithReinforcedTint(BlockTintSource parent) {
 		return new BlockTintSource() {
 			@Override
 			public int color(BlockState state) {
-				return mixWithReinforcedTintIfEnabled(parent.color(state));
+				return mixWithReinforcedTintIfEnabled(parent.color(state), null);
 			}
 
 			@Override
 			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				return mixWithReinforcedTintIfEnabled(parent.colorInWorld(state, level, pos));
+				return mixWithReinforcedTintIfEnabled(parent.colorInWorld(state, level, pos), level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 			}
 
 			@Override
 			public int colorAsTerrainParticle(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				return mixWithReinforcedTintIfEnabled(parent.colorAsTerrainParticle(state, level, pos));
+				return mixWithReinforcedTintIfEnabled(parent.colorAsTerrainParticle(state, level, pos), level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 			}
 
 			@Override
@@ -644,15 +657,11 @@ public class ClientHandler {
 		};
 	}
 
-	public static int mixWithReinforcedTintIfEnabled(int tint) {
-		boolean tintReinforcedBlocks;
+	public static int mixWithReinforcedTintIfEnabled(int tint, IOwnable ownable) {
+		if (ownable == null)
+			return ARGB.multiply(tint, 0xFF000000 | TintMode.getTintColor());
 
-		if (Minecraft.getInstance().level == null)
-			tintReinforcedBlocks = ConfigHandler.CLIENT.reinforcedBlockTint.get();
-		else
-			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
-
-		return tintReinforcedBlocks ? ARGB.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
+		return TintMode.shouldTint(Minecraft.getInstance().player, ownable) ? ARGB.multiply(tint, 0xFF000000 | TintMode.getTintColor()) : tint;
 	}
 
 	public static Player getClientPlayer() {
@@ -760,7 +769,7 @@ public class ClientHandler {
 
 		be.requestModelDataUpdate();
 		be.getLevel().getModelData(pos); //Actually calculates and applies the new model data that was requested before
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()); //Recompiles the render chunk at the changed position
+		ClientUtils.recompileChunk(pos); //Recompiles the render chunk at the changed position
 	}
 
 	public static boolean isPlayerMountedOnCamera() {

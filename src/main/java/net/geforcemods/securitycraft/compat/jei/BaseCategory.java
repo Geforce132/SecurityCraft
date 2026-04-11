@@ -8,15 +8,17 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> {
 	protected static final Component OUTPUT_TEXT = Utils.localize("gui.securitycraft:blockReinforcer.output");
 	private final IDrawable background;
 	private final IDrawable icon;
-	private final int width = 126, height = 43;
+	private final int width = 126, height = 18;
 
 	protected BaseCategory(IGuiHelper helper) {
 		background = helper.createDrawable(SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer.png"), 25, 19, width, height);
@@ -26,6 +28,7 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 	@Override
 	public void draw(ReinforcerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
 		background.draw(guiGraphics);
+		guiGraphics.text(Minecraft.getInstance().font, OUTPUT_TEXT, 24, 5, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override

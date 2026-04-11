@@ -31,6 +31,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -90,12 +91,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}));
 		showAllCheckbox = addRenderableWidget(new CallbackCheckbox(settingsX, topPos + 65, 20, 20, Component.empty(), false, isSelected -> changeEntryList.updateFilteredEntries(), 0));
 		highlightInWorldCheckbox = addRenderableWidget(new CallbackCheckbox(settingsX, topPos + 90, 20, 20, Component.empty(), be.isShowingHighlights(), be::showHighlights, 0));
-		colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
-			@Override
-			public void onColorChange() {
-				be.setColor(getRGBColor());
-			}
-		};
+		colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor, be::setColor);
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
 
 		clearButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:editModule.clear")));
@@ -412,13 +408,13 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public void onClick(MouseButtonEvent event, boolean doubleClick) {
+		public void onPress(InputWithModifiers input) {
 			if (Minecraft.getInstance().hasShiftDown())
 				setCurrentIndex(currentIndex - 1);
 			else
 				setCurrentIndex(currentIndex + 1);
 
-			super.onClick(event, doubleClick);
+			super.onPress(input);
 		}
 
 		@Override

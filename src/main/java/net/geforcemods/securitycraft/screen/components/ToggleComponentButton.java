@@ -6,7 +6,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.network.chat.Component;
 
@@ -25,13 +25,13 @@ public class ToggleComponentButton extends Button.Plain implements IToggleableBu
 	}
 
 	@Override
-	public void onClick(MouseButtonEvent event, boolean doubleClick) {
-		if (Minecraft.getInstance().hasShiftDown())
+	public void onPress(InputWithModifiers input) {
+  		if (Minecraft.getInstance().hasShiftDown())
 			cycleIndex(-1);
 		else
 			cycleIndex(1);
 
-		super.onClick(event, doubleClick);
+		super.onPress(input);
 	}
 
 	@Override
