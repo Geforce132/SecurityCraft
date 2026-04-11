@@ -66,6 +66,11 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 	}
 
 	@Override
+	public boolean shouldRender(ProjectorBlockEntity be, Vec3 cameraPosition) {
+		return true; //Projected blocks should always render, regardless of distance
+	}
+
+	@Override
 	public AABB getRenderBoundingBox(ProjectorBlockEntity be) {
 		AABB projectorBoundingBox = new AABB(be.getBlockPos());
 
