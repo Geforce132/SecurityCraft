@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.134'
+	id 'net.neoforged.moddev' version '2.0.141'
 }
 
 import groovy.json.JsonOutput
@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "26.1.1.8-beta"
+	version = "26.1.2.12-beta"
 	validateAccessTransformers = true
 
 	runs {
@@ -98,16 +98,15 @@ repositories {
 }
 
 dependencies {
-	compileOnly "curse.maven:architectury-api-419699:5553800" //FTB Teams dependency
-	compileOnly "curse.maven:ftb-library-forge-404465:5557408" //FTB Teams dependency
-	compileOnly "curse.maven:ftb-teams-forge-404468:5448371"
-	compileOnly "curse.maven:jei-238222:7861613"
+	implementation "curse.maven:ftb-library-forge-404465:7921509" //FTB Teams dependency
+	implementation "curse.maven:ftb-teams-forge-404468:7921353"
+	implementation "curse.maven:jei-238222:7920926"
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
-    compileOnly "curse.maven:jade-324717:7817285"
+	implementation "curse.maven:jade-324717:7817285"
 	compileOnly "curse.maven:betterf3-401648:7436342"
 	compileOnly "curse.maven:cloth-config-348521:7361439" //BetterF3 dependency
-    compileOnly "curse.maven:wthit-forge-455982:7880673"
-    compileOnly "curse.maven:badpackets-615134:7878544" //WTHIT dependency
+	implementation "curse.maven:wthit-forge-455982:7880673"
+	implementation "curse.maven:badpackets-615134:7878544" //WTHIT dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
 	compileOnly "curse.maven:embeddium-908741:6116910" //Incompatible with Sodium
 	// The actual mod jar is jarjar'd into the Modrinth jar, but NeoForge doesn't load it, so the mod has to be added from CaffeineMCs' maven separately
