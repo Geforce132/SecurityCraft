@@ -39,6 +39,7 @@ public class ConfigHandler {
 		public final BooleanValue sayThanksMessage;
 		public final BooleanValue reinforcedBlockTint;
 		public final BooleanValue debugCameraResetTracing;
+		public final BooleanValue morePerformantSRIRendering;
 		public final IntValue reinforcedBlockTintColor;
 		public final IntValue frameFeedRenderDistance;
 		public final IntValue frameFeedResolution;
@@ -57,6 +58,10 @@ public class ConfigHandler {
 			debugCameraResetTracing = builder
 					.comment("If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working when they immediately reset the player's camera entity.")
 					.define("debug_camera_reset_tracing", false);
+
+			morePerformantSRIRendering = builder
+					.comment("Should Secure Redstone Interfaces in \"Receiver\" mode be rendered without the spinning disk? This may lead to slight clientside performance gains.")
+					.define("more_performant_sri_rendering", false);
 
 			reinforcedBlockTintColor = builder
 					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
@@ -114,6 +119,7 @@ public class ConfigHandler {
 		public final BooleanValue alwaysDrop;
 		public final BooleanValue allowBreakingNonOwnedBlocks;
 		public final DoubleValue nonOwnedBreakingSlowdown;
+		public final DoubleValue ownedBreakingSlowdown;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
@@ -267,6 +273,12 @@ public class ConfigHandler {
 							"The value is calculated as the normal block breaking speed divided by the non-owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
 							"This only applies when \"allow_breaking_non_owned_blocks\" and \"vanilla_tool_block_breaking\" are set to true.")
 					.defineInRange("non_owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
+
+			ownedBreakingSlowdown = builder
+					.comment("How much slower it should be to break a block that is owned by the player breaking it.",
+							"The value is calculated as the normal block breaking speed divided by the owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
+							"This only applies when \"vanilla_tool_block_breaking\" is set to true.")
+					.defineInRange("owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
 
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")

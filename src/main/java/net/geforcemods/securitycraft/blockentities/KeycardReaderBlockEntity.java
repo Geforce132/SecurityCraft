@@ -178,23 +178,23 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 
 		//owner of this keycard reader and the keycard reader the keycard got linked to do not match
 		if (!TeamUtils.areOnSameTeam(getOwner(), keycardOwner) || !getOwner().getUUID().equals(keycardOwner.getUUID()))
-			return Component.translatable("messages.securitycraft:keycardReader.differentOwner");
+			return Component.translatable("messages.securitycraft:keycard_acceptor.different_owner");
 
 		KeycardData keycardData = stack.getOrDefault(SCContent.KEYCARD_DATA, KeycardData.DEFAULT);
 
 		//the name of the player who can use the keycard does not match the one of the player trying to use it
-		if (!keycardData.usableBy().map(player.getGameProfile().name()::equals).orElse(true))
-			return Component.translatable("messages.securitycraft:keycardReader.cantUse");
+		if (!keycardData.usableBy().map(name -> player.getGameProfile().name().equals(name) && PlayerUtils.getNameFromPlayerOrMask(player).equals(name)).orElse(true))
+			return Component.translatable("messages.securitycraft:keycard_acceptor.cant_use");
 
 		//the keycard's signature does not match this keycard reader's
 		if (getSignature() != keycardData.signature())
-			return Component.translatable("messages.securitycraft:keycardReader.wrongSignature");
+			return Component.translatable("messages.securitycraft:keycard_acceptor.wrong_signature");
 
 		int keycardLevel = ((KeycardItem) stack.getItem()).getLevel();
 
 		//the keycard's level
 		if (!getAcceptedLevels()[keycardLevel]) //both are 0 indexed, so it's ok
-			return Component.translatable("messages.securitycraft:keycardReader.wrongLevel", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
+			return Component.translatable("messages.securitycraft:keycard_acceptor.wrong_level", keycardLevel + 1); //level is 0-indexed, so it has to be increased by one to match with the item name
 
 		//don't consider the block powered if the signal length is 0, because players need to be able to toggle it off
 		boolean powered = level.getBlockState(worldPosition).getValue(BlockStateProperties.POWERED) && getSignalLength() > 0;
@@ -204,7 +204,7 @@ public class KeycardReaderBlockEntity extends DisguisableBlockEntity implements 
 				int usesLeft = keycardData.usesLeft();
 
 				if (usesLeft <= 0)
-					return Component.translatable("messages.securitycraft:keycardReader.noUses");
+					return Component.translatable("messages.securitycraft:keycard_acceptor.no_uses");
 
 				if (!player.isCreative())
 					stack.set(SCContent.KEYCARD_DATA, keycardData.setUsesLeft(--usesLeft));

@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.google.common.collect.ImmutableList;
+
 import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.LinkedBlock;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.BooleanOption;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
@@ -56,6 +59,7 @@ import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
 public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuProvider, ContainerListener {
+	protected List<LinkedBlock> linkedBlocks = new ArrayList<>();
 	private DisabledOption disabled = new DisabledOption(false) {
 		@Override
 		public void toggle() {
@@ -158,6 +162,21 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 		MenuProvider.super.writeClientSideData(menu, buffer);
 		buffer.writeBlockPos(worldPosition);
 		buffer.writeNbt(saveSideConfigToTag(sideConfig));
+	}
+
+	@Override
+	protected ImmutableList<LinkedBlock> getLinkedBlocks() {
+		return ImmutableList.copyOf(linkedBlocks);
+	}
+
+	@Override
+	protected void addLinkedBlock(LinkedBlock block) {
+		linkedBlocks.add(block);
+	}
+
+	@Override
+	protected void removeLinkedBlock(LinkedBlock block) {
+		linkedBlocks.remove(block);
 	}
 
 	@Override
@@ -431,12 +450,14 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			List<ModuleType> thatInsertedModules = that.getInsertedModules();
 
 			for (ModuleType type : thisInsertedModules) {
-				ItemStack thisModule = getModule(type);
-
-				if (thatInsertedModules.contains(type) && !ItemStack.isSameItemSameComponents(thisModule, that.getModule(type)))
+				if (thatInsertedModules.contains(type) && !ItemStack.isSameItemSameComponents(getModule(type), that.getModule(type)))
 					return type;
+			}
 
-				bothInsertedModules.put(thisModule.copy(), isModuleEnabled(type));
+			LinkableBlockEntity.link(this, that); //At this point, synchronizing will always succeed. Linking the block entities here prevents laser updating recursion during the module shuffling below
+
+			for (ModuleType type : thisInsertedModules) {
+				bothInsertedModules.put(getModule(type).copy(), isModuleEnabled(type));
 				removeModule(type, false);
 			}
 
@@ -453,8 +474,6 @@ public class LaserBlockBlockEntity extends LinkableBlockEntity implements MenuPr
 			for (int i = 0; i < options.length; i++) {
 				thisOptions[i].setValue(options[i].get());
 			}
-
-			LinkableBlockEntity.link(this, that);
 
 			for (Entry<ItemStack, Boolean> entry : bothInsertedModules.entrySet()) {
 				ItemStack module = entry.getKey();
