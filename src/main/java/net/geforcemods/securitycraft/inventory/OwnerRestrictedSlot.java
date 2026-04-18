@@ -45,6 +45,11 @@ public class OwnerRestrictedSlot extends Slot {
 		return isHighlightable;
 	}
 
+	@Override
+	public boolean isActive() {
+		return isHighlightable || !getItem().isEmpty();
+	}
+
 	public boolean isGhostSlot() {
 		return isGhostSlot;
 	}

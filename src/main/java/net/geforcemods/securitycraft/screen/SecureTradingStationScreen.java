@@ -22,6 +22,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTradingStationMenu> {
 	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station.png");
 	private static final ResourceLocation GUI_TEXTURE_OWNER = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner.png");
+	private static final ResourceLocation GUI_TEXTURE_STORAGE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_storage.png");
 	private static final ResourceLocation GUI_TEXTURE_OWNER_STORAGE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner_storage.png");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("world_list/warning_highlighted");
 	private final Component paymentText = Utils.localize("gui.securitycraft:secure_trading_station.payment");
@@ -47,7 +48,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		isOwner = be.isOwnedBy(playerInventory.player);
 		skipPaymentCheck = isOwner || be.isAllowed(playerInventory.player);
 		storageVisible = be.hasRewardReferenceStacks() || menu.withStorageAccess;
-		imageHeight = 249;
+		imageHeight = storageVisible ? (menu.withStorageAccess ? 249 : 208) : 172;
 		inventoryLabelY = imageHeight - 94;
 	}
 
@@ -124,7 +125,14 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		guiGraphics.blit(isOwner ? (menu.withStorageAccess ? GUI_TEXTURE_OWNER_STORAGE : GUI_TEXTURE_OWNER) : GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+		ResourceLocation backgroundTexture;
+
+		if (isOwner)
+			backgroundTexture = storageVisible ? GUI_TEXTURE_OWNER_STORAGE : GUI_TEXTURE_OWNER;
+		else
+			backgroundTexture = storageVisible ? GUI_TEXTURE_STORAGE : GUI_TEXTURE;
+
+		guiGraphics.blit(backgroundTexture, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
 	private void sendTransactionRequest(Button button) {

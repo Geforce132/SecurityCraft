@@ -68,16 +68,18 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 			}
 		}
 
+		int inventoryTop = withStorageAccess ? 167 : (be.hasRewardReferenceStacks() ? 126 : 90);
+
 		//main player inventory: 25-51 in storage version, 9-35 otherwise
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlot(new Slot(playerInventory, 9 + j + i * 9, 8 + j * 18, 167 + i * 18));
+				addSlot(new Slot(playerInventory, 9 + j + i * 9, 8 + j * 18, inventoryTop + i * 18));
 			}
 		}
 
 		//player hotbar: 52-60 in storage version, 36-43 otherwise
 		for (int i = 0; i < 9; i++) {
-			addSlot(new Slot(playerInventory, i, 8 + i * 18, 225));
+			addSlot(new Slot(playerInventory, i, 8 + i * 18, inventoryTop + 58));
 		}
 	}
 
@@ -112,7 +114,7 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 					return ItemStack.EMPTY;
 			}
 			//payment and reward storage
-			else if (withStorageAccess && index <= 26) {
+			else if (withStorageAccess && index < playerInvStartIndex) {
 				//try to move it to the player's inventory
 				if (!moveItemStackTo(slotStack, playerInvStartIndex, slots.size(), true))
 					return ItemStack.EMPTY;
@@ -143,7 +145,7 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 
 	@Override
 	public void clicked(int slotId, int dragType, ClickType clickType, Player player) {
-		if (slotId >= 0 && slotId <= 8 && clickType != ClickType.CLONE && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isGhostSlot()) {
+		if (slotId >= 0 && slotId <= 8 && clickType != ClickType.CLONE && getSlot(slotId) instanceof OwnerRestrictedSlot slot && slot.isHighlightable() && slot.isGhostSlot()) {
 			if (!player.isSpectator() && be.isOwnedBy(player)) {
 				ItemStack pickedUpStack = getCarried().copy();
 
