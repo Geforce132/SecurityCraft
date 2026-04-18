@@ -30,7 +30,8 @@ public final class BlockEntityTracker<BE extends BlockEntity> {
 	public static final BlockEntityTracker<SonicSecuritySystemBlockEntity> SONIC_SECURITY_SYSTEM = new BlockEntityTracker<>(be -> SonicSecuritySystemBlockEntity.MAX_RANGE);
 	public static final BlockEntityTracker<BlockChangeDetectorBlockEntity> BLOCK_CHANGE_DETECTOR = new BlockEntityTracker<>(be -> be.getRange());
 	public static final BlockEntityTracker<RiftStabilizerBlockEntity> RIFT_STABILIZER = new BlockEntityTracker<>(RiftStabilizerBlockEntity::getRange);
-	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
+	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE_SENDER = new BlockEntityTracker<>(SecureRedstoneInterfaceBlockEntity::getSenderRange);
+	public static final BlockEntityTracker<SecureRedstoneInterfaceBlockEntity> SECURE_REDSTONE_INTERFACE_RECEIVER = new BlockEntityTracker<>(be -> Integer.MAX_VALUE);
 	public static final BlockEntityTracker<SecurityCameraBlockEntity> FRAME_VIEWED_SECURITY_CAMERAS = new BlockEntityTracker<>(be -> 0);
 	private final Map<ResourceKey<Level>, Collection<BlockPos>> trackedBlockEntities = new ConcurrentHashMap<>();
 	private final Function<BE, Integer> range;

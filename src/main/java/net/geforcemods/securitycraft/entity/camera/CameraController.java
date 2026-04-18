@@ -117,6 +117,7 @@ public class CameraController {
 			LayerToggleHandler.disable(ClientHandler.CAMERA_LAYER);
 			LayerToggleHandler.enable(VanillaGuiLayers.JUMP_METER);
 			LayerToggleHandler.enable(VanillaGuiLayers.EXPERIENCE_BAR);
+			LayerToggleHandler.enable(VanillaGuiLayers.EXPERIENCE_LEVEL);
 			LayerToggleHandler.enable(VanillaGuiLayers.EFFECTS);
 		}
 	}

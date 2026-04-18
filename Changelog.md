@@ -1,7 +1,31 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
+- New: The Keycard Reader, Keypad, and Retinal Scanner can now be placed facing up or down (Thanks CYB3RCA4T!)
+- New: The "/sc owner" subcommand now has an optional "resetSettings" mode to force affected blocks to reset sensible data like passcodes
+- New: Configuration option to control whether to render the spinning disk of Secure Redstone Interfaces
+- New: Configuration option to control the breaking speed of owned blocks
+- New: Option for the Portable Radar to control whether it should send messages if players are in its radius
+- New: Block Pockets can now be disassembled automatically
+- Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
+- Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
+- API: New methods within LinkableBlockEntity for better control over how the list of linked blocks is modified and stored
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
+- Fix: The Block Change Detector cannot open Reinforced Doors/Trapdoors/etc. or interact with Secure Redstone Interfaces (Thanks CYB3RCA4T!)
+- Fix: Redstone Wire cannot be placed on top of Reinforced Hoppers
+- Fix: Lecterns and Chiseled Bookshelves display their content incorrectly when they are reinforced using /sc convert
+- Fix: Reinforced Lanterns and Reinforced Chains cannot be waterlogged by placing water into them using a Bucket
+- Fix: Some messages that are sent from a Keycard Lock mention a Keycard Reader as the source block
+- Fix: Triggered Bouncing Betties do not increase in size before exploding
+- Fix: Severe lag when joining a superflat world with a layer of Secure Redstone Interfaces
+- Fix: Placing a Secure Redstone Interface using /setblock places it in its waterlogged state
+- Fix: The two halves of Keypad Doors and Scanner Doors can sometimes become unlinked, making modules and options no longer synchronize between them
+- Fix: Players mounted to Security Cameras are not affected by gravity and cannot be moved by other players
+- Fix: Projected blocks are rendered even if they are outside the player's field of view
+- Fix: The value of the Projector's "Range" option changes unexpectedly when toggling the Horizontal mode
+- Fix: The experience level is visible while mounted to a Security Camera
+- Fix: Crash related to linking and unlinking Laser Blocks
+- Fix: Projected blocks stop rendering when standing too far away
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
