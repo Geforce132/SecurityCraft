@@ -124,7 +124,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 			if (hasRewardReferenceStacks()) {
 				Map<ItemStack, Integer> rewardItems = getRewardPerTransaction(hasSmartModule);
-				Vec3 itemSpawningPos = Vec3.atCenterOf(getBlockPos()).subtract(0.0D, 0.3D, 0.0D).relative(blockState.getValue(SecureTradingStation.FACING), 0.7);
+				Vec3 itemSpawningPos = getBaseItemSpawnPos().relative(blockState.getValue(SecureTradingStation.FACING), 0.7);
 
 				for (Map.Entry<ItemStack, Integer> rewardEntry : rewardItems.entrySet()) {
 					ItemStack rewardStackToMatch = rewardEntry.getKey();
@@ -143,6 +143,10 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		}
 	}
 
+	private Vec3 getBaseItemSpawnPos() {
+		return Vec3.atCenterOf(getBlockPos()).subtract(0.0D, 0.3D, 0.0D);
+	}
+
 	private void handleConsumedPaymentItem(ItemStack paymentStack) {
 		ItemStack remainder = paymentStack;
 
@@ -150,7 +154,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 			remainder = InventoryUtils.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
 		if (!remainder.isEmpty())
-			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, Vec3.atCenterOf(getBlockPos()).subtract(0.0D, 0.3D, 0.0D).relative(blockState.getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
+			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, getBaseItemSpawnPos().relative(blockState.getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
 	}
 
 	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {
@@ -228,18 +232,16 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 			if (inventoryContents.get(index).getCount() <= count) {
 				stack = inventoryContents.get(index);
 				inventoryContents.set(index, ItemStack.EMPTY);
-				setChanged();
-				return stack;
 			}
 			else {
 				stack = inventoryContents.get(index).split(count);
 
 				if (inventoryContents.get(index).getCount() == 0)
 					inventoryContents.set(index, ItemStack.EMPTY);
-
-				setChanged();
-				return stack;
 			}
+
+			setChanged();
+			return stack;
 		}
 		else
 			return ItemStack.EMPTY;
