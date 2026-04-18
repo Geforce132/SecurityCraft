@@ -39,31 +39,31 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 
 		//payment item ghost slots: 0-1
 		for (int i = 0; i < 2; i++) {
-			addSlot(new OwnerRestrictedSlot(this, be, be, i, 65 + i * 18, 18, isOwner, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, i, 71 + i * 18, 20, isOwner, true));
 		}
 
 		//payment input slots: 2-6
 		for (int i = 0; i < 5; i++) {
-			addSlot(new Slot(paymentInput, i, 17 + i * 18, 43));
+			addSlot(new Slot(paymentInput, i, 17 + i * 18, 42));
 		}
 
 		//reward item ghost slots: 7-8
 		for (int i = 0; i < 2; i++) {
-			addSlot(new OwnerRestrictedSlot(this, be, be, 2 + i, 65 + i * 18, 93, withStorageAccess, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, 2 + i, 71 + i * 18, 92, withStorageAccess, true));
 		}
 
 		if (withStorageAccess) {
 			//payment storage slots: 9-16
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 4; j++) {
-					addSlot(new Slot(be, 4 + j + i * 4, 13 + j * 18, 117 + i * 18));
+					addSlot(new Slot(be, 4 + j + i * 4, 13 + j * 18, 115 + i * 18));
 				}
 			}
 
 			//reward storage slots: 17-24
 			for (int i = 0; i < 2; i++) {
 				for (int j = 0; j < 4; j++) {
-					addSlot(new Slot(be, 12 + j + i * 4, 93 + j * 18, 117 + i * 18));
+					addSlot(new Slot(be, 12 + j + i * 4, 93 + j * 18, 115 + i * 18));
 				}
 			}
 		}

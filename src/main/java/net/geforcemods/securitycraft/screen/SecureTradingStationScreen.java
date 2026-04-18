@@ -55,11 +55,11 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	protected void init() {
 		super.init();
 
-		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 43, 50, 16, payButtonText, this::sendTransactionRequest, Button.DEFAULT_NARRATION));
+		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 42, 50, 16, payButtonText, this::sendTransactionRequest, Button.DEFAULT_NARRATION));
 		payButton.active = skipPaymentCheck || !be.hasPaymentReferenceStacks();
 
 		if (storageVisible) {
-			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 112, topPos + 93, 26, 16, Component.empty()));
+			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 116, topPos + 92, 26, 16, Component.empty()));
 			transactionAmountBox.setFilter(s -> s.matches("\\d*")); //Only allow strings of digits or empty
 			transactionAmountBox.setMaxLength(3);
 			transactionAmountBox.setHint(Component.literal("1").withStyle(ChatFormatting.GRAY));
@@ -115,11 +115,11 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		super.renderLabels(guiGraphics, mouseX, mouseY);
-		guiGraphics.drawString(font, paymentText, 15, 25, 0xFF404040, false);
-		guiGraphics.drawString(font, rewardText, 15, 65, 0xFF404040, false);
+		guiGraphics.drawString(font, paymentText, 15, 24, 0xFF404040, false);
+		guiGraphics.drawString(font, rewardText, 15, 64, 0xFF404040, false);
 
 		if (storageVisible)
-			guiGraphics.drawString(font, storedItemsText, 15, 80, 0xFF404040, false);
+			guiGraphics.drawString(font, storedItemsText, 15, 78, 0xFF404040, false);
 	}
 
 	@Override
