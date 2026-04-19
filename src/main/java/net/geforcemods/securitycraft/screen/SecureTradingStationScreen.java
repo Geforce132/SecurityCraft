@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
+import net.geforcemods.securitycraft.blocks.SecureTradingStation;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.network.server.RequestSecureTradingStationTransactions;
 import net.geforcemods.securitycraft.util.Utils;
@@ -26,7 +27,8 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	private static final ResourceLocation GUI_TEXTURE_OWNER_STORAGE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner_storage.png");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("world_list/warning_highlighted");
 	private final Component paymentText = Utils.localize("gui.securitycraft:secure_trading_station.payment");
-	private final Component rewardText = Utils.localize("gui.securitycraft:secure_trading_station.reward_redstone");
+	private final Component rewardActivateText = Utils.localize("gui.securitycraft:secure_trading_station.reward_activate_redstone");
+	private final Component rewardToggleText = Utils.localize("gui.securitycraft:secure_trading_station.reward_toggle_redstone");
 	private final Component storedItemsText = Utils.localize("gui.securitycraft:secure_trading_station.reward_items");
 	private final Component payButtonText = Utils.localize("gui.securitycraft:secure_trading_station.pay_button");
 	private final Component transactionAmountBoxTooltip = Utils.localize("gui.securitycraft:secure_trading_station.transaction_amount_tooltip");
@@ -57,7 +59,9 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		super.init();
 
 		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 42, 50, 16, payButtonText, this::sendTransactionRequest, Button.DEFAULT_NARRATION));
-		payButton.active = skipPaymentCheck || !be.hasPaymentReferenceStacks();
+
+		if ((be.hasPaymentReferenceStacks() && !skipPaymentCheck) || (be.getSignalLength() != 0 && be.blockState.getValue(SecureTradingStation.POWERED)))
+			payButton.active = false; //Preliminary checks for empty container
 
 		if (storageVisible) {
 			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 116, topPos + 92, 26, 16, Component.empty()));
@@ -73,7 +77,11 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	@Override
 	protected void containerTick() {
 		super.containerTick();
-		payButton.active = getTransactionsOnConfirmation() > 0;
+
+		if (be.getSignalLength() != 0 && be.blockState.getValue(SecureTradingStation.POWERED))
+			payButton.active = false;
+		else
+			payButton.active = getTransactionsOnConfirmation() > 0;
 	}
 
 	@Override
@@ -117,7 +125,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		super.renderLabels(guiGraphics, mouseX, mouseY);
 		guiGraphics.drawString(font, paymentText, 15, 24, 0xFF404040, false);
-		guiGraphics.drawString(font, rewardText, 15, 64, 0xFF404040, false);
+		guiGraphics.drawString(font, be.getSignalLength() == 0 ? rewardToggleText : rewardActivateText, 15, 64, 0xFF404040, false);
 
 		if (storageVisible)
 			guiGraphics.drawString(font, storedItemsText, 15, 78, 0xFF404040, false);
