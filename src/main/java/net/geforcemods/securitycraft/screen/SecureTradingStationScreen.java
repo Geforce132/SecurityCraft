@@ -60,7 +60,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 
 		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 42, 50, 16, payButtonText, this::sendTransactionRequest, Button.DEFAULT_NARRATION));
 
-		if ((be.hasPaymentReferenceStacks() && !skipPaymentCheck) || (be.getSignalLength() != 0 && be.blockState.getValue(SecureTradingStation.POWERED)))
+		if ((be.hasPaymentReferenceStacks() && !skipPaymentCheck) || (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStation.POWERED)))
 			payButton.active = false; //Preliminary checks for empty container
 
 		if (storageVisible) {
@@ -78,7 +78,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	protected void containerTick() {
 		super.containerTick();
 
-		if (be.getSignalLength() != 0 && be.blockState.getValue(SecureTradingStation.POWERED))
+		if (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStation.POWERED))
 			payButton.active = false;
 		else
 			payButton.active = getTransactionsOnConfirmation() > 0;
@@ -126,7 +126,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		super.renderLabels(guiGraphics, mouseX, mouseY);
 		guiGraphics.drawString(font, paymentText, 15, 24, 0xFF404040, false);
 		guiGraphics.drawString(font, be.getSignalLength() == 0 ? rewardToggleText : rewardActivateText, 15, 64, 0xFF404040, false);
-
+		
 		if (storageVisible)
 			guiGraphics.drawString(font, storedItemsText, 15, 78, 0xFF404040, false);
 	}

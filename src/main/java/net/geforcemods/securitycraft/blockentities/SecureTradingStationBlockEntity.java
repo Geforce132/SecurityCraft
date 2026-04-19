@@ -94,8 +94,8 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 		rewardLimitedTransactions = getReferenceLimitedTransactions(this, 4, getContainerSize() - 1, getRewardPerTransaction(hasSmartModule), hasSmartModule);
 
-		if (hasReward != blockState.getValue(SecureTradingStation.HAS_REWARD))
-			level.setBlockAndUpdate(worldPosition, blockState.setValue(SecureTradingStation.HAS_REWARD, hasReward));
+		if (hasReward != getBlockState().getValue(SecureTradingStation.HAS_REWARD))
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureTradingStation.HAS_REWARD, hasReward));
 
 		super.setChanged();
 	}
@@ -124,7 +124,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 			if (hasRewardReferenceStacks()) {
 				Map<ItemStack, Integer> rewardItems = getRewardPerTransaction(hasSmartModule);
-				Vec3 itemSpawningPos = getBaseItemSpawnPos().relative(blockState.getValue(SecureTradingStation.FACING), 0.7);
+				Vec3 itemSpawningPos = getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStation.FACING), 0.7);
 
 				for (Map.Entry<ItemStack, Integer> rewardEntry : rewardItems.entrySet()) {
 					ItemStack rewardStackToMatch = rewardEntry.getKey();
@@ -135,7 +135,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 				}
 			}
 
-			level.setBlockAndUpdate(worldPosition, blockState.cycle(SecureTradingStation.POWERED));
+			level.setBlockAndUpdate(worldPosition, getBlockState().cycle(SecureTradingStation.POWERED));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SECURE_TRADING_STATION.get());
 
 			if (signalLengthOption > 0)
@@ -154,7 +154,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 			remainder = InventoryUtils.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
 		if (!remainder.isEmpty())
-			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, getBaseItemSpawnPos().relative(blockState.getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
+			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
 	}
 
 	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {

@@ -38,7 +38,7 @@ public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureT
 
 		if (!be.isModuleEnabled(ModuleType.DISGUISE)) {
 			Level level = be.getLevel();
-			Direction facing = be.blockState.getValue(SecureTradingStation.FACING);
+			Direction facing = be.getBlockState().getValue(SecureTradingStation.FACING);
 			ItemStack paymentDisplay = be.getPaymentDisplay();
 			ItemStack rewardDisplay = be.getRewardDisplay();
 
