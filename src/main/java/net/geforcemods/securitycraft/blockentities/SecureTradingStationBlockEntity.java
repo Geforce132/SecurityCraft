@@ -92,7 +92,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
 		boolean hasReward = hasRewardReferenceStacks();
 
-		rewardLimitedTransactions = getReferenceLimitedTransactions(this, 4, getContainerSize() - 1, getRewardPerTransaction(hasSmartModule), hasSmartModule);
+		rewardLimitedTransactions = getReferenceLimitedTransactions(this, 12, getContainerSize() - 1, getRewardPerTransaction(hasSmartModule), hasSmartModule);
 
 		if (hasReward != getBlockState().getValue(SecureTradingStation.HAS_REWARD))
 			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureTradingStation.HAS_REWARD, hasReward));
