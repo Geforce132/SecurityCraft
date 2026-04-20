@@ -323,10 +323,13 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		return true;
+		return isModuleEnabled(ModuleType.STORAGE);
 	}
 
 	public static IItemHandler getCapability(SecureTradingStationBlockEntity be, Direction side) {
+		if (!be.isModuleEnabled(ModuleType.STORAGE))
+			return null;
+
 		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new SidedInvWrapper(be, side) : new InsertOnlySidedInvWrapper(be, side);
 	}
 
