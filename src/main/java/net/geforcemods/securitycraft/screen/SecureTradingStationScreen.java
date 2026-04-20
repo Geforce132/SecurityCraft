@@ -27,6 +27,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	private static final ResourceLocation GUI_TEXTURE_OWNER_STORAGE = SecurityCraft.resLoc("textures/gui/container/secure_trading_station_owner_storage.png");
 	private static final ResourceLocation WARNING_HIGHLIGHTED_SPRITE = SecurityCraft.mcResLoc("world_list/warning_highlighted");
 	private final Component paymentText = Utils.localize("gui.securitycraft:secure_trading_station.payment");
+	private final Component rewardText = Utils.localize("gui.securitycraft:secure_trading_station.reward");
 	private final Component rewardActivateText = Utils.localize("gui.securitycraft:secure_trading_station.reward_activate_redstone");
 	private final Component rewardToggleText = Utils.localize("gui.securitycraft:secure_trading_station.reward_toggle_redstone");
 	private final Component storedItemsText = Utils.localize("gui.securitycraft:secure_trading_station.reward_items");
@@ -50,7 +51,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		isOwner = be.isOwnedBy(playerInventory.player);
 		skipPaymentCheck = isOwner || be.isAllowed(playerInventory.player);
 		storageVisible = be.hasRewardReferenceStacks() || menu.withStorageAccess;
-		imageHeight = storageVisible ? (menu.withStorageAccess ? 249 : 208) : 172;
+		imageHeight = storageVisible ? (menu.withStorageAccess ? 249 : 208) : 184;
 		inventoryLabelY = imageHeight - 94;
 	}
 
@@ -64,7 +65,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 			payButton.active = false; //Preliminary checks for empty container
 
 		if (storageVisible) {
-			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 116, topPos + 92, 26, 16, Component.empty()));
+			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 118, topPos + 20, 26, 16, Component.empty()));
 			transactionAmountBox.setFilter(s -> s.matches("\\d*")); //Only allow strings of digits or empty
 			transactionAmountBox.setMaxLength(3);
 			transactionAmountBox.setHint(Component.literal("1").withStyle(ChatFormatting.GRAY));
@@ -89,9 +90,9 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 		if (be.hasRewardReferenceStacks() && getTransactionsOnConfirmation() > be.rewardLimitedTransactions) {
-			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, leftPos + 148, topPos + 89, 24, 24);
+			guiGraphics.blitSprite(WARNING_HIGHLIGHTED_SPRITE, leftPos + 148, topPos + 16, 24, 24);
 
-			if (mouseX >= leftPos + 148 && mouseX <= leftPos + 160 && mouseY >= topPos + 92 && mouseY <= topPos + 110) {
+			if (mouseX >= leftPos + 148 && mouseX <= leftPos + 160 && mouseY >= topPos + 16 && mouseY <= topPos + 40) {
 				Component warning;
 
 				if (be.rewardLimitedTransactions == 0)
@@ -124,11 +125,12 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		super.renderLabels(guiGraphics, mouseX, mouseY);
-		guiGraphics.drawString(font, paymentText, 15, 24, 0xFF404040, false);
-		guiGraphics.drawString(font, be.getSignalLength() == 0 ? rewardToggleText : rewardActivateText, 15, 64, 0xFF404040, false);
-		
+		guiGraphics.drawString(font, paymentText, 12, 24, 0xFF404040, false);
+		guiGraphics.drawString(font, rewardText, 12, 64, 0xFF404040, false);
+		guiGraphics.drawString(font, be.getSignalLength() == 0 ? rewardToggleText : rewardActivateText, 12, 76, 0xFF404040, false);
+
 		if (storageVisible)
-			guiGraphics.drawString(font, storedItemsText, 15, 78, 0xFF404040, false);
+			guiGraphics.drawString(font, storedItemsText, 12, 96, 0xFF404040, false);
 	}
 
 	@Override

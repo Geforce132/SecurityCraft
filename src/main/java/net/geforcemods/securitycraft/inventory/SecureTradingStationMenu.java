@@ -39,17 +39,17 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 
 		//payment item ghost slots: 0-1
 		for (int i = 0; i < 2; i++) {
-			addSlot(new OwnerRestrictedSlot(this, be, be, i, 71 + i * 18, 20, isOwner, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, i, 67 + i * 18, 20, isOwner, true));
 		}
 
 		//payment input slots: 2-6
 		for (int i = 0; i < 5; i++) {
-			addSlot(new Slot(paymentInput, i, 17 + i * 18, 42));
+			addSlot(new Slot(paymentInput, i, 13 + i * 18, 42));
 		}
 
 		//reward item ghost slots: 7-8
 		for (int i = 0; i < 2; i++) {
-			addSlot(new OwnerRestrictedSlot(this, be, be, 2 + i, 71 + i * 18, 92, withStorageAccess, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, 2 + i, 111 + i * 18, 92, withStorageAccess, true));
 		}
 
 		if (withStorageAccess) {
@@ -68,7 +68,7 @@ public class SecureTradingStationMenu extends AbstractContainerMenu {
 			}
 		}
 
-		int inventoryTop = withStorageAccess ? 167 : (be.hasRewardReferenceStacks() ? 126 : 90);
+		int inventoryTop = withStorageAccess ? 167 : (be.hasRewardReferenceStacks() ? 126 : 102);
 
 		//main player inventory: 25-51 in storage version, 9-35 otherwise
 		for (int i = 0; i < 3; i++) {
