@@ -250,6 +250,8 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.OwnerDataSerializer;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.particle.InterfaceHighlightParticleType;
+import net.geforcemods.securitycraft.recipe.BlockReinforcingRecipe;
+import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
 import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.HasManualPage;
@@ -335,6 +337,8 @@ public class SCContent {
 	public static final RegistryObject<LootItemConditionType> BLOCK_ENTITY_NBT = LOOT_ITEM_CONDITION_TYPES.register("tile_entity_nbt", () -> new LootItemConditionType(new BlockEntityNBTCondition.ConditionSerializer()));
 
 	//recipe serializers
+	public static final RegistryObject<SimpleCraftingRecipeSerializer<BlockReinforcingRecipe>> BLOCK_REINFORCING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("block_reinforcing_recipe", () -> new SimpleCraftingRecipeSerializer<>(BlockReinforcingRecipe::new));
+	public static final RegistryObject<SimpleCraftingRecipeSerializer<BlockUnreinforcingRecipe>> BLOCK_UNREINFORCING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("block_unreinforcing_recipe", () -> new SimpleCraftingRecipeSerializer<>(BlockUnreinforcingRecipe::new));
 	public static final RegistryObject<SimpleCraftingRecipeSerializer<CopyPositionComponentItemRecipe>> COPY_CAMERA_MONITOR_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_camera_monitor_recipe", () -> new SimpleCraftingRecipeSerializer<>(CopyPositionComponentItemRecipe::cameraMonitor));
 	public static final RegistryObject<SimpleCraftingRecipeSerializer<CopyPositionComponentItemRecipe>> COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_mine_remote_access_tool_recipe", () -> new SimpleCraftingRecipeSerializer<>(CopyPositionComponentItemRecipe::mineRemoteAccessTool));
 	public static final RegistryObject<SimpleCraftingRecipeSerializer<CopyPositionComponentItemRecipe>> COPY_SENTRY_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("copy_sentry_remote_access_tool_recipe", () -> new SimpleCraftingRecipeSerializer<>(CopyPositionComponentItemRecipe::sentryRemoteAccessTool));

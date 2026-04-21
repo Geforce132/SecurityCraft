@@ -39,6 +39,9 @@ public class RecipeGenerator extends RecipeProvider {
 
 	@Override
 	protected final void buildRecipes(Consumer<FinishedRecipe> consumer) {
+		//Combine block with universal block reinforcer to unreinforce/reinforce it (depending on the reinforcer's mode), reducing the reinforcer's durability
+		SpecialRecipeBuilder.special(SCContent.BLOCK_REINFORCING_RECIPE_SERIALIZER.get()).save(consumer, "block_reinforcing");
+		SpecialRecipeBuilder.special(SCContent.BLOCK_UNREINFORCING_RECIPE_SERIALIZER.get()).save(consumer, "block_unreinforcing");
 		//tool copying
 		SpecialRecipeBuilder.special(SCContent.COPY_CAMERA_MONITOR_RECIPE_SERIALIZER.get()).save(consumer, "copy_camera_monitor");
 		SpecialRecipeBuilder.special(SCContent.COPY_MINE_REMOTE_ACCESS_TOOL_RECIPE_SERIALIZER.get()).save(consumer, "copy_mine_remote_access_tool");
