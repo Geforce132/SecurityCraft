@@ -3,7 +3,6 @@ package net.geforcemods.securitycraft.inventory;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,8 +15,9 @@ import net.minecraft.world.level.block.Block;
 
 public class BlockReinforcerMenu extends AbstractContainerMenu {
 	private final ItemStack blockReinforcer;
-	private final SimpleContainer itemInventory = new SimpleContainer(1);
-	public final SlotBlockReinforcer blockReinforcerSlot;
+	private final SimpleContainer itemInventory = new SimpleContainer(2);
+	private final ReinforcerInputSlot inputSlot;
+	private final ReinforcerResultSlot resultSlot;
 	public final boolean isLvl1, isReinforcing;
 
 	public BlockReinforcerMenu(int windowId, Inventory inventory, boolean isLvl1) {
@@ -29,19 +29,9 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 		this.isLvl1 = isLvl1;
 		this.isReinforcing = UniversalBlockReinforcerItem.isReinforcing(blockReinforcer);
 
-		//main player inventory
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlot(new Slot(inventory, 9 + j + i * 9, 8 + j * 18, 104 + i * 18));
-			}
-		}
-
-		//player hotbar
-		for (int i = 0; i < 9; i++) {
-			addSlot(new Slot(inventory, i, 8 + i * 18, 162));
-		}
-
-		addSlot(blockReinforcerSlot = new SlotBlockReinforcer(itemInventory, 0, 26, 20));
+		addStandardInventorySlots(inventory, 8, 104);
+		addSlot(inputSlot = new ReinforcerInputSlot(itemInventory, 0, 26, 20));
+		addSlot(resultSlot = new ReinforcerResultSlot(itemInventory, 1, 116, 20));
 	}
 
 	@Override
@@ -52,26 +42,8 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 	@Override
 	public void removed(Player player) {
 		super.removed(player);
-
-		if (!player.isAlive() || player instanceof ServerPlayer serverPlayer && serverPlayer.hasDisconnected()) {
-			for (int slot = 0; slot < itemInventory.getContainerSize(); ++slot) {
-				player.drop(itemInventory.removeItemNoUpdate(slot), false);
-			}
-
-			return;
-		}
-
-		if (!itemInventory.getItem(0).isEmpty()) {
-			if (itemInventory.getItem(0).getCount() > blockReinforcerSlot.output.getCount()) { //if there's more in the slot than the reinforcer can reinforce (due to durability)
-				ItemStack overflowStack = itemInventory.getItem(0).copy();
-
-				overflowStack.setCount(itemInventory.getItem(0).getCount() - blockReinforcerSlot.output.getCount());
-				player.drop(overflowStack, false);
-			}
-
-			player.drop(blockReinforcerSlot.output, false);
-			blockReinforcer.hurtAndBreak(blockReinforcerSlot.output.getCount(), player, player.getUsedItemHand().asEquipmentSlot());
-		}
+		resultSlot.set(ItemStack.EMPTY);
+		clearContainer(player, itemInventory);
 	}
 
 	@Override
@@ -81,6 +53,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 
 		if (slot.hasItem()) {
 			ItemStack slotStack = slot.getItem();
+			ItemStack itemsTaken;
 
 			slotStackCopy = slotStack.copy();
 
@@ -97,10 +70,20 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 			if (slotStack.getCount() == slotStackCopy.getCount())
 				return ItemStack.EMPTY;
 
-			slot.onTake(player, slotStack);
+			itemsTaken = slotStackCopy.copyWithCount(slotStackCopy.count() - slotStack.count());
+			slot.onTake(player, itemsTaken); //The second parameter is different from vanilla, but this makes implementation easier
 		}
 
 		return slotStackCopy;
+	}
+
+	@Override
+	public boolean canTakeItemForPickAll(ItemStack carried, Slot target) {
+		return target != resultSlot && super.canTakeItemForPickAll(carried, target);
+	}
+
+	public ItemStack getResult() {
+		return resultSlot.getItem();
 	}
 
 	@Override
@@ -109,10 +92,8 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 			super.clicked(slot, dragType, containerInput, player);
 	}
 
-	public class SlotBlockReinforcer extends Slot {
-		private ItemStack output = ItemStack.EMPTY;
-
-		public SlotBlockReinforcer(Container inventory, int index, int x, int y) {
+	public class ReinforcerInputSlot extends Slot {
+		public ReinforcerInputSlot(Container inventory, int index, int x, int y) {
 			super(inventory, index, x, y);
 		}
 
@@ -125,21 +106,40 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 
 		@Override
 		public void setChanged() {
+			super.setChanged();
+
 			ItemStack stack = getItem();
 
-			if (!stack.isEmpty()) {
+			if (stack.isEmpty())
+				resultSlot.set(ItemStack.EMPTY);
+			else {
 				Block inputBlock = Block.byItem(stack.getItem());
 				Block outputBlock = (!isLvl1 && IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.containsKey(inputBlock) ? IReinforcedBlock.SECURITYCRAFT_TO_VANILLA : IReinforcedBlock.VANILLA_TO_SECURITYCRAFT).get(inputBlock);
+				int resultCount = blockReinforcer.isDamageableItem() ? Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamageValue()) : stack.getCount();
 
-				if (outputBlock != null) {
-					output = new ItemStack(outputBlock);
-					output.setCount(blockReinforcer.isDamageableItem() ? Math.min(stack.getCount(), blockReinforcer.getMaxDamage() - blockReinforcer.getDamageValue()) : stack.getCount());
-				}
+				resultSlot.set(new ItemStack(outputBlock, resultCount));
 			}
 		}
+	}
 
-		public ItemStack getOutput() {
-			return output;
+	public class ReinforcerResultSlot extends Slot {
+		public ReinforcerResultSlot(Container inventory, int index, int x, int y) {
+			super(inventory, index, x, y);
+		}
+
+		@Override
+		public boolean mayPlace(ItemStack stack) {
+			return false;
+		}
+
+		@Override
+		public void onTake(Player player, ItemStack itemsTaken) {
+			super.onTake(player, itemsTaken);
+			inputSlot.getItem().shrink(itemsTaken.count());
+			blockReinforcer.hurtAndBreak(itemsTaken.count(), player, player.getUsedItemHand().asEquipmentSlot());
+
+			if (blockReinforcer.isEmpty()) //Ran out of durability
+				player.closeContainer();
 		}
 	}
 }

@@ -20,12 +20,10 @@ import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforcerMenu> implements IHasExtraAreas {
@@ -96,19 +94,11 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 
 	@Override
 	protected void extractLabels(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
-		NonNullList<ItemStack> inv = menu.getItems();
-
 		guiGraphics.text(font, title, (imageWidth - font.width(title)) / 2, 5, CommonColors.DARK_GRAY, false);
 		guiGraphics.text(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, CommonColors.DARK_GRAY, false);
 
-		if (!inv.get(36).isEmpty()) { //Rendering the preview of the output item
+		if (!menu.getResult().isEmpty())
 			guiGraphics.text(font, output, 50, 25, CommonColors.DARK_GRAY, false);
-			guiGraphics.item(menu.blockReinforcerSlot.getOutput(), 116, 20);
-			guiGraphics.itemDecorations(minecraft.font, menu.blockReinforcerSlot.getOutput(), 116, 20, null);
-
-			if (mouseX >= leftPos + 114 && mouseX < leftPos + 134 && mouseY >= topPos + 17 && mouseY < topPos + 39)
-				guiGraphics.setTooltipForNextFrame(font, menu.blockReinforcerSlot.getOutput(), mouseX, mouseY);
-		}
 
 		guiGraphics.text(font, mode, 8, 48, CommonColors.DARK_GRAY, false);
 		guiGraphics.text(font, tint, 8, 73, CommonColors.DARK_GRAY, false);
