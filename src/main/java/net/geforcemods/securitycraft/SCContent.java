@@ -64,6 +64,7 @@ import net.geforcemods.securitycraft.blockentities.ScannerTrapdoorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrackMineBlockEntity;
@@ -114,6 +115,7 @@ import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallHangingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
+import net.geforcemods.securitycraft.blocks.SecureTradingStation;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
@@ -212,6 +214,7 @@ import net.geforcemods.securitycraft.inventory.LaserBlockMenu;
 import net.geforcemods.securitycraft.inventory.ModuleItemContainer;
 import net.geforcemods.securitycraft.inventory.ProjectorMenu;
 import net.geforcemods.securitycraft.inventory.ReinforcedLecternMenu;
+import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.inventory.SingleLensMenu;
 import net.geforcemods.securitycraft.inventory.TrophySystemMenu;
 import net.geforcemods.securitycraft.items.AdminToolItem;
@@ -486,6 +489,9 @@ public class SCContent {
 	@HasManualPage
 	@RegisterItemBlock
 	public static final RegistryObject<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
+	@HasManualPage
+	@RegisterItemBlock
+	public static final RegistryObject<SecureTradingStation> SECURE_TRADING_STATION = registerBlock("secure_trading_station", SecureTradingStation::new, propDisguisable(MapColor.METAL, 5.0F));
 	@HasManualPage
 	public static final RegistryObject<SecurityCameraBlock> SECURITY_CAMERA = registerBlock(SECURITY_CAMERA_PATH, SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollission());
 	@HasManualPage
@@ -2964,6 +2970,7 @@ public class SCContent {
 	public static final RegistryObject<BlockEntityType<SecureRedstoneInterfaceBlockEntity>> SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_redstone_interface", () -> BlockEntityType.Builder.of(SecureRedstoneInterfaceBlockEntity::new, SCContent.SECURE_REDSTONE_INTERFACE.get()).build(null));
 	public static final RegistryObject<BlockEntityType<FrameBlockEntity>> FRAME_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("frame", () -> BlockEntityType.Builder.of(FrameBlockEntity::new, SCContent.FRAME.get()).build(null));
 	public static final RegistryObject<BlockEntityType<ReinforcedObserverBlockEntity>> OBSERVER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("observer", () -> BlockEntityType.Builder.of(ReinforcedObserverBlockEntity::new, SCContent.REINFORCED_OBSERVER.get()).build(null));
+	public static final RegistryObject<BlockEntityType<SecureTradingStationBlockEntity>> SECURE_TRADING_STATION_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_trading_station", () -> BlockEntityType.Builder.of(SecureTradingStationBlockEntity::new, SCContent.SECURE_TRADING_STATION.get()).build(null));
 
 	//entity types
 	public static final RegistryObject<EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
@@ -3028,6 +3035,7 @@ public class SCContent {
 	public static final RegistryObject<MenuType<SingleLensMenu>> SINGLE_LENS_MENU = MENU_TYPES.register("single_lens", () -> IForgeMenuType.create((windowId, inv, data) -> new SingleLensMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 	public static final RegistryObject<MenuType<LaserBlockMenu>> LASER_BLOCK_MENU = MENU_TYPES.register("laser_block", () -> IForgeMenuType.create((windowId, inv, data) -> new LaserBlockMenu(windowId, inv.player.level(), data.readBlockPos(), LaserBlockBlockEntity.loadSideConfig(data.readNbt()), inv)));
 	public static final RegistryObject<MenuType<ReinforcedLecternMenu>> REINFORCED_LECTERN_MENU = MENU_TYPES.register("reinforced_lectern", () -> IForgeMenuType.create((windowId, inv, data) -> new ReinforcedLecternMenu(windowId, inv.player.level(), data.readBlockPos())));
+	public static final RegistryObject<MenuType<SecureTradingStationMenu>> SECURE_TRADING_STATION_MENU = MENU_TYPES.register("secure_trading_station", () -> IForgeMenuType.create((windowId, inv, data) -> new SecureTradingStationMenu(windowId, inv.player.level(), data.readBlockPos(), inv)));
 
 	public static final BlockBehaviour.Properties reinforcedCopy(Block block) {
 		return reinforcedCopy(block, UnaryOperator.identity());

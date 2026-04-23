@@ -206,4 +206,12 @@ public class SecurityCraft {
 	public static String getVersion() {
 		return "v" + ModList.get().getModContainerById(MODID).get().getModInfo().getVersion().toString();
 	}
+
+	public static ResourceLocation resLoc(String path) {
+		return new ResourceLocation(MODID, path);
+	}
+
+	public static ResourceLocation mcResLoc(String path) {
+		return new ResourceLocation(path);
+	}
 }

@@ -208,50 +208,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
-	public ItemStack addItemToStorage(ItemStack stack) {
-		ItemStack remainder = stack;
-
-		for (int i = 10; i < getContents().size(); i++) {
-			remainder = insertItem(i, remainder);
-
-			if (remainder.isEmpty())
-				break;
-		}
-
-		return remainder;
-	}
-
-	public ItemStack insertItem(int slot, ItemStack stackToInsert) {
-		if (stackToInsert.isEmpty() || slot < 0 || slot >= getContents().size())
-			return stackToInsert;
-
-		ItemStack slotStack = getStackInSlot(slot);
-		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
-
-		if (slotStack.isEmpty()) {
-			setItem(slot, stackToInsert);
-			setChanged();
-			return ItemStack.EMPTY;
-		}
-		else if (InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit) {
-			if (limit - slotStack.getCount() >= stackToInsert.getCount()) {
-				slotStack.setCount(slotStack.getCount() + stackToInsert.getCount());
-				setChanged();
-				return ItemStack.EMPTY;
-			}
-			else {
-				ItemStack toInsert = stackToInsert.copy();
-				ItemStack toReturn = toInsert.split((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
-
-				slotStack.setCount(slotStack.getCount() + toInsert.getCount());
-				setChanged();
-				return toReturn;
-			}
-		}
-
-		return stackToInsert;
-	}
-
 	public LensContainer getLensContainer() {
 		return lens;
 	}
