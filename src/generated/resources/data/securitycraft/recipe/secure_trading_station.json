@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "G": {
+      "item": "securitycraft:reinforced_glass"
+    },
+    "H": {
+      "item": "securitycraft:reinforced_hopper"
+    },
+    "R": {
+      "item": "securitycraft:reinforced_redstone_block"
+    },
+    "S": {
+      "item": "securitycraft:reinforced_stone_slab"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "GHG",
+    "SRS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "securitycraft:secure_trading_station"
+  }
+}
