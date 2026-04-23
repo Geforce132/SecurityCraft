@@ -9,7 +9,7 @@
 - New: Blocks can now also be reinforced and unreinforced in a Crafting Table by combining the convertible block with a Universal Block Reinforcer
 - Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
 - Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
-- Change: The visible chunks in frame feeds are no longer expanded by Distant Horizons, to increase stability and performance 
+- Change: The visible chunks in Frame feeds are no longer expanded by Distant Horizons, to increase stability and performance 
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
 - API: New methods within LinkableBlockEntity for better control over how the list of linked blocks is modified and stored
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask

@@ -8,6 +8,8 @@ import com.seibel.distanthorizons.api.methods.events.sharedParameterObjects.DhAp
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 
 public class DistantHorizonsCompat extends DhApiBeforeRenderEvent {
+	private DistantHorizonsCompat() {}
+
 	public static void registerEvent() {
 		DhApiEventRegister.on(DhApiBeforeRenderEvent.class, new DistantHorizonsCompat());
 	}
