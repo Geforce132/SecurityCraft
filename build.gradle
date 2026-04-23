@@ -8,7 +8,7 @@ plugins {
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.10.1-beta2'
+version = '1.10.1-beta3'
 group = 'net.geforcemods.securitycraft'
 
 base {
@@ -98,13 +98,13 @@ repositories {
 }
 
 dependencies {
-	implementation "curse.maven:ftb-library-forge-404465:7921509" //FTB Teams dependency
-	implementation "curse.maven:ftb-teams-forge-404468:7921353"
+	implementation "curse.maven:ftb-library-forge-404465:7971743" //FTB Teams dependency
+	implementation "curse.maven:ftb-teams-forge-404468:7972096"
 	implementation "curse.maven:jei-238222:7920926"
     //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
-	implementation "curse.maven:jade-324717:7817285"
-	compileOnly "curse.maven:betterf3-401648:7436342"
-	compileOnly "curse.maven:cloth-config-348521:7361439" //BetterF3 dependency
+	implementation "curse.maven:jade-324717:7938398"
+	implementation "curse.maven:betterf3-401648:7952333"
+	implementation "curse.maven:cloth-config-348521:7817583" //BetterF3 dependency
 	implementation "curse.maven:wthit-forge-455982:7880673"
 	implementation "curse.maven:badpackets-615134:7878544" //WTHIT dependency
 	compileOnly "curse.maven:projecte-226410:3955047"
