@@ -24,13 +24,15 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 		worldPosCallable = ContainerLevelAccess.create(level, pos);
 		BlockEntityInventoryWrapper<InventoryScannerBlockEntity> wrapper = new BlockEntityInventoryWrapper<>(be, this);
 
+		boolean isOwner = be.isOwnedBy(inventory.player);
+
 		//prohibited items 0-9
 		for (int i = 0; i < 10; i++) {
-			addSlot(new OwnerRestrictedSlot(wrapper, be, i, (6 + (i * 18)), 16, true));
+			addSlot(new OwnerRestrictedSlot(this, wrapper, be, i, (6 + (i * 18)), 16, isOwner, true));
 		}
 
 		//inventory scanner storage 10-36
-		if (be.isOwnedBy(inventory.player) && be.isModuleEnabled(ModuleType.STORAGE)) {
+		if (isOwner && be.isModuleEnabled(ModuleType.STORAGE)) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 3; j++) {
 					addSlot(new Slot(wrapper, 10 + ((i * 3) + j), 188 + (j * 18), 29 + i * 18));

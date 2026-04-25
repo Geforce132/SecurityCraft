@@ -1,5 +1,6 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
+- New: Secure Trading Station
 - New: The Keycard Reader, Keypad, and Retinal Scanner can now be placed facing up or down (Thanks CYB3RCA4T!)
 - New: The "/sc owner" subcommand now has an optional "resetSettings" mode to force affected blocks to reset sensible data like passcodes
 - New: Configuration option to control whether to render the spinning disk of Secure Redstone Interfaces

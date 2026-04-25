@@ -1,12 +1,13 @@
 package net.geforcemods.securitycraft.api;
 
+import net.geforcemods.securitycraft.util.InventoryUtils.ItemAccess;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
 /**
  * @see Container
  */
-public interface IModuleInventoryWithContainer extends IModuleInventory {
+public interface IModuleInventoryWithContainer extends IModuleInventory, ItemAccess {
 	int getContainerSize();
 
 	boolean isItemValidForContainer(int slot, ItemStack stack);
@@ -86,4 +87,22 @@ public interface IModuleInventoryWithContainer extends IModuleInventory {
 	default boolean isItemValid(int slot, ItemStack stack) {
 		return isContainer(slot) ? isItemValidForContainer(slot, stack) : IModuleInventory.super.isItemValid(slot, stack);
 	}
+
+	@Override
+	default int size() {
+		return getContainerSize();
+	}
+
+	@Override
+	default void set(int slot, ItemStack stack) {
+		setContainerItem(slot, stack);
+	}
+
+	@Override
+	default ItemStack getItem(int slot) {
+		return getStackInContainer(slot);
+	}
+
+	@Override
+	default void setChanged() {}
 }
