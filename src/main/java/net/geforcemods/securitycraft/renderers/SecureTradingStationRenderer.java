@@ -43,14 +43,14 @@ public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureT
 			ItemStack rewardDisplay = be.getRewardDisplay();
 
 			if (!paymentDisplay.isEmpty())
-				renderItem(level, pose, paymentDisplay, facing, 0.225F, buffer, packedLight, itemRenderer);
+				renderItem(level, pose, paymentDisplay, facing, 0.225F, buffer, packedLight);
 
 			if (!rewardDisplay.isEmpty())
-				renderItem(level, pose, rewardDisplay, facing, -0.225F, buffer, packedLight, itemRenderer);
+				renderItem(level, pose, rewardDisplay, facing, -0.225F, buffer, packedLight);
 		}
 	}
 
-	public static void renderItem(Level level, PoseStack pose, ItemStack stack, Direction facing, float sideOffset, MultiBufferSource buffer, int packedLight, ItemRenderer itemRenderer) {
+	private void renderItem(Level level, PoseStack pose, ItemStack stack, Direction facing, float sideOffset, MultiBufferSource buffer, int packedLight) {
 		BakedModel model = itemRenderer.getModel(stack, level, null, 0);
 		float verticalSize = model.getTransforms().getTransform(ItemDisplayContext.GROUND).scale.y();
 
