@@ -90,7 +90,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 
 		if (be.hasRewardReferenceStacks() && getTransactionsOnConfirmation() > be.rewardLimitedTransactions) {
-			guiGraphics.blit(WORLD_SELECTION_ICONS, leftPos + 148, topPos + 16, 16, 16, 70, 37, 22, 22, 256, 256);
+			guiGraphics.blit(WORLD_SELECTION_ICONS, leftPos + 148, topPos + 16, 24, 24, 64, 32, 32, 32, 256, 256);
 
 			if (mouseX >= leftPos + 148 && mouseX <= leftPos + 160 && mouseY >= topPos + 16 && mouseY <= topPos + 40) {
 				Component warning;
