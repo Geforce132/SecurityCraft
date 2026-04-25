@@ -31,7 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class SecureTradingStation extends DisguisableBlock {
+public class SecureTradingStationBlock extends DisguisableBlock {
 	private static final VoxelShape BASE_SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D);
 	private static final VoxelShape[] OCCLUSION_SHAPES = {
 			Shapes.or(BASE_SHAPE, Block.box(0.0D, 6.0D, 0.0D, 16.0D, 9.0D, 6.0D)), //south
@@ -43,7 +43,7 @@ public class SecureTradingStation extends DisguisableBlock {
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty HAS_REWARD = BooleanProperty.create("has_reward");
 
-	public SecureTradingStation(Properties properties) {
+	public SecureTradingStationBlock(Properties properties) {
 		super(properties);
 
 		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(HAS_REWARD, false).setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));

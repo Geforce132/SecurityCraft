@@ -116,7 +116,7 @@ import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallHangingSignBlock;
 import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
-import net.geforcemods.securitycraft.blocks.SecureTradingStation;
+import net.geforcemods.securitycraft.blocks.SecureTradingStationBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.blocks.SometimesVisibleBlock;
 import net.geforcemods.securitycraft.blocks.SonicSecuritySystemBlock;
@@ -530,7 +530,7 @@ public class SCContent {
 	public static final DeferredBlock<SecureRedstoneInterfaceBlock> SECURE_REDSTONE_INTERFACE = BLOCKS.registerBlock("secure_redstone_interface", SecureRedstoneInterfaceBlock::new, propDisguisable(3.5F));
 	@HasManualPage
 	@RegisterItemBlock
-	public static final DeferredBlock<SecureTradingStation> SECURE_TRADING_STATION = BLOCKS.registerBlock("secure_trading_station", SecureTradingStation::new, propDisguisable(MapColor.METAL, 5.0F));
+	public static final DeferredBlock<SecureTradingStationBlock> SECURE_TRADING_STATION = BLOCKS.registerBlock("secure_trading_station", SecureTradingStationBlock::new, propDisguisable(MapColor.METAL, 5.0F));
 	@HasManualPage
 	@RegisterItemBlock
 	public static final DeferredBlock<SecurityCameraBlock> SECURITY_CAMERA = BLOCKS.registerBlock("security_camera", SecurityCameraBlock::new, propDisguisable(MapColor.METAL, 5.0F, false).noCollission());

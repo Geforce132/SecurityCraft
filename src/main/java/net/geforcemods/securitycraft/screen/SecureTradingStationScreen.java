@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
-import net.geforcemods.securitycraft.blocks.SecureTradingStation;
+import net.geforcemods.securitycraft.blocks.SecureTradingStationBlock;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.network.server.RequestSecureTradingStationTransactions;
 import net.geforcemods.securitycraft.util.Utils;
@@ -61,7 +61,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 
 		payButton = addRenderableWidget(new Button(leftPos + 112, topPos + 42, 50, 16, payButtonText, this::sendTransactionRequest, Button.DEFAULT_NARRATION));
 
-		if ((be.hasPaymentReferenceStacks() && !skipPaymentCheck) || (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStation.POWERED)))
+		if ((be.hasPaymentReferenceStacks() && !skipPaymentCheck) || (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStationBlock.POWERED)))
 			payButton.active = false; //Preliminary checks for empty container
 
 		if (storageVisible) {
@@ -79,7 +79,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	protected void containerTick() {
 		super.containerTick();
 
-		if (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStation.POWERED))
+		if (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStationBlock.POWERED))
 			payButton.active = false;
 		else
 			payButton.active = getTransactionsOnConfirmation() > 0;
