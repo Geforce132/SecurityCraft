@@ -10,7 +10,7 @@ import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
 import net.geforcemods.securitycraft.api.Owner;
-import net.geforcemods.securitycraft.blocks.SecureTradingStation;
+import net.geforcemods.securitycraft.blocks.SecureTradingStationBlock;
 import net.geforcemods.securitycraft.inventory.InsertOnlySidedInvWrapper;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.misc.ModuleType;
@@ -99,8 +99,8 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 		rewardLimitedTransactions = getReferenceLimitedTransactions(this, 12, getContainerSize() - 1, getRewardPerTransaction(hasSmartModule), hasSmartModule);
 
-		if (hasReward != getBlockState().getValue(SecureTradingStation.HAS_REWARD))
-			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureTradingStation.HAS_REWARD, hasReward));
+		if (hasReward != getBlockState().getValue(SecureTradingStationBlock.HAS_REWARD))
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureTradingStationBlock.HAS_REWARD, hasReward));
 
 		super.setChanged();
 	}
@@ -129,7 +129,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 			if (hasRewardReferenceStacks()) {
 				Map<ItemStack, Integer> rewardItems = getRewardPerTransaction(hasSmartModule);
-				Vec3 itemSpawningPos = getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStation.FACING), 0.7);
+				Vec3 itemSpawningPos = getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStationBlock.FACING), 0.7);
 
 				for (Map.Entry<ItemStack, Integer> rewardEntry : rewardItems.entrySet()) {
 					ItemStack rewardStackToMatch = rewardEntry.getKey();
@@ -140,7 +140,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 				}
 			}
 
-			level.setBlockAndUpdate(worldPosition, getBlockState().cycle(SecureTradingStation.POWERED));
+			level.setBlockAndUpdate(worldPosition, getBlockState().cycle(SecureTradingStationBlock.POWERED));
 			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SECURE_TRADING_STATION.get());
 
 			if (signalLengthOption > 0)
@@ -159,7 +159,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 			remainder = InventoryUtils.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
 		if (!remainder.isEmpty())
-			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStation.FACING).getOpposite(), 0.7));
+			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStationBlock.FACING).getOpposite(), 0.7));
 	}
 
 	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {
@@ -415,8 +415,8 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
 
-		if (state.getValue(SecureTradingStation.POWERED)) {
-			level.setBlockAndUpdate(pos, state.setValue(SecureTradingStation.POWERED, false));
+		if (state.getValue(SecureTradingStationBlock.POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(SecureTradingStationBlock.POWERED, false));
 			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock());
 		}
 

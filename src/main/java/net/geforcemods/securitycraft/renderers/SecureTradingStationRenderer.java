@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
-import net.geforcemods.securitycraft.blocks.SecureTradingStation;
+import net.geforcemods.securitycraft.blocks.SecureTradingStationBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -38,7 +38,7 @@ public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureT
 
 		if (!be.isModuleEnabled(ModuleType.DISGUISE)) {
 			Level level = be.getLevel();
-			Direction facing = be.getBlockState().getValue(SecureTradingStation.FACING);
+			Direction facing = be.getBlockState().getValue(SecureTradingStationBlock.FACING);
 			ItemStack paymentDisplay = be.getPaymentDisplay();
 			ItemStack rewardDisplay = be.getRewardDisplay();
 
