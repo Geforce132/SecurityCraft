@@ -50,13 +50,13 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		Button colorChooserButton;
 
 		reinforcingModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, topPos + 42, 100, 20, this::updateReinforcingModeButtonText, menu.isReinforcing ? 0 : 1, 2, this::reinforcingModeButtonClicked));
-		tintModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, tintRowY, 75, 20, i -> TintMode.values()[i].translate(), TintMode.getTintMode().ordinal(), 4, this::tintModeButtonClicked));
-		tintColorChooser = new ColorChooser(Component.empty(), leftPos + 124, tintRowY, TintMode.getTintColor(), color -> updateSaveButton());
+		tintModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, tintRowY, 75, 20, i -> TintMode.values()[i].translate(), TintMode.mode().ordinal(), 4, this::tintModeButtonClicked));
+		tintColorChooser = new ColorChooser(Component.empty(), leftPos + 124, tintRowY, TintMode.color(), color -> updateSaveButton());
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(leftPos + 124, tintRowY, 20, 20, tintColorChooser));
 		saveToConfigButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 149, tintRowY, 20, 20, SAVE_SPRITE, SAVE_INACTIVE_SPRITE, 2, 2, 16, 16, this::saveButtonClicked));
 
 		updateReinforcingTooltip(menu.isReinforcing);
-		updateTintTooltip(TintMode.getTintMode());
+		updateTintTooltip(TintMode.mode());
 		colorChooserButton.setTooltip(Tooltip.create(Component.translatable("gui.securitycraft:blockReinforcer.chooseTintColorTooltip")));
 		updateSaveButton();
 
@@ -146,7 +146,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		TintMode newTintMode = TintMode.values()[tintModeButton.getCurrentIndex()];
 		int newTintColor = tintColorChooser.getRGBColor();
 
-		if (newTintMode != TintMode.getTintMode() || newTintColor != TintMode.getTintColor()) {
+		if (newTintMode != TintMode.mode() || newTintColor != TintMode.color()) {
 			TintMode.setTintSettings(newTintColor, newTintMode);
 			ClientUtils.recompileAllChunksInRange();
 		}

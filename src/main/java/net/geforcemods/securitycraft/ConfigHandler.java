@@ -288,7 +288,7 @@ public class ConfigHandler {
 		updateTeamPrecedence(event);
 
 		if (event.getConfig().getSpec() == CLIENT_SPEC)
-			TintMode.loadTintSettingsFromConfig();
+			loadTintSettingsFromConfig();
 	}
 
 	@SubscribeEvent
@@ -296,7 +296,11 @@ public class ConfigHandler {
 		updateTeamPrecedence(event);
 
 		if (event.getConfig().getSpec() == CLIENT_SPEC)
-			TintMode.loadTintSettingsFromConfig();
+			loadTintSettingsFromConfig();
+	}
+
+	public static void loadTintSettingsFromConfig() {
+		TintMode.setTintSettings(ConfigHandler.CLIENT.reinforcedBlockTintColor.getAsInt(), ConfigHandler.CLIENT.reinforcedBlockTintMode.get());
 	}
 
 	private static void updateTeamPrecedence(ModConfigEvent event) {

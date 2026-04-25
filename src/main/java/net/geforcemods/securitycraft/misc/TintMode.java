@@ -1,54 +1,62 @@
 package net.geforcemods.securitycraft.misc;
 
-import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.api.IOwnable;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
 
 public enum TintMode {
-	ALL("gui.securitycraft:blockReinforcer.tintMode.all"),
-	NONE("gui.securitycraft:blockReinforcer.tintMode.none"),
-	OWNED("gui.securitycraft:blockReinforcer.tintMode.owned"),
-	UNOWNED("gui.securitycraft:blockReinforcer.tintMode.unowned");
+	ALL("all"),
+	NONE("none") {
+		@Override
+		public boolean shouldTint(Player player, IOwnable ownable) {
+			return false;
+		}
+	},
+	OWNED("owned") {
+		@Override
+		public boolean shouldTint(Player player, IOwnable ownable) {
+			return ownable.isOwnedBy(player);
+		}
+	},
+	UNOWNED("unowned") {
+		@Override
+		public boolean shouldTint(Player player, IOwnable ownable) {
+			return !ownable.isOwnedBy(player);
+		}
+	};
 
 	private static int currentTintColor;
 	private static TintMode currentTintMode;
 	private final String translationKey;
 
-	private TintMode(String translationKey) {
-		this.translationKey = translationKey;
+	TintMode(String name) {
+		translationKey = "gui.securitycraft:blockReinforcer.tintMode." + name;
 	}
 
-	public Component translate() {
+	public boolean shouldTint(Player player, IOwnable ownable) {
+		return true;
+	}
+
+	public static int tint(int baseTint, IOwnable ownable) {
+		return mode().shouldTint(Minecraft.getInstance().player, ownable) ? ARGB.multiply(baseTint, 0xFF000000 | TintMode.color()) : baseTint;
+	}
+
+	public final Component translate() {
 		return Component.translatable(translationKey);
 	}
 
-	public Component tooltip() {
+	public final Component tooltip() {
 		return Component.translatable(translationKey + ".tooltip");
 	}
 
-	public static boolean shouldTint(Player player, IOwnable ownable) {
-		if (currentTintMode == ALL)
-			return true;
-		else if (currentTintMode == NONE)
-			return false;
-
-		boolean isOwner = ownable.isOwnedBy(player);
-
-		return (currentTintMode == OWNED && isOwner) || (currentTintMode == UNOWNED && !isOwner);
-	}
-
-	public static int getTintColor() {
+	public static int color() {
 		return currentTintColor;
 	}
 
-	public static TintMode getTintMode() {
+	public static TintMode mode() {
 		return currentTintMode;
-	}
-
-	public static void loadTintSettingsFromConfig() {
-		currentTintColor = ConfigHandler.CLIENT.reinforcedBlockTintColor.getAsInt();
-		currentTintMode = ConfigHandler.CLIENT.reinforcedBlockTintMode.get();
 	}
 
 	public static void setTintSettings(int tintColor, TintMode tintMode) {

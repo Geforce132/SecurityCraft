@@ -659,9 +659,9 @@ public class ClientHandler {
 
 	public static int mixWithReinforcedTintIfEnabled(int tint, IOwnable ownable) {
 		if (ownable == null)
-			return ARGB.multiply(tint, 0xFF000000 | TintMode.getTintColor());
+			return ARGB.multiply(tint, 0xFF000000 | TintMode.color());
 
-		return TintMode.shouldTint(Minecraft.getInstance().player, ownable) ? ARGB.multiply(tint, 0xFF000000 | TintMode.getTintColor()) : tint;
+		return TintMode.tint(tint, ownable);
 	}
 
 	public static Player getClientPlayer() {
