@@ -8,5 +8,4 @@ public class SecureTradingStationRenderState extends DisguisableBlockEntityRende
 	public ItemStackRenderState payment = new ItemStackRenderState();
 	public ItemStackRenderState reward = new ItemStackRenderState();
 	public Quaternionf rotation;
-	public boolean isDisguised;
 }
