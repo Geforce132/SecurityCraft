@@ -15,6 +15,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedDispenserBlockEntit
 import net.geforcemods.securitycraft.blockentities.ReinforcedDropperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedHopperBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedShelfBlockEntity;
+import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
@@ -39,6 +40,7 @@ import net.geforcemods.securitycraft.network.server.RemoveCameraTag;
 import net.geforcemods.securitycraft.network.server.RemoveMineFromMRAT;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
+import net.geforcemods.securitycraft.network.server.RequestSecureTradingStationTransactions;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.network.server.SetCameraPowered;
 import net.geforcemods.securitycraft.network.server.SetDefaultCameraViewingDirection;
@@ -191,6 +193,7 @@ public class RegistrationHandler {
 		registrar.playToServer(RemoveMineFromMRAT.TYPE, RemoveMineFromMRAT.STREAM_CODEC, RemoveMineFromMRAT::handle);
 		registrar.playToServer(RemovePositionFromSSS.TYPE, RemovePositionFromSSS.STREAM_CODEC, RemovePositionFromSSS::handle);
 		registrar.playToServer(RemoveSentryFromSRAT.TYPE, RemoveSentryFromSRAT.STREAM_CODEC, RemoveSentryFromSRAT::handle);
+		registrar.playToServer(RequestSecureTradingStationTransactions.TYPE, RequestSecureTradingStationTransactions.STREAM_CODEC, RequestSecureTradingStationTransactions::handle);
 		registrar.playToServer(SetBriefcasePasscodeAndOwner.TYPE, SetBriefcasePasscodeAndOwner.STREAM_CODEC, SetBriefcasePasscodeAndOwner::handle);
 		registrar.playToServer(SetCameraPowered.TYPE, SetCameraPowered.STREAM_CODEC, SetCameraPowered::handle);
 		registrar.playToServer(SetDefaultCameraViewingDirection.TYPE, SetDefaultCameraViewingDirection.STREAM_CODEC, SetDefaultCameraViewingDirection::handle);
@@ -237,6 +240,7 @@ public class RegistrationHandler {
 		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.REINFORCED_SHELF_BLOCK_ENTITY.get(), ReinforcedShelfBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.REINFORCED_DROPPER_BLOCK_ENTITY.get(), ReinforcedDropperBlockEntity::getCapability);
 		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraBlockEntity::getCapability);
+		event.registerBlockEntity(Capabilities.Item.BLOCK, SCContent.SECURE_TRADING_STATION_BLOCK_ENTITY.get(), SecureTradingStationBlockEntity::getCapability);
 		registerSecuritySeaBoatCapabilities(event, SCContent.OAK_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.SPRUCE_SECURITY_SEA_BOAT_ENTITY.get());
 		registerSecuritySeaBoatCapabilities(event, SCContent.BIRCH_SECURITY_SEA_BOAT_ENTITY.get());

@@ -516,6 +516,16 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('C', Items.COMPARATOR)
 		.unlockedBy("has_radar", has(SCContent.PORTABLE_RADAR))
 		.save(output);
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.REDSTONE, SCContent.SECURE_TRADING_STATION)
+		.pattern("GGG")
+		.pattern("GHG")
+		.pattern("SRS")
+		.define('G', SCContent.REINFORCED_GLASS)
+		.define('H', SCContent.REINFORCED_HOPPER)
+		.define('S', SCContent.REINFORCED_SMOOTH_STONE_SLAB)
+		.define('R', SCContent.REINFORCED_REDSTONE_BLOCK)
+		.unlockedBy("has_hopper", has(SCContent.REINFORCED_HOPPER))
+		.save(output);
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.MISC, SCContent.SECURITY_CAMERA)
 		.pattern("III")
 		.pattern("GRI")

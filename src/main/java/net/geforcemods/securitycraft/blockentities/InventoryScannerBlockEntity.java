@@ -26,6 +26,7 @@ import net.geforcemods.securitycraft.inventory.SimpleListenerContainer.Container
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.InventoryUtils.ItemAccess;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -53,7 +54,7 @@ import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 import net.neoforged.neoforge.transfer.transaction.TransactionContext;
 
-public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable, ContainerListener {
+public class InventoryScannerBlockEntity extends DisguisableBlockEntity implements MenuProvider, ITickingBlockEntity, ILockable, ContainerListener, ItemAccess {
 	private BooleanOption horizontal = new BooleanOption("horizontal", false);
 	private BooleanOption solidifyField = new BooleanOption("solidifyField", false);
 	private DisabledOption disabled = new DisabledOption(false);
@@ -145,50 +146,6 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		}
 
 		return stacks;
-	}
-
-	public ItemStack addItemToStorage(ItemStack stack) {
-		ItemStack remainder = stack;
-
-		for (int i = 10; i < getContents().size(); i++) {
-			remainder = insertItem(i, remainder);
-
-			if (remainder.isEmpty())
-				break;
-		}
-
-		return remainder;
-	}
-
-	public ItemStack insertItem(int slot, ItemStack stackToInsert) {
-		if (stackToInsert.isEmpty() || slot < 0 || slot >= getContents().size())
-			return stackToInsert;
-
-		ItemStack slotStack = getContents().get(slot);
-		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
-
-		if (slotStack.isEmpty()) {
-			getContents().set(slot, stackToInsert);
-			setChanged();
-			return ItemStack.EMPTY;
-		}
-		else if (InventoryScannerFieldBlock.areItemStacksEqual(slotStack, stackToInsert) && slotStack.getCount() < limit) {
-			if (limit - slotStack.getCount() >= stackToInsert.getCount()) {
-				slotStack.setCount(slotStack.getCount() + stackToInsert.getCount());
-				setChanged();
-				return ItemStack.EMPTY;
-			}
-			else {
-				ItemStack toInsert = stackToInsert.copy();
-				ItemStack toReturn = toInsert.split((slotStack.getCount() + stackToInsert.getCount()) - limit); //this is the remaining stack that could not be inserted
-
-				slotStack.setCount(slotStack.getCount() + toInsert.getCount());
-				setChanged();
-				return toReturn;
-			}
-		}
-
-		return stackToInsert;
 	}
 
 	public LensContainer getLensContainer() {
@@ -467,5 +424,20 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 	@Override
 	public Component getDisplayName() {
 		return super.getDisplayName();
+	}
+
+	@Override
+	public int size() {
+		return inventoryContents.size();
+	}
+
+	@Override
+	public ItemStack getItem(int slot) {
+		return inventoryContents.get(slot);
+	}
+
+	@Override
+	public void set(int slot, ItemStack stack) {
+		inventoryContents.set(slot, stack);
 	}
 }

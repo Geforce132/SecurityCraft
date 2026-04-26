@@ -76,6 +76,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
+import net.geforcemods.securitycraft.renderers.SecureTradingStationRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraSpecialRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
@@ -109,6 +110,7 @@ import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SecureRedstoneInterfaceScreen;
+import net.geforcemods.securitycraft.screen.SecureTradingStationScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SingleLensScreen;
@@ -228,6 +230,7 @@ public class ClientHandler {
 			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SCANNER_DOOR.get(),
 			SCContent.SCANNER_TRAPDOOR.get(),
+			SCContent.SECURE_TRADING_STATION.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			//Excluded because it has its own custom block state model
 			//SCContent.SECURE_REDSTONE_INTERFACE.get(),
@@ -347,6 +350,7 @@ public class ClientHandler {
 		event.register(SCContent.SINGLE_LENS_MENU.get(), SingleLensScreen::new);
 		event.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
 		event.register(SCContent.REINFORCED_LECTERN_MENU.get(), ReinforcedLecternScreen::new);
+		event.register(SCContent.SECURE_TRADING_STATION_MENU.get(), SecureTradingStationScreen::new);
 	}
 
 	@SubscribeEvent
@@ -390,6 +394,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_SHELF_BLOCK_ENTITY.get(), ShelfRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RETINAL_SCANNER_BLOCK_ENTITY.get(), RetinalScannerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), SecureRedstoneInterfaceRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SECURE_TRADING_STATION_BLOCK_ENTITY.get(), SecureTradingStationRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECRET_HANGING_SIGN_BLOCK_ENTITY.get(), SecretHangingSignRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECRET_SIGN_BLOCK_ENTITY.get(), SecretSignRenderer::new);
