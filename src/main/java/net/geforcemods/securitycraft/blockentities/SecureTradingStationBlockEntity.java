@@ -1,0 +1,420 @@
+package net.geforcemods.securitycraft.blockentities;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.api.Option;
+import net.geforcemods.securitycraft.api.Option.DisabledOption;
+import net.geforcemods.securitycraft.api.Option.IntOption;
+import net.geforcemods.securitycraft.api.Option.SignalLengthOption;
+import net.geforcemods.securitycraft.api.Owner;
+import net.geforcemods.securitycraft.blocks.SecureTradingStationBlock;
+import net.geforcemods.securitycraft.inventory.InsertOnlyResourceHandler;
+import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
+import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.BlockUtils;
+import net.geforcemods.securitycraft.util.ITickingBlockEntity;
+import net.geforcemods.securitycraft.util.InventoryUtils;
+import net.geforcemods.securitycraft.util.InventoryUtils.ItemAccess;
+import net.geforcemods.securitycraft.util.PlayerUtils;
+import net.geforcemods.securitycraft.util.Utils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.transfer.EmptyResourceHandler;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
+import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
+
+public class SecureTradingStationBlockEntity extends DisguisableBlockEntity implements WorldlyContainer, MenuProvider, ITickingBlockEntity {
+	private static final int[] SLOTS_FOR_UP_AND_SIDES = new int[] {12, 13, 14, 15, 16, 17, 18, 19};
+	private static final int[] SLOTS_FOR_DOWN = new int[] {4, 5, 6, 7, 8, 9, 10, 11};
+	private IntOption signalLength = new SignalLengthOption(60);
+	private final DisabledOption disabled = new DisabledOption(false);
+	private final NonNullList<ItemStack> inventoryContents = NonNullList.<ItemStack>withSize(20, ItemStack.EMPTY); //2 for payment reference, 2 for reward reference, 8 for payment storage, 8 for reward storage
+	private int paymentDisplayIndex = -1;
+	private int rewardDisplayIndex = -1;
+	public int rewardLimitedTransactions = 0;
+
+	public SecureTradingStationBlockEntity(BlockPos pos, BlockState state) {
+		super(SCContent.SECURE_TRADING_STATION_BLOCK_ENTITY.get(), pos, state);
+	}
+
+	@Override
+	public void tick(Level level, BlockPos pos, BlockState state) {
+		if (level.getGameTime() % 40L == 0L) {
+			if ((paymentDisplayIndex == 1 || paymentDisplayIndex == -1) && !inventoryContents.get(0).isEmpty())
+				paymentDisplayIndex = 0;
+			else if ((paymentDisplayIndex == 0 || paymentDisplayIndex == -1) && !inventoryContents.get(1).isEmpty())
+				paymentDisplayIndex = 1;
+
+			if ((rewardDisplayIndex == 3 || rewardDisplayIndex == -1) && !inventoryContents.get(2).isEmpty())
+				rewardDisplayIndex = 2;
+			else if ((rewardDisplayIndex == 2 || rewardDisplayIndex == -1) && !inventoryContents.get(3).isEmpty())
+				rewardDisplayIndex = 3;
+		}
+	}
+
+	@Override
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
+
+		ContainerHelper.loadAllItems(tag, inventoryContents);
+	}
+
+	@Override
+	public void saveAdditional(ValueOutput tag) {
+		super.saveAdditional(tag);
+
+		ContainerHelper.saveAllItems(tag, inventoryContents);
+	}
+
+	@Override
+	public void setChanged() {
+		boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
+		boolean hasReward = hasRewardReferenceStacks();
+
+		rewardLimitedTransactions = getReferenceLimitedTransactions(this, 12, getContainerSize() - 1, getRewardPerTransaction(hasSmartModule), hasSmartModule);
+
+		if (hasReward != getBlockState().getValue(SecureTradingStationBlock.HAS_REWARD))
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureTradingStationBlock.HAS_REWARD, hasReward));
+
+		super.setChanged();
+	}
+
+	public void doTransaction(Player player, int requestedTransactions) {
+		if (player instanceof ServerPlayer serverPlayer && serverPlayer.containerMenu instanceof SecureTradingStationMenu menu) {
+			int signalLengthOption = signalLength.get();
+			boolean skipPaymentCheck = isOwnedBy(player) || isAllowed(player);
+			boolean hasSmartModule = isModuleEnabled(ModuleType.SMART);
+			int transactions = skipPaymentCheck ? requestedTransactions : Math.min(menu.paymentLimitedTransactions, requestedTransactions);
+
+			if (transactions == 0) {
+				PlayerUtils.sendMessageToPlayer(player, Utils.localize(getBlockState().getBlock().getDescriptionId()), Utils.localize("messages.securitycraft:secure_trading_station.transaction_failed"), ChatFormatting.RED);
+				return;
+			}
+
+			Map<ItemStack, Integer> unifiedPaymentRequestItems = getPaymentPerTransaction(hasSmartModule);
+
+			for (Map.Entry<ItemStack, Integer> paymentRequest : unifiedPaymentRequestItems.entrySet()) {
+				ItemStack paymentStackToMatch = paymentRequest.getKey();
+				int quantityPerTransaction = paymentRequest.getValue();
+				int totalQuantity = quantityPerTransaction * transactions;
+
+				InventoryUtils.checkInventoryForItem(ItemAccess.forList(menu.paymentInput.items), paymentStackToMatch, totalQuantity, hasSmartModule, true, this::handleConsumedPaymentItem, menu.paymentInput::setItem);
+			}
+
+			if (hasRewardReferenceStacks()) {
+				Map<ItemStack, Integer> rewardItems = getRewardPerTransaction(hasSmartModule);
+				Vec3 itemSpawningPos = getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStationBlock.FACING), 0.7);
+
+				for (Map.Entry<ItemStack, Integer> rewardEntry : rewardItems.entrySet()) {
+					ItemStack rewardStackToMatch = rewardEntry.getKey();
+					int quantityPerTransaction = rewardEntry.getValue();
+					int totalQuantity = quantityPerTransaction * transactions;
+
+					InventoryUtils.checkInventoryForItem(ItemAccess.forList(inventoryContents), 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 0, Direction.DOWN, itemSpawningPos), inventoryContents::set);
+				}
+			}
+
+			level.setBlockAndUpdate(worldPosition, getBlockState().cycle(SecureTradingStationBlock.POWERED));
+			BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.SECURE_TRADING_STATION.get());
+
+			if (signalLengthOption > 0)
+				level.scheduleTick(worldPosition, SCContent.SECURE_TRADING_STATION.get(), signalLengthOption);
+		}
+	}
+
+	private Vec3 getBaseItemSpawnPos() {
+		return Vec3.atCenterOf(getBlockPos()).subtract(0.0D, 0.3D, 0.0D);
+	}
+
+	private void handleConsumedPaymentItem(ItemStack paymentStack) {
+		ItemStack remainder = paymentStack;
+
+		if (isModuleEnabled(ModuleType.STORAGE))
+			remainder = InventoryUtils.addItemToStorage(ItemAccess.forContainer(this), 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
+
+		if (!remainder.isEmpty())
+			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStationBlock.FACING).getOpposite(), 0.7));
+	}
+
+	public int getReferenceLimitedTransactions(Container slotsToSearch, int start, int endInclusive, Map<ItemStack, Integer> itemReference, boolean hasSmartModule) {
+		int possibleTransactions = -1;
+
+		if (itemReference.isEmpty())
+			return 1; //If no reference items are set, default to 1 transaction per button push
+
+		for (Map.Entry<ItemStack, Integer> paymentRequest : itemReference.entrySet()) {
+			ItemStack paymentStackToMatch = paymentRequest.getKey();
+			int quantityPerTransaction = paymentRequest.getValue();
+			int paymentItemsInInputSlots = InventoryUtils.countItemsInSlotRange(slotsToSearch, paymentStackToMatch, start, endInclusive, hasSmartModule);
+			int transactions = paymentItemsInInputSlots / quantityPerTransaction;
+
+			if (possibleTransactions == -1 || possibleTransactions > transactions)
+				possibleTransactions = transactions;
+		}
+
+		return Math.max(possibleTransactions, 0);
+	}
+
+	public NonNullList<ItemStack> getContents() {
+		return inventoryContents;
+	}
+
+	@Override
+	public ModuleType[] acceptedModules() {
+		return new ModuleType[] {
+				ModuleType.ALLOWLIST, ModuleType.DENYLIST, ModuleType.DISGUISE, ModuleType.STORAGE, ModuleType.SMART
+		};
+	}
+
+	@Override
+	public Option<?>[] customOptions() {
+		return new Option[] {
+				signalLength, disabled
+		};
+	}
+
+	public void setSignalLength(int signalLength) {
+		if (getSignalLength() != signalLength) {
+			this.signalLength.setValue(signalLength);
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(BlockStateProperties.POWERED, false));
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
+	}
+
+	public int getSignalLength() {
+		return signalLength.get();
+	}
+
+	public void setDisabled(boolean disabled) {
+		if (isDisabled() != disabled) {
+			this.disabled.setValue(disabled);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
+	}
+
+	public boolean isDisabled() {
+		return disabled.get();
+	}
+
+	@Override
+	public int getContainerSize() {
+		return inventoryContents.size();
+	}
+
+	@Override
+	public ItemStack removeItem(int index, int count) {
+		if (!inventoryContents.get(index).isEmpty()) {
+			ItemStack stack;
+
+			if (inventoryContents.get(index).getCount() <= count) {
+				stack = inventoryContents.get(index);
+				inventoryContents.set(index, ItemStack.EMPTY);
+			}
+			else {
+				stack = inventoryContents.get(index).split(count);
+
+				if (inventoryContents.get(index).getCount() == 0)
+					inventoryContents.set(index, ItemStack.EMPTY);
+			}
+
+			setChanged();
+			return stack;
+		}
+		else
+			return ItemStack.EMPTY;
+	}
+
+	@Override
+	public ItemStack getItem(int slot) {
+		return inventoryContents.get(slot);
+	}
+
+	@Override
+	public void setItem(int index, ItemStack stack) {
+		inventoryContents.set(index, stack);
+
+		if (!stack.isEmpty() && stack.getCount() > getMaxStackSize())
+			stack.setCount(getMaxStackSize());
+
+		setChanged();
+	}
+
+	public Map<ItemStack, Integer> getPaymentPerTransaction(boolean exactComponentCheck) {
+		return getReferencePerTransaction(0, 1, exactComponentCheck);
+	}
+
+	public Map<ItemStack, Integer> getRewardPerTransaction(boolean exactComponentCheck) {
+		return getReferencePerTransaction(2, 3, exactComponentCheck);
+	}
+
+	private Map<ItemStack, Integer> getReferencePerTransaction(int start, int endInclusive, boolean exactComponentCheck) {
+		Map<ItemStack, Integer> payment = new HashMap<>();
+		ItemStack firstPaymentReference = getItem(start);
+		ItemStack secondPaymentReference = getItem(endInclusive);
+
+		if (BlockUtils.areItemsEqual(firstPaymentReference, secondPaymentReference, exactComponentCheck)) {
+			if (!firstPaymentReference.isEmpty())
+				payment.put(firstPaymentReference.copyWithCount(1), firstPaymentReference.getCount() + secondPaymentReference.getCount());
+		}
+		else {
+			if (!firstPaymentReference.isEmpty())
+				payment.put(firstPaymentReference.copyWithCount(1), firstPaymentReference.getCount());
+
+			if (!secondPaymentReference.isEmpty())
+				payment.put(secondPaymentReference.copyWithCount(1), secondPaymentReference.getCount());
+		}
+
+		return payment;
+	}
+
+	public boolean hasPaymentReferenceStacks() {
+		return !getItem(0).isEmpty() || !getItem(1).isEmpty();
+	}
+
+	public boolean hasRewardReferenceStacks() {
+		return !getItem(2).isEmpty() || !getItem(3).isEmpty();
+	}
+
+	public ItemStack getPaymentDisplay() {
+		return paymentDisplayIndex >= 0 ? getItem(paymentDisplayIndex).copyWithCount(1) : ItemStack.EMPTY;
+	}
+
+	public ItemStack getRewardDisplay() {
+		return rewardDisplayIndex >= 0 ? getItem(rewardDisplayIndex).copyWithCount(1) : ItemStack.EMPTY;
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return true;
+	}
+
+	@Override
+	public boolean canPlaceItem(int index, ItemStack stack) {
+		return isModuleEnabled(ModuleType.STORAGE);
+	}
+
+	public static ResourceHandler<ItemResource> getCapability(SecureTradingStationBlockEntity be, Direction side) {
+		if (be.isModuleEnabled(ModuleType.STORAGE)) {
+			WorldlyContainerWrapper wrapper = new WorldlyContainerWrapper(be, side);
+
+			if (BlockUtils.isAllowedToExtractFromProtectedObject(side, be))
+				return wrapper;
+			else
+				return new InsertOnlyResourceHandler<>(wrapper);
+		}
+		else
+			return EmptyResourceHandler.instance(); //disallow inserting
+	}
+
+	@Override
+	public int[] getSlotsForFace(Direction side) {
+		return switch (side) {
+			case null -> new int[0];
+			case UP, NORTH, SOUTH, WEST, EAST -> SLOTS_FOR_UP_AND_SIDES;
+			case DOWN -> SLOTS_FOR_DOWN;
+		};
+	}
+
+	@Override
+	public boolean canPlaceItemThroughFace(int index, ItemStack itemStack, Direction direction) {
+		return true;
+	}
+
+	@Override
+	public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+		return true;
+	}
+
+	@Override
+	public void onModuleRemoved(ItemStack stack, ModuleType module, boolean toggled) {
+		super.onModuleRemoved(stack, module, toggled);
+
+		if (module == ModuleType.STORAGE) {
+			dropContents();
+			inventoryContents.set(2, ItemStack.EMPTY);
+			inventoryContents.set(3, ItemStack.EMPTY);
+		}
+	}
+
+	@Override
+	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
+		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
+
+		if (state.getValue(SecureTradingStationBlock.POWERED)) {
+			level.setBlockAndUpdate(pos, state.setValue(SecureTradingStationBlock.POWERED, false));
+			BlockUtils.updateIndirectNeighbors(level, pos, state.getBlock());
+		}
+
+		dropContents();
+	}
+
+	@Override
+	public AbstractContainerMenu createMenu(int windowId, Inventory inv, Player player) {
+		return new SecureTradingStationMenu(windowId, level, worldPosition, inv);
+	}
+
+	@Override
+	public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+		dropContents();
+		super.preRemoveSideEffects(pos, state);
+	}
+
+	public void dropContents() {
+		//First 4 slots (0-3) are the payment & reward slots
+		for (int i = 4; i < getContainerSize(); i++) {
+			Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
+		}
+	}
+
+	@Override
+	public Component getDisplayName() {
+		return super.getDisplayName();
+	}
+
+	@Override
+	public void clearContent() {
+		inventoryContents.clear();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return inventoryContents.isEmpty();
+	}
+
+	@Override
+	public ItemStack removeItemNoUpdate(int index) {
+		return inventoryContents.remove(index);
+	}
+
+	@Override
+	public void writeClientSideData(AbstractContainerMenu menu, RegistryFriendlyByteBuf buffer) {
+		MenuProvider.super.writeClientSideData(menu, buffer);
+		buffer.writeBlockPos(worldPosition);
+	}
+}
