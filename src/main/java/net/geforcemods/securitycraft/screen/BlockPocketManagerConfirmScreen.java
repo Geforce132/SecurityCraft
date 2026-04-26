@@ -13,12 +13,12 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 public class BlockPocketManagerConfirmScreen extends Screen {
-	private static final Identifier GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_pocket_manager_confirm.png");
+	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_pocket_manager_confirm.png");
 	private final BlockPocketManagerBlockEntity be;
 	private int imageWidth = 226, imageHeight = 60, leftPos, topPos;
 
