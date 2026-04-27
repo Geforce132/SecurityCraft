@@ -31,7 +31,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 
 		addStandardInventorySlots(inventory, 8, 104);
 		addSlot(inputSlot = new ReinforcerInputSlot(itemInventory, 0, 26, 20));
-		addSlot(resultSlot = new ReinforcerResultSlot(itemInventory, 1, 116, 20));
+		addSlot(resultSlot = new ReinforcerResultSlot(itemInventory, 1, 134, 20));
 	}
 
 	@Override

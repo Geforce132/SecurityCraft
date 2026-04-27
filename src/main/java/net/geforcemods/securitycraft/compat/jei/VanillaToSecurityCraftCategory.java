@@ -30,6 +30,6 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, ReinforcerRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.vanillaBlock()));
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 91, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.securityCraftBlock()));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 109, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.securityCraftBlock()));
 	}
 }

@@ -99,7 +99,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		guiGraphics.text(font, Utils.INVENTORY_TEXT, 8, imageHeight - 96 + 2, CommonColors.DARK_GRAY, false);
 
 		if (!menu.getResult().isEmpty())
-			guiGraphics.text(font, output, 50, 25, CommonColors.DARK_GRAY, false);
+			guiGraphics.text(font, output, 128 - font.width(output), 25, CommonColors.DARK_GRAY, false);
 
 		guiGraphics.text(font, mode, 8, 48, CommonColors.DARK_GRAY, false);
 		guiGraphics.text(font, tint, 8, 73, CommonColors.DARK_GRAY, false);
