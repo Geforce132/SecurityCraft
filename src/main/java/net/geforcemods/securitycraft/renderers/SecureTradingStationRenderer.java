@@ -22,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureTradingStationBlockEntity, SecureTradingStationRenderState> {
@@ -51,10 +52,12 @@ public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureT
 	}
 
 	private void submitItem(SecureTradingStationRenderState state, PoseStack pose, ItemStackRenderState stack, float sideOffset, SubmitNodeCollector collector, CameraRenderState camera) {
+		AABB modelSize = stack.getModelBoundingBox();
+
 		pose.pushPose();
-		pose.translate(0.5F, 0.5F, 0.5F);
+		pose.translate(0.5F, 0.4F - 0.3F * modelSize.minY, 0.5F);
 		pose.mulPose(state.rotation);
-		pose.translate(sideOffset, 0.0F, 0.0F);
+		pose.translate(sideOffset, 0.0F, modelSize.getZsize() <= 0.0625F ? 0.1F : 0.0F);
 		pose.scale(0.35F, 0.35F, 0.35F);
 		stack.submit(pose, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
 		pose.popPose();
