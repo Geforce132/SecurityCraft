@@ -19,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureTradingStationBlockEntity> {
@@ -55,12 +56,14 @@ public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureT
 
 	private void renderItem(Level level, PoseStack pose, ItemStack stack, Direction facing, float sideOffset, MultiBufferSource buffer, int packedLight) {
 		int seed = ItemClusterRenderState.getSeedForItemStack(stack);
+		AABB modelSize;
 
 		itemModelResolver.updateForTopItem(itemStackRenderState, stack, ItemDisplayContext.FIXED, level, null, seed);
+		modelSize = itemStackRenderState.getModelBoundingBox();
 		pose.pushPose();
-		pose.translate(0.5F, 0.5F, 0.5F);
+		pose.translate(0.5F, 0.4F - 0.3F * modelSize.minY, 0.5F);
 		pose.mulPose(ROTATIONS[facing.get2DDataValue()]);
-		pose.translate(sideOffset, 0.0F, 0.0F);
+		pose.translate(sideOffset, 0.0F, modelSize.getZsize() <= 0.0625F ? 0.1F : 0.0F);
 		pose.scale(0.35F, 0.35F, 0.35F);
 		itemStackRenderState.render(pose, buffer, packedLight, OverlayTexture.NO_OVERLAY);
 		pose.popPose();
