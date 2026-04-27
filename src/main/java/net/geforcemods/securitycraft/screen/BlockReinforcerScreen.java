@@ -37,6 +37,8 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	private ToggleComponentButton tintModeButton;
 	private ColorChooser tintColorChooser;
 	private ActiveBasedTextureButton saveToConfigButton;
+	private int oldTintColor;
+	private TintMode oldTintMode;
 
 	public BlockReinforcerScreen(BlockReinforcerMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title, 176, 186);
@@ -49,9 +51,11 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		int tintRowY = topPos + 67;
 		Button colorChooserButton;
 
+		oldTintColor = TintMode.color();
+		oldTintMode = TintMode.mode();
 		reinforcingModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, topPos + 42, 100, 20, this::updateReinforcingModeButtonText, menu.isReinforcing ? 0 : 1, 2, this::reinforcingModeButtonClicked));
-		tintModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, tintRowY, 75, 20, i -> TintMode.values()[i].translate(), TintMode.mode().ordinal(), 4, this::tintModeButtonClicked));
-		tintColorChooser = new ColorChooser(Component.empty(), leftPos + 124, tintRowY, TintMode.color(), color -> updateSaveButton());
+		tintModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, tintRowY, 75, 20, i -> TintMode.values()[i].translate(), oldTintMode.ordinal(), 4, this::tintModeButtonClicked));
+		tintColorChooser = new ColorChooser(Component.empty(), leftPos + 124, tintRowY, oldTintColor, this::colorChanged);
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(leftPos + 124, tintRowY, 20, 20, tintColorChooser));
 		saveToConfigButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 149, tintRowY, 20, 20, SAVE_SPRITE, SAVE_INACTIVE_SPRITE, 2, 2, 16, 16, this::saveButtonClicked));
 
@@ -73,10 +77,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	}
 
 	private void updateSaveButton() {
-		TintMode newTintMode = TintMode.values()[tintModeButton.getCurrentIndex()];
-		int newTintColor = tintColorChooser.getRGBColor();
-
-		if (newTintMode != ConfigHandler.CLIENT.reinforcedBlockTintMode.get() || newTintColor != ConfigHandler.CLIENT.reinforcedBlockTintColor.getAsInt()) {
+		if (TintMode.mode() != ConfigHandler.CLIENT.reinforcedBlockTintMode.get() || TintMode.color() != ConfigHandler.CLIENT.reinforcedBlockTintColor.getAsInt()) {
 			saveToConfigButton.active = true;
 			saveToConfigButton.setTooltip(Tooltip.create(Component.translatable("gui.securitycraft:blockReinforcer.saveToConfigTooltip")));
 		}
@@ -124,18 +125,25 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	}
 
 	private void tintModeButtonClicked(Button button) {
-		if (button instanceof ToggleComponentButton toggleButton)
-			updateTintTooltip(TintMode.values()[toggleButton.getCurrentIndex()]);
+		if (button instanceof ToggleComponentButton toggleButton) {
+			TintMode newMode = TintMode.values()[toggleButton.getCurrentIndex()];
 
+			TintMode.setMode(newMode);
+			updateTintTooltip(newMode);
+			updateSaveButton();
+		}
+	}
+
+	private void colorChanged(int newColor) {
+		TintMode.setColor(newColor);
 		updateSaveButton();
 	}
 
 	private void saveButtonClicked(Button button) {
-		ConfigHandler.CLIENT.reinforcedBlockTintColor.set(tintColorChooser.getRGBColor());
+		ConfigHandler.CLIENT.reinforcedBlockTintColor.set(TintMode.color());
+		ConfigHandler.CLIENT.reinforcedBlockTintMode.set(TintMode.mode());
 		ConfigHandler.CLIENT.reinforcedBlockTintColor.save();
-		ConfigHandler.CLIENT.reinforcedBlockTintMode.set(TintMode.values()[tintModeButton.getCurrentIndex()]);
 		ConfigHandler.CLIENT.reinforcedBlockTintMode.save();
-		ClientUtils.recompileAllChunksInRange(); //The saved value will automatically be updated through the changing config, so the tints need to be refreshed
 		updateSaveButton();
 	}
 
@@ -143,13 +151,8 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 	public void onClose() {
 		super.onClose();
 
-		TintMode newTintMode = TintMode.values()[tintModeButton.getCurrentIndex()];
-		int newTintColor = tintColorChooser.getRGBColor();
-
-		if (newTintMode != TintMode.mode() || newTintColor != TintMode.color()) {
-			TintMode.setTintSettings(newTintColor, newTintMode);
+		if (TintMode.mode() != oldTintMode || TintMode.color() != oldTintColor)
 			ClientUtils.recompileAllChunksInRange();
-		}
 	}
 
 	@Override

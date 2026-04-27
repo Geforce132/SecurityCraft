@@ -300,7 +300,8 @@ public class ConfigHandler {
 	}
 
 	public static void loadTintSettingsFromConfig() {
-		TintMode.setTintSettings(ConfigHandler.CLIENT.reinforcedBlockTintColor.getAsInt(), ConfigHandler.CLIENT.reinforcedBlockTintMode.get());
+		TintMode.setColor(ConfigHandler.CLIENT.reinforcedBlockTintColor.getAsInt());
+		TintMode.setMode(ConfigHandler.CLIENT.reinforcedBlockTintMode.get());
 	}
 
 	private static void updateTeamPrecedence(ModConfigEvent event) {

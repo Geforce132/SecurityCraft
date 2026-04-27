@@ -59,8 +59,11 @@ public enum TintMode {
 		return currentTintMode;
 	}
 
-	public static void setTintSettings(int tintColor, TintMode tintMode) {
+	public static void setColor(int tintColor) {
 		currentTintColor = tintColor;
+	}
+
+	public static void setMode(TintMode tintMode) {
 		currentTintMode = tintMode;
 	}
 }
