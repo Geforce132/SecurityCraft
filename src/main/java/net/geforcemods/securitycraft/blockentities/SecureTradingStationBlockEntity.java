@@ -360,6 +360,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 			dropContents();
 			inventoryContents.set(2, ItemStack.EMPTY);
 			inventoryContents.set(3, ItemStack.EMPTY);
+			level.setBlockAndUpdate(worldPosition, getBlockState().setValue(SecureTradingStationBlock.HAS_REWARD, false));
 		}
 	}
 
