@@ -757,7 +757,7 @@
 	"gui.securitycraft:blockPocketManager.size": "Size: %sx%sx%s",
 	"gui.securitycraft:blockPocketManager.youNeed": "You need:",
 	"gui.securitycraft:blockReinforcer.chooseTintColorTooltip": "Choose the color that reinforced blocks will be tinted with",
-	"gui.securitycraft:blockReinforcer.mode": "Mode:",
+	"gui.securitycraft:blockReinforcer.mode": "Mining mode:",
 	"gui.securitycraft:blockReinforcer.output": "Output:",
 	"gui.securitycraft:blockReinforcer.reinforcing": "Reinforcing",
 	"gui.securitycraft:blockReinforcer.reinforcing.tooltip": "Reinforces blocks when they are attacked in the world",

@@ -53,7 +53,7 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 
 		oldTintColor = TintMode.color();
 		oldTintMode = TintMode.mode();
-		reinforcingModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, topPos + 42, 100, 20, this::updateReinforcingModeButtonText, menu.isReinforcing ? 0 : 1, 2, this::reinforcingModeButtonClicked));
+		reinforcingModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 89, topPos + 42, 80, 20, this::updateReinforcingModeButtonText, menu.isReinforcing ? 0 : 1, 2, this::reinforcingModeButtonClicked));
 		tintModeButton = addRenderableWidget(new ToggleComponentButton(leftPos + 44, tintRowY, 75, 20, i -> TintMode.values()[i].translate(), oldTintMode.ordinal(), 4, this::tintModeButtonClicked));
 		tintColorChooser = new ColorChooser(Component.empty(), leftPos + 124, tintRowY, oldTintColor, this::colorChanged);
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(leftPos + 124, tintRowY, 20, 20, tintColorChooser));
