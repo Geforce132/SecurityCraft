@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.10.1-beta4 of SecurityCraft--------------------------
+
+- Fix: The Inventory Scanner screen does not display additional slots when a Storage Module is inserted
+
 --------------------------Changelog for v1.10.1-beta3 of SecurityCraft--------------------------
 
 - Fix: Briefcases and Lenses cannot be dyed in a Crafting Table
