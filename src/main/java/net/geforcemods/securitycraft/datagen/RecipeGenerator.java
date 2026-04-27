@@ -730,6 +730,10 @@ public class RecipeGenerator extends RecipeProvider {
 		.unlockedBy("has_name_tag", has(Items.NAME_TAG))
 		.save(output);
 
+		//vanilla recipe provider recipes
+		dyedItem(SCContent.BRIEFCASE.get(), "briefcase");
+		dyedItem(SCContent.LENS.get(), "lens");
+
 		//@formatter:on
 		//template recipes
 		addBarkRecipe(SCContent.REINFORCED_ACACIA_LOG, SCContent.REINFORCED_ACACIA_WOOD);

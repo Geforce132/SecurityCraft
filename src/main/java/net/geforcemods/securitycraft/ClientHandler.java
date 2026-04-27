@@ -573,7 +573,7 @@ public class ClientHandler {
 					ItemStack stack = lensGetter.apply(be);
 
 					if (stack.has(DataComponents.DYED_COLOR))
-						return stack.get(DataComponents.DYED_COLOR).rgb();
+						return ARGB.opaque(stack.get(DataComponents.DYED_COLOR).rgb());
 
 					break;
 				}

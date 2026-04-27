@@ -24,7 +24,7 @@ public class InventoryScannerGhostIngredientHandler implements IGhostIngredientH
 
 		for (Slot slot : screen.getMenu().slots) {
 			if (slot instanceof OwnerRestrictedSlot) {
-				Rect2i area = new Rect2i(screen.getGuiLeft() + slot.x, screen.getGuiTop() + slot.y, 16, 16);
+				Rect2i area = new Rect2i(screen.getLeftPos() + slot.x, screen.getTopPos() + slot.y, 16, 16);
 
 				targets.add(new Target<>() {
 					@Override
