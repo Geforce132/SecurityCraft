@@ -113,6 +113,7 @@ dependencies {
 	// The actual mod jar is jarjar'd into the Modrinth jar, but NeoForge doesn't load it, so the mod has to be added from CaffeineMCs' maven separately
 	compileOnly "maven.modrinth:sodium:mc1.21.11-0.8.4-neoforge"
 	compileOnly "net.caffeinemc:sodium-neoforge-mod:0.8.4+mc1.21.11"
+	implementation "curse.maven:distant-horizons-508933:7977121"
 }
 
 tasks.named('jar', Jar).configure {
