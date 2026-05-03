@@ -56,6 +56,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		colorFieldRight = colorFieldLeft + COLOR_FIELD_SIZE;
 		colorFieldBottom = colorFieldTop + COLOR_FIELD_SIZE;
 		this.rgbColor = rgbColor;
+		initHSBValues();
 		colorFieldHoverChecker = new HoverChecker(colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight);
 	}
 
@@ -128,14 +129,12 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-		if (!disabled) {
-			super.render(guiGraphics, mouseX, mouseY, partialTick);
-			guiGraphics.blitSprite(colorFieldHoverChecker.checkHover(mouseX, mouseY) ? FIELD_SELECTOR_HIGHLIGHTED_SPRITE : FIELD_SELECTOR_SPRITE, (int) selectionX - 1, (int) selectionY - 1, 3, 3); //color field indicator
-			guiGraphics.drawString(font, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040, false);
-			guiGraphics.drawString(font, gText, colorFieldRight + 5, colorFieldTop + 16, 0x404040, false);
-			guiGraphics.drawString(font, bText, colorFieldRight + 5, colorFieldTop + 31, 0x404040, false);
-			guiGraphics.drawString(font, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, 0x404040, false);
-		}
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		guiGraphics.blitSprite(colorFieldHoverChecker.checkHover(mouseX, mouseY) ? FIELD_SELECTOR_HIGHLIGHTED_SPRITE : FIELD_SELECTOR_SPRITE, (int) selectionX - 1, (int) selectionY - 1, 3, 3); //color field indicator
+		guiGraphics.drawString(font, rText, colorFieldRight + 5, colorFieldTop + 1, 0x404040, false);
+		guiGraphics.drawString(font, gText, colorFieldRight + 5, colorFieldTop + 16, 0x404040, false);
+		guiGraphics.drawString(font, bText, colorFieldRight + 5, colorFieldTop + 31, 0x404040, false);
+		guiGraphics.drawString(font, rgbHexText, colorFieldRight + 5, colorFieldTop + 46, 0x404040, false);
 	}
 
 	@Override
@@ -147,26 +146,22 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public void tick() {
-		if (!disabled) {
-			//this is validated here and not in the edit box' responder in order to allow for an empty box while typing
-			validateNotEmpty(rBox);
-			validateNotEmpty(gBox);
-			validateNotEmpty(bBox);
+		//this is validated here and not in the edit box' responder in order to allow for an empty box while typing
+		validateNotEmpty(rBox);
+		validateNotEmpty(gBox);
+		validateNotEmpty(bBox);
 
-			if (getRgbHexBox() != null && !getRgbHexBox().isFocused() && getRgbHexBox().getValue().isEmpty())
-				getRgbHexBox().setValue("000000");
-		}
+		if (getRgbHexBox() != null && !getRgbHexBox().isFocused() && getRgbHexBox().getValue().isEmpty())
+			getRgbHexBox().setValue("000000");
 	}
 
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (!disabled) {
-			super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 
-			if (button == 0 && clickedInDragRegion) {
-				setSelection(mouseX, mouseY);
-				return true;
-			}
+		if (button == 0 && clickedInDragRegion) {
+			setSelection(mouseX, mouseY);
+			return true;
 		}
 
 		return false;
@@ -174,24 +169,19 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (!disabled) {
-			super.mouseClicked(mouseX, mouseY, button);
-			clickedInDragRegion = colorFieldHoverChecker.checkHover(mouseX, mouseY);
+		super.mouseClicked(mouseX, mouseY, button);
+		clickedInDragRegion = colorFieldHoverChecker.checkHover(mouseX, mouseY);
 
-			if (clickedInDragRegion)
-				setSelection(mouseX, mouseY);
-		}
+		if (clickedInDragRegion)
+			setSelection(mouseX, mouseY);
 
 		return false;
 	}
 
 	@Override
 	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if (!disabled) {
-			super.mouseReleased(mouseX, mouseY, button);
-			clickedInDragRegion = false;
-		}
-
+		super.mouseReleased(mouseX, mouseY, button);
+		clickedInDragRegion = false;
 		return false;
 	}
 
@@ -203,8 +193,14 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		return NarrationPriority.NONE;
 	}
 
+	@Override
+	public void onClose() {
+		super.onClose();
+		disabled = true;
+	}
+
 	public List<Rect2i> getGuiExtraAreas() {
-		return disabled ? List.of() : extraAreas;
+		return extraAreas;
 	}
 
 	public int getRGBColor() {
@@ -218,6 +214,14 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		b = 1.0F - ((selectionY - colorFieldTop) / COLOR_FIELD_SIZE);
 		updateTextFields(null);
 		onColorChange();
+	}
+
+	private void initHSBValues() {
+		int red = rgbColor >> 16 & 255;
+		int green = rgbColor >> 8 & 255;
+		int blue = rgbColor & 255;
+
+		updateHSBValues(red, green, blue);
 	}
 
 	private void updateHSBValues(int red, int green, int blue) {
@@ -266,6 +270,11 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	public ColorEditBox getRgbHexBox() {
 		return rgbHexBox;
+	}
+
+	@Override
+	public boolean isPauseScreen() {
+		return false;
 	}
 
 	class HueSlider extends ExtendedSlider {
