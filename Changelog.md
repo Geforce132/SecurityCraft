@@ -10,7 +10,7 @@
 - New: The reinforced block tint mode and color can be modified ingame in the Universal Block Reinforcer screen
 - Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
 - Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
-- Change: Un-/Reinforcing blocks is now done by taking them out of the output slot instead of closing the screen
+- Change: Un-/Reinforcing blocks is now done by taking them out of the Universal Block Reinforcer screen's output slot instead of closing the screen
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
 - API: New methods within LinkableBlockEntity for better control over how the list of linked blocks is modified and stored
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
