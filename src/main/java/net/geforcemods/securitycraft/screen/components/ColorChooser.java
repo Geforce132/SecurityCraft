@@ -10,6 +10,8 @@ import java.util.function.ToIntFunction;
 import org.apache.commons.lang3.StringUtils;
 import org.joml.Matrix3x2f;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.minecraft.client.gui.Font;
@@ -47,11 +49,12 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	private int colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight;
 	private final HoverChecker colorFieldHoverChecker;
 	private float selectionX, selectionY;
-	private final int rgbColor;
+	private final Consumer<Integer> onColorChange;
+	private int rgbColor;
 	private ColorEditBox rBox, gBox, bBox, rgbHexBox;
 	private HueSlider hueSlider;
 
-	public ColorChooser(Component title, int xStart, int yStart, int rgbColor) {
+	public ColorChooser(Component title, int xStart, int yStart, int rgbColor, Consumer<Integer> onColorChange) {
 		super(title);
 		this.xStart = xStart;
 		this.yStart = yStart;
@@ -59,7 +62,8 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		colorFieldTop = yStart + 6;
 		colorFieldRight = colorFieldLeft + COLOR_FIELD_SIZE;
 		colorFieldBottom = colorFieldTop + COLOR_FIELD_SIZE;
-		this.rgbColor = rgbColor;
+		this.rgbColor = rgbColor & 0xFFFFFF;
+		this.onColorChange = onColorChange;
 		initHSBValues();
 		colorFieldHoverChecker = new HoverChecker(colorFieldTop, colorFieldBottom, colorFieldLeft, colorFieldRight);
 	}
@@ -107,7 +111,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		rBox.setValue("" + red);
 		gBox.setValue("" + green);
 		bBox.setValue("" + blue);
-		getRgbHexBox().setValue(Integer.toHexString(rgbColor).substring(2));
+		getRgbHexBox().setValue(Integer.toHexString(rgbColor));
 		rBox.setMaxLength(3);
 		gBox.setMaxLength(3);
 		bBox.setMaxLength(3);
@@ -143,7 +147,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	@Override
 	public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, xStart, yStart, 0.0F, 0.0F, 145, 109, 256, 256);
-		guiGraphics.submitGuiElementRenderState(new HorizontalGradientRenderState(RenderPipelines.GUI, TextureSetup.noTexture(), new Matrix3x2f(guiGraphics.pose()), colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F), guiGraphics.peekScissorStack()));
+		guiGraphics.submitGuiElementRenderState(new HorizontalGradientRenderState(RenderPipelines.GUI, TextureSetup.noTexture(), new Matrix3x2f(guiGraphics.pose()), colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0xFFFFFFFF, ClientUtils.HSBtoRGB(h, 1.0F, 1.0F) | 0xFF000000, guiGraphics.peekScissorStack()));
 		guiGraphics.fillGradient(colorFieldLeft, colorFieldTop, colorFieldRight + 1, colorFieldBottom + 1, 0x00000000, 0xFF000000);
 	}
 
@@ -189,6 +193,16 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	@Override
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(keyCode, scanCode))) {
+			onClose();
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
 	public void updateNarration(NarrationElementOutput narrationElementOutput) {}
 
 	@Override
@@ -206,8 +220,12 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		return extraAreas;
 	}
 
+	public int getARGBColor() {
+		return rgbColor | 0xFF000000;
+	}
+
 	public int getRGBColor() {
-		return ClientUtils.HSBtoRGB(h, s, b);
+		return rgbColor;
 	}
 
 	private void setSelection(double mouseX, double mouseY) {
@@ -237,16 +255,17 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 	}
 
 	private void updateTextFields(EditBox excluded) {
-		int currentRGBColor = getRGBColor();
+		int currentRGBColor = ClientUtils.HSBtoRGB(h, s, b);
 		int red = currentRGBColor >> 16 & 255;
 		int green = currentRGBColor >> 8 & 255;
 		int blue = currentRGBColor & 255;
 
+		rgbColor = currentRGBColor;
 		//setting the value directly to prevent a stack overflow due to setValue calling the responder, which in turn calls this
 		trySetText(excluded, rBox, "" + red);
 		trySetText(excluded, gBox, "" + green);
 		trySetText(excluded, bBox, "" + blue);
-		trySetText(excluded, getRgbHexBox(), Integer.toHexString(currentRGBColor).substring(2));
+		trySetText(excluded, getRgbHexBox(), Integer.toHexString(currentRGBColor));
 	}
 
 	private void trySetText(EditBox excluded, ColorEditBox editBox, String value) {
@@ -264,7 +283,9 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 			hueSlider.setValue(h * 360.0D);
 	}
 
-	public void onColorChange() {}
+	public void onColorChange() {
+		onColorChange.accept(rgbColor);
+	}
 
 	private void validateNotEmpty(EditBox box) {
 		if (box != null && !box.isFocused() && box.getValue().isEmpty())

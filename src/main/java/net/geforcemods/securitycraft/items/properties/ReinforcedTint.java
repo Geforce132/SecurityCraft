@@ -26,7 +26,7 @@ public record ReinforcedTint(ItemTintSource base) implements ItemTintSource {
 
 	@Override
 	public int calculate(ItemStack stack, ClientLevel level, LivingEntity entity) {
-		return ClientHandler.mixWithReinforcedTintIfEnabled(base.calculate(stack, level, entity));
+		return ClientHandler.mixWithReinforcedTintIfEnabled(base.calculate(stack, level, entity), null);
 	}
 
 	@Override
