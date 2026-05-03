@@ -101,12 +101,7 @@ public class BlockPocketManagerScreen extends AbstractContainerScreen<BlockPocke
 		outlineButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:blockPocketManager.outline." + (!be.showsOutline() ? "show" : "hide")), this::outlineButtonClicked).pos(outlineButtonX, outlineY).size(outlineButtonWidth, 20).build());
 		manageStructureButton = addRenderableWidget(manageStructureButtonBuilder.pos(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[3]).size(widgetWidth, 20).build());
 		offsetSlider = addRenderableWidget(new CallbackSlider(leftPos + guiWidth / 2 - widgetOffset, topPos + imageHeight / 2 + yOffset[4], widgetWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), Component.empty(), (-size + 2) / 2, (size - 2) / 2, be.getAutoBuildOffset(), true, this::offsetSliderReleased));
-		colorChooser = new ColorChooser(Component.empty(), colorChooserX, outlineY, be.getColor()) {
-			@Override
-			public void onColorChange() {
-				be.setColor(getRGBColor());
-			}
-		};
+		colorChooser = new ColorChooser(Component.empty(), colorChooserX, outlineY, be.getColor(), be::setColor);
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(colorChooserButtonX, outlineY, 20, 20, colorChooser));
 
 		if (!be.isOwnedBy(Minecraft.getInstance().player))

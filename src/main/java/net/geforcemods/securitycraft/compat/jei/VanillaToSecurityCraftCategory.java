@@ -2,16 +2,12 @@ package net.geforcemods.securitycraft.compat.jei;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.types.IRecipeType;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.CommonColors;
 import net.minecraft.world.item.ItemStack;
 
 public class VanillaToSecurityCraftCategory extends BaseCategory {
@@ -19,12 +15,6 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 
 	public VanillaToSecurityCraftCategory(IGuiHelper helper) {
 		super(helper);
-	}
-
-	@Override
-	public void draw(ReinforcerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphicsExtractor guiGraphics, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-		guiGraphics.text(Minecraft.getInstance().font, OUTPUT_TEXT, 24, 5, CommonColors.DARK_GRAY, false);
 	}
 
 	@Override
@@ -40,6 +30,6 @@ public class VanillaToSecurityCraftCategory extends BaseCategory {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, ReinforcerRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.vanillaBlock()));
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 91, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.securityCraftBlock()));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 109, 1).add(VanillaTypes.ITEM_STACK, new ItemStack(recipe.securityCraftBlock()));
 	}
 }
