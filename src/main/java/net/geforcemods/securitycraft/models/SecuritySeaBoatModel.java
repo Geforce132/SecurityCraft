@@ -16,7 +16,7 @@ public class SecuritySeaBoatModel extends BoatModel {
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int packedARGB) {
-		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedARGB);
+		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedARGB, null);
 		List<ModelPart> parts = allParts();
 
 		for (int i = 0; i < parts.size(); i++) {

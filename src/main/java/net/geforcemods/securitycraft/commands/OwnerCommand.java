@@ -1,5 +1,9 @@
 package net.geforcemods.securitycraft.commands;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,6 +26,7 @@ import net.minecraft.server.players.NameAndId;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 public class OwnerCommand {
@@ -96,6 +101,7 @@ public class OwnerCommand {
 				ownable.onOwnerChanged(state, level, pos, null, oldOwner, ownable.getOwner());
 
 			level.sendBlockUpdated(pos, state, state, 3);
+			level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(level.getChunk(pos))); //Queues chunks with modified blocks to be sent to the client, so reinforced block tints are updated properly
 			source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.set.success", "Set the owner at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ()), true);
 			return 1;
 		}
@@ -115,6 +121,7 @@ public class OwnerCommand {
 		BoundingBox area = BoundingBox.fromCorners(BlockPosArgument.getLoadedBlockPos(ctx, "from"), BlockPosArgument.getLoadedBlockPos(ctx, "to"));
 		CommandSourceStack source = ctx.getSource();
 		ServerLevel level = source.getLevel();
+		Set<ChunkAccess> modifiedChunks = new HashSet<>();
 		int blockCount = area.getXSpan() * area.getYSpan() * area.getZSpan();
 		int commandModificationBlockLimit = level.getGameRules().getInt(GameRules.RULE_COMMAND_MODIFICATION_BLOCK_LIMIT);
 
@@ -139,6 +146,7 @@ public class OwnerCommand {
 							ownable.onOwnerChanged(state, level, pos, null, oldOwner, ownable.getOwner());
 
 						level.sendBlockUpdated(pos, state, state, 3);
+						modifiedChunks.add(level.getChunk(pos));
 						blocksModified++;
 					}
 				}
@@ -149,6 +157,7 @@ public class OwnerCommand {
 			else {
 				int finalBlocksModified = blocksModified;
 
+				level.getChunkSource().chunkMap.resendBiomesForChunks(new ArrayList<>(modifiedChunks)); //Queues chunks with modified blocks to be sent to the client, so reinforced block tints are updated properly
 				source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.fill.success", "Successfully set the owner of %s block(s)", finalBlocksModified), true);
 				return blocksModified;
 			}
