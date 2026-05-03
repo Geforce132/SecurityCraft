@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.geforcemods.securitycraft.api.IDisguisable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
@@ -42,6 +43,7 @@ import net.geforcemods.securitycraft.items.properties.CodebreakerState;
 import net.geforcemods.securitycraft.items.properties.HitCheck;
 import net.geforcemods.securitycraft.items.properties.SentryLinked;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
+import net.geforcemods.securitycraft.misc.TintMode;
 import net.geforcemods.securitycraft.models.BlockMineModel;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableDynamicBakedModel;
@@ -111,6 +113,7 @@ import net.geforcemods.securitycraft.screen.SonicSecuritySystemScreen;
 import net.geforcemods.securitycraft.screen.TrophySystemScreen;
 import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -583,7 +586,7 @@ public class ClientHandler {
 		initTint();
 		blocksWithReinforcedTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 0)
-				return mixWithReinforcedTintIfEnabled(tint);
+				return mixWithReinforcedTintIfEnabled(tint, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 			else
 				return 0xFFFFFFFF;
 		}, block));
@@ -606,7 +609,7 @@ public class ClientHandler {
 			}
 
 			if (block instanceof IReinforcedBlock)
-				return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
+				return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 			else
 				return 0xFFFFFFFF;
 		};
@@ -617,16 +620,16 @@ public class ClientHandler {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
 
-				return mixWithReinforcedTintIfEnabled(grassTint);
+				return mixWithReinforcedTintIfEnabled(grassTint, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 			}
 
-			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1)
 				return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
 
-			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF);
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);
@@ -683,7 +686,7 @@ public class ClientHandler {
 	public static void onRegisterColorHandlersItem(RegisterColorHandlersEvent.Item event) {
 		blocksWithReinforcedTint.forEach((item, tint) -> event.register((stack, tintIndex) -> {
 			if (tintIndex == 0)
-				return mixWithReinforcedTintIfEnabled(tint);
+				return mixWithReinforcedTintIfEnabled(tint, null);
 			else
 				return 0xFFFFFFFF;
 		}, item));
@@ -699,7 +702,7 @@ public class ClientHandler {
 			if (tintIndex == 1) {
 				int grassTint = GrassColor.get(0.5D, 1.0D);
 
-				return mixWithReinforcedTintIfEnabled(grassTint);
+				return mixWithReinforcedTintIfEnabled(grassTint, null);
 			}
 
 			return ConfigHandler.CLIENT.reinforcedBlockTintColor.get();
@@ -708,15 +711,11 @@ public class ClientHandler {
 		blocksWithCustomTint = null;
 	}
 
-	public static int mixWithReinforcedTintIfEnabled(int tint) {
-		boolean tintReinforcedBlocks;
+	public static int mixWithReinforcedTintIfEnabled(int tint, IOwnable ownable) {
+		if (ownable == null)
+			return FastColor.ARGB32.multiply(tint, 0xFF000000 | TintMode.color());
 
-		if (Minecraft.getInstance().level == null)
-			tintReinforcedBlocks = ConfigHandler.CLIENT.reinforcedBlockTint.get();
-		else
-			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
-
-		return tintReinforcedBlocks ? FastColor.ARGB32.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
+		return TintMode.tint(tint, ownable);
 	}
 
 	public static Player getClientPlayer() {
@@ -824,7 +823,7 @@ public class ClientHandler {
 
 		be.requestModelDataUpdate();
 		be.getLevel().getModelData(pos); //Actually calculates and applies the new model data that was requested before
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()); //Recompiles the render chunk at the changed position
+		ClientUtils.recompileChunk(pos); //Recompiles the render chunk at the changed position
 	}
 
 	public static boolean isPlayerMountedOnCamera() {

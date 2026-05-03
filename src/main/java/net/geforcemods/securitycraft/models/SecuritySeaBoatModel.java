@@ -14,7 +14,7 @@ public class SecuritySeaBoatModel extends ChestBoatModel {
 
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, int packedARGB) {
-		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedARGB);
+		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedARGB, null);
 		var parts = parts();
 
 		//The last three parts are the chest, and that one should not get tinted

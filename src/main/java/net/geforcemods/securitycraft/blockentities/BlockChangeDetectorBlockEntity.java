@@ -313,7 +313,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 	}
 
 	public void setColor(int color) {
-		this.color = Mth.clamp(color, 0xFF000000, 0xFFFFFFFF);
+		this.color = Mth.clamp(color | 0xFF000000, 0xFF000000, 0xFFFFFFFF);
 	}
 
 	public int getColor() {
