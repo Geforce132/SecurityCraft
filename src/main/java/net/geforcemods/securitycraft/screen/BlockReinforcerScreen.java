@@ -109,40 +109,6 @@ public class BlockReinforcerScreen extends AbstractContainerScreen<BlockReinforc
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
 	}
 
-	@Override
-	protected void containerTick() {
-		if (tintColorChooser != null)
-			tintColorChooser.tick();
-	}
-
-	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (tintColorChooser != null)
-			tintColorChooser.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-
-		return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mouseX, mouseY, button, dragX, dragY) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-	}
-
-	@Override
-	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (tintColorChooser != null) {
-			tintColorChooser.keyPressed(keyCode, scanCode, modifiers);
-
-			if (!tintColorChooser.getRgbHexBox().isFocused())
-				return super.keyPressed(keyCode, scanCode, modifiers);
-		}
-
-		return true;
-	}
-
-	@Override
-	public boolean charTyped(char codePoint, int modifiers) {
-		if (tintColorChooser != null && tintColorChooser.charTyped(codePoint, modifiers))
-			return true;
-
-		return super.charTyped(codePoint, modifiers);
-	}
-
 	private Component updateReinforcingModeButtonText(int index) {
 		return index == 1 ? Utils.localize("gui.securitycraft:blockReinforcer.unreinforcing") : Utils.localize("gui.securitycraft:blockReinforcer.reinforcing");
 	}
