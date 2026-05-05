@@ -2303,7 +2303,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_LIGHTNING_ROD = reinforcedBlock("reinforced_lightning_rod", Blocks.LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_LIGHTNING_ROD = reinforcedBlock("reinforced_lightning_rod", Blocks.LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2754,15 +2754,15 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_EXPOSED_LIGHTNING_ROD = reinforcedBlock("reinforced_exposed_lightning_rod", Blocks.EXPOSED_LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_EXPOSED_LIGHTNING_ROD = reinforcedBlock("reinforced_exposed_lightning_rod", Blocks.EXPOSED_LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_WEATHERED_LIGHTNING_ROD = reinforcedBlock("reinforced_weathered_lightning_rod", Blocks.WEATHERED_LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_WEATHERED_LIGHTNING_ROD = reinforcedBlock("reinforced_weathered_lightning_rod", Blocks.WEATHERED_LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_OXIDIZED_LIGHTNING_ROD = reinforcedBlock("reinforced_oxidized_lightning_rod", Blocks.OXIDIZED_LIGHTNING_ROD, (p, b) -> new ReinforcedLightningRodBlock(p));
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_OXIDIZED_LIGHTNING_ROD = reinforcedBlock("reinforced_oxidized_lightning_rod", Blocks.OXIDIZED_LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
