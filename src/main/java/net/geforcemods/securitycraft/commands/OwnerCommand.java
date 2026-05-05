@@ -2,7 +2,6 @@ package net.geforcemods.securitycraft.commands;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,6 +12,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 
+import net.geforcemods.securitycraft.SCEventHandler;
 import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.Owner;
 import net.minecraft.commands.CommandSourceStack;
@@ -101,7 +101,7 @@ public class OwnerCommand {
 				ownable.onOwnerChanged(state, level, pos, null, oldOwner, ownable.getOwner());
 
 			level.sendBlockUpdated(pos, state, state, 3);
-			level.getChunkSource().chunkMap.resendBiomesForChunks(List.of(level.getChunk(pos))); //Queues chunks with modified blocks to be sent to the client, so reinforced block tints are updated properly
+			SCEventHandler.TINT_UPDATE_QUEUE.computeIfAbsent(level.dimension(), r -> new ArrayList<>()).add(level.getChunk(pos)); //Queues chunks with modified blocks to be sent to the client, so reinforced block tints are updated properly
 			source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.set.success", "Set the owner at %s, %s, %s", pos.getX(), pos.getY(), pos.getZ()), true);
 			return 1;
 		}
@@ -157,7 +157,7 @@ public class OwnerCommand {
 			else {
 				int finalBlocksModified = blocksModified;
 
-				level.getChunkSource().chunkMap.resendBiomesForChunks(new ArrayList<>(modifiedChunks)); //Queues chunks with modified blocks to be sent to the client, so reinforced block tints are updated properly
+				SCEventHandler.TINT_UPDATE_QUEUE.computeIfAbsent(level.dimension(), r -> new ArrayList<>()).addAll(modifiedChunks); //Queues chunks with modified blocks to be sent to the client, so reinforced block tints are updated properly
 				source.sendSuccess(() -> Component.translatableWithFallback("commands.securitycraft.owner.fill.success", "Successfully set the owner of %s block(s)", finalBlocksModified), true);
 				return blocksModified;
 			}

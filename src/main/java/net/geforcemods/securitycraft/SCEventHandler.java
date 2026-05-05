@@ -57,6 +57,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -88,6 +89,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -122,6 +124,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class SCEventHandler {
 	private static final Integer NOTE_DELAY = 9;
 	public static final Map<Player, MutablePair<Integer, List<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
+	public static final Map<ResourceKey<Level>,  List<ChunkAccess>> TINT_UPDATE_QUEUE = new HashMap<>();
 
 	private SCEventHandler() {}
 
@@ -168,6 +171,16 @@ public class SCEventHandler {
 				while (entries.hasNext()) {
 					if (entries.next().getValue().left == -1)
 						entries.remove();
+				}
+			}
+
+			for (ResourceKey<Level> levelResourceKey : TINT_UPDATE_QUEUE.keySet()) {
+				ServerLevel level = event.getServer().getLevel(levelResourceKey);
+				List<ChunkAccess> chunksToRecompile = TINT_UPDATE_QUEUE.get(levelResourceKey);
+
+				if (!chunksToRecompile.isEmpty()) {
+					level.getChunkSource().chunkMap.resendBiomesForChunks(chunksToRecompile); //Tells the client to mark all modified sections as dirty, to properly update block tints. /fillbiome uses this too
+					chunksToRecompile.clear();
 				}
 			}
 		}
