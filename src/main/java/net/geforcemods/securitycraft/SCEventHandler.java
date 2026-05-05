@@ -124,7 +124,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 public class SCEventHandler {
 	private static final Integer NOTE_DELAY = 9;
 	public static final Map<Player, MutablePair<Integer, List<NoteWrapper>>> PLAYING_TUNES = new HashMap<>();
-	public static final Map<ResourceKey<Level>,  List<ChunkAccess>> TINT_UPDATE_QUEUE = new HashMap<>();
+	public static final Map<ResourceKey<Level>, List<ChunkAccess>> TINT_UPDATE_QUEUE = new HashMap<>();
 
 	private SCEventHandler() {}
 
@@ -175,11 +175,10 @@ public class SCEventHandler {
 			}
 
 			for (ResourceKey<Level> levelResourceKey : TINT_UPDATE_QUEUE.keySet()) {
-				ServerLevel level = event.getServer().getLevel(levelResourceKey);
 				List<ChunkAccess> chunksToRecompile = TINT_UPDATE_QUEUE.get(levelResourceKey);
 
 				if (!chunksToRecompile.isEmpty()) {
-					level.getChunkSource().chunkMap.resendBiomesForChunks(chunksToRecompile); //Tells the client to mark all modified sections as dirty, to properly update block tints. /fillbiome uses this too
+					event.getServer().getLevel(levelResourceKey).getChunkSource().chunkMap.resendBiomesForChunks(chunksToRecompile); //Tells the client to mark all modified sections as dirty, to properly update block tints. /fillbiome uses this too
 					chunksToRecompile.clear();
 				}
 			}
