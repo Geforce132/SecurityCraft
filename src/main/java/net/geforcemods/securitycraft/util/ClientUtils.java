@@ -19,8 +19,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 
 public class ClientUtils {
 	//@formatter:off
@@ -76,6 +79,24 @@ public class ClientUtils {
 		bufferBuilder.vertex(m4f, moduleRight, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(1, 0).endVertex();
 		bufferBuilder.vertex(m4f, moduleLeft, moduleTop, 0).color(1.0F, 1.0F, 1.0F, alpha).uv(0, 0).endVertex();
 		BufferUploader.drawWithShader(bufferBuilder.end());
+	}
+
+	public static void recompileChunk(BlockPos pos) {
+		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public static void recompileAllChunksInRange() {
+		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
+		SectionPos current = SectionPos.of(Minecraft.getInstance().player.blockPosition());
+		Level level = Minecraft.getInstance().level;
+
+		for (int x = current.x() - renderDistance; x <= current.x() + renderDistance; x++) {
+			for (int y = level.getMinSection(); y <= level.getMaxSection(); y++) {
+				for (int z = current.z() - renderDistance; z <= current.z() + renderDistance; z++) {
+					Minecraft.getInstance().levelRenderer.setSectionDirty(x, y, z);
+				}
+			}
+		}
 	}
 
 	public static Quaternionf fromXYZDegrees(float x, float y, float z) {
@@ -165,7 +186,7 @@ public class ClientUtils {
 			}
 		}
 
-		return 0xFF000000 | (r << 16) | (g << 8) | b;
+		return (r << 16) | (g << 8) | b;
 	}
 
 	public static float[] RGBtoHSB(int r, int g, int b) {

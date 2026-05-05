@@ -8,10 +8,13 @@
 - New: Option for the Portable Radar to control whether it should send messages if players are in its radius
 - New: Block Pockets can now be disassembled automatically
 - New: Blocks can now also be reinforced and unreinforced in a Crafting Table by combining the convertible block with a Universal Block Reinforcer
+- New: The reinforced block tint can now be adjusted to only apply to owned or unowned blocks
+- New: The reinforced block tint mode and color can be modified ingame in the Universal Block Reinforcer screen
 - Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
 - Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
 - Change: The visible chunks in Frame feeds are no longer expanded by Distant Horizons, to increase stability and performance 
 - Change: The Cage Trap now builds up gradually within roughly half a second when activated
+- Change: Un-/Reinforcing blocks is now done by taking them out of the Universal Block Reinforcer screen's output slot instead of closing the screen
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
 - API: New methods within LinkableBlockEntity for better control over how the list of linked blocks is modified and stored
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
@@ -29,6 +32,9 @@
 - Fix: The value of the Projector's "Range" option changes unexpectedly when toggling the Horizontal mode
 - Fix: Crash related to linking and unlinking Laser Blocks
 - Fix: Projected blocks stop rendering when standing too far away
+- Fix: The sub-screen that is used for choosing outline colors cannot be closed through the inventory key
+- Fix: Some buttons in the Block Pocket Manager and Block Change Detector screens cannot be interacted with using keyboard navigation
+- Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 

@@ -21,13 +21,13 @@ public class ToggleComponentButton extends Button implements IToggleableButton {
 	}
 
 	@Override
-	public void onClick(double mouseX, double mouseY) {
+	public void onPress() {
 		if (Screen.hasShiftDown())
 			cycleIndex(-1);
 		else
 			cycleIndex(1);
 
-		super.onClick(mouseX, mouseY);
+		super.onPress();
 	}
 
 	@Override

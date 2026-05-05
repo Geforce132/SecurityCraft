@@ -16,7 +16,7 @@ public class SecuritySeaBoatModel extends ChestBoatModel {
 	@Override
 	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		int packedColor = FastColor.ARGB32.color((int) (alpha * 255.0F), (int) (red * 255.0F), (int) (green * 255.0F), (int) (blue * 255.0F));
-		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedColor);
+		int tinted = ClientHandler.mixWithReinforcedTintIfEnabled(packedColor, null);
 		float tintedRed = FastColor.ARGB32.red(tinted) / 255.0F;
 		float tintedGreen = FastColor.ARGB32.green(tinted) / 255.0F;
 		float tintedBlue = FastColor.ARGB32.blue(tinted) / 255.0F;

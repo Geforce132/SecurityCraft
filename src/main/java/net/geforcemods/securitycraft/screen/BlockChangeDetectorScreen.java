@@ -105,12 +105,7 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 				be.showHighlights(selected());
 			}
 		});
-		colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor) {
-			@Override
-			public void onColorChange() {
-				be.setColor(getRGBColor());
-			}
-		};
+		colorChooser = new ColorChooser(Component.empty(), settingsX, topPos + 135, previousColor, be::setColor);
 		colorChooserButton = addRenderableWidget(new ColorChooserButton(settingsX, topPos + 115, 20, 20, colorChooser));
 
 		clearButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:editModule.clear")));
@@ -418,13 +413,13 @@ public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChan
 		}
 
 		@Override
-		public void onClick(double mouseX, double mouseY) {
+		public void onPress() {
 			if (Screen.hasShiftDown())
 				setCurrentIndex(currentIndex - 1);
 			else
 				setCurrentIndex(currentIndex + 1);
 
-			super.onClick(mouseX, mouseY);
+			super.onPress();
 		}
 
 		@Override
