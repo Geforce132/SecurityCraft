@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BundleContents;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -149,7 +151,7 @@ public class InventoryUtils {
 
 		void set(int slot, ItemStack stack);
 
-		void setChanged();
+		default void setChanged() {}
 
 		static ItemAccess forContainer(Container container) {
 			return new ItemAccess() {
@@ -191,9 +193,33 @@ public class InventoryUtils {
 				public void set(int slot, ItemStack stack) {
 					list.set(slot, stack);
 				}
+			};
+		}
+
+		static ItemAccess forEntityEquipment(LivingEntity entity) {
+			return new ItemAccess() {
+				@Override
+				public int size() {
+					return EquipmentSlot.values().length;
+				}
 
 				@Override
-				public void setChanged() {}
+				public ItemStack getItem(int slot) {
+					int size = size();
+
+					if (slot < 0 || slot >= size)
+						return ItemStack.EMPTY;
+
+					return entity.getItemBySlot(EquipmentSlot.values()[slot]);
+				}
+
+				@Override
+				public void set(int slot, ItemStack stack) {
+					int size = size();
+
+					if (slot >= 0 || slot < size)
+						entity.setItemSlot(EquipmentSlot.values()[slot], stack);
+				}
 			};
 		}
 	}
