@@ -35,6 +35,7 @@
 - Fix: The sub-screen that is used for choosing outline colors cannot be closed through the inventory key
 - Fix: Some buttons in the Block Pocket Manager and Block Change Detector screens cannot be interacted with using keyboard navigation
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
+- Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
