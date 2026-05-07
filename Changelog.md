@@ -38,6 +38,7 @@
 - Fix: Some buttons in the Block Pocket Manager and Block Change Detector screens cannot be interacted with using keyboard navigation
 - Fix: Lightning Rods and their oxidized variants cannot be reinforced properly or at all
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
+- Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
 
 --------------------------Changelog for v1.10.1-beta3 of SecurityCraft--------------------------
 
