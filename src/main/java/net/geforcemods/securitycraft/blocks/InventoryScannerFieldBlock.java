@@ -5,6 +5,7 @@ import java.util.List;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.OwnableBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
+import net.geforcemods.securitycraft.compat.curios.CuriosCompat;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.InventoryUtils;
@@ -44,6 +45,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.fml.ModList;
 
 public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWaterloggedBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -103,7 +105,16 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 		if (entity instanceof LivingEntity living && !be.isConsideredInvisible(living) && !be.isAllowed(entity)) {
 			if (living instanceof Player player && (!be.isOwnedBy(player) || !be.ignoresOwner())) {
 				player.closeContainer(); //Fixes item smuggling using nearby containers
-				return checkInventory(ItemAccess.forContainer(player.getInventory()), be, allowInteraction);
+
+				boolean foundItem = checkInventory(ItemAccess.forContainer(player.getInventory()), be, allowInteraction);
+
+				if (ModList.get().isLoaded("curios") && CuriosCompat.hasCuriosInventory(player)) {
+					for (ItemAccess itemAccess : CuriosCompat.getCuriosItemAccess(player)) {
+						foundItem |= checkInventory(itemAccess, be, allowInteraction);
+					}
+				}
+
+				return foundItem;
 			}
 			else if (living instanceof AbstractChestedHorse horse)
 				return checkInventory(ItemAccess.forContainer(horse.getInventory()), be, allowInteraction);
