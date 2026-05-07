@@ -9,6 +9,8 @@ import net.geforcemods.securitycraft.blocks.InventoryScannerFieldBlock;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EntityEquipment;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.component.BundleContents;
@@ -150,7 +152,7 @@ public class InventoryUtils {
 
 		void set(int slot, ItemStack stack);
 
-		void setChanged();
+		default void setChanged() {}
 
 		static ItemAccess forContainer(Container container) {
 			return new ItemAccess() {
@@ -192,9 +194,25 @@ public class InventoryUtils {
 				public void set(int slot, ItemStack stack) {
 					list.set(slot, stack);
 				}
+			};
+		}
+
+		static ItemAccess forEntityEquipment(EntityEquipment equipment, EquipmentSlot... validSlots) {
+			return new ItemAccess() {
+				@Override
+				public int size() {
+					return validSlots.length;
+				}
 
 				@Override
-				public void setChanged() {}
+				public ItemStack getItem(int slot) {
+					return equipment.get(validSlots[slot]);
+				}
+
+				@Override
+				public void set(int slot, ItemStack stack) {
+					equipment.set(validSlots[slot], stack);
+				}
 			};
 		}
 	}
