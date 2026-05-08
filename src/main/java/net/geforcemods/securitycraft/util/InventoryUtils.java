@@ -11,6 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -196,6 +198,33 @@ public class InventoryUtils {
 				@Override
 				public void set(int slot, ItemStack stack) {
 					list.set(slot, stack);
+				}
+			};
+		}
+
+		static ItemAccess forEntityEquipment(LivingEntity entity) {
+			return new ItemAccess() {
+				@Override
+				public int size() {
+					return EquipmentSlot.values().length;
+				}
+
+				@Override
+				public ItemStack getItem(int slot) {
+					int size = size();
+
+					if (slot < 0 || slot >= size)
+						return ItemStack.EMPTY;
+
+					return entity.getItemBySlot(EquipmentSlot.values()[slot]);
+				}
+
+				@Override
+				public void set(int slot, ItemStack stack) {
+					int size = size();
+
+					if (slot >= 0 || slot < size)
+						entity.setItemSlot(EquipmentSlot.values()[slot], stack);
 				}
 			};
 		}
