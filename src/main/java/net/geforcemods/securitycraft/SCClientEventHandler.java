@@ -187,18 +187,19 @@ public class SCClientEventHandler {
 
 	public static void cameraOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
+
+		if (mc.options.hideGui)
+			return;
+
 		Level level = mc.level;
 		BlockPos pos = mc.getCameraEntity().blockPosition();
-		Window window = mc.getWindow();
-		int scaledWidth = window.getGuiScaledWidth();
-		int scaledHeight = window.getGuiScaledHeight();
-
-		if (mc.options.hideGui || mc.getDebugOverlay().showDebugScreen())
-			return;
 
 		if (!(level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be))
 			return;
 
+		Window window = mc.getWindow();
+		int scaledWidth = window.getGuiScaledWidth();
+		int scaledHeight = window.getGuiScaledHeight();
 		Font font = Minecraft.getInstance().font;
 		Options options = Minecraft.getInstance().options;
 		BlockState state = level.getBlockState(pos);
