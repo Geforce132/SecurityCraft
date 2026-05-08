@@ -39,6 +39,7 @@
 - Fix: Some buttons in the Block Pocket Manager and Block Change Detector screens cannot be interacted with using keyboard navigation
 - Fix: Players can smuggle items past Inventory Scanners by interacting with nearby containers 
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
+- Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
