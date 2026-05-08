@@ -16,6 +16,7 @@
 - Change: The visible chunks in Frame feeds are no longer expanded by Distant Horizons, to increase stability and performance 
 - Change: The Cage Trap now builds up gradually within roughly half a second when activated
 - Change: Un-/Reinforcing blocks is now done by taking them out of the Universal Block Reinforcer screen's output slot instead of closing the screen
+- Change: The camera overlay screen will now show even when debug screen entries (F3) are enabled
 - API: New method Owner#isTreatedTheSameAs to check if everything owned by one owner is also owned by the other owner
 - API: New methods within LinkableBlockEntity for better control over how the list of linked blocks is modified and stored
 - Fix: Some Briefcase and Keycard interactions do not respect whether the player is wearing an Incognito Mask
