@@ -98,8 +98,10 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 		if (entity instanceof LivingEntity living && !be.isConsideredInvisible(living) && !be.isAllowed(entity)) {
 			boolean foundItem;
 
-			if (living instanceof Player player && (!be.isOwnedBy(player) || !be.ignoresOwner()))
+			if (living instanceof Player player && (!be.isOwnedBy(player) || !be.ignoresOwner())) {
+				player.closeContainer(); //Fixes item smuggling using nearby containers
 				return checkInventory(ItemAccess.forContainer(player.getInventory()), be, allowInteraction);
+			}
 
 			foundItem = checkInventory(ItemAccess.forEntityEquipment(living), be, allowInteraction);
 
