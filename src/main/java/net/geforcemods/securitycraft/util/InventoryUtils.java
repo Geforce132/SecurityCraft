@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -16,7 +15,7 @@ import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 
 public class InventoryUtils {
-	public static ItemStack addItemToStorage(Container container, int start, int endInclusive, ItemStack stack) {
+	public static ItemStack addItemToStorage(ItemAccess container, int start, int endInclusive, ItemStack stack) {
 		ItemStack remainder = stack;
 
 		for (int i = start; i <= endInclusive; i++) {
@@ -29,7 +28,7 @@ public class InventoryUtils {
 		return remainder;
 	}
 
-	public static ItemStack insertItem(Container container, int slot, ItemStack stackToInsert) {
+	public static ItemStack insertItem(ItemAccess container, int slot, ItemStack stackToInsert) {
 		if (stackToInsert.isEmpty())
 			return stackToInsert;
 
@@ -37,7 +36,7 @@ public class InventoryUtils {
 		int limit = stackToInsert.getItem().getMaxStackSize(stackToInsert);
 
 		if (slotStack.isEmpty()) {
-			container.setItem(slot, stackToInsert);
+			container.set(slot, stackToInsert);
 			container.setChanged();
 			return ItemStack.EMPTY;
 		}
@@ -60,14 +59,14 @@ public class InventoryUtils {
 		return stackToInsert;
 	}
 
-	public static int checkInventoryForItem(List<ItemStack> inventory, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+	public static int checkInventoryForItem(ItemAccess inventory, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
 		return checkInventoryForItem(inventory, 0, inventory.size() - 1, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
 	}
 
-	public static int checkInventoryForItem(List<ItemStack> inventory, int startSlot, int endSlotInclusive, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
+	public static int checkInventoryForItem(ItemAccess inventory, int startSlot, int endSlotInclusive, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem, BiConsumer<Integer, ItemStack> handleRemainingItemInSlot) {
 		if (itemsLeftToFind > 0) {
 			for (int i = endSlotInclusive; i >= startSlot; i--) { //Iteration in backwards order, so slot numbers still match when an entry is removed from the inventory
-				itemsLeftToFind = checkItemsInInventorySlot(inventory.get(i), i, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
+				itemsLeftToFind = checkItemsInInventorySlot(inventory.getItem(i), i, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, handleRemainingItemInSlot);
 
 				if (itemsLeftToFind == 0)
 					break;
@@ -108,7 +107,7 @@ public class InventoryUtils {
 			NonNullList<ItemStack> containerItems = NonNullList.withSize(contents.size(), ItemStack.EMPTY);
 
 			contents.stream().map(tag -> ItemStack.of((CompoundTag) tag)).forEach(containerItems::add);
-			itemsLeftToFind = checkInventoryForItem(containerItems, stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, containerItems::set);
+			itemsLeftToFind = checkInventoryForItem(ItemAccess.forList(containerItems), stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, containerItems::set);
 
 			if (shouldRemoveItems) {
 				ListTag newContents = new ListTag();
@@ -125,7 +124,7 @@ public class InventoryUtils {
 		if (itemsLeftToFind > 0 && bundle != null && bundle.getItem() instanceof BundleItem) {
 			List<ItemStack> bundleItems = BundleItem.getContents(bundle).collect(Collectors.toList());
 
-			itemsLeftToFind = checkInventoryForItem(new ArrayList<>(bundleItems), stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
+			itemsLeftToFind = checkInventoryForItem(ItemAccess.forList(bundleItems), stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
 				if (stack.isEmpty())
 					bundleItems.remove((int) i);
 				else
@@ -147,5 +146,58 @@ public class InventoryUtils {
 		}
 
 		return Integer.MAX_VALUE - itemsLeftToFind;
+	}
+
+	public interface ItemAccess {
+		int size();
+
+		ItemStack getItem(int slot);
+
+		void set(int slot, ItemStack stack);
+
+		default void setChanged() {}
+
+		static ItemAccess forContainer(Container container) {
+			return new ItemAccess() {
+				@Override
+				public int size() {
+					return container.getContainerSize();
+				}
+
+				@Override
+				public ItemStack getItem(int slot) {
+					return container.getItem(slot);
+				}
+
+				@Override
+				public void set(int slot, ItemStack stack) {
+					container.setItem(slot, stack);
+				}
+
+				@Override
+				public void setChanged() {
+					container.setChanged();
+				}
+			};
+		}
+
+		static ItemAccess forList(List<ItemStack> list) {
+			return new ItemAccess() {
+				@Override
+				public int size() {
+					return list.size();
+				}
+
+				@Override
+				public ItemStack getItem(int slot) {
+					return list.get(slot);
+				}
+
+				@Override
+				public void set(int slot, ItemStack stack) {
+					list.set(slot, stack);
+				}
+			};
+		}
 	}
 }

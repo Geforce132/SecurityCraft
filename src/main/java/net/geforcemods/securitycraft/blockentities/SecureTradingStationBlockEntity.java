@@ -17,6 +17,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.InventoryUtils;
+import net.geforcemods.securitycraft.util.InventoryUtils.ItemAccess;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -124,7 +125,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 				int quantityPerTransaction = paymentRequest.getValue();
 				int totalQuantity = quantityPerTransaction * transactions;
 
-				InventoryUtils.checkInventoryForItem(menu.paymentInput.items, paymentStackToMatch, totalQuantity, hasSmartModule, true, this::handleConsumedPaymentItem, menu.paymentInput::setItem);
+				InventoryUtils.checkInventoryForItem(ItemAccess.forList(menu.paymentInput.items), paymentStackToMatch, totalQuantity, hasSmartModule, true, this::handleConsumedPaymentItem, menu.paymentInput::setItem);
 			}
 
 			if (hasRewardReferenceStacks()) {
@@ -136,7 +137,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 					int quantityPerTransaction = rewardEntry.getValue();
 					int totalQuantity = quantityPerTransaction * transactions;
 
-					InventoryUtils.checkInventoryForItem(inventoryContents, 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 0, Direction.DOWN, itemSpawningPos), inventoryContents::set);
+					InventoryUtils.checkInventoryForItem(ItemAccess.forList(inventoryContents), 12, 19, rewardStackToMatch, totalQuantity, hasSmartModule, true, stack -> DefaultDispenseItemBehavior.spawnItem(level, stack, 0, Direction.DOWN, itemSpawningPos), inventoryContents::set);
 				}
 			}
 
@@ -156,7 +157,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		ItemStack remainder = paymentStack;
 
 		if (isModuleEnabled(ModuleType.STORAGE))
-			remainder = InventoryUtils.addItemToStorage(this, 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
+			remainder = InventoryUtils.addItemToStorage(ItemAccess.forContainer(this), 4, 11, paymentStack); //This operation will set paymentStack to be empty if the stack was successfully placed into the slots
 
 		if (!remainder.isEmpty())
 			DefaultDispenseItemBehavior.spawnItem(level, remainder, 0, Direction.DOWN, getBaseItemSpawnPos().relative(getBlockState().getValue(SecureTradingStationBlock.FACING).getOpposite(), 0.7));

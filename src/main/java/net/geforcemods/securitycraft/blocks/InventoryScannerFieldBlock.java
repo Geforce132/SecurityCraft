@@ -8,9 +8,9 @@ import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.InventoryUtils;
+import net.geforcemods.securitycraft.util.InventoryUtils.ItemAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -124,9 +124,9 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
-		NonNullList<ItemStack> inventoryItems = player.getInventory().items;
-		NonNullList<ItemStack> armorItems = player.getInventory().armor;
-		NonNullList<ItemStack> offhandItems = player.getInventory().offhand;
+		ItemAccess inventoryItems = ItemAccess.forList(player.getInventory().items);
+		ItemAccess armorItems = ItemAccess.forList(player.getInventory().armor);
+		ItemAccess offhandItems = ItemAccess.forList(player.getInventory().offhand);
 
 		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (be.isOwnedBy(player) && be.ignoresOwner()))
 			return false;
@@ -173,7 +173,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 	}
 
 	private static void addItemToStorage(ItemStack stack, InventoryScannerBlockEntity be) {
-		ItemStack remainder = InventoryUtils.addItemToStorage(be, 10, be.getContents().size() - 1, stack);
+		ItemStack remainder = InventoryUtils.addItemToStorage(ItemAccess.forContainer(be), 10, be.getContents().size() - 1, stack);
 
 		if (!remainder.isEmpty())
 			Block.popResource(be.getLevel(), be.getBlockPos(), remainder.copy());
