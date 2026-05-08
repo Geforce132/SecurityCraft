@@ -12,8 +12,11 @@ import net.geforcemods.securitycraft.util.InventoryUtils.ItemAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -59,23 +62,8 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 		Level level = entity.getCommandSenderWorld();
 		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, pos);
 
-		if (connectedScanner != null && connectedScanner.doesFieldSolidify()) {
-			if (entity instanceof Player player && !connectedScanner.isConsideredInvisible(player)) {
-				if (connectedScanner.isAllowed(entity))
-					return Shapes.empty();
-
-				List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
-
-				if (!prohibitedItems.isEmpty() && checkInventory(player, connectedScanner, prohibitedItems, false))
-					return getShape(state, level, pos, ctx);
-			}
-			else if (entity instanceof ItemEntity item) {
-				List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
-
-				if (!prohibitedItems.isEmpty() && checkItemEntity(item, connectedScanner, prohibitedItems, false))
-					return getShape(state, level, pos, ctx);
-			}
-		}
+		if (connectedScanner != null && connectedScanner.doesFieldSolidify() && scanEntity(entity, connectedScanner, false))
+			return getShape(state, blockGetter, pos, ctx);
 
 		return Shapes.empty();
 	}
@@ -103,41 +91,45 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 		if (connectedScanner == null || connectedScanner.doesFieldSolidify())
 			return;
 
-		if (entity instanceof Player player && !connectedScanner.isConsideredInvisible(player)) {
-			if (connectedScanner.isAllowed(entity))
-				return;
-
-			List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
-
-			if (!prohibitedItems.isEmpty())
-				checkInventory(player, connectedScanner, prohibitedItems, true);
-		}
-		else if (entity instanceof ItemEntity item) {
-			List<ItemStack> prohibitedItems = connectedScanner.getAllProhibitedItems();
-
-			if (!prohibitedItems.isEmpty())
-				checkItemEntity(item, connectedScanner, prohibitedItems, true);
-		}
+		scanEntity(entity, connectedScanner, true);
 	}
 
-	public static boolean checkInventory(Player player, InventoryScannerBlockEntity be, List<ItemStack> prohibitedItems, boolean allowInteraction) {
+	public static boolean scanEntity(Entity entity, InventoryScannerBlockEntity be, boolean allowInteraction) {
+		if (entity instanceof LivingEntity living && !be.isConsideredInvisible(living) && !be.isAllowed(entity)) {
+			boolean foundItem;
+
+			if (living instanceof Player player && (!be.isOwnedBy(player) || !be.ignoresOwner()))
+				return checkInventory(ItemAccess.forContainer(player.getInventory()), be, allowInteraction);
+
+			foundItem = checkInventory(ItemAccess.forEntityEquipment(living), be, allowInteraction);
+
+			if (living instanceof AbstractChestedHorse horse)
+				foundItem |= checkInventory(ItemAccess.forContainer(horse.getInventory()), be, allowInteraction);
+
+			return foundItem;
+		}
+		else if (entity instanceof ContainerEntity containerEntity)
+			return checkInventory(ItemAccess.forContainer(containerEntity), be, allowInteraction);
+		else if (entity instanceof ItemEntity item)
+			return checkItemEntity(item, be, allowInteraction);
+
+		return false;
+	}
+
+	public static boolean checkInventory(ItemAccess inventoryAccess, InventoryScannerBlockEntity be, boolean allowInteraction) {
 		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
-		ItemAccess inventoryItems = ItemAccess.forList(player.getInventory().items);
-		ItemAccess armorItems = ItemAccess.forList(player.getInventory().armor);
-		ItemAccess offhandItems = ItemAccess.forList(player.getInventory().offhand);
+		List<ItemStack> prohibitedItems = be.getAllProhibitedItems();
 
-		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction) || (be.isOwnedBy(player) && be.ignoresOwner()))
+		if (prohibitedItems.isEmpty() || (!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;
 
 		for (ItemStack prohibitedStack : prohibitedItems) {
-			int removeInventoryItems = InventoryUtils.checkInventoryForItem(inventoryItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), inventoryItems::set);
-			int removeArmorItems = InventoryUtils.checkInventoryForItem(armorItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), armorItems::set);
-			int removeOffhandItems = InventoryUtils.checkInventoryForItem(offhandItems, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), offhandItems::set);
+			int removeInventoryItems = InventoryUtils.checkInventoryForItem(inventoryAccess, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), inventoryAccess::set);
 
-			if (removeInventoryItems < Integer.MAX_VALUE || removeArmorItems < Integer.MAX_VALUE || removeOffhandItems < Integer.MAX_VALUE) {
-				if (hasRedstoneModule)
+			if (removeInventoryItems < Integer.MAX_VALUE) {
+				if (hasRedstoneModule && !be.isProvidingPower())
 					updateInventoryScannerPower(be);
 
 				return true;
@@ -147,12 +139,13 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 		return false;
 	}
 
-	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity be, List<ItemStack> prohibitedItems, boolean allowInteraction) {
+	public static boolean checkItemEntity(ItemEntity entity, InventoryScannerBlockEntity be, boolean allowInteraction) {
 		boolean hasSmartModule = be.isModuleEnabled(ModuleType.SMART);
 		boolean hasStorageModule = allowInteraction && be.isModuleEnabled(ModuleType.STORAGE);
 		boolean hasRedstoneModule = allowInteraction && be.isModuleEnabled(ModuleType.REDSTONE);
+		List<ItemStack> prohibitedItems = be.getAllProhibitedItems();
 
-		if ((!hasRedstoneModule && !hasStorageModule && allowInteraction))
+		if (prohibitedItems.isEmpty() || (!hasRedstoneModule && !hasStorageModule && allowInteraction))
 			return false;
 
 		for (ItemStack prohibitedStack : prohibitedItems) {
