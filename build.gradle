@@ -108,6 +108,7 @@ dependencies {
 	compileOnly "curse.maven:embeddium-908741:6116910"
 	compileOnly "maven.modrinth:sodium:mc1.21.6-0.6.13-neoforge" //incompatible with embeddium
 	compileOnly "curse.maven:distant-horizons-508933:7977116"
+	implementation "curse.maven:curios-309927:7642207"
 }
 
 tasks.named('jar', Jar).configure {
