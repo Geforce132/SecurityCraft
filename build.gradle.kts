@@ -95,6 +95,7 @@ dependencies {
 	compileOnly("curse.maven:projecte-226410:3955047")
 	compileOnly("curse.maven:embeddium-908741:6116910") //incompatible with sodium
 	compileOnly("curse.maven:distant-horizons-508933:7977120")
+	implementation("curse.maven:curios-309927:7642213")
 
 	deps("sodium_internal") {
 		val sodiumArtifact = "maven.modrinth:sodium:${deps("sodium")}"
