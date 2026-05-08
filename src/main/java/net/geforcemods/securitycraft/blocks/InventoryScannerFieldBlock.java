@@ -144,7 +144,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 			int removeInventoryItems = InventoryUtils.checkInventoryForItem(inventoryAccess, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), inventoryAccess::set);
 
 			if (removeInventoryItems < Integer.MAX_VALUE) {
-				if (hasRedstoneModule)
+				if (hasRedstoneModule && !be.isProvidingPower())
 					updateInventoryScannerPower(be);
 
 				return true;
@@ -170,7 +170,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 			});
 
 			if (removeItems < Integer.MAX_VALUE) {
-				if (hasRedstoneModule)
+				if (hasRedstoneModule && !be.isProvidingPower())
 					updateInventoryScannerPower(be);
 
 				return true;
