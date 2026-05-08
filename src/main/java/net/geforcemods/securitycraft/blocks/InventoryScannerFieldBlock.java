@@ -14,12 +14,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.equine.AbstractChestedHorse;
-import net.minecraft.world.entity.animal.fox.Fox;
-import net.minecraft.world.entity.animal.golem.CopperGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.ContainerEntity;
@@ -103,10 +100,12 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 
 	public static boolean scanEntity(Entity entity, InventoryScannerBlockEntity be, boolean allowInteraction) {
 		if (entity instanceof LivingEntity living && !be.isConsideredInvisible(living) && !be.isAllowed(entity)) {
+			boolean foundItem;
+
 			if (living instanceof Player player && (!be.isOwnedBy(player) || !be.ignoresOwner())) {
 				player.closeContainer(); //Fixes item smuggling using nearby containers
 
-				boolean foundItem = checkInventory(ItemAccess.forContainer(player.getInventory()), be, allowInteraction);
+				foundItem = checkInventory(ItemAccess.forContainer(player.getInventory()), be, allowInteraction);
 
 				if (ModList.get().isLoaded("curios") && CuriosCompat.hasCuriosInventory(player)) {
 					for (ItemAccess itemAccess : CuriosCompat.getCuriosItemAccess(player)) {
@@ -116,15 +115,16 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 
 				return foundItem;
 			}
-			else if (living instanceof AbstractChestedHorse horse)
-				return checkInventory(ItemAccess.forContainer(horse.getInventory()), be, allowInteraction);
-			else if (living instanceof Fox fox)
-				return checkInventory(ItemAccess.forEntityEquipment(fox.equipment, EquipmentSlot.MAINHAND), be, allowInteraction);
-			else if (living instanceof CopperGolem golem)
-				return checkInventory(ItemAccess.forEntityEquipment(golem.equipment, EquipmentSlot.MAINHAND), be, allowInteraction);
+
+			foundItem = checkInventory(ItemAccess.forEntityEquipment(living), be, allowInteraction);
+
+			if (living instanceof AbstractChestedHorse horse)
+				foundItem |= checkInventory(ItemAccess.forContainer(horse.getInventory()), be, allowInteraction);
+
+			return foundItem;
 		}
 		else if (entity instanceof ContainerEntity containerEntity)
-			return checkInventory(ItemAccess.forList(containerEntity.getItemStacks()), be, allowInteraction);
+			return checkInventory(ItemAccess.forContainer(containerEntity), be, allowInteraction);
 		else if (entity instanceof ItemEntity item)
 			return checkItemEntity(item, be, allowInteraction);
 

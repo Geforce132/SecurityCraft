@@ -10,6 +10,7 @@
 - New: The reinforced block tint can now be adjusted to only apply to owned or unowned blocks
 - New: The reinforced block tint mode and color can be modified ingame in the Universal Block Reinforcer screen
 - New: Inventory Scanners will now react to items in the inventories of various entities, including Donkeys, Minecarts with Chests, and Boats with Chests
+- New: Inventory Scanners will now react to items in the equipment slots of living entities
 - New: Inventory Scanners will now react to items equipped in the player's Curio inventory, if the mod Curios is installed
 - Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
 - Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
