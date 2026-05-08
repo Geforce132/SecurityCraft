@@ -97,9 +97,7 @@ public class CameraSelectScreen extends Screen {
 						cameraName = cameraBe.getCustomName().getString();
 
 					if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
-						if (!cameraBe.isModuleEnabled(ModuleType.REDSTONE))
-							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
-						else
+						if (cameraBe.isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
 					}
 					else
