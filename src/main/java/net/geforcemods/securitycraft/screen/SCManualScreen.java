@@ -101,7 +101,7 @@ public class SCManualScreen extends Screen {
 
 		startX = (width - 256) / 2;
 		patreonLinkButton = addRenderableWidget(new HyperlinkButton(startX + 225, 143, 16, 16, Component.empty(), b -> handleComponentClicked(Style.EMPTY.withClickEvent(new ClickEvent(Action.OPEN_URL, "https://www.patreon.com/Geforce")))));
-		patronList = addRenderableWidget(new PatronList(minecraft, 115, 90, 50, startX + 125));
+		patronList = addRenderableWidget(new PatronList(minecraft, 112, 90, 50, startX + 130));
 		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 95, false, b -> previousSubpage()));
 		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 95, true, b -> nextSubpage()));
 		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, false, b -> previousPage()));
@@ -202,7 +202,7 @@ public class SCManualScreen extends Screen {
 			}
 
 			guiGraphics.drawString(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0x8E8270, false);
-			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, 0, false);
+			guiGraphics.drawString(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 34, 40, 0, false);
 		}
 	}
 
