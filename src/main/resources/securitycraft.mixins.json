@@ -28,6 +28,9 @@
 		"datafix.V3439Mixin",
 		"datafix.V4067Mixin",
 		"datafix.V99Mixin",
+		"mines.BrushItemMixin",
+		"mines.NewMinecartBehaviorMixin",
+		"mines.OldMinecartBehaviorMixin",
 		"passcode.ServerGamePacketListenerImplMixin",
 		"passcode.StructureTemplateMixin",
 		"potion.BrewingStandMenuMixin",
@@ -35,8 +38,10 @@
 		"reinforced.PortalForcerMixin",
 		"reinforced.ShearsItemMixin",
 		"reinforced.ToolMaterialMixin",
-		"reinforced.VanillaInventoryCodeHooksMixin",
-		"suspiciousmines.BrushItemMixin"
+		"reinforced.VanillaInventoryCodeHooksMixin"
 	],
-	"minVersion": "0.8"
+	"minVersion": "0.8",
+	"mixinextras": {
+		"minVersion": "0.5.0"
+	}
 }
