@@ -2,23 +2,36 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.141'
+	id 'net.neoforged.moddev' version "${mdg_version}"
 }
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-version = '1.10.1-beta3'
-group = 'net.geforcemods.securitycraft'
+version = "${mod_version}"
+group = "net.geforcemods.${mod_id}"
 
 base {
-	archivesName = 'securitycraft'
+	archivesName = "${mod_id}"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(25)
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+java.toolchain.languageVersion = JavaLanguageVersion.of(java_version)
 
 processResources {
+	var expandProps = [
+		'mod_name': mod_name,
+		'mod_id': mod_id,
+		'mod_version': mod_version,
+		'authors': authors,
+		'neoforge_min_version': neoforge_min_version,
+		'mc_min_version': mc_min_version
+	]
+
+	filesMatching(['META-INF/neoforge.mods.toml']) {
+		expand expandProps
+	}
+
+	inputs.properties(expandProps)
 	exclude ".cache"
 	duplicatesStrategy = 'include'
 
@@ -35,7 +48,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "26.1.2.22-beta"
+	version = "${neoforge_version}"
 	validateAccessTransformers = true
 
 	runs {
@@ -62,12 +75,12 @@ neoForge {
 
 		data {
 			clientData()
-			programArguments.addAll('--mod', 'securitycraft', '--all', '--output', file('src/generated/resources/').getAbsolutePath())
+			programArguments.addAll('--mod', "${mod_id}", '--all', '--output', file('src/generated/resources/').getAbsolutePath())
 		}
 	}
 
 	mods {
-		securitycraft {
+		"${mod_id}" {
 			sourceSet(sourceSets.main)
 		}
 	}
@@ -98,39 +111,39 @@ repositories {
 }
 
 dependencies {
-	implementation "curse.maven:ftb-library-forge-404465:7971743" //FTB Teams dependency
-	implementation "curse.maven:ftb-teams-forge-404468:7972096"
-	implementation "curse.maven:jei-238222:7920926"
-    //compileOnly "curse.maven:the-one-probe-245211:5502323" //Incompatible at compile time because of ResourceLocation -> Identifier
-	implementation "curse.maven:jade-324717:7938398"
-	implementation "curse.maven:betterf3-401648:7952333"
-	implementation "curse.maven:cloth-config-348521:7817583" //BetterF3 dependency
-	implementation "curse.maven:wthit-forge-455982:7880673"
-	implementation "curse.maven:badpackets-615134:7878544" //WTHIT dependency
-	compileOnly "curse.maven:projecte-226410:3955047"
-	compileOnly "curse.maven:embeddium-908741:6116910" //Incompatible with Sodium
+	implementation "curse.maven:ftb-library-forge-404465:${ftb_library}" //FTB Teams dependency
+	implementation "curse.maven:ftb-teams-forge-404468:${ftb_teams}"
+	implementation "curse.maven:jei-238222:${jei}"
+    //compileOnly "curse.maven:the-one-probe-245211:${top}" //Incompatible at compile time because of ResourceLocation -> Identifier
+	implementation "curse.maven:jade-324717:${jade}"
+	implementation "curse.maven:betterf3-401648:${betterf3}"
+	implementation "curse.maven:cloth-config-348521:${cloth_config}" //BetterF3 dependency
+	implementation "curse.maven:wthit-forge-455982:${wthit}"
+	implementation "curse.maven:badpackets-615134:${badpackets}" //WTHIT dependency
+	compileOnly "curse.maven:projecte-226410:${projecte}"
+	compileOnly "curse.maven:embeddium-908741:${embeddium}" //Incompatible with Sodium
 	// The actual mod jar is jarjar'd into the Modrinth jar, but NeoForge doesn't load it, so the mod has to be added from CaffeineMCs' maven separately
-	compileOnly "maven.modrinth:sodium:mc26.1.1-0.8.9-neoforge"
-	compileOnly "net.caffeinemc:sodium-neoforge-mod:0.8.9+mc26.1.1"
+	compileOnly "maven.modrinth:sodium:mc${sodium_mc}-${sodium_self}-neoforge"
+	compileOnly "net.caffeinemc:sodium-neoforge-mod:${sodium_self}+mc${sodium_mc}"
 }
 
 tasks.named('jar', Jar).configure {
-	exclude('net/geforcemods/securitycraft/datagen/**') //exclude files from the built jar that are only used to generate the assets & data
-	archiveFileName = "[${project.mc_version}] SecurityCraft v${version}.jar"
+	exclude("net/geforcemods/${mod_id}/datagen/**") //exclude files from the built jar that are only used to generate the assets & data
+	archiveFileName = "[${project.mc_version}] ${mod_name} v${mod_version}.jar"
 	manifest {
-		attributes(["Specification-Title": "SecurityCraft",
-					"Specification-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep",
-					"Specification-Version": "${version}",
-					"Implementation-Title": "SecurityCraft",
-					"Implementation-Version": "${version}",
-					"Implementation-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep"],)
+		attributes(["Specification-Title": "${mod_name}",
+					"Specification-Vendor": "${authors}",
+					"Specification-Version": "${mod_version}",
+					"Implementation-Title": "${mod_name}",
+					"Implementation-Version": "${mod_version}",
+					"Implementation-Vendor": "${authors}"],)
 	}
 }
 
 tasks.withType(JavaCompile).configureEach {
 	options.compilerArgs << "-Xmaxerrs" << "10000"
 	options.encoding = 'UTF-8'
-	options.release = 25
+	options.getRelease().set(java_version.toInteger())
 }
 
 idea {

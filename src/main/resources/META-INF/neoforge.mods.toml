@@ -1,34 +1,34 @@
 logoFile="sc_banner.png"
-license="MIT https://github.com/Geforce132/SecurityCraft/blob/master/LICENSE"
-issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
+license="MIT https://github.com/Geforce132/${mod_name}/blob/master/LICENSE"
+issueTrackerURL="http://github.com/Geforce132/${mod_name}/issues"
 
 [[mods]]
-	modId="securitycraft"
-	version="${file.jarVersion}"
-	displayName="SecurityCraft"
-	updateJSONURL="https://www.github.com/Geforce132/SecurityCraft/raw/master/Updates/Forge.json"
+	modId="${mod_id}"
+	version="${mod_version}"
+	displayName="${mod_name}"
+	updateJSONURL="https://www.github.com/Geforce132/${mod_name}/raw/master/Updates/Forge.json"
 	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.'''
 	displayURL="https://discord.gg/U8DvBAW"
 	credits="Thanks to all of you guys for your support!"
-	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
+	authors="${authors}"
 	enumExtensions="META-INF/enum_extensions.json"
 
 [[mixins]]
-    config="securitycraft.mixins.json"
+    config="${mod_id}.mixins.json"
 
-[[dependencies.securitycraft]]
+[[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"
-    versionRange="[26.1.2.21-beta,)"
+    versionRange="[${neoforge_min_version},)"
     ordering="NONE"
     side="BOTH"
 
-[[dependencies.securitycraft]]
+[[dependencies.${mod_id}]]
     modId="minecraft"
     type="required"
-    versionRange="[26.1,)"
+    versionRange="[${mc_min_version},)"
     ordering="NONE"
     side="BOTH"
 
-[modproperties.securitycraft]
+[modproperties.${mod_id}]
     catalogueImageIcon="sc_logo.png"
