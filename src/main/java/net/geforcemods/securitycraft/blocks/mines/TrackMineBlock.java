@@ -49,7 +49,6 @@ public class TrackMineBlock extends RailBlock implements IExplosive, EntityBlock
 			NeoForge.EVENT_BUS.post(new OwnershipEvent(level, pos, player));
 	}
 
-	@Override
 	public void onMinecartPass(BlockState state, Level level, BlockPos pos, AbstractMinecart cart) {
 		if (level.getBlockEntity(pos) instanceof TrackMineBlockEntity be && be.isActive()) {
 			level.destroyBlock(pos, false);
