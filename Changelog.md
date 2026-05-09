@@ -41,6 +41,7 @@
 - Fix: A Projector placed on the ceiling has the wrong breaking particles
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
+- Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
