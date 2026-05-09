@@ -2,7 +2,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"projector": "securitycraft:block/ceiling_projector",
-		"particle": "securitycraft:block/ceiling_projector"
+		"particle": "block/iron_block"
 	},
 	"elements": [
 		{
