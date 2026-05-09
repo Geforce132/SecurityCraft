@@ -42,6 +42,7 @@
 - Fix: Some buttons in the Block Pocket Manager and Block Change Detector screens cannot be interacted with using keyboard navigation
 - Fix: Lightning Rods and their oxidized variants cannot be reinforced properly or at all
 - Fix: Players can smuggle items past Inventory Scanners by interacting with nearby containers 
+- Fix: A Projector placed on the ceiling has the wrong breaking particles
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
