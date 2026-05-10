@@ -42,9 +42,11 @@
 - Fix: Some buttons in the Block Pocket Manager and Block Change Detector screens cannot be interacted with using keyboard navigation
 - Fix: Players can smuggle items past Inventory Scanners by interacting with nearby containers 
 - Fix: A Projector placed on the ceiling has the wrong breaking particles
+- Fix: Rail Mines do not work
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
+- Misc.: The minimum required NeoForge version is now 21.8.18
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 

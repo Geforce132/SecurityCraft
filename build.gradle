@@ -35,7 +35,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.8.13"
+	version = "21.8.53"
 	validateAccessTransformers = true
 
 	runs {

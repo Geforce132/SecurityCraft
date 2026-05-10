@@ -1,4 +1,4 @@
-package net.geforcemods.securitycraft.mixin.suspiciousmines;
+package net.geforcemods.securitycraft.mixin.mines;
 
 import java.util.function.Predicate;
 
