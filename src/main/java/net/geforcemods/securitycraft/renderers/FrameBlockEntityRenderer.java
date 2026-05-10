@@ -155,7 +155,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	private void renderNoise(PoseStack pose, MultiBufferSource buffer, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
-		renderTexture(pose, buffer, NOISE_BACKGROUND.buffer(buffer, RenderType::entitySolid), vertices, packedLight, normal, margin);
+		renderTexture(pose, buffer, NOISE_BACKGROUND.buffer(buffer, RenderType::entitySolid), vertices, packedLight, normal, margin, 0.0625f, 0.9375f);
 	}
 
 	private void renderSolidTexture(PoseStack pose, MultiBufferSource buffer, ResourceLocation texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
@@ -167,6 +167,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	}
 
 	private void renderTexture(PoseStack pose, MultiBufferSource buffer, VertexConsumer bufferBuilder, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+		renderTexture(pose, buffer, bufferBuilder, vertices, packedLight, normal, margin, 0, 1);
+	}
+
+	private void renderTexture(PoseStack pose, MultiBufferSource buffer, VertexConsumer bufferBuilder, Vector4f vertices, int packedLight, Vec3i normal, float margin, float minUv, float maxUv) {
 		Pose last = pose.last();
 		Matrix4f lastPose = last.pose();
 		float xStart = vertices.x;
@@ -177,10 +181,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		int ny = normal.getY();
 		int nz = normal.getZ();
 
-		bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFFFFFF).uv(1, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
-		bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).color(0xFFFFFF).uv(1, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
-		bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).color(0xFFFFFF).uv(0, 0).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
-		bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFFFFFF).uv(0, 1).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
+		bufferBuilder.vertex(lastPose, xStart, margin, zStart).color(0xFFFFFF).uv(maxUv, maxUv).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
+		bufferBuilder.vertex(lastPose, xStart, 1 - margin, zStart).color(0xFFFFFF).uv(maxUv, minUv).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
+		bufferBuilder.vertex(lastPose, xEnd, 1 - margin, zEnd).color(0xFFFFFF).uv(minUv, minUv).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
+		bufferBuilder.vertex(lastPose, xEnd, margin, zEnd).color(0xFFFFFF).uv(minUv, maxUv).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(nx, ny, nz).endVertex();
 
 		if (buffer instanceof MultiBufferSource.BufferSource bufferSource)
 			bufferSource.endBatch();
