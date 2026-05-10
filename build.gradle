@@ -104,7 +104,7 @@ dependencies {
 	implementation fg.deobf("curse.maven:projecte-226410:4901949")
 	implementation fg.deobf("curse.maven:embeddium-908741:5681725")
 	compileOnly fg.deobf("curse.maven:distant-horizons-508933:7948170")
-	implementation "curse.maven:curios-309927:6418456"
+	implementation fg.deobf("curse.maven:curios-309927:6418456")
 }
 
 mixin {
