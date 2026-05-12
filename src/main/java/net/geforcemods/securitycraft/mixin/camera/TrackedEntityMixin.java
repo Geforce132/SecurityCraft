@@ -1,12 +1,13 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import net.geforcemods.securitycraft.misc.BlockEntityTracker;
@@ -26,7 +27,9 @@ public abstract class TrackedEntityMixin {
 	@Final
 	private Entity entity;
 
-	@ModifyVariable(method = "updatePlayer", name = "flag", at = @At(value = "JUMP", opcode = Opcodes.IFEQ, shift = At.Shift.BEFORE, ordinal = 2))
+	@Definition(id = "visibleToPlayer", local = @Local(type = boolean.class, ordinal = 0))
+	@Expression("visibleToPlayer")
+	@ModifyVariable(method = "updatePlayer", at = @At("MIXINEXTRAS:EXPRESSION"))
 	private boolean securitycraft$modifyFlag(boolean original, ServerPlayer player, @Local(ordinal = 0) double viewDistance) {
 		if (original)
 			return true;
