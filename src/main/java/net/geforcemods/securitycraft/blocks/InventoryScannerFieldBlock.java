@@ -142,7 +142,7 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 			int removeInventoryItems = InventoryUtils.checkInventoryForItem(inventoryAccess, prohibitedStack, Integer.MAX_VALUE, hasSmartModule, hasStorageModule, stack -> addItemToStorage(stack, be), inventoryAccess::set);
 
 			if (removeInventoryItems < Integer.MAX_VALUE) {
-				if (hasRedstoneModule && !be.isProvidingPower())
+				if (hasRedstoneModule)
 					updateInventoryScannerPower(be);
 
 				return true;
@@ -186,13 +186,15 @@ public class InventoryScannerFieldBlock extends OwnableBlock implements SimpleWa
 	}
 
 	private static void updateInventoryScannerPower(InventoryScannerBlockEntity be) {
-		InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(be.getLevel(), be.getBlockPos());
+		if (!be.isProvidingPower() || be.getSignalLength() == 0) {
+			InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(be.getLevel(), be.getBlockPos());
 
-		if (connectedScanner == null)
-			return;
+			if (connectedScanner == null)
+				return;
 
-		be.togglePowerOutput();
-		connectedScanner.togglePowerOutput();
+			be.togglePowerOutput();
+			connectedScanner.togglePowerOutput();
+		}
 	}
 
 	/**
