@@ -466,6 +466,10 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 		setChanged();
 	}
 
+	public int getSignalLength() {
+		return signalLength.get();
+	}
+
 	public boolean isConsideredInvisible(LivingEntity entity) {
 		return respectInvisibility.isConsideredInvisible(entity);
 	}
