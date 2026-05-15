@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.misc;
 
 import net.geforcemods.securitycraft.api.IOwnable;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Player;
@@ -39,8 +38,8 @@ public enum TintMode {
 		return true;
 	}
 
-	public static int tint(int baseTint, IOwnable ownable) {
-		return mode().shouldTint(Minecraft.getInstance().player, ownable) ? FastColor.ARGB32.multiply(baseTint, 0xFF000000 | TintMode.color()) : baseTint;
+	public static int tint(Player player, int baseTint, IOwnable ownable) {
+		return mode().shouldTint(player, ownable) ? FastColor.ARGB32.multiply(baseTint, 0xFF000000 | TintMode.color()) : baseTint;
 	}
 
 	public final Component translate() {
