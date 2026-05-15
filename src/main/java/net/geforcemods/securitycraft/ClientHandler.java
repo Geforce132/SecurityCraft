@@ -666,7 +666,7 @@ public class ClientHandler {
 		if (ownable == null)
 			return ARGB.multiply(tint, 0xFF000000 | TintMode.color());
 
-		return TintMode.tint(tint, ownable);
+		return TintMode.tint(Minecraft.getInstance().player, tint, ownable);
 	}
 
 	public static Player getClientPlayer() {
