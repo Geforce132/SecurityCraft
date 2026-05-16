@@ -24,15 +24,15 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable {
+	public static final int LOGGER_LIST_SIZE = 100;
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
-	private IntOption searchRadius = new IntOption("searchRadius", 3, 1, 20, 1);
-	private DisabledOption disabled = new DisabledOption(false);
-	private IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
-	private RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
-	private IntOption repeatedLogInterval = new IntOption("repeatedLogInterval", 1, 1, 120, 1);
-	private String[] players = new String[100];
-	private String[] uuids = new String[100];
-	private long[] timestamps = new long[100];
+	private final IntOption searchRadius = new IntOption("searchRadius", 3, 1, 20, 1);
+	private final DisabledOption disabled = new DisabledOption(false);
+	private final IgnoreOwnerOption ignoreOwner = new IgnoreOwnerOption(true);
+	private final RespectInvisibilityOption respectInvisibility = new RespectInvisibilityOption();
+	private final IntOption repeatedLogInterval = new IntOption("repeatedLogInterval", 1, 1, 120, 1);
+	private UsernameLoggerEntry[] entries = new UsernameLoggerEntry[LOGGER_LIST_SIZE];
+	private int nextEmptyIndex = -1;
 	private int cooldown = TICKS_BETWEEN_ATTACKS;
 
 	public UsernameLoggerBlockEntity(BlockPos pos, BlockState state) {
@@ -52,17 +52,41 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 			if (!nearbyPlayers.isEmpty()) {
 				boolean changed = false;
-				int playerIndex = 0;
 
-				for (int i = 0; i < getPlayers().length && playerIndex < nearbyPlayers.size(); i++) {
-					if (getPlayers()[i] == null || getPlayers()[i].equals("")) {
-						Player player = nearbyPlayers.get(playerIndex++);
+				for (Player nearbyPlayer : nearbyPlayers) {
+					String nearbyPlayerName = nearbyPlayer.getName().getString();
+					boolean wasPlayerAdded = false;
 
-						getPlayers()[i] = player.getName().getString();
-						getUuids()[i] = player.getGameProfile().id().toString();
-						getTimestamps()[i] = timestamp;
-						changed = true;
+					if (isModuleEnabled(ModuleType.SMART)) {
+						for (int i = LOGGER_LIST_SIZE - 1; i >= 0; i--) { //Loop the entry list from back to front, overwriting the bottommost entry instead of the topmost one
+							UsernameLoggerEntry entry = getEntry(i);
+
+							if (entry != null && entry.playerName.equals(nearbyPlayerName)) {
+								getEntries()[i] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
+								wasPlayerAdded = true;
+								break;
+							}
+						}
 					}
+
+					if (!wasPlayerAdded) {
+						if (nextEmptyIndex < 0) {
+							for (int i = 0; i < LOGGER_LIST_SIZE; i++) {
+								if (getEntries()[i] == null) {
+									nextEmptyIndex = i;
+									break;
+								}
+							}
+						}
+
+						if (nextEmptyIndex >= 0 && nextEmptyIndex < LOGGER_LIST_SIZE) { //The index is still -1 if the list is full when the index is determined
+							getEntries()[nextEmptyIndex++] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
+							wasPlayerAdded = true;
+						}
+					}
+
+					if (wasPlayerAdded)
+						changed = true;
 				}
 
 				if (changed) {
@@ -78,8 +102,8 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	private boolean wasPlayerRecentlyAdded(String username, long timestamp) {
 		long timeout = repeatedLogInterval.get() * 1000L;
 
-		for (int i = 0; i < getPlayers().length; i++) {
-			if (getPlayers()[i] != null && getPlayers()[i].equals(username) && (getTimestamps()[i] + timeout) > timestamp) //was within the timeout that the same player was last added
+		for (UsernameLoggerEntry entry : getEntries()) {
+			if (entry != null && entry.playerName.equals(username) && (entry.timestamp + timeout) > timestamp) //was within the timeout that the same player was last added
 				return true;
 		}
 
@@ -90,35 +114,47 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		for (int i = 0; i < getPlayers().length; i++) {
-			tag.putString("player" + i, getPlayers()[i] == null ? "" : getPlayers()[i]);
-			tag.putString("uuid" + i, getUuids()[i] == null ? "" : getUuids()[i]);
-			tag.putLong("timestamp" + i, getTimestamps()[i]);
+		for (int i = 0; i < LOGGER_LIST_SIZE; i++) {
+			UsernameLoggerEntry entry = getEntry(i);
+
+			if (entry != null) {
+				tag.putString("player" + i, entry.playerName);
+				tag.putString("uuid" + i, entry.uuid);
+				tag.putLong("timestamp" + i, entry.timestamp);
+			}
 		}
 	}
 
 	@Override
 	public void loadAdditional(ValueInput tag) {
 		super.loadAdditional(tag);
+		clearEntries();
 
-		for (int i = 0; i < getPlayers().length; i++) {
-			getPlayers()[i] = tag.getStringOr("player" + i, "");
-			getUuids()[i] = tag.getStringOr("uuid" + i, "");
-			getTimestamps()[i] = tag.getLongOr("timestamp" + i, 0);
+		for (int i = 0; i < LOGGER_LIST_SIZE; i++) {
+			String playerName = tag.getStringOr("player" + i, "");
+
+			if (!playerName.isEmpty()) {
+				String uuid = tag.getStringOr("uuid" + i, "");
+				long timestamp = tag.getLongOr("timestamp" + i, 0);
+
+				getEntries()[i] = new UsernameLoggerEntry(playerName, uuid, timestamp);
+			}
 		}
 	}
 
 	public void syncLoggedPlayersToClient() {
-		for (int i = 0; i < getPlayers().length; i++) {
-			if (getPlayers()[i] != null)
-				PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, ChunkPos.containing(worldPosition), new UpdateLogger(worldPosition, i, getPlayers()[i], getUuids()[i], getTimestamps()[i]));
+		for (int i = 0; i < LOGGER_LIST_SIZE; i++) {
+			UsernameLoggerEntry entry = getEntry(i);
+
+			if (entry != null)
+				PacketDistributor.sendToPlayersTrackingChunk((ServerLevel) level, ChunkPos.containing(worldPosition), new UpdateLogger(worldPosition, i, entry.playerName, entry.uuid, entry.timestamp));
 		}
 	}
 
 	@Override
 	public ModuleType[] acceptedModules() {
 		return new ModuleType[] {
-				ModuleType.DISGUISE, ModuleType.ALLOWLIST
+				ModuleType.DISGUISE, ModuleType.ALLOWLIST, ModuleType.SMART
 		};
 	}
 
@@ -138,19 +174,21 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		return ignoreOwner.get();
 	}
 
-	public String[] getPlayers() {
-		return players;
+	public UsernameLoggerEntry[] getEntries() {
+		return entries;
 	}
 
-	public void setPlayers(String[] players) {
-		this.players = players;
+	public UsernameLoggerEntry getEntry(int index) {
+		if (index >= LOGGER_LIST_SIZE)
+			return null;
+
+		return getEntries()[index];
 	}
 
-	public String[] getUuids() {
-		return uuids;
+	public void clearEntries() {
+		entries = new UsernameLoggerEntry[LOGGER_LIST_SIZE];
+		nextEmptyIndex = -1;
 	}
 
-	public long[] getTimestamps() {
-		return timestamps;
-	}
+	public record UsernameLoggerEntry(String playerName, String uuid, long timestamp) {}
 }

@@ -2,6 +2,7 @@ package net.geforcemods.securitycraft.network.client;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity.UsernameLoggerEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -29,10 +30,7 @@ public record UpdateLogger(BlockPos pos, int index, String username, String uuid
 	public void handle(IPayloadContext ctx) {
 		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) ctx.player().level().getBlockEntity(pos);
 
-		if (be != null) {
-			be.getPlayers()[index] = username;
-			be.getUuids()[index] = uuid;
-			be.getTimestamps()[index] = timestamp;
-		}
+		if (be != null)
+			be.getEntries()[index] = new UsernameLoggerEntry(username, uuid, timestamp);
 	}
 }
