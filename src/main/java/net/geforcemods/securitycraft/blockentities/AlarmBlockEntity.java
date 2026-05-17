@@ -10,11 +10,10 @@ import net.geforcemods.securitycraft.api.Option.IntOption;
 import net.geforcemods.securitycraft.blocks.AlarmBlock;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.SCSounds;
-import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
+import net.geforcemods.securitycraft.network.client.ToggleAlarmSound;
 import net.geforcemods.securitycraft.util.AlarmSoundHandler;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
@@ -30,9 +29,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	public static final int MAXIMUM_ALARM_SOUND_LENGTH = 3600; //one hour
-	private IntOption range = new IntOption("range", 17, 0, ConfigHandler.getOrDefault(ConfigHandler.SERVER.maxAlarmRange), 1);
-	private DisabledOption disabled = new DisabledOption(false);
-	private BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
+	private final IntOption range = new IntOption("range", 17, 0, ConfigHandler.getOrDefault(ConfigHandler.SERVER.maxAlarmRange), 1);
+	private final DisabledOption disabled = new DisabledOption(false);
+	private final BooleanOption resetCooldown = new BooleanOption("resetCooldown", true);
 	private int cooldown = 0;
 	private boolean isPowered = false;
 	private SoundEvent sound = SCSounds.ALARM.event;
@@ -46,19 +45,25 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 
 	@Override
 	public void tick(Level level, BlockPos pos, BlockState state) {
-		if (level.isClientSide() && soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT)))
-			stopPlayingSound();
+		if (!level.isClientSide() && soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT))) {
+			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2))) {
+				PacketDistributor.sendToPlayer(player, new ToggleAlarmSound(worldPosition, false, 0.0F, 0));
+			}
+
+			soundPlaying = false;
+		}
 
 		if (!isDisabled() && isPowered && --cooldown <= 0) { //Even though isPowered is only explicitly set serverside, it is always synched to the client via NBT due to the block state change
 			if (!level.isClientSide()) {
 				double rangeSqr = Math.pow(range.get(), 2);
-				Holder<SoundEvent> soundEventHolder = BuiltInRegistries.SOUND_EVENT.wrapAsHolder(isModuleEnabled(ModuleType.SMART) ? sound : SCSounds.ALARM.event);
 
 				for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
 					float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-					PacketDistributor.sendToPlayer(player, new PlayAlarmSound(worldPosition, soundEventHolder, volume, getPitch(), player.level().getRandom().nextLong()));
+					PacketDistributor.sendToPlayer(player, new ToggleAlarmSound(worldPosition, true, volume, player.level().getRandom().nextLong()));
 				}
+
+				soundPlaying = true;
 			}
 
 			setCooldown(soundLength * 20);
@@ -163,8 +168,8 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 			stopPlayingSound();
 	}
 
-	public void playSound(Level level, double x, double y, double z, Holder<SoundEvent> sound, float volume, float pitch, long seed) {
-		AlarmSoundHandler.playSound(this, level, x, y, z, sound, SoundSource.BLOCKS, volume, pitch, seed);
+	public void playSound(Level level, double x, double y, double z, float volume, long seed) {
+		AlarmSoundHandler.playSound(this, level, x, y, z, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(getSound()), SoundSource.BLOCKS, volume, getPitch(), seed);
 		soundPlaying = true;
 	}
 
