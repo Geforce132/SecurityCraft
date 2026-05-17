@@ -50,11 +50,11 @@ import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
 import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.network.client.SendManualPages;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.client.ToggleAlarmSound;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
@@ -515,11 +515,11 @@ public class ClientHandler {
 	public static void onRegisterClientPayloadsHandlers(RegisterClientPayloadHandlersEvent event) {
 		event.register(InteractWithFrame.TYPE, InteractWithFrame::handle);
 		event.register(OpenScreen.TYPE, OpenScreen::handle);
-		event.register(PlayAlarmSound.TYPE, PlayAlarmSound::handle);
 		event.register(RefreshDisguisableModel.TYPE, RefreshDisguisableModel::handle);
 		event.register(SendManualPages.TYPE, SendManualPages::handle);
 		event.register(SetCameraView.TYPE, SetCameraView::handle);
 		event.register(SetTrophySystemTarget.TYPE, SetTrophySystemTarget::handle);
+		event.register(ToggleAlarmSound.TYPE, ToggleAlarmSound::handle);
 		event.register(UpdateLaserColors.TYPE, UpdateLaserColors::handle);
 		event.register(UpdateLogger.TYPE, UpdateLogger::handle);
 	}
