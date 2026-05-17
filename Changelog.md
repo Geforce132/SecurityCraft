@@ -42,6 +42,7 @@
 - Fix: Players can smuggle items past Inventory Scanners by interacting with nearby containers 
 - Fix: A Projector placed on the ceiling has the wrong breaking particles
 - Fix: The Alarm sometimes interrupts its sound directly after being powered
+- Fix: Visual issues when viewing a Frame feed while a post effect is active, e.g. when spectating a Creeper
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
