@@ -60,38 +60,13 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 				for (Player nearbyPlayer : nearbyPlayers) {
 					String nearbyPlayerName = nearbyPlayer.getName().getString();
-					boolean wasPlayerAdded = false;
 
-					if (isModuleEnabled(ModuleType.SMART)) {
-						for (int i = LOGGER_LIST_SIZE - 1; i >= 0; i--) { //Loop the entry list from back to front, overwriting the bottommost entry instead of the topmost one
-							UsernameLoggerEntry entry = getEntry(i);
-
-							if (entry != null && entry.playerName.equals(nearbyPlayerName)) {
-								getEntries()[i] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
-								wasPlayerAdded = true;
-								break;
-							}
-						}
-					}
-
-					if (!wasPlayerAdded) {
-						if (nextEmptyIndex < 0) {
-							for (int i = 0; i < LOGGER_LIST_SIZE; i++) {
-								if (getEntries()[i] == null) {
-									nextEmptyIndex = i;
-									break;
-								}
-							}
-						}
-
-						if (nextEmptyIndex >= 0 && nextEmptyIndex < LOGGER_LIST_SIZE) { //The index is still -1 if the list is full when the index is determined
-							getEntries()[nextEmptyIndex++] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
-							wasPlayerAdded = true;
-						}
-					}
-
-					if (wasPlayerAdded)
+					if (isModuleEnabled(ModuleType.SMART) && overrideLastEntry(nearbyPlayer, nearbyPlayerName, timestamp))
 						changed = true;
+					else {
+						if (addEntry(nearbyPlayer, nearbyPlayerName, timestamp))
+							changed = true;
+					}
 				}
 
 				if (changed) {
@@ -101,6 +76,43 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 			}
 
 			cooldown = TICKS_BETWEEN_ATTACKS;
+		}
+	}
+
+	public boolean overrideLastEntry(Player nearbyPlayer, String nearbyPlayerName, long timestamp) {
+		//Loop the entry list from back to front, overwriting the bottommost entry instead of the topmost one
+		for (int i = LOGGER_LIST_SIZE - 1; i >= 0; i--) {
+			UsernameLoggerEntry entry = getEntry(i);
+
+			if (entry != null && entry.playerName.equals(nearbyPlayerName)) {
+				getEntries()[i] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean addEntry(Player nearbyPlayer, String nearbyPlayerName, long timestamp) {
+		updateNextEmptyIndex();
+
+		//The index is still -1 if the list is full when the index is determined
+		if (nextEmptyIndex >= 0 && nextEmptyIndex < LOGGER_LIST_SIZE) {
+			getEntries()[nextEmptyIndex++] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
+			return true;
+		}
+
+		return false;
+	}
+
+	private void updateNextEmptyIndex() {
+		if (nextEmptyIndex < 0) {
+			for (int i = 0; i < LOGGER_LIST_SIZE; i++) {
+				if (getEntries()[i] == null) {
+					nextEmptyIndex = i;
+					break;
+				}
+			}
 		}
 	}
 
