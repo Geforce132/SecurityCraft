@@ -21,10 +21,10 @@ import net.geforcemods.securitycraft.entity.SecuritySeaBoat;
 import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.client.ToggleAlarmSound;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
@@ -166,10 +166,10 @@ public class RegistrationHandler {
 
 		registrar.playToClient(InteractWithFrame.TYPE, InteractWithFrame.STREAM_CODEC, InteractWithFrame::handle);
 		registrar.playToClient(OpenScreen.TYPE, OpenScreen.STREAM_CODEC, OpenScreen::handle);
-		registrar.playToClient(PlayAlarmSound.TYPE, PlayAlarmSound.STREAM_CODEC, PlayAlarmSound::handle);
 		registrar.playToClient(RefreshDisguisableModel.TYPE, RefreshDisguisableModel.STREAM_CODEC, RefreshDisguisableModel::handle);
 		registrar.playToClient(SetCameraView.TYPE, SetCameraView.STREAM_CODEC, SetCameraView::handle);
 		registrar.playToClient(SetTrophySystemTarget.TYPE, SetTrophySystemTarget.STREAM_CODEC, SetTrophySystemTarget::handle);
+		registrar.playToClient(ToggleAlarmSound.TYPE, ToggleAlarmSound.STREAM_CODEC, ToggleAlarmSound::handle);
 		registrar.playToClient(UpdateLaserColors.TYPE, UpdateLaserColors.STREAM_CODEC, UpdateLaserColors::handle);
 		registrar.playToClient(UpdateLogger.TYPE, UpdateLogger.STREAM_CODEC, UpdateLogger::handle);
 		registrar.playToServer(CheckBriefcasePasscode.TYPE, CheckBriefcasePasscode.STREAM_CODEC, CheckBriefcasePasscode::handle);
