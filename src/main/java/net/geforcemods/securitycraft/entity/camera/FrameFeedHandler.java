@@ -137,7 +137,7 @@ public class FrameFeedHandler {
 					float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(partialTick, be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
 
 					securityCamera.setPos(cameraEntityPos);
-					mc.setCameraEntity(securityCamera);
+					mc.cameraEntity = securityCamera; //Don't use the setter because the post effect shouldn't be modified
 					securityCamera.setXRot(cameraXRot);
 					securityCamera.setYRot(cameraYRot);
 					currentlyCapturedCamera = cameraPos;
@@ -174,7 +174,7 @@ public class FrameFeedHandler {
 		}
 
 		securityCamera.discard();
-		mc.setCameraEntity(oldCamEntity);
+		mc.cameraEntity = oldCamEntity; //Don't use the setter because the post effect shouldn't be modified
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
 		mc.levelRenderer.renderChunksInFrustum.clear();
