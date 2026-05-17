@@ -9,6 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public record SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float pitch, int soundLength) implements CustomPacketPayload {
@@ -39,6 +40,8 @@ public record SyncAlarmSettings(BlockPos pos, ResourceLocation soundEvent, float
 
 			if (soundLength != be.getSoundLength())
 				be.setSoundLength(soundLength);
+
+			player.level().sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), Block.UPDATE_ALL);
 		}
 	}
 }
