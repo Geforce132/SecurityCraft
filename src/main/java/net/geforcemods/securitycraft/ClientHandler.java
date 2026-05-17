@@ -496,11 +496,11 @@ public class ClientHandler {
 	public static void onRegisterClientPayloadsHandlers(RegisterClientPayloadHandlersEvent event) {
 		event.register(InteractWithFrame.TYPE, InteractWithFrame::handle);
 		event.register(OpenScreen.TYPE, OpenScreen::handle);
-		event.register(ToggleAlarmSound.TYPE, ToggleAlarmSound::handle);
 		event.register(RefreshDisguisableModel.TYPE, RefreshDisguisableModel::handle);
 		event.register(SendManualPages.TYPE, SendManualPages::handle);
 		event.register(SetCameraView.TYPE, SetCameraView::handle);
 		event.register(SetTrophySystemTarget.TYPE, SetTrophySystemTarget::handle);
+		event.register(ToggleAlarmSound.TYPE, ToggleAlarmSound::handle);
 		event.register(UpdateLaserColors.TYPE, UpdateLaserColors::handle);
 		event.register(UpdateLogger.TYPE, UpdateLogger::handle);
 	}
