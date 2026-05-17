@@ -14,6 +14,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity.UsernameLoggerEntry;
 import net.geforcemods.securitycraft.network.server.ClearLoggerServer;
 import net.geforcemods.securitycraft.screen.components.SmallButton;
 import net.geforcemods.securitycraft.util.Utils;
@@ -51,7 +52,7 @@ public class UsernameLoggerScreen extends Screen {
 		topPos = (height - imageHeight) / 2;
 
 		Button clearButton = addRenderableWidget(SmallButton.createWithX(leftPos + 4, topPos + 4, b -> {
-			be.setPlayers(new String[100]);
+			be.clearEntries();
 			PacketDistributor.sendToServer(new ClearLoggerServer(be.getBlockPos()));
 		}));
 
@@ -113,7 +114,7 @@ public class UsernameLoggerScreen extends Screen {
 
 		@Override
 		protected int getContentHeight() {
-			int height = be.getPlayers().length * (font.lineHeight + 3);
+			int height = UsernameLoggerBlockEntity.LOGGER_LIST_SIZE * (font.lineHeight + 3);
 
 			if (height < bottom - top - 4)
 				height = bottom - top - 4;
@@ -135,16 +136,13 @@ public class UsernameLoggerScreen extends Screen {
 				int slotIndex = mouseListY / SLOT_HEIGHT;
 
 				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
-					String[] players = be.getPlayers();
+					UsernameLoggerEntry entry = be.getEntry(slotIndex);
 
-					if (players[slotIndex] != null && !players[slotIndex].isEmpty()) {
-						Component localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(be.getTimestamps()[slotIndex])));
-						String[] uuids = be.getUuids();
+					if (entry != null) {
+						Component localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(entry.timestamp())));
 
-						if (uuids[slotIndex] != null && !uuids[slotIndex].isEmpty())
-							guiGraphics.renderTooltip(font, Component.literal(be.getUuids()[slotIndex]), mouseX, mouseY);
-
-						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 4210752, false);
+						guiGraphics.renderTooltip(font, Component.literal(entry.uuid().toString()), mouseX, mouseY);
+						guiGraphics.drawString(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, 0x404040, false);
 					}
 				}
 			}
@@ -159,9 +157,9 @@ public class UsernameLoggerScreen extends Screen {
 
 			//highlight hovered slot
 			if (mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
-				String[] players = be.getPlayers();
+				UsernameLoggerEntry entry = be.getEntry(slotIndex);
 
-				if (players[slotIndex] != null && !players[slotIndex].isEmpty()) {
+				if (entry != null) {
 					int min = left;
 					int max = entryRight - 6; //6 is the width of the scrollbar
 					int slotTop = baseY + slotIndex * SLOT_HEIGHT;
@@ -184,9 +182,11 @@ public class UsernameLoggerScreen extends Screen {
 			}
 
 			//draw entry strings
-			for (int i = 0; i < be.getPlayers().length; i++) {
-				if (be.getPlayers()[i] != null && !be.getPlayers()[i].equals(""))
-					guiGraphics.drawString(font, be.getPlayers()[i], left + width / 2 - font.width(be.getPlayers()[i]) / 2, relativeY + (SLOT_HEIGHT * i), 0xC6C6C6, false);
+			for (int i = 0; i < be.getEntries().length; i++) {
+				UsernameLoggerEntry entry = be.getEntry(i);
+
+				if (entry != null)
+					guiGraphics.drawString(font, entry.playerName(), left + width / 2 - font.width(entry.playerName()) / 2, relativeY + (SLOT_HEIGHT * i), 0xFFC6C6C6, false);
 			}
 		}
 

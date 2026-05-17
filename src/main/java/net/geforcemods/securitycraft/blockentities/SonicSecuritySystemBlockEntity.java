@@ -218,7 +218,7 @@ public class SonicSecuritySystemBlockEntity extends DisguisableBlockEntity imple
 					GlobalPos.CODEC.decode(NbtOps.INSTANCE, entry).result().ifPresentOrElse(pair -> linkedBlocks.add(pair.getFirst()), () -> linkedBlocks.add(null));
 				}
 				catch (Exception exception) {
-					SecurityCraft.LOGGER.error("Failed to load global pos in Sonic Security System at position {}: {}", worldPosition, entry, exception);
+					SecurityCraft.LOGGER.error("Failed to load global pos in Sonic Security System at position {}: {}\n{}", worldPosition, entry, exception);
 				}
 			}
 		}
