@@ -44,7 +44,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
@@ -357,7 +356,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 	@Override
 	public void reviveCaps() {
-		storageHandlers = null; //recreated in getExtractionHandler
+		storageHandlers = null; //recreated in getInventoryHandler
 		insertOnlyHandlers = null; //recreated in getInsertOnlyHandler
 		super.reviveCaps();
 	}
@@ -366,21 +365,14 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 		if (storageHandlers == null)
 			storageHandlers = SidedInvWrapper.create(this, Direction.values());
 
-		return storageHandlers[side.get3DDataValue()];
+		return side != null ? storageHandlers[side.get3DDataValue()] : storageHandlers[Direction.DOWN.get3DDataValue()];
 	}
 
 	public LazyOptional<IItemHandlerModifiable> getInsertOnlyHandler(Direction side) {
 		if (insertOnlyHandlers == null)
 			insertOnlyHandlers = InsertOnlySidedInvWrapper.create(this, Direction.values());
 
-		return insertOnlyHandlers[side.get3DDataValue()];
-	}
-
-	public static IItemHandler getCapability(SecureTradingStationBlockEntity be, Direction side) {
-		if (!be.isModuleEnabled(ModuleType.STORAGE))
-			return null;
-
-		return BlockUtils.isAllowedToExtractFromProtectedObject(side, be) ? new SidedInvWrapper(be, side) : new InsertOnlySidedInvWrapper(be, side);
+		return side != null ? insertOnlyHandlers[side.get3DDataValue()] : insertOnlyHandlers[Direction.DOWN.get3DDataValue()];
 	}
 
 	@Override
