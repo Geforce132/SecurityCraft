@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.blockentities;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,6 +17,7 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
@@ -85,7 +87,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 			UsernameLoggerEntry entry = getEntry(i);
 
 			if (entry != null && entry.playerName.equals(nearbyPlayerName)) {
-				getEntries()[i] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
+				getEntries()[i] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id(), timestamp);
 				return true;
 			}
 		}
@@ -98,7 +100,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 		//The index is still -1 if the list is full when the index is determined
 		if (nextEmptyIndex >= 0 && nextEmptyIndex < LOGGER_LIST_SIZE) {
-			getEntries()[nextEmptyIndex++] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id().toString(), timestamp);
+			getEntries()[nextEmptyIndex++] = new UsernameLoggerEntry(nearbyPlayerName, nearbyPlayer.getGameProfile().id(), timestamp);
 			return true;
 		}
 
@@ -163,7 +165,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 				String playerName = tag.getStringOr("player" + i, "");
 
 				if (!playerName.isEmpty()) {
-					String uuid = tag.getStringOr("uuid" + i, "");
+					UUID uuid = tag.getString("uuid" + i).map(UUID::fromString).orElseGet(UUID::randomUUID);
 					long timestamp = tag.getLongOr("timestamp" + i, 0);
 
 					entries[i] = new UsernameLoggerEntry(playerName, uuid, timestamp);
@@ -220,10 +222,10 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 		nextEmptyIndex = -1;
 	}
 
-	public record UsernameLoggerEntry(String playerName, String uuid, long timestamp) {
+	public record UsernameLoggerEntry(String playerName, UUID uuid, long timestamp) {
 		public static final Codec<UsernameLoggerEntry> CODEC = RecordCodecBuilder.create(i -> i.group(
 				Codec.STRING.fieldOf("player_name").forGetter(UsernameLoggerEntry::playerName),
-				Codec.STRING.fieldOf("uuid").forGetter(UsernameLoggerEntry::uuid),
+				UUIDUtil.CODEC.fieldOf("uuid").forGetter(UsernameLoggerEntry::uuid),
 				Codec.LONG.fieldOf("timestamp").forGetter(UsernameLoggerEntry::timestamp)
 		).apply(i, UsernameLoggerEntry::new));
 	}

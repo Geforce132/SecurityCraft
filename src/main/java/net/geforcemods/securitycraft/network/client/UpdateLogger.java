@@ -1,16 +1,19 @@
 package net.geforcemods.securitycraft.network.client;
 
+import java.util.UUID;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity.UsernameLoggerEntry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) implements CustomPacketPayload {
+public record UpdateLogger(BlockPos pos, int index, String username, UUID uuid, long timestamp) implements CustomPacketPayload {
 
 	public static final Type<UpdateLogger> TYPE = new Type<>(SecurityCraft.resLoc("update_logger"));
 	//@formatter:off
@@ -18,7 +21,7 @@ public record UpdateLogger(BlockPos pos, int index, String username, String uuid
 			BlockPos.STREAM_CODEC, UpdateLogger::pos,
 			ByteBufCodecs.VAR_INT, UpdateLogger::index,
 			ByteBufCodecs.STRING_UTF8, UpdateLogger::username,
-			ByteBufCodecs.STRING_UTF8, UpdateLogger::uuid,
+			UUIDUtil.STREAM_CODEC, UpdateLogger::uuid,
 			ByteBufCodecs.VAR_LONG, UpdateLogger::timestamp,
 			UpdateLogger::new);
 	//@formatter:on

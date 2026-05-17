@@ -139,7 +139,7 @@ public class UsernameLoggerScreen extends Screen {
 					if (entry != null) {
 						Component localized = Utils.localize("gui.securitycraft:logger.date", dateFormat.format(new Date(entry.timestamp())));
 
-						guiGraphics.setTooltipForNextFrame(font, Component.literal(entry.uuid()), mouseX, mouseY);
+						guiGraphics.setTooltipForNextFrame(font, Component.literal(entry.uuid().toString()), mouseX, mouseY);
 						guiGraphics.text(font, localized, leftPos + (imageWidth / 2 - font.width(localized) / 2), bottom + 5, CommonColors.DARK_GRAY, false);
 					}
 				}
