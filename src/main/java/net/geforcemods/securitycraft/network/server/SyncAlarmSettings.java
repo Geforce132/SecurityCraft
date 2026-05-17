@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.network.NetworkEvent;
 
 public class SyncAlarmSettings {
@@ -50,6 +51,8 @@ public class SyncAlarmSettings {
 
 			if (soundLength != be.getSoundLength())
 				be.setSoundLength(soundLength);
+
+			player.level().sendBlockUpdated(pos, be.getBlockState(), be.getBlockState(), Block.UPDATE_ALL);
 		}
 	}
 }
