@@ -1,9 +1,11 @@
 package net.geforcemods.securitycraft.network.client;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
+import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
-import net.minecraft.client.Minecraft;
+import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity.UsernameLoggerEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
@@ -12,12 +14,12 @@ public class UpdateLogger {
 	private BlockPos pos;
 	private int index;
 	private String username;
-	private String uuid;
+	private UUID uuid;
 	private long timestamp;
 
 	public UpdateLogger() {}
 
-	public UpdateLogger(BlockPos pos, int index, String username, String uuid, long timestamp) {
+	public UpdateLogger(BlockPos pos, int index, String username, UUID uuid, long timestamp) {
 		this.pos = pos;
 		this.index = index;
 		this.username = username;
@@ -27,27 +29,24 @@ public class UpdateLogger {
 
 	public UpdateLogger(FriendlyByteBuf buf) {
 		pos = buf.readBlockPos();
-		index = buf.readInt();
+		index = buf.readVarInt();
 		username = buf.readUtf(Integer.MAX_VALUE / 4);
-		uuid = buf.readUtf(Integer.MAX_VALUE / 4);
-		timestamp = buf.readLong();
+		uuid = buf.readUUID();
+		timestamp = buf.readVarLong();
 	}
 
 	public void encode(FriendlyByteBuf buf) {
 		buf.writeBlockPos(pos);
-		buf.writeInt(index);
+		buf.writeVarInt(index);
 		buf.writeUtf(username);
-		buf.writeUtf(uuid);
-		buf.writeLong(timestamp);
+		buf.writeUUID(uuid);
+		buf.writeVarLong(timestamp);
 	}
 
 	public void handle(Supplier<NetworkEvent.Context> ctx) {
-		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) Minecraft.getInstance().player.level().getBlockEntity(pos);
+		UsernameLoggerBlockEntity be = (UsernameLoggerBlockEntity) ClientHandler.getClientLevel().getBlockEntity(pos);
 
-		if (be != null) {
-			be.getPlayers()[index] = username;
-			be.getUuids()[index] = uuid;
-			be.getTimestamps()[index] = timestamp;
-		}
+		if (be != null)
+			be.getEntries()[index] = new UsernameLoggerEntry(username, uuid, timestamp);
 	}
 }

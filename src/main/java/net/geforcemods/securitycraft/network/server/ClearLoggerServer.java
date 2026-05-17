@@ -29,7 +29,7 @@ public class ClearLoggerServer {
 		ServerPlayer player = ctx.get().getSender();
 
 		if (!player.isSpectator() && player.level().getBlockEntity(pos) instanceof UsernameLoggerBlockEntity be && be.isOwnedBy(player)) {
-			be.setPlayers(new String[100]);
+			be.clearEntries();
 			be.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 2);
 		}
 	}
