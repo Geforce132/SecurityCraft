@@ -1,8 +1,12 @@
 {
-    "parent": "block/orientable",
-    "textures": {
-        "top": "block/furnace_top",
-        "front": "securitycraft:block/inventory_scanner",
-        "side": "block/furnace_side"
-    }
+	"parent": "block/orientable",
+	"textures": {
+		"particle": "securitycraft:block/inventory_scanner",
+		"up": "securitycraft:block/inventory_scanner_top",
+		"down": "securitycraft:block/inventory_scanner_bottom",
+		"north": "securitycraft:block/inventory_scanner",
+		"east": "securitycraft:block/inventory_scanner_left",
+		"south": "block/furnace_side",
+		"west": "securitycraft:block/inventory_scanner_right"
+	}
 }
