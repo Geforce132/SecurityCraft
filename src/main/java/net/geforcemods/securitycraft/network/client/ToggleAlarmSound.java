@@ -25,8 +25,16 @@ public record ToggleAlarmSound(BlockPos bePos, boolean shouldPlay, int soundX, i
 			ToggleAlarmSound::new);
 	//formatter:on
 
-	public ToggleAlarmSound(BlockPos bePos, boolean shoulyPlay, float volume, long seed) {
-		this(bePos, shoulyPlay, (int) (bePos.getX() * ClientboundSoundPacket.LOCATION_ACCURACY), (int) (bePos.getY() * ClientboundSoundPacket.LOCATION_ACCURACY), (int) (bePos.getZ() * ClientboundSoundPacket.LOCATION_ACCURACY), volume, seed);
+	private ToggleAlarmSound(BlockPos bePos, boolean shouldPlay, float volume, long seed) {
+		this(bePos, shouldPlay, (int) (bePos.getX() * ClientboundSoundPacket.LOCATION_ACCURACY), (int) (bePos.getY() * ClientboundSoundPacket.LOCATION_ACCURACY), (int) (bePos.getZ() * ClientboundSoundPacket.LOCATION_ACCURACY), volume, seed);
+	}
+
+	public static ToggleAlarmSound off(BlockPos bePos) {
+		return new ToggleAlarmSound(bePos, false, 0.0F, 0);
+	}
+
+	public static ToggleAlarmSound on(BlockPos bePos, float volume, long seed) {
+		return new ToggleAlarmSound(bePos, true, volume, seed);
 	}
 
 	@Override

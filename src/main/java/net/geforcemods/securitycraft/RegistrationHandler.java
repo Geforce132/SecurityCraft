@@ -175,11 +175,11 @@ public class RegistrationHandler {
 
 		registrar.playToClient(InteractWithFrame.TYPE, InteractWithFrame.STREAM_CODEC);
 		registrar.playToClient(OpenScreen.TYPE, OpenScreen.STREAM_CODEC);
-		registrar.playToClient(ToggleAlarmSound.TYPE, ToggleAlarmSound.STREAM_CODEC);
 		registrar.playToClient(RefreshDisguisableModel.TYPE, RefreshDisguisableModel.STREAM_CODEC);
 		registrar.playToClient(SendManualPages.TYPE, SendManualPages.STREAM_CODEC);
 		registrar.playToClient(SetCameraView.TYPE, SetCameraView.STREAM_CODEC);
 		registrar.playToClient(SetTrophySystemTarget.TYPE, SetTrophySystemTarget.STREAM_CODEC);
+		registrar.playToClient(ToggleAlarmSound.TYPE, ToggleAlarmSound.STREAM_CODEC);
 		registrar.playToClient(UpdateLaserColors.TYPE, UpdateLaserColors.STREAM_CODEC);
 		registrar.playToClient(UpdateLogger.TYPE, UpdateLogger.STREAM_CODEC);
 		registrar.playToServer(CheckBriefcasePasscode.TYPE, CheckBriefcasePasscode.STREAM_CODEC, CheckBriefcasePasscode::handle);

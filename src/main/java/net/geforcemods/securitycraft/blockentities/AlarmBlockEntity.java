@@ -47,20 +47,21 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 	public void tick(Level level, BlockPos pos, BlockState state) {
 		if (!level.isClientSide() && soundPlaying && (isDisabled() || !getBlockState().getValue(AlarmBlock.LIT))) {
 			for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= Math.pow(range.get(), 2))) {
-				PacketDistributor.sendToPlayer(player, new ToggleAlarmSound(worldPosition, false, 0.0F, 0));
+				PacketDistributor.sendToPlayer(player, ToggleAlarmSound.off(worldPosition));
 			}
 
 			soundPlaying = false;
 		}
 
-		if (!isDisabled() && isPowered && --cooldown <= 0) { //Even though isPowered is only explicitly set serverside, it is always synched to the client via NBT due to the block state change
+		//Even though isPowered is only explicitly set serverside, it is always synched to the client via NBT due to the block state change
+		if (!isDisabled() && isPowered && --cooldown <= 0) {
 			if (!level.isClientSide()) {
 				double rangeSqr = Math.pow(range.get(), 2);
 
 				for (ServerPlayer player : ((ServerLevel) level).getPlayers(p -> p.blockPosition().distSqr(pos) <= rangeSqr)) {
 					float volume = (float) (1.0F - ((player.blockPosition().distSqr(pos)) / rangeSqr));
 
-					PacketDistributor.sendToPlayer(player, new ToggleAlarmSound(worldPosition, true, volume, player.level().getRandom().nextLong()));
+					PacketDistributor.sendToPlayer(player, ToggleAlarmSound.on(worldPosition, volume, level.getRandom().nextLong()));
 				}
 
 				soundPlaying = true;
