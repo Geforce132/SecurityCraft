@@ -104,7 +104,7 @@ public class UsernameLoggerScreen extends Screen {
 
 	class PlayerList extends ScrollPanel {
 		private final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault());
-		private static final int SLOT_HEIGHT = 12, LIST_LENGTH = 100;
+		private static final int SLOT_HEIGHT = 12;
 
 		public PlayerList(Minecraft client, int width, int height, int top, int left) {
 			super(client, width, height, top, left);
@@ -133,7 +133,7 @@ public class UsernameLoggerScreen extends Screen {
 				int mouseListY = (int) (mouseY - top + scrollDistance - border);
 				int slotIndex = mouseListY / SLOT_HEIGHT;
 
-				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
+				if (mouseX >= left && mouseX < right - 6 && slotIndex >= 0 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom) {
 					UsernameLoggerEntry entry = be.getEntry(slotIndex);
 
 					if (entry != null) {
@@ -154,7 +154,7 @@ public class UsernameLoggerScreen extends Screen {
 			int slotIndex = mouseListY / SLOT_HEIGHT;
 
 			//highlight hovered slot
-			if (mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && slotIndex < LIST_LENGTH && mouseY >= top && mouseY <= bottom) {
+			if (mouseX >= left && mouseX <= right - 6 && slotIndex >= 0 && mouseListY >= 0 && mouseY >= top && mouseY <= bottom) {
 				UsernameLoggerEntry entry = be.getEntry(slotIndex);
 
 				if (entry != null) {

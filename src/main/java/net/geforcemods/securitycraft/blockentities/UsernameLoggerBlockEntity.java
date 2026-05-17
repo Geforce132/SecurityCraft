@@ -24,7 +24,7 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable {
-	public static final int LOGGER_LIST_SIZE = 100;
+	public static final int LOGGER_LIST_SIZE = 128;
 	private static final int TICKS_BETWEEN_ATTACKS = 80;
 	private final IntOption searchRadius = new IntOption("searchRadius", 3, 1, 20, 1);
 	private final DisabledOption disabled = new DisabledOption(false);
