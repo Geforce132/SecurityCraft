@@ -65,10 +65,8 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 
 					if (isModuleEnabled(ModuleType.SMART) && overrideLastEntry(nearbyPlayer, nearbyPlayerName, timestamp))
 						changed = true;
-					else {
-						if (addEntry(nearbyPlayer, nearbyPlayerName, timestamp))
-							changed = true;
-					}
+					else if (addEntry(nearbyPlayer, nearbyPlayerName, timestamp))
+						changed = true;
 				}
 
 				if (changed) {
@@ -133,7 +131,7 @@ public class UsernameLoggerBlockEntity extends DisguisableBlockEntity implements
 	public void saveAdditional(ValueOutput tag) {
 		super.saveAdditional(tag);
 
-		TypedOutputList<UsernameLoggerEntry> tagList = tag.list("player", UsernameLoggerEntry.CODEC);
+		TypedOutputList<UsernameLoggerEntry> tagList = tag.list("players", UsernameLoggerEntry.CODEC);
 
 		for (UsernameLoggerEntry entry : entries) {
 			if (entry != null)
