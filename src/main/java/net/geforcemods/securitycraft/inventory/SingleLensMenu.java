@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SingleLensMenu extends AbstractContainerMenu {
 	public final BlockEntity be;
-	private ContainerLevelAccess containerLevelAccess;
+	private final ContainerLevelAccess containerLevelAccess;
 
 	public SingleLensMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.SINGLE_LENS_MENU.get(), windowId);

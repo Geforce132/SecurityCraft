@@ -24,7 +24,7 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	public final InventoryScannerBlockEntity be;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
-	private Component infoStringRedstone, infoStringStorage;
+	private final Component infoStringRedstone, infoStringStorage;
 	private static final Style UNDERLINE = Style.EMPTY.applyFormat(ChatFormatting.UNDERLINE);
 	private final Component prohibitedItems = Utils.localize("gui.securitycraft:invScan.prohibitedItems");
 	private final Component adminMode = Utils.localize("gui.securitycraft:invScan.mode.admin").setStyle(UNDERLINE);
