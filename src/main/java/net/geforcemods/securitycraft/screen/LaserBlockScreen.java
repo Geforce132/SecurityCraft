@@ -22,6 +22,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/laser_block.png");
+	private static final ResourceLocation LENS_SLOT = SecurityCraft.resLoc("slot/lens");
 	private final boolean hasSmartModule;
 	private Component smartModuleTooltip;
 	private LaserBlockBlockEntity be;
@@ -63,6 +64,11 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
 		guiGraphics.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+
+		for (int i = 0; i < 6; i++) {
+			if (be.getLensContainer().getItem(i).isEmpty())
+				guiGraphics.blitSprite(LENS_SLOT, leftPos + 15, topPos + i * 22 + 27, 16, 16);
+		}
 	}
 
 	@Override

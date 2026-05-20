@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu> {
 	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/trophy_system.png");
+	private static final ResourceLocation LENS_SLOT = SecurityCraft.resLoc("slot/lens");
 	public final Component scrollListTitle, smartModuleTooltip;
 	private boolean hasSmartModule;
 	private boolean hasRedstoneModule;
@@ -62,6 +63,9 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
 		guiGraphics.blit(GUI_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+
+		if (be.getLensContainer().getItem(0).isEmpty())
+			guiGraphics.blitSprite(LENS_SLOT, leftPos + 154, topPos + 6, 16, 16);
 	}
 
 	@Override

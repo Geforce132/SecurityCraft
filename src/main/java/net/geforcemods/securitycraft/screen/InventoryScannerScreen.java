@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class InventoryScannerScreen extends AbstractContainerScreen<InventoryScannerMenu> {
 	private static final ResourceLocation REGULAR_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_gui.png");
 	private static final ResourceLocation ENHANCED_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_enhanced_gui.png");
+	private static final ResourceLocation LENS_SLOT = SecurityCraft.resLoc("slot/lens");
 	public final InventoryScannerBlockEntity be;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
@@ -77,5 +78,8 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTicks, int mouseX, int mouseY) {
 		guiGraphics.blit(hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY, leftPos, topPos, 0, 0, imageWidth, imageHeight + 30);
+
+		if (be.getLensContainer().getItem(0).isEmpty())
+			guiGraphics.blitSprite(LENS_SLOT, leftPos + 159, topPos + 89, 16, 16);
 	}
 }
