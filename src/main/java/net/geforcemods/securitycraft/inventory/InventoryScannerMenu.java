@@ -16,7 +16,7 @@ import net.minecraft.world.level.Level;
 
 public class InventoryScannerMenu extends AbstractContainerMenu {
 	public final InventoryScannerBlockEntity be;
-	private ContainerLevelAccess worldPosCallable;
+	private final ContainerLevelAccess worldPosCallable;
 
 	public InventoryScannerMenu(int windowId, Level level, BlockPos pos, Inventory inventory) {
 		super(SCContent.INVENTORY_SCANNER_MENU.get(), windowId);
