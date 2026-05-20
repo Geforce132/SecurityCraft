@@ -27,7 +27,7 @@ public class InventoryScannerMenu extends AbstractContainerMenu {
 
 		//prohibited items 0-9
 		for (int i = 0; i < 10; i++) {
-			addSlot(new OwnerRestrictedSlot(this, be, be, i, (6 + (i * 18)), 16, isOwner, true));
+			addSlot(new OwnerRestrictedSlot(this, be, be, i, (6 + (i * 18)), 20, isOwner, true));
 		}
 
 		//inventory scanner storage 10-36
