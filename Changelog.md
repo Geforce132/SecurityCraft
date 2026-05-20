@@ -52,6 +52,11 @@
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
 - Misc.: The Inventory Scanner has a new look 
 
+--------------------------Changelog for v1.10.1-beta4 of SecurityCraft--------------------------
+
+- Fix: The Inventory Scanner screen does not display additional slots when a Storage Module is inserted
+- Fix: Mounting Security Cameras that are out of a player's view distance does not work
+
 --------------------------Changelog for v1.10.1-beta3 of SecurityCraft--------------------------
 
 - Fix: Briefcases and Lenses cannot be dyed in a Crafting Table
