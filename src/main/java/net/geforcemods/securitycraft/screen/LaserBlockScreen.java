@@ -25,8 +25,8 @@ public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
 	private static final ResourceLocation LENS_SLOT = SecurityCraft.resLoc("slot/lens");
 	private final boolean hasSmartModule;
 	private Component smartModuleTooltip;
-	private LaserBlockBlockEntity be;
-	private Map<Direction, Boolean> sideConfig;
+	private final LaserBlockBlockEntity be;
+	private final Map<Direction, Boolean> sideConfig;
 
 	public LaserBlockScreen(LaserBlockMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);

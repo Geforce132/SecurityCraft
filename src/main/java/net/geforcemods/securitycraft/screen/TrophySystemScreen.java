@@ -20,9 +20,9 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/trophy_system.png");
 	private static final ResourceLocation LENS_SLOT = SecurityCraft.resLoc("slot/lens");
 	public final Component scrollListTitle, smartModuleTooltip;
-	private boolean hasSmartModule;
-	private boolean hasRedstoneModule;
-	private TrophySystemBlockEntity be;
+	private final boolean hasSmartModule;
+	private final boolean hasRedstoneModule;
+	private final TrophySystemBlockEntity be;
 	private ToggleScrollList<EntityType<?>> scrollList;
 
 	public TrophySystemScreen(TrophySystemMenu menu, Inventory playerInventory, Component title) {
