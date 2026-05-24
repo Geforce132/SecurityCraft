@@ -1582,7 +1582,7 @@
 	"securitycraft.configuration.reinforced_block_tint_color": "Цвет затемнения укреплённых блоков",
 	"securitycraft.configuration.reinforced_block_tint_color.tooltip": "Установите цвет, которым будут тонироваться текстуры укреплённых блоков. Он будет применяться одинаково ко всем блокам, которые соответствуют условию, заданному параметром \"reinforced_block_tint_mode\". Оттенки серого выглядят лучше.",
 	"securitycraft.configuration.reinforced_block_tint_mode": "Режим тонировки укреплённых блоков",
-	"securitycraft.configuration.reinforced_block_tint_mode.tooltip": "Определяет, каким условиям должны соответствовать установленные укреплённые блоки, чтобы быть окрашенными по сравнению с их ванильными аналогами. Цвет этой тонировки можно задать через параметр \"reinforced_block_tint_color\". Тонировка может применяться ко всем укреплённым блокам, ни к одному, либо только к тем, которые принадлежат или не принадлежат игроку."
+	"securitycraft.configuration.reinforced_block_tint_mode.tooltip": "Определяет, каким условиям должны соответствовать установленные укреплённые блоки, чтобы быть окрашенными по сравнению с их ванильными аналогами. Цвет этой тонировки можно задать через параметр \"reinforced_block_tint_color\". Тонировка может применяться ко всем укреплённым блокам, ни к одному, либо только к тем, которые принадлежат или не принадлежат игроку.",
 	"securitycraft.configuration.reinforced_suffocation_damage": "Урон от удушья в укреплённых блоках",
 	"securitycraft.configuration.reinforced_suffocation_damage.tooltip": "Установите количество урона, которое игрок получает, когда он задыхается в укреплённом блоке. По умолчанию это два с половиной сердца. Если значение установлено на -1, будет использоваться стандартный урон от удушья.",
 	"securitycraft.configuration.retinalScannerFace": "Отображение лица в ретинальном сканере",
@@ -1649,5 +1649,5 @@
 	"tooltip.securitycraft:universal_block_remover.disabled": "Отключено. Используйте ванильные инструменты для разрушения укреплённых блоков.",
 	"waila.securitycraft:customName": "Пользовательское имя: %s",
 	"waila.securitycraft:equipped": "Снаряжено:",
-	"waila.securitycraft:owner": "Владелец: %s",
+	"waila.securitycraft:owner": "Владелец: %s"
 }
