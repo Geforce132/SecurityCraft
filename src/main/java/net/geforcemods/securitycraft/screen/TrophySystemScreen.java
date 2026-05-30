@@ -22,10 +22,11 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu> {
 	private static final Identifier GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/trophy_system.png");
+	private static final Identifier LENS_SLOT = SecurityCraft.resLoc("slot/lens");
 	public final Component scrollListTitle, smartModuleTooltip;
-	private boolean hasSmartModule;
-	private boolean hasRedstoneModule;
-	private TrophySystemBlockEntity be;
+	private final boolean hasSmartModule;
+	private final boolean hasRedstoneModule;
+	private final TrophySystemBlockEntity be;
 	private ToggleScrollList<EntityType<?>> scrollList;
 
 	public TrophySystemScreen(TrophySystemMenu menu, Inventory playerInventory, Component title) {
@@ -74,6 +75,9 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
 		super.extractBackground(guiGraphics, mouseX, mouseY, a);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, GUI_TEXTURE, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight, 256, 256);
+
+		if (be.getLensContainer().getItem(0).isEmpty())
+			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, LENS_SLOT, leftPos + 154, topPos + 6, 16, 16);
 	}
 
 	@Override

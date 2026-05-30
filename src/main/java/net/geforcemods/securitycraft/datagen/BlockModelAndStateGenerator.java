@@ -199,6 +199,7 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_SOUL_LANTERN.get());
 		registerSimpleItemModelFromItem(SCContent.RETINAL_SCANNER.get());
 		registerSimpleItemModel(SCContent.SCANNER_TRAPDOOR.get(), "_bottom");
+		registerSimpleItemModel(SCContent.SECURE_TRADING_STATION.get());
 		createSecureRedstoneInterface();
 		createSecurityCamera();
 		registerSimpleItemModel(SCContent.TROPHY_SYSTEM.get());

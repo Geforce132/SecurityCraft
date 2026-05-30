@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.blockentities.DisplayCaseBlockEntity;
 import net.geforcemods.securitycraft.components.OwnerData;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -57,7 +58,7 @@ public class UniversalOwnerChangerItem extends Item {
 			return InteractionResult.PASS;
 
 		Owner owner = ownable.getOwner();
-		boolean isDefault = owner.getName().equals("owner") && owner.getUUID().equals("ownerUUID");
+		boolean isDefault = owner.isDefaultOwner();
 
 		if (!ownable.isOwnedBy(player) && !isDefault) {
 			if (!(block instanceof IBlockMine) && (!(be.getBlockState().getBlock() instanceof IDisguisable db) || (((BlockItem) db.getDisguisedStack(level, pos).getItem()).getBlock() instanceof IDisguisable))) {
@@ -89,6 +90,8 @@ public class UniversalOwnerChangerItem extends Item {
 
 		if (!level.isClientSide())
 			level.sendBlockUpdated(pos, state, state, 3);
+		else
+			ClientUtils.recompileChunk(pos);
 
 		//disable this in a development environment
 		if (FMLEnvironment.isProduction() && be instanceof IModuleInventory inv) {

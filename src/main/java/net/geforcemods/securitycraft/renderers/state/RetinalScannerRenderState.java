@@ -6,6 +6,6 @@ import net.minecraft.core.Direction;
 public class RetinalScannerRenderState extends DisguisableBlockEntityRenderState {
 	public RenderType renderType;
 	public Direction direction;
-	public boolean isDisguised;
+	public Direction rotation;
 	public int combinedSkinLight;
 }

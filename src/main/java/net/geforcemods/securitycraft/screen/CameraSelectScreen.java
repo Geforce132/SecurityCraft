@@ -54,11 +54,11 @@ public class CameraSelectScreen extends Screen {
 		leftPos = (width - xSize) / 2;
 		topPos = (height - ySize) / 2;
 
-		Button prevPageButton = addRenderableWidget(Button.builder(Component.literal("<"), b -> {
+		Button prevPageButton = addRenderableWidget(Button.builder(Component.literal("<"), _ -> {
 			page--;
 			rebuildWidgets();
 		}).pos(width / 2 - 25, height / 2 + 57).size(20, 20).build());
-		Button nextPageButton = addRenderableWidget(Button.builder(Component.literal(">"), b -> {
+		Button nextPageButton = addRenderableWidget(Button.builder(Component.literal(">"), _ -> {
 			page++;
 			rebuildWidgets();
 		}).pos(width / 2 + 5, height / 2 + 57).size(20, 20).build());
@@ -98,9 +98,7 @@ public class CameraSelectScreen extends Screen {
 						cameraName = cameraBe.getCustomName().getString();
 
 					if (state.getSignal(level, pos, state.getValue(SecurityCameraBlock.FACING)) == 0) {
-						if (!cameraBe.isModuleEnabled(ModuleType.REDSTONE))
-							redstoneModuleStates[i] = CameraRedstoneModuleState.NOT_INSTALLED;
-						else
+						if (cameraBe.isModuleEnabled(ModuleType.REDSTONE))
 							redstoneModuleStates[i] = CameraRedstoneModuleState.DEACTIVATED;
 					}
 					else
@@ -112,7 +110,7 @@ public class CameraSelectScreen extends Screen {
 
 				//op check is done on the server through the command
 				if (player.isCreative()) {
-					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), b -> {
+					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), _ -> {
 						player.connection.sendCommand(String.format("execute in %s run tp %s %s %s", globalPos.dimension().identifier(), pos.getX(), pos.getY(), pos.getZ()));
 						minecraft.setScreen(null);
 					}));

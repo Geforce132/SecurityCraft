@@ -127,7 +127,7 @@ public class SCManualScreen extends Screen {
 			}
 			catch (URISyntaxException e) {}
 		}));
-		patronList = addRenderableWidget(new PatronList(minecraft, 115, 90, 50, startX + 125));
+		patronList = addRenderableWidget(new PatronList(minecraft, 112, 90, 50, startX + 130));
 		previousSubpage = addRenderableWidget(new ChangePageButton(startX + 155, startY + 95, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousSubpage()));
 		nextSubpage = addRenderableWidget(new ChangePageButton(startX + 180, startY + 95, PAGE_FORWARD_SPRITE, PAGE_FORWARD_HIGHLIGHTED_SPRITE, b -> nextSubpage()));
 		addRenderableWidget(new ChangePageButton(startX + 22, startY + 188, PAGE_BACKWARD_SPRITE, PAGE_BACKWARD_HIGHLIGHTED_SPRITE, b -> previousPage()));
@@ -212,7 +212,7 @@ public class SCManualScreen extends Screen {
 			}
 
 			guiGraphics.text(font, pageNumberText, startX + 240 - font.width(pageNumberText), 182, 0xFF8E8270, false);
-			guiGraphics.text(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 30, 40, CommonColors.BLACK, false);
+			guiGraphics.text(font, ourPatrons, width / 2 - font.width(ourPatrons) / 2 + 34, 40, CommonColors.BLACK, false);
 		}
 	}
 

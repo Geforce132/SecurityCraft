@@ -7,7 +7,6 @@ public class SecurityCameraRenderState extends DisguisableBlockEntityRenderState
 	public Direction direction;
 	public boolean isDown;
 	public boolean isShutDown;
-	public boolean isDisguised;
 	public boolean hasLens;
 	public boolean isBeingViewed;
 	public boolean isBeingCaptured;

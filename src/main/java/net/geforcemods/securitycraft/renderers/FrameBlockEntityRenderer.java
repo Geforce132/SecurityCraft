@@ -95,7 +95,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		if (!state.isCameraSelected)
 			submitSolidTexture(pose, collector, SELECT_CAMERA, innerVertices, lightCoords, normal, margin);
 		else if (state.isRedstoneSignalDisabled) {
-			submitNoise(pose, collector, state.innerVertices, lightCoords, normal, margin);
+			submitNoise(pose, collector, innerVertices, lightCoords, normal, margin);
 			submitCutoutTexture(pose, collector, NO_REDSTONE_SIGNAL, outerVertices, lightCoords, normal, margin);
 		}
 		else if (!state.hasClientInteracted) {
@@ -229,10 +229,11 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		collector.submitCustomGeometry(poseStack, RenderTypes.entitySolid(NOISE_BACKGROUND.texture()), new WrappingGeometryRenderer(NOISE_BACKGROUND) {
 			@Override
 			public void render(Pose pose, VertexConsumer builder) {
-				builder.addVertex(pose, xStart, margin, zStart).setUv(1, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-				builder.addVertex(pose, xStart, 1 - margin, zStart).setUv(1, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-				builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(0, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-				builder.addVertex(pose, xEnd, margin, zEnd).setUv(0, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+				//The quad size is 14x14, but the texture size is 16x16
+				builder.addVertex(pose, xStart, margin, zStart).setUv(0.9375f, 0.9375f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+				builder.addVertex(pose, xStart, 1 - margin, zStart).setUv(0.9375f, 0.0625f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+				builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(0.0625f, 0.0625f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+				builder.addVertex(pose, xEnd, margin, zEnd).setUv(0.0625f, 0.9375f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
 			}
 		});
 	}

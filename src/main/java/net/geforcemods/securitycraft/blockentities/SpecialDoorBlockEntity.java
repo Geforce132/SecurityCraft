@@ -2,9 +2,12 @@ package net.geforcemods.securitycraft.blockentities;
 
 import java.util.List;
 
+import com.google.common.collect.ImmutableList;
+
 import net.geforcemods.securitycraft.api.ILinkedAction;
 import net.geforcemods.securitycraft.api.ILockable;
 import net.geforcemods.securitycraft.api.LinkableBlockEntity;
+import net.geforcemods.securitycraft.api.LinkedBlock;
 import net.geforcemods.securitycraft.api.Option;
 import net.geforcemods.securitycraft.api.Option.DisabledOption;
 import net.geforcemods.securitycraft.api.Option.IntOption;
@@ -21,9 +24,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.neoforged.neoforge.model.data.ModelData;
 
 public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity implements ILockable {
+	protected LinkedBlock linkedBlock;
 	protected IntOption signalLength = new IntOption("signalLength", defaultSignalLength(), 0, 400, 5); //20 seconds max
 	protected DisabledOption disabled = new DisabledOption(false);
 
@@ -35,7 +40,7 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 	public void onOwnerChanged(BlockState state, Level level, BlockPos pos, Player player, Owner oldOwner, Owner newOwner) {
 		pos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos.above();
 
-		if (level.getBlockEntity(pos) instanceof SpecialDoorBlockEntity be && isLinkedWith(this, be)) {
+		if (level.getBlockEntity(pos) instanceof SpecialDoorBlockEntity be && be.isOwnedBy(oldOwner)) {
 			be.setOwner(getOwner().getUUID(), getOwner().getName());
 
 			if (!level.isClientSide())
@@ -43,6 +48,20 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 		}
 
 		super.onOwnerChanged(state, level, pos, player, oldOwner, newOwner);
+	}
+
+	@Override
+	protected ImmutableList<LinkedBlock> getLinkedBlocks() {
+		if (linkedBlock == null) {
+			BlockState state = getBlockState();
+			BlockPos thisPos = getBlockPos();
+			BlockPos otherPos = state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) == DoubleBlockHalf.UPPER ? thisPos.below() : thisPos.above();
+
+			if (level.getBlockEntity(otherPos) instanceof SpecialDoorBlockEntity be && be.isOwnedBy(getOwner()))
+				addLinkedBlock(new LinkedBlock(be));
+		}
+
+		return linkedBlock != null ? ImmutableList.of(linkedBlock) : ImmutableList.of(); //The linked block can be null if the other door half is missing, e.g. when breaking the door
 	}
 
 	@Override
@@ -66,6 +85,20 @@ public abstract class SpecialDoorBlockEntity extends LinkableBlockEntity impleme
 			}
 		}
 	}
+
+	@Override
+	protected void addLinkedBlock(LinkedBlock block) {
+		linkedBlock = block;
+	}
+
+	@Override
+	protected void removeLinkedBlock(LinkedBlock block) {
+		if (linkedBlock.equals(block))
+			linkedBlock = null;
+	}
+
+	@Override
+	protected void saveLinkedBlocks(ValueOutput tag) {}
 
 	@Override
 	public void onModuleInserted(ItemStack stack, ModuleType module, boolean toggled) {

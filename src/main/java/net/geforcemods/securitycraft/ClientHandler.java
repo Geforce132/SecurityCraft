@@ -18,6 +18,7 @@ import com.mojang.math.OctahedralGroup;
 
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.geforcemods.securitycraft.api.IDisguisable;
+import net.geforcemods.securitycraft.api.IOwnable;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
@@ -40,6 +41,7 @@ import net.geforcemods.securitycraft.items.properties.KeycardCount;
 import net.geforcemods.securitycraft.items.properties.ReinforcedTint;
 import net.geforcemods.securitycraft.items.properties.SentryLinked;
 import net.geforcemods.securitycraft.misc.LayerToggleHandler;
+import net.geforcemods.securitycraft.misc.TintMode;
 import net.geforcemods.securitycraft.models.BulletModel;
 import net.geforcemods.securitycraft.models.DisguisableBlockStateModel;
 import net.geforcemods.securitycraft.models.DisplayCaseModel;
@@ -49,14 +51,13 @@ import net.geforcemods.securitycraft.models.SecureRedstoneInterfaceDishModel;
 import net.geforcemods.securitycraft.models.SecurityCameraModel;
 import net.geforcemods.securitycraft.models.SentryModel;
 import net.geforcemods.securitycraft.models.SonicSecuritySystemModel;
-import net.geforcemods.securitycraft.network.client.BlockPocketManagerFailedActivation;
 import net.geforcemods.securitycraft.network.client.InteractWithFrame;
 import net.geforcemods.securitycraft.network.client.OpenScreen;
-import net.geforcemods.securitycraft.network.client.PlayAlarmSound;
 import net.geforcemods.securitycraft.network.client.RefreshDisguisableModel;
 import net.geforcemods.securitycraft.network.client.SendManualPages;
 import net.geforcemods.securitycraft.network.client.SetCameraView;
 import net.geforcemods.securitycraft.network.client.SetTrophySystemTarget;
+import net.geforcemods.securitycraft.network.client.ToggleAlarmSound;
 import net.geforcemods.securitycraft.network.client.UpdateLaserColors;
 import net.geforcemods.securitycraft.network.client.UpdateLogger;
 import net.geforcemods.securitycraft.particle.FloorTrapCloudParticle;
@@ -77,6 +78,7 @@ import net.geforcemods.securitycraft.renderers.RetinalScannerRenderer;
 import net.geforcemods.securitycraft.renderers.SecretHangingSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecretSignRenderer;
 import net.geforcemods.securitycraft.renderers.SecureRedstoneInterfaceRenderer;
+import net.geforcemods.securitycraft.renderers.SecureTradingStationRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraRenderer;
 import net.geforcemods.securitycraft.renderers.SecurityCameraSpecialRenderer;
 import net.geforcemods.securitycraft.renderers.SecuritySeaBoatRenderer;
@@ -110,6 +112,7 @@ import net.geforcemods.securitycraft.screen.RiftStabilizerScreen;
 import net.geforcemods.securitycraft.screen.SCManualScreen;
 import net.geforcemods.securitycraft.screen.SSSItemScreen;
 import net.geforcemods.securitycraft.screen.SecureRedstoneInterfaceScreen;
+import net.geforcemods.securitycraft.screen.SecureTradingStationScreen;
 import net.geforcemods.securitycraft.screen.SentryRemoteAccessToolScreen;
 import net.geforcemods.securitycraft.screen.SetPasscodeScreen;
 import net.geforcemods.securitycraft.screen.SingleLensScreen;
@@ -119,6 +122,7 @@ import net.geforcemods.securitycraft.screen.UsernameLoggerScreen;
 import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderState;
 import net.geforcemods.securitycraft.screen.components.GuiBlockModelRenderer;
 import net.geforcemods.securitycraft.util.BlockEntityRenderDelegate;
+import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSource;
@@ -229,6 +233,7 @@ public class ClientHandler {
 			SCContent.RIFT_STABILIZER.get(),
 			SCContent.SCANNER_DOOR.get(),
 			SCContent.SCANNER_TRAPDOOR.get(),
+			SCContent.SECURE_TRADING_STATION.get(),
 			SCContent.SECURITY_CAMERA.get(),
 			//Excluded because it has its own custom block state model
 			//SCContent.SECURE_REDSTONE_INTERFACE.get(),
@@ -348,6 +353,7 @@ public class ClientHandler {
 		event.register(SCContent.SINGLE_LENS_MENU.get(), SingleLensScreen::new);
 		event.register(SCContent.LASER_BLOCK_MENU.get(), LaserBlockScreen::new);
 		event.register(SCContent.REINFORCED_LECTERN_MENU.get(), ReinforcedLecternScreen::new);
+		event.register(SCContent.SECURE_TRADING_STATION_MENU.get(), SecureTradingStationScreen::new);
 	}
 
 	@SubscribeEvent
@@ -391,6 +397,7 @@ public class ClientHandler {
 		event.registerBlockEntityRenderer(SCContent.REINFORCED_SHELF_BLOCK_ENTITY.get(), ShelfRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.RETINAL_SCANNER_BLOCK_ENTITY.get(), RetinalScannerRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURE_REDSTONE_INTERFACE_BLOCK_ENTITY.get(), SecureRedstoneInterfaceRenderer::new);
+		event.registerBlockEntityRenderer(SCContent.SECURE_TRADING_STATION_BLOCK_ENTITY.get(), SecureTradingStationRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECURITY_CAMERA_BLOCK_ENTITY.get(), SecurityCameraRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECRET_HANGING_SIGN_BLOCK_ENTITY.get(), SecretHangingSignRenderer::new);
 		event.registerBlockEntityRenderer(SCContent.SECRET_SIGN_BLOCK_ENTITY.get(), SecretSignRenderer::new);
@@ -487,14 +494,13 @@ public class ClientHandler {
 
 	@SubscribeEvent
 	public static void onRegisterClientPayloadsHandlers(RegisterClientPayloadHandlersEvent event) {
-		event.register(BlockPocketManagerFailedActivation.TYPE, BlockPocketManagerFailedActivation::handle);
 		event.register(InteractWithFrame.TYPE, InteractWithFrame::handle);
 		event.register(OpenScreen.TYPE, OpenScreen::handle);
-		event.register(PlayAlarmSound.TYPE, PlayAlarmSound::handle);
 		event.register(RefreshDisguisableModel.TYPE, RefreshDisguisableModel::handle);
 		event.register(SendManualPages.TYPE, SendManualPages::handle);
 		event.register(SetCameraView.TYPE, SetCameraView::handle);
 		event.register(SetTrophySystemTarget.TYPE, SetTrophySystemTarget::handle);
+		event.register(ToggleAlarmSound.TYPE, ToggleAlarmSound::handle);
 		event.register(UpdateLaserColors.TYPE, UpdateLaserColors::handle);
 		event.register(UpdateLogger.TYPE, UpdateLogger::handle);
 	}
@@ -587,24 +593,34 @@ public class ClientHandler {
 	}
 
 	private static BlockTintSource mixedReinforcedTintSource(int tint) {
-		return BlockTintSources.constant(mixWithReinforcedTintIfEnabled(tint));
+		return new BlockTintSource() {
+			@Override
+			public int color(BlockState state) {
+				return mixWithReinforcedTintIfEnabled(tint, null);
+			}
+
+			@Override
+			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
+				return mixWithReinforcedTintIfEnabled(tint, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
+			}
+		};
 	}
 
 	public static BlockTintSource mixTintSourceWithReinforcedTint(BlockTintSource parent) {
 		return new BlockTintSource() {
 			@Override
 			public int color(BlockState state) {
-				return mixWithReinforcedTintIfEnabled(parent.color(state));
+				return mixWithReinforcedTintIfEnabled(parent.color(state), null);
 			}
 
 			@Override
 			public int colorInWorld(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				return mixWithReinforcedTintIfEnabled(parent.colorInWorld(state, level, pos));
+				return mixWithReinforcedTintIfEnabled(parent.colorInWorld(state, level, pos), level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 			}
 
 			@Override
 			public int colorAsTerrainParticle(BlockState state, BlockAndTintGetter level, BlockPos pos) {
-				return mixWithReinforcedTintIfEnabled(parent.colorAsTerrainParticle(state, level, pos));
+				return mixWithReinforcedTintIfEnabled(parent.colorAsTerrainParticle(state, level, pos), level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
 			}
 
 			@Override
@@ -646,15 +662,11 @@ public class ClientHandler {
 		};
 	}
 
-	public static int mixWithReinforcedTintIfEnabled(int tint) {
-		boolean tintReinforcedBlocks;
+	public static int mixWithReinforcedTintIfEnabled(int tint, IOwnable ownable) {
+		if (ownable == null)
+			return ARGB.multiply(tint, 0xFF000000 | TintMode.color());
 
-		if (Minecraft.getInstance().level == null)
-			tintReinforcedBlocks = ConfigHandler.CLIENT.reinforcedBlockTint.get();
-		else
-			tintReinforcedBlocks = ConfigHandler.SERVER.forceReinforcedBlockTint.get() ? ConfigHandler.SERVER.reinforcedBlockTint.get() : ConfigHandler.CLIENT.reinforcedBlockTint.get();
-
-		return tintReinforcedBlocks ? ARGB.multiply(tint, 0xFF000000 | ConfigHandler.CLIENT.reinforcedBlockTintColor.get()) : tint;
+		return TintMode.tint(Minecraft.getInstance().player, tint, ownable);
 	}
 
 	public static Player getClientPlayer() {
@@ -762,7 +774,7 @@ public class ClientHandler {
 
 		be.requestModelDataUpdate();
 		be.getLevel().getModelData(pos); //Actually calculates and applies the new model data that was requested before
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()); //Recompiles the render chunk at the changed position
+		ClientUtils.recompileChunk(pos); //Recompiles the render chunk at the changed position
 	}
 
 	public static boolean isPlayerMountedOnCamera() {

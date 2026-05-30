@@ -4,7 +4,6 @@ public class SonicSecuritySystemRenderState extends DisguisableBlockEntityRender
 	public boolean isRecording;
 	public boolean isListening;
 	public boolean isShutDown;
-	public boolean isDisguised;
 	public float radarRotation;
 	public double distanceToCameraSqr;
 }

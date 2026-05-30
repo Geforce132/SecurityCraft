@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import net.geforcemods.securitycraft.misc.TintMode;
 import net.geforcemods.securitycraft.util.TeamUtils;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -13,6 +14,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.DoubleValue;
+import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
@@ -37,8 +39,9 @@ public class ConfigHandler {
 
 	public static class Client {
 		public final BooleanValue sayThanksMessage;
-		public final BooleanValue reinforcedBlockTint;
 		public final BooleanValue debugCameraResetTracing;
+		public final BooleanValue morePerformantSRIRendering;
+		public final EnumValue<TintMode> reinforcedBlockTintMode;
 		public final IntValue reinforcedBlockTintColor;
 		public final IntValue frameFeedRenderDistance;
 		public final IntValue frameFeedResolution;
@@ -50,16 +53,20 @@ public class ConfigHandler {
 					.comment("Send a welcome message containing tips when joining the world")
 					.define("sayThanksMessage", true);
 
-			reinforcedBlockTint = builder
-					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? Servers can force this setting on clients if the server config setting \"force_reinforced_block_tint\" is set to true.")
-					.define("reinforced_block_tint", true);
-
 			debugCameraResetTracing = builder
 					.comment("If this debug feature is enabled, SecurityCraft will attempt to find and report mods that prevent the feature of viewing security cameras from working when they immediately reset the player's camera entity.")
 					.define("debug_camera_reset_tracing", false);
 
+			morePerformantSRIRendering = builder
+					.comment("Should Secure Redstone Interfaces in \"Receiver\" mode be rendered without the spinning disk? This may lead to slight clientside performance gains.")
+					.define("more_performant_sri_rendering", false);
+
+			reinforcedBlockTintMode = builder
+					.comment("Controls what condition placed reinforced blocks must satisfy in order to be colored compared to their vanilla counterparts. The color of this tint can be defined through the \"reinforced_block_tint_color\" configuration option. The tint may apply to all reinforced blocks, no reinforced blocks, or only the reinforced blocks that belong or don't belong to the player.")
+					.defineEnum("reinforced_block_tint_mode", TintMode.ALL);
+
 			reinforcedBlockTintColor = builder
-					.comment("Set the color that reinforced blocks' textures have when reinforced_block_tint is enabled. This cannot be overridden by servers, and will be applied the same to all blocks. Grayscale values look best.",
+					.comment("Set the color that reinforced blocks' textures are tinted with. This will be applied the same to all blocks that satisfy the condition set by \"reinforced_block_tint_mode\". Grayscale values look best.",
 							"Format: 0xRRGGBB")
 					.defineInRange("reinforced_block_tint_color", 0x999999, 0x000000, 0xFFFFFF);
 
@@ -88,8 +95,6 @@ public class ConfigHandler {
 		public final IntValue inventoryScannerRange;
 		public final IntValue maxAlarmRange;
 		public final BooleanValue allowBlockClaim;
-		public final BooleanValue reinforcedBlockTint;
-		public final BooleanValue forceReinforcedBlockTint;
 		public final BooleanValue retinalScannerFace;
 		public final BooleanValue enableTeamOwnership;
 		public final ConfigValue<List<? extends String>> teamOwnershipPrecedence;
@@ -114,6 +119,7 @@ public class ConfigHandler {
 		public final BooleanValue alwaysDrop;
 		public final BooleanValue allowBreakingNonOwnedBlocks;
 		public final DoubleValue nonOwnedBreakingSlowdown;
+		public final DoubleValue ownedBreakingSlowdown;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesAllowlist;
 		public final ConfigValue<List<? extends String>> sentryAttackableEntitiesDenylist;
 
@@ -154,14 +160,6 @@ public class ConfigHandler {
 			allowBlockClaim = builder
 					.comment("Allows to claim blocks that do not have an owner by rightclicking them with the Universal Owner Changer.")
 					.define("allowBlockClaim", false);
-
-			reinforcedBlockTint = builder
-					.comment("Should reinforced blocks' textures be slightly darker than their vanilla counterparts? Servers can force this setting on clients if the server config \"force_reinforced_block_tint\" is set to true.")
-					.define("reinforced_block_tint", true);
-
-			forceReinforcedBlockTint = builder
-					.comment("Set this to true if you want to force the setting of reinforced_block_tint for players.")
-					.define("force_reinforced_block_tint", false);
 
 			retinalScannerFace = builder
 					.comment("Display owner face on retinal scanner?")
@@ -268,6 +266,12 @@ public class ConfigHandler {
 							"This only applies when \"allow_breaking_non_owned_blocks\" and \"vanilla_tool_block_breaking\" are set to true.")
 					.defineInRange("non_owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
 
+			ownedBreakingSlowdown = builder
+					.comment("How much slower it should be to break a block that is owned by the player breaking it.",
+							"The value is calculated as the normal block breaking speed divided by the owned block breaking slowdown. Example: A value of 2.0 means it takes twice as long to break the block.",
+							"This only applies when \"vanilla_tool_block_breaking\" is set to true.")
+					.defineInRange("owned_breaking_slowdown", 1.0D, 0.0D, Double.MAX_VALUE);
+
 			sentryAttackableEntitiesAllowlist = builder
 					.comment("Add entities to this list that the Sentry currently does not attack, but that you want the Sentry to attack. The denylist takes priority over the allowlist.")
 					.defineListAllowEmpty("sentry_attackable_entities_allowlist", List.of(), () -> "minecraft:pig", String.class::isInstance);
@@ -282,11 +286,22 @@ public class ConfigHandler {
 	@SubscribeEvent
 	public static void onModConfigReloading(ModConfigEvent.Loading event) {
 		updateTeamPrecedence(event);
+
+		if (event.getConfig().getSpec() == CLIENT_SPEC)
+			loadTintSettingsFromConfig();
 	}
 
 	@SubscribeEvent
 	public static void onModConfigReloading(ModConfigEvent.Reloading event) {
 		updateTeamPrecedence(event);
+
+		if (event.getConfig().getSpec() == CLIENT_SPEC)
+			loadTintSettingsFromConfig();
+	}
+
+	public static void loadTintSettingsFromConfig() {
+		TintMode.setColor(ConfigHandler.CLIENT.reinforcedBlockTintColor.getAsInt());
+		TintMode.setMode(ConfigHandler.CLIENT.reinforcedBlockTintMode.get());
 	}
 
 	private static void updateTeamPrecedence(ModConfigEvent event) {

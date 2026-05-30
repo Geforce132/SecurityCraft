@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.renderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecureRedstoneInterfaceBlock;
@@ -49,9 +50,14 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 	public void extractRenderState(SecureRedstoneInterfaceBlockEntity be, SecureRedstoneInterfaceRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPos, crumblingOverlay);
 		state.disguiseRenderState = ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.tryExtractFromDelegate(be, partialTick, cameraPos, crumblingOverlay);
-		state.modelRotation = be.getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getRotation();
-		state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE);
-		state.isSender = be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER);
-		state.dishRotation = Mth.lerp(partialTick, be.getOriginalDishRotationDegrees(), be.getDishRotationDegrees());
+
+		if (!ConfigHandler.CLIENT.morePerformantSRIRendering.get()) {
+			state.modelRotation = be.getBlockState().getValue(SecureRedstoneInterfaceBlock.FACING).getRotation();
+			state.isDisguised = be.isModuleEnabled(ModuleType.DISGUISE);
+			state.isSender = be.getBlockState().getValue(SecureRedstoneInterfaceBlock.SENDER);
+			state.dishRotation = Mth.lerp(partialTick, be.getOriginalDishRotationDegrees(), be.getDishRotationDegrees());
+		}
+		else
+			state.isSender = true;
 	}
 }

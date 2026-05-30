@@ -20,10 +20,11 @@ import net.minecraft.world.entity.player.Inventory;
 public class InventoryScannerScreen extends AbstractContainerScreen<InventoryScannerMenu> {
 	private static final Identifier REGULAR_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_gui.png");
 	private static final Identifier ENHANCED_INVENTORY = SecurityCraft.resLoc("textures/gui/container/inventory_scanner_enhanced_gui.png");
+	private static final Identifier LENS_SLOT = SecurityCraft.resLoc("slot/lens");
 	public final InventoryScannerBlockEntity be;
 	private boolean owns = false;
 	private boolean hasRedstoneModule = false, hasStorageModule = false;
-	private Component infoStringRedstone, infoStringStorage;
+	private final Component infoStringRedstone, infoStringStorage;
 	private static final Style UNDERLINE = Style.EMPTY.applyFormat(ChatFormatting.UNDERLINE);
 	private final Component prohibitedItems = Utils.localize("gui.securitycraft:invScan.prohibitedItems");
 	private final Component adminMode = Utils.localize("gui.securitycraft:invScan.mode.admin").setStyle(UNDERLINE);
@@ -77,5 +78,8 @@ public class InventoryScannerScreen extends AbstractContainerScreen<InventorySca
 	public void extractBackground(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float a) {
 		super.extractBackground(guiGraphics, mouseX, mouseY, a);
 		guiGraphics.blit(RenderPipelines.GUI_TEXTURED, hasStorageModule && owns ? ENHANCED_INVENTORY : REGULAR_INVENTORY, leftPos, topPos, 0.0F, 0.0F, imageWidth, imageHeight + 30, 256, 256);
+
+		if (be.getLensContainer().getItem(0).isEmpty())
+			guiGraphics.blitSprite(RenderPipelines.GUI_TEXTURED, LENS_SLOT, leftPos + 159, topPos + 89, 16, 16);
 	}
 }

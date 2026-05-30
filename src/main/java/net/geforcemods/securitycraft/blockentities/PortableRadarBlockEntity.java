@@ -38,6 +38,7 @@ import net.minecraft.world.phys.AABB;
 public class PortableRadarBlockEntity extends CustomizableBlockEntity implements ITickingBlockEntity {
 	private IntOption searchRadiusOption = new IntOption("searchRadius", 25, 1, 50, 1);
 	private IntOption searchDelayOption = new IntOption("searchDelay", 4, 4, 10, 1);
+	private BooleanOption sendMessageOption = new BooleanOption("sendMessage", true);
 	private BooleanOption repeatMessageOption = new BooleanOption("repeatMessage", true);
 	private BooleanOption sendToTeamMembersOption = new BooleanOption("sendToTeamMembers", true) {
 		@Override
@@ -62,12 +63,12 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 
 			AABB area = new AABB(pos).inflate(getSearchRadius());
 			List<Player> closebyPlayers = level.getEntitiesOfClass(Player.class, area, e -> !(isOwnedBy(e) && ignoresOwner()) && ((!isModuleEnabled(ModuleType.DENYLIST) && !isAllowed(e)) || isDenied(e)) && e.canBeSeenByAnyone() && !respectInvisibility.isConsideredInvisible(e));
-			List<Owner> closebyOwners = closebyPlayers.stream().map(Owner::new).toList();
 
 			if (isModuleEnabled(ModuleType.REDSTONE))
 				PortableRadarBlock.togglePowerOutput(level, pos, !closebyPlayers.isEmpty());
 
-			if (!closebyPlayers.isEmpty()) {
+			if (sendMessageOption.get() && !closebyPlayers.isEmpty()) {
+				List<Owner> closebyOwners = closebyPlayers.stream().map(Owner::new).toList();
 				Component coords = Utils.getFormattedCoordinates(pos);
 				Collection<ServerPlayer> messageReceivers;
 
@@ -90,9 +91,9 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 							messageReceivers.forEach(player -> PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.PORTABLE_RADAR.get().getDescriptionId()), text, ChatFormatting.BLUE));
 					}
 				}
-			}
 
-			seenPlayers.removeIf(owner -> !closebyOwners.contains(owner));
+				seenPlayers.removeIf(owner -> !closebyOwners.contains(owner));
+			}
 		}
 	}
 
@@ -138,7 +139,7 @@ public class PortableRadarBlockEntity extends CustomizableBlockEntity implements
 	@Override
 	public Option<?>[] customOptions() {
 		Option<?>[] options = new Option[] {
-				searchRadiusOption, searchDelayOption, repeatMessageOption, disabled, ignoreOwner, respectInvisibility
+				searchRadiusOption, searchDelayOption, sendMessageOption, repeatMessageOption, disabled, ignoreOwner, respectInvisibility
 		};
 
 		if (ConfigHandler.SERVER.enableTeamOwnership.get())

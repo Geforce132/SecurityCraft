@@ -86,8 +86,6 @@ public abstract class SpecialDoorBlock extends DoorBlock implements EntityBlock,
 				upperBe.setOwner(player.getGameProfile().id().toString(), player.getName().getString());
 			}
 
-			LinkableBlockEntity.link(lowerBe, upperBe);
-
 			if (lowerBe.hasCustomName())
 				upperBe.setCustomName(lowerBe.getCustomName());
 		}

@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.util.TeamUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -101,6 +102,25 @@ public class Owner {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @return Whether everything owned by this owner is also owned by the other owner
+	 */
+	public boolean isTreatedTheSameAs(Owner otherOwner) {
+		if (TeamUtils.areOnSameTeam(this, otherOwner))
+			return true;
+
+		String selfUUID = getUUID();
+		String otherUUID = otherOwner.getUUID();
+		String otherName = otherOwner.getName();
+
+		// Compare the UUIDs of the owners first.
+		if (otherUUID != null && otherUUID.equals(selfUUID))
+			return true;
+
+		// If either owner doesn't have a UUID saved, compare names instead.
+		return otherName != null && (selfUUID.equals("ownerUUID") || otherUUID.equals("ownerUUID")) && otherName.equals(getName());
 	}
 
 	/**

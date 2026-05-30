@@ -12,6 +12,7 @@ import net.geforcemods.securitycraft.api.SecurityCraftAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
@@ -147,14 +148,22 @@ public class BlockUtils {
 					float newDestroyProgress;
 
 					state.destroySpeed = destroyTimeForOwner;
-					newDestroyProgress = destroyProgress.get(state, player, level, pos) / (float) (isOwned || isBlockMine ? 1.0F : ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble());
+					newDestroyProgress = destroyProgress.get(state, player, level, pos);
 					state.destroySpeed = -1.0F;
+
+					if (!isBlockMine)
+						return newDestroyProgress / (float) (isOwned ? ConfigHandler.SERVER.ownedBreakingSlowdown.getAsDouble() : ConfigHandler.SERVER.nonOwnedBreakingSlowdown.getAsDouble());
+
 					return newDestroyProgress;
 				}
 			}
 		}
 
 		return destroyProgress.get(state, player, level, pos);
+	}
+
+	public static boolean areItemsEqual(ItemStack firstItemStack, ItemStack secondItemStack, boolean exactComponentCheck) {
+		return exactComponentCheck ? ItemStack.isSameItemSameComponents(firstItemStack, secondItemStack) : firstItemStack.is(secondItemStack.getItem());
 	}
 
 	@FunctionalInterface

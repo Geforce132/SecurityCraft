@@ -17,7 +17,7 @@ public class ColorChooserButton extends Button.Plain {
 
 	@Override
 	public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-		int color = colorChooser.getRGBColor();
+		int color = colorChooser.getARGBColor();
 
 		super.extractContents(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.fillGradient(getX() + 2, getY() + 2, getX() + width - 2, getY() + height - 2, color, color);
