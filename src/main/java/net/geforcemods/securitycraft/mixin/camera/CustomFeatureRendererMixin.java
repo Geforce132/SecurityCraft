@@ -5,15 +5,12 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.vertex.PoseStack.Pose;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer.WrappingGeometryRenderer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
-import net.minecraft.client.renderer.SubmitNodeCollection;
-import net.minecraft.client.renderer.SubmitNodeCollector.CustomGeometryRenderer;
 import net.minecraft.client.renderer.feature.CustomFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 
 /**
@@ -22,23 +19,11 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
  */
 @Mixin(CustomFeatureRenderer.class)
 public class CustomFeatureRendererMixin {
-	@WrapOperation(method = "renderSolid", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector$CustomGeometryRenderer;render(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
-	private void securitycraft$renderSolidAnimation(CustomGeometryRenderer renderer, Pose pose, VertexConsumer vertexConsumer, Operation<Void> original, SubmitNodeCollection collection, BufferSource buffer) {
-		if (renderer instanceof WrappingGeometryRenderer wrapper)
-			renderer.render(pose, wrapper.spriteId.buffer(Minecraft.getInstance().getAtlasManager(), buffer, RenderTypes::entitySolid));
+	@WrapOperation(method = "buildGroup", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/feature/CustomFeatureRenderer;getVertexBuilder(Lnet/minecraft/client/renderer/rendertype/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
+	private VertexConsumer securitycraft$renderAnimation(CustomFeatureRenderer instance, RenderType renderType, Operation<VertexConsumer> original, @Local CustomFeatureRenderer.Submit submit) {
+		if (submit.customGeometryRenderer() instanceof WrappingGeometryRenderer wrapper)
+			return original.call(instance, wrapper.spriteId.renderType(RenderTypes::entitySolid));
 		else
-			original.call(renderer, pose, vertexConsumer);
-	}
-
-	/**
-	 * Technically not needed because SecurityCraft does not have any translucent textures it needs to render with
-	 * animations, however it is here for completeness
-	 */
-	@WrapOperation(method = "renderTranslucent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollector$CustomGeometryRenderer;render(Lcom/mojang/blaze3d/vertex/PoseStack$Pose;Lcom/mojang/blaze3d/vertex/VertexConsumer;)V"))
-	private void securitycraft$renderTranslucentAnimation(CustomGeometryRenderer renderer, Pose pose, VertexConsumer vertexConsumer, Operation<Void> original, SubmitNodeCollection collection, BufferSource buffer) {
-		if (renderer instanceof WrappingGeometryRenderer wrapper)
-			renderer.render(pose, wrapper.spriteId.buffer(Minecraft.getInstance().getAtlasManager(), buffer, RenderTypes::entityTranslucent));
-		else
-			original.call(renderer, pose, vertexConsumer);
+			return original.call(instance, renderType);
 	}
 }

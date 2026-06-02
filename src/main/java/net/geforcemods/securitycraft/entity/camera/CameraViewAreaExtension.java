@@ -28,8 +28,8 @@ public class CameraViewAreaExtension {
 		return sectionRenderDispatcher.new RenderSection(0, sectionPos);
 	}
 
-	public static void setDirty(int cx, int cy, int cz, boolean playerChanged) {
-		SectionRenderDispatcher.RenderSection section = rawFetch(cx, cy, cz, false);
+	public static void setDirty(int sectionX, int sectionY, int sectionZ, boolean playerChanged) {
+		SectionRenderDispatcher.RenderSection section = rawFetch(sectionX, sectionY, sectionZ, false);
 
 		if (section != null)
 			section.setDirty(playerChanged);
