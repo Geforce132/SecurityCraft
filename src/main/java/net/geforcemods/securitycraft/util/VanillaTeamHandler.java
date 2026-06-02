@@ -5,10 +5,10 @@ import java.util.Objects;
 
 import net.geforcemods.securitycraft.api.Owner;
 import net.geforcemods.securitycraft.util.TeamUtils.TeamRepresentation;
-import net.minecraft.ChatFormatting;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
+import net.minecraft.world.scores.TeamColor;
 
 public class VanillaTeamHandler implements TeamHandler {
 	@Override
@@ -23,9 +23,9 @@ public class VanillaTeamHandler implements TeamHandler {
 		PlayerTeam team = TeamUtils.getVanillaTeamFromPlayer(owner.getName());
 
 		if (team != null && team.getPlayers().size() > 1) {
-			Integer color = team.getColor().getColor();
+			TeamColor color = team.getColor().orElse(TeamColor.GRAY);
 
-			return new TeamRepresentation(team.getDisplayName().getString(), color == null ? ChatFormatting.GRAY.getColor() : color);
+			return new TeamRepresentation(team.getDisplayName().getString(), color.rgb());
 		}
 
 		return null;

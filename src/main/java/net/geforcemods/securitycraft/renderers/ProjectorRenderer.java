@@ -32,7 +32,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 
 			pose.pushPose();
 			pose.translate(positionalOffset.getX(), positionalOffset.getY(), positionalOffset.getZ());
-			collector.submitMovingBlock(pose, projectionInfo.movingBlockRenderState);
+			collector.submitMovingBlock(pose, projectionInfo.movingBlockRenderState, 0);
 			ClientHandler.PROJECTOR_RENDER_DELEGATE.trySubmitDelegate(state.projectedBlockEntityRenderState, pose, collector, camera);
 			pose.popPose();
 		}

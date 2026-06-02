@@ -47,7 +47,7 @@ public class SecuritySeaBoatItem extends BoatItem {
 			boat.setOwner(player);
 
 			if (level instanceof ServerLevel serverLevel)
-				EntityType.<AbstractBoat>createDefaultStackConfig(serverLevel, stack, player).accept(boat);
+				EntityType.<AbstractBoat>createDefaultStackConfig(serverLevel, stack, player).apply(boat);
 		}
 
 		return boat;

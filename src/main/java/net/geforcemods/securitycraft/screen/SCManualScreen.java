@@ -42,7 +42,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
@@ -333,7 +333,7 @@ public class SCManualScreen extends Screen {
 			nextSubpage.visible = false;
 			previousSubpage.visible = false;
 
-			if (I18n.exists("gui.securitycraft:scManual.author"))
+			if (Language.getInstance().has("gui.securitycraft:scManual.author"))
 				author = font.split(Utils.localize("gui.securitycraft:scManual.author"), 180);
 			else
 				author.clear();

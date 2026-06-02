@@ -47,7 +47,7 @@ public class ClientUtils {
 		else if (module == ModuleType.SPEED)
 			drawTexture(guiGraphics, SUGAR_TEXTURE, moduleLeft, moduleTop, color);
 
-		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom && mc.screen != null)
+		if (moduleTooltip != null && mouseX >= moduleLeft && mouseX < moduleRight && mouseY >= moduleTop && mouseY <= moduleBottom && mc.gui.screen() != null)
 			guiGraphics.setComponentTooltipForNextFrame(font, Arrays.asList(moduleTooltip), mouseX, mouseY);
 	}
 
@@ -56,7 +56,7 @@ public class ClientUtils {
 	}
 
 	public static void recompileChunk(BlockPos pos) {
-		Minecraft.getInstance().levelRenderer.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+		Minecraft.getInstance().levelExtractor.setBlocksDirty(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public static void recompileAllChunksInRange() {
@@ -64,7 +64,7 @@ public class ClientUtils {
 		SectionPos current = SectionPos.of(Minecraft.getInstance().player.blockPosition());
 		Level level = Minecraft.getInstance().level;
 
-		Minecraft.getInstance().levelRenderer.setSectionRangeDirty(current.x() - renderDistance, level.getMinSectionY(), current.z() - renderDistance, current.x() + renderDistance, level.getMaxSectionY(), current.z() + renderDistance);
+		Minecraft.getInstance().levelExtractor.setSectionRangeDirty(current.x() - renderDistance, level.getMinSectionY(), current.z() - renderDistance, current.x() + renderDistance, level.getMaxSectionY(), current.z() + renderDistance);
 	}
 
 	public static Quaternionf fromXYZDegrees(float x, float y, float z) {

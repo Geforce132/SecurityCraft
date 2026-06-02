@@ -185,7 +185,7 @@ public class SCClientEventHandler {
 	public static void cameraOverlay(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
 		Minecraft mc = Minecraft.getInstance();
 
-		if (mc.options.hideGui)
+		if (mc.gui.hud.isHidden())
 			return;
 
 		Level level = mc.level;

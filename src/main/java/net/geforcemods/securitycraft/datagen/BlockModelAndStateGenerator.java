@@ -62,6 +62,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WeatheringCopperCollection.ByState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SideChainPart;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -125,6 +126,8 @@ public class BlockModelAndStateGenerator {
 	protected static void run(BlockModelGenerators blockModelGenerators) {
 		List<Holder<Item>> mineTabItems = SCCreativeModeTabs.getItemList(SCItemGroup.EXPLOSIVES);
 		List<Holder<Item>> decorationTabItems = SCCreativeModeTabs.getItemList(SCItemGroup.DECORATION);
+		ByState<BlockFamily> copperFamilies = BlockFamilies.COPPER_BLOCK.weathering();
+		ByState<BlockFamily> cutCopperFamilies = BlockFamilies.CUT_COPPER.weathering();
 		List<BlockFamily> excludedFamilies = List.of();
 
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
@@ -302,14 +305,15 @@ public class BlockModelAndStateGenerator {
 			.filter(Predicates.not(excludedFamilies::contains))
 			.forEach(BlockModelAndStateGenerator::reinforcedFamily);
 		//@formatter:on
-		reinforcedFamily(BlockFamilies.COPPER_BLOCK);
-		reinforcedFamily(BlockFamilies.CUT_COPPER);
-		reinforcedFamily(BlockFamilies.EXPOSED_COPPER);
-		reinforcedFamily(BlockFamilies.EXPOSED_CUT_COPPER);
-		reinforcedFamily(BlockFamilies.WEATHERED_COPPER);
-		reinforcedFamily(BlockFamilies.WEATHERED_CUT_COPPER);
-		reinforcedFamily(BlockFamilies.OXIDIZED_COPPER);
-		reinforcedFamily(BlockFamilies.OXIDIZED_CUT_COPPER);
+
+		reinforcedFamily(copperFamilies.unaffected());
+		reinforcedFamily(cutCopperFamilies.unaffected());
+		reinforcedFamily(copperFamilies.exposed());
+		reinforcedFamily(cutCopperFamilies.exposed());
+		reinforcedFamily(copperFamilies.weathered());
+		reinforcedFamily(cutCopperFamilies.weathered());
+		reinforcedFamily(copperFamilies.oxidized());
+		reinforcedFamily(cutCopperFamilies.oxidized());
 		REINFORCED_FAMILIES.forEach(family -> family.generateFor(null));
 		createReinforcedSlab(SCContent.REINFORCED_SMOOTH_STONE_SLAB.get(), "reinforced_smooth_stone_slab_double", "smooth_stone_slab_side", "smooth_stone");
 		createCrystalQuartzBlocks();

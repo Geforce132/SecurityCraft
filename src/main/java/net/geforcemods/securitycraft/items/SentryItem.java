@@ -60,7 +60,7 @@ public class SentryItem extends Item {
 		entity.setUpSentry(player);
 
 		if (level instanceof ServerLevel serverLevel)
-			EntityType.<Sentry>createDefaultStackConfig(serverLevel, stack, player).accept(entity);
+			EntityType.<Sentry>createDefaultStackConfig(serverLevel, stack, player).apply(entity);
 
 		level.addFreshEntity(entity);
 		entity.gameEvent(GameEvent.ENTITY_PLACE, player);

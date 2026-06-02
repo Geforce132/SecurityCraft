@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.blaze3d.GpuFormat;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
 
@@ -39,7 +40,7 @@ public class CameraFeed {
 	public CameraFeed(GlobalPos globalPos, RenderSection startingSection) {
 		int resolution = ConfigHandler.CLIENT.frameFeedResolution.get();
 
-		this.renderTarget = new TextureTarget("securitycraft:frame", resolution, resolution, true);
+		this.renderTarget = new TextureTarget("securitycraft:frame", resolution, resolution, true, GpuFormat.RGBA8_UNORM);
 		compilingSectionsQueue.add(startingSection);
 		sectionsInRange.add(startingSection);
 		sectionsInRangePositions.add(startingSection.getRenderOrigin().asLong());

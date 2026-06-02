@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -29,7 +29,7 @@ public class LevelUtils {
 	}
 
 	public static LightningBolt createLightning(Level level, Vec3 pos, boolean effectOnly) {
-		LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
+		LightningBolt lightning = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
 
 		lightning.snapTo(pos);
 		lightning.setVisualOnly(effectOnly);

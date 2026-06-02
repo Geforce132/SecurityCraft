@@ -678,95 +678,95 @@ public class ClientHandler {
 	}
 
 	public static void displayMRATScreen(ItemStack stack) {
-		Minecraft.getInstance().setScreen(new MineRemoteAccessToolScreen(stack));
+		Minecraft.getInstance().gui.setScreen(new MineRemoteAccessToolScreen(stack));
 	}
 
 	public static void displaySRATScreen(ItemStack stack) {
-		Minecraft.getInstance().setScreen(new SentryRemoteAccessToolScreen(stack));
+		Minecraft.getInstance().gui.setScreen(new SentryRemoteAccessToolScreen(stack));
 	}
 
 	public static void displayEditModuleScreen(ItemStack stack) {
-		Minecraft.getInstance().setScreen(new EditModuleScreen(stack));
+		Minecraft.getInstance().gui.setScreen(new EditModuleScreen(stack));
 	}
 
 	public static void displayCameraMonitorScreen(ItemStack stack) {
-		Minecraft.getInstance().setScreen(new CameraMonitorScreen(stack));
+		Minecraft.getInstance().gui.setScreen(new CameraMonitorScreen(stack));
 	}
 
 	public static void displayFrameScreen(FrameBlockEntity be, boolean readOnly) {
-		Minecraft.getInstance().setScreen(new FrameScreen(readOnly, be));
+		Minecraft.getInstance().gui.setScreen(new FrameScreen(readOnly, be));
 	}
 
 	public static void displaySCManualScreen() {
-		Minecraft.getInstance().setScreen(new SCManualScreen());
+		Minecraft.getInstance().gui.setScreen(new SCManualScreen());
 	}
 
 	public static void displayEditSecretSignScreen(SecretSignBlockEntity be, boolean isFront) {
-		Minecraft.getInstance().setScreen(new SignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
+		Minecraft.getInstance().gui.setScreen(new SignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
 	}
 
 	public static void displayEditSecretHangingSignScreen(SecretHangingSignBlockEntity be, boolean isFront) {
-		Minecraft.getInstance().setScreen(new HangingSignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
+		Minecraft.getInstance().gui.setScreen(new HangingSignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
 	}
 
 	public static void displaySonicSecuritySystemScreen(SonicSecuritySystemBlockEntity be) {
-		Minecraft.getInstance().setScreen(new SonicSecuritySystemScreen(be));
+		Minecraft.getInstance().gui.setScreen(new SonicSecuritySystemScreen(be));
 	}
 
 	public static void displayBriefcasePasscodeScreen(Component title) {
-		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, false));
+		Minecraft.getInstance().gui.setScreen(new BriefcasePasscodeScreen(title, false));
 	}
 
 	public static void displayBriefcaseSetupScreen(Component title) {
-		Minecraft.getInstance().setScreen(new BriefcasePasscodeScreen(title, true));
+		Minecraft.getInstance().gui.setScreen(new BriefcasePasscodeScreen(title, true));
 	}
 
 	public static void displayUsernameLoggerScreen(UsernameLoggerBlockEntity be) {
-		Minecraft.getInstance().setScreen(new UsernameLoggerScreen(be));
+		Minecraft.getInstance().gui.setScreen(new UsernameLoggerScreen(be));
 	}
 
 	public static void displayUniversalKeyChangerScreen(BlockEntity be) {
-		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) be));
+		Minecraft.getInstance().gui.setScreen(new KeyChangerScreen((IPasscodeProtected) be));
 	}
 
 	public static void displayUniversalKeyChangerScreen(Entity entity) {
-		Minecraft.getInstance().setScreen(new KeyChangerScreen((IPasscodeProtected) entity));
+		Minecraft.getInstance().gui.setScreen(new KeyChangerScreen((IPasscodeProtected) entity));
 	}
 
 	public static void displayCheckPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) be, displayName));
+		Minecraft.getInstance().gui.setScreen(new CheckPasscodeScreen((IPasscodeProtected) be, displayName));
 	}
 
 	public static void displayCheckPasscodeScreen(Entity entity) {
-		Minecraft.getInstance().setScreen(new CheckPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
+		Minecraft.getInstance().gui.setScreen(new CheckPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
 	}
 
 	public static void displaySetPasscodeScreen(BlockEntity be) {
 		Component displayName = be instanceof Nameable nameable ? nameable.getDisplayName() : Component.translatable(be.getBlockState().getBlock().getDescriptionId());
 
-		Minecraft.getInstance().setScreen(new SetPasscodeScreen((IPasscodeProtected) be, displayName));
+		Minecraft.getInstance().gui.setScreen(new SetPasscodeScreen((IPasscodeProtected) be, displayName));
 	}
 
 	public static void displaySetPasscodeScreen(Entity entity) {
-		Minecraft.getInstance().setScreen(new SetPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
+		Minecraft.getInstance().gui.setScreen(new SetPasscodeScreen((IPasscodeProtected) entity, entity.getDisplayName()));
 	}
 
 	public static void displaySSSItemScreen(ItemStack stack) {
-		Minecraft.getInstance().setScreen(new SSSItemScreen(stack));
+		Minecraft.getInstance().gui.setScreen(new SSSItemScreen(stack));
 	}
 
 	public static void displayRiftStabilizerScreen(RiftStabilizerBlockEntity be) {
-		Minecraft.getInstance().setScreen(new RiftStabilizerScreen(be));
+		Minecraft.getInstance().gui.setScreen(new RiftStabilizerScreen(be));
 	}
 
 	public static void displaySecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
-		Minecraft.getInstance().setScreen(new SecureRedstoneInterfaceScreen(be));
+		Minecraft.getInstance().gui.setScreen(new SecureRedstoneInterfaceScreen(be));
 	}
 
 	public static void displayAlarmScreen(AlarmBlockEntity be) {
-		Minecraft.getInstance().setScreen(new AlarmScreen(be, be.getSound().location()));
+		Minecraft.getInstance().gui.setScreen(new AlarmScreen(be, be.getSound().location()));
 	}
 
 	public static void refreshModelData(BlockEntity be) {

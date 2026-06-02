@@ -43,7 +43,7 @@ public record SetCameraView(int id) implements CustomPacketPayload {
 				CameraController.setCameraMountedTimestamp();
 				CameraController.previousCameraType = mc.options.getCameraType();
 				mc.options.setCameraType(CameraType.FIRST_PERSON);
-				mc.gui.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
+				mc.gui.hud.setOverlayMessage(Utils.localize("mount.onboard", mc.options.keyShift.getTranslatedKeyMessage()), false);
 				LayerToggleHandler.disable(VanillaGuiLayers.CONTEXTUAL_INFO_BAR);
 				LayerToggleHandler.disable(VanillaGuiLayers.CONTEXTUAL_INFO_BAR_BACKGROUND);
 				LayerToggleHandler.disable(VanillaGuiLayers.EFFECTS);

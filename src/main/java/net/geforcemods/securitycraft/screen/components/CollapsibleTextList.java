@@ -97,7 +97,7 @@ public class CollapsibleTextList extends Button.Plain {
 
 	public void renderLongMessageTooltip(GuiGraphicsExtractor guiGraphics, Font font) {
 		if (isMessageTooLong && isHoveredOrFocused()) {
-			Screen currentScreen = Minecraft.getInstance().screen;
+			Screen currentScreen = Minecraft.getInstance().gui.screen();
 
 			if (currentScreen != null)
 				guiGraphics.setTooltipForNextFrame(font, originalDisplayString, getX() + 1, getY() + height + 2);

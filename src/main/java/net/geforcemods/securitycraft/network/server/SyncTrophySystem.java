@@ -3,25 +3,25 @@ package net.geforcemods.securitycraft.network.server;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.TrophySystemBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-public record SyncTrophySystem(BlockPos pos, Identifier projectileTypeLocation, boolean allowed) implements CustomPacketPayload {
+public record SyncTrophySystem(BlockPos pos, ResourceKey<EntityType<?>> projectileType, boolean allowed) implements CustomPacketPayload {
 
 	public static final Type<SyncTrophySystem> TYPE = new Type<>(SecurityCraft.resLoc("sync_trophy_system"));
 	//@formatter:off
 	public static final StreamCodec<RegistryFriendlyByteBuf, SyncTrophySystem> STREAM_CODEC = StreamCodec.composite(
 			BlockPos.STREAM_CODEC, SyncTrophySystem::pos,
-			Identifier.STREAM_CODEC, SyncTrophySystem::projectileTypeLocation,
+			ResourceKey.streamCodec(Registries.ENTITY_TYPE), SyncTrophySystem::projectileType,
 			ByteBufCodecs.BOOL, SyncTrophySystem::allowed,
 			SyncTrophySystem::new);
 	//@formatter:on
@@ -31,8 +31,6 @@ public record SyncTrophySystem(BlockPos pos, Identifier projectileTypeLocation, 
 	}
 
 	public void handle(IPayloadContext ctx) {
-		EntityType<?> projectileType = BuiltInRegistries.ENTITY_TYPE.get(projectileTypeLocation).orElseThrow().value();
-
 		Player player = ctx.player();
 		Level level = player.level();
 

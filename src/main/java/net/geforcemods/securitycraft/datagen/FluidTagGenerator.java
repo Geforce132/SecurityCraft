@@ -16,13 +16,14 @@ public class FluidTagGenerator extends FluidTagsProvider {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	protected void addTags(HolderLookup.Provider provider) {
 		//vanilla tags
-		tag(FluidTags.LAVA).add(SCContent.FAKE_LAVA.get(), SCContent.FLOWING_FAKE_LAVA.get());
-		tag(FluidTags.WATER).add(SCContent.FAKE_WATER.get(), SCContent.FLOWING_FAKE_WATER.get());
+		tag(FluidTags.LAVA).add(SCContent.FAKE_LAVA.getKey(), SCContent.FLOWING_FAKE_LAVA.getKey());
+		tag(FluidTags.WATER).add(SCContent.FAKE_WATER.getKey(), SCContent.FLOWING_FAKE_WATER.getKey());
 
 		//neoforge tags
-		tag(Tags.Fluids.LAVA).add(SCContent.FAKE_LAVA.get());
-		tag(Tags.Fluids.WATER).add(SCContent.FAKE_WATER.get());
+		tag(Tags.Fluids.LAVA).add(SCContent.FAKE_LAVA.getKey());
+		tag(Tags.Fluids.WATER).add(SCContent.FAKE_WATER.getKey());
 	}
 }

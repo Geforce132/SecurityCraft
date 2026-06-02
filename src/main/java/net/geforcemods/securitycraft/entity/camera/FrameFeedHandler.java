@@ -26,7 +26,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.TextureFilteringMethod;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.SectionOcclusionGraph;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -37,7 +37,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Marker;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.ChunkPos;
@@ -74,7 +74,7 @@ public class FrameFeedHandler {
 
 		boolean resourcesLoaded = mc.isGameLoadFinished();
 		Level level = player.level();
-		Camera camera = mc.gameRenderer.getMainCamera();
+		Camera camera = mc.gameRenderer.mainCamera();
 		Entity oldCamEntity = mc.getCameraEntity();
 		Window window = mc.getWindow();
 		int oldWidth = window.getWidth();
@@ -94,8 +94,8 @@ public class FrameFeedHandler {
 		float oldEyeHeight = camera.eyeHeight;
 		float oldEyeHeightO = camera.eyeHeightOld;
 		CameraType oldCameraType = mc.options.getCameraType();
-		Entity securityCamera = new Marker(EntityType.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
-		RenderTarget oldMainRenderTarget = mc.getMainRenderTarget();
+		Entity securityCamera = new Marker(EntityTypes.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
+		RenderTarget oldMainRenderTarget = mc.gameRenderer.mainRenderTarget;
 		boolean oldIsPanoramicMode = camera.isPanoramicMode();
 
 		camera.eyeHeight = camera.eyeHeightOld = player.getDimensions(Pose.STANDING).eyeHeight();
@@ -135,7 +135,7 @@ public class FrameFeedHandler {
 					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
 					mc.gameRenderer.getGlobalSettingsUniform().update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
 					mc.levelRenderer.update(camera); //Queues uncompiled visible sections for compilation
-					mc.mainRenderTarget = feed.renderTarget();
+					mc.gameRenderer.mainRenderTarget = feed.renderTarget();
 
 					try {
 						mc.gameRenderer.extract(DeltaTracker.ONE, true);
@@ -150,7 +150,7 @@ public class FrameFeedHandler {
 
 					profiler.push("securitycraft:apply_frame_frustum");
 
-					Frustum frustum = LevelRenderer.offsetFrustum(feed.getCameraFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
+					Frustum frustum = SectionOcclusionGraph.offsetFrustum(feed.getCameraFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
 
 					if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
 						feed.updateVisibleSections(frustum);
@@ -185,10 +185,10 @@ public class FrameFeedHandler {
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
-		mc.mainRenderTarget = oldMainRenderTarget;
+		mc.gameRenderer.mainRenderTarget = oldMainRenderTarget;
 		currentlyCapturedCamera = null;
 		//These two lines ensure that GUI rendering, which happens after frame feed capture, is done with the correct parameters
-		mc.gameRenderer.extractGui(partialTick, resourcesLoaded, resourcesLoaded);
+		mc.gui.extractRenderState(partialTick, resourcesLoaded, resourcesLoaded);
 		mc.gameRenderer.extractWindow();
 	}
 

@@ -832,7 +832,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COPPER_BLOCK = reinforcedBlock("reinforced_copper_block", Blocks.COPPER_BLOCK);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COPPER_BLOCK = reinforcedBlock("reinforced_copper_block", Blocks.COPPER_BLOCK.weathering().unaffected());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -848,63 +848,63 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_COPPER = reinforcedBlock("reinforced_exposed_copper", Blocks.EXPOSED_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_COPPER = reinforcedBlock("reinforced_exposed_copper", Blocks.COPPER_BLOCK.weathering().exposed());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_COPPER = reinforcedBlock("reinforced_weathered_copper", Blocks.WEATHERED_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_COPPER = reinforcedBlock("reinforced_weathered_copper", Blocks.COPPER_BLOCK.weathering().weathered());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_COPPER = reinforcedBlock("reinforced_oxidized_copper", Blocks.OXIDIZED_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_COPPER = reinforcedBlock("reinforced_oxidized_copper", Blocks.COPPER_BLOCK.weathering().oxidized());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_COPPER = reinforcedBlock("reinforced_cut_copper", Blocks.CUT_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_COPPER = reinforcedBlock("reinforced_cut_copper", Blocks.CUT_COPPER.weathering().unaffected());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CUT_COPPER = reinforcedBlock("reinforced_exposed_cut_copper", Blocks.EXPOSED_CUT_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CUT_COPPER = reinforcedBlock("reinforced_exposed_cut_copper", Blocks.CUT_COPPER.weathering().exposed());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CUT_COPPER = reinforcedBlock("reinforced_weathered_cut_copper", Blocks.WEATHERED_CUT_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CUT_COPPER = reinforcedBlock("reinforced_weathered_cut_copper", Blocks.CUT_COPPER.weathering().weathered());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CUT_COPPER = reinforcedBlock("reinforced_oxidized_cut_copper", Blocks.OXIDIZED_CUT_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CUT_COPPER = reinforcedBlock("reinforced_oxidized_cut_copper", Blocks.CUT_COPPER.weathering().oxidized());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().unaffected(), ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_EXPOSED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_exposed_cut_copper_stairs", Blocks.EXPOSED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_EXPOSED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_exposed_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().exposed(), ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_WEATHERED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_weathered_cut_copper_stairs", Blocks.WEATHERED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_WEATHERED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_weathered_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().weathered(), ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_OXIDIZED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_oxidized_cut_copper_stairs", Blocks.OXIDIZED_CUT_COPPER_STAIRS, ReinforcedStairsBlock::new);
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_OXIDIZED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_oxidized_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().oxidized(), ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_cut_copper_slab", Blocks.CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().unaffected(), ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_EXPOSED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_exposed_cut_copper_slab", Blocks.EXPOSED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_EXPOSED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_exposed_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().exposed(), ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_WEATHERED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_weathered_cut_copper_slab", Blocks.WEATHERED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_WEATHERED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_weathered_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().weathered(), ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_OXIDIZED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_oxidized_cut_copper_slab", Blocks.OXIDIZED_CUT_COPPER_SLAB, ReinforcedSlabBlock::new);
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_OXIDIZED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_oxidized_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().oxidized(), ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1076,67 +1076,67 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_WOOL = reinforcedBlock("reinforced_white_wool", Blocks.WHITE_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_WOOL = reinforcedBlock("reinforced_white_wool", Blocks.WOOL.white());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_WOOL = reinforcedBlock("reinforced_orange_wool", Blocks.ORANGE_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_WOOL = reinforcedBlock("reinforced_orange_wool", Blocks.WOOL.orange());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_WOOL = reinforcedBlock("reinforced_magenta_wool", Blocks.MAGENTA_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_WOOL = reinforcedBlock("reinforced_magenta_wool", Blocks.WOOL.magenta());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_WOOL = reinforcedBlock("reinforced_light_blue_wool", Blocks.LIGHT_BLUE_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_WOOL = reinforcedBlock("reinforced_light_blue_wool", Blocks.WOOL.lightBlue());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_WOOL = reinforcedBlock("reinforced_yellow_wool", Blocks.YELLOW_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_WOOL = reinforcedBlock("reinforced_yellow_wool", Blocks.WOOL.yellow());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_WOOL = reinforcedBlock("reinforced_lime_wool", Blocks.LIME_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_WOOL = reinforcedBlock("reinforced_lime_wool", Blocks.WOOL.lime());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_WOOL = reinforcedBlock("reinforced_pink_wool", Blocks.PINK_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_WOOL = reinforcedBlock("reinforced_pink_wool", Blocks.WOOL.pink());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_WOOL = reinforcedBlock("reinforced_gray_wool", Blocks.GRAY_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_WOOL = reinforcedBlock("reinforced_gray_wool", Blocks.WOOL.gray());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_WOOL = reinforcedBlock("reinforced_light_gray_wool", Blocks.LIGHT_GRAY_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_WOOL = reinforcedBlock("reinforced_light_gray_wool", Blocks.WOOL.lightGray());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_WOOL = reinforcedBlock("reinforced_cyan_wool", Blocks.CYAN_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_WOOL = reinforcedBlock("reinforced_cyan_wool", Blocks.WOOL.cyan());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_WOOL = reinforcedBlock("reinforced_purple_wool", Blocks.PURPLE_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_WOOL = reinforcedBlock("reinforced_purple_wool", Blocks.WOOL.purple());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_WOOL = reinforcedBlock("reinforced_blue_wool", Blocks.BLUE_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_WOOL = reinforcedBlock("reinforced_blue_wool", Blocks.WOOL.blue());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_WOOL = reinforcedBlock("reinforced_brown_wool", Blocks.BROWN_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_WOOL = reinforcedBlock("reinforced_brown_wool", Blocks.WOOL.brown());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_WOOL = reinforcedBlock("reinforced_green_wool", Blocks.GREEN_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_WOOL = reinforcedBlock("reinforced_green_wool", Blocks.WOOL.green());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_WOOL = reinforcedBlock("reinforced_red_wool", Blocks.RED_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_WOOL = reinforcedBlock("reinforced_red_wool", Blocks.WOOL.red());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_WOOL = reinforcedBlock("reinforced_black_wool", Blocks.BLACK_WOOL);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_WOOL = reinforcedBlock("reinforced_black_wool", Blocks.WOOL.black());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1463,67 +1463,67 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_TERRACOTTA = reinforcedBlock("reinforced_white_terracotta", Blocks.WHITE_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_TERRACOTTA = reinforcedBlock("reinforced_white_terracotta", Blocks.DYED_TERRACOTTA.white());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_TERRACOTTA = reinforcedBlock("reinforced_orange_terracotta", Blocks.ORANGE_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_TERRACOTTA = reinforcedBlock("reinforced_orange_terracotta", Blocks.DYED_TERRACOTTA.orange());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_TERRACOTTA = reinforcedBlock("reinforced_magenta_terracotta", Blocks.MAGENTA_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_TERRACOTTA = reinforcedBlock("reinforced_magenta_terracotta", Blocks.DYED_TERRACOTTA.magenta());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_TERRACOTTA = reinforcedBlock("reinforced_light_blue_terracotta", Blocks.LIGHT_BLUE_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_TERRACOTTA = reinforcedBlock("reinforced_light_blue_terracotta", Blocks.DYED_TERRACOTTA.lightBlue());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_TERRACOTTA = reinforcedBlock("reinforced_yellow_terracotta", Blocks.YELLOW_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_TERRACOTTA = reinforcedBlock("reinforced_yellow_terracotta", Blocks.DYED_TERRACOTTA.yellow());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_TERRACOTTA = reinforcedBlock("reinforced_lime_terracotta", Blocks.LIME_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_TERRACOTTA = reinforcedBlock("reinforced_lime_terracotta", Blocks.DYED_TERRACOTTA.lime());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_TERRACOTTA = reinforcedBlock("reinforced_pink_terracotta", Blocks.PINK_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_TERRACOTTA = reinforcedBlock("reinforced_pink_terracotta", Blocks.DYED_TERRACOTTA.pink());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_TERRACOTTA = reinforcedBlock("reinforced_gray_terracotta", Blocks.GRAY_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_TERRACOTTA = reinforcedBlock("reinforced_gray_terracotta", Blocks.DYED_TERRACOTTA.gray());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_TERRACOTTA = reinforcedBlock("reinforced_light_gray_terracotta", Blocks.LIGHT_GRAY_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_TERRACOTTA = reinforcedBlock("reinforced_light_gray_terracotta", Blocks.DYED_TERRACOTTA.lightGray());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_TERRACOTTA = reinforcedBlock("reinforced_cyan_terracotta", Blocks.CYAN_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_TERRACOTTA = reinforcedBlock("reinforced_cyan_terracotta", Blocks.DYED_TERRACOTTA.cyan());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_TERRACOTTA = reinforcedBlock("reinforced_purple_terracotta", Blocks.PURPLE_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_TERRACOTTA = reinforcedBlock("reinforced_purple_terracotta", Blocks.DYED_TERRACOTTA.purple());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_TERRACOTTA = reinforcedBlock("reinforced_blue_terracotta", Blocks.BLUE_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_TERRACOTTA = reinforcedBlock("reinforced_blue_terracotta", Blocks.DYED_TERRACOTTA.blue());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_TERRACOTTA = reinforcedBlock("reinforced_brown_terracotta", Blocks.BROWN_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_TERRACOTTA = reinforcedBlock("reinforced_brown_terracotta", Blocks.DYED_TERRACOTTA.brown());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_TERRACOTTA = reinforcedBlock("reinforced_green_terracotta", Blocks.GREEN_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_TERRACOTTA = reinforcedBlock("reinforced_green_terracotta", Blocks.DYED_TERRACOTTA.green());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_TERRACOTTA = reinforcedBlock("reinforced_red_terracotta", Blocks.RED_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_TERRACOTTA = reinforcedBlock("reinforced_red_terracotta", Blocks.DYED_TERRACOTTA.red());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_TERRACOTTA = reinforcedBlock("reinforced_black_terracotta", Blocks.BLACK_TERRACOTTA);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_TERRACOTTA = reinforcedBlock("reinforced_black_terracotta", Blocks.DYED_TERRACOTTA.black());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1547,67 +1547,67 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_WHITE_STAINED_GLASS = reinforcedBlock("reinforced_white_stained_glass", Blocks.WHITE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_WHITE_STAINED_GLASS = reinforcedBlock("reinforced_white_stained_glass", Blocks.STAINED_GLASS.white(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_ORANGE_STAINED_GLASS = reinforcedBlock("reinforced_orange_stained_glass", Blocks.ORANGE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_ORANGE_STAINED_GLASS = reinforcedBlock("reinforced_orange_stained_glass", Blocks.STAINED_GLASS.orange(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_MAGENTA_STAINED_GLASS = reinforcedBlock("reinforced_magenta_stained_glass", Blocks.MAGENTA_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_MAGENTA_STAINED_GLASS = reinforcedBlock("reinforced_magenta_stained_glass", Blocks.STAINED_GLASS.magenta(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_light_blue_stained_glass", Blocks.LIGHT_BLUE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_light_blue_stained_glass", Blocks.STAINED_GLASS.lightBlue(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_YELLOW_STAINED_GLASS = reinforcedBlock("reinforced_yellow_stained_glass", Blocks.YELLOW_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_YELLOW_STAINED_GLASS = reinforcedBlock("reinforced_yellow_stained_glass", Blocks.STAINED_GLASS.yellow(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIME_STAINED_GLASS = reinforcedBlock("reinforced_lime_stained_glass", Blocks.LIME_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIME_STAINED_GLASS = reinforcedBlock("reinforced_lime_stained_glass", Blocks.STAINED_GLASS.lime(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PINK_STAINED_GLASS = reinforcedBlock("reinforced_pink_stained_glass", Blocks.PINK_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PINK_STAINED_GLASS = reinforcedBlock("reinforced_pink_stained_glass", Blocks.STAINED_GLASS.pink(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_gray_stained_glass", Blocks.GRAY_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_gray_stained_glass", Blocks.STAINED_GLASS.gray(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_light_gray_stained_glass", Blocks.LIGHT_GRAY_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_light_gray_stained_glass", Blocks.STAINED_GLASS.lightGray(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_CYAN_STAINED_GLASS = reinforcedBlock("reinforced_cyan_stained_glass", Blocks.CYAN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_CYAN_STAINED_GLASS = reinforcedBlock("reinforced_cyan_stained_glass", Blocks.STAINED_GLASS.cyan(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PURPLE_STAINED_GLASS = reinforcedBlock("reinforced_purple_stained_glass", Blocks.PURPLE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PURPLE_STAINED_GLASS = reinforcedBlock("reinforced_purple_stained_glass", Blocks.STAINED_GLASS.purple(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_blue_stained_glass", Blocks.BLUE_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_blue_stained_glass", Blocks.STAINED_GLASS.blue(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BROWN_STAINED_GLASS = reinforcedBlock("reinforced_brown_stained_glass", Blocks.BROWN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BROWN_STAINED_GLASS = reinforcedBlock("reinforced_brown_stained_glass", Blocks.STAINED_GLASS.brown(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GREEN_STAINED_GLASS = reinforcedBlock("reinforced_green_stained_glass", Blocks.GREEN_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GREEN_STAINED_GLASS = reinforcedBlock("reinforced_green_stained_glass", Blocks.STAINED_GLASS.green(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_RED_STAINED_GLASS = reinforcedBlock("reinforced_red_stained_glass", Blocks.RED_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_RED_STAINED_GLASS = reinforcedBlock("reinforced_red_stained_glass", Blocks.STAINED_GLASS.red(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLACK_STAINED_GLASS = reinforcedBlock("reinforced_black_stained_glass", Blocks.BLACK_STAINED_GLASS, ReinforcedStainedGlassBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLACK_STAINED_GLASS = reinforcedBlock("reinforced_black_stained_glass", Blocks.STAINED_GLASS.black(), ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1675,67 +1675,67 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_CONCRETE = reinforcedBlock("reinforced_white_concrete", Blocks.WHITE_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_CONCRETE = reinforcedBlock("reinforced_white_concrete", Blocks.CONCRETE.white());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_CONCRETE = reinforcedBlock("reinforced_orange_concrete", Blocks.ORANGE_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_CONCRETE = reinforcedBlock("reinforced_orange_concrete", Blocks.CONCRETE.orange());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_CONCRETE = reinforcedBlock("reinforced_magenta_concrete", Blocks.MAGENTA_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_CONCRETE = reinforcedBlock("reinforced_magenta_concrete", Blocks.CONCRETE.magenta());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_CONCRETE = reinforcedBlock("reinforced_light_blue_concrete", Blocks.LIGHT_BLUE_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_CONCRETE = reinforcedBlock("reinforced_light_blue_concrete", Blocks.CONCRETE.lightBlue());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_CONCRETE = reinforcedBlock("reinforced_yellow_concrete", Blocks.YELLOW_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_CONCRETE = reinforcedBlock("reinforced_yellow_concrete", Blocks.CONCRETE.yellow());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_CONCRETE = reinforcedBlock("reinforced_lime_concrete", Blocks.LIME_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_CONCRETE = reinforcedBlock("reinforced_lime_concrete", Blocks.CONCRETE.lime());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_CONCRETE = reinforcedBlock("reinforced_pink_concrete", Blocks.PINK_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_CONCRETE = reinforcedBlock("reinforced_pink_concrete", Blocks.CONCRETE.pink());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_CONCRETE = reinforcedBlock("reinforced_gray_concrete", Blocks.GRAY_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_CONCRETE = reinforcedBlock("reinforced_gray_concrete", Blocks.CONCRETE.gray());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_CONCRETE = reinforcedBlock("reinforced_light_gray_concrete", Blocks.LIGHT_GRAY_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_CONCRETE = reinforcedBlock("reinforced_light_gray_concrete", Blocks.CONCRETE.lightGray());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_CONCRETE = reinforcedBlock("reinforced_cyan_concrete", Blocks.CYAN_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_CONCRETE = reinforcedBlock("reinforced_cyan_concrete", Blocks.CONCRETE.cyan());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_CONCRETE = reinforcedBlock("reinforced_purple_concrete", Blocks.PURPLE_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_CONCRETE = reinforcedBlock("reinforced_purple_concrete", Blocks.CONCRETE.purple());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_CONCRETE = reinforcedBlock("reinforced_blue_concrete", Blocks.BLUE_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_CONCRETE = reinforcedBlock("reinforced_blue_concrete", Blocks.CONCRETE.blue());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_CONCRETE = reinforcedBlock("reinforced_brown_concrete", Blocks.BROWN_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_CONCRETE = reinforcedBlock("reinforced_brown_concrete", Blocks.CONCRETE.brown());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_CONCRETE = reinforcedBlock("reinforced_green_concrete", Blocks.GREEN_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_CONCRETE = reinforcedBlock("reinforced_green_concrete", Blocks.CONCRETE.green());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_CONCRETE = reinforcedBlock("reinforced_red_concrete", Blocks.RED_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_CONCRETE = reinforcedBlock("reinforced_red_concrete", Blocks.CONCRETE.red());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_CONCRETE = reinforcedBlock("reinforced_black_concrete", Blocks.BLACK_CONCRETE);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_CONCRETE = reinforcedBlock("reinforced_black_concrete", Blocks.CONCRETE.black());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2053,195 +2053,195 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = reinforcedBlock("reinforced_white_carpet", Blocks.WHITE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = reinforcedBlock("reinforced_white_carpet", Blocks.CARPET.white(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = reinforcedBlock("reinforced_orange_carpet", Blocks.ORANGE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = reinforcedBlock("reinforced_orange_carpet", Blocks.CARPET.orange(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = reinforcedBlock("reinforced_magenta_carpet", Blocks.MAGENTA_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = reinforcedBlock("reinforced_magenta_carpet", Blocks.CARPET.magenta(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = reinforcedBlock("reinforced_light_blue_carpet", Blocks.LIGHT_BLUE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = reinforcedBlock("reinforced_light_blue_carpet", Blocks.CARPET.lightBlue(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = reinforcedBlock("reinforced_yellow_carpet", Blocks.YELLOW_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = reinforcedBlock("reinforced_yellow_carpet", Blocks.CARPET.yellow(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = reinforcedBlock("reinforced_lime_carpet", Blocks.LIME_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = reinforcedBlock("reinforced_lime_carpet", Blocks.CARPET.lime(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = reinforcedBlock("reinforced_pink_carpet", Blocks.PINK_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = reinforcedBlock("reinforced_pink_carpet", Blocks.CARPET.pink(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = reinforcedBlock("reinforced_gray_carpet", Blocks.GRAY_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = reinforcedBlock("reinforced_gray_carpet", Blocks.CARPET.gray(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = reinforcedBlock("reinforced_light_gray_carpet", Blocks.LIGHT_GRAY_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = reinforcedBlock("reinforced_light_gray_carpet", Blocks.CARPET.lightGray(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = reinforcedBlock("reinforced_cyan_carpet", Blocks.CYAN_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = reinforcedBlock("reinforced_cyan_carpet", Blocks.CARPET.cyan(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = reinforcedBlock("reinforced_purple_carpet", Blocks.PURPLE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = reinforcedBlock("reinforced_purple_carpet", Blocks.CARPET.purple(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = reinforcedBlock("reinforced_blue_carpet", Blocks.BLUE_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = reinforcedBlock("reinforced_blue_carpet", Blocks.CARPET.blue(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = reinforcedBlock("reinforced_brown_carpet", Blocks.BROWN_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = reinforcedBlock("reinforced_brown_carpet", Blocks.CARPET.brown(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = reinforcedBlock("reinforced_green_carpet", Blocks.GREEN_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = reinforcedBlock("reinforced_green_carpet", Blocks.CARPET.green(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = reinforcedBlock("reinforced_red_carpet", Blocks.RED_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = reinforcedBlock("reinforced_red_carpet", Blocks.CARPET.red(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = reinforcedBlock("reinforced_black_carpet", Blocks.BLACK_CARPET, ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = reinforcedBlock("reinforced_black_carpet", Blocks.CARPET.black(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_WHITE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_white_stained_glass_pane", Blocks.WHITE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_WHITE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_white_stained_glass_pane", Blocks.STAINED_GLASS_PANE.white(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_ORANGE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_orange_stained_glass_pane", Blocks.ORANGE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_ORANGE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_orange_stained_glass_pane", Blocks.STAINED_GLASS_PANE.orange(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_MAGENTA_STAINED_GLASS_PANE = reinforcedBlock("reinforced_magenta_stained_glass_pane", Blocks.MAGENTA_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_MAGENTA_STAINED_GLASS_PANE = reinforcedBlock("reinforced_magenta_stained_glass_pane", Blocks.STAINED_GLASS_PANE.magenta(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_blue_stained_glass_pane", Blocks.LIGHT_BLUE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_blue_stained_glass_pane", Blocks.STAINED_GLASS_PANE.lightBlue(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_YELLOW_STAINED_GLASS_PANE = reinforcedBlock("reinforced_yellow_stained_glass_pane", Blocks.YELLOW_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_YELLOW_STAINED_GLASS_PANE = reinforcedBlock("reinforced_yellow_stained_glass_pane", Blocks.STAINED_GLASS_PANE.yellow(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIME_STAINED_GLASS_PANE = reinforcedBlock("reinforced_lime_stained_glass_pane", Blocks.LIME_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIME_STAINED_GLASS_PANE = reinforcedBlock("reinforced_lime_stained_glass_pane", Blocks.STAINED_GLASS_PANE.lime(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PINK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_pink_stained_glass_pane", Blocks.PINK_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PINK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_pink_stained_glass_pane", Blocks.STAINED_GLASS_PANE.pink(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_gray_stained_glass_pane", Blocks.GRAY_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_gray_stained_glass_pane", Blocks.STAINED_GLASS_PANE.gray(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_gray_stained_glass_pane", Blocks.LIGHT_GRAY_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_gray_stained_glass_pane", Blocks.STAINED_GLASS_PANE.lightGray(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_CYAN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_cyan_stained_glass_pane", Blocks.CYAN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_CYAN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_cyan_stained_glass_pane", Blocks.STAINED_GLASS_PANE.cyan(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PURPLE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_purple_stained_glass_pane", Blocks.PURPLE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PURPLE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_purple_stained_glass_pane", Blocks.STAINED_GLASS_PANE.purple(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_blue_stained_glass_pane", Blocks.BLUE_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_blue_stained_glass_pane", Blocks.STAINED_GLASS_PANE.blue(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BROWN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_brown_stained_glass_pane", Blocks.BROWN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BROWN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_brown_stained_glass_pane", Blocks.STAINED_GLASS_PANE.brown(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GREEN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_green_stained_glass_pane", Blocks.GREEN_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GREEN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_green_stained_glass_pane", Blocks.STAINED_GLASS_PANE.green(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_RED_STAINED_GLASS_PANE = reinforcedBlock("reinforced_red_stained_glass_pane", Blocks.RED_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_RED_STAINED_GLASS_PANE = reinforcedBlock("reinforced_red_stained_glass_pane", Blocks.STAINED_GLASS_PANE.red(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLACK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_black_stained_glass_pane", Blocks.BLACK_STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
+	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLACK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_black_stained_glass_pane", Blocks.STAINED_GLASS_PANE.black(), ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_WHITE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_white_glazed_terracotta", Blocks.WHITE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_WHITE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_white_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.white(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_ORANGE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_orange_glazed_terracotta", Blocks.ORANGE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_ORANGE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_orange_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.orange(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_MAGENTA_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_magenta_glazed_terracotta", Blocks.MAGENTA_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_MAGENTA_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_magenta_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.magenta(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_blue_glazed_terracotta", Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_blue_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.lightBlue(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_YELLOW_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_yellow_glazed_terracotta", Blocks.YELLOW_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_YELLOW_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_yellow_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.yellow(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIME_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_lime_glazed_terracotta", Blocks.LIME_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIME_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_lime_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.lime(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PINK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_pink_glazed_terracotta", Blocks.PINK_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PINK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_pink_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.pink(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_gray_glazed_terracotta", Blocks.GRAY_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_gray_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.gray(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_gray_glazed_terracotta", Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_gray_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.lightGray(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_CYAN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_cyan_glazed_terracotta", Blocks.CYAN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_CYAN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_cyan_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.cyan(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PURPLE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_purple_glazed_terracotta", Blocks.PURPLE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PURPLE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_purple_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.purple(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_blue_glazed_terracotta", Blocks.BLUE_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_blue_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.blue(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BROWN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_brown_glazed_terracotta", Blocks.BROWN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BROWN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_brown_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.brown(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GREEN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_green_glazed_terracotta", Blocks.GREEN_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GREEN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_green_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.green(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_RED_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_red_glazed_terracotta", Blocks.RED_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_RED_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_red_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.red(), ReinforcedGlazedTerracottaBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLACK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_black_glazed_terracotta", Blocks.BLACK_GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
+	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLACK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_black_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.black(), ReinforcedGlazedTerracottaBlock::new);
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedScaffoldingBlock> REINFORCED_SCAFFOLDING = reinforcedBlock("reinforced_scaffolding", Blocks.SCAFFOLDING, (p, b) -> new ReinforcedScaffoldingBlock(p.pushReaction(PushReaction.NORMAL)));
@@ -2303,7 +2303,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_LIGHTNING_ROD = reinforcedBlock("reinforced_lightning_rod", Blocks.LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_LIGHTNING_ROD = reinforcedBlock("reinforced_lightning_rod", Blocks.LIGHTNING_ROD.weathering().unaffected(), ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2586,51 +2586,51 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_COPPER = reinforcedBlock("reinforced_chiseled_copper", Blocks.CHISELED_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_COPPER = reinforcedBlock("reinforced_chiseled_copper", Blocks.CHISELED_COPPER.weathering().unaffected());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CHISELED_COPPER = reinforcedBlock("reinforced_exposed_chiseled_copper", Blocks.EXPOSED_CHISELED_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CHISELED_COPPER = reinforcedBlock("reinforced_exposed_chiseled_copper", Blocks.CHISELED_COPPER.weathering().exposed());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CHISELED_COPPER = reinforcedBlock("reinforced_weathered_chiseled_copper", Blocks.WEATHERED_CHISELED_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CHISELED_COPPER = reinforcedBlock("reinforced_weathered_chiseled_copper", Blocks.CHISELED_COPPER.weathering().weathered());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CHISELED_COPPER = reinforcedBlock("reinforced_oxidized_chiseled_copper", Blocks.OXIDIZED_CHISELED_COPPER);
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CHISELED_COPPER = reinforcedBlock("reinforced_oxidized_chiseled_copper", Blocks.CHISELED_COPPER.weathering().oxidized());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_COPPER_GRATE = reinforcedBlock("reinforced_copper_grate", Blocks.COPPER_GRATE, ReinforcedCopperGrateBlock::new);
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_COPPER_GRATE = reinforcedBlock("reinforced_copper_grate", Blocks.COPPER_GRATE.weathering().unaffected(), ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_EXPOSED_COPPER_GRATE = reinforcedBlock("reinforced_exposed_copper_grate", Blocks.EXPOSED_COPPER_GRATE, ReinforcedCopperGrateBlock::new);
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_EXPOSED_COPPER_GRATE = reinforcedBlock("reinforced_exposed_copper_grate", Blocks.COPPER_GRATE.weathering().exposed(), ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_WEATHERED_COPPER_GRATE = reinforcedBlock("reinforced_weathered_copper_grate", Blocks.WEATHERED_COPPER_GRATE, ReinforcedCopperGrateBlock::new);
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_WEATHERED_COPPER_GRATE = reinforcedBlock("reinforced_weathered_copper_grate", Blocks.COPPER_GRATE.weathering().weathered(), ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_OXIDIZED_COPPER_GRATE = reinforcedBlock("reinforced_oxidized_copper_grate", Blocks.OXIDIZED_COPPER_GRATE, ReinforcedCopperGrateBlock::new);
+	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_OXIDIZED_COPPER_GRATE = reinforcedBlock("reinforced_oxidized_copper_grate", Blocks.COPPER_GRATE.weathering().oxidized(), ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_COPPER_BULB = reinforcedBlock("reinforced_copper_bulb", Blocks.COPPER_BULB, ReinforcedCopperBulbBlock::new);
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_COPPER_BULB = reinforcedBlock("reinforced_copper_bulb", Blocks.COPPER_BULB.weathering().unaffected(), ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_EXPOSED_COPPER_BULB = reinforcedBlock("reinforced_exposed_copper_bulb", Blocks.EXPOSED_COPPER_BULB, ReinforcedCopperBulbBlock::new);
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_EXPOSED_COPPER_BULB = reinforcedBlock("reinforced_exposed_copper_bulb", Blocks.COPPER_BULB.weathering().exposed(), ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_WEATHERED_COPPER_BULB = reinforcedBlock("reinforced_weathered_copper_bulb", Blocks.WEATHERED_COPPER_BULB, ReinforcedCopperBulbBlock::new);
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_WEATHERED_COPPER_BULB = reinforcedBlock("reinforced_weathered_copper_bulb", Blocks.COPPER_BULB.weathering().weathered(), ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_OXIDIZED_COPPER_BULB = reinforcedBlock("reinforced_oxidized_copper_bulb", Blocks.OXIDIZED_COPPER_BULB, ReinforcedCopperBulbBlock::new);
+	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_OXIDIZED_COPPER_BULB = reinforcedBlock("reinforced_oxidized_copper_bulb", Blocks.COPPER_BULB.weathering().oxidized(), ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2754,63 +2754,63 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_EXPOSED_LIGHTNING_ROD = reinforcedBlock("reinforced_exposed_lightning_rod", Blocks.EXPOSED_LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_EXPOSED_LIGHTNING_ROD = reinforcedBlock("reinforced_exposed_lightning_rod", Blocks.LIGHTNING_ROD.weathering().exposed(), ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_WEATHERED_LIGHTNING_ROD = reinforcedBlock("reinforced_weathered_lightning_rod", Blocks.WEATHERED_LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_WEATHERED_LIGHTNING_ROD = reinforcedBlock("reinforced_weathered_lightning_rod", Blocks.LIGHTNING_ROD.weathering().weathered(), ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_OXIDIZED_LIGHTNING_ROD = reinforcedBlock("reinforced_oxidized_lightning_rod", Blocks.OXIDIZED_LIGHTNING_ROD, ReinforcedLightningRodBlock::new);
+	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_OXIDIZED_LIGHTNING_ROD = reinforcedBlock("reinforced_oxidized_lightning_rod", Blocks.LIGHTNING_ROD.weathering().oxidized(), ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_COPPER_CHAIN = reinforcedBlock("reinforced_copper_chain", Blocks.COPPER_CHAIN.unaffected(), ReinforcedChainBlock::new);
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_COPPER_CHAIN = reinforcedBlock("reinforced_copper_chain", Blocks.COPPER_CHAIN.weathering().unaffected(), ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_EXPOSED_COPPER_CHAIN = reinforcedBlock("reinforced_exposed_copper_chain", Blocks.COPPER_CHAIN.exposed(), ReinforcedChainBlock::new);
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_EXPOSED_COPPER_CHAIN = reinforcedBlock("reinforced_exposed_copper_chain", Blocks.COPPER_CHAIN.weathering().exposed(), ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_WEATHERED_COPPER_CHAIN = reinforcedBlock("reinforced_weathered_copper_chain", Blocks.COPPER_CHAIN.weathered(), ReinforcedChainBlock::new);
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_WEATHERED_COPPER_CHAIN = reinforcedBlock("reinforced_weathered_copper_chain", Blocks.COPPER_CHAIN.weathering().weathered(), ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_OXIDIZED_COPPER_CHAIN = reinforcedBlock("reinforced_oxidized_copper_chain", Blocks.COPPER_CHAIN.oxidized(), ReinforcedChainBlock::new);
+	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_OXIDIZED_COPPER_CHAIN = reinforcedBlock("reinforced_oxidized_copper_chain", Blocks.COPPER_CHAIN.weathering().oxidized(), ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_COPPER_BARS = reinforcedBlock("reinforced_copper_bars", Blocks.COPPER_BARS.unaffected(), ReinforcedPaneBlock::new);
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_COPPER_BARS = reinforcedBlock("reinforced_copper_bars", Blocks.COPPER_BARS.weathering().unaffected(), ReinforcedPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_EXPOSED_COPPER_BARS = reinforcedBlock("reinforced_exposed_copper_bars", Blocks.COPPER_BARS.exposed(), ReinforcedPaneBlock::new);
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_EXPOSED_COPPER_BARS = reinforcedBlock("reinforced_exposed_copper_bars", Blocks.COPPER_BARS.weathering().exposed(), ReinforcedPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_WEATHERED_COPPER_BARS = reinforcedBlock("reinforced_weathered_copper_bars", Blocks.COPPER_BARS.weathered(), ReinforcedPaneBlock::new);
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_WEATHERED_COPPER_BARS = reinforcedBlock("reinforced_weathered_copper_bars", Blocks.COPPER_BARS.weathering().weathered(), ReinforcedPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_OXIDIZED_COPPER_BARS = reinforcedBlock("reinforced_oxidized_copper_bars", Blocks.COPPER_BARS.oxidized(), ReinforcedPaneBlock::new);
+	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_OXIDIZED_COPPER_BARS = reinforcedBlock("reinforced_oxidized_copper_bars", Blocks.COPPER_BARS.weathering().oxidized(), ReinforcedPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_COPPER_LANTERN = reinforcedBlock("reinforced_copper_lantern", Blocks.COPPER_LANTERN.unaffected(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_COPPER_LANTERN = reinforcedBlock("reinforced_copper_lantern", Blocks.COPPER_LANTERN.weathering().unaffected(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_EXPOSED_COPPER_LANTERN = reinforcedBlock("reinforced_exposed_copper_lantern", Blocks.COPPER_LANTERN.exposed(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_EXPOSED_COPPER_LANTERN = reinforcedBlock("reinforced_exposed_copper_lantern", Blocks.COPPER_LANTERN.weathering().exposed(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_WEATHERED_COPPER_LANTERN = reinforcedBlock("reinforced_weathered_copper_lantern", Blocks.COPPER_LANTERN.weathered(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_WEATHERED_COPPER_LANTERN = reinforcedBlock("reinforced_weathered_copper_lantern", Blocks.COPPER_LANTERN.weathering().weathered(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_OXIDIZED_COPPER_LANTERN = reinforcedBlock("reinforced_oxidized_copper_lantern", Blocks.COPPER_LANTERN.oxidized(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_OXIDIZED_COPPER_LANTERN = reinforcedBlock("reinforced_oxidized_copper_lantern", Blocks.COPPER_LANTERN.weathering().oxidized(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_OAK_SHELF = reinforcedBlock("reinforced_oak_shelf", Blocks.OAK_SHELF, ReinforcedShelfBlock::new);

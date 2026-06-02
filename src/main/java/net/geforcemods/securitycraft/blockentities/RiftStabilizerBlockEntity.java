@@ -23,7 +23,7 @@ import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.player.Player;
@@ -333,8 +333,8 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 	public enum TeleportationType {
 		ITEM_CONSUMPTION("gui.securitycraft:rift_stabilizer.item_consumption"),
 		ENDER_PEARL(Items.ENDER_PEARL.getDescriptionId()),
-		ENDERMAN(EntityType.ENDERMAN.getDescriptionId()),
-		SHULKER(EntityType.SHULKER.getDescriptionId()),
+		ENDERMAN(EntityTypes.ENDERMAN.getDescriptionId()),
+		SHULKER(EntityTypes.SHULKER.getDescriptionId()),
 		MODDED("gui.securitycraft:rift_stabilizer.modded");
 
 		public final String label;

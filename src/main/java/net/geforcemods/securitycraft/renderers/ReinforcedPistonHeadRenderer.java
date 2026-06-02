@@ -31,11 +31,11 @@ public class ReinforcedPistonHeadRenderer implements BlockEntityRenderer<Reinfor
 		if (state.block != null) {
 			pose.pushPose();
 			pose.translate(state.xOffset, state.yOffset, state.zOffset);
-			collector.submitMovingBlock(pose, state.block);
+			collector.submitMovingBlock(pose, state.block, 0);
 			pose.popPose();
 
 			if (state.base != null)
-				collector.submitMovingBlock(pose, state.base);
+				collector.submitMovingBlock(pose, state.base, 0);
 		}
 	}
 

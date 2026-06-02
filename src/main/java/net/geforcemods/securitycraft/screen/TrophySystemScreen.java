@@ -16,6 +16,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,7 +28,7 @@ public class TrophySystemScreen extends AbstractContainerScreen<TrophySystemMenu
 	private final boolean hasSmartModule;
 	private final boolean hasRedstoneModule;
 	private final TrophySystemBlockEntity be;
-	private ToggleScrollList<EntityType<?>> scrollList;
+	private ToggleScrollList<ResourceKey<EntityType<?>>> scrollList;
 
 	public TrophySystemScreen(TrophySystemMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title, 176, 248);

@@ -112,7 +112,7 @@ public class CameraSelectScreen extends Screen {
 				if (player.isCreative()) {
 					Button tpButton = addRenderableWidget(SmallButton.create(x, aboveCameraButton, Component.empty(), _ -> {
 						player.connection.sendCommand(String.format("execute in %s run tp %s %s %s", globalPos.dimension().identifier(), pos.getX(), pos.getY(), pos.getZ()));
-						minecraft.setScreen(null);
+						minecraft.gui.setScreen(null);
 					}));
 
 					tpButton.setTooltip(Tooltip.create(Component.translatable("chat.coordinates.tooltip")));

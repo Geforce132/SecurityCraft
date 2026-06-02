@@ -52,7 +52,7 @@ public class AlarmOptionsScreen extends Screen {
 		int soundLengthTextWidthPlusBuffer = font.width(soundLengthText) + 5;
 		int combinedTextAndBoxWidth = soundLengthTextWidthPlusBuffer + timeEditBoxWidth;
 
-		addRenderableWidget(SmallButton.createWithX(leftPos + imageWidth - 12, topPos + 4, b -> Minecraft.getInstance().popGuiLayer()));
+		addRenderableWidget(SmallButton.createWithX(leftPos + imageWidth - 12, topPos + 4, b -> Minecraft.getInstance().gui.popGuiLayer()));
 		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
 		soundLengthEditBox = addRenderableWidget(new SoundLengthEditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()));
 		soundLengthEditBox.setFilter(string -> string.matches("[0-9:]*"));

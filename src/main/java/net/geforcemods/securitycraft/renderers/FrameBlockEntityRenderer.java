@@ -125,7 +125,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						GpuDevice device = RenderSystem.getDevice();
 						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
 						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
-						RenderTarget mainRenderTarget = Minecraft.getInstance().getMainRenderTarget();
+						RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
 						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewMatrix(), new Vector4f(), new Vector3f(), new Matrix4f());
 
 						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, mainRenderTarget.getColorTextureView(), OptionalInt.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {

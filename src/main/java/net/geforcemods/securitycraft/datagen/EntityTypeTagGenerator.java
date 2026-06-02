@@ -17,9 +17,9 @@ public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags(HolderLookup.Provider provider) {
-		tag(EntityTypeTags.IMMUNE_TO_INFESTED).add(SCContent.SENTRY_ENTITY.get());
-		tag(EntityTypeTags.IMMUNE_TO_OOZING).add(SCContent.SENTRY_ENTITY.get());
-		tag(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED).add(SCContent.SENTRY_ENTITY.get());
-		tag(Tags.EntityTypes.TELEPORTING_NOT_SUPPORTED).add(SCContent.SENTRY_ENTITY.get());
+		tag(EntityTypeTags.IMMUNE_TO_INFESTED).add(SCContent.SENTRY_ENTITY.getKey());
+		tag(EntityTypeTags.IMMUNE_TO_OOZING).add(SCContent.SENTRY_ENTITY.getKey());
+		tag(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED).add(SCContent.SENTRY_ENTITY.getKey());
+		tag(Tags.EntityTypes.TELEPORTING_NOT_SUPPORTED).add(SCContent.SENTRY_ENTITY.getKey());
 	}
 }

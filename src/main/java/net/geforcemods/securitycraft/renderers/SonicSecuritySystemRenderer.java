@@ -46,7 +46,7 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		if (state.isRecording || state.isListening && !state.isShutDown) {
 			Component text = state.isRecording ? RECORDING_TEXT : LISTENING_TEXT;
 
-			collector.submitNameTag(pose, Vec3.ZERO, 0, text, true, state.lightCoords, state.distanceToCameraSqr, camera);
+			collector.submitNameTag(pose, Vec3.ZERO, 0, text, true, state.lightCoords, camera);
 		}
 
 		if (!state.isDisguised) {

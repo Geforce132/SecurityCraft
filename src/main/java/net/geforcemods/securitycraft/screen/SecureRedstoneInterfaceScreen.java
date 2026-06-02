@@ -90,7 +90,7 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 						be.setSenderRange(oldSenderRange);
 					}
 
-					minecraft.setScreen(new SecureRedstoneInterfaceScreen(be, oldSender, oldProtectedSignal, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange,oldHighlightConnections));
+					minecraft.gui.setScreen(new SecureRedstoneInterfaceScreen(be, oldSender, oldProtectedSignal, oldFrequency, oldSendExactPower, oldReceiveInvertedPower, oldSenderRange,oldHighlightConnections));
 				}));
 		layout.addChild(CycleButton.<Boolean>builder(value -> Component.translatable("gui.securitycraft:invScan." + (value ? "yes" : "no")), () -> be.isSender() ? be.sendsExactPower() : be.receivesInvertedPower())
 				.withValues(true, false)
