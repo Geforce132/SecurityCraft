@@ -104,7 +104,6 @@ public class FrameFeedHandler {
 		window.setWidth(100);
 		window.setHeight(100); //Different width/height values seem to have no effect, although the ratio needs to be 1:1
 		mc.options.setCameraType(CameraType.FIRST_PERSON);
-		mc.renderBuffers().bufferSource().endBatch(); //Makes sure that previous world rendering is done
 
 		for (Entry<GlobalPos, CameraFeed> cameraView : activeFrameCameraFeeds.entrySet()) {
 			GlobalPos cameraPos = cameraView.getKey();
@@ -133,12 +132,11 @@ public class FrameFeedHandler {
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
 					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
 					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
-					mc.gameRenderer.getGlobalSettingsUniform().update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
-					mc.levelRenderer.update(camera); //Queues uncompiled visible sections for compilation
+					mc.gameRenderer.globalSettingsUniform.update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
 					mc.gameRenderer.mainRenderTarget = feed.renderTarget();
 
 					try {
-						mc.gameRenderer.extract(DeltaTracker.ONE, true);
+						mc.gameRenderer.extract(DeltaTracker.ONE, true); //TODO: Test whether frame chunks compile, since chunk recompilation has been moved
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}
 					catch (Exception e) {

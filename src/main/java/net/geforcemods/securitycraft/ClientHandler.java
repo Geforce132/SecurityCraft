@@ -786,7 +786,7 @@ public class ClientHandler {
 	}
 
 	public static void updateBlockColorAroundPosition(BlockPos pos) {
-		Minecraft.getInstance().levelRenderer.blockChanged(Minecraft.getInstance().level, pos, null, null, 0);
+		Minecraft.getInstance().levelExtractor.blockChanged(pos, 0);
 	}
 
 	private record SRIKey(boolean sender, Direction direction) {

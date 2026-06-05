@@ -58,7 +58,7 @@ public record SetCameraView(int id) implements CustomPacketPayload {
 				CameraController.resetOverlaysAfterDismount = true;
 			}
 
-			mc.levelRenderer.allChanged();
+			mc.levelExtractor.allChanged();
 		}
 	}
 }
