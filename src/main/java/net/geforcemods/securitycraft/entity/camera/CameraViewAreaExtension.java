@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import net.minecraft.client.SectionUpdateTracker.SectionDirtyState;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher.RenderSection;
 import net.minecraft.core.SectionPos;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.Level;
 
 public class CameraViewAreaExtension {
 	private static final Long2ObjectOpenHashMap<RenderSection> SECTIONS = new Long2ObjectOpenHashMap<>();
+	private static final Long2ObjectOpenHashMap<SectionDirtyState> DIRTY_STATES = new Long2ObjectOpenHashMap<>();
 	private static SectionRenderDispatcher sectionRenderDispatcher;
 	private static int minSectionY;
 	private static int maxSectionY;
@@ -25,14 +27,22 @@ public class CameraViewAreaExtension {
 	}
 
 	private static RenderSection createSection(long sectionPos) {
-		return sectionRenderDispatcher.new RenderSection(0, sectionPos);
+		RenderSection renderSection = sectionRenderDispatcher.new RenderSection(0, sectionPos);
+
+		DIRTY_STATES.put(sectionPos, new SectionDirtyState(true, false, sectionPos));
+		return renderSection;
 	}
 
 	public static void setDirty(int sectionX, int sectionY, int sectionZ, boolean playerChanged) {
-		SectionRenderDispatcher.RenderSection section = rawFetch(sectionX, sectionY, sectionZ, false);
+		long sectionPos = SectionPos.asLong(sectionX, sectionY, sectionZ);
+		SectionDirtyState dirtyState = DIRTY_STATES.putIfAbsent(sectionPos, new SectionDirtyState(true, false, sectionPos));
 
-		if (section != null)
-			section.setDirty(playerChanged);
+		if (dirtyState != null)
+			dirtyState.setDirty(playerChanged);
+	}
+
+	public static SectionDirtyState getDirtyState(long sectionPos) {
+		return DIRTY_STATES.get(sectionPos);
 	}
 
 	public static void onChunkUnload(int sectionX, int sectionZ) {
