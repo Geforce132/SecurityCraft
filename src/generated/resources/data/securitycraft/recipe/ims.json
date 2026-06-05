@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "B": "securitycraft:bouncing_betty",
     "I": "securitycraft:reinforced_iron_block",

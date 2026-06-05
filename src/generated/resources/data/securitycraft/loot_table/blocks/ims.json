@@ -8,7 +8,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
               "conditions": [
                 {
                   "block": "securitycraft:ims",
@@ -22,7 +21,6 @@
               "function": "minecraft:set_count"
             },
             {
-              "add": false,
               "conditions": [
                 {
                   "block": "securitycraft:ims",
@@ -36,7 +34,6 @@
               "function": "minecraft:set_count"
             },
             {
-              "add": false,
               "conditions": [
                 {
                   "block": "securitycraft:ims",
@@ -50,7 +47,6 @@
               "function": "minecraft:set_count"
             },
             {
-              "add": false,
               "conditions": [
                 {
                   "block": "securitycraft:ims",

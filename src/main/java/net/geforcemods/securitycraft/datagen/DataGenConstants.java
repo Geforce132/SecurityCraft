@@ -74,6 +74,7 @@ public class DataGenConstants {
 	public class SCTexturedModels {
 		public static final TexturedModel.Provider REINFORCED_CARPET = TexturedModel.createDefault(block -> TextureMapping.singleSlot(SCTextureSlots.BLOCK, TextureMapping.getBlockTexture(block)), SCModelTemplates.REINFORCED_CARPET);
 		public static final TexturedModel.Provider REINFORCED_COLUMN = TexturedModel.createDefault(TextureMapping::column, SCModelTemplates.REINFORCED_CUBE_COLUMN);
+		public static final TexturedModel.Provider REINFORCED_COLUMN_HORIZONTAL = TexturedModel.createDefault(TextureMapping::column, SCModelTemplates.REINFORCED_CUBE_COLUMN_HORIZONTAL);
 		public static final TexturedModel.Provider REINFORCED_COLUMN_WITH_WALL = TexturedModel.createDefault(TextureMapping::columnWithWall, SCModelTemplates.REINFORCED_CUBE_COLUMN);
 		public static final TexturedModel.Provider REINFORCED_CUBE = TexturedModel.createDefault(TextureMapping::cube, SCModelTemplates.REINFORCED_CUBE_ALL);
 		public static final TexturedModel.Provider REINFORCED_TOP_BOTTOM_WITH_WALL = TexturedModel.createDefault(TextureMapping::cubeBottomTopWithWall, SCModelTemplates.REINFORCED_CUBE_BOTTOM_TOP);

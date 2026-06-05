@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "securitycraft:security_sea_boats",
   "key": {
     "C": "securitycraft:keypad_chest",

@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "securitycraft:lens",
   "key": {
     "P": "securitycraft:reinforced_brown_stained_glass_pane"

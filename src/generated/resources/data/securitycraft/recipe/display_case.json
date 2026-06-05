@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "F": "minecraft:item_frame",
     "G": "securitycraft:reinforced_glass_pane",

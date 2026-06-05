@@ -3,7 +3,7 @@
     "render_type": "minecraft:cutout",
 	"textures": {
 		"0": "securitycraft:block/block_pocket_manager_front",
-		"1": "block/quartz_pillar",
+		"1": "block/quartz_pillar_side",
 		"2": "block/quartz_pillar_top",
 		"particle": "securitycraft:block/block_pocket_manager_front"
 	},

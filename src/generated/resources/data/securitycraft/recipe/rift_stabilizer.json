@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "C": "minecraft:chorus_fruit",
     "D": "securitycraft:reinforced_diamond_block",

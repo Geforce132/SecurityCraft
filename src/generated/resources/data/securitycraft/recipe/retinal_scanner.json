@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "E": "minecraft:ender_eye",
     "S": "#securitycraft:reinforced/stone_crafting_materials"

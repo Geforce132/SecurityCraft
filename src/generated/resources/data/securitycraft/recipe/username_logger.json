@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "P": "securitycraft:portable_radar",
     "R": "#c:dusts/redstone",

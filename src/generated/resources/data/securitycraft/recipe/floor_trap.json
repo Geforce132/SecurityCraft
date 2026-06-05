@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "key": {
     "I": "#c:ingots/iron",
     "L": "#securitycraft:reinforced/stone_pressure_plates",

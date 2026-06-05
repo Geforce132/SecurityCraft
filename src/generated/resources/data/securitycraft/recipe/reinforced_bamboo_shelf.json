@@ -1,6 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "misc",
   "group": "securitycraft:reinforced_shelves",
   "key": {
     "L": "securitycraft:reinforced_stripped_bamboo_block"

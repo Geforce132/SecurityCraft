@@ -120,6 +120,16 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 	}
 
 	@Override
+	public ReinforcedBlockFamilyProvider customHangingSign(Block signBlock) {
+		return this; //There are no reinforced hanging signs
+	}
+
+	@Override
+	public ReinforcedBlockFamilyProvider hangingSign(Block signBlock) {
+		return this; //There are no reinforced hanging signs
+	}
+
+	@Override
 	public ReinforcedBlockFamilyProvider slab(Block slabBlock) {
 		if (fullBlock == null)
 			throw new IllegalStateException("Full block not generated yet");
@@ -158,6 +168,17 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 		MultiVariant model = BlockModelGenerators.plainVariant(texturedModel.create(block, modelOutput));
 
 		BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createSimpleBlock(block, model));
+		BlockModelAndStateGenerator.registerReinforcedItemModel(block);
+		return this;
+	}
+
+	@Override
+	public ReinforcedBlockFamilyProvider pillar(Block block) {
+		Block vanillaBlock = ((IReinforcedBlock) block).getVanillaBlock();
+		MultiVariant verticalModel = BlockModelGenerators.plainVariant(SCTexturedModels.REINFORCED_COLUMN.get(vanillaBlock).create(block, modelOutput));
+		MultiVariant horizontalModel = BlockModelGenerators.plainVariant(SCTexturedModels.REINFORCED_COLUMN_HORIZONTAL.get(vanillaBlock).create(block, modelOutput));
+
+		BlockModelAndStateGenerator.generate(block, BlockModelGenerators.createRotatedPillarWithHorizontalVariant(block, verticalModel, horizontalModel));
 		BlockModelAndStateGenerator.registerReinforcedItemModel(block);
 		return this;
 	}
