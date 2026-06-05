@@ -6,7 +6,6 @@ import net.geforcemods.securitycraft.blockentities.BlockPocketManagerBlockEntity
 import net.geforcemods.securitycraft.blocks.BlockPocketManagerBlock;
 import net.geforcemods.securitycraft.renderers.state.BlockPocketManagerRenderState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -32,9 +31,10 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 		BlockPos blockPos = state.blockPos;
 		Vec3 cameraPos = camera.pos;
 
-		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {
-			ShapeRenderer.renderShape(poseStack, builder, state.shape, blockPos.getX() - cameraPos.x, blockPos.getY() - cameraPos.y, blockPos.getZ() - cameraPos.z, state.color, 2.0F);
-		});
+		poseStack.pushPose();
+		poseStack.translate(blockPos.getX() - cameraPos.x, blockPos.getY() - cameraPos.y, blockPos.getZ() - cameraPos.z);
+		collector.submitShapeOutline(poseStack, state.shape, RenderTypes.lines(), state.color, 2.0F, false); //TODO Is the last boolean flag correct?
+		poseStack.popPose();
 	}
 
 	@Override

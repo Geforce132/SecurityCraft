@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity;
 import net.geforcemods.securitycraft.blockentities.BlockChangeDetectorBlockEntity.ChangeEntry;
@@ -27,7 +26,6 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.ShapeRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
@@ -101,8 +99,6 @@ public class SCClientEventHandler {
 		PoseStack pose = event.getPoseStack();
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
-		VertexConsumer consumer = mc.renderBuffers().bufferSource().getBuffer(ClientHandler.OVERLAY_LINES);
-
 		for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
 			BlockEntity be = level.getBlockEntity(bcdPos);
 
@@ -113,7 +109,8 @@ public class SCClientEventHandler {
 					BlockPos pos = changeEntry.pos();
 
 					pose.pushPose();
-					ShapeRenderer.renderShape(pose, consumer, Shapes.block(), pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z, packedColor, 1.0F);
+					pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z); //TODO is there a better way to get the SubmitNodeStorage?
+					event.getLevelRenderer().submitNodeStorage.submitShapeOutline(pose, Shapes.block(), ClientHandler.OVERLAY_LINES, packedColor, 1.0F, true); //TODO Is the last boolean flag correct?
 					pose.popPose();
 				}
 			}
