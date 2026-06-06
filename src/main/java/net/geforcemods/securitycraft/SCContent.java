@@ -326,6 +326,7 @@ import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WeatheringCopperCollection;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -837,7 +838,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_COPPER_BLOCK = reinforcedBlock("reinforced_copper_block", Blocks.COPPER_BLOCK.weathering().unaffected());
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<BaseReinforcedBlock>> REINFORCED_COPPER_BLOCK = reinforcedWeatheringCopperCollection(BlockItemIds.COPPER_BLOCK.weathering(), Blocks.COPPER_BLOCK.weathering());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -853,63 +854,15 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_COPPER = reinforcedBlock("reinforced_exposed_copper", Blocks.COPPER_BLOCK.weathering().exposed());
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<BaseReinforcedBlock>> REINFORCED_CUT_COPPER = reinforcedWeatheringCopperCollection(BlockItemIds.CUT_COPPER.weathering(), Blocks.CUT_COPPER.weathering());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_COPPER = reinforcedBlock("reinforced_weathered_copper", Blocks.COPPER_BLOCK.weathering().weathered());
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedStairsBlock>> REINFORCED_CUT_COPPER_STAIRS = reinforcedWeatheringCopperCollection(BlockItemIds.CUT_COPPER_STAIRS.weathering(), Blocks.CUT_COPPER_STAIRS.weathering(), ReinforcedStairsBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_COPPER = reinforcedBlock("reinforced_oxidized_copper", Blocks.COPPER_BLOCK.weathering().oxidized());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CUT_COPPER = reinforcedBlock("reinforced_cut_copper", Blocks.CUT_COPPER.weathering().unaffected());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CUT_COPPER = reinforcedBlock("reinforced_exposed_cut_copper", Blocks.CUT_COPPER.weathering().exposed());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CUT_COPPER = reinforcedBlock("reinforced_weathered_cut_copper", Blocks.CUT_COPPER.weathering().weathered());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CUT_COPPER = reinforcedBlock("reinforced_oxidized_cut_copper", Blocks.CUT_COPPER.weathering().oxidized());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().unaffected(), ReinforcedStairsBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_EXPOSED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_exposed_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().exposed(), ReinforcedStairsBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_WEATHERED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_weathered_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().weathered(), ReinforcedStairsBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_OXIDIZED_CUT_COPPER_STAIRS = reinforcedBlock("reinforced_oxidized_cut_copper_stairs", Blocks.CUT_COPPER_STAIRS.weathering().oxidized(), ReinforcedStairsBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().unaffected(), ReinforcedSlabBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_EXPOSED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_exposed_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().exposed(), ReinforcedSlabBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_WEATHERED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_weathered_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().weathered(), ReinforcedSlabBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_OXIDIZED_CUT_COPPER_SLAB = reinforcedBlock("reinforced_oxidized_cut_copper_slab", Blocks.CUT_COPPER_SLAB.weathering().oxidized(), ReinforcedSlabBlock::new);
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedSlabBlock>> REINFORCED_CUT_COPPER_SLAB = reinforcedWeatheringCopperCollection(BlockItemIds.CUT_COPPER_SLAB.weathering(), Blocks.CUT_COPPER_SLAB.weathering(), ReinforcedSlabBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1888,7 +1841,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_LIGHTNING_ROD = reinforcedBlock("reinforced_lightning_rod", Blocks.LIGHTNING_ROD.weathering().unaffected(), ReinforcedLightningRodBlock::new);
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedLightningRodBlock>> REINFORCED_LIGHTNING_ROD = reinforcedWeatheringCopperCollection(BlockItemIds.LIGHTNING_ROD.weathering(), Blocks.LIGHTNING_ROD.weathering(), ReinforcedLightningRodBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2171,51 +2124,15 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_COPPER = reinforcedBlock("reinforced_chiseled_copper", Blocks.CHISELED_COPPER.weathering().unaffected());
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<BaseReinforcedBlock>> REINFORCED_CHISELED_COPPER = reinforcedWeatheringCopperCollection(BlockItemIds.CHISELED_COPPER.weathering(), Blocks.CHISELED_COPPER.weathering());
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_EXPOSED_CHISELED_COPPER = reinforcedBlock("reinforced_exposed_chiseled_copper", Blocks.CHISELED_COPPER.weathering().exposed());
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedCopperGrateBlock>> REINFORCED_COPPER_GRATE = reinforcedWeatheringCopperCollection(BlockItemIds.COPPER_GRATE.weathering(), Blocks.COPPER_GRATE.weathering(), ReinforcedCopperGrateBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WEATHERED_CHISELED_COPPER = reinforcedBlock("reinforced_weathered_chiseled_copper", Blocks.CHISELED_COPPER.weathering().weathered());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_OXIDIZED_CHISELED_COPPER = reinforcedBlock("reinforced_oxidized_chiseled_copper", Blocks.CHISELED_COPPER.weathering().oxidized());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_COPPER_GRATE = reinforcedBlock("reinforced_copper_grate", Blocks.COPPER_GRATE.weathering().unaffected(), ReinforcedCopperGrateBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_EXPOSED_COPPER_GRATE = reinforcedBlock("reinforced_exposed_copper_grate", Blocks.COPPER_GRATE.weathering().exposed(), ReinforcedCopperGrateBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_WEATHERED_COPPER_GRATE = reinforcedBlock("reinforced_weathered_copper_grate", Blocks.COPPER_GRATE.weathering().weathered(), ReinforcedCopperGrateBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperGrateBlock> REINFORCED_OXIDIZED_COPPER_GRATE = reinforcedBlock("reinforced_oxidized_copper_grate", Blocks.COPPER_GRATE.weathering().oxidized(), ReinforcedCopperGrateBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_COPPER_BULB = reinforcedBlock("reinforced_copper_bulb", Blocks.COPPER_BULB.weathering().unaffected(), ReinforcedCopperBulbBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_EXPOSED_COPPER_BULB = reinforcedBlock("reinforced_exposed_copper_bulb", Blocks.COPPER_BULB.weathering().exposed(), ReinforcedCopperBulbBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_WEATHERED_COPPER_BULB = reinforcedBlock("reinforced_weathered_copper_bulb", Blocks.COPPER_BULB.weathering().weathered(), ReinforcedCopperBulbBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCopperBulbBlock> REINFORCED_OXIDIZED_COPPER_BULB = reinforcedBlock("reinforced_oxidized_copper_bulb", Blocks.COPPER_BULB.weathering().oxidized(), ReinforcedCopperBulbBlock::new);
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedCopperBulbBlock>> REINFORCED_COPPER_BULB = reinforcedWeatheringCopperCollection(BlockItemIds.COPPER_BULB.weathering(), Blocks.COPPER_BULB.weathering(), ReinforcedCopperBulbBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2339,63 +2256,15 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_EXPOSED_LIGHTNING_ROD = reinforcedBlock("reinforced_exposed_lightning_rod", Blocks.LIGHTNING_ROD.weathering().exposed(), ReinforcedLightningRodBlock::new);
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedChainBlock>> REINFORCED_COPPER_CHAIN = reinforcedWeatheringCopperCollection(BlockItemIds.COPPER_CHAIN.weathering(), Blocks.COPPER_CHAIN.weathering(), ReinforcedChainBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_WEATHERED_LIGHTNING_ROD = reinforcedBlock("reinforced_weathered_lightning_rod", Blocks.LIGHTNING_ROD.weathering().weathered(), ReinforcedLightningRodBlock::new);
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedPaneBlock>> REINFORCED_COPPER_BARS = reinforcedWeatheringCopperCollection(BlockItemIds.COPPER_BARS.weathering(), Blocks.COPPER_BARS.weathering(), ReinforcedPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedLightningRodBlock> REINFORCED_OXIDIZED_LIGHTNING_ROD = reinforcedBlock("reinforced_oxidized_lightning_rod", Blocks.LIGHTNING_ROD.weathering().oxidized(), ReinforcedLightningRodBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_COPPER_CHAIN = reinforcedBlock("reinforced_copper_chain", Blocks.COPPER_CHAIN.weathering().unaffected(), ReinforcedChainBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_EXPOSED_COPPER_CHAIN = reinforcedBlock("reinforced_exposed_copper_chain", Blocks.COPPER_CHAIN.weathering().exposed(), ReinforcedChainBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_WEATHERED_COPPER_CHAIN = reinforcedBlock("reinforced_weathered_copper_chain", Blocks.COPPER_CHAIN.weathering().weathered(), ReinforcedChainBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedChainBlock> REINFORCED_OXIDIZED_COPPER_CHAIN = reinforcedBlock("reinforced_oxidized_copper_chain", Blocks.COPPER_CHAIN.weathering().oxidized(), ReinforcedChainBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_COPPER_BARS = reinforcedBlock("reinforced_copper_bars", Blocks.COPPER_BARS.weathering().unaffected(), ReinforcedPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_EXPOSED_COPPER_BARS = reinforcedBlock("reinforced_exposed_copper_bars", Blocks.COPPER_BARS.weathering().exposed(), ReinforcedPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_WEATHERED_COPPER_BARS = reinforcedBlock("reinforced_weathered_copper_bars", Blocks.COPPER_BARS.weathering().weathered(), ReinforcedPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedPaneBlock> REINFORCED_OXIDIZED_COPPER_BARS = reinforcedBlock("reinforced_oxidized_copper_bars", Blocks.COPPER_BARS.weathering().oxidized(), ReinforcedPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_COPPER_LANTERN = reinforcedBlock("reinforced_copper_lantern", Blocks.COPPER_LANTERN.weathering().unaffected(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_EXPOSED_COPPER_LANTERN = reinforcedBlock("reinforced_exposed_copper_lantern", Blocks.COPPER_LANTERN.weathering().exposed(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_WEATHERED_COPPER_LANTERN = reinforcedBlock("reinforced_weathered_copper_lantern", Blocks.COPPER_LANTERN.weathering().weathered(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedLanternBlock> REINFORCED_OXIDIZED_COPPER_LANTERN = reinforcedBlock("reinforced_oxidized_copper_lantern", Blocks.COPPER_LANTERN.weathering().oxidized(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
+	public static final WeatheringCopperCollection.ByState<DeferredBlock<ReinforcedLanternBlock>> REINFORCED_COPPER_LANTERN = reinforcedWeatheringCopperCollection(BlockItemIds.COPPER_LANTERN.weathering(), Blocks.COPPER_LANTERN.weathering(), ReinforcedLanternBlock::new, p -> p.pushReaction(PushReaction.BLOCK));
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_OAK_SHELF = reinforcedBlock("reinforced_oak_shelf", Blocks.OAK_SHELF, ReinforcedShelfBlock::new);
@@ -3161,6 +3030,18 @@ public class SCContent {
 		return ColorCollection.zipMap(ids, blocks, (id, block) -> reinforcedBlock(reinforcedName(id), block, constructor, propertyEditor));
 	}
 
+	private static WeatheringCopperCollection.ByState<DeferredBlock<BaseReinforcedBlock>> reinforcedWeatheringCopperCollection(WeatheringCopperCollection.ByState<BlockItemId> ids, WeatheringCopperCollection.ByState<Block> blocks) {
+		return WeatheringCopperCollection.zipMap(ids, blocks, (id, block) -> reinforcedBlock(reinforcedName(id), block));
+	}
+
+	private static <B extends Block> WeatheringCopperCollection.ByState<DeferredBlock<B>> reinforcedWeatheringCopperCollection(WeatheringCopperCollection.ByState<BlockItemId> ids, WeatheringCopperCollection.ByState<Block> blocks, BiFunction<BlockBehaviour.Properties, Block, B> constructor) {
+		return WeatheringCopperCollection.zipMap(ids, blocks, (id, block) -> reinforcedBlock(reinforcedName(id), block, constructor));
+	}
+
+	private static <B extends Block> WeatheringCopperCollection.ByState<DeferredBlock<B>> reinforcedWeatheringCopperCollection(WeatheringCopperCollection.ByState<BlockItemId> ids, WeatheringCopperCollection.ByState<Block> blocks, BiFunction<BlockBehaviour.Properties, Block, B> constructor, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return WeatheringCopperCollection.zipMap(ids, blocks, (id, block) -> reinforcedBlock(reinforcedName(id), block, constructor, propertyEditor));
+	}
+
 	private static String reinforcedName(BlockItemId id) {
 		return "reinforced_" + id.block().identifier().getPath();
 	}
@@ -3217,6 +3098,8 @@ public class SCContent {
 		return switch (constant) {
 			case DeferredHolder<?, ?> holder -> Stream.of(holder);
 			case ColorCollection<?> collection -> collection.asList().stream().map(e -> (DeferredHolder<?, ?>) e);
+			case WeatheringCopperCollection.ByState<?>(DeferredHolder<?, ?> unaffected, DeferredHolder<?, ?> exposed, DeferredHolder<?, ?> weathered, DeferredHolder<?, ?> oxidized) ->
+					Stream.of(unaffected, exposed, weathered, oxidized);
 			default ->
 					throw new IllegalArgumentException("Don't know how to create a stream out of " + constant.getClass().getName());
 		};

@@ -177,29 +177,21 @@ public class BlockModelAndStateGenerator {
 		registerSimpleItemModel(SCContent.PROTECTO.get(), "_deactivated");
 		createRailMine();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_CAULDRON.get());
-		createBarsAndItem(SCContent.REINFORCED_COPPER_BARS.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_COPPER_CHAIN.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_COPPER_LANTERN.get());
-		createBarsAndItem(SCContent.REINFORCED_EXPOSED_COPPER_BARS.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_EXPOSED_COPPER_CHAIN.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_EXPOSED_COPPER_LANTERN.get());
-		createReinforcedLightningRod(SCContent.REINFORCED_EXPOSED_LIGHTNING_ROD.get());
+		SCContent.REINFORCED_COPPER_BARS.forEach(BlockModelAndStateGenerator::createBarsAndItem);
+		SCContent.REINFORCED_COPPER_CHAIN.forEach(BlockModelAndStateGenerator::registerReinforcedFlatItemModel);
+		SCContent.REINFORCED_COPPER_LANTERN.forEach(BlockModelAndStateGenerator::registerReinforcedFlatItemModel);
+		SCContent.REINFORCED_LIGHTNING_ROD.forEach(BlockModelAndStateGenerator::createReinforcedLightningRod);
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_IRON_CHAIN.get());
 		registerReinforcedItemModel(SCContent.REINFORCED_CHISELED_BOOKSHELF.get(), "_inventory");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_COBWEB.get());
 		createReinforcedGrassBlock();
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_HOPPER.get());
-		createBarsAndItem(SCContent.REINFORCED_IRON_BARS.get());
+		createBarsAndItem(SCContent.REINFORCED_IRON_BARS);
 		registerSimpleItemModel(SCContent.REINFORCED_IRON_TRAPDOOR.get(), "_bottom");
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LADDER.get());
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_LANTERN.get());
 		registerReinforcedFlatItemModelFromBlock(SCContent.REINFORCED_LEVER.get());
-		createReinforcedLightningRod(SCContent.REINFORCED_LIGHTNING_ROD.get());
 		createReinforcedCarpet(SCContent.REINFORCED_MOSS_CARPET.get(), "block");
-		createBarsAndItem(SCContent.REINFORCED_OXIDIZED_COPPER_BARS.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_OXIDIZED_COPPER_CHAIN.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_OXIDIZED_COPPER_LANTERN.get());
-		createReinforcedLightningRod(SCContent.REINFORCED_OXIDIZED_LIGHTNING_ROD.get());
 		createReinforcedPistons();
 		registerReinforcedItemModel(SCContent.REINFORCED_SCAFFOLDING.get(), "_stable");
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_SOUL_LANTERN.get());
@@ -210,10 +202,6 @@ public class BlockModelAndStateGenerator {
 		createSecurityCamera();
 		registerSimpleItemModel(SCContent.TROPHY_SYSTEM.get());
 		registerSimpleItemModel(SCContent.USERNAME_LOGGER.get());
-		createBarsAndItem(SCContent.REINFORCED_WEATHERED_COPPER_BARS.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_CHAIN.get());
-		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_LANTERN.get());
-		createReinforcedLightningRod(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get());
 
 		createGlassBlocks(SCContent.REINFORCED_GLASS, SCContent.REINFORCED_GLASS_PANE);
 		ColorCollection.zipApply(SCContent.REINFORCED_STAINED_GLASS, SCContent.REINFORCED_STAINED_GLASS_PANE, BlockModelAndStateGenerator::createGlassBlocks);
@@ -321,7 +309,9 @@ public class BlockModelAndStateGenerator {
 		});
 	}
 
-	public static void createBarsAndItem(Block block) {
+	public static void createBarsAndItem(DeferredBlock<? extends Block> dBlock) {
+		Block block = dBlock.get();
+
 		blockModelGenerators.createBarsAndItem(block);
 		generatedBlocks.add(block);
 	}
@@ -539,8 +529,9 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(block);
 	}
 
-	public static void createReinforcedLightningRod(Block block) {
-		MultiVariant powered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(SCContent.REINFORCED_LIGHTNING_ROD.get(), "_on"));
+	public static void createReinforcedLightningRod(DeferredBlock<? extends Block> dBlock) {
+		Block block = dBlock.get();
+		MultiVariant powered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(SCContent.REINFORCED_LIGHTNING_ROD.unaffected().get(), "_on"));
 		MultiVariant unpowered = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(block));
 		//@formatter:off
 		blockStateOutput.accept(
@@ -793,6 +784,10 @@ public class BlockModelAndStateGenerator {
 
 	public static <T extends Block & IReinforcedBlock> void registerReinforcedFlatItemModelFromBlock(T block) {
 		registerReinforcedItemModel(block, blockModelGenerators.createFlatItemModelWithBlockTexture(block.asItem(), block.getVanillaBlock()));
+	}
+
+	public static <T extends Block & IReinforcedBlock> void registerReinforcedFlatItemModel(DeferredBlock<T> block) {
+		registerReinforcedFlatItemModel(block.get());
 	}
 
 	public static <T extends Block & IReinforcedBlock> void registerReinforcedFlatItemModel(T block) {
