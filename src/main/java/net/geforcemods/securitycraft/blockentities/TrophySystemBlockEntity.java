@@ -28,11 +28,11 @@ import net.geforcemods.securitycraft.util.BlockUtils;
 import net.geforcemods.securitycraft.util.ITickingBlockEntity;
 import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.geforcemods.securitycraft.util.TeamUtils;
+import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
@@ -41,7 +41,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypeIds;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
@@ -64,10 +64,10 @@ import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.VanillaContainerWrapper;
 
-public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<ResourceKey<EntityType<?>>>, MenuProvider, ContainerListener {
+public class TrophySystemBlockEntity extends DisguisableBlockEntity implements ITickingBlockEntity, ILockable, IToggleableEntries<EntityType<?>>, MenuProvider, ContainerListener {
 	/** The range (in blocks) that the trophy system will search for projectiles in */
 	public static final int RANGE = 10;
-	private final Map<ResourceKey<EntityType<?>>, Boolean> projectileFilter = new LinkedHashMap<>();
+	private final Map<EntityType<?>, Boolean> projectileFilter = new LinkedHashMap<>();
 	private Projectile entityBeingTargeted = null;
 	private int cooldown = getCooldownTime();
 	private final DisabledOption disabled = new DisabledOption(false);
@@ -79,23 +79,23 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		lens.setListener(this);
 		//when adding new types ONLY ADD TO THE END. anything else will break saved data.
 		//ordering is done in ToggleListScreen based on the user's current language
-		projectileFilter.put(SCContent.BULLET_ENTITY.getKey(), true);
-		projectileFilter.put(EntityTypeIds.SPECTRAL_ARROW, true);
-		projectileFilter.put(EntityTypeIds.ARROW, true);
-		projectileFilter.put(EntityTypeIds.SMALL_FIREBALL, true);
-		projectileFilter.put(SCContent.IMS_BOMB_ENTITY.getKey(), true);
-		projectileFilter.put(EntityTypeIds.FIREBALL, true);
-		projectileFilter.put(EntityTypeIds.DRAGON_FIREBALL, true);
-		projectileFilter.put(EntityTypeIds.WITHER_SKULL, true);
-		projectileFilter.put(EntityTypeIds.SHULKER_BULLET, true);
-		projectileFilter.put(EntityTypeIds.LLAMA_SPIT, true);
-		projectileFilter.put(EntityTypeIds.EGG, true);
-		projectileFilter.put(EntityTypeIds.ENDER_PEARL, true);
-		projectileFilter.put(EntityTypeIds.SNOWBALL, true);
-		projectileFilter.put(EntityTypeIds.FIREWORK_ROCKET, true);
-		projectileFilter.put(EntityTypeIds.PIG, false); //modded projectiles
-		projectileFilter.put(EntityTypeIds.BREEZE_WIND_CHARGE, true);
-		projectileFilter.put(EntityTypeIds.WIND_CHARGE, true);
+		projectileFilter.put(SCContent.BULLET_ENTITY.get(), true);
+		projectileFilter.put(EntityTypes.SPECTRAL_ARROW, true);
+		projectileFilter.put(EntityTypes.ARROW, true);
+		projectileFilter.put(EntityTypes.SMALL_FIREBALL, true);
+		projectileFilter.put(SCContent.IMS_BOMB_ENTITY.get(), true);
+		projectileFilter.put(EntityTypes.FIREBALL, true);
+		projectileFilter.put(EntityTypes.DRAGON_FIREBALL, true);
+		projectileFilter.put(EntityTypes.WITHER_SKULL, true);
+		projectileFilter.put(EntityTypes.SHULKER_BULLET, true);
+		projectileFilter.put(EntityTypes.LLAMA_SPIT, true);
+		projectileFilter.put(EntityTypes.EGG, true);
+		projectileFilter.put(EntityTypes.ENDER_PEARL, true);
+		projectileFilter.put(EntityTypes.SNOWBALL, true);
+		projectileFilter.put(EntityTypes.FIREWORK_ROCKET, true);
+		projectileFilter.put(EntityTypes.PIG, false); //modded projectiles
+		projectileFilter.put(EntityTypes.BREEZE_WIND_CHARGE, true);
+		projectileFilter.put(EntityTypes.WIND_CHARGE, true);
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		ValueInput projectilesNBT = tag.childOrEmpty("projectiles");
 		int i = 0;
 
-		for (ResourceKey<EntityType<?>> projectileType : projectileFilter.keySet()) {
+		for (EntityType<?> projectileType : projectileFilter.keySet()) {
 			projectileFilter.put(projectileType, projectilesNBT.getBooleanOr("projectile" + i, projectileFilter.get(projectileType)));
 			i++;
 		}
@@ -273,7 +273,7 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 			return false;
 
 		//try to get the target's type filter first. if not found, it's a modded projectile and the return value falls back to the modded filter (designated by the PIG entity type)
-		return projectileFilter.getOrDefault(target.getType().builtInRegistryHolder().key(), projectileFilter.get(EntityTypeIds.PIG));
+		return projectileFilter.getOrDefault(target.getType(), projectileFilter.get(EntityTypes.PIG));
 	}
 
 	private boolean filterSCProjectiles(Projectile projectile) {
@@ -292,29 +292,29 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 	}
 
 	@Override
-	public void setFilter(ResourceKey<EntityType<?>> projectileType, boolean allowed) {
+	public void setFilter(EntityType<?> projectileType, boolean allowed) {
 		if (projectileFilter.containsKey(projectileType)) {
 			projectileFilter.put(projectileType, allowed);
 			setChanged();
 
 			if (level.isClientSide())
-				ClientPacketDistributor.sendToServer(new SyncTrophySystem(worldPosition, projectileType, allowed));
+				ClientPacketDistributor.sendToServer(new SyncTrophySystem(worldPosition, Utils.getRegistryName(projectileType), allowed));
 		}
 	}
 
 	@Override
-	public boolean getFilter(ResourceKey<EntityType<?>> projectileType) {
+	public boolean getFilter(EntityType<?> projectileType) {
 		return projectileFilter.get(projectileType);
 	}
 
 	@Override
-	public Map<ResourceKey<EntityType<?>>, Boolean> getFilters() {
+	public Map<EntityType<?>, Boolean> getFilters() {
 		return projectileFilter;
 	}
 
 	@Override
-	public ResourceKey<EntityType<?>> getDefaultType() {
-		return EntityTypeIds.PIG;
+	public EntityType<?> getDefaultType() {
+		return EntityTypes.PIG;
 	}
 
 	@Override
@@ -336,8 +336,8 @@ public class TrophySystemBlockEntity extends DisguisableBlockEntity implements I
 		super.onModuleRemoved(stack, module, toggled);
 
 		if (module == ModuleType.SMART) {
-			for (ResourceKey<EntityType<?>> projectileType : projectileFilter.keySet()) {
-				projectileFilter.put(projectileType, !projectileType.equals(EntityTypeIds.PIG));
+			for (EntityType<?> projectileType : projectileFilter.keySet()) {
+				projectileFilter.put(projectileType, projectileType != EntityTypes.PIG);
 			}
 		}
 	}

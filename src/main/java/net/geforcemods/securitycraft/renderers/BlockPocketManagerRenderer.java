@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -33,7 +32,7 @@ public class BlockPocketManagerRenderer implements BlockEntityRenderer<BlockPock
 
 		poseStack.pushPose();
 		poseStack.translate(blockPos.getX() - cameraPos.x, blockPos.getY() - cameraPos.y, blockPos.getZ() - cameraPos.z);
-		collector.submitShapeOutline(poseStack, state.shape, RenderTypes.lines(), state.color, 2.0F, false); //TODO Is the last boolean flag correct?
+		//collector.submitShapeOutline(poseStack, state.shape, RenderTypes.lines(), state.color, 2.0F, true); //TODO Is the last boolean flag correct?
 		poseStack.popPose();
 	}
 
