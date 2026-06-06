@@ -191,7 +191,6 @@ import net.neoforged.neoforge.client.model.standalone.SimpleUnbakedStandaloneMod
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelKey;
 import net.neoforged.neoforge.client.model.standalone.StandaloneModelLoader.BakedModels;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class ClientHandler {
@@ -509,13 +508,17 @@ public class ClientHandler {
 		for (Field field : SCContent.class.getFields()) {
 			if (field.isAnnotationPresent(Reinforced.class)) {
 				try {
-					Block block = ((DeferredBlock<Block>) field.get(null)).get();
-					int customTint = field.getAnnotation(Reinforced.class).customTint();
+					Reinforced reinforced = field.getAnnotation(Reinforced.class);
+					List<Block> blocks = SCContent.annotatedConstantToStream(field.get(null)).map(e -> (Block) e.get()).toList();
 
-					if (field.getAnnotation(Reinforced.class).hasReinforcedTint())
-						blocksWithReinforcedTint.put(block, customTint);
-					else if (customTint != 0xFFFFFFFF)
-						blocksWithCustomTint.put(block, customTint);
+					for (Block block : blocks) {
+						int customTint = reinforced.customTint();
+
+						if (reinforced.hasReinforcedTint())
+							blocksWithReinforcedTint.put(block, customTint);
+						else if (customTint != 0xFFFFFFFF)
+							blocksWithCustomTint.put(block, customTint);
+					}
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
 					e.printStackTrace();

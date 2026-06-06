@@ -62,9 +62,11 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.block.WeatheringCopperCollection.ByState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.SideChainPart;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockModelAndStateGenerator {
@@ -213,23 +215,8 @@ public class BlockModelAndStateGenerator {
 		registerReinforcedFlatItemModel(SCContent.REINFORCED_WEATHERED_COPPER_LANTERN.get());
 		createReinforcedLightningRod(SCContent.REINFORCED_WEATHERED_LIGHTNING_ROD.get());
 
-		createGlassBlocks(SCContent.REINFORCED_GLASS.get(), SCContent.REINFORCED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_WHITE_STAINED_GLASS.get(), SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get(), SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get(), SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get(), SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get(), SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_LIME_STAINED_GLASS.get(), SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_PINK_STAINED_GLASS.get(), SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_GRAY_STAINED_GLASS.get(), SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get(), SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_CYAN_STAINED_GLASS.get(), SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get(), SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_BLUE_STAINED_GLASS.get(), SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_BROWN_STAINED_GLASS.get(), SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_GREEN_STAINED_GLASS.get(), SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_RED_STAINED_GLASS.get(), SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get());
-		createGlassBlocks(SCContent.REINFORCED_BLACK_STAINED_GLASS.get(), SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get());
+		createGlassBlocks(SCContent.REINFORCED_GLASS, SCContent.REINFORCED_GLASS_PANE);
+		ColorCollection.zipApply(SCContent.REINFORCED_STAINED_GLASS, SCContent.REINFORCED_STAINED_GLASS_PANE, BlockModelAndStateGenerator::createGlassBlocks);
 
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_ACACIA_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_ACACIA_WOOD.get());
 		ReinforcedWoodProvider.of(SCContent.REINFORCED_STRIPPED_ACACIA_LOG.get(), LogGenerator.HORIZONTAL).wood(SCContent.REINFORCED_STRIPPED_ACACIA_WOOD.get());
@@ -726,7 +713,10 @@ public class BlockModelAndStateGenerator {
 		blockModelGenerators.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block, "_sender"));
 	}
 
-	public static void createGlassBlocks(Block glass, Block pane) {
+	public static void createGlassBlocks(DeferredBlock<? extends Block> dGlass, DeferredBlock<? extends Block> dPane) {
+		Block glass = dGlass.get();
+		Block pane = dPane.get();
+
 		blockModelGenerators.createGlassBlocks(glass, pane);
 		itemInfo.accept(glass.asItem(), ItemModelUtils.plainModel(ModelLocationUtils.getModelLocation(glass)));
 		generatedBlocks.add(glass);

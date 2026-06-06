@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -7,11 +9,16 @@ import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockItemTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ColorCollection;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagsProvider) {
@@ -164,134 +171,44 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 		//NeoForge tags
 		tag(Tags.Items.BUCKETS).add(SCContent.FAKE_LAVA_BUCKET.getKey(), SCContent.FAKE_WATER_BUCKET.getKey());
 		tag(Tags.Items.CONCRETES).addTag(SCTags.Items.REINFORCED_CONCRETE);
-		tag(Tags.Items.DYED_BLACK).add(
-				SCContent.REINFORCED_BLACK_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLACK_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLACK_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLACK_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLACK_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLACK_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_BLUE).add(
-				SCContent.REINFORCED_BLUE_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLUE_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLUE_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLUE_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLUE_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BLUE_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_BROWN).add(
-				SCContent.REINFORCED_BROWN_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BROWN_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BROWN_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BROWN_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BROWN_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_BROWN_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_CYAN).add(
-				SCContent.REINFORCED_CYAN_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_CYAN_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_CYAN_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_CYAN_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_CYAN_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_CYAN_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_GRAY).add(
-				SCContent.REINFORCED_GRAY_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GRAY_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GRAY_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GRAY_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GRAY_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GRAY_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_GREEN).add(
-				SCContent.REINFORCED_GREEN_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GREEN_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GREEN_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GREEN_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GREEN_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_GREEN_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_LIGHT_BLUE).add(
-				SCContent.REINFORCED_LIGHT_BLUE_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_BLUE_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_BLUE_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_LIGHT_GRAY).add(
-				SCContent.REINFORCED_LIGHT_GRAY_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_GRAY_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIGHT_GRAY_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_LIME).add(
-				SCContent.REINFORCED_LIME_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIME_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIME_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIME_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIME_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_LIME_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_MAGENTA).add(
-				SCContent.REINFORCED_MAGENTA_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_MAGENTA_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_MAGENTA_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_MAGENTA_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_MAGENTA_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_ORANGE).add(
-				SCContent.REINFORCED_ORANGE_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_ORANGE_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_ORANGE_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_ORANGE_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_ORANGE_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_ORANGE_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_PURPLE).add(
-				SCContent.REINFORCED_PURPLE_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PURPLE_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PURPLE_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PURPLE_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PURPLE_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PURPLE_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_PINK).add(
-				SCContent.REINFORCED_PINK_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PINK_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PINK_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PINK_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PINK_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_PINK_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_RED).add(
-				SCContent.REINFORCED_RED_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_RED_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_RED_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_RED_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_RED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_RED_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_WHITE).add(
-				SCContent.REINFORCED_WHITE_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_WHITE_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_WHITE_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_WHITE_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_WHITE_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_WHITE_WOOL.get().asItem().builtInRegistryHolder().key());
-		tag(Tags.Items.DYED_YELLOW).add(
-				SCContent.REINFORCED_YELLOW_CARPET.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_YELLOW_CONCRETE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_YELLOW_GLAZED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_YELLOW_STAINED_GLASS.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_YELLOW_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
-				SCContent.REINFORCED_YELLOW_WOOL.get().asItem().builtInRegistryHolder().key());
+
+		List<ColorCollection<? extends DeferredBlock<? extends Block>>> allColoredCollections =  List.of(
+				SCContent.REINFORCED_CARPET,
+				SCContent.REINFORCED_CONCRETE,
+				SCContent.REINFORCED_GLAZED_TERRACOTTA,
+				SCContent.REINFORCED_STAINED_GLASS,
+				SCContent.REINFORCED_STAINED_GLASS_PANE,
+				SCContent.REINFORCED_DYED_TERRACOTTA,
+				SCContent.REINFORCED_WOOL
+		);
+		ColorCollection<TagKey<Item>> dyedTags = new ColorCollection<>(
+				Tags.Items.DYED_WHITE,
+				Tags.Items.DYED_ORANGE,
+				Tags.Items.DYED_MAGENTA,
+				Tags.Items.DYED_LIGHT_BLUE,
+				Tags.Items.DYED_YELLOW,
+				Tags.Items.DYED_LIME,
+				Tags.Items.DYED_PINK,
+				Tags.Items.DYED_GRAY,
+				Tags.Items.DYED_LIGHT_GRAY,
+				Tags.Items.DYED_CYAN,
+				Tags.Items.DYED_PURPLE,
+				Tags.Items.DYED_BLUE,
+				Tags.Items.DYED_BROWN,
+				Tags.Items.DYED_GREEN,
+				Tags.Items.DYED_RED,
+				Tags.Items.DYED_BLACK
+		);
+		ColorCollection<List<ResourceKey<Item>>> allColoredEntries = new ColorCollection<>(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+		for (ColorCollection<? extends DeferredBlock<? extends Block>> collection : allColoredCollections){
+			allColoredEntries = ColorCollection.zipMap(allColoredEntries, collection, (list, entry) -> {
+				list.add(entry.asItem().builtInRegistryHolder().key());
+				return list;
+			});
+		}
+
+		ColorCollection.zipApply(dyedTags, allColoredEntries, (tag, blockList) -> tag(tag).addAll(blockList));
 		tag(Tags.Items.FENCE_GATES_WOODEN).addTag(SCTags.Items.REINFORCED_WOODEN_FENCE_GATES);
 		tag(Tags.Items.GLAZED_TERRACOTTAS).addTag(SCTags.Items.REINFORCED_GLAZED_TERRACOTTA);
 		//@formatter:on

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 import com.google.common.base.Predicates;
 import com.mojang.brigadier.arguments.BoolArgumentType;
@@ -294,6 +295,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.references.BlockItemId;
+import net.minecraft.references.BlockItemIds;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EntityType;
@@ -317,6 +320,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SignBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -325,6 +329,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -1076,67 +1081,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_WOOL = reinforcedBlock("reinforced_white_wool", Blocks.WOOL.white());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_WOOL = reinforcedBlock("reinforced_orange_wool", Blocks.WOOL.orange());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_WOOL = reinforcedBlock("reinforced_magenta_wool", Blocks.WOOL.magenta());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_WOOL = reinforcedBlock("reinforced_light_blue_wool", Blocks.WOOL.lightBlue());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_WOOL = reinforcedBlock("reinforced_yellow_wool", Blocks.WOOL.yellow());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_WOOL = reinforcedBlock("reinforced_lime_wool", Blocks.WOOL.lime());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_WOOL = reinforcedBlock("reinforced_pink_wool", Blocks.WOOL.pink());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_WOOL = reinforcedBlock("reinforced_gray_wool", Blocks.WOOL.gray());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_WOOL = reinforcedBlock("reinforced_light_gray_wool", Blocks.WOOL.lightGray());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_WOOL = reinforcedBlock("reinforced_cyan_wool", Blocks.WOOL.cyan());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_WOOL = reinforcedBlock("reinforced_purple_wool", Blocks.WOOL.purple());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_WOOL = reinforcedBlock("reinforced_blue_wool", Blocks.WOOL.blue());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_WOOL = reinforcedBlock("reinforced_brown_wool", Blocks.WOOL.brown());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_WOOL = reinforcedBlock("reinforced_green_wool", Blocks.WOOL.green());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_WOOL = reinforcedBlock("reinforced_red_wool", Blocks.WOOL.red());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_WOOL = reinforcedBlock("reinforced_black_wool", Blocks.WOOL.black());
+	public static final ColorCollection<DeferredBlock<BaseReinforcedBlock>> REINFORCED_WOOL = reinforcedColorCollection(BlockItemIds.WOOL, Blocks.WOOL);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1463,67 +1408,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_TERRACOTTA = reinforcedBlock("reinforced_white_terracotta", Blocks.DYED_TERRACOTTA.white());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_TERRACOTTA = reinforcedBlock("reinforced_orange_terracotta", Blocks.DYED_TERRACOTTA.orange());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_TERRACOTTA = reinforcedBlock("reinforced_magenta_terracotta", Blocks.DYED_TERRACOTTA.magenta());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_TERRACOTTA = reinforcedBlock("reinforced_light_blue_terracotta", Blocks.DYED_TERRACOTTA.lightBlue());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_TERRACOTTA = reinforcedBlock("reinforced_yellow_terracotta", Blocks.DYED_TERRACOTTA.yellow());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_TERRACOTTA = reinforcedBlock("reinforced_lime_terracotta", Blocks.DYED_TERRACOTTA.lime());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_TERRACOTTA = reinforcedBlock("reinforced_pink_terracotta", Blocks.DYED_TERRACOTTA.pink());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_TERRACOTTA = reinforcedBlock("reinforced_gray_terracotta", Blocks.DYED_TERRACOTTA.gray());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_TERRACOTTA = reinforcedBlock("reinforced_light_gray_terracotta", Blocks.DYED_TERRACOTTA.lightGray());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_TERRACOTTA = reinforcedBlock("reinforced_cyan_terracotta", Blocks.DYED_TERRACOTTA.cyan());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_TERRACOTTA = reinforcedBlock("reinforced_purple_terracotta", Blocks.DYED_TERRACOTTA.purple());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_TERRACOTTA = reinforcedBlock("reinforced_blue_terracotta", Blocks.DYED_TERRACOTTA.blue());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_TERRACOTTA = reinforcedBlock("reinforced_brown_terracotta", Blocks.DYED_TERRACOTTA.brown());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_TERRACOTTA = reinforcedBlock("reinforced_green_terracotta", Blocks.DYED_TERRACOTTA.green());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_TERRACOTTA = reinforcedBlock("reinforced_red_terracotta", Blocks.DYED_TERRACOTTA.red());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_TERRACOTTA = reinforcedBlock("reinforced_black_terracotta", Blocks.DYED_TERRACOTTA.black());
+	public static final ColorCollection<DeferredBlock<BaseReinforcedBlock>> REINFORCED_DYED_TERRACOTTA = reinforcedColorCollection(BlockItemIds.DYED_TERRACOTTA, Blocks.DYED_TERRACOTTA);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1547,67 +1432,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_WHITE_STAINED_GLASS = reinforcedBlock("reinforced_white_stained_glass", Blocks.STAINED_GLASS.white(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_ORANGE_STAINED_GLASS = reinforcedBlock("reinforced_orange_stained_glass", Blocks.STAINED_GLASS.orange(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_MAGENTA_STAINED_GLASS = reinforcedBlock("reinforced_magenta_stained_glass", Blocks.STAINED_GLASS.magenta(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_light_blue_stained_glass", Blocks.STAINED_GLASS.lightBlue(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_YELLOW_STAINED_GLASS = reinforcedBlock("reinforced_yellow_stained_glass", Blocks.STAINED_GLASS.yellow(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIME_STAINED_GLASS = reinforcedBlock("reinforced_lime_stained_glass", Blocks.STAINED_GLASS.lime(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PINK_STAINED_GLASS = reinforcedBlock("reinforced_pink_stained_glass", Blocks.STAINED_GLASS.pink(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_gray_stained_glass", Blocks.STAINED_GLASS.gray(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS = reinforcedBlock("reinforced_light_gray_stained_glass", Blocks.STAINED_GLASS.lightGray(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_CYAN_STAINED_GLASS = reinforcedBlock("reinforced_cyan_stained_glass", Blocks.STAINED_GLASS.cyan(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_PURPLE_STAINED_GLASS = reinforcedBlock("reinforced_purple_stained_glass", Blocks.STAINED_GLASS.purple(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLUE_STAINED_GLASS = reinforcedBlock("reinforced_blue_stained_glass", Blocks.STAINED_GLASS.blue(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BROWN_STAINED_GLASS = reinforcedBlock("reinforced_brown_stained_glass", Blocks.STAINED_GLASS.brown(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_GREEN_STAINED_GLASS = reinforcedBlock("reinforced_green_stained_glass", Blocks.STAINED_GLASS.green(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_RED_STAINED_GLASS = reinforcedBlock("reinforced_red_stained_glass", Blocks.STAINED_GLASS.red(), ReinforcedStainedGlassBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassBlock> REINFORCED_BLACK_STAINED_GLASS = reinforcedBlock("reinforced_black_stained_glass", Blocks.STAINED_GLASS.black(), ReinforcedStainedGlassBlock::new);
+	public static final ColorCollection<DeferredBlock<ReinforcedStainedGlassBlock>> REINFORCED_STAINED_GLASS = reinforcedColorCollection(BlockItemIds.STAINED_GLASS, Blocks.STAINED_GLASS, ReinforcedStainedGlassBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -1675,67 +1500,7 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_WHITE_CONCRETE = reinforcedBlock("reinforced_white_concrete", Blocks.CONCRETE.white());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_ORANGE_CONCRETE = reinforcedBlock("reinforced_orange_concrete", Blocks.CONCRETE.orange());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_MAGENTA_CONCRETE = reinforcedBlock("reinforced_magenta_concrete", Blocks.CONCRETE.magenta());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_BLUE_CONCRETE = reinforcedBlock("reinforced_light_blue_concrete", Blocks.CONCRETE.lightBlue());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_YELLOW_CONCRETE = reinforcedBlock("reinforced_yellow_concrete", Blocks.CONCRETE.yellow());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIME_CONCRETE = reinforcedBlock("reinforced_lime_concrete", Blocks.CONCRETE.lime());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PINK_CONCRETE = reinforcedBlock("reinforced_pink_concrete", Blocks.CONCRETE.pink());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GRAY_CONCRETE = reinforcedBlock("reinforced_gray_concrete", Blocks.CONCRETE.gray());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_LIGHT_GRAY_CONCRETE = reinforcedBlock("reinforced_light_gray_concrete", Blocks.CONCRETE.lightGray());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CYAN_CONCRETE = reinforcedBlock("reinforced_cyan_concrete", Blocks.CONCRETE.cyan());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_PURPLE_CONCRETE = reinforcedBlock("reinforced_purple_concrete", Blocks.CONCRETE.purple());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLUE_CONCRETE = reinforcedBlock("reinforced_blue_concrete", Blocks.CONCRETE.blue());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BROWN_CONCRETE = reinforcedBlock("reinforced_brown_concrete", Blocks.CONCRETE.brown());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_GREEN_CONCRETE = reinforcedBlock("reinforced_green_concrete", Blocks.CONCRETE.green());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_RED_CONCRETE = reinforcedBlock("reinforced_red_concrete", Blocks.CONCRETE.red());
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_BLACK_CONCRETE = reinforcedBlock("reinforced_black_concrete", Blocks.CONCRETE.black());
+	public static final ColorCollection<DeferredBlock<BaseReinforcedBlock>> REINFORCED_CONCRETE = reinforcedColorCollection(BlockItemIds.CONCRETE, Blocks.CONCRETE);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
@@ -2053,195 +1818,15 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_WHITE_CARPET = reinforcedBlock("reinforced_white_carpet", Blocks.CARPET.white(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_ORANGE_CARPET = reinforcedBlock("reinforced_orange_carpet", Blocks.CARPET.orange(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_MAGENTA_CARPET = reinforcedBlock("reinforced_magenta_carpet", Blocks.CARPET.magenta(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_BLUE_CARPET = reinforcedBlock("reinforced_light_blue_carpet", Blocks.CARPET.lightBlue(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_YELLOW_CARPET = reinforcedBlock("reinforced_yellow_carpet", Blocks.CARPET.yellow(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIME_CARPET = reinforcedBlock("reinforced_lime_carpet", Blocks.CARPET.lime(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PINK_CARPET = reinforcedBlock("reinforced_pink_carpet", Blocks.CARPET.pink(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GRAY_CARPET = reinforcedBlock("reinforced_gray_carpet", Blocks.CARPET.gray(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_LIGHT_GRAY_CARPET = reinforcedBlock("reinforced_light_gray_carpet", Blocks.CARPET.lightGray(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_CYAN_CARPET = reinforcedBlock("reinforced_cyan_carpet", Blocks.CARPET.cyan(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_PURPLE_CARPET = reinforcedBlock("reinforced_purple_carpet", Blocks.CARPET.purple(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLUE_CARPET = reinforcedBlock("reinforced_blue_carpet", Blocks.CARPET.blue(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BROWN_CARPET = reinforcedBlock("reinforced_brown_carpet", Blocks.CARPET.brown(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_GREEN_CARPET = reinforcedBlock("reinforced_green_carpet", Blocks.CARPET.green(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_RED_CARPET = reinforcedBlock("reinforced_red_carpet", Blocks.CARPET.red(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedCarpetBlock> REINFORCED_BLACK_CARPET = reinforcedBlock("reinforced_black_carpet", Blocks.CARPET.black(), ReinforcedCarpetBlock::new, BlockBehaviour.Properties::forceSolidOn);
+	public static final ColorCollection<DeferredBlock<ReinforcedCarpetBlock>> REINFORCED_CARPET = reinforcedColorCollection(BlockItemIds.CARPET, Blocks.CARPET, ReinforcedCarpetBlock::new, Properties::forceSolidOn);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_WHITE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_white_stained_glass_pane", Blocks.STAINED_GLASS_PANE.white(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_ORANGE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_orange_stained_glass_pane", Blocks.STAINED_GLASS_PANE.orange(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_MAGENTA_STAINED_GLASS_PANE = reinforcedBlock("reinforced_magenta_stained_glass_pane", Blocks.STAINED_GLASS_PANE.magenta(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_blue_stained_glass_pane", Blocks.STAINED_GLASS_PANE.lightBlue(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_YELLOW_STAINED_GLASS_PANE = reinforcedBlock("reinforced_yellow_stained_glass_pane", Blocks.STAINED_GLASS_PANE.yellow(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIME_STAINED_GLASS_PANE = reinforcedBlock("reinforced_lime_stained_glass_pane", Blocks.STAINED_GLASS_PANE.lime(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PINK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_pink_stained_glass_pane", Blocks.STAINED_GLASS_PANE.pink(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_gray_stained_glass_pane", Blocks.STAINED_GLASS_PANE.gray(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE = reinforcedBlock("reinforced_light_gray_stained_glass_pane", Blocks.STAINED_GLASS_PANE.lightGray(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_CYAN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_cyan_stained_glass_pane", Blocks.STAINED_GLASS_PANE.cyan(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_PURPLE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_purple_stained_glass_pane", Blocks.STAINED_GLASS_PANE.purple(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLUE_STAINED_GLASS_PANE = reinforcedBlock("reinforced_blue_stained_glass_pane", Blocks.STAINED_GLASS_PANE.blue(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BROWN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_brown_stained_glass_pane", Blocks.STAINED_GLASS_PANE.brown(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_GREEN_STAINED_GLASS_PANE = reinforcedBlock("reinforced_green_stained_glass_pane", Blocks.STAINED_GLASS_PANE.green(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_RED_STAINED_GLASS_PANE = reinforcedBlock("reinforced_red_stained_glass_pane", Blocks.STAINED_GLASS_PANE.red(), ReinforcedStainedGlassPaneBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced(hasReinforcedTint = false)
-	public static final DeferredBlock<ReinforcedStainedGlassPaneBlock> REINFORCED_BLACK_STAINED_GLASS_PANE = reinforcedBlock("reinforced_black_stained_glass_pane", Blocks.STAINED_GLASS_PANE.black(), ReinforcedStainedGlassPaneBlock::new);
+	public static final ColorCollection<DeferredBlock<ReinforcedStainedGlassPaneBlock>> REINFORCED_STAINED_GLASS_PANE = reinforcedColorCollection(BlockItemIds.STAINED_GLASS_PANE, Blocks.STAINED_GLASS_PANE, ReinforcedStainedGlassPaneBlock::new);
 	@HasManualPage(PageGroup.REINFORCED)
 	@OwnableBE
 	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_WHITE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_white_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.white(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_ORANGE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_orange_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.orange(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_MAGENTA_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_magenta_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.magenta(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_blue_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.lightBlue(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_YELLOW_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_yellow_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.yellow(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIME_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_lime_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.lime(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PINK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_pink_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.pink(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_gray_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.gray(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_light_gray_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.lightGray(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_CYAN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_cyan_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.cyan(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_PURPLE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_purple_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.purple(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLUE_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_blue_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.blue(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BROWN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_brown_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.brown(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_GREEN_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_green_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.green(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_RED_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_red_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.red(), ReinforcedGlazedTerracottaBlock::new);
-	@HasManualPage(PageGroup.REINFORCED)
-	@OwnableBE
-	@Reinforced
-	public static final DeferredBlock<ReinforcedGlazedTerracottaBlock> REINFORCED_BLACK_GLAZED_TERRACOTTA = reinforcedBlock("reinforced_black_glazed_terracotta", Blocks.GLAZED_TERRACOTTA.black(), ReinforcedGlazedTerracottaBlock::new);
+	public static final ColorCollection<DeferredBlock<ReinforcedGlazedTerracottaBlock>> REINFORCED_GLAZED_TERRACOTTA = reinforcedColorCollection(BlockItemIds.GLAZED_TERRACOTTA, Blocks.GLAZED_TERRACOTTA, ReinforcedGlazedTerracottaBlock::new);
 	@OwnableBE
 	@Reinforced(registerBlockItem = false)
 	public static final DeferredBlock<ReinforcedScaffoldingBlock> REINFORCED_SCAFFOLDING = reinforcedBlock("reinforced_scaffolding", Blocks.SCAFFOLDING, (p, b) -> new ReinforcedScaffoldingBlock(p.pushReaction(PushReaction.NORMAL)));
@@ -3089,14 +2674,14 @@ public class SCContent {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OwnableBlockEntity>> OWNABLE_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("ownable", () -> {
 		List<Block> beOwnableBlocks = Arrays.stream(SCContent.class.getFields())
 				.filter(field -> field.isAnnotationPresent(OwnableBE.class))
-				.map(field -> {
+				.flatMap(field -> {
 					//@formatter:on
 					try {
-						return ((DeferredBlock<Block>) field.get(null)).get();
+						return annotatedConstantToStream(field.get(null)).map(e -> (Block) e.get());
 					}
 					catch (IllegalArgumentException | IllegalAccessException e) {
 						e.printStackTrace();
-						return null;
+						return Stream.of();
 					}
 				}) //@formatter:off
 				.filter(Predicates.notNull())
@@ -3564,6 +3149,22 @@ public class SCContent {
 		//@formatter:on
 	}
 
+	private static ColorCollection<DeferredBlock<BaseReinforcedBlock>> reinforcedColorCollection(ColorCollection<BlockItemId> ids, ColorCollection<Block> blocks) {
+		return ColorCollection.zipMap(ids, blocks, (id, block) -> reinforcedBlock(reinforcedName(id), block));
+	}
+
+	private static <B extends Block> ColorCollection<DeferredBlock<B>> reinforcedColorCollection(ColorCollection<BlockItemId> ids, ColorCollection<Block> blocks, BiFunction<BlockBehaviour.Properties, Block, B> constructor) {
+		return ColorCollection.zipMap(ids, blocks, (id, block) -> reinforcedBlock(reinforcedName(id), block, constructor));
+	}
+
+	private static <B extends Block> ColorCollection<DeferredBlock<B>> reinforcedColorCollection(ColorCollection<BlockItemId> ids, ColorCollection<Block> blocks, BiFunction<BlockBehaviour.Properties, Block, B> constructor, UnaryOperator<BlockBehaviour.Properties> propertyEditor) {
+		return ColorCollection.zipMap(ids, blocks, (id, block) -> reinforcedBlock(reinforcedName(id), block, constructor, propertyEditor));
+	}
+
+	private static String reinforcedName(BlockItemId id) {
+		return "reinforced_" + id.block().identifier().getPath();
+	}
+
 	private static ResourceKey<EntityType<?>> scEntityId(String path) {
 		return ResourceKey.create(Registries.ENTITY_TYPE, SecurityCraft.resLoc(path));
 	}
@@ -3610,6 +3211,15 @@ public class SCContent {
 
 	public static GameRule<Boolean> createBooleanGameRule(GameRuleCategory category, boolean defaultValue) {
 		return new GameRule<>(category, GameRuleType.BOOL, BoolArgumentType.bool(), GameRuleTypeVisitor::visitBoolean, Codec.BOOL, value -> value ? 1 : 0, defaultValue, FeatureFlagSet.of());
+	}
+
+	public static Stream<DeferredHolder<?, ?>> annotatedConstantToStream(Object constant) {
+		return switch (constant) {
+			case DeferredHolder<?, ?> holder -> Stream.of(holder);
+			case ColorCollection<?> collection -> collection.asList().stream().map(e -> (DeferredHolder<?, ?>) e);
+			default ->
+					throw new IllegalArgumentException("Don't know how to create a stream out of " + constant.getClass().getName());
+		};
 	}
 
 	private SCContent() {}

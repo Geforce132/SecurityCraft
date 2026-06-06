@@ -63,8 +63,6 @@ import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 @Mod(SecurityCraft.MODID)
@@ -163,40 +161,45 @@ public class SecurityCraft {
 		for (Field field : SCContent.class.getFields()) {
 			try {
 				if (field.isAnnotationPresent(Reinforced.class)) {
-					Block block = ((DeferredBlock<Block>) field.get(null)).get();
-					IReinforcedBlock rb = (IReinforcedBlock) block;
+					List<Block> blocks = SCContent.annotatedConstantToStream(field.get(null)).map(e -> (Block) e.get()).toList();
 
-					IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
-					IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
+					for (Block block : blocks) {
+						IReinforcedBlock rb = (IReinforcedBlock) block;
+
+						IReinforcedBlock.VANILLA_TO_SECURITYCRAFT.put(rb.getVanillaBlock(), block);
+						IReinforcedBlock.SECURITYCRAFT_TO_VANILLA.put(block, rb.getVanillaBlock());
+					}
 				}
 
 				if (field.isAnnotationPresent(HasManualPage.class)) {
-					Object o = ((DeferredHolder<?, ?>) field.get(null)).get();
+					List<Item> items = SCContent.annotatedConstantToStream(field.get(null)).map(e -> ((ItemLike) e.get()).asItem()).toList();
 					HasManualPage hmp = field.getAnnotation(HasManualPage.class);
-					Item item = ((ItemLike) o).asItem();
-					PageGroup group = hmp.value();
-					boolean wasNotAdded = false;
-					Component title = Component.empty();
-					String key = "help.";
 
-					if (group != PageGroup.NONE) {
-						if (!groupStacks.containsKey(group)) {
-							groupStacks.put(group, new ArrayList<>());
-							title = Utils.localize(group.getTitle());
-							key += group.getSpecialInfoKey();
-							wasNotAdded = true;
+					for (Item item : items) {
+						PageGroup group = hmp.value();
+						boolean wasNotAdded = false;
+						Component title = Component.empty();
+						String key = "help.";
+
+						if (group != PageGroup.NONE) {
+							if (!groupStacks.containsKey(group)) {
+								groupStacks.put(group, new ArrayList<>());
+								title = Utils.localize(group.getTitle());
+								key += group.getSpecialInfoKey();
+								wasNotAdded = true;
+							}
+
+							if (item != Items.AIR)
+								groupStacks.get(group).add(new ItemStackTemplate(item));
+						}
+						else {
+							title = Utils.localize(item.getDescriptionId());
+							key += item.getDescriptionId().substring(5) + ".info";
 						}
 
-						if (item != Items.AIR)
-							groupStacks.get(group).add(new ItemStackTemplate(item));
+						if (addPages && (group == PageGroup.NONE || wasNotAdded))
+							SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription(), Suppliers.memoize(() -> SCManualItem.findRecipes(server, item, group))));
 					}
-					else {
-						title = Utils.localize(item.getDescriptionId());
-						key += item.getDescriptionId().substring(5) + ".info";
-					}
-
-					if (addPages && (group == PageGroup.NONE || wasNotAdded))
-						SCManualItem.PAGES.add(new SCManualPage(item, group, title, Component.translatable(key.replace("..", ".")), hmp.designedBy(), hmp.hasRecipeDescription(), Suppliers.memoize(() -> SCManualItem.findRecipes(server, item, group))));
 				}
 			}
 			catch (IllegalArgumentException | IllegalAccessException e) {

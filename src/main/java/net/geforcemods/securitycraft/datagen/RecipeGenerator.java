@@ -38,9 +38,29 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ColorCollection;
 import net.neoforged.neoforge.common.Tags;
 
 public class RecipeGenerator extends RecipeProvider {
+	private static final ColorCollection<TagKey<Item>> DYES_TAGS = new ColorCollection<>(
+			Tags.Items.DYES_WHITE,
+			Tags.Items.DYES_ORANGE,
+			Tags.Items.DYES_MAGENTA,
+			Tags.Items.DYES_LIGHT_BLUE,
+			Tags.Items.DYES_YELLOW,
+			Tags.Items.DYES_LIME,
+			Tags.Items.DYES_PINK,
+			Tags.Items.DYES_GRAY,
+			Tags.Items.DYES_LIGHT_GRAY,
+			Tags.Items.DYES_CYAN,
+			Tags.Items.DYES_PURPLE,
+			Tags.Items.DYES_BLUE,
+			Tags.Items.DYES_BROWN,
+			Tags.Items.DYES_GREEN,
+			Tags.Items.DYES_RED,
+			Tags.Items.DYES_BLACK
+	);
+
 	public RecipeGenerator(HolderLookup.Provider lookupProvider, RecipeOutput output) {
 		super(lookupProvider, output);
 	}
@@ -602,7 +622,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" DG")
 		.pattern("RLD")
 		.pattern("SR ")
-		.define('G', SCContent.REINFORCED_BLACK_STAINED_GLASS)
+		.define('G', SCContent.REINFORCED_STAINED_GLASS.black())
 		.define('D', SCContent.REINFORCED_DIAMOND_BLOCK)
 		.define('R', Tags.Items.DUSTS_REDSTONE)
 		.define('L', SCContent.LASER_BLOCK)
@@ -614,7 +634,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" EG")
 		.pattern("RNE")
 		.pattern("SR ")
-		.define('G', SCContent.REINFORCED_PINK_STAINED_GLASS)
+		.define('G', SCContent.REINFORCED_STAINED_GLASS.pink())
 		.define('E', SCContent.REINFORCED_EMERALD_BLOCK)
 		.define('R', SCContent.REINFORCED_REDSTONE_BLOCK)
 		.define('N', Tags.Items.NETHER_STARS)
@@ -797,22 +817,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addButtonRecipe(SCContent.REINFORCED_POLISHED_BLACKSTONE, SCContent.REINFORCED_POLISHED_BLACKSTONE_BUTTON);
 		addCarpetRecipe(SCContent.REINFORCED_MOSS_BLOCK, SCContent.REINFORCED_MOSS_CARPET, SCContent.REINFORCED_MOSS_BLOCK);
 		addCarpetRecipe(SCContent.REINFORCED_PALE_MOSS_BLOCK, SCContent.REINFORCED_PALE_MOSS_CARPET, SCContent.REINFORCED_PALE_MOSS_BLOCK);
-		addColoredCarpetRecipes(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL, SCContent.REINFORCED_BLACK_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL, SCContent.REINFORCED_BLUE_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL, SCContent.REINFORCED_BROWN_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_CYAN, SCContent.REINFORCED_CYAN_WOOL, SCContent.REINFORCED_CYAN_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_GRAY, SCContent.REINFORCED_GRAY_WOOL, SCContent.REINFORCED_GRAY_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_GREEN, SCContent.REINFORCED_GREEN_WOOL, SCContent.REINFORCED_GREEN_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_WOOL, SCContent.REINFORCED_LIGHT_BLUE_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_WOOL, SCContent.REINFORCED_LIGHT_GRAY_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_LIME, SCContent.REINFORCED_LIME_WOOL, SCContent.REINFORCED_LIME_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_MAGENTA, SCContent.REINFORCED_MAGENTA_WOOL, SCContent.REINFORCED_MAGENTA_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_ORANGE, SCContent.REINFORCED_ORANGE_WOOL, SCContent.REINFORCED_ORANGE_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_PINK, SCContent.REINFORCED_PINK_WOOL, SCContent.REINFORCED_PINK_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_WOOL, SCContent.REINFORCED_PURPLE_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_RED, SCContent.REINFORCED_RED_WOOL, SCContent.REINFORCED_RED_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_WOOL, SCContent.REINFORCED_WHITE_CARPET);
-		addColoredCarpetRecipes(Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL, SCContent.REINFORCED_YELLOW_CARPET);
+		addAllColoredCarpetRecipes();
 		addChiselingRecipe(SCContent.CRYSTAL_QUARTZ_SLAB, SCContent.CHISELED_CRYSTAL_QUARTZ);
 		addChiselingRecipe(SCContent.REINFORCED_CRYSTAL_QUARTZ_SLAB, SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ);
 		addChiselingRecipe(SCContent.REINFORCED_COBBLED_DEEPSLATE_SLAB, SCContent.REINFORCED_CHISELED_DEEPSLATE);
@@ -830,38 +835,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addChiselingRecipe(SCContent.REINFORCED_TUFF_BRICK_SLAB, SCContent.REINFORCED_CHISELED_TUFF_BRICKS);
 		addChiselingRecipe(SCContent.REINFORCED_TUFF_SLAB, SCContent.REINFORCED_CHISELED_TUFF);
 		addChiselingRecipe(SCContent.REINFORCED_RESIN_BRICK_SLAB, SCContent.REINFORCED_CHISELED_RESIN_BRICKS);
-		addColoredLensRecipe(DyeColor.BLACK, SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.BLUE, SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.BROWN, SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.CYAN, SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.GRAY, SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.GREEN, SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.LIME, SCContent.REINFORCED_LIME_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.MAGENTA, SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.ORANGE, SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.PINK, SCContent.REINFORCED_PINK_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.PURPLE, SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.RED, SCContent.REINFORCED_RED_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.YELLOW, SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE);
-		addColoredLensRecipe(DyeColor.WHITE, SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE);
-		addColoredWoolRecipe(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_CYAN, SCContent.REINFORCED_CYAN_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_GRAY, SCContent.REINFORCED_GRAY_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_GREEN, SCContent.REINFORCED_GREEN_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_LIME, SCContent.REINFORCED_LIME_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_MAGENTA, SCContent.REINFORCED_MAGENTA_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_ORANGE, SCContent.REINFORCED_ORANGE_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_PINK, SCContent.REINFORCED_PINK_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_RED, SCContent.REINFORCED_RED_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_WOOL);
-		addColoredWoolRecipe(Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_WOOL);
+		ColorCollection.zipApply(ColorCollection.VALUES, SCContent.REINFORCED_STAINED_GLASS_PANE, this::addColoredLensRecipe);
+		ColorCollection.zipApply(DYES_TAGS, SCContent.REINFORCED_WOOL, this::addColoredWoolRecipe);
 		addCompressingRecipe(SCContent.REINFORCED_ICE, SCContent.REINFORCED_PACKED_ICE);
 		addCompressingRecipe(SCContent.REINFORCED_PACKED_ICE, SCContent.REINFORCED_BLUE_ICE);
 		addCopperGrateRecipe(SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_COPPER_GRATE);
@@ -1025,54 +1000,9 @@ public class RecipeGenerator extends RecipeProvider {
 		addSlabRecipe(SCContent.REINFORCED_TUFF_BRICKS, SCContent.REINFORCED_TUFF_BRICK_SLAB);
 		addSlabRecipe(SCContent.REINFORCED_WEATHERED_CUT_COPPER, SCContent.REINFORCED_WEATHERED_CUT_COPPER_SLAB);
 		addSlabRecipe(SCContent.SMOOTH_CRYSTAL_QUARTZ, SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB);
-		addStainedGlassRecipe(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_CYAN, SCContent.REINFORCED_CYAN_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_GRAY, SCContent.REINFORCED_GRAY_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_GREEN, SCContent.REINFORCED_GREEN_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_LIME, SCContent.REINFORCED_LIME_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_MAGENTA, SCContent.REINFORCED_MAGENTA_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_ORANGE, SCContent.REINFORCED_ORANGE_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_PINK, SCContent.REINFORCED_PINK_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_RED, SCContent.REINFORCED_RED_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_STAINED_GLASS);
-		addStainedGlassRecipe(Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_STAINED_GLASS);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_STAINED_GLASS, SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_STAINED_GLASS, SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_STAINED_GLASS, SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_CYAN, SCContent.REINFORCED_CYAN_STAINED_GLASS, SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_GRAY, SCContent.REINFORCED_GRAY_STAINED_GLASS, SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_GREEN, SCContent.REINFORCED_GREEN_STAINED_GLASS, SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS, SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS, SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_LIME, SCContent.REINFORCED_LIME_STAINED_GLASS, SCContent.REINFORCED_LIME_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_MAGENTA, SCContent.REINFORCED_MAGENTA_STAINED_GLASS, SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_ORANGE, SCContent.REINFORCED_ORANGE_STAINED_GLASS, SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_PINK, SCContent.REINFORCED_PINK_STAINED_GLASS, SCContent.REINFORCED_PINK_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_STAINED_GLASS, SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_RED, SCContent.REINFORCED_RED_STAINED_GLASS, SCContent.REINFORCED_RED_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_STAINED_GLASS, SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE);
-		addStainedGlassPaneRecipes(Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_STAINED_GLASS, SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE);
-		addStainedTerracottaRecipe(Tags.Items.DYES_BLACK, SCContent.REINFORCED_BLACK_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_BLUE, SCContent.REINFORCED_BLUE_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_BROWN, SCContent.REINFORCED_BROWN_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_CYAN, SCContent.REINFORCED_CYAN_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_GRAY, SCContent.REINFORCED_GRAY_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_GREEN, SCContent.REINFORCED_GREEN_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_LIGHT_BLUE, SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_LIGHT_GRAY, SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_LIME, SCContent.REINFORCED_LIME_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_MAGENTA, SCContent.REINFORCED_MAGENTA_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_ORANGE, SCContent.REINFORCED_ORANGE_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_PINK, SCContent.REINFORCED_PINK_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_PURPLE, SCContent.REINFORCED_PURPLE_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_RED, SCContent.REINFORCED_RED_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_TERRACOTTA);
-		addStainedTerracottaRecipe(Tags.Items.DYES_YELLOW, SCContent.REINFORCED_YELLOW_TERRACOTTA);
+		ColorCollection.zipApply(DYES_TAGS, SCContent.REINFORCED_STAINED_GLASS, this::addStainedGlassRecipe);
+		addAllColoredGlassPaneRecipes();
+		ColorCollection.zipApply(DYES_TAGS, SCContent.REINFORCED_DYED_TERRACOTTA, this::addStainedTerracottaRecipe);
 		addStairsRecipe(Ingredient.of(SCContent.CRYSTAL_QUARTZ_BLOCK, SCContent.CRYSTAL_QUARTZ_PILLAR, SCContent.CHISELED_CRYSTAL_QUARTZ), SCContent.CRYSTAL_QUARTZ_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_ANDESITE, SCContent.REINFORCED_ANDESITE_STAIRS);
 		addStairsRecipe(SCContent.REINFORCED_BAMBOO_MOSAIC, SCContent.REINFORCED_BAMBOO_MOSAIC_STAIRS);
@@ -1234,22 +1164,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addSimpleCookingRecipe(SCContent.REINFORCED_SANDSTONE, SCContent.REINFORCED_SMOOTH_SANDSTONE);
 		addSimpleCookingRecipe(SCContent.REINFORCED_STONE, SCContent.REINFORCED_SMOOTH_STONE);
 		addSimpleCookingRecipe(SCContent.REINFORCED_STONE_BRICKS, SCContent.REINFORCED_CRACKED_STONE_BRICKS);
-		addSimpleCookingRecipe(SCContent.REINFORCED_BLACK_TERRACOTTA, SCContent.REINFORCED_BLACK_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_BLUE_TERRACOTTA, SCContent.REINFORCED_BLUE_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_BROWN_TERRACOTTA, SCContent.REINFORCED_BROWN_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_CYAN_TERRACOTTA, SCContent.REINFORCED_CYAN_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_GRAY_TERRACOTTA, SCContent.REINFORCED_GRAY_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_GREEN_TERRACOTTA, SCContent.REINFORCED_GREEN_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA, SCContent.REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA, SCContent.REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_LIME_TERRACOTTA, SCContent.REINFORCED_LIME_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_MAGENTA_TERRACOTTA, SCContent.REINFORCED_MAGENTA_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_ORANGE_TERRACOTTA, SCContent.REINFORCED_ORANGE_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_PINK_TERRACOTTA, SCContent.REINFORCED_PINK_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_PURPLE_TERRACOTTA, SCContent.REINFORCED_PURPLE_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_RED_TERRACOTTA, SCContent.REINFORCED_RED_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_WHITE_TERRACOTTA, SCContent.REINFORCED_WHITE_GLAZED_TERRACOTTA);
-		addSimpleCookingRecipe(SCContent.REINFORCED_YELLOW_TERRACOTTA, SCContent.REINFORCED_YELLOW_GLAZED_TERRACOTTA);
+		ColorCollection.zipApply(SCContent.REINFORCED_DYED_TERRACOTTA, SCContent.REINFORCED_GLAZED_TERRACOTTA, this::addSimpleCookingRecipe);
 		addSimpleCookingRecipe(SCContent.CRYSTAL_QUARTZ_BLOCK, SCContent.SMOOTH_CRYSTAL_QUARTZ);
 		addSimpleCookingRecipe(SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK, SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ);
 
@@ -1564,7 +1479,16 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addColoredCarpetRecipes(TagKey<Item> dye, ItemLike wool, ItemLike carpet) {
+	protected final void addAllColoredCarpetRecipes() {
+		ColorCollection<TwoItemLikes> woolAndCarpet = ColorCollection.zipMap(SCContent.REINFORCED_WOOL, SCContent.REINFORCED_CARPET, TwoItemLikes::new);
+
+		ColorCollection.zipApply(DYES_TAGS, woolAndCarpet, this::addColoredCarpetRecipes);
+	}
+
+	protected final void addColoredCarpetRecipes(TagKey<Item> dye, TwoItemLikes woolAndCarpet) {
+		ItemLike wool = woolAndCarpet.first;
+		ItemLike carpet = woolAndCarpet.second;
+
 		addCarpetRecipe(wool, carpet, SCTags.Items.REINFORCED_WOOL);
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BUILDING_BLOCKS, carpet)
@@ -1879,7 +1803,15 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
-	protected final void addStainedGlassPaneRecipes(TagKey<Item> dye, ItemLike stainedGlass, ItemLike result) {
+	protected final void addAllColoredGlassPaneRecipes() {
+		ColorCollection<TwoItemLikes> glassAndPane = ColorCollection.zipMap(SCContent.REINFORCED_STAINED_GLASS, SCContent.REINFORCED_STAINED_GLASS_PANE, TwoItemLikes::new);
+
+		ColorCollection.zipApply(DYES_TAGS, glassAndPane, this::addStainedGlassPaneRecipes);
+	}
+
+	protected final void addStainedGlassPaneRecipes(TagKey<Item> dye, TwoItemLikes glassAndPane) {
+		ItemLike result = glassAndPane.second;
+
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.DECORATIONS, result, 8)
 		.group("securitycraft:reinforced_glass_panes")
@@ -1894,7 +1826,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")
 		.pattern("GGG")
-		.define('G', stainedGlass)
+		.define('G', glassAndPane.first)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS_BLOCKS))
 		.save(output);
 		//@formatter:on
@@ -2051,4 +1983,6 @@ public class RecipeGenerator extends RecipeProvider {
 			return "SecurityCraft recipes";
 		}
 	}
+
+	private record TwoItemLikes(ItemLike first, ItemLike second) {}
 }

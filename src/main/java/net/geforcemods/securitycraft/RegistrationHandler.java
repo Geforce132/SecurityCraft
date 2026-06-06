@@ -82,6 +82,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTab.TabVisibility;
 import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -91,7 +92,9 @@ import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ColorCollection;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -104,7 +107,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.transfer.fluid.BucketResourceHandler;
 
@@ -120,25 +123,31 @@ public class RegistrationHandler {
 				try {
 					if (field.isAnnotationPresent(Reinforced.class) && field.getAnnotation(Reinforced.class).registerBlockItem()) {
 						SCItemGroup group = field.getAnnotation(Reinforced.class).itemGroup();
-						DeferredBlock<Block> deferredBlock = (DeferredBlock<Block>) field.get(null);
-						Block block = deferredBlock.get();
-						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().identifier().getPath(), new Item.Properties().fireResistant(), true));
+						List<DeferredHolder<?, ?>> holders = SCContent.annotatedConstantToStream(field.get(null)).toList();
 
-						helper.register(Utils.getRegistryName(block), blockItem);
+						for (DeferredHolder<?, ?> holder : holders) {
+							Block block = (Block) holder.get();
+							Item blockItem = new BlockItem(block, SCContent.setId(holder.getKey().identifier().getPath(), new Item.Properties().fireResistant(), true));
 
-						if (group != SCItemGroup.MANUAL)
-							SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStackTemplate(blockItem));
+							helper.register(Utils.getRegistryName(block), blockItem);
+
+							if (group != SCItemGroup.MANUAL)
+								SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStackTemplate(blockItem));
+						}
 					}
 					else if (field.isAnnotationPresent(RegisterItemBlock.class)) {
 						SCItemGroup group = field.getAnnotation(RegisterItemBlock.class).value();
-						DeferredBlock<Block> deferredBlock = (DeferredBlock<Block>) field.get(null);
-						Block block = deferredBlock.get();
-						Item blockItem = new BlockItem(block, SCContent.setId(deferredBlock.getKey().identifier().getPath(), new Item.Properties(), true));
+						List<DeferredHolder<?, ?>> holders = SCContent.annotatedConstantToStream(field.get(null)).toList();
 
-						helper.register(Utils.getRegistryName(block), blockItem);
+						for (DeferredHolder<?, ?> holder : holders) {
+							Block block = (Block) holder.get();
+							Item blockItem = new BlockItem(block, SCContent.setId(holder.getKey().identifier().getPath(), new Item.Properties(), true));
 
-						if (group != SCItemGroup.MANUAL)
-							SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStackTemplate(blockItem));
+							helper.register(Utils.getRegistryName(block), blockItem);
+
+							if (group != SCItemGroup.MANUAL)
+								SCCreativeModeTabs.STACKS_FOR_ITEM_GROUPS.get(group).add(new ItemStackTemplate(blockItem));
+						}
 					}
 				}
 				catch (IllegalArgumentException | IllegalAccessException e) {
@@ -280,125 +289,36 @@ public class RegistrationHandler {
 			event.insertAfter(new ItemStack(Items.LECTERN), new ItemStack(SCContent.REINFORCED_LECTERN.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 		}
 		else if (tabKey.equals(CreativeModeTabs.COLORED_BLOCKS)) {
-			//@formatter:off
-			event.acceptAll(List.of(
-					new ItemStack(SCContent.REINFORCED_WHITE_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_GRAY_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_BLACK_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_BROWN_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_RED_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_ORANGE_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_YELLOW_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_LIME_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_GREEN_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_CYAN_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_BLUE_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_PURPLE_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_MAGENTA_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_PINK_WOOL.get()),
-					new ItemStack(SCContent.REINFORCED_WHITE_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_GRAY_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_BLACK_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_BROWN_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_RED_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_ORANGE_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_YELLOW_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_LIME_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_GREEN_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_CYAN_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_BLUE_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_PURPLE_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_MAGENTA_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_PINK_CARPET.get()),
-					new ItemStack(SCContent.REINFORCED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_WHITE_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_GRAY_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_BLACK_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_BROWN_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_RED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_ORANGE_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_YELLOW_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_LIME_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_GREEN_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_CYAN_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_BLUE_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_PURPLE_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_MAGENTA_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_PINK_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_WHITE_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_GRAY_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_BLACK_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_BROWN_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_RED_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_ORANGE_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_YELLOW_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_LIME_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_GREEN_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_CYAN_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_BLUE_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_PURPLE_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_MAGENTA_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_PINK_CONCRETE.get()),
-					new ItemStack(SCContent.REINFORCED_WHITE_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_GRAY_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_BLACK_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_BROWN_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_RED_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_ORANGE_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_YELLOW_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_LIME_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_GREEN_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_CYAN_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_BLUE_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_PURPLE_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_MAGENTA_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_PINK_GLAZED_TERRACOTTA.get()),
-					new ItemStack(SCContent.REINFORCED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_TINTED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_WHITE_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_GRAY_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_BLACK_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_BROWN_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_RED_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_ORANGE_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_YELLOW_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_LIME_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_GREEN_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_CYAN_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_BLUE_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_PURPLE_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_MAGENTA_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_PINK_STAINED_GLASS.get()),
-					new ItemStack(SCContent.REINFORCED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_WHITE_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_GRAY_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_GRAY_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_BLACK_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_BROWN_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_RED_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_ORANGE_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_YELLOW_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_LIME_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_GREEN_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_CYAN_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_LIGHT_BLUE_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_BLUE_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_PURPLE_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_MAGENTA_STAINED_GLASS_PANE.get()),
-					new ItemStack(SCContent.REINFORCED_PINK_STAINED_GLASS_PANE.get())));
-			//@formatter:on
+			List<DyeColor> gameplayColorOrder = List.of(
+					DyeColor.WHITE,
+					DyeColor.LIGHT_GRAY,
+					DyeColor.GRAY,
+					DyeColor.BLACK,
+					DyeColor.BROWN,
+					DyeColor.RED,
+					DyeColor.ORANGE,
+					DyeColor.YELLOW,
+					DyeColor.LIME,
+					DyeColor.GREEN,
+					DyeColor.CYAN,
+					DyeColor.LIGHT_BLUE,
+					DyeColor.BLUE,
+					DyeColor.PURPLE,
+					DyeColor.MAGENTA,
+					DyeColor.PINK
+			);
+
+			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_WOOL);
+			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_CARPET);
+			event.accept(SCContent.REINFORCED_TERRACOTTA);
+			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_DYED_TERRACOTTA);
+			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_CONCRETE);
+			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_GLAZED_TERRACOTTA);
+			event.accept(SCContent.REINFORCED_GLASS.get());
+			event.accept(SCContent.REINFORCED_TINTED_GLASS.get());
+			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_STAINED_GLASS);
+			event.accept(SCContent.REINFORCED_GLASS_PANE.get());
+			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_STAINED_GLASS_PANE);
 		}
 		else if (tabKey.equals(SCCreativeModeTabs.DECORATION_TAB.getKey())) {
 			try {
@@ -466,5 +386,9 @@ public class RegistrationHandler {
 		Ingredient strongPotions = DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(strongPotion), Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
 
 		return CompoundIngredient.of(normalPotions, strongPotions);
+	}
+
+	private static void registerColoredItems(CreativeModeTab.Output coloredBlocks, List<DyeColor> gameplayColorOrder, ColorCollection<? extends ItemLike> items) {
+		gameplayColorOrder.forEach(color -> coloredBlocks.accept(items.pick(color)));
 	}
 }
