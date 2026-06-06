@@ -244,30 +244,30 @@ public class BlockModelAndStateGenerator {
 		createReinforcedShelf(SCContent.REINFORCED_SPRUCE_SHELF.get(), Blocks.SPRUCE_SHELF, Blocks.STRIPPED_SPRUCE_LOG);
 		createReinforcedShelf(SCContent.REINFORCED_WARPED_SHELF.get(), Blocks.WARPED_SHELF, Blocks.STRIPPED_WARPED_STEM);
 
-		createSecretSign(SCContent.SECRET_ACACIA_SIGN_ITEM.get(), Blocks.ACACIA_SIGN);
-		createSecretSign(SCContent.SECRET_BAMBOO_SIGN_ITEM.get(), Blocks.BAMBOO_SIGN);
-		createSecretSign(SCContent.SECRET_BIRCH_SIGN_ITEM.get(), Blocks.BIRCH_SIGN);
-		createSecretSign(SCContent.SECRET_CHERRY_SIGN_ITEM.get(), Blocks.CHERRY_SIGN);
-		createSecretSign(SCContent.SECRET_CRIMSON_SIGN_ITEM.get(), Blocks.CRIMSON_SIGN);
-		createSecretSign(SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(), Blocks.DARK_OAK_SIGN);
-		createSecretSign(SCContent.SECRET_JUNGLE_SIGN_ITEM.get(), Blocks.JUNGLE_SIGN);
-		createSecretSign(SCContent.SECRET_MANGROVE_SIGN_ITEM.get(), Blocks.MANGROVE_SIGN);
-		createSecretSign(SCContent.SECRET_OAK_SIGN_ITEM.get(), Blocks.OAK_SIGN);
-		createSecretSign(SCContent.SECRET_PALE_OAK_SIGN_ITEM.get(), Blocks.PALE_OAK_SIGN);
-		createSecretSign(SCContent.SECRET_SPRUCE_SIGN_ITEM.get(), Blocks.SPRUCE_SIGN);
-		createSecretSign(SCContent.SECRET_WARPED_SIGN_ITEM.get(), Blocks.WARPED_SIGN);
-		createSecretSign(SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get(), Blocks.ACACIA_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get(), Blocks.BAMBOO_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_BIRCH_HANGING_SIGN_ITEM.get(), Blocks.BIRCH_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get(), Blocks.CHERRY_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.get(), Blocks.CRIMSON_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.get(), Blocks.DARK_OAK_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get(), Blocks.JUNGLE_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get(), Blocks.MANGROVE_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get(), Blocks.OAK_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.get(), Blocks.PALE_OAK_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get(), Blocks.SPRUCE_HANGING_SIGN);
-		createSecretSign(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get(), Blocks.WARPED_HANGING_SIGN);
+		createSecretSign(SCContent.SECRET_ACACIA_SIGN_ITEM.get(), Blocks.ACACIA_SIGN, Blocks.ACACIA_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_BAMBOO_SIGN_ITEM.get(), Blocks.BAMBOO_SIGN, Blocks.BAMBOO_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_BIRCH_SIGN_ITEM.get(), Blocks.BIRCH_SIGN, Blocks.BIRCH_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_CHERRY_SIGN_ITEM.get(), Blocks.CHERRY_SIGN, Blocks.CHERRY_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_CRIMSON_SIGN_ITEM.get(), Blocks.CRIMSON_SIGN, Blocks.CRIMSON_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_DARK_OAK_SIGN_ITEM.get(), Blocks.DARK_OAK_SIGN, Blocks.DARK_OAK_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_JUNGLE_SIGN_ITEM.get(), Blocks.JUNGLE_SIGN, Blocks.JUNGLE_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_MANGROVE_SIGN_ITEM.get(), Blocks.MANGROVE_SIGN, Blocks.MANGROVE_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_OAK_SIGN_ITEM.get(), Blocks.OAK_SIGN, Blocks.OAK_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_PALE_OAK_SIGN_ITEM.get(), Blocks.PALE_OAK_SIGN, Blocks.PALE_OAK_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_SPRUCE_SIGN_ITEM.get(), Blocks.SPRUCE_SIGN, Blocks.SPRUCE_WALL_SIGN);
+		createSecretSign(SCContent.SECRET_WARPED_SIGN_ITEM.get(), Blocks.WARPED_SIGN, Blocks.WARPED_WALL_SIGN);
+		createSecretHangingSign(SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.get(), Blocks.ACACIA_HANGING_SIGN, Blocks.ACACIA_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.get(), Blocks.BAMBOO_HANGING_SIGN, Blocks.BAMBOO_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_BIRCH_HANGING_SIGN_ITEM.get(), Blocks.BIRCH_HANGING_SIGN, Blocks.BIRCH_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.get(), Blocks.CHERRY_HANGING_SIGN, Blocks.CHERRY_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.get(), Blocks.CRIMSON_HANGING_SIGN, Blocks.CRIMSON_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.get(), Blocks.DARK_OAK_HANGING_SIGN, Blocks.DARK_OAK_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.get(), Blocks.JUNGLE_HANGING_SIGN, Blocks.JUNGLE_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.get(), Blocks.MANGROVE_HANGING_SIGN, Blocks.MANGROVE_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_OAK_HANGING_SIGN_ITEM.get(), Blocks.OAK_HANGING_SIGN, Blocks.OAK_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.get(), Blocks.PALE_OAK_HANGING_SIGN, Blocks.PALE_OAK_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.get(), Blocks.SPRUCE_HANGING_SIGN, Blocks.SPRUCE_WALL_HANGING_SIGN);
+		createSecretHangingSign(SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.get(), Blocks.WARPED_HANGING_SIGN, Blocks.WARPED_WALL_HANGING_SIGN);
 
 		//@formatter:off
 		SCModelTemplates.REINFORCED_CUBE_COLUMN.create(
@@ -714,13 +714,35 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(pane);
 	}
 
-	public static void createSecretSign(SignItem item, Block vanillaSign) {
-		Block sign = item.getBlock();
-		Block wallSign = item.wallBlock;
-		MultiVariant blockModel = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaSign));
+	public static void createSecretSign(SignItem item, Block vanillaSign, Block vanillaWallSign) {
+		Block secretSign = item.getBlock();
+		Block secretWallSign = item.wallBlock;
+		MultiVariant standingRot0 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaSign, "_rot_0"));
+		MultiVariant standingRot1 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaSign, "_rot_1"));
+		MultiVariant standingRot2 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaSign, "_rot_2"));
+		MultiVariant standingRot3 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaSign, "_rot_3"));
+		MultiVariant wallModel = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaWallSign));
 
-		generate(sign, BlockModelGenerators.createSimpleBlock(sign, blockModel));
-		generate(wallSign, BlockModelGenerators.createSimpleBlock(wallSign, blockModel));
+		generate(secretSign, BlockModelGenerators.createSign(secretSign, standingRot0, standingRot1, standingRot2, standingRot3));
+		generate(secretWallSign, MultiVariantGenerator.dispatch(secretWallSign, wallModel).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING_ALT));
+	}
+
+	public static void createSecretHangingSign(SignItem item, Block vanillaHangingSign, Block vanillaWallHangingSign) {
+		Block secretHangingSign = item.getBlock();
+		Block secretWallHangingSign = item.wallBlock;
+
+		MultiVariant hangingRot0 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_rot_0"));
+		MultiVariant hangingRot1 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_rot_1"));
+		MultiVariant hangingRot2 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_rot_2"));
+		MultiVariant hangingRot3 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_rot_3"));
+		MultiVariant attachedRot0 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_attached_rot_0"));
+		MultiVariant attachedRot1 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_attached_rot_1"));
+		MultiVariant attachedRot2 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_attached_rot_2"));
+		MultiVariant attachedRot3 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaHangingSign, "_attached_rot_3"));
+		MultiVariant wallModel = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaWallHangingSign));
+
+		generate(secretHangingSign, BlockModelGenerators.createHangingSign(secretHangingSign, hangingRot0, hangingRot1, hangingRot2, hangingRot3, attachedRot0, attachedRot1, attachedRot2, attachedRot3));
+		generate(secretWallHangingSign, MultiVariantGenerator.dispatch(secretWallHangingSign, wallModel).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING_ALT));
 	}
 
 	public static void createFloorTrap() {
