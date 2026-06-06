@@ -837,6 +837,7 @@ public class RecipeGenerator extends RecipeProvider {
 		ColorCollection.zipApply(DYES_TAGS, SCContent.REINFORCED_WOOL, this::addColoredWoolRecipe);
 		addCompressingRecipe(SCContent.REINFORCED_ICE, SCContent.REINFORCED_PACKED_ICE);
 		addCompressingRecipe(SCContent.REINFORCED_PACKED_ICE, SCContent.REINFORCED_BLUE_ICE);
+		WeatheringCopperCollection.zipApply(SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_COPPER_BULB, this::addCopperBulbRecipe);
 		WeatheringCopperCollection.zipApply(SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_COPPER_GRATE, this::addCopperGrateRecipe);
 		addFenceRecipe(SCContent.REINFORCED_OAK_PLANKS, SCContent.REINFORCED_OAK_FENCE);
 		addFenceRecipe(SCContent.REINFORCED_SPRUCE_PLANKS, SCContent.REINFORCED_SPRUCE_FENCE);
