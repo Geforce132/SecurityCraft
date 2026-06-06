@@ -41,7 +41,6 @@
 		"potion.BrewingStandMenuMixin",
 		"reinforced.HopperBlockEntityMixin",
 		"reinforced.PortalForcerMixin",
-		"reinforced.ShearsItemMixin",
 		"reinforced.ToolMaterialMixin",
 		"reinforced.VanillaInventoryCodeHooksMixin"
 	],

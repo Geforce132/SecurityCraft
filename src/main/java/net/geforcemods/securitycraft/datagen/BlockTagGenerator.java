@@ -433,6 +433,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.TRIGGERS_AMBIENT_DESERT_DRY_VEGETATION_BLOCK_SOUNDS).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA).add(SCContent.REINFORCED_SAND.getKey(), SCContent.REINFORCED_RED_SAND.getKey());
 		tag(BlockTags.PRESSURE_PLATES).addTag(SCTags.Blocks.REINFORCED_PRESSURE_PLATES);
 		tag(BlockTags.RAILS).add(SCContent.TRACK_MINE.getKey());
+		tag(BlockTags.SHEARS_EXTREME_BREAKING_SPEED).add(SCContent.REINFORCED_COBWEB.getKey());
 		tag(BlockTags.SLABS).addTag(SCTags.Blocks.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.getKey(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.getKey());
 		tag(BlockTags.SIGNS).addTag(SCTags.Blocks.SECRET_SIGNS);
 		tag(BlockTags.SNAPS_GOAT_HORN).add(
