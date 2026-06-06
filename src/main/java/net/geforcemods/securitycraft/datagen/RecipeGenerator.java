@@ -846,6 +846,10 @@ public class RecipeGenerator extends RecipeProvider {
 		addColoredWoolRecipe(recipeOutput, Tags.Items.DYES_WHITE, SCContent.REINFORCED_WHITE_WOOL);
 		addCompressingRecipe(recipeOutput, SCContent.REINFORCED_ICE, SCContent.REINFORCED_PACKED_ICE);
 		addCompressingRecipe(recipeOutput, SCContent.REINFORCED_PACKED_ICE, SCContent.REINFORCED_BLUE_ICE);
+		addCopperBulbRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_COPPER_BULB);
+		addCopperBulbRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_COPPER_BULB);
+		addCopperBulbRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_COPPER_BULB);
+		addCopperBulbRecipe(recipeOutput, SCContent.REINFORCED_WEATHERED_COPPER, SCContent.REINFORCED_WEATHERED_COPPER_BULB);
 		addCopperGrateRecipe(recipeOutput, SCContent.REINFORCED_COPPER_BLOCK, SCContent.REINFORCED_COPPER_GRATE);
 		addCopperGrateRecipe(recipeOutput, SCContent.REINFORCED_EXPOSED_COPPER, SCContent.REINFORCED_EXPOSED_COPPER_GRATE);
 		addCopperGrateRecipe(recipeOutput, SCContent.REINFORCED_OXIDIZED_COPPER, SCContent.REINFORCED_OXIDIZED_COPPER_GRATE);
@@ -1566,6 +1570,20 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addCopperBulbRecipe(RecipeOutput recipeOutput, ItemLike copperBlock, ItemLike bulb) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, bulb, 4)
+				.pattern(" C ")
+				.pattern("CBC")
+				.pattern(" R ")
+				.define('C', copperBlock)
+				.define('B', Tags.Items.RODS_BLAZE)
+				.define('R', Tags.Items.DUSTS_REDSTONE)
+				.unlockedBy("has_copper_block", has(copperBlock))
+				.save(recipeOutput);
+		//@formatter:on
+	}
+
 	protected final void addCopperGrateRecipe(RecipeOutput recipeOutput, ItemLike block, ItemLike grate) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, grate, 4)
@@ -1574,20 +1592,6 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" C ")
 		.define('C', block)
 		.unlockedBy("has_copper_block", has(block))
-		.save(recipeOutput);
-		//@formatter:on
-	}
-
-	protected final void addCopperBulbRecipe(RecipeOutput recipeOutput, ItemLike copperBlock, ItemLike bulb) {
-		//@formatter:off
-		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, bulb, 4)
-		.pattern(" C ")
-		.pattern("CBC")
-		.pattern(" R ")
-		.define('C', copperBlock)
-		.define('B', Tags.Items.RODS_BLAZE)
-		.define('R', Tags.Items.DUSTS_REDSTONE)
-		.unlockedBy("has_copper_block", has(copperBlock))
 		.save(recipeOutput);
 		//@formatter:on
 	}

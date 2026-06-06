@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "B": {
+      "tag": "c:rods/blaze"
+    },
+    "C": {
+      "item": "securitycraft:reinforced_exposed_copper"
+    },
+    "R": {
+      "tag": "c:dusts/redstone"
+    }
+  },
+  "pattern": [
+    " C ",
+    "CBC",
+    " R "
+  ],
+  "result": {
+    "count": 4,
+    "id": "securitycraft:reinforced_exposed_copper_bulb"
+  }
+}
