@@ -1510,6 +1510,20 @@ public class RecipeGenerator extends RecipeProvider {
 		//@formatter:on
 	}
 
+	protected final void addCopperBulbRecipe(ItemLike copperBlock, ItemLike bulb) {
+		//@formatter:off
+		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, bulb, 4)
+				.pattern(" C ")
+				.pattern("CBC")
+				.pattern(" R ")
+				.define('C', copperBlock)
+				.define('B', Tags.Items.RODS_BLAZE)
+				.define('R', Tags.Items.DUSTS_REDSTONE)
+				.unlockedBy("has_copper_block", has(copperBlock))
+				.save(output);
+		//@formatter:on
+	}
+
 	protected final void addCopperGrateRecipe(ItemLike block, ItemLike grate) {
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, grate, 4)
@@ -1518,20 +1532,6 @@ public class RecipeGenerator extends RecipeProvider {
 		.pattern(" C ")
 		.define('C', block)
 		.unlockedBy("has_copper_block", has(block))
-		.save(output);
-		//@formatter:on
-	}
-
-	protected final void addCopperBulbRecipe(ItemLike copperBlock, ItemLike bulb) {
-		//@formatter:off
-		ShapedRecipeBuilder.shaped(items, RecipeCategory.BUILDING_BLOCKS, bulb, 4)
-		.pattern(" C ")
-		.pattern("CBC")
-		.pattern(" R ")
-		.define('C', copperBlock)
-		.define('B', Tags.Items.RODS_BLAZE)
-		.define('R', Tags.Items.DUSTS_REDSTONE)
-		.unlockedBy("has_copper_block", has(copperBlock))
 		.save(output);
 		//@formatter:on
 	}
