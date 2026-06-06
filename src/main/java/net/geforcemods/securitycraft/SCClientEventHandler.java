@@ -110,7 +110,7 @@ public class SCClientEventHandler {
 
 					pose.pushPose();
 					pose.translate(pos.getX() - camPos.x, pos.getY() - camPos.y, pos.getZ() - camPos.z); //TODO is there a better way to get the SubmitNodeStorage?
-					event.getLevelRenderer().submitNodeStorage.submitShapeOutline(pose, Shapes.block(), ClientHandler.OVERLAY_LINES, packedColor, 1.0F, true); //TODO Is the last boolean flag correct?
+					event.getLevelRenderer().submitNodeStorage.submitShapeOutline(pose, Shapes.block(), ClientHandler.OVERLAY_LINES, packedColor, 1.0F, true);
 					pose.popPose();
 				}
 			}
