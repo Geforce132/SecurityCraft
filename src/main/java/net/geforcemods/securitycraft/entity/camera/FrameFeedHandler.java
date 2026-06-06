@@ -148,10 +148,14 @@ public class FrameFeedHandler {
 
 					profiler.push("securitycraft:apply_frame_frustum");
 
-					Frustum frustum = SectionOcclusionGraph.offsetFrustum(feed.getCameraFrustum()); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
+					Frustum cameraFrustum = feed.getCameraFrustum();
 
-					if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
-						feed.updateVisibleSections(frustum);
+					if (cameraFrustum != null) {
+						Frustum frustum = SectionOcclusionGraph.offsetFrustum(cameraFrustum); //This needs the frame's newly calculated frustum, so it needs to be queried from inside the loop
+
+						if (be.shouldRotate() || !feed.hasVisibleSections() || feed.requiresFrustumUpdate())
+							feed.updateVisibleSections(frustum);
+					}
 
 					profiler.pop();
 				}
