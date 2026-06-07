@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.pipeline.RenderTarget;
@@ -52,6 +53,7 @@ import net.neoforged.neoforge.client.event.ExtractLevelRenderStateEvent;
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class FrameFeedHandler {
 	private static final Map<GlobalPos, CameraFeed> FRAME_CAMERA_FEEDS = new ConcurrentHashMap<>();
+	public static final Frustum DUMMY_FRUSTUM = new Frustum(new Matrix4f(), new Matrix4f());
 	private static GlobalPos currentlyCapturedCamera;
 	private static double lastFrameRendered = 0.0D;
 

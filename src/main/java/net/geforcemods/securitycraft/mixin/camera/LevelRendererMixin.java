@@ -8,10 +8,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+
 import net.geforcemods.securitycraft.entity.camera.CameraViewAreaExtension;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.ViewArea;
 import net.minecraft.client.renderer.chunk.CompiledSectionMesh;
 import net.minecraft.client.renderer.chunk.SectionRenderDispatcher;
 import net.minecraft.core.BlockPos;
@@ -25,6 +29,22 @@ public abstract class LevelRendererMixin {
 	@Shadow
 	@Final
 	private GameRenderer gameRenderer;
+
+	/**
+	 * Allows the compile task to run on render sections stored in our CameraViewAreaExtension, which allows those sections
+	 * to actually compile and render something
+	 */
+	@WrapOperation(method = "compileSections", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ViewArea;getRenderSection(J)Lnet/minecraft/client/renderer/chunk/SectionRenderDispatcher$RenderSection;"))
+	private SectionRenderDispatcher.RenderSection securitycraft$getSectionToCompile(ViewArea instance, long sectionNode, Operation<SectionRenderDispatcher.RenderSection> original) {
+		if (FrameFeedHandler.isCapturingCamera()) {
+			SectionRenderDispatcher.RenderSection renderSection = CameraViewAreaExtension.rawFetch(sectionNode, false);
+
+			if (renderSection != null)
+				return renderSection;
+		}
+
+		return original.call(instance, sectionNode);
+	}
 
 	/**
 	 * Updates the camera view area with the refreshed section render dispatcher when F3+A is pressed

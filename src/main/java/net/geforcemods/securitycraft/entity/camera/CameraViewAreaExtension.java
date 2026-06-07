@@ -34,11 +34,14 @@ public class CameraViewAreaExtension {
 	}
 
 	public static void setDirty(int sectionX, int sectionY, int sectionZ, boolean playerChanged) {
-		long sectionPos = SectionPos.asLong(sectionX, sectionY, sectionZ);
-		SectionDirtyState dirtyState = DIRTY_STATES.putIfAbsent(sectionPos, new SectionDirtyState(true, false, sectionPos));
+		long sectionPos = sectionPosToLong(sectionX, sectionY, sectionZ);
 
-		if (dirtyState != null)
-			dirtyState.setDirty(playerChanged);
+		if (SECTIONS.containsKey(sectionPos)) {
+			SectionDirtyState dirtyState = DIRTY_STATES.putIfAbsent(sectionPos, new SectionDirtyState(true, false, sectionPos));
+
+			if (dirtyState != null)
+				dirtyState.setDirty(playerChanged);
+		}
 	}
 
 	public static SectionDirtyState getDirtyState(long sectionPos) {
@@ -47,7 +50,7 @@ public class CameraViewAreaExtension {
 
 	public static void onChunkUnload(int sectionX, int sectionZ) {
 		for (int sectionY = minSectionY; sectionY < maxSectionY; sectionY++) {
-			long sectionPos = SectionPos.asLong(sectionX, sectionY, sectionZ);
+			long sectionPos = sectionPosToLong(sectionX, sectionY, sectionZ);
 			RenderSection section = SECTIONS.get(sectionPos);
 
 			if (section != null) {
@@ -61,8 +64,10 @@ public class CameraViewAreaExtension {
 		if (cy < minSectionY || cy >= maxSectionY)
 			return null;
 
-		long sectionPos = SectionPos.asLong(cx, cy, cz);
+		return rawFetch(sectionPosToLong(cx, cy, cz), generateNew);
+	}
 
+	public static SectionRenderDispatcher.RenderSection rawFetch(long sectionPos, boolean generateNew) {
 		return generateNew ? provideSection(sectionPos) : SECTIONS.get(sectionPos);
 	}
 
@@ -72,6 +77,7 @@ public class CameraViewAreaExtension {
 		}
 
 		SECTIONS.clear();
+		DIRTY_STATES.clear();
 	}
 
 	public static int minSectionY() {
@@ -80,5 +86,9 @@ public class CameraViewAreaExtension {
 
 	public static int maxSectionY() {
 		return maxSectionY;
+	}
+
+	private static long sectionPosToLong(int cx, int cy, int cz) {
+		return SectionPos.asLong(cx, cy + minSectionY, cz);
 	}
 }
