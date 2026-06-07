@@ -11,7 +11,6 @@ import com.mojang.blaze3d.platform.cursor.CursorTypes;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
-import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.StandingOrWallType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ComponentPath;
@@ -58,7 +57,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 	private final int previewXTranslation, previewYTranslation;
 	private final HoverChecker dragHoverChecker;
 	private final List<Rect2i> extraAreas = new ArrayList<>();
-	private FullbrightBlockAndTintGetter fullbrightBlockAndTintGetter;
 	private Item blockItem = Items.AIR;
 	private BlockState state = Blocks.AIR.defaultBlockState();
 	private List<Property<?>> properties = List.of();
@@ -95,7 +93,6 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		nextPageButton = Button.builder(Component.literal(">"), button -> turnPage(1)).bounds(xStart + 126, yStart + 125, 20, 20).build();
 		updateButtons(true, false);
 		extraAreas.add(new Rect2i(xStart, 0, 193, minecraft.getWindow().getGuiScaledHeight()));
-		fullbrightBlockAndTintGetter = new FullbrightBlockAndTintGetter(minecraft.level);
 	}
 
 	private void copyStateFromMenu() {
@@ -126,7 +123,7 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 		super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 		previousPageButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
 		nextPageButton.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
-		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, fullbrightBlockAndTintGetter, dragRotation, x, y, x + wh, y + wh, 1.0F, guiGraphics.peekScissorStack()));
+		guiGraphics.submitPictureInPictureRenderState(new GuiBlockModelRenderState(state, be, beRenderer, dragRotation, x, y, x + wh, y + wh, 1.0F, guiGraphics.peekScissorStack()));
 
 		for (int i = 0; i < propertyButtons.size(); i++) {
 			String propertyName = propertyButtons.get(i).getProperty().getName();
