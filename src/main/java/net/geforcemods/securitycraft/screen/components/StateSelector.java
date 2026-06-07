@@ -390,6 +390,8 @@ public class StateSelector extends Screen implements GuiEventListener, Narratabl
 
 		@Override
 		public void onPress() {
+			super.onPress();
+
 			if (property == STANDING_OR_WALL_TYPE_PROPERTY) {
 				state = standingOrWallType.getNewState((StandingAndWallBlockItem) blockItem);
 				standingOrWallType = standingOrWallType == StandingOrWallType.STANDING ? StandingOrWallType.WALL : StandingOrWallType.STANDING;
