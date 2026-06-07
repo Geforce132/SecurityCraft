@@ -26,9 +26,9 @@ public class ColorChooserButton extends Button.Plain {
 	@Override
 	public void onPress(InputWithModifiers input) {
 		if (colorChooser.disabled)
-			Minecraft.getInstance().gui.pushGuiLayer(colorChooser);
+			Minecraft.getInstance().gui.pushScreenLayer(colorChooser);
 		else
-			Minecraft.getInstance().gui.popGuiLayer();
+			Minecraft.getInstance().gui.popScreenLayer();
 
 		colorChooser.disabled = !colorChooser.disabled;
 	}

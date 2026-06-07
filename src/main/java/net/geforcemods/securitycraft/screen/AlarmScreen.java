@@ -80,7 +80,7 @@ public class AlarmScreen extends Screen {
 		searchBar.setHint(searchText);
 		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
-		addRenderableWidget(Button.builder(Utils.localize("menu.options"), b -> Minecraft.getInstance().gui.pushGuiLayer(new AlarmOptionsScreen(this))).pos(leftPos + imageWidth / 2 - 170 / 2, topPos + 215).size(170, 20).build());
+		addRenderableWidget(Button.builder(Utils.localize("menu.options"), b -> Minecraft.getInstance().gui.pushScreenLayer(new AlarmOptionsScreen(this))).pos(leftPos + imageWidth / 2 - 170 / 2, topPos + 215).size(170, 20).build());
 	}
 
 	@Override

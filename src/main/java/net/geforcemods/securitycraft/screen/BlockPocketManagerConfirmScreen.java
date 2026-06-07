@@ -36,7 +36,7 @@ public class BlockPocketManagerConfirmScreen extends Screen {
 		int buttonX = leftPos + 10;
 		int buttonY = topPos + 30;
 
-		addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:blockPocketManager.cancel"), b -> Minecraft.getInstance().gui.popGuiLayer()).pos(buttonX, buttonY).size(98, 20).build());
+		addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:blockPocketManager.cancel"), b -> Minecraft.getInstance().gui.popScreenLayer()).pos(buttonX, buttonY).size(98, 20).build());
 		addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:blockPocketManager.confirm"), this::confirmDisassemblyButtonClicked).pos(buttonX + 106, buttonY).size(98, 20).build());
 	}
 
