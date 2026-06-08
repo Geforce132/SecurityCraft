@@ -72,7 +72,7 @@ public class FrameFeedHandler {
 			return;
 
 		lastFrameRendered = currentTime;
-		profiler.popPush("securitycraft:frame_level");
+		profiler.popPush("securitycraft:capture_frame_feed");
 
 		boolean resourcesLoaded = mc.isGameLoadFinished();
 		Level level = player.level();
@@ -138,7 +138,9 @@ public class FrameFeedHandler {
 					mc.gameRenderer.mainRenderTarget = feed.renderTarget();
 
 					try {
+						profiler.popPush("securitycraft:extract");
 						mc.gameRenderer.extract(DeltaTracker.ONE, true); //TODO: Test whether frame chunks compile, since chunk recompilation has been moved
+						profiler.popPush("securitycraft:render");
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}
 					catch (Exception e) {
@@ -148,7 +150,7 @@ public class FrameFeedHandler {
 						feed.markForRemoval();
 					}
 
-					profiler.push("securitycraft:apply_frame_frustum");
+					profiler.popPush("securitycraft:apply_frame_frustum");
 
 					Frustum cameraFrustum = feed.getCameraFrustum();
 
