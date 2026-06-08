@@ -89,6 +89,6 @@ public class CameraViewAreaExtension {
 	}
 
 	private static long sectionPosToLong(int cx, int cy, int cz) {
-		return SectionPos.asLong(cx, cy + minSectionY, cz);
+		return SectionPos.asLong(cx, cy, cz);
 	}
 }
