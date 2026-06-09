@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -19,6 +20,7 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -50,10 +52,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.resources.VanillaClientListeners;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
@@ -86,6 +90,14 @@ public class SCClientEventHandler {
 	private static float cameraInfoMessageTime;
 
 	private SCClientEventHandler() {}
+
+	@SubscribeEvent
+	public static void onAddClientReloadListeners(AddClientReloadListenersEvent event) {
+		Identifier noiseTextureInvalidator = SecurityCraft.resLoc("frame_noise_texture_invalidator");
+
+		event.addListener(noiseTextureInvalidator, (_, backgroundExecutor, barrier, _) -> CompletableFuture.runAsync(FrameBlockEntityRenderer::invalidateNoiseBackground, backgroundExecutor).thenCompose(barrier::wait));
+		event.addDependency(VanillaClientListeners.LAST, noiseTextureInvalidator); //To ensure that the noise background texture has been updated properly before its reference is refreshed
+	}
 
 	@SubscribeEvent
 	public static void onClientTickPost(ClientTickEvent.Post event) {

@@ -250,6 +250,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		return noiseBackground;
 	}
 
+	public static void invalidateNoiseBackground() {
+		noiseBackground = null;
+	}
+
 	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
 		submitTexture(pose, collector, RenderTypes.entitySolid(texture), vertices, packedLight, normal, margin);
 	}
