@@ -27,7 +27,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexSorting;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -40,7 +39,6 @@ import net.geforcemods.securitycraft.renderers.state.FrameRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.SubmitNodeCollector;
-import net.minecraft.client.renderer.SubmitNodeCollector.CustomGeometryRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
@@ -48,12 +46,12 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.client.resources.model.sprite.SpriteId;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.player.Player;
@@ -65,7 +63,6 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final Identifier CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
 	private static final Identifier INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final Identifier NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
-	private static final SpriteId NOISE_BACKGROUND = new SpriteId(TextureAtlas.LOCATION_BLOCKS, SecurityCraft.resLoc("entity/frame/noise_background"));
 	private static final Identifier SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	private static final Identifier WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
 	//@formatter:off
@@ -83,6 +80,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
 			.withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, true))
 			.build();
+	private static TextureAtlasSprite noiseBackground = null;
 	//@formatter:on
 
 	public FrameBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
@@ -224,6 +222,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 	private void submitNoise(PoseStack poseStack, SubmitNodeCollector collector, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
 		Pose last = poseStack.last();
+		TextureAtlasSprite noiseBackground = getNoiseBackground();
 		float xStart = vertices.x;
 		float xEnd = vertices.y;
 		float zStart = vertices.z - 0.0001f;
@@ -231,25 +230,24 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		int nx = normal.getX();
 		int ny = normal.getY();
 		int nz = normal.getZ();
+		float u0 = noiseBackground.getU(0.0625F);
+		float u1 = noiseBackground.getU(0.9375F);
+		float v0 = noiseBackground.getV(0.0625F);
+		float v1 = noiseBackground.getV(0.9375F);
 
-		collector.submitCustomGeometry(poseStack, RenderTypes.entitySolid(NOISE_BACKGROUND.texture()), new WrappingGeometryRenderer(NOISE_BACKGROUND) {
-			@Override
-			public void render(Pose pose, VertexConsumer builder) {
-				//The quad size is 14x14, but the texture size is 16x16
-				builder.addVertex(pose, xStart, margin, zStart).setUv(0.9375f, 0.9375f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-				builder.addVertex(pose, xStart, 1 - margin, zStart).setUv(0.9375f, 0.0625f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-				builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(0.0625f, 0.0625f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-				builder.addVertex(pose, xEnd, margin, zEnd).setUv(0.0625f, 0.9375f).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-			}
+		collector.submitCustomGeometry(poseStack, RenderTypes.entitySolid(noiseBackground.atlasLocation()), (pose, builder) -> {
+			builder.addVertex(pose, xStart, margin, zStart).setUv(u1, v1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xStart, 1 - margin, zStart).setUv(u1, v0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(u0, v0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xEnd, margin, zEnd).setUv(u0, v1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
 		});
 	}
 
-	public abstract class WrappingGeometryRenderer implements CustomGeometryRenderer {
-		public final SpriteId spriteId;
+	private static TextureAtlasSprite getNoiseBackground() {
+		if (noiseBackground == null)
+			noiseBackground = Minecraft.getInstance().getAtlasManager().getAtlasOrThrow(AtlasIds.BLOCKS).getSprite(SecurityCraft.resLoc("entity/frame/noise_background"));
 
-		public WrappingGeometryRenderer(SpriteId spriteId) {
-			this.spriteId = spriteId;
-		}
+		return noiseBackground;
 	}
 
 	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
