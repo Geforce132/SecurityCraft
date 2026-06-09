@@ -22,8 +22,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -83,25 +83,9 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 	}
 
 	@Override
-	public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity be, ItemStack stack) {
-		super.playerDestroy(level, player, pos, Blocks.AIR.defaultBlockState(), be, stack);
-	}
-
-	@Override
 	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (!level.isClientSide && player.isCreative()) {
-			DoubleBlockHalf doorHalf = state.getValue(HALF);
-
-			if (doorHalf == DoubleBlockHalf.UPPER) {
-				BlockPos posBelow = pos.below();
-				BlockState stateBelow = level.getBlockState(posBelow);
-
-				if (stateBelow.getBlock() == state.getBlock() && stateBelow.getValue(HALF) == DoubleBlockHalf.LOWER) {
-					level.setBlock(posBelow, Blocks.AIR.defaultBlockState(), 35);
-					level.levelEvent(player, LevelEvent.PARTICLES_DESTROY_BLOCK, posBelow, Block.getId(stateBelow));
-				}
-			}
-		}
+		if (!level.isClientSide() && (player.isCreative() || !player.hasCorrectToolForDrops(state, level, pos)))
+			DoublePlantBlock.preventDropFromBottomPart(level, pos, state, player);
 
 		return super.playerWillDestroy(level, pos, state, player);
 	}
@@ -127,11 +111,6 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 		}
 
 		return null;
-	}
-
-	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, Orientation orientation, boolean flag) {
-		onNeighborChanged(level, pos, block, orientation);
 	}
 
 	@Override
@@ -176,14 +155,8 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			return DoorHingeSide.RIGHT;
 	}
 
-	/**
-	 * Old method, renamed because I am lazy. Called by neighborChanged
-	 *
-	 * @param level The level the change occured in
-	 * @param firstDoorPos The position of this block
-	 * @param neighbor The position of the changed block
-	 */
-	public void onNeighborChanged(Level level, BlockPos firstDoorPos, Block neighborBlock, Orientation orientation) {
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos firstDoorPos, Block neighborBlock, Orientation orientation, boolean movedByPiston) {
 		BlockState firstDoorState = level.getBlockState(firstDoorPos);
 		Owner previousOwner = null;
 
@@ -197,7 +170,7 @@ public class ReinforcedDoorBlock extends OwnableBlock {
 			if (stateBelow.getBlock() != this)
 				level.destroyBlock(firstDoorPos, false);
 			else if (neighborBlock != this)
-				onNeighborChanged(level, blockBelow, neighborBlock, orientation);
+				neighborChanged(stateBelow, level, blockBelow, neighborBlock, orientation, movedByPiston);
 		}
 		else {
 			boolean drop = false;

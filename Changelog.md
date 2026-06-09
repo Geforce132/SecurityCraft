@@ -47,6 +47,7 @@
 - Fix: Rail Mines do not work
 - Fix: The Alarm sometimes interrupts its sound directly after being powered
 - Fix: Reinforced Copper Bulbs have no crafting recipe
+- Fix: Reinforced Doors do not drop in item form when mining the bottom block
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
