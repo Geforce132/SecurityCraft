@@ -34,7 +34,7 @@ public class CameraViewAreaExtension {
 	}
 
 	public static void setDirty(int sectionX, int sectionY, int sectionZ, boolean playerChanged) {
-		long sectionPos = sectionPosToLong(sectionX, sectionY, sectionZ);
+		long sectionPos = SectionPos.asLong(sectionX, sectionY, sectionZ);
 
 		if (SECTIONS.containsKey(sectionPos)) {
 			SectionDirtyState dirtyState = DIRTY_STATES.putIfAbsent(sectionPos, new SectionDirtyState(true, false, sectionPos));
@@ -50,7 +50,7 @@ public class CameraViewAreaExtension {
 
 	public static void onChunkUnload(int sectionX, int sectionZ) {
 		for (int sectionY = minSectionY; sectionY < maxSectionY; sectionY++) {
-			long sectionPos = sectionPosToLong(sectionX, sectionY, sectionZ);
+			long sectionPos = SectionPos.asLong(sectionX, sectionY, sectionZ);
 			RenderSection section = SECTIONS.get(sectionPos);
 
 			if (section != null) {
@@ -64,7 +64,7 @@ public class CameraViewAreaExtension {
 		if (cy < minSectionY || cy >= maxSectionY)
 			return null;
 
-		return rawFetch(sectionPosToLong(cx, cy, cz), generateNew);
+		return rawFetch(SectionPos.asLong(cx, cy, cz), generateNew);
 	}
 
 	public static SectionRenderDispatcher.RenderSection rawFetch(long sectionPos, boolean generateNew) {
@@ -86,9 +86,5 @@ public class CameraViewAreaExtension {
 
 	public static int maxSectionY() {
 		return maxSectionY;
-	}
-
-	private static long sectionPosToLong(int cx, int cy, int cz) {
-		return SectionPos.asLong(cx, cy, cz);
 	}
 }
