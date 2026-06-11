@@ -1,10 +1,13 @@
 package net.geforcemods.securitycraft.renderers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
+import org.joml.Matrix4fStack;
 import org.joml.Vector4f;
 
 import com.mojang.blaze3d.PrimitiveTopology;
@@ -20,6 +23,7 @@ import com.mojang.blaze3d.platform.CompareOp;
 import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.textures.AddressMode;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
@@ -58,8 +62,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
+@EventBusSubscriber
 public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity, FrameRenderState> {
+	private static final List<Pair<Matrix4f, FrameRenderState>> FRAME_FEEDS_TO_RENDER = new ArrayList<>();
 	private static final Identifier CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
 	private static final Identifier INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final Identifier NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
@@ -78,7 +87,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			.withVertexBinding(0, DefaultVertexFormat.POSITION_TEX)
 			.withPrimitiveTopology(PrimitiveTopology.QUADS)
 			.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
-			.withDepthStencilState(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, true))
+			.withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
 			.build();
 	private static TextureAtlasSprite noiseBackground = null;
 	//@formatter:on
@@ -115,42 +124,66 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				float zStartO = outerVertices.z;
 				float zEndO = outerVertices.w;
 
-				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
-					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
-
-					bufferBuilder.addVertex(pose.last().pose(), xStartO, margin, zStartO).setUv(1, 0);
-					bufferBuilder.addVertex(pose.last().pose(), xStartO, 1 - margin, zStartO).setUv(1, 1);
-					bufferBuilder.addVertex(pose.last().pose(), xEndO, 1 - margin, zEndO).setUv(0, 1);
-					bufferBuilder.addVertex(pose.last().pose(), xEndO, margin, zEndO).setUv(0, 0);
-
-					try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-						meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
-
-						GpuDevice device = RenderSystem.getDevice();
-						GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
-						GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
-						RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
-						GpuBufferSlice dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(RenderSystem.getModelViewStack(), new Vector4f(), new Vector3f(), new Matrix4f());
-
-						try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, mainRenderTarget.getColorTextureView(), Optional.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
-							RenderSystem.bindDefaultUniforms(pass);
-							pass.setPipeline(FRAME_PIPELINE);
-							pass.setVertexBuffer(0, vertexBuffer.slice());
-							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
-							pass.setUniform("DynamicTransforms", dynamicTransforms);
-							pass.bindTexture("InSampler", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getClampToEdge(FilterMode.NEAREST));
-							pass.drawIndexed(6, 1, 0, 0, 0);
-						}
-
-						vertexBuffer.close();
-						indexBuffer.close();
-					}
-				}
+				FRAME_FEEDS_TO_RENDER.add(Pair.of(new Matrix4f(pose.last().pose()), state));
 
 				if (state.hasLens)
 					submitOverlay(pose, collector, state.lensColor, xStartO, xEndO, zStartO, zEndO, margin, lightCoords, normal);
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void onRenderLevelStage(RenderLevelStageEvent.AfterOpaqueBlocks event) {
+		for (Pair<Matrix4f, FrameRenderState> frameToRender : FRAME_FEEDS_TO_RENDER) {
+			Matrix4f framePos = frameToRender.getLeft();
+			FrameRenderState state = frameToRender.getRight();
+			Vector4f innerVertices = state.innerVertices;
+			final float margin = 0.0625F;
+			float xStartO = innerVertices.x;
+			float xEndO = innerVertices.y;
+			float zStartO = innerVertices.z;
+			float zEndO = innerVertices.w;
+
+			try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
+				BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
+
+				bufferBuilder.addVertex(xStartO, margin, zStartO).setUv(1, 0);
+				bufferBuilder.addVertex(xStartO, 1 - margin, zStartO).setUv(1, 1);
+				bufferBuilder.addVertex(xEndO, 1 - margin, zEndO).setUv(0, 1);
+				bufferBuilder.addVertex(xEndO, margin, zEndO).setUv(0, 0);
+
+				try (MeshData meshData = bufferBuilder.buildOrThrow()) {
+					meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
+
+					GpuDevice device = RenderSystem.getDevice();
+					GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
+					GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
+					RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+					Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
+					GpuBufferSlice dynamicTransforms;
+
+					modelViewStack.pushMatrix();
+					modelViewStack.mul(framePos);
+					dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(new Matrix4f(modelViewStack));
+
+					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, mainRenderTarget.getColorTextureView(), Optional.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
+						RenderSystem.bindDefaultUniforms(pass);
+						pass.setPipeline(FRAME_PIPELINE);
+						pass.setVertexBuffer(0, vertexBuffer.slice());
+						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
+						pass.setUniform("DynamicTransforms", dynamicTransforms);
+						pass.bindTexture("InSampler", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
+						pass.drawIndexed(6, 1, 0, 0, 0);
+					}
+
+					modelViewStack.popMatrix();
+					vertexBuffer.close();
+					indexBuffer.close();
+				}
+			}
+		}
+
+		FRAME_FEEDS_TO_RENDER.clear();
 	}
 
 	@Override

@@ -115,6 +115,7 @@ public class FrameFeedHandler {
 
 				if (level.getBlockEntity(pos) instanceof SecurityCameraBlockEntity be) {
 					CameraFeed feed = cameraView.getValue();
+					RenderTarget newRenderTarget = feed.renderTarget();
 
 					if (!feed.hasFrameInFrustum())
 						continue;
@@ -131,15 +132,16 @@ public class FrameFeedHandler {
 					feed.applyVisibleSections(mc.levelRenderer.visibleSections);
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
+					mc.levelRenderer.skyRenderer().renderTarget = newRenderTarget; //Fixes the sky renderer caching and rendering to the original render target instead of the frame's one
 					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
 					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
 					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
 					mc.gameRenderer.globalSettingsUniform.update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
-					mc.gameRenderer.mainRenderTarget = feed.renderTarget();
+					mc.gameRenderer.mainRenderTarget = newRenderTarget;
 
 					try {
 						profiler.popPush("securitycraft:extract");
-						mc.gameRenderer.extract(DeltaTracker.ONE, true); //TODO: Test whether frame chunks compile, since chunk recompilation has been moved
+						mc.gameRenderer.extract(DeltaTracker.ONE, true); //TODO: Rendering far away camera feeds does not work
 						profiler.popPush("securitycraft:render");
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}
@@ -189,6 +191,7 @@ public class FrameFeedHandler {
 		camera.update(mc.getDeltaTracker());
 		mc.levelRenderer.visibleSections.clear();
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
+		mc.levelRenderer.skyRenderer().renderTarget = oldMainRenderTarget; //Allows the sky renderer to render to the previous main target again
 		window.setWidth(oldWidth);
 		window.setHeight(oldHeight);
 		mc.gameRenderer.mainRenderTarget = oldMainRenderTarget;

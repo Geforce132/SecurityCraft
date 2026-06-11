@@ -111,6 +111,7 @@ public class SCClientEventHandler {
 		PoseStack pose = event.getPoseStack();
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
+
 		for (BlockPos bcdPos : BlockEntityTracker.BLOCK_CHANGE_DETECTOR.getTrackedBlockEntities(level)) {
 			BlockEntity be = level.getBlockEntity(bcdPos);
 

@@ -26,7 +26,6 @@ public class SectionUpdateTrackerMixin {
 	/**
 	 * Ensures that dirty chunks within the camera storage are recompiled when the frame feed is captured
 	 */
-	//TODO Test whether dirty chunk recompiling actually works
 	@Inject(method = "getDirtyState", at = @At("HEAD"), cancellable = true)
 	private void securitycraft$onGetDirtyState(long sectionNode, CallbackInfoReturnable<SectionDirtyState> cir) {
 		if (FrameFeedHandler.isCapturingCamera()) {
