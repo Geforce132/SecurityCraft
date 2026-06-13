@@ -13,7 +13,6 @@ import org.joml.Vector4f;
 import com.mojang.blaze3d.PrimitiveTopology;
 import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.pipeline.BindGroupLayout;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
@@ -25,6 +24,7 @@ import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.AddressMode;
 import com.mojang.blaze3d.textures.FilterMode;
+import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -86,8 +86,9 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			.withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
 			.withDepthStencilState(new DepthStencilState(CompareOp.GREATER_THAN_OR_EQUAL, true))
 			.build();
-	private static TextureAtlasSprite noiseBackground = null;
 	//@formatter:on
+	private static final float MARGIN = 0.0625F;
+	private static TextureAtlasSprite noiseBackground = null;
 
 	public FrameBlockEntityRenderer(BlockEntityRendererProvider.Context ctx) {}
 
@@ -96,35 +97,35 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		if (state.isDisabled || !state.canSeeFeed || !state.hasCamerasLinked)
 			return;
 
-		final float margin = 0.0625F;
 		Vector4f innerVertices = state.innerVertices;
 		Vector4f outerVertices = state.outerVertices;
 		Vec3i normal = state.normal;
 		int lightCoords = state.lightCoords;
 
 		if (!state.isCameraSelected)
-			submitSolidTexture(pose, collector, SELECT_CAMERA, innerVertices, lightCoords, normal, margin);
+			submitSolidTexture(pose, collector, SELECT_CAMERA, innerVertices, lightCoords, normal, MARGIN);
 		else if (state.isRedstoneSignalDisabled) {
-			submitNoise(pose, collector, innerVertices, lightCoords, normal, margin);
-			submitCutoutTexture(pose, collector, NO_REDSTONE_SIGNAL, outerVertices, lightCoords, normal, margin);
+			submitNoise(pose, collector, innerVertices, lightCoords, normal, MARGIN);
+			submitCutoutTexture(pose, collector, NO_REDSTONE_SIGNAL, outerVertices, lightCoords, normal, MARGIN);
 		}
 		else if (!state.hasClientInteracted) {
-			submitNoise(pose, collector, innerVertices, lightCoords, normal, margin);
-			submitCutoutTexture(pose, collector, INACTIVE, outerVertices, lightCoords, normal, margin);
+			submitNoise(pose, collector, innerVertices, lightCoords, normal, MARGIN);
+			submitCutoutTexture(pose, collector, INACTIVE, outerVertices, lightCoords, normal, MARGIN);
 		}
 		else {
 			if (!state.isCameraPresent)
-				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal, margin);
+				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal, MARGIN);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
-				float xStartO = outerVertices.x;
-				float xEndO = outerVertices.y;
-				float zStartO = outerVertices.z;
-				float zEndO = outerVertices.w;
-
 				FRAME_FEEDS_TO_RENDER.add(Pair.of(new Matrix4f(pose.last().pose()), state));
 
-				if (state.hasLens)
-					submitOverlay(pose, collector, state.lensColor, xStartO, xEndO, zStartO, zEndO, margin, lightCoords, normal);
+				if (state.hasLens) {
+					float xStartO = outerVertices.x;
+					float xEndO = outerVertices.y;
+					float zStartO = outerVertices.z;
+					float zEndO = outerVertices.w;
+
+					submitOverlay(pose, collector, state.lensColor, xStartO, xEndO, zStartO, zEndO, MARGIN, lightCoords, normal);
+				}
 			}
 		}
 	}
@@ -132,50 +133,49 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	@SubscribeEvent
 	public static void onRenderLevelStage(RenderLevelStageEvent.AfterOpaqueBlocks event) {
 		for (Pair<Matrix4f, FrameRenderState> frameToRender : FRAME_FEEDS_TO_RENDER) {
-			Matrix4f framePos = frameToRender.getLeft();
-			FrameRenderState state = frameToRender.getRight();
-			Vector4f innerVertices = state.innerVertices;
-			final float margin = 0.0625F;
-			float xStartO = innerVertices.x;
-			float xEndO = innerVertices.y;
-			float zStartO = innerVertices.z;
-			float zEndO = innerVertices.w;
-
 			try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
 				BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
+				FrameRenderState state = frameToRender.getRight();
+				Vector4f innerVertices = state.innerVertices;
+				float xStartO = innerVertices.x;
+				float xEndO = innerVertices.y;
+				float zStartO = innerVertices.z;
+				float zEndO = innerVertices.w;
 
-				bufferBuilder.addVertex(xStartO, margin, zStartO).setUv(1, 0);
-				bufferBuilder.addVertex(xStartO, 1 - margin, zStartO).setUv(1, 1);
-				bufferBuilder.addVertex(xEndO, 1 - margin, zEndO).setUv(0, 1);
-				bufferBuilder.addVertex(xEndO, margin, zEndO).setUv(0, 0);
+				bufferBuilder.addVertex(xStartO, MARGIN, zStartO).setUv(1, 0);
+				bufferBuilder.addVertex(xStartO, 1 - MARGIN, zStartO).setUv(1, 1);
+				bufferBuilder.addVertex(xEndO, 1 - MARGIN, zEndO).setUv(0, 1);
+				bufferBuilder.addVertex(xEndO, MARGIN, zEndO).setUv(0, 0);
 
 				try (MeshData meshData = bufferBuilder.buildOrThrow()) {
 					meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
 
 					GpuDevice device = RenderSystem.getDevice();
-					GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
-					GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
 					RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
 					Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
 					GpuBufferSlice dynamicTransforms;
+					GpuTextureView color = mainRenderTarget.getColorTextureView();
+					GpuTextureView depth = mainRenderTarget.getDepthTextureView();
 
 					modelViewStack.pushMatrix();
-					modelViewStack.mul(framePos);
+					modelViewStack.mul(frameToRender.getLeft());
 					dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(new Matrix4f(modelViewStack));
 
-					try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, mainRenderTarget.getColorTextureView(), Optional.empty(), mainRenderTarget.getDepthTextureView(), OptionalDouble.empty())) {
-						RenderSystem.bindDefaultUniforms(pass);
+					try (
+							GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
+							GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
+							RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, color, Optional.empty(), depth, OptionalDouble.empty())
+					) {
 						pass.setPipeline(FRAME_PIPELINE);
-						pass.setVertexBuffer(0, vertexBuffer.slice());
-						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
+						RenderSystem.bindDefaultUniforms(pass);
 						pass.setUniform("DynamicTransforms", dynamicTransforms);
 						pass.bindTexture("Sampler0", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
+						pass.setVertexBuffer(0, vertexBuffer.slice());
+						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
 						pass.drawIndexed(6, 1, 0, 0, 0);
 					}
 
 					modelViewStack.popMatrix();
-					vertexBuffer.close();
-					indexBuffer.close();
 				}
 			}
 		}
