@@ -75,12 +75,9 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final Identifier SELECT_CAMERA = SecurityCraft.resLoc("textures/entity/frame/select_camera.png");
 	private static final Identifier WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
 	//@formatter:off
-	public static final BindGroupLayout FRAME_LAYOUT = BindGroupLayout.builder()
-			.withSampler("InSampler")
-			.build();
 	public static final RenderPipeline FRAME_PIPELINE = RenderPipeline.builder()
 			.withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
-			.withBindGroupLayout(FRAME_LAYOUT)
+			.withBindGroupLayout(BindGroupLayouts.SAMPLER0)
 			.withLocation(SecurityCraft.resLoc("pipeline/frame_draw_fb_in_area"))
 			.withVertexShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
 			.withFragmentShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
@@ -172,7 +169,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 						pass.setVertexBuffer(0, vertexBuffer.slice());
 						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
 						pass.setUniform("DynamicTransforms", dynamicTransforms);
-						pass.bindTexture("InSampler", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
+						pass.bindTexture("Sampler0", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
 						pass.drawIndexed(6, 1, 0, 0, 0);
 					}
 
