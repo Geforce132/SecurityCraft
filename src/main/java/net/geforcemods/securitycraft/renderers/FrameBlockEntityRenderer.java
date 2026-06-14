@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.renderers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
@@ -9,27 +10,21 @@ import org.joml.Matrix4fStack;
 import org.joml.Vector4f;
 
 import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.BlendFunction;
 import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.DepthStencilState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.CompareOp;
-import com.mojang.blaze3d.systems.GpuDevice;
 import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.textures.AddressMode;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.textures.GpuTextureView;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
-import com.mojang.blaze3d.vertex.VertexSorting;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
@@ -41,6 +36,7 @@ import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer.FeatureR
 import net.geforcemods.securitycraft.renderers.state.FrameRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BindGroupLayouts;
+import net.minecraft.client.renderer.StagedVertexBuffer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -65,7 +61,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.submit.RenderPhaseKeys;
 
 @EventBusSubscriber
@@ -133,60 +128,64 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 
 	public static class FeatureRenderer implements net.minecraft.client.renderer.feature.FeatureRenderer<FeatureRenderer.Submit> {
 		public static final FeatureRendererType<Submit> TYPE = FeatureRendererType.create("securitycraft:frame");
+		private final List<List<Frame>> groups = new ArrayList<>();
 
 		@Override
 		public void prepareGroup(FeatureFrameContext context, List<Submit> submits, boolean strictlyOrdered) {
-		}
+			if (!submits.isEmpty()) {
+				List<Frame> frames = new ArrayList<>();
+				StagedVertexBuffer buffer = context.stagedVertexBuffer();
 
-		@Override
-		public void executeGroup(FeatureFrameContext context, int groupIndex, List<Submit> submits, boolean strictlyOrdered) {
-			for (Submit submit : submits) {
-				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
-					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
+				for (Submit submit : submits) {
 					FrameRenderState state = submit.state;
 					Vector4f innerVertices = state.innerVertices;
 					float xStartO = innerVertices.x;
 					float xEndO = innerVertices.y;
 					float zStartO = innerVertices.z;
 					float zEndO = innerVertices.w;
+					Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
+					StagedVertexBuffer.Draw draw = buffer.appendDraw(DefaultVertexFormat.POSITION_TEX, PrimitiveTopology.QUADS, null);
+					VertexConsumer builder = buffer.getVertexBuilder(draw);
 
-					bufferBuilder.addVertex(xStartO, MARGIN, zStartO).setUv(1, 0);
-					bufferBuilder.addVertex(xStartO, 1 - MARGIN, zStartO).setUv(1, 1);
-					bufferBuilder.addVertex(xEndO, 1 - MARGIN, zEndO).setUv(0, 1);
-					bufferBuilder.addVertex(xEndO, MARGIN, zEndO).setUv(0, 0);
+					builder.addVertex(xStartO, MARGIN, zStartO).setUv(1, 0);
+					builder.addVertex(xStartO, 1 - MARGIN, zStartO).setUv(1, 1);
+					builder.addVertex(xEndO, 1 - MARGIN, zEndO).setUv(0, 1);
+					builder.addVertex(xEndO, MARGIN, zEndO).setUv(0, 0);
+					modelViewStack.pushMatrix();
+					modelViewStack.mul(submit.pos);
+					frames.add(new Frame(draw, new Matrix4f(modelViewStack), state.renderTargetColorTexture));
+					modelViewStack.popMatrix();
+				}
 
-					try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-						meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
+				groups.add(frames);
+			}
+		}
 
-						GpuDevice device = RenderSystem.getDevice();
-						RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
-						Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
-						GpuBufferSlice dynamicTransforms;
-						GpuTextureView color = mainRenderTarget.getColorTextureView();
-						GpuTextureView depth = mainRenderTarget.getDepthTextureView();
+		@Override
+		public void executeGroup(FeatureFrameContext context, int groupIndex, List<Submit> submits, boolean strictlyOrdered) {
+			StagedVertexBuffer buffer = context.stagedVertexBuffer();
+			RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+			GpuTextureView color = mainRenderTarget.getColorTextureView();
+			GpuTextureView depth = mainRenderTarget.getDepthTextureView();
 
-						modelViewStack.pushMatrix();
-						modelViewStack.mul(submit.pos);
-						dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(new Matrix4f(modelViewStack));
+			try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SecurityCraft camera frames", color, Optional.empty(), depth, OptionalDouble.empty())) {
+				for (Frame frame : groups.get(groupIndex)) {
+					StagedVertexBuffer.ExecuteInfo info = buffer.getExecuteInfo(frame.draw);
 
-						try (
-								GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
-								GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
-								RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, color, Optional.empty(), depth, OptionalDouble.empty())
-						) {
-							pass.setPipeline(FRAME_PIPELINE);
-							RenderSystem.bindDefaultUniforms(pass);
-							pass.setUniform("DynamicTransforms", dynamicTransforms);
-							pass.bindTexture("Sampler0", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
-							pass.setVertexBuffer(0, vertexBuffer.slice());
-							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
-							pass.drawIndexed(6, 1, 0, 0, 0);
-						}
-
-						modelViewStack.popMatrix();
-					}
+					pass.setPipeline(FRAME_PIPELINE);
+					RenderSystem.bindDefaultUniforms(pass);
+					pass.setUniform("DynamicTransforms", RenderSystem.getDynamicUniforms().writeTransform(frame.dynamicTransforms));
+					pass.bindTexture("Sampler0", frame.texture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
+					pass.setVertexBuffer(0, info.vertexBuffer().slice());
+					pass.setIndexBuffer(info.indexBuffer(), info.indexType());
+					pass.drawIndexed(info.indexCount(), 1, info.firstIndex(), info.baseVertex(), 0);
 				}
 			}
+		}
+
+		@Override
+		public void finishExecute(FeatureFrameContext context) {
+			groups.clear();
 		}
 
 		public record Submit(Matrix4f pos, FrameRenderState state) implements SubmitNode {
@@ -195,6 +194,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				return TYPE;
 			}
 		}
+
+		public record Frame(StagedVertexBuffer.Draw draw, Matrix4f dynamicTransforms, GpuTextureView texture) {}
 	}
 
 	@Override
