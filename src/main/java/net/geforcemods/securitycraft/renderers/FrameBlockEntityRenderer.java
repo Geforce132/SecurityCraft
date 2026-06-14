@@ -1,11 +1,9 @@
 package net.geforcemods.securitycraft.renderers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalDouble;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 import org.joml.Vector4f;
@@ -39,13 +37,17 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.FrameBlock;
 import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
+import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer.FeatureRenderer.Submit;
 import net.geforcemods.securitycraft.renderers.state.FrameRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.feature.FeatureFrameContext;
+import net.minecraft.client.renderer.feature.FeatureRendererType;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.feature.submit.SubmitNode;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
@@ -62,13 +64,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.submit.RenderPhaseKeys;
 
 @EventBusSubscriber
 public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockEntity, FrameRenderState> {
-	private static final List<Pair<Matrix4f, FrameRenderState>> FRAME_FEEDS_TO_RENDER = new ArrayList<>();
 	private static final Identifier CAMERA_NOT_FOUND = SecurityCraft.resLoc("textures/entity/frame/camera_not_found.png");
 	private static final Identifier INACTIVE = SecurityCraft.resLoc("textures/entity/frame/inactive.png");
 	private static final Identifier NO_REDSTONE_SIGNAL = SecurityCraft.resLoc("textures/entity/frame/no_redstone_signal.png");
@@ -116,7 +117,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			if (!state.isCameraPresent)
 				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal, MARGIN);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
-				FRAME_FEEDS_TO_RENDER.add(Pair.of(new Matrix4f(pose.last().pose()), state));
+				collector.submitSpecial(RenderPhaseKeys.SOLID, new Submit(new Matrix4f(pose.last().pose()), state));
 
 				if (state.hasLens) {
 					float xStartO = outerVertices.x;
@@ -130,57 +131,70 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 	}
 
-	@SubscribeEvent
-	public static void onRenderLevelStage(RenderLevelStageEvent.AfterOpaqueBlocks event) {
-		for (Pair<Matrix4f, FrameRenderState> frameToRender : FRAME_FEEDS_TO_RENDER) {
-			try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
-				BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
-				FrameRenderState state = frameToRender.getRight();
-				Vector4f innerVertices = state.innerVertices;
-				float xStartO = innerVertices.x;
-				float xEndO = innerVertices.y;
-				float zStartO = innerVertices.z;
-				float zEndO = innerVertices.w;
+	public static class FeatureRenderer implements net.minecraft.client.renderer.feature.FeatureRenderer<FeatureRenderer.Submit> {
+		public static final FeatureRendererType<Submit> TYPE = FeatureRendererType.create("securitycraft:frame");
 
-				bufferBuilder.addVertex(xStartO, MARGIN, zStartO).setUv(1, 0);
-				bufferBuilder.addVertex(xStartO, 1 - MARGIN, zStartO).setUv(1, 1);
-				bufferBuilder.addVertex(xEndO, 1 - MARGIN, zEndO).setUv(0, 1);
-				bufferBuilder.addVertex(xEndO, MARGIN, zEndO).setUv(0, 0);
+		@Override
+		public void prepareGroup(FeatureFrameContext context, List<Submit> submits, boolean strictlyOrdered) {
+		}
 
-				try (MeshData meshData = bufferBuilder.buildOrThrow()) {
-					meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
+		@Override
+		public void executeGroup(FeatureFrameContext context, int groupIndex, List<Submit> submits, boolean strictlyOrdered) {
+			for (Submit submit : submits) {
+				try (ByteBufferBuilder byteBufferBuilder = new ByteBufferBuilder(DefaultVertexFormat.POSITION_TEX.getVertexSize() * 4)) {
+					BufferBuilder bufferBuilder = new BufferBuilder(byteBufferBuilder, PrimitiveTopology.QUADS, DefaultVertexFormat.POSITION_TEX);
+					FrameRenderState state = submit.state;
+					Vector4f innerVertices = state.innerVertices;
+					float xStartO = innerVertices.x;
+					float xEndO = innerVertices.y;
+					float zStartO = innerVertices.z;
+					float zEndO = innerVertices.w;
 
-					GpuDevice device = RenderSystem.getDevice();
-					RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
-					Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
-					GpuBufferSlice dynamicTransforms;
-					GpuTextureView color = mainRenderTarget.getColorTextureView();
-					GpuTextureView depth = mainRenderTarget.getDepthTextureView();
+					bufferBuilder.addVertex(xStartO, MARGIN, zStartO).setUv(1, 0);
+					bufferBuilder.addVertex(xStartO, 1 - MARGIN, zStartO).setUv(1, 1);
+					bufferBuilder.addVertex(xEndO, 1 - MARGIN, zEndO).setUv(0, 1);
+					bufferBuilder.addVertex(xEndO, MARGIN, zEndO).setUv(0, 0);
 
-					modelViewStack.pushMatrix();
-					modelViewStack.mul(frameToRender.getLeft());
-					dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(new Matrix4f(modelViewStack));
+					try (MeshData meshData = bufferBuilder.buildOrThrow()) {
+						meshData.sortQuads(byteBufferBuilder, VertexSorting.DISTANCE_TO_ORIGIN);
 
-					try (
-							GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
-							GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
-							RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, color, Optional.empty(), depth, OptionalDouble.empty())
-					) {
-						pass.setPipeline(FRAME_PIPELINE);
-						RenderSystem.bindDefaultUniforms(pass);
-						pass.setUniform("DynamicTransforms", dynamicTransforms);
-						pass.bindTexture("Sampler0", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
-						pass.setVertexBuffer(0, vertexBuffer.slice());
-						pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
-						pass.drawIndexed(6, 1, 0, 0, 0);
+						GpuDevice device = RenderSystem.getDevice();
+						RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
+						Matrix4fStack modelViewStack = RenderSystem.getModelViewStack();
+						GpuBufferSlice dynamicTransforms;
+						GpuTextureView color = mainRenderTarget.getColorTextureView();
+						GpuTextureView depth = mainRenderTarget.getDepthTextureView();
+
+						modelViewStack.pushMatrix();
+						modelViewStack.mul(submit.pos);
+						dynamicTransforms = RenderSystem.getDynamicUniforms().writeTransform(new Matrix4f(modelViewStack));
+
+						try (
+								GpuBuffer vertexBuffer = device.createBuffer(() -> "Frame Vertex", GpuBuffer.USAGE_VERTEX, meshData.vertexBuffer());
+								GpuBuffer indexBuffer = device.createBuffer(() -> "Frame Index", GpuBuffer.USAGE_INDEX | GpuBuffer.USAGE_COPY_DST, meshData.indexBuffer());
+								RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SC camera frame at " + state.blockPos, color, Optional.empty(), depth, OptionalDouble.empty())
+						) {
+							pass.setPipeline(FRAME_PIPELINE);
+							RenderSystem.bindDefaultUniforms(pass);
+							pass.setUniform("DynamicTransforms", dynamicTransforms);
+							pass.bindTexture("Sampler0", state.renderTargetColorTexture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
+							pass.setVertexBuffer(0, vertexBuffer.slice());
+							pass.setIndexBuffer(indexBuffer, meshData.drawState().indexType());
+							pass.drawIndexed(6, 1, 0, 0, 0);
+						}
+
+						modelViewStack.popMatrix();
 					}
-
-					modelViewStack.popMatrix();
 				}
 			}
 		}
 
-		FRAME_FEEDS_TO_RENDER.clear();
+		public record Submit(Matrix4f pos, FrameRenderState state) implements SubmitNode {
+			@Override
+			public FeatureRendererType<Submit> featureType() {
+				return TYPE;
+			}
+		}
 	}
 
 	@Override

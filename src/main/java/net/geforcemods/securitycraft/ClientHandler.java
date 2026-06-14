@@ -175,6 +175,7 @@ import net.neoforged.neoforge.client.IArmPoseTransformer;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterFeatureRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterFluidModelsEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -502,6 +503,11 @@ public class ClientHandler {
 		event.register(ToggleAlarmSound.TYPE, ToggleAlarmSound::handle);
 		event.register(UpdateLaserColors.TYPE, UpdateLaserColors::handle);
 		event.register(UpdateLogger.TYPE, UpdateLogger::handle);
+	}
+
+	@SubscribeEvent
+	public static void onRegisterFeatureRenderers(RegisterFeatureRenderersEvent event) {
+		event.register(FrameBlockEntityRenderer.FeatureRenderer.TYPE, new FrameBlockEntityRenderer.FeatureRenderer());
 	}
 
 	private static void initTint() {
