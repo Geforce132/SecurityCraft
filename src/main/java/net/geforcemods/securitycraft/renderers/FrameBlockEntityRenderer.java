@@ -99,18 +99,18 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		int lightCoords = state.lightCoords;
 
 		if (!state.isCameraSelected)
-			submitSolidTexture(pose, collector, SELECT_CAMERA, innerVertices, lightCoords, normal, MARGIN);
+			submitSolidTexture(pose, collector, SELECT_CAMERA, innerVertices, lightCoords, normal);
 		else if (state.isRedstoneSignalDisabled) {
-			submitNoise(pose, collector, innerVertices, lightCoords, normal, MARGIN);
-			submitCutoutTexture(pose, collector, NO_REDSTONE_SIGNAL, outerVertices, lightCoords, normal, MARGIN);
+			submitNoise(pose, collector, innerVertices, lightCoords, normal);
+			submitCutoutTexture(pose, collector, NO_REDSTONE_SIGNAL, outerVertices, lightCoords, normal);
 		}
 		else if (!state.hasClientInteracted) {
-			submitNoise(pose, collector, innerVertices, lightCoords, normal, MARGIN);
-			submitCutoutTexture(pose, collector, INACTIVE, outerVertices, lightCoords, normal, MARGIN);
+			submitNoise(pose, collector, innerVertices, lightCoords, normal);
+			submitCutoutTexture(pose, collector, INACTIVE, outerVertices, lightCoords, normal);
 		}
 		else {
 			if (!state.isCameraPresent)
-				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal, MARGIN);
+				submitSolidTexture(pose, collector, CAMERA_NOT_FOUND, innerVertices, lightCoords, normal);
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				collector.submitSpecial(RenderPhaseKeys.SOLID, new Submit(new Matrix4f(pose.last().pose()), state));
 
@@ -205,24 +205,22 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		Level level = be.getLevel();
 		GlobalPos securityCameraPos = be.getCurrentCamera();
 		Direction direction = be.getBlockState().getValue(FrameBlock.FACING);
-		final float margin = 0.0625F;
-
 		switch (direction) {
 			case Direction.NORTH:
-				state.innerVertices = new Vector4f(margin, 1 - margin, 0.05F, 0.05F);
-				state.outerVertices = new Vector4f(margin, 1 - margin, 0.045F, 0.045F);
+				state.innerVertices = new Vector4f(MARGIN, 1 - MARGIN, 0.05F, 0.05F);
+				state.outerVertices = new Vector4f(MARGIN, 1 - MARGIN, 0.045F, 0.045F);
 				break;
 			case Direction.SOUTH:
-				state.innerVertices = new Vector4f(1 - margin, margin, 0.95F, 0.95F);
-				state.outerVertices = new Vector4f(1 - margin, margin, 0.955F, 0.955F);
+				state.innerVertices = new Vector4f(1 - MARGIN, MARGIN, 0.95F, 0.95F);
+				state.outerVertices = new Vector4f(1 - MARGIN, MARGIN, 0.955F, 0.955F);
 				break;
 			case Direction.WEST:
-				state.innerVertices = new Vector4f(0.05F, 0.05F, 1 - margin, margin);
-				state.outerVertices = new Vector4f(0.045F, 0.045F, 1 - margin, margin);
+				state.innerVertices = new Vector4f(0.05F, 0.05F, 1 - MARGIN, MARGIN);
+				state.outerVertices = new Vector4f(0.045F, 0.045F, 1 - MARGIN, MARGIN);
 				break;
 			case Direction.EAST:
-				state.innerVertices = new Vector4f(0.95F, 0.95F, margin, 1 - margin);
-				state.outerVertices = new Vector4f(0.955F, 0.955F, margin, 1 - margin);
+				state.innerVertices = new Vector4f(0.95F, 0.95F, MARGIN, 1 - MARGIN);
+				state.outerVertices = new Vector4f(0.955F, 0.955F, MARGIN, 1 - MARGIN);
 				break;
 			default:
 				state.innerVertices = new Vector4f(0.0F, 1.0F, 0.0F, 1.0F);
@@ -259,7 +257,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 	}
 
-	private void submitNoise(PoseStack poseStack, SubmitNodeCollector collector, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+	private void submitNoise(PoseStack poseStack, SubmitNodeCollector collector, Vector4f vertices, int packedLight, Vec3i normal) {
 		Pose last = poseStack.last();
 		TextureAtlasSprite noiseBackground = getNoiseBackground();
 		float xStart = vertices.x;
@@ -275,10 +273,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		float v1 = noiseBackground.getV(0.9375F);
 
 		collector.submitCustomGeometry(poseStack, RenderTypes.entitySolid(noiseBackground.atlasLocation()), (pose, builder) -> {
-			builder.addVertex(pose, xStart, margin, zStart).setUv(u1, v1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-			builder.addVertex(pose, xStart, 1 - margin, zStart).setUv(u1, v0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-			builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(u0, v0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-			builder.addVertex(pose, xEnd, margin, zEnd).setUv(u0, v1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xStart, MARGIN, zStart).setUv(u1, v1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xStart, 1 - MARGIN, zStart).setUv(u1, v0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xEnd, 1 - MARGIN, zEnd).setUv(u0, v0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xEnd, MARGIN, zEnd).setUv(u0, v1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
 		});
 	}
 
@@ -293,15 +291,15 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		noiseBackground = null;
 	}
 
-	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
-		submitTexture(pose, collector, RenderTypes.entitySolid(texture), vertices, packedLight, normal, margin);
+	private void submitSolidTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal) {
+		submitTexture(pose, collector, RenderTypes.entitySolid(texture), vertices, packedLight, normal);
 	}
 
-	private void submitCutoutTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
-		submitTexture(pose, collector, RenderTypes.entityCutout(texture), vertices, packedLight, normal, margin);
+	private void submitCutoutTexture(PoseStack pose, SubmitNodeCollector collector, Identifier texture, Vector4f vertices, int packedLight, Vec3i normal) {
+		submitTexture(pose, collector, RenderTypes.entityCutout(texture), vertices, packedLight, normal);
 	}
 
-	private void submitTexture(PoseStack poseStack, SubmitNodeCollector collector, RenderType renderType, Vector4f vertices, int packedLight, Vec3i normal, float margin) {
+	private void submitTexture(PoseStack poseStack, SubmitNodeCollector collector, RenderType renderType, Vector4f vertices, int packedLight, Vec3i normal) {
 		Pose last = poseStack.last();
 		float xStart = vertices.x;
 		float xEnd = vertices.y;
@@ -312,10 +310,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		int nz = normal.getZ();
 
 		collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
-			builder.addVertex(pose, xStart, margin, zStart).setUv(1, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-			builder.addVertex(pose, xStart, 1 - margin, zStart).setUv(1, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-			builder.addVertex(pose, xEnd, 1 - margin, zEnd).setUv(0, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
-			builder.addVertex(pose, xEnd, margin, zEnd).setUv(0, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xStart, MARGIN, zStart).setUv(1, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xStart, 1 - MARGIN, zStart).setUv(1, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xEnd, 1 - MARGIN, zEnd).setUv(0, 0).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
+			builder.addVertex(pose, xEnd, MARGIN, zEnd).setUv(0, 1).setColor(0xFFFFFFFF).setLight(packedLight).setOverlay(OverlayTexture.NO_OVERLAY).setNormal(last, nx, ny, nz);
 		});
 	}
 
