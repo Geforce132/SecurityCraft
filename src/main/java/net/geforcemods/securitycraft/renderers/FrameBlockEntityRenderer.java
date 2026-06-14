@@ -114,14 +114,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 			else if (!FrameFeedHandler.isCapturingCamera()) { //Only rendering the frame when no camera is being captured prevents screen-in-screen rendering
 				collector.submitSpecial(RenderPhaseKeys.SOLID, new Submit(new Matrix4f(pose.last().pose()), state));
 
-				if (state.hasLens) {
-					float xStartO = outerVertices.x;
-					float xEndO = outerVertices.y;
-					float zStartO = outerVertices.z;
-					float zEndO = outerVertices.w;
-
-					submitOverlay(pose, collector, state.lensColor, xStartO, xEndO, zStartO, zEndO, MARGIN, lightCoords, normal);
-				}
+				if (state.hasLens)
+					submitOverlay(pose, collector, state.lensColor, outerVertices, lightCoords, normal);
 			}
 		}
 	}
@@ -325,20 +319,22 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		});
 	}
 
-	private void submitOverlay(PoseStack pose, SubmitNodeCollector collector, int color, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight, Vec3i normal) {
-		submitOverlay(pose, collector, RenderTypes.entityTranslucent(WHITE), color, xStart, xEnd, zStart, zEnd, margin, packedLight, normal);
-	}
-
-	private void submitOverlay(PoseStack poseStack, SubmitNodeCollector collector, RenderType renderType, int color, float xStart, float xEnd, float zStart, float zEnd, float margin, int packedLight, Vec3i normal) {
+	private void submitOverlay(PoseStack pose, SubmitNodeCollector collector, int color, Vector4f vertices, int packedLight, Vec3i normal) {
+		RenderType renderType = RenderTypes.entityTranslucent(WHITE);
+		float xStart = vertices.x;
+		float xEnd = vertices.y;
+		float zStart = vertices.z;
+		float zEnd = vertices.w;
 		int nx = normal.getX();
 		int ny = normal.getY();
 		int nz = normal.getZ();
 
-		collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
-			builder.addVertex(pose, xStart, margin, zStart).setColor(color).setUv(0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-			builder.addVertex(pose, xStart, 1 - margin, zStart).setColor(color).setUv(0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-			builder.addVertex(pose, xEnd, 1 - margin, zEnd).setColor(color).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
-			builder.addVertex(pose, xEnd, margin, zEnd).setColor(color).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
+		collector.submitCustomGeometry(pose, renderType, (pose1, builder) -> {
+			builder.addVertex(pose1, xStart, MARGIN, zStart).setColor(color).setUv(0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
+			builder.addVertex(pose1, xStart, 1 - MARGIN, zStart).setColor(color).setUv(0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
+			builder.addVertex(pose1, xEnd, 1 - MARGIN, zEnd).setColor(color).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
+			builder.addVertex(pose1, xEnd, MARGIN, zEnd).setColor(color).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
 		});
 	}
+
 }
