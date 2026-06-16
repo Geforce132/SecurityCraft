@@ -1,18 +1,17 @@
-package net.geforcemods.securitycraft.mixin.sulfur_cube;
+package net.geforcemods.securitycraft.mixin.reinforced;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.geforcemods.securitycraft.api.IReinforcedBlock;
+import net.geforcemods.securitycraft.SCTags.Items;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.monster.cubemob.AbstractCubeMob;
 import net.minecraft.world.entity.monster.cubemob.SulfurCube;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.Level;
 
 /**
@@ -26,7 +25,7 @@ public abstract class SulfurCubeMixin extends AbstractCubeMob {
 
 	@Inject(method = "hurtServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/cubemob/AbstractCubeMob;hurtServer(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/damagesource/DamageSource;F)Z"), cancellable = true)
 	private void securitycraft$onSulfurCubeTakeDamage(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
-		if (getItemBySlot(EquipmentSlot.BODY).getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof IReinforcedBlock)
+		if (getItemBySlot(EquipmentSlot.BODY).is(Items.SULFUR_CUBE_ARCHETYPE_REINFORCED))
 			cir.setReturnValue(false);
 	}
 }

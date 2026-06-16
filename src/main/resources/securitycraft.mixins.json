@@ -40,9 +40,9 @@
 		"potion.BrewingStandMenuMixin",
 		"reinforced.HopperBlockEntityMixin",
 		"reinforced.PortalForcerMixin",
+		"reinforced.SulfurCubeMixin",
 		"reinforced.ToolMaterialMixin",
-		"reinforced.VanillaInventoryCodeHooksMixin",
-		"sulfur_cube.SulfurCubeMixin"
+		"reinforced.VanillaInventoryCodeHooksMixin"
 	],
 	"minVersion": "0.8",
 	"mixinextras": {

@@ -15,6 +15,7 @@
 - New: Inventory Scanners will now react to items equipped in the player's Curio inventory, if the mod Curios is installed
 - New: The Username Logger now supports the Smart Module, allowing it to update existing entries instead of creating new ones for the same player 
 - New: Dutch translation
+- New: Sulfur Cube archetype for reinforced blocks with similar values to the slow bouncy archetype, more knockback resistance, less bounciness, and full invulnerability
 - Change: Several entries within the SecurityCraft Manual have been updated to remove outdated descriptions
 - Change: Ownable blocks that are targeted by the "/sc owner" subcommand will now keep all of their non-owner-related data by default
 - Change: The visible chunks in Frame feeds are no longer expanded by Distant Horizons, to increase stability and performance 
