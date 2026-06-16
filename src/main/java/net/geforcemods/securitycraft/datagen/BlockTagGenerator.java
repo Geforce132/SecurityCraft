@@ -902,7 +902,8 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_CINNABAR_BRICK_SLAB.getKey(),
 				SCContent.REINFORCED_CINNABAR_BRICK_STAIRS.getKey(),
 				SCContent.REINFORCED_CINNABAR_BRICK_WALL.getKey(),
-				SCContent.REINFORCED_CHISELED_CINNABAR.getKey())
+				SCContent.REINFORCED_CHISELED_CINNABAR.getKey(),
+				SCContent.REINFORCED_POTENT_SULFUR.getKey())
 		.addTag(SCTags.Blocks.REINFORCED_BARS)
 		.addTag(SCTags.Blocks.REINFORCED_WALLS)
 		.addTag(SCTags.Blocks.REINFORCED_CAULDRONS)

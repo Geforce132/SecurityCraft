@@ -1,6 +1,7 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
 - New: Reinforced block variants for all blocks in the new Sulfur and Cinnabar block sets
+- New: Reinforced Potent Sulfur
 - New: Secure Trading Station
 - New: The Keycard Reader, Keypad, and Retinal Scanner can now be placed facing up or down (Thanks CYB3RCA4T!)
 - New: The "/sc owner" subcommand now has an optional "resetSettings" mode to force affected blocks to reset sensible data like passcodes

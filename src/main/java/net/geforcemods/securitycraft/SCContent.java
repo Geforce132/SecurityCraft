@@ -62,6 +62,7 @@ import net.geforcemods.securitycraft.blockentities.ReinforcedIronBarsBlockEntity
 import net.geforcemods.securitycraft.blockentities.ReinforcedLecternBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedObserverBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedPistonMovingBlockEntity;
+import net.geforcemods.securitycraft.blockentities.ReinforcedPotentSulfurBlockEntity;
 import net.geforcemods.securitycraft.blockentities.ReinforcedShelfBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RetinalScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
@@ -182,6 +183,7 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedObsidianBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPaneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonBaseBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPistonHeadBlock;
+import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPotentSulfurBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedPressurePlateBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneBlock;
 import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedRedstoneLampBlock;
@@ -2405,6 +2407,9 @@ public class SCContent {
 	@OwnableBE
 	@Reinforced
 	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_CINNABAR = reinforcedBlock("reinforced_chiseled_cinnabar", Blocks.CHISELED_CINNABAR);
+	@HasManualPage(PageGroup.REINFORCED)
+	@Reinforced
+	public static final DeferredBlock<ReinforcedPotentSulfurBlock> REINFORCED_POTENT_SULFUR = reinforcedBlock("reinforced_potent_sulfur", Blocks.POTENT_SULFUR, (p, b) -> new ReinforcedPotentSulfurBlock(p));
 
 	//misc
 	@RegisterItemBlock
@@ -2901,6 +2906,7 @@ public class SCContent {
 			SCContent.REINFORCED_MOVING_PISTON.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedObserverBlockEntity>> OBSERVER_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("observer", () -> new BlockEntityType<>(ReinforcedObserverBlockEntity::new, SCContent.REINFORCED_OBSERVER.get()));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SecureTradingStationBlockEntity>> SECURE_TRADING_STATION_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("secure_trading_station", () -> new BlockEntityType<>(SecureTradingStationBlockEntity::new, SCContent.SECURE_TRADING_STATION.get()));
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReinforcedPotentSulfurBlockEntity>> REINFORCED_POTENT_SULFUR_BLOCK_ENTITY = BLOCK_ENTITY_TYPES.register("reinforced_potent_sulfur", () -> new BlockEntityType<>(ReinforcedPotentSulfurBlockEntity::new, SCContent.REINFORCED_POTENT_SULFUR.get()));
 
 	//entity types
 	public static final DeferredHolder<EntityType<?>, EntityType<BouncingBetty>> BOUNCING_BETTY_ENTITY = ENTITY_TYPES.register("bouncingbetty",
