@@ -11,6 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.geforcemods.securitycraft.entity.camera.CameraClientChunkCacheExtension;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.geforcemods.securitycraft.entity.camera.SecurityCamera;
@@ -83,5 +86,37 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 			if (chunk != null)
 				cir.setReturnValue(chunk);
 		}
+	}
+
+	/**
+	 * Appends the list of recently added chunks with the camera-added chunks, to make the section occlusion graph consider
+	 * them when the area around the camera is loaded
+	 */
+	@ModifyReturnValue(method = "addedLoadedChunks", at = @At("RETURN"))
+	private LongOpenHashSet securitycraft$addCameraAddedLoadedChunks(LongOpenHashSet original) {
+		LongOpenHashSet cameraAdded = CameraClientChunkCacheExtension.cameraAddedLoadedChunks();
+
+		if (!cameraAdded.isEmpty()) {
+			original.addAll(cameraAdded);
+			cameraAdded.clear();
+		}
+
+		return original;
+	}
+
+	/**
+	 * Appends the list of recently removed chunks with the camera-removed chunks, to make the section occlusion graph no
+	 * longer consider them when the area around the camera is unloaded
+	 */
+	@ModifyReturnValue(method = "removedLoadedChunks", at = @At("RETURN"))
+	private LongOpenHashSet securitycraft$addCameraRemovedLoadedChunks(LongOpenHashSet original) {
+		LongOpenHashSet cameraRemoved = CameraClientChunkCacheExtension.cameraRemovedLoadedChunks();
+
+		if (!cameraRemoved.isEmpty()) {
+			original.addAll(cameraRemoved);
+			cameraRemoved.clear();
+		}
+
+		return original;
 	}
 }

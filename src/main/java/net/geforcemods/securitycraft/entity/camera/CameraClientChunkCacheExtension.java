@@ -207,8 +207,10 @@ package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.geforcemods.securitycraft.compat.ium.IumCompat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -226,6 +228,8 @@ import net.neoforged.neoforge.event.level.ChunkEvent;
 public class CameraClientChunkCacheExtension {
 	private static final Long2ObjectOpenHashMap<LevelChunk> CHUNK_MAP = new Long2ObjectOpenHashMap<>();
 	private static final Long2ObjectOpenHashMap<LevelChunk> CHUNK_MAP_OTHER_THREADS = new Long2ObjectOpenHashMap<>();
+	private static final LongOpenHashSet ADDED_LOADED_CHUNKS = new LongOpenHashSet();
+	private static final LongOpenHashSet REMOVED_LOADED_CHUNKS = new LongOpenHashSet();
 
 	private CameraClientChunkCacheExtension() {}
 
@@ -235,7 +239,11 @@ public class CameraClientChunkCacheExtension {
 			LevelChunk chunk = CHUNK_MAP.get(chunkPosLong);
 
 			if (chunk != null) {
-				modifyChunkMaps(map -> map.remove(chunkPosLong));
+				LevelChunk oldChunk = modifyChunkMaps(map -> map.remove(chunkPosLong));
+
+				if (oldChunk != null)
+					REMOVED_LOADED_CHUNKS.add(chunkPosLong);
+
 				NeoForge.EVENT_BUS.post(new ChunkEvent.Unload(chunk));
 				level.unload(chunk);
 				IumCompat.get().onChunkStatusRemoved(level, chunkPos.x(), chunkPos.z());
@@ -265,10 +273,16 @@ public class CameraClientChunkCacheExtension {
 
 		if (chunk == null) {
 			LevelChunk newChunk = new LevelChunk(level, chunkPos);
+			LevelChunk oldChunk;
 
 			chunk = newChunk;
 			chunk.replaceWithPacketData(packetData, heightmaps, tagOutput);
-			modifyChunkMaps(map -> map.put(longChunkPos, newChunk));
+			oldChunk = modifyChunkMaps(map -> map.put(longChunkPos, newChunk));
+
+			if (oldChunk != null)
+				level.unload(oldChunk);
+			else
+				ADDED_LOADED_CHUNKS.add(longChunkPos);
 		}
 
 		level.onChunkLoaded(chunkPos);
@@ -277,12 +291,22 @@ public class CameraClientChunkCacheExtension {
 		return chunk;
 	}
 
-	private static void modifyChunkMaps(Consumer<Long2ObjectOpenHashMap<LevelChunk>> operation) {
-		operation.accept(CHUNK_MAP);
+	private static LevelChunk modifyChunkMaps(Function<Long2ObjectOpenHashMap<LevelChunk>, LevelChunk> operation) {
+		LevelChunk oldChunk = operation.apply(CHUNK_MAP);
 
 		synchronized (CHUNK_MAP_OTHER_THREADS) {
-			operation.accept(CHUNK_MAP_OTHER_THREADS);
+			operation.apply(CHUNK_MAP_OTHER_THREADS);
 		}
+
+		return oldChunk;
+	}
+
+	public static LongOpenHashSet cameraAddedLoadedChunks() {
+		return ADDED_LOADED_CHUNKS;
+	}
+
+	public static LongOpenHashSet cameraRemovedLoadedChunks() {
+		return REMOVED_LOADED_CHUNKS;
 	}
 
 	public static void clear() {
