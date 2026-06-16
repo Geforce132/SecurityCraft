@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "securitycraft:reinforced_polished_sulfur",
+  "result": {
+    "id": "securitycraft:reinforced_polished_sulfur_stairs"
+  }
+}

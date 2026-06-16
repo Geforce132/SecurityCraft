@@ -2301,6 +2301,110 @@ public class SCContent {
 	@HasManualPage(PageGroup.REINFORCED)
 	@Reinforced
 	public static final DeferredBlock<ReinforcedShelfBlock> REINFORCED_WARPED_SHELF = reinforcedBlock("reinforced_warped_shelf", Blocks.WARPED_SHELF, ReinforcedShelfBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SULFUR = reinforcedBlock("reinforced_sulfur", Blocks.SULFUR);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SULFUR_SLAB = reinforcedBlock("reinforced_sulfur_slab", Blocks.SULFUR_SLAB, ReinforcedSlabBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SULFUR_STAIRS = reinforcedBlock("reinforced_sulfur_stairs", Blocks.SULFUR_STAIRS, ReinforcedStairsBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_SULFUR_WALL = reinforcedBlock("reinforced_sulfur_wall", Blocks.SULFUR_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_SULFUR = reinforcedBlock("reinforced_polished_sulfur", Blocks.POLISHED_SULFUR);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_SULFUR_SLAB = reinforcedBlock("reinforced_polished_sulfur_slab", Blocks.POLISHED_SULFUR_SLAB, ReinforcedSlabBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_SULFUR_STAIRS = reinforcedBlock("reinforced_polished_sulfur_stairs", Blocks.POLISHED_SULFUR_STAIRS, ReinforcedStairsBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_SULFUR_WALL = reinforcedBlock("reinforced_polished_sulfur_wall", Blocks.POLISHED_SULFUR_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_SULFUR_BRICKS = reinforcedBlock("reinforced_sulfur_bricks", Blocks.SULFUR_BRICKS);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_SULFUR_BRICK_SLAB = reinforcedBlock("reinforced_sulfur_brick_slab", Blocks.SULFUR_BRICK_SLAB, ReinforcedSlabBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_SULFUR_BRICK_STAIRS = reinforcedBlock("reinforced_sulfur_brick_stairs", Blocks.SULFUR_BRICK_STAIRS, ReinforcedStairsBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_SULFUR_BRICK_WALL = reinforcedBlock("reinforced_sulfur_brick_wall", Blocks.SULFUR_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_SULFUR = reinforcedBlock("reinforced_chiseled_sulfur", Blocks.CHISELED_SULFUR);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CINNABAR = reinforcedBlock("reinforced_cinnabar", Blocks.CINNABAR);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CINNABAR_SLAB = reinforcedBlock("reinforced_cinnabar_slab", Blocks.CINNABAR_SLAB, ReinforcedSlabBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CINNABAR_STAIRS = reinforcedBlock("reinforced_cinnabar_stairs", Blocks.CINNABAR_STAIRS, ReinforcedStairsBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_CINNABAR_WALL = reinforcedBlock("reinforced_cinnabar_wall", Blocks.CINNABAR_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_POLISHED_CINNABAR = reinforcedBlock("reinforced_polished_cinnabar", Blocks.POLISHED_CINNABAR);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_POLISHED_CINNABAR_SLAB = reinforcedBlock("reinforced_polished_cinnabar_slab", Blocks.POLISHED_CINNABAR_SLAB, ReinforcedSlabBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_POLISHED_CINNABAR_STAIRS = reinforcedBlock("reinforced_polished_cinnabar_stairs", Blocks.POLISHED_CINNABAR_STAIRS, ReinforcedStairsBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_POLISHED_CINNABAR_WALL = reinforcedBlock("reinforced_polished_cinnabar_wall", Blocks.POLISHED_CINNABAR_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CINNABAR_BRICKS = reinforcedBlock("reinforced_cinnabar_bricks", Blocks.CINNABAR_BRICKS);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedSlabBlock> REINFORCED_CINNABAR_BRICK_SLAB = reinforcedBlock("reinforced_cinnabar_brick_slab", Blocks.CINNABAR_BRICK_SLAB, ReinforcedSlabBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedStairsBlock> REINFORCED_CINNABAR_BRICK_STAIRS = reinforcedBlock("reinforced_cinnabar_brick_stairs", Blocks.CINNABAR_BRICK_STAIRS, ReinforcedStairsBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<ReinforcedWallBlock> REINFORCED_CINNABAR_BRICK_WALL = reinforcedBlock("reinforced_cinnabar_brick_wall", Blocks.CINNABAR_BRICK_WALL, ReinforcedWallBlock::new);
+	@HasManualPage(PageGroup.REINFORCED)
+	@OwnableBE
+	@Reinforced
+	public static final DeferredBlock<BaseReinforcedBlock> REINFORCED_CHISELED_CINNABAR = reinforcedBlock("reinforced_chiseled_cinnabar", Blocks.CHISELED_CINNABAR);
 
 	//misc
 	@RegisterItemBlock

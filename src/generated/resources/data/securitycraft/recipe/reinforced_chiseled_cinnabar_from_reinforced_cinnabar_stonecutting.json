@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "securitycraft:reinforced_cinnabar",
+  "result": {
+    "id": "securitycraft:reinforced_chiseled_cinnabar"
+  }
+}

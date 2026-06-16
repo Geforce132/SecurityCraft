@@ -25,6 +25,12 @@
     "securitycraft:reinforced_tuff_wall",
     "securitycraft:reinforced_polished_tuff_wall",
     "securitycraft:reinforced_tuff_brick_wall",
-    "securitycraft:reinforced_resin_brick_wall"
+    "securitycraft:reinforced_resin_brick_wall",
+    "securitycraft:reinforced_sulfur_wall",
+    "securitycraft:reinforced_polished_sulfur_wall",
+    "securitycraft:reinforced_sulfur_brick_wall",
+    "securitycraft:reinforced_cinnabar_wall",
+    "securitycraft:reinforced_polished_cinnabar_wall",
+    "securitycraft:reinforced_cinnabar_brick_wall"
   ]
 }

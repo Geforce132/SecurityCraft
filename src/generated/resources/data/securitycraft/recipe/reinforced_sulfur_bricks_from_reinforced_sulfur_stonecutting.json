@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "securitycraft:reinforced_sulfur",
+  "result": {
+    "id": "securitycraft:reinforced_sulfur_bricks"
+  }
+}

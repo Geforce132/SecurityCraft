@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "securitycraft:block/reinforced_cinnabar_slab"
+    },
+    "type=double": {
+      "model": "securitycraft:block/reinforced_cinnabar"
+    },
+    "type=top": {
+      "model": "securitycraft:block/reinforced_cinnabar_slab_top"
+    }
+  }
+}

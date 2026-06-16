@@ -130,8 +130,7 @@ public class BlockModelAndStateGenerator {
 		List<Holder<Item>> decorationTabItems = SCCreativeModeTabs.getItemList(SCItemGroup.DECORATION);
 		ByState<BlockFamily> copperFamilies = BlockFamilies.COPPER_BLOCK.weathering();
 		ByState<BlockFamily> cutCopperFamilies = BlockFamilies.CUT_COPPER.weathering();
-		//TODO Add new reinforced blocks for these families
-		List<BlockFamily> excludedFamilies = List.of(BlockFamilies.CINNABAR, BlockFamilies.CINNABAR_BRICKS, BlockFamilies.POLISHED_CINNABAR, BlockFamilies.POLISHED_SULFUR, BlockFamilies.SULFUR, BlockFamilies.SULFUR_BRICKS);
+		List<BlockFamily> excludedFamilies = List.of();
 
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
 		blockStateOutput = blockModelGenerators.blockStateOutput;
