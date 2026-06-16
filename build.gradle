@@ -108,6 +108,15 @@ repositories {
 	maven {
 		url = "https://maven.caffeinemc.net/releases"
 	}
+
+	if (port) {
+		maven {
+			url = uri("https://prmaven.neoforged.net/NeoForge/pr${porting_pr}")
+			content {
+				includeModule("net.neoforged", "neoforge")
+			}
+		}
+	}
 }
 
 dependencies {
