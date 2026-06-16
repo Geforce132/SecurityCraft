@@ -142,6 +142,7 @@ public class SCTags {
 		public static final TagKey<Item> REINFORCED_WOOL_CARPETS = tag("reinforced/wool_carpets");
 		public static final TagKey<Item> SECRET_HANGING_SIGNS = tag("secret_hanging_signs");
 		public static final TagKey<Item> SECRET_SIGNS = tag("secret_signs");
+		public static final TagKey<Item> SULFUR_CUBE_ARCHETYPE_REINFORCED = tag("sulfur_cube_archetype/reinforced");
 
 		private static TagKey<Item> tag(String name) {
 			return ItemTags.create(SecurityCraft.resLoc(name));

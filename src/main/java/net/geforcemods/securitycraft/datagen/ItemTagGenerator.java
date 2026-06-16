@@ -3,6 +3,9 @@ package net.geforcemods.securitycraft.datagen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
+
+import com.google.common.collect.ImmutableList;
 
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
@@ -16,6 +19,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ColorCollection;
+import net.minecraft.world.level.block.WeatheringCopperCollection;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -85,6 +89,189 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 				SCContent.SECRET_PALE_OAK_SIGN_ITEM.getKey(),
 				SCContent.SECRET_SPRUCE_SIGN_ITEM.getKey(),
 				SCContent.SECRET_WARPED_SIGN_ITEM.getKey());
+		tag(SCTags.Items.SULFUR_CUBE_ARCHETYPE_REINFORCED).add(
+				SCContent.REINFORCED_ACACIA_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_ACACIA_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_ACACIA_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_AMETHYST_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_ANDESITE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BAMBOO_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BAMBOO_MOSAIC.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BAMBOO_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BASALT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BIRCH_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BIRCH_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BIRCH_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BLACKSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BLUE_ICE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BONE_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CALCITE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHERRY_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHERRY_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHERRY_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_CINNABAR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_DEEPSLATE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_NETHER_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_POLISHED_BLACKSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_QUARTZ.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_RED_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_RESIN_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_STONE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_SULFUR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_TUFF.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CHISELED_TUFF_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CINNABAR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CINNABAR_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CLAY.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_COAL_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_COARSE_DIRT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_COBBLED_DEEPSLATE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_COBBLESTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRACKED_DEEPSLATE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRACKED_DEEPSLATE_TILES.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRACKED_NETHER_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRACKED_STONE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRIMSON_HYPHAE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRIMSON_NYLIUM.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRIMSON_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRIMSON_STEM.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CRYING_OBSIDIAN.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CUT_RED_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_CUT_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DARK_OAK_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DARK_OAK_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DARK_OAK_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DARK_PRISMARINE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DEEPSLATE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DEEPSLATE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DEEPSLATE_TILES.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DIAMOND_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DIORITE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DIRT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_DRIPSTONE_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_EMERALD_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_END_STONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_END_STONE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_GLOWSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_GOLD_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_GRANITE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_GRASS_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_TERRACOTTA.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_IRON_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_JUNGLE_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_JUNGLE_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_JUNGLE_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_LAPIS_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MAGMA_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MANGROVE_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MANGROVE_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MANGROVE_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MOSSY_COBBLESTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MOSSY_STONE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MOSS_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MUD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MUD_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_MYCELIUM.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_NETHERITE_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_NETHERRACK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_NETHER_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_NETHER_WART_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_OAK_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_OAK_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_OAK_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_OBSERVER.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_OBSIDIAN.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_OCHRE_FROGLIGHT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PACKED_ICE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PACKED_MUD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PALE_MOSS_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PALE_OAK_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PALE_OAK_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PALE_OAK_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PEARLESCENT_FROGLIGHT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PODZOL.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_ANDESITE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_BASALT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_BLACKSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_CINNABAR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_DEEPSLATE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_DIORITE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_GRANITE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_SULFUR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_POLISHED_TUFF.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PRISMARINE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PRISMARINE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PURPUR_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_PURPUR_PILLAR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_QUARTZ_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_QUARTZ_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_QUARTZ_PILLAR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_RAW_COPPER_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_RAW_GOLD_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_RAW_IRON_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_REDSTONE_LAMP.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_RED_NETHER_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_RED_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_RESIN_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_RESIN_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_ROOTED_DIRT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SEA_LANTERN.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SHROOMLIGHT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SMOOTH_BASALT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SMOOTH_QUARTZ.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SMOOTH_RED_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SMOOTH_SANDSTONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SMOOTH_STONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SNOW_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SOUL_SAND.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SOUL_SOIL.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SPRUCE_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SPRUCE_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SPRUCE_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STONE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STONE_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_ACACIA_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_ACACIA_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_BAMBOO_BLOCK.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_BIRCH_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_BIRCH_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_CHERRY_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_CHERRY_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_CRIMSON_HYPHAE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_CRIMSON_STEM.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_DARK_OAK_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_DARK_OAK_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_JUNGLE_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_JUNGLE_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_MANGROVE_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_MANGROVE_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_OAK_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_OAK_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_PALE_OAK_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_PALE_OAK_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_SPRUCE_LOG.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_SPRUCE_WOOD.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_WARPED_HYPHAE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_STRIPPED_WARPED_STEM.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SULFUR.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_SULFUR_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_TUFF.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_TUFF_BRICKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_VERDANT_FROGLIGHT.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_WARPED_HYPHAE.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_WARPED_NYLIUM.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_WARPED_PLANKS.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_WARPED_STEM.get().asItem().builtInRegistryHolder().key(),
+				SCContent.REINFORCED_WARPED_WART_BLOCK.get().asItem().builtInRegistryHolder().key())
+				.addAll(keysFromCollection(SCContent.REINFORCED_CHISELED_COPPER)).addAll(keysFromCollection(SCContent.REINFORCED_CONCRETE))
+				.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_BLOCK)).addAll(keysFromCollection(SCContent.REINFORCED_COPPER_BULB))
+				.addAll(keysFromCollection(SCContent.REINFORCED_CUT_COPPER)).addAll(keysFromCollection(SCContent.REINFORCED_DYED_TERRACOTTA))
+				.addAll(keysFromCollection(SCContent.REINFORCED_GLAZED_TERRACOTTA)).addAll(keysFromCollection(SCContent.REINFORCED_WOOL));
 		copy(SCTags.Blocks.REINFORCED_ACACIA_LOGS, SCTags.Items.REINFORCED_ACACIA_LOGS);
 		copy(SCTags.Blocks.REINFORCED_BAMBOO_BLOCKS, SCTags.Items.REINFORCED_BAMBOO_BLOCKS);
 		copy(SCTags.Blocks.REINFORCED_BARS, SCTags.Items.REINFORCED_BARS);
@@ -156,6 +343,7 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 		tag(BlockItemTags.SLABS.item()).addTag(SCTags.Items.REINFORCED_SLABS).add(SCContent.CRYSTAL_QUARTZ_SLAB.get().asItem().builtInRegistryHolder().key(), SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB.get().asItem().builtInRegistryHolder().key());
 		tag(BlockItemTags.STAIRS.item()).addTag(SCTags.Items.REINFORCED_STAIRS).add(SCContent.CRYSTAL_QUARTZ_STAIRS.get().asItem().builtInRegistryHolder().key(), SCContent.SMOOTH_CRYSTAL_QUARTZ_STAIRS.get().asItem().builtInRegistryHolder().key());
 		tag(ItemTags.SIGNS).addTag(SCTags.Items.SECRET_SIGNS);
+		tag(ItemTags.SULFUR_CUBE_SWALLOWABLE).addTag(SCTags.Items.SULFUR_CUBE_ARCHETYPE_REINFORCED);
 		tag(ItemTags.TERRACOTTA).addTag(SCTags.Items.REINFORCED_TERRACOTTA);
 		tag(BlockItemTags.TRAPDOORS.item()).add(SCContent.REINFORCED_IRON_TRAPDOOR.get().asItem().builtInRegistryHolder().key(), SCContent.KEYPAD_TRAPDOOR.get().asItem().builtInRegistryHolder().key(), SCContent.SCANNER_TRAPDOOR.get().asItem().builtInRegistryHolder().key());
 		tag(ItemTags.VANISHING_ENCHANTABLE).add(
@@ -217,5 +405,16 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 	@Override
 	public String getName() {
 		return "SecurityCraft Item Tags";
+	}
+
+	private static Stream<ResourceKey<Item>> keysFromCollection(ColorCollection<? extends DeferredBlock<? extends Block>> collection) {
+		return collection.asList().stream().map(e -> e.asItem().builtInRegistryHolder().getKey());
+	}
+
+	private static Stream<ResourceKey<Item>> keysFromCollection(WeatheringCopperCollection.ByState<? extends DeferredBlock<? extends Block>> collection) {
+		ImmutableList.Builder<ResourceKey<Item>> builder = ImmutableList.builderWithExpectedSize(4);
+
+		collection.forEach(e -> builder.add(e.asItem().builtInRegistryHolder().getKey()));
+		return builder.build().stream();
 	}
 }

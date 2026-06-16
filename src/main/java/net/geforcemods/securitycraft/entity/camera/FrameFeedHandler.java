@@ -141,7 +141,7 @@ public class FrameFeedHandler {
 
 					try {
 						profiler.popPush("securitycraft:extract");
-						mc.gameRenderer.extract(DeltaTracker.ONE, true); //TODO: Rendering far away camera feeds does not work
+						mc.gameRenderer.extract(DeltaTracker.ONE, true);
 						profiler.popPush("securitycraft:render");
 						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
 					}

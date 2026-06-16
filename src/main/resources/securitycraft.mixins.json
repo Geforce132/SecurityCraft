@@ -41,7 +41,8 @@
 		"reinforced.HopperBlockEntityMixin",
 		"reinforced.PortalForcerMixin",
 		"reinforced.ToolMaterialMixin",
-		"reinforced.VanillaInventoryCodeHooksMixin"
+		"reinforced.VanillaInventoryCodeHooksMixin",
+		"sulfur_cube.SulfurCubeMixin"
 	],
 	"minVersion": "0.8",
 	"mixinextras": {
