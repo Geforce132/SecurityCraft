@@ -317,7 +317,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		});
 	}
 
-	private void submitOverlay(PoseStack pose, SubmitNodeCollector collector, int color, Vector4f vertices, int packedLight, Vec3i normal) {
+	private void submitOverlay(PoseStack poseStack, SubmitNodeCollector collector, int color, Vector4f vertices, int packedLight, Vec3i normal) {
 		RenderType renderType = RenderTypes.entityTranslucent(WHITE);
 		float xStart = vertices.x;
 		float xEnd = vertices.y;
@@ -327,11 +327,11 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		int ny = normal.getY();
 		int nz = normal.getZ();
 
-		collector.submitCustomGeometry(pose, renderType, (pose1, builder) -> {
-			builder.addVertex(pose1, xStart, MARGIN, zStart).setColor(color).setUv(0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
-			builder.addVertex(pose1, xStart, 1 - MARGIN, zStart).setColor(color).setUv(0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
-			builder.addVertex(pose1, xEnd, 1 - MARGIN, zEnd).setColor(color).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
-			builder.addVertex(pose1, xEnd, MARGIN, zEnd).setColor(color).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose1, nx, ny, nz);
+		collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
+			builder.addVertex(pose, xStart, MARGIN, zStart).setColor(color).setUv(0, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
+			builder.addVertex(pose, xStart, 1 - MARGIN, zStart).setColor(color).setUv(0, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
+			builder.addVertex(pose, xEnd, 1 - MARGIN, zEnd).setColor(color).setUv(1, 1).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
+			builder.addVertex(pose, xEnd, MARGIN, zEnd).setColor(color).setUv(1, 0).setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(pose, nx, ny, nz);
 		});
 	}
 
