@@ -5,6 +5,7 @@ declare -A languages=(
 	["de"]="de_at de_ch bar fra_de ksh nds_de sxu"
 	["es"]="es_ar es_cl es_ec es_mx es_uy es_ve"
 	["fr"]="fr_ca"
+	["nl"]="nl_be"
 )
 
 for standard in "${!languages[@]}"; do
