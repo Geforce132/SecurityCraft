@@ -11,8 +11,8 @@ public class CameraViewAreaExtension {
 	private static final Long2ObjectOpenHashMap<RenderSection> SECTIONS = new Long2ObjectOpenHashMap<>();
 	private static final Long2ObjectOpenHashMap<SectionDirtyState> DIRTY_STATES = new Long2ObjectOpenHashMap<>();
 	private static SectionRenderDispatcher sectionRenderDispatcher;
-	private static int minSectionY;
-	private static int maxSectionY;
+	private static int minSectionY = 0;
+	private static int maxSectionY = 1; //Default of 1 prevents crash when these height limits aren't set correctly
 
 	private CameraViewAreaExtension() {}
 

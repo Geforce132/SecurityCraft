@@ -76,14 +76,6 @@ public abstract class LevelRendererMixin {
 	}
 
 	/**
-	 * Updates the camera view area with the refreshed section render dispatcher when F3+A is pressed
-	 */
-	@Inject(method = "invalidateCompiledGeometry", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SectionOcclusionGraph;waitAndReset(Lnet/minecraft/client/renderer/ViewArea;)V"))
-	private void securitycraft$onAllChanged(CallbackInfo ci) {
-		CameraViewAreaExtension.allChanged(sectionRenderDispatcher, gameRenderer.mainCamera().entity().level());
-	}
-
-	/**
 	 * If rendering a frame camera, makes sure that all compiled sections within the camera view area extension are properly
 	 * treated as compiled (e.g. for the purpose of entity rendering)
 	 */
