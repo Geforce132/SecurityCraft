@@ -133,8 +133,6 @@ public class FrameFeedHandler {
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
 					mc.levelRenderer.skyRenderer().renderTarget = newRenderTarget; //Fixes the sky renderer caching and rendering to the original render target instead of the frame's one
-					mc.levelRenderer.endFrame(); //This fixes frame feed clouds being rendered at the position of a previous feed sometimes, due to the cloud rendering buffer not resetting itself properly
-					mc.gameRenderer.fogRenderer.endFrame(); //Same fix but for fog color
 					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
 					mc.gameRenderer.globalSettingsUniform.update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
 					mc.gameRenderer.mainRenderTarget = newRenderTarget;
@@ -151,6 +149,8 @@ public class FrameFeedHandler {
 						e.printStackTrace();
 						feed.markForRemoval();
 					}
+
+					feed.fogRenderBuffer().rotate();
 
 					profiler.popPush("securitycraft:apply_frame_frustum");
 
@@ -303,11 +303,15 @@ public class FrameFeedHandler {
 	}
 
 	public static void removeAllFeeds() {
+		for (CameraFeed feed : FRAME_CAMERA_FEEDS.values()) {
+			feed.fogRenderBuffer().close();
+		}
+
 		FRAME_CAMERA_FEEDS.clear();
 	}
 
 	public static CameraFeed getCurrentlyCapturedFeed() {
-		return getFeed(currentlyCapturedCamera);
+		return isCapturingCamera() ? getFeed(currentlyCapturedCamera) : null;
 	}
 
 	public static int getFrameFeedViewDistance(FrameBlockEntity be) {

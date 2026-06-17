@@ -6,6 +6,8 @@
 	"client": [
 		"camera.CameraMixin",
 		"camera.ClientChunkCacheMixin",
+		"camera.CloudRendererMixin",
+		"camera.FogRendererMixin",
 		"camera.GameRendererMixin",
 		"camera.GuiMixin",
 		"camera.LevelExtractorMixin",
