@@ -1,7 +1,7 @@
 #version 330
 
-#moj_import < minecraft:dynamictransforms.glsl >
-#moj_import < minecraft:projection.glsl >
+#moj_import <minecraft:dynamictransforms.glsl>
+#moj_import <minecraft:projection.glsl>
 
 in vec3 Position;
 in vec2 UV0;
