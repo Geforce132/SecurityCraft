@@ -26,6 +26,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ChunkTrackingView;
+import net.minecraft.world.attribute.EnvironmentAttributeProbe;
 import net.minecraft.world.phys.AABB;
 
 public class CameraFeed {
@@ -35,6 +36,7 @@ public class CameraFeed {
 	private final Set<Long> sectionsInRangePositions = new HashSet<>();
 	private final List<RenderSection> visibleSections = new ArrayList<>();
 	private final List<RenderSection> compilingSectionsQueue = new ArrayList<>();
+	private final EnvironmentAttributeProbe frameAttributeProbe = new EnvironmentAttributeProbe();
 	private final RenderTarget renderTarget;
 	private final MappableRingBuffer fogRenderBuffer;
 	private Frustum cameraFrustum;
@@ -165,6 +167,10 @@ public class CameraFeed {
 
 	public AtomicDouble lastActiveTime() {
 		return lastActiveTime;
+	}
+
+	public EnvironmentAttributeProbe attributeProbe() {
+		return frameAttributeProbe;
 	}
 
 	public RenderTarget renderTarget() {

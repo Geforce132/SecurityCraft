@@ -37,6 +37,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.attribute.EnvironmentAttributeProbe;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Marker;
@@ -95,6 +96,7 @@ public class FrameFeedHandler {
 		float oldYRotO = player.yRotO;
 		float oldEyeHeight = camera.eyeHeight;
 		float oldEyeHeightO = camera.eyeHeightOld;
+		EnvironmentAttributeProbe oldAttributeProbe = camera.attributeProbe();
 		CameraType oldCameraType = mc.options.getCameraType();
 		Entity securityCamera = new Marker(EntityTypes.MARKER, level); //A separate entity is used instead of moving the player to allow the player to see themselves
 		RenderTarget oldMainRenderTarget = mc.gameRenderer.mainRenderTarget;
@@ -133,7 +135,9 @@ public class FrameFeedHandler {
 					profiler.push("securitycraft:discover_frame_sections");
 					feed.discoverVisibleSections(cameraPos, newFrameFeedViewDistance);
 					mc.levelRenderer.skyRenderer().renderTarget = newRenderTarget; //Fixes the sky renderer caching and rendering to the original render target instead of the frame's one
+					camera.attributeProbe = feed.attributeProbe(); //Prevents writing the frame feed's position to the main attribute probe, so the main renderer doesn't consider the frame environment attributes when interpolating
 					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
+					camera.attributeProbe().tick(level, camera.position()); //Notifies the camera's attribute probe with the new camera entity position, so the correct sky and fog color is used
 					mc.gameRenderer.globalSettingsUniform.update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
 					mc.gameRenderer.mainRenderTarget = newRenderTarget;
 
@@ -189,6 +193,7 @@ public class FrameFeedHandler {
 			camera.disablePanoramicMode();
 
 		camera.update(mc.getDeltaTracker());
+		camera.attributeProbe = oldAttributeProbe;
 		mc.levelRenderer.visibleSections.clear();
 		mc.levelRenderer.visibleSections.addAll(oldVisibleSections);
 		mc.levelRenderer.skyRenderer().renderTarget = oldMainRenderTarget; //Allows the sky renderer to render to the previous main target again
