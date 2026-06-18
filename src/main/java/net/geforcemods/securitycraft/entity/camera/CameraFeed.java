@@ -42,6 +42,7 @@ public class CameraFeed {
 	private Frustum cameraFrustum;
 	private boolean requiresFrustumUpdate = false;
 	private boolean hasFrameInFrustum = false;
+	private boolean closed = false;
 
 	public CameraFeed(GlobalPos globalPos, RenderSection startingSection) {
 		int resolution = ConfigHandler.CLIENT.frameFeedResolution.get();
@@ -63,6 +64,9 @@ public class CameraFeed {
 	}
 
 	public void discoverVisibleSections(GlobalPos cameraPos, int viewDistance) {
+		if (closed)
+			return;
+
 		SectionPos cameraSectionPos = SectionPos.of(cameraPos.pos());
 		Deque<RenderSection> queueToCheck = new ArrayDeque<>(compilingSectionsQueue);
 
@@ -112,6 +116,9 @@ public class CameraFeed {
 	}
 
 	public void updateVisibleSections(Frustum frustum) {
+		if (closed)
+			return;
+
 		requiresFrustumUpdate = false;
 		visibleSections.clear();
 
@@ -131,6 +138,9 @@ public class CameraFeed {
 	}
 
 	public void updateHasFrameInFrustum(Frustum frustum) {
+		if (closed)
+			return;
+
 		hasFrameInFrustum = false;
 
 		for (BlockPos framePos : linkedFrames) {
@@ -157,12 +167,14 @@ public class CameraFeed {
 		return linkedFrames.contains(be.getBlockPos());
 	}
 
-	public void markForRemoval() {
+	public void close() {
 		linkedFrames.clear();
+		fogRenderBuffer.close();
+		closed = true;
 	}
 
-	public boolean shouldBeRemoved() {
-		return linkedFrames.isEmpty();
+	public boolean isClosed() {
+		return closed || linkedFrames.isEmpty();
 	}
 
 	public AtomicDouble lastActiveTime() {

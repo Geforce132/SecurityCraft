@@ -1,6 +1,7 @@
 package net.geforcemods.securitycraft.entity.camera;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -151,7 +152,7 @@ public class FrameFeedHandler {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.error"), ChatFormatting.RED, true);
 						SecurityCraft.LOGGER.error("Frame feed at {} threw an exception while rendering the level. Deactivating clientside rendering for this feed", be.getBlockPos());
 						e.printStackTrace();
-						feed.markForRemoval();
+						feed.close();
 					}
 
 					feed.fogRenderBuffer().rotate();
@@ -208,8 +209,18 @@ public class FrameFeedHandler {
 
 	@SubscribeEvent
 	public static void onClientTickPost(ClientTickEvent.Post event) {
-		if (hasFeeds())
-			FRAME_CAMERA_FEEDS.entrySet().removeIf(e -> e.getValue().shouldBeRemoved());
+		if (hasFeeds()) {
+			Iterator<Entry<GlobalPos, CameraFeed>> feeds = FRAME_CAMERA_FEEDS.entrySet().iterator();
+
+			while (feeds.hasNext()) {
+				CameraFeed feed = feeds.next().getValue();
+
+				if (feed.isClosed()) {
+					feed.close();
+					feeds.remove();
+				}
+			}
+		}
 	}
 
 	@SubscribeEvent
@@ -268,8 +279,10 @@ public class FrameFeedHandler {
 	}
 
 	public static void removeAllFrameLinks(GlobalPos cameraPos) {
-		if (FRAME_CAMERA_FEEDS.containsKey(cameraPos))
-			FRAME_CAMERA_FEEDS.remove(cameraPos);
+		CameraFeed feed = FRAME_CAMERA_FEEDS.remove(cameraPos);
+
+		if (feed != null)
+			feed.close();
 	}
 
 	public static boolean isCapturingCamera() {
@@ -309,7 +322,7 @@ public class FrameFeedHandler {
 
 	public static void removeAllFeeds() {
 		for (CameraFeed feed : FRAME_CAMERA_FEEDS.values()) {
-			feed.fogRenderBuffer().close();
+			feed.close();
 		}
 
 		FRAME_CAMERA_FEEDS.clear();
