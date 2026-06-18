@@ -2,7 +2,7 @@ plugins {
 	id 'java-library'
 	id 'eclipse'
 	id 'idea'
-	id 'net.neoforged.moddev' version '2.0.107'
+	id 'net.neoforged.moddev' version '2.0.141'
 }
 
 import groovy.json.JsonOutput
