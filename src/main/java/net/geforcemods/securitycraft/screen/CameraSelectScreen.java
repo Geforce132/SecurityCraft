@@ -10,6 +10,7 @@ import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.components.NamedPositions;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.screen.components.SmallButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -27,7 +28,7 @@ import net.minecraft.util.CommonColors;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CameraSelectScreen extends Screen {
+public abstract class CameraSelectScreen extends Screen implements StillValid {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final List<NamedPositions.Entry> cameras;
 	protected final boolean readOnly;

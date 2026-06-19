@@ -9,9 +9,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.components.GlobalPositions;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -19,10 +21,11 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-public class SSSItemScreen extends Screen implements ConnectionAccessor {
+public class SSSItemScreen extends Screen implements ConnectionAccessor, StillValid {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final ItemStack stack;
 	private int imageWidth = 176;
@@ -92,5 +95,10 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 
 		ClientPacketDistributor.sendToServer(new RemovePositionFromSSS(globalPos));
 		connectionList.refreshPositions();
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return !PlayerUtils.getItemStackFromAnyHand(player, stack.getItem()).isEmpty();
 	}
 }

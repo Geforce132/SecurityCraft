@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
@@ -19,9 +20,11 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.CommonColors;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-public class SecureRedstoneInterfaceScreen extends Screen {
+public class SecureRedstoneInterfaceScreen extends Screen implements StillValid {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/secure_redstone_interface.png");
 	private static final ResourceLocation RANDOM_SPRITE = SecurityCraft.resLoc("widget/random");
 	private static final ResourceLocation RANDOM_INACTIVE_SPRITE = SecurityCraft.resLoc("widget/random_inactive");
@@ -165,5 +168,10 @@ public class SecureRedstoneInterfaceScreen extends Screen {
 	@Override
 	public boolean isPauseScreen() {
 		return false;
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return Container.stillValidBlockEntity(be, player);
 	}
 }

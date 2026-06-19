@@ -7,6 +7,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SyncSSSSettingsOnServer;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
@@ -24,10 +25,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.CommonColors;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-public class SonicSecuritySystemScreen extends Screen implements ConnectionAccessor {
+public class SonicSecuritySystemScreen extends Screen implements ConnectionAccessor, StillValid {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/sonic_security_system.png");
 	private static final Component SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
@@ -205,5 +208,10 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 
 	private void updateInvertButtonTooltip() {
 		invertButton.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:sonic_security_system.invert.tooltip_" + (be.disablesBlocksWhenTuneIsPlayed() ? "inverted" : "default"))));
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return Container.stillValidBlockEntity(be, player);
 	}
 }
