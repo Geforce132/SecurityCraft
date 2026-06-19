@@ -3,6 +3,7 @@ package net.geforcemods.securitycraft.inventory;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
 import net.geforcemods.securitycraft.items.UniversalBlockReinforcerItem;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,7 +47,7 @@ public class BlockReinforcerMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return true;
+		return !PlayerUtils.getItemStackFromAnyHand(player, blockReinforcer.getItem()).isEmpty();
 	}
 
 	@Override

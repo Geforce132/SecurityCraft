@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -14,11 +15,14 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-public class SetPasscodeScreen extends Screen {
+public class SetPasscodeScreen extends Screen implements StillValid {
 	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
@@ -96,5 +100,15 @@ public class SetPasscodeScreen extends Screen {
 			PacketDistributor.sendToServer(new SetPasscode(entity.getId(), keycodeTextbox.getValue()));
 
 		Minecraft.getInstance().player.closeContainer();
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		if (passcodeProtected instanceof BlockEntity be)
+			return Container.stillValidBlockEntity(be, player);
+		else if (passcodeProtected instanceof ContainerEntity entity)
+			return entity.isChestVehicleStillValid(player);
+		else
+			return true;
 	}
 }
