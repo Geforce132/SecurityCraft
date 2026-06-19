@@ -81,7 +81,7 @@ public class BriefcaseMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get()) == briefcaseInventory.getContainerStack();
+		return !PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get()).isEmpty();
 	}
 
 	@Override
