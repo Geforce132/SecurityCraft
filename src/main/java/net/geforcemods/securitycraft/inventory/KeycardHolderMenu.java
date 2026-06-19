@@ -80,7 +80,7 @@ public class KeycardHolderMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return PlayerUtils.getItemStackFromAnyHand(player, SCContent.KEYCARD_HOLDER.get()) == keycardHolderInv.getContainerStack();
+		return !PlayerUtils.getItemStackFromAnyHand(player, SCContent.KEYCARD_HOLDER.get()).isEmpty();
 	}
 
 	@Override

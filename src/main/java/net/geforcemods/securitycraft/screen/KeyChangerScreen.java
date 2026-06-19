@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -19,11 +20,14 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-public class KeyChangerScreen extends Screen {
+public class KeyChangerScreen extends Screen implements StillValid {
 	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final Component ukcName = Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId());
 	private final Component enterPasscode = Utils.localize("gui.securitycraft:universalKeyChanger.enterNewPasscode");
@@ -108,5 +112,15 @@ public class KeyChangerScreen extends Screen {
 
 		Minecraft.getInstance().player.closeContainer();
 		PlayerUtils.sendMessageToPlayer(Minecraft.getInstance().player, Utils.localize(SCContent.UNIVERSAL_KEY_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalKeyChanger.passcodeChanged"), ChatFormatting.GREEN, true);
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		if (passcodeProtected instanceof BlockEntity be)
+			return Container.stillValidBlockEntity(be, player);
+		else if (passcodeProtected instanceof ContainerEntity entity)
+			return entity.isChestVehicleStillValid(player);
+		else
+			return true;
 	}
 }

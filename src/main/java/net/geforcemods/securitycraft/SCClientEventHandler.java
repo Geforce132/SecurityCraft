@@ -20,6 +20,7 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.renderers.FrameBlockEntityRenderer;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.DeltaTracker;
@@ -61,6 +62,7 @@ import net.neoforged.neoforge.client.resources.VanillaClientListeners;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
@@ -190,6 +192,14 @@ public class SCClientEventHandler {
 				}, flag, stack.getComponents());
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void onPlayerTickPre(PlayerTickEvent.Pre event) {
+		Minecraft mc = Minecraft.getInstance();
+
+		if (mc.gui.screen() instanceof StillValid screen && !screen.stillValid(event.getEntity()))
+			mc.gui.setScreen(null);
 	}
 
 	public static void cameraOverlay(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
