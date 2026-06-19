@@ -4,13 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.mojang.serialization.DataResult;
+
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.misc.PageGroup;
 import net.geforcemods.securitycraft.misc.SCManualPage;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -104,17 +110,25 @@ public class SCManualItem extends Item {
 
 	private static ItemStack safeAssemble(CraftingRecipe recipe, CraftingInput dummyInput, HolderLookup.Provider registryAccess) {
 		try {
-			ItemStack res = recipe.assemble(dummyInput, registryAccess);
+			ItemStack result = recipe.assemble(dummyInput, registryAccess);
 
-			if (res == null)
-				new NullPointerException("Recipe#assemble unexpectedly returned null for type " + recipe.getType()).printStackTrace();
-			else
-				return res;
+			if (result != null)
+				return result;
+			else {
+				DataResult<Tag> encodedRecipe = recipe.getSerializer().codec().encoder().encodeStart(NbtOps.INSTANCE, cast(recipe));
+
+				SecurityCraft.LOGGER.warn("Recipe#assemble unexpectedly returned null for recipe {}", encodedRecipe.result().orElseGet(CompoundTag::new));
+			}
 		}
 		catch (Exception e) {
 			//If an exception is thrown, it's safe to assume that recipe assembling failed for some reason that means the recipe is not relevant for one of SC's items
 		}
 
 		return ItemStack.EMPTY;
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T extends CraftingRecipe> T cast(CraftingRecipe recipe) {
+		return (T) recipe;
 	}
 }
