@@ -14,9 +14,11 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.components.ListModuleData;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -32,12 +34,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.CommonColors;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
 import net.neoforged.neoforge.client.gui.widget.ScrollPanel;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
-public class EditModuleScreen extends Screen {
+public class EditModuleScreen extends Screen implements StillValid {
 	private static ListModuleData savedData;
 	private static final Identifier TEXTURE = SecurityCraft.resLoc("textures/gui/container/edit_module.png");
 	private static final Identifier CONFIRM_SPRITE = SecurityCraft.mcResLoc("container/beacon/confirm");
@@ -251,6 +254,11 @@ public class EditModuleScreen extends Screen {
 		copyButton.active = !isSameTag;
 		pasteButton.active = savedData != null && !savedData.equals(ListModuleData.EMPTY) && !isSameTag;
 		clearButton.active = !hasNoData;
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return !PlayerUtils.getItemStackFromAnyHand(player, module.getItem()).isEmpty();
 	}
 
 	private void refreshFromComponent() {

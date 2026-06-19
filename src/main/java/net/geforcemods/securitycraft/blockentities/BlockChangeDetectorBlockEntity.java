@@ -333,7 +333,7 @@ public class BlockChangeDetectorBlockEntity extends DisguisableBlockEntity imple
 
 	@Override
 	public boolean stillValid(Player player) {
-		return true;
+		return Container.stillValidBlockEntity(this, player);
 	}
 
 	@Override

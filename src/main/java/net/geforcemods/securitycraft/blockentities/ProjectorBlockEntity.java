@@ -367,7 +367,7 @@ public class ProjectorBlockEntity extends DisguisableBlockEntity implements Cont
 
 	@Override
 	public boolean stillValid(Player player) {
-		return true;
+		return Container.stillValidBlockEntity(this, player);
 	}
 
 	@Override

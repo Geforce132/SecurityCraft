@@ -25,8 +25,6 @@ import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
 import net.geforcemods.securitycraft.blockentities.InventoryScannerBlockEntity;
 import net.geforcemods.securitycraft.blockentities.LaserBlockBlockEntity;
 import net.geforcemods.securitycraft.blockentities.RiftStabilizerBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SecretHangingSignBlockEntity;
-import net.geforcemods.securitycraft.blockentities.SecretSignBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SecureRedstoneInterfaceBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blockentities.UsernameLoggerBlockEntity;
@@ -127,8 +125,6 @@ import net.geforcemods.securitycraft.util.Reinforced;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSource;
 import net.minecraft.client.color.block.BlockTintSources;
-import net.minecraft.client.gui.screens.inventory.HangingSignEditScreen;
-import net.minecraft.client.gui.screens.inventory.SignEditScreen;
 import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -699,14 +695,6 @@ public class ClientHandler {
 
 	public static void displaySCManualScreen() {
 		Minecraft.getInstance().setScreen(new SCManualScreen());
-	}
-
-	public static void displayEditSecretSignScreen(SecretSignBlockEntity be, boolean isFront) {
-		Minecraft.getInstance().setScreen(new SignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
-	}
-
-	public static void displayEditSecretHangingSignScreen(SecretHangingSignBlockEntity be, boolean isFront) {
-		Minecraft.getInstance().setScreen(new HangingSignEditScreen(be, isFront, Minecraft.getInstance().isTextFilteringEnabled()));
 	}
 
 	public static void displaySonicSecuritySystemScreen(SonicSecuritySystemBlockEntity be) {
