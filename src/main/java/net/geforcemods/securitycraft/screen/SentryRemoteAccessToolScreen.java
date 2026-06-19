@@ -10,11 +10,13 @@ import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.sentry.Sentry;
 import net.geforcemods.securitycraft.entity.sentry.Sentry.SentryMode;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.RemoveSentryFromSRAT;
 import net.geforcemods.securitycraft.network.server.SetSentryMode;
 import net.geforcemods.securitycraft.screen.components.IToggleableButton;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -24,12 +26,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.PacketDistributor;
 
-public class SentryRemoteAccessToolScreen extends Screen {
+public class SentryRemoteAccessToolScreen extends Screen implements StillValid {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
 	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
 	private final Component modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
@@ -374,5 +377,10 @@ public class SentryRemoteAccessToolScreen extends Screen {
 		}
 
 		return super.keyPressed(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return !PlayerUtils.getItemStackFromAnyHand(player, srat.getItem()).isEmpty();
 	}
 }

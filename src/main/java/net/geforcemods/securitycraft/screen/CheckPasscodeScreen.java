@@ -8,6 +8,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.minecraft.client.gui.Font;
@@ -19,10 +20,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class CheckPasscodeScreen extends Screen {
+public class CheckPasscodeScreen extends Screen implements StillValid {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/check_passcode.png");
 	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:passcode.cooldown1");
 	private int cooldownText1XPos;
@@ -177,6 +181,16 @@ public class CheckPasscodeScreen extends Screen {
 			SecurityCraft.CHANNEL.sendToServer(new CheckPasscode(be.getBlockPos(), code));
 		else if (passcodeProtected instanceof Entity entity)
 			SecurityCraft.CHANNEL.sendToServer(new CheckPasscode(entity.getId(), code));
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		if (passcodeProtected instanceof BlockEntity be)
+			return Container.stillValidBlockEntity(be, player);
+		else if (passcodeProtected instanceof ContainerEntity entity)
+			return entity.isChestVehicleStillValid(player);
+		else
+			return true;
 	}
 
 	public static class CensoringEditBox extends EditBox {

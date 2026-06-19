@@ -20,9 +20,11 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.ModuleItem;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -38,11 +40,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
-public class EditModuleScreen extends Screen {
+public class EditModuleScreen extends Screen implements StillValid {
 	private static CompoundTag savedModule;
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
 	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
@@ -268,6 +271,11 @@ public class EditModuleScreen extends Screen {
 		copyButton.active = !tagIsConsideredEmpty && !tag.equals(savedModule);
 		pasteButton.active = savedModule != null && !savedModule.isEmpty() && !tag.equals(savedModule);
 		clearButton.active = !tagIsConsideredEmpty;
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return !PlayerUtils.getItemStackFromAnyHand(player, module.getItem()).isEmpty();
 	}
 
 	private void refreshFromNbt() {

@@ -45,6 +45,7 @@
 - Fix: The Alarm sometimes interrupts its sound directly after being powered
 - Fix: Visual issues when viewing a Frame feed while a post effect is active, e.g. when spectating a Creeper
 - Fix: Reinforced Doors do not drop in item form when mining the bottom block
+- Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated

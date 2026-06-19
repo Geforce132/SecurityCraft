@@ -323,7 +323,7 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 	@Override
 	public boolean stillValid(Player player) {
-		return true;
+		return Container.stillValidBlockEntity(this, player);
 	}
 
 	@Override

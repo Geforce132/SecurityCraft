@@ -19,6 +19,7 @@ import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SyncAlarmSettings;
 import net.geforcemods.securitycraft.util.ClientUtils;
 import net.geforcemods.securitycraft.util.Utils;
@@ -37,9 +38,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
-public class AlarmScreen extends Screen {
+public class AlarmScreen extends Screen implements StillValid {
 	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
 	protected final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
@@ -141,6 +144,11 @@ public class AlarmScreen extends Screen {
 	@Override
 	public boolean isPauseScreen() {
 		return false;
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return Container.stillValidBlockEntity(be, player);
 	}
 
 	public class SoundScrollList extends ScrollPanel {

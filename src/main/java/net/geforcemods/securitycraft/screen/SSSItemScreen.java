@@ -7,17 +7,20 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.items.SonicSecuritySystemItem;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.RemovePositionFromSSS;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
+import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class SSSItemScreen extends Screen implements ConnectionAccessor {
+public class SSSItemScreen extends Screen implements ConnectionAccessor, StillValid {
 	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
 	private final ItemStack stack;
 	private int imageWidth = 176;
@@ -79,5 +82,10 @@ public class SSSItemScreen extends Screen implements ConnectionAccessor {
 		SonicSecuritySystemItem.removeLinkedBlock(stack.getTag(), pos);
 		SecurityCraft.CHANNEL.sendToServer(new RemovePositionFromSSS(pos));
 		connectionList.refreshPositions();
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return !PlayerUtils.getItemStackFromAnyHand(player, stack.getItem()).isEmpty();
 	}
 }

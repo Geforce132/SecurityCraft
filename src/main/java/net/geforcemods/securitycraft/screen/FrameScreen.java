@@ -5,6 +5,8 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 
 public class FrameScreen extends CameraSelectScreen {
 	private final FrameBlockEntity be;
@@ -36,5 +38,10 @@ public class FrameScreen extends CameraSelectScreen {
 	protected void unbindCamera(int camID) {
 		if (!readOnly)
 			be.removeCameraOnClient(camID);
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return Container.stillValidBlockEntity(be, player);
 	}
 }

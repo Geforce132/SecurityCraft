@@ -132,12 +132,7 @@ public class CustomizeBlockMenu extends AbstractContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		return worldPosCallable.evaluate((level, pos) -> {
-			if (moduleInv instanceof BlockEntity be && !level.getBlockState(pos).is(be.getBlockState().getBlock()))
-				return false;
-
-			return player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0;
-		}, true);
+		return stillValid(worldPosCallable, player, ((BlockEntity) moduleInv).getBlockState().getBlock());
 	}
 
 	public int getMaxSlots() {

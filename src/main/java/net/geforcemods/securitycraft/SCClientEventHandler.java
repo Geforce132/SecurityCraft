@@ -21,6 +21,7 @@ import net.geforcemods.securitycraft.misc.BlockEntityTracker;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
 import net.geforcemods.securitycraft.misc.KeyBindings;
 import net.geforcemods.securitycraft.misc.ModuleType;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
@@ -50,6 +51,7 @@ import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
+import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -151,6 +153,16 @@ public class SCClientEventHandler {
 		FrameFeedHandler.removeAllFeeds();
 		CameraClientChunkCacheExtension.clear();
 		CameraViewAreaExtension.clear();
+	}
+
+	@SubscribeEvent
+	public static void onPlayerTickPre(PlayerTickEvent event) {
+		if (event.phase == Phase.START) {
+			Minecraft mc = Minecraft.getInstance();
+
+			if (mc.screen instanceof StillValid screen && !screen.stillValid(event.player))
+				mc.setScreen(null);
+		}
 	}
 
 	public static void cameraOverlay(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {

@@ -5,6 +5,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.geforcemods.securitycraft.ClientHandler;
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
+import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.CheckBriefcasePasscode;
 import net.geforcemods.securitycraft.network.server.SetBriefcasePasscodeAndOwner;
 import net.geforcemods.securitycraft.util.PlayerUtils;
@@ -14,9 +15,10 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class BriefcasePasscodeScreen extends Screen {
+public class BriefcasePasscodeScreen extends Screen implements StillValid {
 	public static final String UP_ARROW = "\u2191";
 	public static final String RIGHT_ARROW = "\u2192";
 	public static final String DOWN_ARROW = "\u2193";
@@ -101,5 +103,10 @@ public class BriefcasePasscodeScreen extends Screen {
 		//java's modulo operator % does not handle negative numbers like it should for some reason, so floorMod needs to be used
 		digits[index] = Math.floorMod((id > 3 ? --digits[index] : ++digits[index]), 10);
 		keycodeTextboxes[index].setValue(String.valueOf(digits[index]));
+	}
+
+	@Override
+	public boolean stillValid(Player player) {
+		return !PlayerUtils.getItemStackFromAnyHand(player, SCContent.BRIEFCASE.get()).isEmpty();
 	}
 }
