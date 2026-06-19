@@ -51,6 +51,7 @@
 - Fix: Reinforced Copper Bulbs have no crafting recipe
 - Fix: Adding or removing an item from the Projector's projected block slot does not update the state selector
 - Fix: Reinforced Doors do not drop in item form when mining the bottom block
+- Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
