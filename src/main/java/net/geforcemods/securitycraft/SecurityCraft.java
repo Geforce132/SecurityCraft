@@ -75,7 +75,7 @@ public class SecurityCraft {
 	public static final String MODID = "securitycraft";
 	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_WATER_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeWaterSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(true)));
 	public static final Supplier<GameRules.Key<GameRules.BooleanValue>> RULE_FAKE_LAVA_SOURCE_CONVERSION = Suppliers.memoize(() -> GameRules.register("fakeLavaSourceConversion", GameRules.Category.UPDATES, GameRules.BooleanValue.create(false)));
-	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
+	public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(SecurityCraft.resLoc(MODID), () -> getVersion(), getVersion()::equals, getVersion()::equals);
 	public static final Random RANDOM = new Random();
 	public static final boolean IS_A_SODIUM_MOD_INSTALLED = Util.make(() -> {
 		ModList modList = ModList.get();
@@ -208,10 +208,10 @@ public class SecurityCraft {
 	}
 
 	public static ResourceLocation resLoc(String path) {
-		return new ResourceLocation(MODID, path);
+		return ResourceLocation.fromNamespaceAndPath(MODID, path);
 	}
 
 	public static ResourceLocation mcResLoc(String path) {
-		return new ResourceLocation(path);
+		return ResourceLocation.withDefaultNamespace(path);
 	}
 }

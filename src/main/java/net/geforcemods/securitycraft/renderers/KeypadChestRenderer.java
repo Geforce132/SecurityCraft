@@ -5,6 +5,7 @@ import java.util.Calendar;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.geforcemods.securitycraft.ClientHandler;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IModuleInventory;
 import net.geforcemods.securitycraft.misc.ModuleType;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.ChestRenderer;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.properties.ChestType;
 
@@ -65,6 +65,6 @@ public class KeypadChestRenderer extends ChestRenderer<ChestBlockEntity> {
 	}
 
 	private static Material createMaterial(String name) {
-		return new Material(Sheets.CHEST_SHEET, new ResourceLocation("securitycraft", "entity/chest/" + name));
+		return new Material(Sheets.CHEST_SHEET, SecurityCraft.resLoc("entity/chest/" + name));
 	}
 }

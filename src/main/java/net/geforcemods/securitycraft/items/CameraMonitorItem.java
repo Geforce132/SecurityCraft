@@ -164,7 +164,7 @@ public class CameraMonitorItem extends Item {
 					cameraName = tag.getString(nameKey);
 
 				//default to overworld if there is no dimension saved
-				list.add(Pair.of(GlobalPos.of(coords.length == 4 ? ResourceKey.create(Registries.DIMENSION, new ResourceLocation(coords[3])) : Level.OVERWORLD, pos), cameraName));
+				list.add(Pair.of(GlobalPos.of(coords.length == 4 ? ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse(coords[3])) : Level.OVERWORLD, pos), cameraName));
 			}
 			else
 				list.add(Pair.of(null, null));

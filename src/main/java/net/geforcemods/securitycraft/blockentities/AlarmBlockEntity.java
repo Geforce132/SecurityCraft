@@ -90,7 +90,7 @@ public class AlarmBlockEntity extends CustomizableBlockEntity implements ITickin
 		isPowered = tag.getBoolean("isPowered");
 
 		if (tag.contains("sound", Tag.TAG_STRING))
-			setSound(new ResourceLocation(tag.getString("sound")));
+			setSound(ResourceLocation.parse(tag.getString("sound")));
 		else
 			setSound(SCSounds.ALARM.location);
 

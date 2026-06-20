@@ -6,6 +6,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.misc.CameraRedstoneModuleState;
@@ -27,7 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class CameraSelectScreen extends Screen implements StillValid {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final List<Pair<GlobalPos, String>> cameras;
 	protected final boolean readOnly;
 	private final Button[] cameraButtons = new Button[10];

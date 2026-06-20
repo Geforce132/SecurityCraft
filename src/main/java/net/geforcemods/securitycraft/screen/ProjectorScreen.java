@@ -23,7 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> implements IHasExtraAreas {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/projector.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/projector.png");
 	private static final Component SLOT_TOOLTIP = Utils.localize("gui.securitycraft:projector.block");
 	private ProjectorBlockEntity be;
 	private TextHoverChecker slotHoverChecker;

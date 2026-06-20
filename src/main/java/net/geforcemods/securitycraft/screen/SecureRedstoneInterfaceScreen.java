@@ -21,9 +21,9 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 
 public class SecureRedstoneInterfaceScreen extends Screen implements StillValid {
-	public static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/secure_redstone_interface.png");
-	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
-	private static final ResourceLocation RANDOM_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random_inactive.png");
+	public static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/secure_redstone_interface.png");
+	private static final ResourceLocation RANDOM_TEXTURE = SecurityCraft.resLoc("textures/gui/random.png");
+	private static final ResourceLocation RANDOM_INACTIVE_TEXTURE = SecurityCraft.resLoc("textures/gui/random_inactive.png");
 	private final Component frequencyText = Component.translatable("gui.securitycraft:secure_redstone_interface.frequency");
 	private final SecureRedstoneInterfaceBlockEntity be;
 	private final boolean oldSender, oldProtectedSignal, oldSendExactPower, oldReceiveInvertedPower, oldHighlightConnections;

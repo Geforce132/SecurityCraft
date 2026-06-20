@@ -28,8 +28,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 public class MineRemoteAccessToolScreen extends Screen implements StillValid {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/mrat.png");
-	private static final ResourceLocation INFO_BOOK_ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png"); //for the explosion icon
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/mrat.png");
+	private static final ResourceLocation INFO_BOOK_ICONS = SecurityCraft.resLoc("textures/gui/info_book_icons.png"); //for the explosion icon
 	private static final int DEFUSE = 0, ACTIVATE = 1, DETONATE = 2, UNBIND = 3;
 	private ItemStack mrat;
 	private Button[][] guiButtons = new Button[6][4]; //6 mines, 4 actions (defuse, prime, detonate, unbind)

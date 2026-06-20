@@ -28,8 +28,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
 public class SonicSecuritySystemScreen extends Screen implements ConnectionAccessor, StillValid {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/sonic_security_system.png");
-	private static final ResourceLocation STREAMER_ICONS = new ResourceLocation("textures/gui/stream_indicator.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/sonic_security_system.png");
+	private static final ResourceLocation STREAMER_ICONS = SecurityCraft.mcResLoc("textures/gui/stream_indicator.png");
 	private static final Component SOUND_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.sound");
 	/** The number of ticks between each note when playing back a recording **/
 	private static final int PLAYBACK_DELAY = 10;
@@ -62,7 +62,7 @@ public class SonicSecuritySystemScreen extends Screen implements ConnectionAcces
 				if (currentNote < be.getNumberOfNotes()) {
 					NoteWrapper note = be.getRecordedNotes().get(currentNote++);
 					NoteBlockInstrument instrument = NoteBlockInstrument.valueOf(note.instrumentName().toUpperCase());
-					SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(new ResourceLocation(note.customSoundId())) : instrument.getSoundEvent().get();
+					SoundEvent sound = instrument.hasCustomSound() && !note.customSoundId().isEmpty() ? SoundEvent.createVariableRangeEvent(ResourceLocation.parse(note.customSoundId())) : instrument.getSoundEvent().get();
 					float pitch = instrument.isTunable() ? (float) Math.pow(2.0D, (note.noteID() - 12) / 12.0D) : 1.0F;
 
 					tickCount = 0;

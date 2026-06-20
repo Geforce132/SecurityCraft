@@ -21,7 +21,7 @@ public enum SCSounds {
 
 	private SCSounds(String path) {
 		this.path = path;
-		location = new ResourceLocation(path);
-		event = SoundEvent.createVariableRangeEvent(new ResourceLocation(path));
+		location = ResourceLocation.parse(path);
+		event = SoundEvent.createVariableRangeEvent(ResourceLocation.parse(path));
 	}
 }

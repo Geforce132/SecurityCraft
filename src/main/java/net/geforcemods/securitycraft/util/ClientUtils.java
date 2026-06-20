@@ -28,18 +28,18 @@ import net.minecraft.world.level.Level;
 public class ClientUtils {
 	//@formatter:off
 	private static final ResourceLocation[] MODULE_TEXTURES = {
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/whitelist_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/blacklist_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/harming_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/smart_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/storage_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/disguise_module.png"),
-			new ResourceLocation(SecurityCraft.MODID, "textures/item/module_background.png")
+			SecurityCraft.resLoc("textures/item/module_background.png"),
+			SecurityCraft.resLoc("textures/item/whitelist_module.png"),
+			SecurityCraft.resLoc("textures/item/blacklist_module.png"),
+			SecurityCraft.resLoc("textures/item/harming_module.png"),
+			SecurityCraft.resLoc("textures/item/smart_module.png"),
+			SecurityCraft.resLoc("textures/item/storage_module.png"),
+			SecurityCraft.resLoc("textures/item/disguise_module.png"),
+			SecurityCraft.resLoc("textures/item/module_background.png")
 	};
 	//@formatter:on
-	private static final ResourceLocation REDSTONE_TEXTURE = new ResourceLocation("textures/item/redstone.png");
-	private static final ResourceLocation SUGAR_TEXTURE = new ResourceLocation("textures/item/sugar.png");
+	private static final ResourceLocation REDSTONE_TEXTURE = SecurityCraft.mcResLoc("textures/item/redstone.png");
+	private static final ResourceLocation SUGAR_TEXTURE = SecurityCraft.mcResLoc("textures/item/sugar.png");
 
 	private ClientUtils() {}
 

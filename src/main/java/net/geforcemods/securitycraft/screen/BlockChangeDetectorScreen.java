@@ -46,7 +46,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class BlockChangeDetectorScreen extends AbstractContainerScreen<BlockChangeDetectorMenu> implements ContainerListener, IHasExtraAreas {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_change_detector.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_change_detector.png");
 	private BlockChangeDetectorBlockEntity be;
 	private ChangeEntryList changeEntryList;
 	private TextHoverChecker smartModuleHoverChecker;

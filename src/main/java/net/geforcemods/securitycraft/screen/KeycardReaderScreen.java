@@ -33,15 +33,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/keycard_reader.png");
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
-	private static final ResourceLocation RANDOM_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random.png");
-	private static final ResourceLocation RANDOM_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/random_inactive.png");
-	private static final ResourceLocation RESET_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset.png");
-	private static final ResourceLocation RESET_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/reset_inactive.png");
-	private static final ResourceLocation RETURN_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return.png");
-	private static final ResourceLocation RETURN_INACTIVE_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/return_inactive.png");
-	private static final ResourceLocation WORLD_SELECTION_ICONS = new ResourceLocation("textures/gui/world_selection.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/keycard_reader.png");
+	private static final ResourceLocation BEACON_GUI = SecurityCraft.mcResLoc("textures/gui/container/beacon.png");
+	private static final ResourceLocation RANDOM_TEXTURE = SecurityCraft.resLoc("textures/gui/random.png");
+	private static final ResourceLocation RANDOM_INACTIVE_TEXTURE = SecurityCraft.resLoc("textures/gui/random_inactive.png");
+	private static final ResourceLocation RESET_TEXTURE = SecurityCraft.resLoc("textures/gui/reset.png");
+	private static final ResourceLocation RESET_INACTIVE_TEXTURE = SecurityCraft.resLoc("textures/gui/reset_inactive.png");
+	private static final ResourceLocation RETURN_TEXTURE = SecurityCraft.resLoc("textures/gui/return.png");
+	private static final ResourceLocation RETURN_INACTIVE_TEXTURE = SecurityCraft.resLoc("textures/gui/return_inactive.png");
+	private static final ResourceLocation WORLD_SELECTION_ICONS = SecurityCraft.mcResLoc("textures/gui/world_selection.png");
 	private static final Component EQUALS = Component.literal("=");
 	private static final Component GREATER_THAN_EQUALS = Component.literal(">=");
 	private static final int MAX_SIGNATURE = 99999;
@@ -100,7 +100,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		for (int i = 0; i < 5; i++) {
 			final int thisButtonId = i;
 
-			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[]{110, 88}, new int[]{219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
+			toggleButtons[i] = addRenderableWidget(new TogglePictureButton(leftPos + 100, topPos + 50 + (i + 1) * 17, 15, 15, BEACON_GUI, new int[] {110, 88}, new int[] {219, 219}, -1, 17, 17, 21, 22, 256, 256, 2, thisButton -> {
 				//TogglePictureButton already implicitly handles changing the button state in the case of isSmart, so only the data needs to be updated
 				if (!hasSmartModule) {
 					for (int otherButtonId = 0; otherButtonId < 5; otherButtonId++) {

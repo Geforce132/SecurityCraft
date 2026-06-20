@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SingleLensScreen extends AbstractContainerScreen<SingleLensMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/single_lens.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/single_lens.png");
 
 	public SingleLensScreen(SingleLensMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);

@@ -19,6 +19,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.Tesselator;
 
 import net.geforcemods.securitycraft.SCContent;
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.ICustomizable;
 import net.geforcemods.securitycraft.api.IExplosive;
 import net.geforcemods.securitycraft.api.ILockable;
@@ -68,11 +69,11 @@ import net.minecraftforge.client.gui.widget.ScrollPanel;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class SCManualScreen extends Screen implements StillValid {
-	private static final ResourceLocation PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_texture.png");
-	private static final ResourceLocation PAGE_WITH_SCROLL = new ResourceLocation("securitycraft:textures/gui/info_book_texture_special.png"); //for items without a recipe
-	private static final ResourceLocation TITLE_PAGE = new ResourceLocation("securitycraft:textures/gui/info_book_title_page.png");
-	private static final ResourceLocation ICONS = new ResourceLocation("securitycraft:textures/gui/info_book_icons.png");
-	private static final ResourceLocation VANILLA_BOOK = new ResourceLocation("textures/gui/book.png");
+	private static final ResourceLocation PAGE = SecurityCraft.resLoc("textures/gui/info_book_texture.png");
+	private static final ResourceLocation PAGE_WITH_SCROLL = SecurityCraft.resLoc("textures/gui/info_book_texture_special.png"); //for items without a recipe
+	private static final ResourceLocation TITLE_PAGE = SecurityCraft.resLoc("textures/gui/info_book_title_page.png");
+	private static final ResourceLocation ICONS = SecurityCraft.resLoc("textures/gui/info_book_icons.png");
+	private static final ResourceLocation VANILLA_BOOK = SecurityCraft.mcResLoc("textures/gui/book.png");
 	private static final int SUBPAGE_LENGTH = 1285;
 	private static int lastPage = -1;
 	private final MutableComponent intro1 = Utils.localize("gui.securitycraft:scManual.intro.1").setStyle(Style.EMPTY.withUnderlined(true));

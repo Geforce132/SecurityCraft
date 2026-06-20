@@ -82,6 +82,6 @@ public final class JadeDataProvider extends HudModHandler implements IWailaPlugi
 
 	@Override
 	public ResourceLocation getUid() {
-		return new ResourceLocation(SecurityCraft.MODID, "info");
+		return SecurityCraft.resLoc("info");
 	}
 }

@@ -182,14 +182,14 @@ import net.minecraftforge.registries.RegistryObject;
 @EventBusSubscriber(modid = SecurityCraft.MODID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ClientHandler {
 	public static final float EMPTY_STATE = 0.0F, UNKNOWN_STATE = 0.25F, NOT_LINKED_STATE = 0.5F, LINKED_STATE = 0.75F;
-	public static final ModelLayerLocation BULLET_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "bullet"), "main");
-	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "ims_bomb"), "main");
-	public static final ModelLayerLocation DISPLAY_CASE_LOCATION = new ModelLayerLocation(new ResourceLocation("securitycraft", "display_case"), "main");
-	public static final ModelLayerLocation GLOW_DISPLAY_CASE_LOCATION = new ModelLayerLocation(new ResourceLocation("securitycraft", "glow_display_case"), "main");
-	public static final ModelLayerLocation SENTRY_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sentry"), "main");
-	public static final ModelLayerLocation SECURE_REDSTONE_INTERFACE_DISH_LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "secure_redstone_interface_dish"), "main");
-	public static final ModelLayerLocation SECURITY_CAMERA_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "security_camera"), "main");
-	public static final ModelLayerLocation SONIC_SECURITY_SYSTEM_LOCATION = new ModelLayerLocation(new ResourceLocation(SecurityCraft.MODID, "sonic_security_system"), "main");
+	public static final ModelLayerLocation BULLET_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("bullet"), "main");
+	public static final ModelLayerLocation IMS_BOMB_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("ims_bomb"), "main");
+	public static final ModelLayerLocation DISPLAY_CASE_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("display_case"), "main");
+	public static final ModelLayerLocation GLOW_DISPLAY_CASE_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("glow_display_case"), "main");
+	public static final ModelLayerLocation SENTRY_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("sentry"), "main");
+	public static final ModelLayerLocation SECURE_REDSTONE_INTERFACE_DISH_LAYER_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("secure_redstone_interface_dish"), "main");
+	public static final ModelLayerLocation SECURITY_CAMERA_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("security_camera"), "main");
+	public static final ModelLayerLocation SONIC_SECURITY_SYSTEM_LOCATION = new ModelLayerLocation(SecurityCraft.resLoc("sonic_security_system"), "main");
 	public static final BlockEntityRenderDelegate DISGUISED_BLOCK_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static final BlockEntityRenderDelegate PROJECTOR_RENDER_DELEGATE = new BlockEntityRenderDelegate();
 	public static IGuiOverlay cameraOverlay;
@@ -239,7 +239,7 @@ public class ClientHandler {
 		rightArm.yRot = -0.5F;
 		leftArm.xRot = rightArm.xRot = -1.5F;
 	});
-	public static final ResourceLocation LINKING_STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "linking_state");
+	public static final ResourceLocation LINKING_STATE_PROPERTY = SecurityCraft.resLoc("linking_state");
 	private static ShaderInstance frameFeedShader;
 	private static BiFunction<ResourceLocation, Material, TextureAtlasSprite> textureGetter;
 
@@ -312,10 +312,10 @@ public class ClientHandler {
 		}
 
 		for (String mine : mines) {
-			registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, mine.replace("_ore", "") + "_mine"), new ResourceLocation(mine));
+			registerBlockMineModel(event, SecurityCraft.resLoc(mine.replace("_ore", "") + "_mine"), ResourceLocation.parse(mine));
 		}
 
-		registerBlockMineModel(event, new ResourceLocation(SecurityCraft.MODID, "quartz_mine"), new ResourceLocation("nether_quartz_ore"));
+		registerBlockMineModel(event, SecurityCraft.resLoc("quartz_mine"), SecurityCraft.mcResLoc("nether_quartz_ore"));
 	}
 
 	private static void registerDisguisedModel(Map<ResourceLocation, BakedModel> modelRegistry, BlockState state, Function<BakedModel, IDynamicBakedModel> modelFunction) {
@@ -559,7 +559,7 @@ public class ClientHandler {
 		ShaderInstance shader;
 
 		try {
-			shader = new ShaderInstance(event.getResourceProvider(), new ResourceLocation(SecurityCraft.MODID, "frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX);
+			shader = new ShaderInstance(event.getResourceProvider(), SecurityCraft.resLoc("frame_draw_fb_in_area"), DefaultVertexFormat.POSITION_TEX);
 		}
 		catch (IOException e) {
 			throw new IllegalStateException("Camera feed shader does not exist", e);

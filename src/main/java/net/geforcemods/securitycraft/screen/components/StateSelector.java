@@ -11,6 +11,7 @@ import org.joml.Vector3f;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.inventory.StateSelectorAccessMenu;
 import net.geforcemods.securitycraft.misc.FullbrightBlockAndTintGetter;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -55,7 +56,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.data.ModelData;
 
 public class StateSelector extends Screen implements GuiEventListener, NarratableEntry, ContainerListener {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/state_selector.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/state_selector.png");
 	private static final int PAGE_LENGTH = 5;
 	private static final float ROTATION_SENSITIVITY = 0.1F;
 	private static final Vector3f Y_DRAG_ROTATION_VECTOR = new Vector3f((float) (1.0D / Math.sqrt(2)), 0, (float) (1.0D / Math.sqrt(2)));

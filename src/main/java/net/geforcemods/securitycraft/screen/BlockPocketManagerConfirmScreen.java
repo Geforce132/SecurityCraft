@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.PacketDistributor;
 
 public class BlockPocketManagerConfirmScreen extends Screen {
-	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/block_pocket_manager_confirm.png");
+	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/block_pocket_manager_confirm.png");
 	private final BlockPocketManagerBlockEntity be;
 	private int imageWidth = 226, imageHeight = 60, leftPos, topPos;
 

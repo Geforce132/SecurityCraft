@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DisguiseModuleScreen extends AbstractContainerScreen<DisguiseModuleMenu> implements IHasExtraAreas {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/customize1.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/customize1.png");
 	private final Component disguiseModuleName = Utils.localize(SCContent.DISGUISE_MODULE.get().getDescriptionId());
 	private StateSelector stateSelector;
 

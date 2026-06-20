@@ -101,7 +101,7 @@ public class KeypadChestBlockEntity extends ChestBlockEntity implements IPasscod
 			String savedPreviousChest = tag.getString("previous_chest");
 
 			if (!savedPreviousChest.isBlank()) {
-				ResourceLocation parsedPreviousChest = new ResourceLocation(savedPreviousChest);
+				ResourceLocation parsedPreviousChest = ResourceLocation.parse(savedPreviousChest);
 
 				if (parsedPreviousChest.getPath() != null && !parsedPreviousChest.getPath().isBlank())
 					previousChest = parsedPreviousChest;

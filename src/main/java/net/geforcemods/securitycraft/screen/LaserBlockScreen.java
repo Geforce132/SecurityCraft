@@ -20,7 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class LaserBlockScreen extends AbstractContainerScreen<LaserBlockMenu> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/laser_block.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/laser_block.png");
 	private final boolean hasSmartModule;
 	private Component smartModuleTooltip;
 	private final LaserBlockBlockEntity be;

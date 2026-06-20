@@ -22,7 +22,7 @@ import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class SetPasscodeScreen extends Screen implements StillValid {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
 	private int leftPos;

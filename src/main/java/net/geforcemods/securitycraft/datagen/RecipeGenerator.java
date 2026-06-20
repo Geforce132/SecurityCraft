@@ -1442,7 +1442,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(dye)
 		.requires(SCTags.Items.REINFORCED_WOOL_CARPETS)
 		.unlockedBy("has_wool_carpet", has(SCTags.Items.REINFORCED_WOOL_CARPETS))
-		.save(consumer, new ResourceLocation(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
+		.save(consumer, ResourceLocation.parse(Utils.getRegistryName(carpet.asItem()).toString() + "_from_dye"));
 		//@formatter:on
 	}
 
@@ -1531,7 +1531,7 @@ public class RecipeGenerator extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, keycard)
 		.requires(keycard)
 		.unlockedBy("has_keycard", has(keycard))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(keycard.asItem()).getPath() + "_reset"));
+		.save(consumer, SecurityCraft.resLoc(Utils.getRegistryName(keycard.asItem()).getPath() + "_reset"));
 		//@formatter:on
 	}
 
@@ -1648,7 +1648,7 @@ public class RecipeGenerator extends RecipeProvider {
 		recipe = new ShapelessRecipeBuilder.Result(id,
 				resultItem, amount, group, craftingBookCategory, ingredients.stream().map(Ingredient::of).collect(Collectors.toList()),
 				Advancement.Builder.advancement().addCriterion("has_item", criterion),
-				new ResourceLocation(id.getNamespace(), "recipes/" + recipeCategory.getFolderName() + "/" + id.getPath()));
+				ResourceLocation.parse(id.getNamespace(), "recipes/" + recipeCategory.getFolderName() + "/" + id.getPath()));
 		ConditionalRecipe.builder().addCondition(condition).addRecipe(recipe).build(consumer, id);
 		//@formatter:on
 	}
@@ -1721,7 +1721,7 @@ public class RecipeGenerator extends RecipeProvider {
 		.define('G', SCContent.REINFORCED_GLASS_PANE.get())
 		.define('D', dye)
 		.unlockedBy("has_glass", has(Tags.Items.GLASS))
-		.save(consumer, new ResourceLocation(SecurityCraft.MODID, Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
+		.save(consumer, SecurityCraft.resLoc(Utils.getRegistryName(result.asItem()).getPath() + "_from_dye"));
 		ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result, 16)
 		.group("securitycraft:reinforced_glass_panes")
 		.pattern("GGG")

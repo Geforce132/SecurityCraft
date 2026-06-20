@@ -22,7 +22,7 @@ public abstract class BaseCategory implements IRecipeCategory<ReinforcerRecipe> 
 	private final int width = 126, height = 18;
 
 	protected BaseCategory(IGuiHelper helper) {
-		background = helper.createDrawable(new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/universal_block_reinforcer.png"), 25, 19, width, height);
+		background = helper.createDrawable(SecurityCraft.resLoc("textures/gui/container/universal_block_reinforcer.png"), 25, 19, width, height);
 		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_3.get()));
 	}
 

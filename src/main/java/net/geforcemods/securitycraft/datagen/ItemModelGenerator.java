@@ -230,7 +230,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	public ItemModelBuilder flatReinforcedBlockItem(Block block, String texturePath) {
 		generatedBlocks.add(block);
-		return singleTexture(name(block), mcLoc("item/generated"), "layer0", new ResourceLocation(texturePath));
+		return singleTexture(name(block), mcLoc("item/generated"), "layer0", ResourceLocation.parse(texturePath));
 	}
 
 	public ItemModelBuilder reinforcedStainedPane(Block block) {
@@ -250,7 +250,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 
 	public ItemModelBuilder reinforcedWallInventory(Block block, String textureName) {
 		generatedBlocks.add(block);
-		return uncheckedSingleTexture(Utils.getRegistryName(block).toString(), modBlock("reinforced_wall_inventory"), "wall", new ResourceLocation("block/" + textureName));
+		return uncheckedSingleTexture(Utils.getRegistryName(block).toString(), modBlock("reinforced_wall_inventory"), "wall", SecurityCraft.mcResLoc("block/" + textureName));
 	}
 
 	public ItemModelBuilder reinforcedBlockInventory(Block block) {

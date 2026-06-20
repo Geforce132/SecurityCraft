@@ -333,7 +333,7 @@ public class ConfigHandler {
 				int amplifier = Integer.parseInt(split[2]);
 
 				if (validateValue(duration, entry) && validateValue(amplifier, entry)) {
-					ResourceLocation effectLocation = new ResourceLocation(split[0]);
+					ResourceLocation effectLocation = ResourceLocation.parse(split[0]);
 
 					if (!ForgeRegistries.MOB_EFFECTS.containsKey(effectLocation)) {
 						SecurityCraft.LOGGER.warn("Effect \"{}\" does not exist, skipping", effectLocation);

@@ -43,7 +43,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class AlarmScreen extends Screen implements StillValid {
-	private static final ResourceLocation GUI_TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/alarm.png");
+	private static final ResourceLocation GUI_TEXTURE = SecurityCraft.resLoc("textures/gui/container/alarm.png");
 	protected final AlarmBlockEntity be;
 	private final boolean hasSmartModule;
 	private final Component smartModuleTooltip;

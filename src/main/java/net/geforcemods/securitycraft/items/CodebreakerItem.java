@@ -26,7 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 public class CodebreakerItem extends Item {
-	public static final ResourceLocation STATE_PROPERTY = new ResourceLocation(SecurityCraft.MODID, "codebreaker_state");
+	public static final ResourceLocation STATE_PROPERTY = SecurityCraft.resLoc("codebreaker_state");
 	public static final String WORKING = "working", LAST_USED_TIME = "last_used_time", WAS_SUCCESSFUL = "was_successful";
 
 	public CodebreakerItem(Item.Properties properties) {

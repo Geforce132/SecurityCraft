@@ -59,9 +59,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class SCClientEventHandler {
-	public static final ResourceLocation CAMERA_DASHBOARD = new ResourceLocation("securitycraft:textures/gui/camera/camera_dashboard.png");
-	public static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
-	public static final ResourceLocation NIGHT_VISION = new ResourceLocation("textures/mob_effect/night_vision.png");
+	public static final ResourceLocation CAMERA_DASHBOARD = SecurityCraft.resLoc("textures/gui/camera/camera_dashboard.png");
+	public static final ResourceLocation NIGHT_VISION = SecurityCraft.mcResLoc("textures/mob_effect/night_vision.png");
 	public static final ItemStack REDSTONE = new ItemStack(Items.REDSTONE);
 	private static final Component REDSTONE_NOTE = Utils.localize("gui.securitycraft:camera.toggleRedstoneNote");
 	private static final Component SMART_MODULE_NOTE = Utils.localize("gui.securitycraft:camera.smartModuleNote");

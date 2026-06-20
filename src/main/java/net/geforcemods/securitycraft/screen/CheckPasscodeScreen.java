@@ -27,7 +27,7 @@ import net.minecraft.world.entity.vehicle.ContainerEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class CheckPasscodeScreen extends Screen implements StillValid {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/check_passcode.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/check_passcode.png");
 	private static final Component COOLDOWN_TEXT_1 = Component.translatable("gui.securitycraft:passcode.cooldown1");
 	private int cooldownText1XPos;
 	private IPasscodeProtected passcodeProtected;

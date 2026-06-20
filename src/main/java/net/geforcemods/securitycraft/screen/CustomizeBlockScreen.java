@@ -37,7 +37,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlockMenu> implements IHasExtraAreas, ContainerListener {
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation BEACON_GUI = SecurityCraft.mcResLoc("textures/gui/container/beacon.png");
 	private final List<Rect2i> extraAreas = new ArrayList<>();
 	private final int maxNumberOfModules;
 	private final ResourceLocation texture;
@@ -50,7 +50,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 		super(menu, inv, title);
 		moduleInv = menu.moduleInv;
 		maxNumberOfModules = moduleInv.getMaxNumberOfModules();
-		texture = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/customize" + maxNumberOfModules + ".png");
+		texture = SecurityCraft.resLoc("textures/gui/container/customize" + maxNumberOfModules + ".png");
 		descriptionButtons = new PictureButton[maxNumberOfModules];
 		menu.addSlotListener(this);
 

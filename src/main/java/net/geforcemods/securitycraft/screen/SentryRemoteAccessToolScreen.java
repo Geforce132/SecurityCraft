@@ -33,8 +33,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.PacketDistributor;
 
 public class SentryRemoteAccessToolScreen extends Screen implements StillValid {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/srat.png");
-	private static final ResourceLocation SENTRY_ICONS = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/sentry_icons.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/srat.png");
+	private static final ResourceLocation SENTRY_ICONS = SecurityCraft.resLoc("textures/gui/container/sentry_icons.png");
 	private final Component modifyAll = Utils.localize("gui.securitycraft:srat.modifyAll");
 	private ItemStack srat;
 	private Button[][] guiButtons = new Button[12][3]; // 12 sentries, 3 actions (mode, targets, unbind)

@@ -141,7 +141,7 @@ public class KeypadBarrelBlockEntity extends RandomizableContainerBlockEntity im
 			String savedPreviousBarrel = tag.getString("previous_barrel");
 
 			if (!savedPreviousBarrel.isBlank()) {
-				ResourceLocation parsedPreviousBarrel = new ResourceLocation(savedPreviousBarrel);
+				ResourceLocation parsedPreviousBarrel = ResourceLocation.parse(savedPreviousBarrel);
 
 				if (parsedPreviousBarrel.getPath() != null && !parsedPreviousBarrel.getPath().isBlank())
 					previousBarrel = parsedPreviousBarrel;

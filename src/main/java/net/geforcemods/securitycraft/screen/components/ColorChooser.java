@@ -27,7 +27,7 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.widget.ForgeSlider;
 
 public class ColorChooser extends Screen implements GuiEventListener, NarratableEntry {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/gui/container/color_chooser.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/color_chooser.png");
 	private static final int COLOR_FIELD_SIZE = 75;
 	protected boolean disabled = true;
 	private final int xStart, yStart;

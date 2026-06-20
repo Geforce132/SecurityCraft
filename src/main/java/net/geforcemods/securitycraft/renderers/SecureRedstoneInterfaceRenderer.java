@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<SecureRedstoneInterfaceBlockEntity> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(SecurityCraft.MODID, "textures/block/secure_redstone_interface_dish.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/block/secure_redstone_interface_dish.png");
 	private final SecureRedstoneInterfaceDishModel model;
 
 	public SecureRedstoneInterfaceRenderer(BlockEntityRendererProvider.Context ctx) {

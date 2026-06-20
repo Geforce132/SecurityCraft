@@ -47,8 +47,8 @@ import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class EditModuleScreen extends Screen implements StillValid {
 	private static CompoundTag savedModule;
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/edit_module.png");
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/edit_module.png");
+	private static final ResourceLocation BEACON_GUI = SecurityCraft.mcResLoc("textures/gui/container/beacon.png");
 	private final Component editModule = Utils.localize("gui.securitycraft:editModule");
 	private final ItemStack module;
 	private final List<PlayerTeam> availableTeams;

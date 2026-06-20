@@ -22,7 +22,7 @@ public class BriefcasePasscodeScreen extends Screen implements StillValid {
 	public static final String UP_ARROW = "\u2191";
 	public static final String RIGHT_ARROW = "\u2192";
 	public static final String DOWN_ARROW = "\u2193";
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final boolean isSetup;
 	private int imageWidth = 176;
 	private int imageHeight = 166;

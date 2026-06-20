@@ -12,6 +12,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
+import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.screen.components.SSSConnectionList.ConnectionAccessor;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class SSSConnectionList<T extends Screen & ConnectionAccessor> extends ScrollPanel {
-	private static final ResourceLocation BEACON_GUI = new ResourceLocation("textures/gui/container/beacon.png");
+	private static final ResourceLocation BEACON_GUI = SecurityCraft.mcResLoc("textures/gui/container/beacon.png");
 	private static final int SLOT_HEIGHT = 12;
 	private final T parent;
 	private final List<ConnectionInfo> connectionInfo = new ArrayList<>();

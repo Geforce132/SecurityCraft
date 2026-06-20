@@ -32,7 +32,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.gui.widget.ScrollPanel;
 
 public class UsernameLoggerScreen extends Screen implements StillValid {
-	private static final ResourceLocation TEXTURE = new ResourceLocation("securitycraft:textures/gui/container/blank.png");
+	private static final ResourceLocation TEXTURE = SecurityCraft.resLoc("textures/gui/container/blank.png");
 	private final Component logged = Utils.localize("gui.securitycraft:logger.logged");
 	private int imageWidth = 176;
 	private int imageHeight = 166;
