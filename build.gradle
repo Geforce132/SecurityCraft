@@ -122,9 +122,9 @@ repositories {
 dependencies {
 	compileOnly "curse.maven:ftb-library-forge-404465:${ftb_library}" //FTB Teams dependency
 	compileOnly "curse.maven:ftb-teams-forge-404468:${ftb_teams}"
-	compileOnly "curse.maven:jei-238222:${jei}"
+	implementation "curse.maven:jei-238222:${jei}"
     //compileOnly "curse.maven:the-one-probe-245211:${top}" //Incompatible at compile time because of ResourceLocation -> Identifier
-	compileOnly "curse.maven:jade-324717:${jade}"
+	implementation "curse.maven:jade-324717:${jade}"
 	compileOnly "curse.maven:betterf3-401648:${betterf3}"
 	compileOnly "curse.maven:cloth-config-348521:${cloth_config}" //BetterF3 dependency
 	compileOnly "curse.maven:wthit-forge-455982:${wthit}"
@@ -134,7 +134,7 @@ dependencies {
 	// The actual mod jar is jarjar'd into the Modrinth jar, but NeoForge doesn't load it, so the mod has to be added from CaffeineMCs' maven separately
 	compileOnly "maven.modrinth:sodium:mc${sodium_mc}-${sodium_self}-neoforge"
 	compileOnly "net.caffeinemc:sodium-neoforge-mod:${sodium_self}+mc${sodium_mc}"
-	compileOnly "curse.maven:distant-horizons-508933:${distant_horizons}"
+	implementation "curse.maven:distant-horizons-508933:${distant_horizons}"
 	compileOnly "curse.maven:curios-309927:${curios}"
 }
 
