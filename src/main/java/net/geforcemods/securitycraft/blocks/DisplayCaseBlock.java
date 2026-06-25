@@ -117,7 +117,7 @@ public class DisplayCaseBlock extends OwnableBlock implements SimpleWaterloggedB
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof DisplayCaseBlockEntity be) {
 			ItemStack heldStack = player.getItemInHand(hand);
 
-			if (be.isLocked() && be.disableInteractionWhenLocked(level, pos, player)) {
+			if (be.isLockedBySSS() && be.disableInteractionWhenLocked(level, pos, player)) {
 				MutableComponent blockName = Utils.localize(getDescriptionId());
 
 				PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);

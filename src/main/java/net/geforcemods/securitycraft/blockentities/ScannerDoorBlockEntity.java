@@ -59,7 +59,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 			if (!(entity instanceof Player player) || (!isModuleEnabled(ModuleType.DISGUISE) && facingAxis != hitResult.getDirection().getAxis()))
 				return false;
 
-			if (!isLocked() && !isDisabled()) {
+			if (!isLockedBySSS() && !isDisabled()) {
 				Owner viewingPlayer;
 
 				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
@@ -87,7 +87,7 @@ public class ScannerDoorBlockEntity extends SpecialDoorBlockEntity implements IV
 					PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId()), Utils.localize("messages.securitycraft:retinalScanner.hello", viewingPlayer.getName()), ChatFormatting.GREEN);
 			}
 			else {
-				if (isLocked() && sendsMessages()) {
+				if (isLockedBySSS() && sendsMessages()) {
 					MutableComponent blockName = Utils.localize(SCContent.SCANNER_DOOR_ITEM.get().getDescriptionId());
 
 					PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);
