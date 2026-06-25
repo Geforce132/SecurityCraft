@@ -12,7 +12,7 @@ issueTrackerURL="http://github.com/Geforce132/SecurityCraft/issues"
 	description='''Adds a load of things to keep your house safe with and defend yourself from attackers.'''
 	displayURL="https://discord.gg/U8DvBAW"
 	credits="Thanks to all of you guys for your support!"
-	authors="Geforce132, bl4ckscor3, Redstone_Dubstep"
+	authors="Geforce, bl4ckscor3, Redstone_Dubstep, and ChainmailPickaxe"
 
 [[dependencies.securitycraft]]
     modId="forge"
