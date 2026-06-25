@@ -328,7 +328,7 @@ public class SCEventHandler {
 		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (be instanceof ILockable lockable && lockable.isLocked() && lockable.disableInteractionWhenLocked(level, pos, player) && !player.isShiftKeyDown()) {
+		if (be instanceof ILockable lockable && lockable.isLockedBySSS() && lockable.disableInteractionWhenLocked(level, pos, player) && !player.isShiftKeyDown()) {
 			if (event.getHand() == InteractionHand.MAIN_HAND) {
 				MutableComponent blockName = Utils.localize(block.getDescriptionId());
 
