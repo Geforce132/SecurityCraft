@@ -1,4 +1,4 @@
---------------------------Changelog for the next version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.2 of SecurityCraft--------------------------
 
 - New: Secure Trading Station
 - New: The Keycard Reader, Keypad, and Retinal Scanner can now be placed facing up or down (Thanks CYB3RCA4T!)
