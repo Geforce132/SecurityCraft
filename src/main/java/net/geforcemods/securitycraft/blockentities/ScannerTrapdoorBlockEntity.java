@@ -60,7 +60,7 @@ public class ScannerTrapdoorBlockEntity extends DisguisableBlockEntity implement
 			if (!(entity instanceof Player player) || (!isModuleEnabled(ModuleType.DISGUISE) && !(state.getValue(TrapDoorBlock.OPEN) ? hitResult.getDirection().getAxis() == state.getValue(HorizontalDirectionalBlock.FACING).getAxis() : hitResult.getDirection().getAxis() == Axis.Y)))
 				return false;
 
-			if (!isLocked() && !isDisabled()) {
+			if (!isLockedBySSS() && !isDisabled()) {
 				Owner viewingPlayer;
 
 				if (ConfigHandler.SERVER.trickScannersWithPlayerHeads.get() && player.getItemBySlot(EquipmentSlot.HEAD).getItem() == Items.PLAYER_HEAD)
@@ -86,7 +86,7 @@ public class ScannerTrapdoorBlockEntity extends DisguisableBlockEntity implement
 					level.scheduleTick(worldPosition, SCContent.SCANNER_TRAPDOOR.get(), getSignalLength());
 			}
 			else {
-				if (isLocked() && sendMessage.get()) {
+				if (isLockedBySSS() && sendMessage.get()) {
 					MutableComponent blockName = Utils.localize(SCContent.SCANNER_TRAPDOOR.get().getDescriptionId());
 
 					PlayerUtils.sendMessageToPlayer(player, blockName, Utils.localize("messages.securitycraft:sonic_security_system.locked", blockName), ChatFormatting.DARK_RED, false);

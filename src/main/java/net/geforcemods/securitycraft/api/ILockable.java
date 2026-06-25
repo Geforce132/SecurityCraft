@@ -27,7 +27,7 @@ public interface ILockable {
 	/**
 	 * @return If this BlockEntity is currently being locked down by a Sonic Security System
 	 */
-	public default boolean isLocked() {
+	public default boolean isLockedBySSS() {
 		BlockEntity thisBe = getThisBlockEntity();
 		List<SonicSecuritySystemBlockEntity> sonicSecuritySystems = BlockEntityTracker.SONIC_SECURITY_SYSTEM.getBlockEntitiesInRange(thisBe.getLevel(), thisBe.getBlockPos());
 
