@@ -62,7 +62,7 @@
 - Removed: Server configuration options "reinforcedBlockTint" and "forceReinforcedBlockTint"
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
-- Misc.: The Inventory Scanner has a new look 
+- Misc.: The Inventory Scanner has a new look
 
 --------------------------Changelog for v1.10.1-beta3 of SecurityCraft--------------------------
 
