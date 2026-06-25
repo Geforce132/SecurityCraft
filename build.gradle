@@ -122,11 +122,11 @@ tasks.named('jar', Jar).configure {
 	archiveFileName = "[${project.mc_version}] SecurityCraft v${version}.jar"
 	manifest {
 		attributes(["Specification-Title": "SecurityCraft",
-					"Specification-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep",
+					"Specification-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep, and ChainmailPickaxe",
 					"Specification-Version": "${version}",
 					"Implementation-Title": "SecurityCraft",
 					"Implementation-Version": "${version}",
-					"Implementation-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep"],)
+					"Implementation-Vendor": "Geforce, bl4ckscor3, Redstone_Dubstep, and ChainmailPickaxe"],)
 	}
 }
 
