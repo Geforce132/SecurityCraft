@@ -1,4 +1,4 @@
---------------------------Changelog for the next version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.2-beta1 of SecurityCraft--------------------------
 
 - New: Reinforced block variants for all blocks in the new Sulfur and Cinnabar block sets
 - New: Reinforced Potent Sulfur
