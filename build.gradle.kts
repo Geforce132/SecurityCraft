@@ -125,11 +125,11 @@ tasks.withType<Jar> {
 	archiveFileName = "[$minecraftVersion] SecurityCraft v$version.jar"
 	manifest {
 		attributes(mapOf("Specification-Title" to "SecurityCraft",
-				"Specification-Vendor" to "Geforce, bl4ckscor3, Redstone_Dubstep",
+				"Specification-Vendor" to "Geforce, bl4ckscor3, Redstone_Dubstep, and ChainmailPickaxe",
 				"Specification-Version" to "$version",
 				"Implementation-Title" to "SecurityCraft",
 				"Implementation-Version" to "$version",
-				"Implementation-Vendor" to "Geforce, bl4ckscor3, Redstone_Dubstep"))
+				"Implementation-Vendor" to "Geforce, bl4ckscor3, Redstone_Dubstep, and ChainmailPickaxe"))
 	}
 }
 
