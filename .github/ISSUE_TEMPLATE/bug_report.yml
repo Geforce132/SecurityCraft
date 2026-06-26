@@ -42,7 +42,7 @@ body:
     id: securitycraft-version
     attributes:
       label: SecurityCraft version
-      description: Which version of SecurityCraft are you using?
+      description: Which version of SecurityCraft are you using? (Including beta versions)
       options:
         - v1.10.2
         - v1.10.1
