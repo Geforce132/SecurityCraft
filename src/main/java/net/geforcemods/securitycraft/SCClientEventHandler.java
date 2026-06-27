@@ -198,7 +198,7 @@ public class SCClientEventHandler {
 	public static void onPlayerTickPre(PlayerTickEvent.Pre event) {
 		Minecraft mc = Minecraft.getInstance();
 
-		if (mc.gui.screen() instanceof StillValid screen && !screen.stillValid(event.getEntity()))
+		if (event.getEntity() == mc.player && mc.gui.screen() instanceof StillValid screen && !screen.stillValid(event.getEntity()))
 			mc.gui.setScreen(null);
 	}
 
