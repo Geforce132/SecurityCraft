@@ -103,11 +103,12 @@ public class SCClientEventHandler {
 	@SubscribeEvent
 	public static void onClientTickPost(ClientTickEvent.Post event) {
 		Minecraft mc = Minecraft.getInstance();
+
 		if (cameraInfoMessageTime >= 0)
 			cameraInfoMessageTime--;
 
 		//move the GUI closing mechanism to onClientTickPost
-		if (mc.player != null && mc.gui.screen() instanceof StillValid screen && !screen.stillValid(mc.player))
+		if (mc != null && mc.gui.screen() instanceof StillValid screen && !screen.stillValid(mc.player))
 			mc.gui.setScreen(null);
 	}
 
