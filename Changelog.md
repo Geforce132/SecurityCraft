@@ -51,7 +51,7 @@
 - Removed: Indicator in the camera select screen that shows when no Redstone Module is installed
 - Misc.: The textures for some items and the SecurityCraft Manual UI have been updated
 - Misc.: The Inventory Scanner has a new look
-- Misc.: The minimum required Forge version is now 47.3.19
+- Misc.: The minimum required Forge version is now 47.3.30
 
 --------------------------Changelog for v1.10.1 of SecurityCraft--------------------------
 
