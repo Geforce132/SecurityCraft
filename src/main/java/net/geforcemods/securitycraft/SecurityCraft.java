@@ -55,7 +55,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -83,12 +82,12 @@ public class SecurityCraft {
 		return modList.isLoaded("embeddium") || modList.isLoaded("rubidium") || modList.isLoaded("sodium");
 	});
 
-	public SecurityCraft() {
-		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+	public SecurityCraft(FMLJavaModLoadingContext context) {
+		IEventBus modEventBus = context.getModEventBus();
 
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
+		context.registerConfig(ModConfig.Type.CLIENT, ConfigHandler.CLIENT_SPEC);
+		context.registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);
 		SCContent.COMMAND_ARGUMENT_TYPES.register(modEventBus);
