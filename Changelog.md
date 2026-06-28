@@ -1,3 +1,7 @@
+--------------------------Changelog for the next version of SecurityCraft--------------------------
+
+- Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
+
 --------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
 
 - Fix: Some of SecurityCraft's UIs immediately close and/or cause other players to get kicked
