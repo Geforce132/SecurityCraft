@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.10.2.1-beta1 of SecurityCraft--------------------------
+
+- Fix: Some of SecurityCraft's UIs immediately close and/or cause other players to get kicked
+
 --------------------------Changelog for v1.10.2-beta1 of SecurityCraft--------------------------
 
 - New: Reinforced block variants for all blocks in the new Sulfur and Cinnabar block sets
