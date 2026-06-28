@@ -107,7 +107,6 @@ public class SCClientEventHandler {
 		if (cameraInfoMessageTime >= 0)
 			cameraInfoMessageTime--;
 
-		//move the GUI closing mechanism to onClientTickPost
 		if (mc != null && mc.gui.screen() instanceof StillValid screen && !screen.stillValid(mc.player))
 			mc.gui.setScreen(null);
 	}
