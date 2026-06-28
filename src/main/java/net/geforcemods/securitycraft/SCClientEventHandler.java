@@ -51,7 +51,6 @@ import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.level.ChunkEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -82,8 +81,15 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onClientTickPost(ClientTickEvent event) {
-		if (event.phase == Phase.END && cameraInfoMessageTime >= 0)
-			cameraInfoMessageTime--;
+		if (event.phase == Phase.END) {
+			Minecraft mc = Minecraft.getInstance();
+
+			if (cameraInfoMessageTime >= 0)
+				cameraInfoMessageTime--;
+
+			if (mc != null && mc.screen instanceof StillValid screen && !screen.stillValid(mc.player))
+				mc.setScreen(null);
+		}
 	}
 
 	@SubscribeEvent
@@ -152,16 +158,6 @@ public class SCClientEventHandler {
 		FrameFeedHandler.removeAllFeeds();
 		CameraClientChunkCacheExtension.clear();
 		CameraViewAreaExtension.clear();
-	}
-
-	@SubscribeEvent
-	public static void onPlayerTickPre(PlayerTickEvent event) {
-		if (event.phase == Phase.START) {
-			Minecraft mc = Minecraft.getInstance();
-
-			if (mc.screen instanceof StillValid screen && !screen.stillValid(event.player))
-				mc.setScreen(null);
-		}
 	}
 
 	public static void cameraOverlay(ForgeGui gui, GuiGraphics guiGraphics, float partialTicks, int width, int height) {
