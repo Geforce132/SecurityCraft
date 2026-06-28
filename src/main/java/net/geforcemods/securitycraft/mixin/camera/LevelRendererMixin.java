@@ -21,7 +21,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 
-@Mixin(LevelRenderer.class)
+@Mixin(value = LevelRenderer.class, priority = 1100)
 public class LevelRendererMixin {
 	@Shadow
 	private ChunkRenderDispatcher chunkRenderDispatcher;
