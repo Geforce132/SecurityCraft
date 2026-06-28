@@ -8,7 +8,7 @@ plugins {
 base {
 	archivesName.set("securitycraft")
 	group = "net.geforcemods.securitycraft"
-	version = "1.10.2"
+	version = "1.10.2.1"
 }
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))

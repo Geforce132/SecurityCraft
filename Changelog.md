@@ -1,3 +1,7 @@
+--------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
+
+- Fix: Some of SecurityCraft's UIs immediately close and/or cause other players to get kicked
+
 --------------------------Changelog for v1.10.2 of SecurityCraft--------------------------
 
 - New: Secure Trading Station
