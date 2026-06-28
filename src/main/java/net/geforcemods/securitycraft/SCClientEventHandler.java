@@ -59,7 +59,6 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
@@ -92,8 +91,13 @@ public class SCClientEventHandler {
 
 	@SubscribeEvent
 	public static void onClientTickPost(ClientTickEvent.Post event) {
+		Minecraft mc = Minecraft.getInstance();
+
 		if (cameraInfoMessageTime >= 0)
 			cameraInfoMessageTime--;
+
+		if (mc != null && mc.screen instanceof StillValid screen && !screen.stillValid(mc.player))
+			mc.setScreen(null);
 	}
 
 	@SubscribeEvent
@@ -181,14 +185,6 @@ public class SCClientEventHandler {
 				}, flag, stack.getComponents());
 			}
 		}
-	}
-
-	@SubscribeEvent
-	public static void onPlayerTickPre(PlayerTickEvent.Pre event) {
-		Minecraft mc = Minecraft.getInstance();
-
-		if (mc.screen instanceof StillValid screen && !screen.stillValid(event.getEntity()))
-			mc.setScreen(null);
 	}
 
 	public static void cameraOverlay(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
