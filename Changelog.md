@@ -1,6 +1,7 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
 - Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
+- Fix: Reinforced, Keypad, and Scanner Trapdoors show up incorrectly when open and facing east or west (Thanks CYB3RCA4T!)
 
 --------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
 
