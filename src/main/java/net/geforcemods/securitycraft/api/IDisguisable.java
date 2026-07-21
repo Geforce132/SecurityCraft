@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public interface IDisguisable {
 	public default ItemStack getDisguisedStack(BlockGetter level, BlockPos pos) {
-		if (level != null && level.getBlockEntity(pos) instanceof IModuleInventory be) {
+		if (level != null && pos != null && level.getBlockEntity(pos) instanceof IModuleInventory be) {
 			ItemStack stack = be.isModuleEnabled(ModuleType.DISGUISE) ? be.getModule(ModuleType.DISGUISE) : ItemStack.EMPTY;
 
 			if (!stack.isEmpty()) {
