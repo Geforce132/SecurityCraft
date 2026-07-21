@@ -582,7 +582,7 @@ public class ClientHandler {
 		initTint();
 		blocksWithReinforcedTint.forEach((block, tint) -> event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 0)
-				return mixWithReinforcedTintIfEnabled(tint, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
+				return mixWithReinforcedTintIfEnabled(tint, safeGetBlockEntity(level, pos) instanceof IOwnable ownable ? ownable : null);
 			else
 				return 0xFFFFFFFF;
 		}, block));
@@ -605,7 +605,7 @@ public class ClientHandler {
 			}
 
 			if (block instanceof IReinforcedBlock)
-				return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
+				return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, safeGetBlockEntity(level, pos) instanceof IOwnable ownable ? ownable : null);
 			else
 				return 0xFFFFFFFF;
 		};
@@ -616,16 +616,16 @@ public class ClientHandler {
 			if (tintIndex == 1 && !state.getValue(SnowyDirtBlock.SNOWY)) {
 				int grassTint = level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.get(0.5D, 1.0D);
 
-				return mixWithReinforcedTintIfEnabled(grassTint, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
+				return mixWithReinforcedTintIfEnabled(grassTint, safeGetBlockEntity(level, pos) instanceof IOwnable ownable ? ownable : null);
 			}
 
-			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, safeGetBlockEntity(level, pos) instanceof IOwnable ownable ? ownable : null);
 		}, SCContent.REINFORCED_GRASS_BLOCK.get());
 		event.register((state, level, pos, tintIndex) -> {
 			if (tintIndex == 1)
 				return level != null && pos != null ? BiomeColors.getAverageWaterColor(level, pos) : -1;
 
-			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, level.getBlockEntity(pos) instanceof IOwnable ownable ? ownable : null);
+			return mixWithReinforcedTintIfEnabled(0xFFFFFFFF, safeGetBlockEntity(level, pos) instanceof IOwnable ownable ? ownable : null);
 		}, SCContent.REINFORCED_WATER_CAULDRON.get());
 		event.register((state, level, pos, tintIndex) -> {
 			Direction direction = LaserFieldBlock.getFieldDirection(state);
@@ -640,16 +640,18 @@ public class ClientHandler {
 	}
 
 	public static int iterateFields(BlockAndTintGetter level, BlockPos pos, Direction direction, int range, Block block, Predicate<BlockEntity> beTest, Function<BlockEntity, ItemStack> lensGetter) {
-		try {
-			return iterateFieldsInternal(level, pos, direction, range, block, beTest, lensGetter);
-		}
-		catch (Exception e1) {
-			direction = direction.getOpposite();
-
+		if (level != null && pos != null) {
 			try {
 				return iterateFieldsInternal(level, pos, direction, range, block, beTest, lensGetter);
 			}
-			catch (Exception e2) {}
+			catch (Exception e1) {
+				direction = direction.getOpposite();
+
+				try {
+					return iterateFieldsInternal(level, pos, direction, range, block, beTest, lensGetter);
+				}
+				catch (Exception e2) {}
+			}
 		}
 
 		return -1;
@@ -855,5 +857,12 @@ public class ClientHandler {
 
 	private static ModelBakery.TextureGetter textureGetter() {
 		return textureGetter;
+	}
+
+	private static BlockEntity safeGetBlockEntity(BlockAndTintGetter level, BlockPos pos) {
+		if (level != null && pos != null)
+			return level.getBlockEntity(pos);
+		else
+			return null;
 	}
 }
