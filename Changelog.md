@@ -1,5 +1,6 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
+- New: Hungarian translation (Thanks morpheus133!)
 - Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
 - Fix: Retinal Scanners, Scanner Doors, and Scanner Trapdoors send messages to players who are not the owner or allowlisted, even if they're configured to not send messages
 - Fix: Crashes
