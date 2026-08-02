@@ -424,6 +424,10 @@ public class SecureTradingStationBlockEntity extends DisguisableBlockEntity impl
 
 	public void dropContents() {
 		//First 4 slots (0-3) are the payment & reward slots
+		for (int i = 0; i < 4; i++) {
+			getContents().set(i, ItemStack.EMPTY);
+		}
+
 		for (int i = 4; i < getContainerSize(); i++) {
 			Containers.dropItemStack(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), getContents().get(i));
 		}
