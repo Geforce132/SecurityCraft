@@ -81,7 +81,6 @@ public class AlarmScreen extends Screen implements StillValid {
 		soundList = addRenderableWidget(new SoundScrollList(minecraft, imageWidth - 10, imageHeight - 105, topPos + 40, leftPos + 5));
 		searchBar = addRenderableWidget(new EditBox(font, leftPos + 30, topPos + 20, imageWidth - 60, 15, searchText));
 		searchBar.setHint(searchText);
-		searchBar.setFilter(s -> s.matches("[a-zA-Z0-9\\._]*"));
 		searchBar.setResponder(soundList::updateFilteredEntries);
 		addRenderableWidget(Button.builder(Utils.localize("menu.options"), b -> Minecraft.getInstance().gui.pushScreenLayer(new AlarmOptionsScreen(this))).pos(leftPos + imageWidth / 2 - 170 / 2, topPos + 215).size(170, 20).build());
 	}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,15 +72,16 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 
 	@Override
 	protected void init() {
-		Predicate<String> boxFilter = string -> string.isEmpty() || StringUtils.isNumeric(string);
 		Function<EditBox, Consumer<String>> boxResponder = box -> string -> {
-			if (!string.isEmpty()) {
+			if (StringUtils.isNumeric(string)) {
 				int number = Integer.parseInt(string);
 				ToIntFunction<EditBox> parsingFunction = editBox -> {
-					if (editBox.getValue().isEmpty())
-						return 0;
+					String value = editBox.getValue();
+
+					if (StringUtils.isNumeric(value))
+						return Integer.parseInt(value);
 					else
-						return Integer.parseInt(editBox.getValue());
+						return 0;
 				};
 
 				if (number < 0)
@@ -119,10 +119,10 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		gBox.setMaxLength(3);
 		bBox.setMaxLength(3);
 		getRgbHexBox().setMaxLength(6);
-		rBox.setFilter(boxFilter);
-		gBox.setFilter(boxFilter);
-		bBox.setFilter(boxFilter);
-		getRgbHexBox().setFilter(string -> string.matches("[0-9a-fA-F]*"));
+		rBox.setValidText(StringUtils::isNumeric);
+		gBox.setValidText(StringUtils::isNumeric);
+		bBox.setValidText(StringUtils::isNumeric);
+		getRgbHexBox().setValidText(string -> string.matches("[0-9a-fA-F]*"));
 		rBox.setResponder(boxResponder.apply(rBox));
 		gBox.setResponder(boxResponder.apply(gBox));
 		bBox.setResponder(boxResponder.apply(bBox));
@@ -322,7 +322,7 @@ public class ColorChooser extends Screen implements GuiEventListener, Narratable
 		}
 	}
 
-	public class ColorEditBox extends EditBox {
+	public class ColorEditBox extends ErrorMarkingEditBox {
 		public ColorEditBox(Font font, int x, int y, int width, int height, Component message) {
 			super(font, x, y, width, height, message);
 		}

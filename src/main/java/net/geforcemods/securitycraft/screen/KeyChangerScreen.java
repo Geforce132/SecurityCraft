@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SCContent;
@@ -7,13 +9,13 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -36,8 +38,8 @@ public class KeyChangerScreen extends Screen implements StillValid {
 	private int imageHeight = 166;
 	private int leftPos;
 	private int topPos;
-	private EditBox textboxNewPasscode;
-	private EditBox textboxConfirmPasscode;
+	private ErrorMarkingEditBox textboxNewPasscode;
+	private ErrorMarkingEditBox textboxConfirmPasscode;
 	private Button confirmButton;
 	private IPasscodeProtected passcodeProtected;
 
@@ -56,15 +58,15 @@ public class KeyChangerScreen extends Screen implements StillValid {
 		confirmButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:universalKeyChanger.confirm"), this::confirmButtonClicked).pos(width / 2 - 52, height / 2 + 52).size(100, 20).build());
 		confirmButton.active = false;
 
-		textboxNewPasscode = addRenderableWidget(new EditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, Component.empty()));
+		textboxNewPasscode = addRenderableWidget(new ErrorMarkingEditBox(font, width / 2 - 57, height / 2 - 47, 110, 12, Component.empty()));
 		textboxNewPasscode.setMaxLength(20);
 		setInitialFocus(textboxNewPasscode);
-		textboxNewPasscode.setFilter(s -> s.matches("\\d*"));
+		textboxNewPasscode.setValidText(s -> s.matches("\\d*"));
 		textboxNewPasscode.setResponder(s -> updateConfirmButtonState());
 
-		textboxConfirmPasscode = addRenderableWidget(new EditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, Component.empty()));
+		textboxConfirmPasscode = addRenderableWidget(new ErrorMarkingEditBox(font, width / 2 - 57, height / 2 - 7, 110, 12, Component.empty()));
 		textboxConfirmPasscode.setMaxLength(20);
-		textboxConfirmPasscode.setFilter(s -> s.matches("\\d*"));
+		textboxConfirmPasscode.setValidText(s -> s.matches("\\d*"));
 		textboxConfirmPasscode.setResponder(s -> updateConfirmButtonState());
 	}
 
@@ -101,7 +103,7 @@ public class KeyChangerScreen extends Screen implements StillValid {
 		String newPasscode = textboxNewPasscode.getValue();
 		String passcodeConfirmation = textboxConfirmPasscode.getValue();
 
-		confirmButton.active = passcodeConfirmation != null && newPasscode != null && !passcodeConfirmation.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(passcodeConfirmation);
+		confirmButton.active = passcodeConfirmation != null && newPasscode != null && !passcodeConfirmation.isEmpty() && !newPasscode.isEmpty() && newPasscode.equals(passcodeConfirmation) && StringUtils.isNumeric(passcodeConfirmation) && StringUtils.isNumeric(newPasscode);
 	}
 
 	private void confirmButtonClicked(Button button) {

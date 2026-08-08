@@ -1,4 +1,3 @@
-logoFile="sc_banner.png"
 license="MIT https://github.com/Geforce132/${mod_name}/blob/master/LICENSE"
 issueTrackerURL="http://github.com/Geforce132/${mod_name}/issues"
 
@@ -12,6 +11,8 @@ issueTrackerURL="http://github.com/Geforce132/${mod_name}/issues"
 	credits="Thanks to all of you guys for your support!"
 	authors="${authors}"
 	enumExtensions="META-INF/enum_extensions.json"
+    bannerFile="sc_banner.png"
+    iconFile="sc_logo.png"
 
 [[mixins]]
     config="${mod_id}.mixins.json"

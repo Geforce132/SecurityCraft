@@ -6,11 +6,11 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IPasscodeProtected;
 import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SetPasscode;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -34,7 +34,7 @@ public class SetPasscodeScreen extends Screen implements StillValid {
 	private IPasscodeProtected passcodeProtected;
 	private Component setup;
 	private MutableComponent combined;
-	private EditBox keycodeTextbox;
+	private ErrorMarkingEditBox keycodeTextbox;
 	private Button saveAndContinueButton;
 
 	public SetPasscodeScreen(IPasscodeProtected passcodeProtected, Component title) {
@@ -53,9 +53,14 @@ public class SetPasscodeScreen extends Screen implements StillValid {
 
 		saveAndContinueButton = addRenderableWidget(Button.builder(Utils.localize("gui.securitycraft:passcode.save"), this::saveAndContinueButtonClicked).pos(width / 2 - 48, height / 2 + 30 + 10).size(100, 20).build());
 		saveAndContinueButton.active = false;
-		keycodeTextbox = addRenderableWidget(new EditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, Component.empty()));
+		keycodeTextbox = addRenderableWidget(new ErrorMarkingEditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
-		keycodeTextbox.setFilter(s -> s.matches("\\d*"));
+		keycodeTextbox.setValidText(s -> {
+			boolean matches = s.matches("\\d*");
+
+			saveAndContinueButton.active = matches;
+			return matches;
+		});
 		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
 		setInitialFocus(keycodeTextbox);
 	}

@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -8,9 +10,9 @@ import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SyncSecureRedstoneInterface;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.CycleButton;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.layouts.FrameLayout;
 import net.minecraft.client.gui.layouts.LinearLayout;
@@ -36,7 +38,7 @@ public class SecureRedstoneInterfaceScreen extends Screen implements StillValid 
 	private final int xSize = 176, ySize = 188;
 	private int leftPos;
 	private int topPos;
-	private EditBox frequencyBox;
+	private ErrorMarkingEditBox frequencyBox;
 
 	public SecureRedstoneInterfaceScreen(SecureRedstoneInterfaceBlockEntity be) {
 		this(be, be.isSender(), be.isProtectedSignal(), be.getFrequency(), be.sendsExactPower(), be.receivesInvertedPower(), be.getSenderRange(), be.shouldHighlightConnections());
@@ -66,15 +68,13 @@ public class SecureRedstoneInterfaceScreen extends Screen implements StillValid 
 		LinearLayout frequencyLayout = new LinearLayout(widgetWidth, widgetHeight, Orientation.HORIZONTAL).spacing(3);
 		String powerSettingKey = "gui.securitycraft:secure_redstone_interface." + (be.isSender() ? "send_exact_power" : "receive_inverted_power");
 
-		frequencyBox = new EditBox(font, widgetWidth - 23, widgetHeight, frequencyText);
+		frequencyBox = new ErrorMarkingEditBox(font, widgetWidth - 23, widgetHeight, frequencyText);
 		frequencyBox.setValue(be.getFrequency() + "");
 		frequencyBox.setMaxLength(9);
-		frequencyBox.setFilter(s -> s.matches("\\d*")); //any amount of digits);
+		frequencyBox.setValidText(s -> s.matches("\\d*")); //any amount of digits
 		frequencyBox.setResponder(s -> {
-			if (!s.isEmpty())
+			if (!s.isEmpty() && StringUtils.isNumeric(s))
 				be.setFrequency(Integer.parseInt(s));
-			else
-				be.setFrequency(0);
 		});
 		frequencyLayout.addChild(frequencyBox);
 		frequencyLayout.addChild(new ActiveBasedTextureButton(0, 0, 20, widgetHeight, RANDOM_SPRITE, RANDOM_INACTIVE_SPRITE, 3, 3, 16, 16, b -> frequencyBox.setValue("" + SecurityCraft.RANDOM.nextInt(999999999))));

@@ -3,16 +3,18 @@ package net.geforcemods.securitycraft.screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.SecureTradingStationBlockEntity;
 import net.geforcemods.securitycraft.blocks.SecureTradingStationBlock;
 import net.geforcemods.securitycraft.inventory.SecureTradingStationMenu;
 import net.geforcemods.securitycraft.network.server.RequestSecureTradingStationTransactions;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -42,7 +44,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 	private final boolean skipPaymentCheck;
 	private final boolean storageVisible;
 	private Button payButton;
-	private EditBox transactionAmountBox;
+	private ErrorMarkingEditBox transactionAmountBox;
 	private int requestedTransactions;
 
 	public SecureTradingStationScreen(SecureTradingStationMenu menu, Inventory playerInventory, Component title) {
@@ -67,12 +69,17 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 			payButton.active = false; //Preliminary checks for empty container
 
 		if (storageVisible) {
-			transactionAmountBox = addRenderableWidget(new EditBox(font, leftPos + 118, topPos + 20, 26, 16, Component.empty()));
-			transactionAmountBox.setFilter(s -> s.matches("\\d*")); //Only allow strings of digits or empty
+			transactionAmountBox = addRenderableWidget(new ErrorMarkingEditBox(font, leftPos + 118, topPos + 20, 26, 16, Component.empty()));
+			transactionAmountBox.setValidText(s -> s.matches("\\d*")); //Only allow strings of digits or empty
 			transactionAmountBox.setMaxLength(3);
 			transactionAmountBox.setHint(Component.literal("1").withStyle(ChatFormatting.GRAY));
 			transactionAmountBox.setTooltip(Tooltip.create(transactionAmountBoxTooltip));
-			transactionAmountBox.setResponder(s -> requestedTransactions = s.isEmpty() ? 1 : Integer.parseInt(s));
+			transactionAmountBox.setResponder(s -> {
+				boolean numeric = StringUtils.isNumeric(s);
+
+				requestedTransactions = !numeric ? 1 : Integer.parseInt(s);
+				payButton.active = numeric;
+			});
 			requestedTransactions = 1;
 		}
 	}
@@ -84,7 +91,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		if (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStationBlock.POWERED))
 			payButton.active = false;
 		else
-			payButton.active = getTransactionsOnConfirmation() > 0;
+			payButton.active &= getTransactionsOnConfirmation() > 0;
 	}
 
 	@Override

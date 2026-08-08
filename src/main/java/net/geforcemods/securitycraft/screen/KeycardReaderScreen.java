@@ -18,6 +18,7 @@ import net.geforcemods.securitycraft.misc.SCSounds;
 import net.geforcemods.securitycraft.network.server.SetKeycardUses;
 import net.geforcemods.securitycraft.network.server.SyncKeycardSettings;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.geforcemods.securitycraft.screen.components.TextHoverChecker;
 import net.geforcemods.securitycraft.screen.components.TogglePictureButton;
 import net.geforcemods.securitycraft.util.ClientUtils;
@@ -70,7 +71,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	private int signatureTextStartX;
 	private Button minusThree, minusTwo, minusOne, reset, plusOne, plusTwo, plusThree;
 	private TogglePictureButton[] toggleButtons = new TogglePictureButton[5];
-	private EditBox signatureTextField, usesTextField, usableByTextField;
+	private ErrorMarkingEditBox signatureTextField, usesTextField;
+	private EditBox usableByTextField;
 	private TextHoverChecker usesHoverChecker;
 	private Button setUsesButton;
 	private Button linkButton;
@@ -138,9 +140,9 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 
 		signatureTextLength = font.width(signatureText);
 		signatureTextStartX = imageWidth / 2 - signatureTextLength + 5;
-		signatureTextField = addRenderableWidget(new EditBox(font, leftPos + 96, topPos + 21, 40, 12, Component.empty()));
+		signatureTextField = addRenderableWidget(new ErrorMarkingEditBox(font, leftPos + 96, topPos + 21, 40, 12, Component.empty()));
 		signatureTextField.setValue(leftPaddedSignature());
-		signatureTextField.setFilter(s -> s.matches("\\d*"));
+		signatureTextField.setValidText(s -> s.matches("\\d*"));
 		signatureTextField.setMaxLength(5);
 		signatureTextField.setResponder(this::changeSignature);
 		minusThree = addRenderableWidget(Button.builder(Component.literal("---"), b -> changeSignature(signature - 100)).pos(leftPos + 22, buttonY).size(24, buttonHeight).build());
@@ -174,8 +176,8 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		setUsesButton = addRenderableWidget(new ActiveBasedTextureButton(leftPos + 62, topPos + 106, 16, 17, RETURN_SPRITE, RETURN_INACTIVE_SPRITE, 2, 2, 14, 14, b -> ClientPacketDistributor.sendToServer(new SetKeycardUses(be.getBlockPos(), Integer.parseInt(usesTextField.getValue())))));
 		setUsesButton.active = false;
 		//text field for setting amount of limited uses
-		usesTextField = addRenderableWidget(new EditBox(font, leftPos + 28, topPos + 107, 30, 15, Component.empty()));
-		usesTextField.setFilter(s -> s.matches("\\d*"));
+		usesTextField = addRenderableWidget(new ErrorMarkingEditBox(font, leftPos + 28, topPos + 107, 30, 15, Component.empty()));
+		usesTextField.setValidText(s -> s.matches("\\d*"));
 		usesTextField.setMaxLength(3);
 		//info text when hovering over text field
 		usesHoverChecker = new TextHoverChecker(topPos + 107, topPos + 122, leftPos + 28, leftPos + 58, limitedInfo);
@@ -263,7 +265,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 		}
 		else {
 			//set return button depending on whether a different amount of uses compared to the keycard in the slot can be set
-			setUsesButton.active = enabled && usesTextField.getValue() != null && !usesTextField.getValue().isEmpty() && !("" + keycardData.usesLeft()).equals(usesTextField.getValue());
+			setUsesButton.active = enabled && usesTextField.getValue() != null && StringUtils.isNumeric(usesTextField.getValue()) && !("" + keycardData.usesLeft()).equals(usesTextField.getValue());
 			linkButton.active = !isEmpty && (cardSignature != signature || !keycardData.usableBy().orElse("").equals(usableByTextField.getValue()));
 		}
 	}
@@ -343,7 +345,7 @@ public class KeycardReaderScreen extends AbstractContainerScreen<KeycardReaderMe
 	}
 
 	public void changeSignature(String newSignature) {
-		if (newSignature != null && !newSignature.isEmpty())
+		if (newSignature != null && !newSignature.isEmpty() && StringUtils.isNumeric(newSignature))
 			changeSignature(Integer.parseInt(newSignature), true);
 	}
 

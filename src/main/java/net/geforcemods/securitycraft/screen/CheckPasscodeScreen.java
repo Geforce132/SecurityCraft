@@ -11,11 +11,11 @@ import net.geforcemods.securitycraft.misc.ModuleType;
 import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.CheckPasscode;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -86,7 +86,7 @@ public class CheckPasscodeScreen extends Screen implements StillValid {
 			}
 		});
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
-		keycodeTextbox.setFilter(s -> s.matches("\\d*\\**")); //allow any amount of digits and any amount of asterisks
+		keycodeTextbox.setValidText(s -> s.matches("\\d*\\**")); //allow any amount of digits and any amount of asterisks
 
 		if (passcodeProtected.isOnCooldown())
 			toggleChildrenActive(false);
@@ -205,7 +205,7 @@ public class CheckPasscodeScreen extends Screen implements StillValid {
 			return true;
 	}
 
-	public static class CensoringEditBox extends EditBox {
+	public static class CensoringEditBox extends ErrorMarkingEditBox {
 		private String renderedText = "";
 		private boolean shouldCensor = true;
 

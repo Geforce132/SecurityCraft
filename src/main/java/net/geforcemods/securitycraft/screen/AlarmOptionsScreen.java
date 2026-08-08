@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -8,6 +9,7 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.AlarmBlockEntity;
 import net.geforcemods.securitycraft.screen.components.ActiveBasedTextureButton;
 import net.geforcemods.securitycraft.screen.components.CallbackSlider;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.geforcemods.securitycraft.screen.components.SmallButton;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -15,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -55,7 +56,7 @@ public class AlarmOptionsScreen extends Screen {
 		addRenderableWidget(SmallButton.createWithX(leftPos + imageWidth - 12, topPos + 4, b -> Minecraft.getInstance().gui.popScreenLayer()));
 		soundLengthTextXPosition = width / 2 - combinedTextAndBoxWidth / 2;
 		soundLengthEditBox = addRenderableWidget(new SoundLengthEditBox(font, soundLengthTextXPosition + soundLengthTextWidthPlusBuffer, buttonY - 15, timeEditBoxWidth, 12, Component.empty()));
-		soundLengthEditBox.setFilter(string -> string.matches("[0-9:]*"));
+		soundLengthEditBox.setValidText(string -> string.matches("[0-9:]*"));
 		minusMinute = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.minus_one_minute"), b -> changeSoundLength(-60)).pos(buttonsX, buttonY).size(32, buttonHeight).build());
 		minusTenSeconds = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.minus_ten_seconds"), b -> changeSoundLength(-10)).pos(buttonsX + 34, buttonY).size(32, buttonHeight).build());
 		minusSecond = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.minus_one_second"), b -> changeSoundLength(-1)).pos(buttonsX + 68, buttonY).size(32, buttonHeight).build());
@@ -138,7 +139,7 @@ public class AlarmOptionsScreen extends Screen {
 		return alarmScreen.isPauseScreen();
 	}
 
-	public class SoundLengthEditBox extends EditBox {
+	public class SoundLengthEditBox extends ErrorMarkingEditBox {
 		public SoundLengthEditBox(Font font, int x, int y, int width, int height, Component message) {
 			super(font, x, y, width, height, message);
 		}
@@ -171,32 +172,22 @@ public class AlarmOptionsScreen extends Screen {
 
 			if (value != null && !value.isEmpty() && !value.isBlank()) {
 				if (!value.contains(":")) {
-					int numeric = Integer.parseInt(value);
+					if (StringUtils.isNumeric(value)) {
+						int numeric = Integer.parseInt(value);
 
-					minutes = numeric / 60;
-					seconds = numeric % 60;
+						minutes = numeric / 60;
+						seconds = numeric % 60;
+					}
 				}
 				else {
 					String[] split = value.split(":");
 
 					if (split.length == 2) {
-						if (!split[0].isEmpty() && !split[0].isBlank()) {
-							try {
-								minutes = Integer.parseInt(split[0]);
-							}
-							catch (NumberFormatException e) { //usually happens when the entered number is too big
-								minutes = 60;
-							}
-						}
+						if (StringUtils.isNumeric(split[0]))
+							minutes = Integer.parseInt(split[0]);
 
-						if (!split[1].isEmpty() && !split[1].isBlank()) {
-							try {
-								seconds = Integer.parseInt(split[1]);
-							}
-							catch (NumberFormatException e) {} //usually happens when the entered number is too big
-						}
-						else
-							seconds = 0;
+						if (StringUtils.isNumeric(split[1]))
+							seconds = Integer.parseInt(split[1]);
 					}
 				}
 			}

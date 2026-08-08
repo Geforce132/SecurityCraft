@@ -17,13 +17,13 @@ import net.geforcemods.securitycraft.components.ListModuleData;
 import net.geforcemods.securitycraft.misc.StillValid;
 import net.geforcemods.securitycraft.network.server.SetListModuleData;
 import net.geforcemods.securitycraft.screen.components.CallbackCheckbox;
+import net.geforcemods.securitycraft.screen.components.ErrorMarkingEditBox;
 import net.geforcemods.securitycraft.screen.components.ToggleComponentButton;
 import net.geforcemods.securitycraft.util.PlayerUtils;
 import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -49,7 +49,7 @@ public class EditModuleScreen extends Screen implements StillValid {
 	private final ItemStack module;
 	private final List<PlayerTeam> availableTeams;
 	private final Map<PlayerTeam, Boolean> teamsListedStatus = new HashMap<>();
-	private EditBox inputField;
+	private ErrorMarkingEditBox inputField;
 	private Button addPlayerButton, removePlayerButton, copyButton, pasteButton, clearButton;
 	private CallbackCheckbox affectEveryPlayerCheckbox;
 	private int xSize = 247, ySize = 211, leftPos, topPos;
@@ -77,7 +77,7 @@ public class EditModuleScreen extends Screen implements StillValid {
 		int length = font.width(checkboxText) + 24; //24 = checkbox width + 4 pixels of buffer
 		Button editTeamsButton;
 
-		inputField = addRenderableWidget(new EditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()) {
+		inputField = addRenderableWidget(new ErrorMarkingEditBox(font, controlsStartX, height / 2 - 88, 107, 15, Component.empty()) {
 			@Override
 			public boolean keyPressed(KeyEvent event) {
 				int keyCode = event.key();
@@ -105,9 +105,9 @@ public class EditModuleScreen extends Screen implements StillValid {
 		refreshFromComponent();
 		updateButtonStates();
 		inputField.setMaxLength(16);
-		inputField.setFilter(s -> !s.contains(" "));
+		inputField.setValidText(s -> !s.contains(" "));
 		inputField.setResponder(s -> {
-			if (s.isEmpty())
+			if (s.isEmpty() || s.contains(" "))
 				addPlayerButton.active = false;
 			else {
 				ListModuleData listModuleData = module.get(SCContent.LIST_MODULE_DATA);
