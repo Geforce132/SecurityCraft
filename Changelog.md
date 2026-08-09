@@ -1,6 +1,7 @@
---------------------------Changelog for the next version of SecurityCraft--------------------------
+--------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
 
 - Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
+- Fix: Compatibility with NeoForge 26.2.0.52-beta and above
 
 --------------------------Changelog for v1.10.2.1-beta1 of SecurityCraft--------------------------
 
