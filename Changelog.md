@@ -1,5 +1,12 @@
 --------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
 
+- New: Hungarian translation (Thanks morpheus133!)
+- Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
+- Fix: Reinforced, Keypad, and Scanner Trapdoors show up incorrectly when open and facing east or west (Thanks CYB3RCA4T!)
+- Fix: Retinal Scanners, Scanner Doors, and Scanner Trapdoors send messages to players who are not the owner or allowlisted, even if they're configured to not send messages
+
+--------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
+
 - Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
 - Fix: Compatibility with NeoForge 26.2.0.52-beta and above
 
