@@ -102,10 +102,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			connectedScanner.setDisabled(false);
 		}
 
-		boolean horizontal = false;
-
-		if (connectedScanner.getBlockState().getValue(HORIZONTAL))
-			horizontal = true;
+		connectedScanner.setHorizontal(thisBe.isHorizontal());
 
 		Direction facing = level.getBlockState(pos).getValue(FACING);
 		int loopBoundary = switch (facing) {
@@ -113,8 +110,6 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			case NORTH, SOUTH -> Math.abs(pos.getZ() - connectedScanner.getBlockPos().getZ());
 			default -> 0;
 		};
-
-		thisBe.setHorizontal(horizontal);
 
 		for (int i = 1; i < loopBoundary; i++) {
 			if (level.getBlockState(pos.relative(facing, i)).getBlock() == SCContent.INVENTORY_SCANNER_FIELD.get())
@@ -126,7 +121,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 		for (int i = 1; i < loopBoundary; i++) {
 			BlockPos offsetPos = pos.relative(facing, i);
 
-			level.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, horizontal).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER));
+			level.setBlockAndUpdate(offsetPos, SCContent.INVENTORY_SCANNER_FIELD.get().defaultBlockState().setValue(FACING, facing).setValue(HORIZONTAL, thisBe.isHorizontal()).setValue(WATERLOGGED, level.getFluidState(pos).getType() == Fluids.WATER));
 
 			if (level.getBlockEntity(offsetPos) instanceof IOwnable ownable)
 				ownable.setOwner(thisBe.getOwner().getUUID(), thisBe.getOwner().getName());
@@ -136,7 +131,7 @@ public class InventoryScannerBlock extends DisguisableBlock {
 			thisBe.insertModule(connectedScanner.getModule(type), false);
 		}
 
-		((BooleanOption) customOptions[0]).setValue(connectedScanner.isHorizontal());
+		((BooleanOption) customOptions[0]).setValue(thisBe.isHorizontal());
 		((BooleanOption) customOptions[1]).setValue(connectedScanner.doesFieldSolidify());
 		((BooleanOption) customOptions[2]).setValue(false);
 	}
