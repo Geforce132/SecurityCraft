@@ -86,7 +86,6 @@ public class SecurityCraft {
 		NeoForge.EVENT_BUS.addListener(this::registerCommands);
 		NeoForge.EVENT_BUS.addListener(SecurityCraft::addReloadListener);
 		NeoForge.EVENT_BUS.addListener(SecurityCraft::onServerStarted);
-		NeoForge.EVENT_BUS.addListener(RegistrationHandler::registerBrewingRecipes);
 		container.registerConfig(ModConfig.Type.SERVER, ConfigHandler.SERVER_SPEC);
 		SCContent.BLOCKS.register(modEventBus);
 		SCContent.BLOCK_ENTITY_TYPES.register(modEventBus);

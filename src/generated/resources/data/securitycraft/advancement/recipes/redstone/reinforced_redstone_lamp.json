@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_redstone_lamp"
+        "recipes": "securitycraft:reinforced_redstone_lamp"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -162,7 +162,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 
 						entity = entities.next();
 
-						if (entity.getPistonPushReaction() != PushReaction.IGNORE) {
+						if (entity.getPistonPushReaction() != PushReaction.IGNORE_ENTITY) {
 							if (!isSlimeBlock)
 								break;
 
@@ -237,7 +237,7 @@ public class ReinforcedPistonMovingBlockEntity extends BlockEntity implements IO
 	}
 
 	private static boolean matchesStickyCriteria(AABB shape, Entity entity) {
-		return entity.getPistonPushReaction() == PushReaction.NORMAL && entity.onGround() && entity.getX() >= shape.minX && entity.getX() <= shape.maxX && entity.getZ() >= shape.minZ && entity.getZ() <= shape.maxZ;
+		return entity.getPistonPushReaction() == PushReaction.PUSH_PULL && entity.onGround() && entity.getX() >= shape.minX && entity.getX() <= shape.maxX && entity.getZ() >= shape.minZ && entity.getZ() <= shape.maxZ;
 	}
 
 	private boolean isStickyForEntities() {

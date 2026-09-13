@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_yellow_carpet_from_dye"
+        "recipes": "securitycraft:reinforced_yellow_carpet_from_dye"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

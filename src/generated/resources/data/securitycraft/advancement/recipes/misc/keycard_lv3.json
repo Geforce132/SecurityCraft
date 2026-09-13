@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:keycard_lv3"
+        "recipes": "securitycraft:keycard_lv3"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

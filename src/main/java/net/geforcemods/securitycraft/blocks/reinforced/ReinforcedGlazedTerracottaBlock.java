@@ -16,7 +16,7 @@ public class ReinforcedGlazedTerracottaBlock extends BaseReinforcedBlock {
 	public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public ReinforcedGlazedTerracottaBlock(BlockBehaviour.Properties properties, Block vB) {
-		super(properties.pushReaction(PushReaction.PUSH_ONLY), vB);
+		super(properties.pushReaction(PushReaction.PUSH), vB);
 	}
 
 	@Override

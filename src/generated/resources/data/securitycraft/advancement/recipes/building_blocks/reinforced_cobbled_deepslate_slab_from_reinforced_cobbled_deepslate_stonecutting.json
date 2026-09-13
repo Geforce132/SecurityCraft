@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_cobbled_deepslate_slab_from_reinforced_cobbled_deepslate_stonecutting"
+        "recipes": "securitycraft:reinforced_cobbled_deepslate_slab_from_reinforced_cobbled_deepslate_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:projector"
+        "recipes": "securitycraft:projector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

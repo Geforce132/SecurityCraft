@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_spruce_fence"
+        "recipes": "securitycraft:reinforced_spruce_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

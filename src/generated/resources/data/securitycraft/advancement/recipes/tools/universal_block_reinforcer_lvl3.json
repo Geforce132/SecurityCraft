@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:universal_block_reinforcer_lvl3"
+        "recipes": "securitycraft:universal_block_reinforcer_lvl3"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

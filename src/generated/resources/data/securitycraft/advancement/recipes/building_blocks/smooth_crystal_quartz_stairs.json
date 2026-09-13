@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:smooth_crystal_quartz_stairs"
+        "recipes": "securitycraft:smooth_crystal_quartz_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

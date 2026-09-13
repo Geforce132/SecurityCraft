@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import com.mojang.serialization.MapCodec;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.api.IReinforcedBlock;
@@ -44,7 +42,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IReinforcedBlock, EntityBlock {
-	public static final MapCodec<ReinforcedCauldronBlock> CODEC = simpleCodec(ReinforcedCauldronBlock::new);
 	private final float destroyTimeForOwner;
 
 	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties) {
@@ -54,11 +51,6 @@ public class ReinforcedCauldronBlock extends AbstractCauldronBlock implements IR
 	public ReinforcedCauldronBlock(BlockBehaviour.Properties properties, Dispatcher dispatcher) {
 		super(OwnableBlock.withReinforcedDestroyTime(properties), dispatcher);
 		destroyTimeForOwner = OwnableBlock.getStoredDestroyTime();
-	}
-
-	@Override
-	protected MapCodec<? extends AbstractCauldronBlock> codec() {
-		return CODEC;
 	}
 
 	@Override

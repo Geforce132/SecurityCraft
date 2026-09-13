@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks"
+        "recipes": "securitycraft:reinforced_mossy_stone_bricks_from_vanilla_stone_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

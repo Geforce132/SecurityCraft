@@ -31,7 +31,7 @@ public final class AlarmSoundHandler {
 		SimpleSoundInstance soundInstance = new SimpleSoundInstance(event.getSound().value(), event.getSource(), event.getNewVolume(), event.getNewPitch(), RandomSource.create(seed), x, y, z);
 		SoundManager soundManager = Minecraft.getInstance().getSoundManager();
 
-		if (soundInstance.resolve(soundManager) == null)
+		if (soundInstance.getOrResolve(soundManager) == null)
 			soundInstance = new SimpleSoundInstance(SCSounds.ALARM.event, event.getSource(), event.getNewVolume(), event.getNewPitch(), RandomSource.create(seed), x, y, z);
 
 		stopCurrentSound(be);

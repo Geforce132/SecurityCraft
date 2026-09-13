@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:crystal_quartz_stairs"
+        "recipes": "securitycraft:crystal_quartz_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

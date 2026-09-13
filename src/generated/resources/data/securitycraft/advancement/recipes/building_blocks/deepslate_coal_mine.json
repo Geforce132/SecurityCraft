@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:deepslate_coal_mine"
+        "recipes": "securitycraft:deepslate_coal_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

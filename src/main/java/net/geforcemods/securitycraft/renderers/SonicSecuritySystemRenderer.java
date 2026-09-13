@@ -15,8 +15,8 @@ import net.geforcemods.securitycraft.util.Utils;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -31,11 +31,9 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 	private static final Component RECORDING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.recording");
 	private static final Component LISTENING_TEXT = Utils.localize("gui.securitycraft:sonic_security_system.listening");
 	private final SonicSecuritySystemModel model;
-	private final EntityRenderDispatcher entityRenderDispatcher;
 
 	public SonicSecuritySystemRenderer(BlockEntityRendererProvider.Context ctx) {
 		model = new SonicSecuritySystemModel(ctx.bakeLayer(ClientHandler.SONIC_SECURITY_SYSTEM_LOCATION));
-		entityRenderDispatcher = ctx.entityRenderer();
 	}
 
 	@Override
@@ -50,9 +48,14 @@ public class SonicSecuritySystemRenderer implements BlockEntityRenderer<SonicSec
 		}
 
 		if (!state.isDisguised) {
+			RenderType renderType = RenderTypes.entitySolid(TEXTURE);
+
 			pose.translate(0.0D, 0.5D, 0.0D);
-			pose.mulPose(POSITIVE_X_180);
-			collector.submitModel(model, state.radarRotation, pose, RenderTypes.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+			pose.rotate(POSITIVE_X_180);
+			collector.submitModel(model, state.radarRotation, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+
+			if (state.breakProgress != null)
+				collector.order(1).submitCrumblingOverlay(model, state.radarRotation, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, -1, state.breakProgress);
 		}
 	}
 

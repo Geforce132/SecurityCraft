@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:blacklist_module"
+        "recipes": "securitycraft:blacklist_module"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:gilded_blackstone_mine"
+        "recipes": "securitycraft:gilded_blackstone_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

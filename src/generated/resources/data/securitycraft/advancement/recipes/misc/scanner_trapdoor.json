@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:scanner_trapdoor"
+        "recipes": "securitycraft:scanner_trapdoor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

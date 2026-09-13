@@ -30,7 +30,6 @@ import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntit
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
-import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedCarpetBlock;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
 import net.geforcemods.securitycraft.entity.camera.CameraNightVisionEffectInstance;
@@ -111,7 +110,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.LeftClickBlock;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent.UsePhase;
-import net.neoforged.neoforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.NoteBlockEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
@@ -372,13 +370,15 @@ public class SCEventHandler {
 		}
 
 		if (!level.isClientSide()) {
-			if (event.getItemStack().is(Items.REDSTONE) && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
+			ItemStack stack = event.getItemStack();
+
+			if (stack.is(Items.REDSTONE) && be instanceof IEMPAffected empAffected && empAffected.isShutDown()) {
 				empAffected.reactivate();
 
 				if (!player.isCreative())
-					event.getItemStack().shrink(1);
+					stack.shrink(1);
 
-				player.swing(event.getHand());
+				player.swing(event.getHand(), stack.getInteractAnimation(), true);
 				event.setCanceled(true);
 				event.setCancellationResult(InteractionResult.SUCCESS);
 				return;
@@ -533,11 +533,12 @@ public class SCEventHandler {
 			event.setCanceled(true);
 	}
 
-	@SubscribeEvent
-	public static void onFurnaceFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
-		if (event.getItemStack().getItem() instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ReinforcedCarpetBlock || blockItem.getBlock() == SCContent.ELECTRIFIED_IRON_FENCE_GATE.get()))
-			event.setBurnTime(0);
-	}
+	//TODO: Check if reinforced carpets and the electrified fence gate are no longer furnace fuel
+//	@SubscribeEvent
+//	public static void onFurnaceFuelBurnTime(FurnaceFuelBurnTimeEvent event) {
+//		if (event.getItemStack().getItem() instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ReinforcedCarpetBlock || blockItem.getBlock() == SCContent.ELECTRIFIED_IRON_FENCE_GATE.get()))
+//			event.setBurnTime(0);
+//	}
 
 	@SubscribeEvent
 	public static void onAnvilCraftPre(AnvilUpdateEvent event) {

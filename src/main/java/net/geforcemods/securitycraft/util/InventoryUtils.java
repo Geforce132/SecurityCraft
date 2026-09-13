@@ -119,7 +119,7 @@ public class InventoryUtils {
 
 	public static int checkItemsInBundle(ItemStack bundle, ItemStack stackToMatch, int itemsLeftToFind, boolean exactStackCheck, boolean shouldRemoveItems, Consumer<ItemStack> handleRemovedItem) {
 		if (itemsLeftToFind > 0 && bundle != null && bundle.has(DataComponents.BUNDLE_CONTENTS)) {
-			List<ItemStack> bundleItems = bundle.get(DataComponents.BUNDLE_CONTENTS).itemCopyStream().collect(Collectors.toList());
+			List<ItemStack> bundleItems = bundle.get(DataComponents.BUNDLE_CONTENTS).itemCopies().collect(Collectors.toList());
 
 			itemsLeftToFind = checkInventoryForItem(ItemAccess.forList(bundleItems), stackToMatch, itemsLeftToFind, exactStackCheck, shouldRemoveItems, handleRemovedItem, (i, stack) -> {
 				if (stack.isEmpty())

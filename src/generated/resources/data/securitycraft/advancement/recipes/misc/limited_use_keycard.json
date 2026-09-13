@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:limited_use_keycard"
+        "recipes": "securitycraft:limited_use_keycard"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -8,23 +8,24 @@ import java.util.OptionalDouble;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 import org.joml.Vector4f;
+import org.jspecify.annotations.Nullable;
 
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.pipeline.RenderTarget;
-import com.mojang.blaze3d.platform.CompareOp;
-import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.AddressMode;
-import com.mojang.blaze3d.textures.FilterMode;
-import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.PoseStack.Pose;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.BlendFunction;
+import com.mojang.renderpearl.api.pipeline.ColorTargetState;
+import com.mojang.renderpearl.api.pipeline.CompareOp;
+import com.mojang.renderpearl.api.pipeline.DepthStencilState;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.pipeline.RenderPipeline;
+import com.mojang.renderpearl.api.textures.AddressMode;
+import com.mojang.renderpearl.api.textures.FilterMode;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
@@ -44,6 +45,7 @@ import net.minecraft.client.renderer.feature.FeatureFrameContext;
 import net.minecraft.client.renderer.feature.FeatureRendererType;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.feature.submit.SubmitNode;
+import net.minecraft.client.renderer.oit.OitStage;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
@@ -73,7 +75,8 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 	private static final Identifier WHITE = SecurityCraft.resLoc("textures/entity/frame/white.png");
 	//@formatter:off
 	public static final RenderPipeline FRAME_PIPELINE = RenderPipeline.builder()
-			.withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+			.withBindGroupLayout(BindGroupLayouts.PROJECTION)
+			.withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
 			.withBindGroupLayout(BindGroupLayouts.SAMPLER0)
 			.withLocation(SecurityCraft.resLoc("pipeline/frame_draw_fb_in_area"))
 			.withVertexShader(SecurityCraft.resLoc("frame_draw_fb_in_area"))
@@ -157,7 +160,7 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 
 		@Override
-		public void executeGroup(FeatureFrameContext context, int groupIndex, List<Submit> submits, boolean strictlyOrdered) {
+		public void executeGroup(FeatureFrameContext context, @Nullable OitStage stage, RenderPass renderPass, int groupIndex, List<Submit> submits, boolean strictlyOrdered) {
 			StagedVertexBuffer buffer = context.stagedVertexBuffer();
 			RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
 			GpuTextureView color = mainRenderTarget.getColorTextureView();
@@ -167,10 +170,10 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 				for (Frame frame : groups.get(groupIndex)) {
 					StagedVertexBuffer.ExecuteInfo info = buffer.getExecuteInfo(frame.draw);
 
-					pass.setPipeline(FRAME_PIPELINE);
+					pass.setPipeline(RenderSystem.getCompiledPipeline(FRAME_PIPELINE));
 					RenderSystem.bindDefaultUniforms(pass);
 					pass.setUniform("DynamicTransforms", RenderSystem.getDynamicUniforms().writeTransform(frame.dynamicTransforms));
-					pass.bindTexture("Sampler0", frame.texture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
+					pass.setUniform("Sampler0", frame.texture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
 					pass.setVertexBuffer(0, info.vertexBuffer().slice());
 					pass.setIndexBuffer(info.indexBuffer(), info.indexType());
 					pass.drawIndexed(info.indexCount(), 1, info.firstIndex(), info.baseVertex(), 0);

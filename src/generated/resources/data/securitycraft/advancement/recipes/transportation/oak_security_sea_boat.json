@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:oak_security_sea_boat"
+        "recipes": "securitycraft:oak_security_sea_boat"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

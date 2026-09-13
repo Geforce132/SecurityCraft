@@ -9,7 +9,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
-import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.GameRenderer;
 
 @Mixin(value = GameRenderer.class, priority = 1100)
@@ -17,12 +16,12 @@ public class GameRendererMixin {
 	/**
 	 * Makes sure distortion effects are not rendered in camera feeds
 	 */
-	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F"))
-	private float securitycraft$disableFeedDistortion(float delta, float start, float end, Operation<Float> original) {
+	@WrapOperation(method = "renderLevel", at = @At(value = "INVOKE", target = "Ljava/lang/Math;max(FF)F"))
+	private float securitycraft$disableFeedDistortion(float a, float b, Operation<Float> original) {
 		if (FrameFeedHandler.isCapturingCamera())
 			return 0.0F;
 		else
-			return original.call(delta, start, end);
+			return original.call(a, b);
 	}
 
 	/**
@@ -30,7 +29,7 @@ public class GameRendererMixin {
 	 * rendering, but before GUI rendering, to fix screen flickering with Iris.
 	 */
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;tryTakeScreenshotIfNeeded()V"))
-	private void securitycraft$afterLevelRendering(DeltaTracker deltaTracker, boolean renderLevel, CallbackInfo ci) {
-		FrameFeedHandler.captureFrameFeeds(deltaTracker);
+	private void securitycraft$afterLevelRendering(CallbackInfo ci) {
+		FrameFeedHandler.captureFrameFeeds();
 	}
 }

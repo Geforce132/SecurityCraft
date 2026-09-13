@@ -2,7 +2,7 @@ package net.geforcemods.securitycraft.renderers.state;
 
 import org.joml.Vector4f;
 
-import com.mojang.blaze3d.textures.GpuTextureView;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.core.Vec3i;

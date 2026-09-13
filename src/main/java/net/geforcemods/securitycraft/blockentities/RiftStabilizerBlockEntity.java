@@ -24,7 +24,7 @@ import net.geforcemods.securitycraft.util.IToggleableEntries;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -347,7 +347,7 @@ public class RiftStabilizerBlockEntity extends DisguisableBlockEntity implements
 			return switch (event) {
 				case ItemConsumption fruit -> ITEM_CONSUMPTION;
 				case EnderPearl pearl -> ENDER_PEARL;
-				case EnderEntity ender when ender.getEntityLiving() instanceof EnderMan -> ENDERMAN;
+				case EnderEntity ender when ender.getEntityLiving() instanceof Enderman -> ENDERMAN;
 				case EnderEntity ender when ender.getEntityLiving() instanceof Shulker -> SHULKER;
 				case EnderEntity ender -> MODDED;
 				case TeleportCommand teleport -> null;

@@ -37,7 +37,7 @@ public class SentryRenderer extends EntityRenderer<Sentry, SentryRenderState> {
 		pose.translate(0.0D, 1.5D, 0.0D);
 		pose.scale(-1, -1, 1); //rotate model rightside up
 		model.submitBase(state, pose, collector, renderType);
-		pose.mulPose(Axis.YP.rotationDegrees(state.headRotation));
+		pose.rotate(Axis.YP.rotationDegrees(state.headRotation));
 		pose.translate(0.0F, state.headY, 0.0F);
 		model.submitHead(state, pose, collector, renderType);
 		pose.popPose();

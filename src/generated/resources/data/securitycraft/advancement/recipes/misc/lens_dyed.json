@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:lens_dyed"
+        "recipes": "securitycraft:lens_dyed"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:lens_dyed"
+      "securitycraft:lens_dyed"
     ]
   }
 }

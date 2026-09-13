@@ -129,7 +129,6 @@ import net.minecraft.client.model.HumanoidModel.ArmPose;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.block.BlockAndTintGetter;
 import net.minecraft.client.renderer.block.FluidStateModelSet;
@@ -139,9 +138,9 @@ import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.ShelfRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.rendertype.LayeringTransform;
-import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
+import net.minecraft.client.renderer.state.level.PlayerRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockPos.MutableBlockPos;
 import net.minecraft.core.Direction;
@@ -253,7 +252,7 @@ public class ClientHandler {
 			"overlay_lines",
 			RenderSetup.builder(RenderPipelines.LINES)
 					.setLayeringTransform(LayeringTransform.VIEW_OFFSET_Z_LAYERING)
-					.setOutputTarget(OutputTarget.OUTLINE_TARGET)
+					.setOutline(RenderSetup.OutlineProperty.IS_OUTLINE)
 					.createRenderSetup());
 	//@formatter:on
 	public static final EnumProxy<ArmPose> TASER_ARM_POSE_PARAMS = new EnumProxy<>(ArmPose.class, true, true, (IArmPoseTransformer) (model, entity, arm) -> {
@@ -454,7 +453,7 @@ public class ClientHandler {
 
 			//first person
 			@Override
-			public boolean applyForgeHandTransform(PoseStack pose, LocalPlayer player, HumanoidArm arm, ItemStack stack, float partialTick, float equippedProgress, float swingProgress) {
+			public boolean applyForgeHandTransform(PoseStack pose, PlayerRenderState state, HumanoidArm arm, ItemStack stack, float partialTick, float equippedProgress, float swingProgress) {
 				if (swingProgress < 0.001F) {
 					pose.translate(0.02F, -0.4F, -0.5F);
 					return true;

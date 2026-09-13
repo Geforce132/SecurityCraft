@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_stripped_mangrove_wood"
+        "recipes": "securitycraft:reinforced_stripped_mangrove_wood"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

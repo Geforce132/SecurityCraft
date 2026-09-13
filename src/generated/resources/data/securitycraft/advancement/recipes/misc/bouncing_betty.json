@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:bouncing_betty"
+        "recipes": "securitycraft:bouncing_betty"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

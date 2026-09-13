@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_granite"
+        "recipes": "securitycraft:reinforced_granite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

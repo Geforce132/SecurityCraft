@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_cherry_shelf"
+        "recipes": "securitycraft:reinforced_cherry_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

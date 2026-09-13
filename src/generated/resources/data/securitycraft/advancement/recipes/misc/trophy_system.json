@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:trophy_system"
+        "recipes": "securitycraft:trophy_system"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

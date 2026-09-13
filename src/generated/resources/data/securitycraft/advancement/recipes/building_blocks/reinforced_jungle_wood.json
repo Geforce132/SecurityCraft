@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_jungle_wood"
+        "recipes": "securitycraft:reinforced_jungle_wood"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

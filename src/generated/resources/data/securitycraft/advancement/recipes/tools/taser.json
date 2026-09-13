@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:taser"
+        "recipes": "securitycraft:taser"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

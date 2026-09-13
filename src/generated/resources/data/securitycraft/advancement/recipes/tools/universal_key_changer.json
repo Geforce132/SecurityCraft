@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:universal_key_changer"
+        "recipes": "securitycraft:universal_key_changer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

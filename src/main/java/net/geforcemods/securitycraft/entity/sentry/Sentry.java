@@ -185,7 +185,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 		BlockPos pos = blockPosition();
 
 		if (isOwnedBy(player) && hand == InteractionHand.MAIN_HAND) {
-			Item item = player.getMainHandItem().getItem();
+			ItemStack heldStack = player.getMainHandItem();
+			Item item = heldStack.getItem();
 
 			player.closeContainer();
 
@@ -195,13 +196,13 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				reactivate();
 
 				if (!player.isCreative())
-					player.getMainHandItem().shrink(1);
+					heldStack.shrink(1);
 			}
 			else if (item == SCContent.UNIVERSAL_BLOCK_REMOVER.get() && !ConfigHandler.SERVER.vanillaToolBlockBreaking.get()) {
 				kill(null);
 
 				if (!player.isCreative())
-					player.getMainHandItem().hurtAndBreak(1, player, hand.asEquipmentSlot());
+					heldStack.hurtAndBreak(1, player, hand.asEquipmentSlot());
 			}
 			else if (item == SCContent.DISGUISE_MODULE.get()) {
 				ItemStack module = getDisguiseModule();
@@ -210,7 +211,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				if (!module.isEmpty())
 					Block.popResource(level(), pos, module);
 
-				addDisguiseModule(player.getMainHandItem());
+				addDisguiseModule(heldStack);
 
 				if (!player.isCreative())
 					player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -221,7 +222,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 				if (!module.isEmpty())
 					Block.popResource(level(), pos, module);
 
-				setAllowlistModule(player.getMainHandItem());
+				setAllowlistModule(heldStack);
 
 				if (!player.isCreative())
 					player.setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
@@ -249,7 +250,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			else if (item == SCContent.SENTRY_REMOTE_ACCESS_TOOL.get())
 				item.useOn(new UseOnContext(player, hand, new BlockHitResult(new Vec3(0.0D, 0.0D, 0.0D), Direction.NORTH, pos, false)));
 			else if (item == SCContent.UNIVERSAL_OWNER_CHANGER.get()) {
-				String newOwner = player.getMainHandItem().getHoverName().getString();
+				String newOwner = heldStack.getHoverName().getString();
 
 				entityData.set(OWNER, new Owner(newOwner, PlayerUtils.isPlayerOnline(newOwner) ? PlayerUtils.getPlayerFromName(newOwner).getUUID().toString() : "ownerUUID"));
 				PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.UNIVERSAL_OWNER_CHANGER.get().getDescriptionId()), Utils.localize("messages.securitycraft:universalOwnerChanger.changed", newOwner), ChatFormatting.GREEN);
@@ -257,7 +258,8 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 			else
 				toggleMode(player);
 
-			player.swing(InteractionHand.MAIN_HAND);
+			//TODO: is this false correct?
+			player.swing(InteractionHand.MAIN_HAND, heldStack.getInteractAnimation(), false);
 			return InteractionResult.SUCCESS;
 		}
 		else if (!isOwnedBy(player) && hand == InteractionHand.MAIN_HAND && player.isCreative() && (player.isCrouching() || player.getMainHandItem().getItem() == SCContent.UNIVERSAL_BLOCK_REMOVER.get()))
@@ -706,7 +708,7 @@ public class Sentry extends PathfinderMob implements RangedAttackMob, IEMPAffect
 
 	@Override
 	public PushReaction getPistonPushReaction() {
-		return PushReaction.IGNORE;
+		return PushReaction.IGNORE_ENTITY;
 	}
 
 	@Override

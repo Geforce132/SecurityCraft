@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_mossy_cobblestone_from_vine"
+        "recipes": "securitycraft:reinforced_mossy_cobblestone_from_vine"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:light_blue_lens"
+        "recipes": "securitycraft:light_blue_lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

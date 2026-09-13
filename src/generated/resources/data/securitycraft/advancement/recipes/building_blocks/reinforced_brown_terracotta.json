@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_brown_terracotta"
+        "recipes": "securitycraft:reinforced_brown_terracotta"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

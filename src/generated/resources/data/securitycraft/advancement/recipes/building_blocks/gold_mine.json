@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:gold_mine"
+        "recipes": "securitycraft:gold_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

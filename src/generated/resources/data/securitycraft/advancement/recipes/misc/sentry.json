@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:sentry"
+        "recipes": "securitycraft:sentry"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:portable_tune_player"
+        "recipes": "securitycraft:portable_tune_player"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

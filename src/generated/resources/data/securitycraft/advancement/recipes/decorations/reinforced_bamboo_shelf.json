@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_bamboo_shelf"
+        "recipes": "securitycraft:reinforced_bamboo_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

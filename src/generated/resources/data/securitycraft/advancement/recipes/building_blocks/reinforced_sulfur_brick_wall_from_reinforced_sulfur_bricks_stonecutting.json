@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_sulfur_brick_wall_from_reinforced_sulfur_bricks_stonecutting"
+        "recipes": "securitycraft:reinforced_sulfur_brick_wall_from_reinforced_sulfur_bricks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

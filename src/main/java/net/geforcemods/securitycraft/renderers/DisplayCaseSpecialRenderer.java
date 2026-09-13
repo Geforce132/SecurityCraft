@@ -21,7 +21,7 @@ import net.minecraft.resources.Identifier;
 public record DisplayCaseSpecialRenderer(DisplayCaseModel model, Identifier texture, float openness, Optional<Integer> light) implements NoDataSpecialModelRenderer {
 	@Override
 	public void submit(PoseStack pose, SubmitNodeCollector collector, int lightCoords, int overlayCoords, boolean hasFoil, int outlineColor) {
-		collector.submitModel(model, openness, pose, RenderTypes.entityCutout(texture), light.orElse(lightCoords), overlayCoords, outlineColor, null);
+		collector.submitModel(model, openness, pose, RenderTypes.entityCutout(texture), light.orElse(lightCoords), overlayCoords, outlineColor);
 	}
 
 	@Override

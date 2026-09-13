@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_weathered_cut_copper_slab"
+        "recipes": "securitycraft:reinforced_weathered_cut_copper_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

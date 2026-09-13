@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_crystal_quartz_pillar"
+        "recipes": "securitycraft:reinforced_crystal_quartz_pillar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

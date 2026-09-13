@@ -57,15 +57,15 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 						break;
 					case SOUTH:
 						poseStack.translate(0.75F, 1.0F / 16.0F, 1.0F);
-						poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+						poseStack.rotate(Axis.YP.rotationDegrees(180.0F));
 						break;
 					case WEST:
 						poseStack.translate(0.0F, 1.0F / 16.0F, 0.75F);
-						poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
+						poseStack.rotate(Axis.YP.rotationDegrees(90.0F));
 						break;
 					case EAST:
 						poseStack.translate(1.0F, 1.0F / 16.0F, 0.25F);
-						poseStack.mulPose(Axis.YP.rotationDegrees(270.0F));
+						poseStack.rotate(Axis.YP.rotationDegrees(270.0F));
 						break;
 					default:
 						break;
@@ -75,12 +75,12 @@ public class RetinalScannerRenderer implements BlockEntityRenderer<RetinalScanne
 				poseStack.translate(0.5D, 0.5D, 0.5D);
 
 				if (facing == Direction.DOWN) {
-					poseStack.mulPose(Axis.XP.rotationDegrees(-90.0F));
-					poseStack.mulPose(Axis.ZP.rotationDegrees(rotation.toYRot() + 180.0F));
+					poseStack.rotate(Axis.XP.rotationDegrees(-90.0F));
+					poseStack.rotate(Axis.ZP.rotationDegrees(rotation.toYRot() + 180.0F));
 				}
 				else if (facing == Direction.UP) {
-					poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
-					poseStack.mulPose(Axis.ZP.rotationDegrees(180.0F - rotation.toYRot()));
+					poseStack.rotate(Axis.XP.rotationDegrees(90.0F));
+					poseStack.rotate(Axis.ZP.rotationDegrees(180.0F - rotation.toYRot()));
 				}
 
 				poseStack.translate(-0.25D, -0.4375D, -0.501D);

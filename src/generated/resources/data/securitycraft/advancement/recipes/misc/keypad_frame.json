@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:keypad_frame"
+        "recipes": "securitycraft:keypad_frame"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:magenta_lens"
+        "recipes": "securitycraft:magenta_lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

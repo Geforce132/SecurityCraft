@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_blue_stained_glass_pane_from_dye"
+        "recipes": "securitycraft:reinforced_blue_stained_glass_pane_from_dye"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

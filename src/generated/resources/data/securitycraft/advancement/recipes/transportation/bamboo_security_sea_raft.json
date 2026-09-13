@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:bamboo_security_sea_raft"
+        "recipes": "securitycraft:bamboo_security_sea_raft"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

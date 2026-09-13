@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
 import net.geforcemods.securitycraft.entity.camera.CameraController;
@@ -35,11 +35,11 @@ public class KeyBindings {
 	@SubscribeEvent
 	public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
 		category = KeyMapping.Category.register(SecurityCraft.resLoc(SecurityCraft.MODID));
-		cameraZoomIn = register(event, "cameraZoomIn", GLFW.GLFW_KEY_EQUAL);
-		cameraZoomOut = register(event, "cameraZoomOut", GLFW.GLFW_KEY_MINUS);
-		cameraEmitRedstone = registerTicking(event, "cameraEmitRedstone", GLFW.GLFW_KEY_R, CameraController::toggleRedstone);
-		cameraActivateNightVision = registerTicking(event, "cameraActivateNightVision", GLFW.GLFW_KEY_N, CameraController::toggleNightVision);
-		setDefaultViewingDirection = registerTicking(event, "setDefaultViewingDirection", GLFW.GLFW_KEY_U, CameraController::setDefaultViewingDirection);
+		cameraZoomIn = register(event, "cameraZoomIn", InputConstants.KEY_EQUALS);
+		cameraZoomOut = register(event, "cameraZoomOut", InputConstants.KEY_MINUS);
+		cameraEmitRedstone = registerTicking(event, "cameraEmitRedstone", InputConstants.KEY_R, CameraController::toggleRedstone);
+		cameraActivateNightVision = registerTicking(event, "cameraActivateNightVision", InputConstants.KEY_N, CameraController::toggleNightVision);
+		setDefaultViewingDirection = registerTicking(event, "setDefaultViewingDirection", InputConstants.KEY_U, CameraController::setDefaultViewingDirection);
 	}
 
 	private static KeyMapping register(RegisterKeyMappingsEvent event, String name, int defaultKey) {

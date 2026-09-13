@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:portable_radar"
+        "recipes": "securitycraft:portable_radar"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:sc_manual"
+        "recipes": "securitycraft:sc_manual"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

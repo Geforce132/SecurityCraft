@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:scanner_door_item"
+        "recipes": "securitycraft:scanner_door_item"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

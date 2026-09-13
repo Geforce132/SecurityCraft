@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:briefcase"
+        "recipes": "securitycraft:briefcase"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:quartz_mine"
+        "recipes": "securitycraft:quartz_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

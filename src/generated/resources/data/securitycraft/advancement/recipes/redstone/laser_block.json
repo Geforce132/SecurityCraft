@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:laser_block"
+        "recipes": "securitycraft:laser_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_observer"
+        "recipes": "securitycraft:reinforced_observer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

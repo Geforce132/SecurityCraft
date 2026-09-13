@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_light_gray_wool"
+        "recipes": "securitycraft:reinforced_light_gray_wool"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

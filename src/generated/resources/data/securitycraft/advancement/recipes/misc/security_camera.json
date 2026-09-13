@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:security_camera"
+        "recipes": "securitycraft:security_camera"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

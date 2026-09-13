@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:block_pocket_manager"
+        "recipes": "securitycraft:block_pocket_manager"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

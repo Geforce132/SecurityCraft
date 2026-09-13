@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:disguise_module"
+        "recipes": "securitycraft:disguise_module"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

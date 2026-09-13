@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:storage_module"
+        "recipes": "securitycraft:storage_module"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

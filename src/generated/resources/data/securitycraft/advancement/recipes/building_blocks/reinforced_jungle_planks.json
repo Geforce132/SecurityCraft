@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_jungle_planks"
+        "recipes": "securitycraft:reinforced_jungle_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

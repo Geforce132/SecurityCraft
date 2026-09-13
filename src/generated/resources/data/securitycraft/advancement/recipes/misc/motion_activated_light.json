@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:motion_activated_light"
+        "recipes": "securitycraft:motion_activated_light"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

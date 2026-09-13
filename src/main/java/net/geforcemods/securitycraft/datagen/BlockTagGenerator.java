@@ -533,6 +533,12 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				.addTag(SCTags.Blocks.REINFORCED_MUD)
 				.addTag(SCTags.Blocks.REINFORCED_MOSS_BLOCKS)
 				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS);
+		tag(BlockTags.NETHER_PORTAL_FRAME).add(SCContent.REINFORCED_OBSIDIAN.getKey());
+		tag(BlockTags.CONDUIT_EFFECT_BLOCK).add(
+				SCContent.REINFORCED_PRISMARINE.getKey(),
+				SCContent.REINFORCED_PRISMARINE_BRICKS.getKey(),
+				SCContent.REINFORCED_SEA_LANTERN.getKey(),
+				SCContent.REINFORCED_DARK_PRISMARINE.getKey());
 		//@formatter:on
 		miningRelatedTags();
 

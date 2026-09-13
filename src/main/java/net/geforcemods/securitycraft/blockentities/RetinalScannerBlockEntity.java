@@ -93,7 +93,7 @@ public class RetinalScannerBlockEntity extends DisguisableBlockEntity implements
 				BlockUtils.updateIndirectNeighbors(level, worldPosition, SCContent.RETINAL_SCANNER.get());
 
 				if (signalLength > 0)
-					level.scheduleTick(new BlockPos(worldPosition), SCContent.RETINAL_SCANNER.get(), signalLength);
+					level.scheduleTick(worldPosition, SCContent.RETINAL_SCANNER.get(), signalLength);
 
 				return true;
 			}

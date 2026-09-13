@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -55,18 +56,22 @@ public class SecurityCameraRenderer implements BlockEntityRenderer<SecurityCamer
 
 		if (!state.isDisguised) {
 			Direction side = state.direction;
+			RenderType renderType = RenderTypes.entitySolid(state.texture);
 
 			pose.translate(0.5D, 1.5D, 0.5D);
 
 			if (side == Direction.NORTH)
-				pose.mulPose(POSITIVE_Y_180);
+				pose.rotate(POSITIVE_Y_180);
 			else if (side == Direction.EAST)
-				pose.mulPose(POSITIVE_Y_90);
+				pose.rotate(POSITIVE_Y_90);
 			else if (side == Direction.WEST)
-				pose.mulPose(NEGATIVE_Y_90);
+				pose.rotate(NEGATIVE_Y_90);
 
-			pose.mulPose(POSITIVE_X_180);
-			collector.submitModel(model, state, pose, RenderTypes.entitySolid(state.texture), state.lightCoords, OverlayTexture.NO_OVERLAY, state.lensColor, null, 0, state.breakProgress);
+			pose.rotate(POSITIVE_X_180);
+			collector.submitModel(model, state, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, state.lensColor, null, 0);
+
+			if (state.breakProgress != null)
+				collector.order(1).submitCrumblingOverlay(model, state, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, -1, state.breakProgress);
 		}
 	}
 

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_green_stained_glass"
+        "recipes": "securitycraft:reinforced_green_stained_glass"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

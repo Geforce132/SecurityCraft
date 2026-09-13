@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_brown_carpet"
+        "recipes": "securitycraft:reinforced_brown_carpet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

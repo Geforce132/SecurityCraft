@@ -54,17 +54,17 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 			switch (state.attachFace) {
 				case CEILING:
 					pose.translate(0.0D, insertionAmount, 0.0D);
-					pose.mulPose(Axis.YP.rotationDegrees(-rotation + 180.0F));
-					pose.mulPose(Axis.XP.rotationDegrees(-90.0F));
+					pose.rotate(Axis.YP.rotationDegrees(-rotation + 180.0F));
+					pose.rotate(Axis.XP.rotationDegrees(-90.0F));
 					break;
 				case FLOOR:
 					pose.translate(0.0D, -insertionAmount, 0.0D);
-					pose.mulPose(Axis.YP.rotationDegrees(-rotation + 180.0F));
-					pose.mulPose(Axis.XP.rotationDegrees(90.0F));
+					pose.rotate(Axis.YP.rotationDegrees(-rotation + 180.0F));
+					pose.rotate(Axis.XP.rotationDegrees(90.0F));
 					break;
 				case WALL:
-					pose.mulPose(Axis.YP.rotationDegrees(180.0F));
-					pose.mulPose(Axis.YP.rotationDegrees(-rotation));
+					pose.rotate(Axis.YP.rotationDegrees(180.0F));
+					pose.rotate(Axis.YP.rotationDegrees(-rotation));
 					pose.translate(0.0D, 0.0D, insertionAmount);
 					break;
 			}
@@ -76,27 +76,31 @@ public class DisplayCaseRenderer implements BlockEntityRenderer<DisplayCaseBlock
 			pose.popPose();
 		}
 
-		pose.mulPose(Axis.YP.rotationDegrees(-rotation));
+		pose.rotate(Axis.YP.rotationDegrees(-rotation));
 
 		switch (state.attachFace) {
 			case CEILING:
 				pose.translate(0.0D, 0.0D, 1.0D);
-				pose.mulPose(Axis.XP.rotationDegrees(-90.0F));
+				pose.rotate(Axis.XP.rotationDegrees(-90.0F));
 				break;
 			case FLOOR:
 				pose.translate(0.0D, 0.0D, -1.0D);
-				pose.mulPose(Axis.XP.rotationDegrees(90.0F));
+				pose.rotate(Axis.XP.rotationDegrees(90.0F));
 				break;
 			case WALL:
 				pose.translate(0.0D, 1.0D, 0.0D);
-				pose.mulPose(Axis.XP.rotationDegrees(180.0F));
+				pose.rotate(Axis.XP.rotationDegrees(180.0F));
 				break;
 		}
 
 		RenderType renderType = RenderTypes.entityCutout(state.isGlowing ? glowTexture : texture);
 
 		pose.scale(-1.0F, 1.0F, -1.0F);
-		collector.submitModel(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+		collector.submitModel(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+
+		if (state.breakProgress != null)
+			collector.order(1).submitCrumblingOverlay(model, state.openness, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, -1, state.breakProgress);
+
 		pose.popPose();
 	}
 

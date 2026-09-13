@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_packed_ice"
+        "recipes": "securitycraft:reinforced_packed_ice"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

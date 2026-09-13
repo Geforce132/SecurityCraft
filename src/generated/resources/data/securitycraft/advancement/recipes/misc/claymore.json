@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:claymore"
+        "recipes": "securitycraft:claymore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

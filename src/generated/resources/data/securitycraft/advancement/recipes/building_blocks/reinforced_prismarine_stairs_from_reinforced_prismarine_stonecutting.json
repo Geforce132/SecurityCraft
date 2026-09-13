@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_prismarine_stairs_from_reinforced_prismarine_stonecutting"
+        "recipes": "securitycraft:reinforced_prismarine_stairs_from_reinforced_prismarine_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

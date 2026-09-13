@@ -1,8 +1,5 @@
 package net.geforcemods.securitycraft.mixin.camera;
 
-import java.util.Map;
-import java.util.function.Consumer;
-
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,13 +18,11 @@ import net.geforcemods.securitycraft.misc.IChunkStorageProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientChunkCache;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData.BlockEntityTagOutput;
+import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.levelgen.Heightmap;
 
 /**
  * These mixins aim at implementing the camera chunk storage from FrameFeedRenderer into all the places
@@ -61,14 +56,14 @@ public abstract class ClientChunkCacheMixin implements IChunkStorageProvider {
 	 * cache
 	 */
 	@Inject(method = "replaceWithPacketData", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$onReplaceChunk(int x, int z, FriendlyByteBuf buffer, Map<Heightmap.Types, long[]> heightmaps, Consumer<BlockEntityTagOutput> tagOutputConsumer, CallbackInfoReturnable<LevelChunk> cir) {
+	private void securitycraft$onReplaceChunk(int x, int z, ClientboundLevelChunkPacketData packet, CallbackInfoReturnable<LevelChunk> cir) {
 		int renderDistance = Minecraft.getInstance().options.renderDistance().get();
 		Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
 		ChunkPos pos = new ChunkPos(x, z);
 		boolean isInPlayerRange = storage.inRange(x, z);
 
 		if (cameraEntity instanceof SecurityCamera && pos.getChessboardDistance(cameraEntity.chunkPosition()) <= (renderDistance + 1) || FrameFeedHandler.shouldAddChunk(pos, renderDistance)) {
-			LevelChunk newChunk = CameraClientChunkCacheExtension.replaceWithPacketData(level, x, z, new FriendlyByteBuf(buffer.copy()), heightmaps, tagOutputConsumer);
+			LevelChunk newChunk = CameraClientChunkCacheExtension.replaceWithPacketData(level, x, z, packet);
 
 			if (!isInPlayerRange)
 				cir.setReturnValue(newChunk);

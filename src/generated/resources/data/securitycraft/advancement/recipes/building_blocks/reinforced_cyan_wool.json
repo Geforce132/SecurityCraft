@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_cyan_wool"
+        "recipes": "securitycraft:reinforced_cyan_wool"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

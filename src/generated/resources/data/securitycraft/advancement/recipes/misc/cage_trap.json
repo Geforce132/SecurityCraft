@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:cage_trap"
+        "recipes": "securitycraft:cage_trap"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

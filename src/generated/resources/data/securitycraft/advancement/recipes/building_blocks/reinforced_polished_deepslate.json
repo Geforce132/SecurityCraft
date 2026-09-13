@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_polished_deepslate"
+        "recipes": "securitycraft:reinforced_polished_deepslate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

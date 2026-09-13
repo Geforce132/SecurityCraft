@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_jungle_fence"
+        "recipes": "securitycraft:reinforced_jungle_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

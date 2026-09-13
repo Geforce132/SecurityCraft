@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_mud_bricks"
+        "recipes": "securitycraft:reinforced_mud_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -2,25 +2,21 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "condition": "securitycraft:tile_entity_nbt",
-              "key": "canDrop",
-              "value": true
-            }
-          ],
+          "condition": {
+            "type": "securitycraft:tile_entity_nbt",
+            "key": "canDrop",
+            "value": true
+          },
           "name": "securitycraft:reinforced_iron_bars"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "securitycraft:blocks/reinforced_iron_bars"

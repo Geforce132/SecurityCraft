@@ -26,7 +26,7 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 	public void submit(ClaymoreRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
 		poseStack.pushPose();
 		poseStack.translate(0.5D, 0.0D, 0.5D);
-		poseStack.mulPose(state.rotation);
+		poseStack.rotate(state.rotation);
 		poseStack.translate(-0.5D, 0.0D, -0.5D);
 
 		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {

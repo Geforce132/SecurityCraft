@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.datagen;
 
-import java.util.concurrent.CompletableFuture;
-
 import net.geforcemods.securitycraft.SCContent;
 import net.geforcemods.securitycraft.SCTags;
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -11,11 +9,13 @@ import net.geforcemods.securitycraft.recipe.BlockUnreinforcingRecipe;
 import net.geforcemods.securitycraft.recipe.CopyPositionComponentItemRecipe;
 import net.geforcemods.securitycraft.recipe.LimitedUseKeycardRecipe;
 import net.geforcemods.securitycraft.util.Utils;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.CustomCraftingRecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -24,6 +24,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -32,8 +33,12 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionContents;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.DyeRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
@@ -41,6 +46,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ColorCollection;
 import net.minecraft.world.level.block.WeatheringCopperCollection;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.CompoundIngredient;
+import net.neoforged.neoforge.common.crafting.DataComponentIngredient;
 
 public class RecipeGenerator extends RecipeProvider {
 	private static final ColorCollection<TagKey<Item>> DYES_TAGS = new ColorCollection<>(
@@ -62,8 +69,8 @@ public class RecipeGenerator extends RecipeProvider {
 			Tags.Items.DYES_BLACK
 	);
 
-	public RecipeGenerator(HolderLookup.Provider lookupProvider, RecipeOutput output) {
-		super(lookupProvider, output);
+	public RecipeGenerator(BootstrapContext<Recipe<?>> recipeOutput, BootstrapContext<Advancement> advancementOutput) {
+		super(recipeOutput, advancementOutput);
 	}
 
 	@Override
@@ -1444,7 +1451,29 @@ public class RecipeGenerator extends RecipeProvider {
 		.requires(SCContent.REINFORCED_MOSS_BLOCK)
 		.unlockedBy("has_reinforced_moss", has(SCContent.REINFORCED_MOSS_BLOCK))
 		.save(output, "securitycraft:reinforced_mossy_stone_bricks_from_reinforced_ingredients");
+		registerBrewingRecipes(items, output);
+	}
+
+	//TODO: These should be actual brewing recipes, but the data-driven vanilla ones are very limited
+	public void registerBrewingRecipes(HolderGetter<Item> items, RecipeOutput output) {
+		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BREWING, SCContent.FAKE_WATER_BUCKET)
+		.requires(Items.WATER_BUCKET)
+		.requires(getPotionIngredient(Potions.HARMING, Potions.STRONG_HARMING))
+		.unlockedBy("has_water_bucket", has(Items.WATER_BUCKET))
+		.save(output);
+		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.BREWING, SCContent.FAKE_LAVA_BUCKET)
+		.requires(Items.LAVA_BUCKET)
+		.requires(getPotionIngredient(Potions.HEALING, Potions.STRONG_HEALING))
+		.unlockedBy("has_water_bucket", has(Items.LAVA_BUCKET))
+		.save(output);
 		//@formatter:on
+	}
+
+	private Ingredient getPotionIngredient(Holder<Potion> normalPotion, Holder<Potion> strongPotion) {
+		Ingredient normalPotions = DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(normalPotion), Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+		Ingredient strongPotions = DataComponentIngredient.of(false, DataComponents.POTION_CONTENTS, new PotionContents(strongPotion), Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION);
+
+		return CompoundIngredient.of(normalPotions, strongPotions);
 	}
 
 	protected final void addBarkRecipe(ItemLike log, ItemLike result) { //woof
@@ -1973,12 +2002,14 @@ public class RecipeGenerator extends RecipeProvider {
 	}
 
 	protected final void limitedUseKeycard(ItemLike keycard) {
+		//@formatter:off
 		DataComponentPatch components = DataComponentPatch.builder().set(SCContent.KEYCARD_DATA.get(), KeycardData.DEFAULT.setLimitedAndUsesLeft(true, 0)).build();
 		SpecialRecipeBuilder.special(() -> new LimitedUseKeycardRecipe(
 				Ingredient.of(keycard),
 				Ingredient.of(SCContent.LIMITED_USE_KEYCARD.get()),
 				new ItemStackTemplate(keycard.asItem(), 2, components))
 		).save(output, scRecipeId("limited_use_" + Utils.getRegistryName(keycard.asItem()).getPath()));
+		//@formatter:on
 	}
 
 	public static ItemStackTemplate applyDye(Item item, DyeColor dye) {
@@ -1986,24 +2017,21 @@ public class RecipeGenerator extends RecipeProvider {
 		return new ItemStackTemplate(item.builtInRegistryHolder(), 1, patch);
 	}
 
-	private static ResourceKey<Recipe<?>> scRecipeId(String path) {
-		return ResourceKey.create(Registries.RECIPE, SecurityCraft.resLoc(path));
+	//Copy from the super method to add the mod namespace
+	public void dyedItem(Item target, String group) {
+		//@formatter:off
+		CustomCraftingRecipeBuilder.customCrafting(
+				RecipeCategory.MISC,
+				(commonInfo, bookInfo) -> new DyeRecipe(commonInfo, bookInfo, Ingredient.of(target), tag(ItemTags.DYES), new ItemStackTemplate(target))
+		)
+		.unlockedBy(getHasName(target), has(target))
+		.group(group)
+		.save(output, "securitycraft:" + getItemName(target) + "_dyed");
+		//@formatter:on
 	}
 
-	public static final class Runner extends RecipeProvider.Runner {
-		public Runner(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
-			super(output, lookupProvider);
-		}
-
-		@Override
-		protected RecipeProvider createRecipeProvider(HolderLookup.Provider lookupProvider, RecipeOutput output) {
-			return new RecipeGenerator(lookupProvider, output);
-		}
-
-		@Override
-		public String getName() {
-			return "SecurityCraft recipes";
-		}
+	private static ResourceKey<Recipe<?>> scRecipeId(String path) {
+		return ResourceKey.create(Registries.RECIPE, SecurityCraft.resLoc(path));
 	}
 
 	private record TwoItemLikes(ItemLike first, ItemLike second) {}

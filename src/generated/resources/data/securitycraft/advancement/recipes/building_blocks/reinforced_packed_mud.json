@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_packed_mud"
+        "recipes": "securitycraft:reinforced_packed_mud"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

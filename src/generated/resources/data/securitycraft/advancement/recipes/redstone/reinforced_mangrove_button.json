@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_mangrove_button"
+        "recipes": "securitycraft:reinforced_mangrove_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

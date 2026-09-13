@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_crimson_stairs"
+        "recipes": "securitycraft:reinforced_crimson_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

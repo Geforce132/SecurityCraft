@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_smooth_crystal_quartz_slab_from_reinforced_smooth_crystal_quartz_stonecutting"
+        "recipes": "securitycraft:reinforced_smooth_crystal_quartz_slab_from_reinforced_smooth_crystal_quartz_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

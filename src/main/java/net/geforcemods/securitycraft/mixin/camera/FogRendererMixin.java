@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mojang.blaze3d.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 
 import net.geforcemods.securitycraft.entity.camera.CameraFeed;
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.fog.FogRenderer;
  */
 @Mixin(FogRenderer.class)
 public class FogRendererMixin {
-	@WrapOperation(method = {"getBuffer", "updateBuffer(Lnet/minecraft/client/renderer/fog/FogData;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MappableRingBuffer;currentBuffer()Lcom/mojang/blaze3d/buffers/GpuBuffer;"))
+	@WrapOperation(method = {"getBuffer", "updateBuffer(Lnet/minecraft/client/renderer/fog/FogData;)V"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MappableRingBuffer;currentBuffer()Lcom/mojang/renderpearl/api/buffers/GpuBuffer;"))
 	private GpuBuffer securitycraft$useFrameFogBuffer(MappableRingBuffer instance, Operation<GpuBuffer> original) {
 		CameraFeed currentFeed = FrameFeedHandler.getCurrentlyCapturedFeed();
 

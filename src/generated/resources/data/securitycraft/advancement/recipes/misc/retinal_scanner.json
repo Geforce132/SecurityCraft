@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:retinal_scanner"
+        "recipes": "securitycraft:retinal_scanner"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

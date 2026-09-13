@@ -28,8 +28,8 @@ public class BulletRenderer extends EntityRenderer<Bullet, ArrowRenderState> {
 
 	@Override
 	public void submit(ArrowRenderState state, PoseStack pose, SubmitNodeCollector collector, CameraRenderState camera) {
-		pose.mulPose(Axis.YP.rotationDegrees(state.yRot));
-		collector.submitModel(model, state, pose, RenderTypes.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+		pose.rotate(Axis.YP.rotationDegrees(state.yRot));
+		collector.submitModel(model, state, pose, RenderTypes.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
 	}
 
 	@Override

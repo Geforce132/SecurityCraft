@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.joml.Matrix4f;
-import org.lwjgl.glfw.GLFW;
 
+import com.mojang.blaze3d.Blaze3D;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.platform.Window;
 
@@ -59,7 +59,7 @@ public class FrameFeedHandler {
 	private static GlobalPos currentlyCapturedCamera;
 	private static double lastFrameRendered = 0.0D;
 
-	public static void captureFrameFeeds(DeltaTracker partialTick) {
+	public static void captureFrameFeeds() {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 
@@ -67,7 +67,7 @@ public class FrameFeedHandler {
 			return;
 
 		ProfilerFiller profiler = Profiler.get();
-		double currentTime = GLFW.glfwGetTime();
+		double currentTime = Blaze3D.getTime();
 		Map<GlobalPos, CameraFeed> activeFrameCameraFeeds = getFeedsToRender(mc, currentTime);
 
 		if (activeFrameCameraFeeds.isEmpty())
@@ -125,7 +125,8 @@ public class FrameFeedHandler {
 
 					Vec3 cameraEntityPos = new Vec3(pos.getX() + 0.5D, pos.getY() - player.getDimensions(Pose.STANDING).eyeHeight() + 0.5D, pos.getZ() + 0.5D);
 					float cameraXRot = be.getDefaultXRotation();
-					float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(partialTick.getGameTimeDeltaPartialTick(false), be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
+					//TODO: 1.0F in lerp ok?
+					float cameraYRot = be.getDefaultYRotation(be.getBlockState().getValue(SecurityCameraBlock.FACING)) + (float) Mth.lerp(1.0F, be.getOriginalCameraRotation(), be.getCameraRotation()) * Mth.RAD_TO_DEG;
 
 					securityCamera.setPos(cameraEntityPos);
 					mc.setCameraEntity(securityCamera);
@@ -139,14 +140,14 @@ public class FrameFeedHandler {
 					camera.attributeProbe = feed.attributeProbe(); //Prevents writing the frame feed's position to the main attribute probe, so the main renderer doesn't consider the frame environment attributes when interpolating
 					camera.update(DeltaTracker.ONE); //Updates the camera position to be at the current camera entity
 					camera.attributeProbe().tick(level, camera.position()); //Notifies the camera's attribute probe with the new camera entity position, so the correct sky and fog color is used
-					mc.gameRenderer.globalSettingsUniform.update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), DeltaTracker.ONE, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
+					mc.gameRenderer.globalSettingsUniform.update(oldWidth, oldHeight, mc.options.glintStrength().get(), level.getGameTime(), 1.0F, mc.options.getMenuBackgroundBlurriness(), camera.position(), mc.options.textureFiltering().get() == TextureFilteringMethod.RGSS); //The camera's position also needs to be updated in here
 					mc.gameRenderer.mainRenderTarget = newRenderTarget;
 
 					try {
 						profiler.popPush("securitycraft:extract");
 						mc.gameRenderer.extract(DeltaTracker.ONE, true);
 						profiler.popPush("securitycraft:render");
-						mc.gameRenderer.renderLevel(DeltaTracker.ONE);
+						mc.gameRenderer.renderLevel();
 					}
 					catch (Exception e) {
 						PlayerUtils.sendMessageToPlayer(player, Utils.localize(SCContent.FRAME.get().getDescriptionId()), Utils.localize("messages.securitycraft:frame.error"), ChatFormatting.RED, true);
@@ -203,7 +204,8 @@ public class FrameFeedHandler {
 		mc.gameRenderer.mainRenderTarget = oldMainRenderTarget;
 		currentlyCapturedCamera = null;
 		//These two lines ensure that GUI rendering, which happens after frame feed capture, is done with the correct parameters
-		mc.gui.extractRenderState(partialTick, resourcesLoaded, resourcesLoaded);
+		//TODO: Correct delta tracker?
+		mc.gui.extractRenderState(Minecraft.getInstance().getDeltaTracker(), resourcesLoaded, resourcesLoaded);
 		mc.gameRenderer.extractWindow();
 	}
 

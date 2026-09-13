@@ -4,6 +4,7 @@ import net.geforcemods.securitycraft.api.IDisguisable;
 import net.geforcemods.securitycraft.compat.IOverlayDisplay;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -48,7 +49,7 @@ public abstract class DisguisableBlock extends OwnableBlock implements IOverlayD
 		if (disguisedState.getBlock() != state.getBlock())
 			return disguisedState.isSuffocating(level, pos);
 		else
-			return state.blocksMotion() && state.isCollisionShapeFullBlock(level, pos);
+			return state.is(BlockTags.CAUSES_SUFFOCATION) && state.isCollisionShapeFullBlock(level, pos);
 	}
 
 	@Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:keycard_lv5_reset"
+        "recipes": "securitycraft:keycard_lv5_reset"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -18,7 +18,7 @@
 		"f3.BetterF3TargetModuleMixin",
 		"f3.DebugEntryLookingAtBlockMixin",
 		"f3.DebugEntryLookingAtFluidMixin",
-		"taser.ItemInHandRendererMixin"
+		"taser.FirstPersonHandsAndItemsMixin"
 	],
 	"mixins": [
 		"camera.ChunkMapMixin",

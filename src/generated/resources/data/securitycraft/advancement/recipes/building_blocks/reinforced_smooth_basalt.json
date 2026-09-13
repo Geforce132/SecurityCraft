@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_smooth_basalt"
+        "recipes": "securitycraft:reinforced_smooth_basalt"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

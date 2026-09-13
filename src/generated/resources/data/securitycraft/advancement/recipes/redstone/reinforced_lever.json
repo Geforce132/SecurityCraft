@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_lever"
+        "recipes": "securitycraft:reinforced_lever"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

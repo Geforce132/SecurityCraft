@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_red_sandstone_wall_from_reinforced_red_sandstone_stonecutting"
+        "recipes": "securitycraft:reinforced_red_sandstone_wall_from_reinforced_red_sandstone_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

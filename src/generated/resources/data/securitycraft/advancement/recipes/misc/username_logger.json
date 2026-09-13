@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:username_logger"
+        "recipes": "securitycraft:username_logger"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

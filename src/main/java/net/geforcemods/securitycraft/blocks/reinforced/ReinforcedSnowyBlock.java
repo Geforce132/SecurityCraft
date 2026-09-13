@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.SnowyBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ReinforcedSnowyBlock extends SnowyBlock implements IReinforcedBlock, EntityBlock {
@@ -55,7 +55,7 @@ public class ReinforcedSnowyBlock extends SnowyBlock implements IReinforcedBlock
 	}
 
 	@Override
-	public boolean onTreeGrow(BlockState state, WorldGenLevel level, BiConsumer<BlockPos, BlockState> placeFunction, RandomSource randomSource, BlockPos pos, TreeConfiguration config) {
+	public boolean onTreeGrow(BlockState state, WorldGenLevel level, BiConsumer<BlockPos, BlockState> placeFunction, RandomSource randomSource, BlockPos pos, TreeFeature tree) {
 		return true; //Do not allow trees to replace reinforced blocks with dirt when growing
 	}
 

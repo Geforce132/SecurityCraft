@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:deepslate_emerald_mine"
+        "recipes": "securitycraft:deepslate_emerald_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

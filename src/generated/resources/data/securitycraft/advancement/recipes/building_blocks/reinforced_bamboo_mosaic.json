@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_bamboo_mosaic"
+        "recipes": "securitycraft:reinforced_bamboo_mosaic"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -10,6 +10,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
@@ -89,7 +90,7 @@ public abstract class FakeLavaFluid extends BaseFlowingFluid {
 							return;
 						}
 					}
-					else if (stateToUpdate.blocksMotion())
+					else if (stateToUpdate.is(BlockTags.BLOCKS_LAVA_FIRE_SPREAD))
 						return;
 				}
 			}

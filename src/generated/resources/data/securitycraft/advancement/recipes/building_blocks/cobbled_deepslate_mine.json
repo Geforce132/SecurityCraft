@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:cobbled_deepslate_mine"
+        "recipes": "securitycraft:cobbled_deepslate_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

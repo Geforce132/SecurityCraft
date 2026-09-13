@@ -1,7 +1,5 @@
 package net.geforcemods.securitycraft.screen;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -126,14 +124,14 @@ public class CheckPasscodeScreen extends Screen implements StillValid {
 	public boolean keyPressed(KeyEvent event) {
 		int keyCode = event.key();
 
-		if (keyCode == GLFW.GLFW_KEY_BACKSPACE && !keycodeTextbox.getValue().isEmpty())
+		if (keyCode == InputConstants.KEY_BACKSPACE && !keycodeTextbox.getValue().isEmpty())
 			minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 
 		if (!super.keyPressed(event) && !keycodeTextbox.keyPressed(event)) {
 			if (minecraft.options.keyInventory.isActiveAndMatches(InputConstants.getKey(event)))
 				onClose();
 
-			if (!passcodeProtected.isOnCooldown() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
+			if (!passcodeProtected.isOnCooldown() && (keyCode == InputConstants.KEY_RETURN || keyCode == InputConstants.KEY_NUMPADENTER)) {
 				minecraft.player.playSound(SoundEvents.UI_BUTTON_CLICK.value(), 0.15F, 1.0F);
 				checkCode(keycodeTextbox.getValue());
 			}

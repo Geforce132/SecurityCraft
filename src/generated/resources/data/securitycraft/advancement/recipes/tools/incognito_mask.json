@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:incognito_mask"
+        "recipes": "securitycraft:incognito_mask"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

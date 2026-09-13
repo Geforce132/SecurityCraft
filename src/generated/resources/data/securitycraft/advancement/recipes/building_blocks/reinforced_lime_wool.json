@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_lime_wool"
+        "recipes": "securitycraft:reinforced_lime_wool"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

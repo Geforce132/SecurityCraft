@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:remote_access_sentry"
+        "recipes": "securitycraft:remote_access_sentry"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

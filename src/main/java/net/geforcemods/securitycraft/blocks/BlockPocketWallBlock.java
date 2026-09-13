@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -35,6 +36,10 @@ public class BlockPocketWallBlock extends OwnableBlock implements IBlockPocket {
 
 	public static boolean causesSuffocation(BlockState state, BlockGetter level, BlockPos pos) {
 		return state.getValue(SOLID);
+	}
+
+	public static boolean causesSuffocation(BlockState state, BlockGetter level, BlockPos pos, AABB aabb) {
+		return causesSuffocation(state, level, pos);
 	}
 
 	@Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:dirt_mine"
+        "recipes": "securitycraft:dirt_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

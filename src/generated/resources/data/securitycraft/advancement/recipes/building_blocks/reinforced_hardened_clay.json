@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_hardened_clay"
+        "recipes": "securitycraft:reinforced_hardened_clay"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

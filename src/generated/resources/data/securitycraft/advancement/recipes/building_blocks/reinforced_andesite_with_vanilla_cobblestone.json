@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_andesite_with_vanilla_cobblestone"
+        "recipes": "securitycraft:reinforced_andesite_with_vanilla_cobblestone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

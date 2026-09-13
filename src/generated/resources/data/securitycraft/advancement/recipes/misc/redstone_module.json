@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:redstone_module"
+        "recipes": "securitycraft:redstone_module"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

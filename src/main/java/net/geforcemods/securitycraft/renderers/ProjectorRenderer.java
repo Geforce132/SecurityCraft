@@ -55,6 +55,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 			BlockPos projectorPos = be.getBlockPos();
 			AABB projectedBlocksArea = be.getProjectedBlocksArea().deflate(0.1D);
 
+			//TODO: level.findBlocksIn (and everywhere where we use this)
 			for (BlockPos relativePos : BlockPos.betweenClosed(projectedBlocksArea)) {
 				BlockPos projectionPos = projectorPos.offset(relativePos);
 
@@ -67,7 +68,7 @@ public class ProjectorRenderer implements BlockEntityRenderer<ProjectorBlockEnti
 					movingBlockRenderState.biome = level.getBiome(projectionPos);
 					movingBlockRenderState.cardinalLighting = level.cardinalLighting();
 					movingBlockRenderState.lightEngine = level.getLightEngine();
-					renderPositions.add(new ProjectionInfo(new BlockPos(relativePos), movingBlockRenderState));
+					renderPositions.add(new ProjectionInfo(relativePos.immutable(), movingBlockRenderState));
 				}
 			}
 		}

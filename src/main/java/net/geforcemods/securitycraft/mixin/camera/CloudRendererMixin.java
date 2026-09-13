@@ -5,10 +5,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
+
 import net.geforcemods.securitycraft.entity.camera.FrameFeedHandler;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.renderer.CloudRenderer;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.client.renderer.oit.OitRenderPassProvider.Parameters;
+import net.minecraft.client.renderer.oit.OitStage;
 
 /**
  * Completely disables cloud rendering within frame feeds, to prevent crashes and other instabilities arising from the cloud
@@ -16,8 +20,14 @@ import net.minecraft.world.phys.Vec3;
  */
 @Mixin(CloudRenderer.class)
 public class CloudRendererMixin {
-	@Inject(method = "render", at = @At("HEAD"), cancellable = true)
-	private void securitycraft$disableCloudRendering(int color, CloudStatus cloudStatus, float bottomY, int range, Vec3 cameraPosition, long gameTime, float partialTicks, CallbackInfo ci) {
+	@Inject(method = "render(Lnet/minecraft/client/CloudStatus;Lcom/mojang/renderpearl/api/commands/RenderPass;)V", at = @At("HEAD"), cancellable = true)
+	private void securitycraft$disableCloudRendering(CloudStatus cloudStatus, RenderPass renderPass, CallbackInfo ci) {
+		if (FrameFeedHandler.isCapturingCamera())
+			ci.cancel();
+	}
+
+	@Inject(method = "renderOit", at = @At("HEAD"), cancellable = true)
+	private void securitycraft$disableCloudRendering(CloudStatus cloudStatus, OitStage stage, GpuTextureView mainDepthTextureView, Parameters params, CallbackInfo ci) {
 		if (FrameFeedHandler.isCapturingCamera())
 			ci.cancel();
 	}

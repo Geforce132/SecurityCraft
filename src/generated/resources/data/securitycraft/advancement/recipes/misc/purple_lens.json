@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:purple_lens"
+        "recipes": "securitycraft:purple_lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

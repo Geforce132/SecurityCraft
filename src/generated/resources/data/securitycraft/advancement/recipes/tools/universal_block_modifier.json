@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:universal_block_modifier"
+        "recipes": "securitycraft:universal_block_modifier"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

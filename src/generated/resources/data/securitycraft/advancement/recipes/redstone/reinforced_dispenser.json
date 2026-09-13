@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_dispenser"
+        "recipes": "securitycraft:reinforced_dispenser"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

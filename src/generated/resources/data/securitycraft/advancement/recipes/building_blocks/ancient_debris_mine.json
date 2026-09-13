@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:ancient_debris_mine"
+        "recipes": "securitycraft:ancient_debris_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

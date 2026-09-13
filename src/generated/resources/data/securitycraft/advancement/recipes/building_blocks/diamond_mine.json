@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:diamond_mine"
+        "recipes": "securitycraft:diamond_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

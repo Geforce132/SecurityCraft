@@ -1,6 +1,5 @@
 package net.geforcemods.securitycraft.blocks.reinforced;
 
-import net.geforcemods.securitycraft.SCContent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -11,11 +10,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements BonemealableBlock {
 	public ReinforcedNyliumBlock(BlockBehaviour.Properties properties, Block vB) {
@@ -23,33 +23,31 @@ public class ReinforcedNyliumBlock extends BaseReinforcedBlock implements Boneme
 	}
 
 	@Override
-	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+	public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
 		return level.getBlockState(pos.above()).isAir();
 	}
 
 	@Override
-	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+	public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
 		return true;
 	}
 
 	@Override
-	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-		BlockPos upperPos = pos.above();
-		ChunkGenerator chunkGenerator = level.getChunkSource().getGenerator();
-		Registry<ConfiguredFeature<?, ?>> registry = level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE);
+	public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
+		BlockPos abovePos = pos.above();
+		ChunkGenerator generator = level.getChunkSource().getGenerator();
+		Registry<Feature> configuredFeatures = level.registryAccess().lookupOrThrow(Registries.FEATURE);
 
-		if (state.is(SCContent.REINFORCED_CRIMSON_NYLIUM.get()))
-			place(registry, NetherFeatures.CRIMSON_FOREST_VEGETATION_BONEMEAL, level, chunkGenerator, random, upperPos);
-		else if (state.is(SCContent.REINFORCED_WARPED_NYLIUM.get())) {
-			place(registry, NetherFeatures.WARPED_FOREST_VEGETATION_BONEMEAL, level, chunkGenerator, random, upperPos);
-			place(registry, NetherFeatures.NETHER_SPROUTS_BONEMEAL, level, chunkGenerator, random, upperPos);
-
-			if (random.nextInt(8) == 0)
-				place(registry, NetherFeatures.TWISTING_VINES_BONEMEAL, level, chunkGenerator, random, upperPos);
-		}
+		place(configuredFeatures, NetherFeatures.NYLIUM_BONEMEAL, level, generator, random, abovePos);
 	}
 
-	private void place(Registry<ConfiguredFeature<?, ?>> registry, ResourceKey<ConfiguredFeature<?, ?>> configuredFeatureKey, ServerLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos pos) {
-		registry.get(configuredFeatureKey).ifPresent(configuredFeature -> configuredFeature.value().place(level, chunkGenerator, random, pos));
+	private void place(Registry<Feature> configuredFeatures, ResourceKey<Feature> id, ServerLevel level, ChunkGenerator generator, RandomSource random, BlockPos pos) {
+		if (level.isInsideBuildHeight(pos))
+			configuredFeatures.get(id).ifPresent(feature -> feature.value().place(level, generator, random, pos));
+	}
+
+	@Override
+	public BonemealableBlock.Type getType() {
+		return BonemealableBlock.Type.NEIGHBOR_SPREADER;
 	}
 }

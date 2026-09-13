@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_yellow_carpet"
+        "recipes": "securitycraft:reinforced_yellow_carpet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

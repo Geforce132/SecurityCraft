@@ -205,8 +205,6 @@
 //@formatter:on
 package net.geforcemods.securitycraft.entity.camera;
 
-import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -214,11 +212,9 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.geforcemods.securitycraft.compat.ium.IumCompat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkPacketData;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.ChunkEvent;
 
@@ -263,7 +259,7 @@ public class CameraClientChunkCacheExtension {
 		}
 	}
 
-	public static LevelChunk replaceWithPacketData(ClientLevel level, int x, int z, FriendlyByteBuf packetData, Map<Heightmap.Types, long[]> heightmaps, Consumer<ClientboundLevelChunkPacketData.BlockEntityTagOutput> tagOutput) {
+	public static LevelChunk replaceWithPacketData(ClientLevel level, int x, int z, ClientboundLevelChunkPacketData packet) {
 		if (!Minecraft.getInstance().isSameThread())
 			throw new UnsupportedOperationException("replaceWithPacketData called off-thread, this shouldn't happen!");
 
@@ -276,7 +272,7 @@ public class CameraClientChunkCacheExtension {
 			LevelChunk oldChunk;
 
 			chunk = newChunk;
-			chunk.replaceWithPacketData(packetData, heightmaps, tagOutput);
+			chunk.replaceWithPacketData(x, z, packet);
 			oldChunk = modifyChunkMaps(map -> map.put(longChunkPos, newChunk));
 
 			if (oldChunk != null)

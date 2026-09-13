@@ -44,7 +44,7 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 		toDestroy.clear();
 
 		if (!ReinforcedPistonBaseBlock.isPushable(state, level, pistonPos, startPos, pushDirection, false, pistonDirection)) {
-			if (extending && state.getPistonPushReaction() == PushReaction.DESTROY) {
+			if (extending && state.getPistonPushReaction() == PushReaction.POPPED) {
 				toDestroy.add(startPos);
 				return true;
 			}
@@ -133,7 +133,7 @@ public class ReinforcedPistonStructureResolver { //this class doesn't extend Pis
 					if (!ReinforcedPistonBaseBlock.isPushable(state, level, pistonPos, offsetPos, pushDirection, true, pushDirection) || offsetPos.equals(pistonPos))
 						return false;
 
-					if (state.getPistonPushReaction() == PushReaction.DESTROY) {
+					if (state.getPistonPushReaction() == PushReaction.POPPED) {
 						toDestroy.add(offsetPos);
 						return true;
 					}

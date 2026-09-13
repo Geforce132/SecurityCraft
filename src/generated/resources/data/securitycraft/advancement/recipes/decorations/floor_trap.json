@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:floor_trap"
+        "recipes": "securitycraft:floor_trap"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

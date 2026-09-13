@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:electrified_iron_fence"
+        "recipes": "securitycraft:electrified_iron_fence"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

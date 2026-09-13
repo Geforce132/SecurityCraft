@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:keycard_holder"
+        "recipes": "securitycraft:keycard_holder"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

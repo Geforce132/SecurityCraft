@@ -1,7 +1,6 @@
 package net.geforcemods.securitycraft.screen;
 
 import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -152,7 +151,9 @@ public class AlarmOptionsScreen extends Screen {
 
 		@Override
 		public boolean keyPressed(KeyEvent event) {
-			if (event.key() == GLFW.GLFW_KEY_ENTER || event.key() == GLFW.GLFW_KEY_KP_ENTER)
+			int keyCode = event.key();
+
+			if (keyCode == InputConstants.KEY_RETURN || keyCode == InputConstants.KEY_NUMPADENTER)
 				checkAndProcessInput();
 
 			return super.keyPressed(event);

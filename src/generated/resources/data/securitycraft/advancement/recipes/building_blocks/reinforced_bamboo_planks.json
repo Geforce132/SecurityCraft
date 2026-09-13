@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_bamboo_planks"
+        "recipes": "securitycraft:reinforced_bamboo_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

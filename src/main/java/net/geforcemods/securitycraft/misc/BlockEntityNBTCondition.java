@@ -29,7 +29,7 @@ public record BlockEntityNBTCondition(String key, boolean value) implements Loot
 
 	@Override
 	public boolean test(LootContext lootContext) {
-		BlockEntity be = lootContext.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		BlockEntity be = lootContext.getOptional(LootContextParams.BLOCK_ENTITY);
 
 		if (be != null) {
 			CompoundTag nbt = be.saveWithFullMetadata(lootContext.getLevel().registryAccess());

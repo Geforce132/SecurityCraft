@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:rift_stabilizer"
+        "recipes": "securitycraft:rift_stabilizer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

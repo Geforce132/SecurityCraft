@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.IntFunction;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.platform.InputConstants;
 
@@ -82,7 +80,7 @@ public class EditModuleScreen extends Screen implements StillValid {
 			public boolean keyPressed(KeyEvent event) {
 				int keyCode = event.key();
 
-				if (isFocused() && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
+				if (isFocused() && (keyCode == InputConstants.KEY_RETURN || keyCode == InputConstants.KEY_NUMPADENTER)) {
 					addPlayerButtonClicked(addPlayerButton);
 					return true;
 				}

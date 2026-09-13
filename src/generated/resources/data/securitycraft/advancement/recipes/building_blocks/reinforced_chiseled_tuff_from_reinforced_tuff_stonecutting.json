@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_chiseled_tuff_from_reinforced_tuff_stonecutting"
+        "recipes": "securitycraft:reinforced_chiseled_tuff_from_reinforced_tuff_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

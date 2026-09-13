@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:block_pocket_wall"
+        "recipes": "securitycraft:block_pocket_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

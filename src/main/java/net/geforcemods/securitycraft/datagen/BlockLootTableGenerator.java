@@ -11,9 +11,9 @@ import net.geforcemods.securitycraft.blocks.reinforced.ReinforcedSlabBlock;
 import net.geforcemods.securitycraft.misc.BlockEntityNBTCondition;
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
@@ -25,18 +25,18 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTable.Builder;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.entries.UniformContainerBase;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.predicates.MatchBlock;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class BlockLootTableGenerator extends BlockLootSubProvider {
-	public BlockLootTableGenerator(HolderLookup.Provider lookupProvider) {
-		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), lookupProvider);
+	public BlockLootTableGenerator(LootTableSubProvider.Context output) {
+		super(Set.of(), FeatureFlags.REGISTRY.allFlags(), output);
 	}
 
 	@Override
@@ -59,22 +59,22 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		add(SCContent.CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 		add(SCContent.SMOOTH_CRYSTAL_QUARTZ_SLAB, this::createSlabItemTable);
 
-		LootPoolSingletonContainer.Builder<?> imsLootEntryBuilder = LootItem.lootTableItem(SCContent.BOUNCING_BETTY);
+		UniformContainerBase.Builder<?> imsLootEntryBuilder = LootItem.lootTableItem(SCContent.BOUNCING_BETTY);
 
 		for (int i = 0; i <= 4; i++) {
 			if (i == 1)
 				continue;
 
 			//@formatter:off
-			imsLootEntryBuilder.apply(SetItemCountFunction.setCount(ConstantValue.exactly(i))
-					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(SCContent.IMS.get())
-							.setProperties(StatePropertiesPredicate.Builder.properties()
-									.hasProperty(IMSBlock.MINES, i))));
+			imsLootEntryBuilder.apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(i))
+					.when(MatchBlock.blockMatches(blocks, SCContent.IMS.get(),
+							StatePropertiesPredicate.Builder.properties()
+											.hasProperty(IMSBlock.MINES, i))));
 		}
 
 		add(SCContent.IMS, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantValue.exactly(1))
+						.setRolls(ContextIntProviders.exactly(1))
 						.add(imsLootEntryBuilder)));
 		//@formatter:on
 		add(SCContent.KEY_PANEL_BLOCK, this::createNameableBlockEntityTable);
@@ -84,7 +84,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		add(SCContent.REINFORCED_IRON_BARS,
 				LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantValue.exactly(1))
+						.setRolls(ContextIntProviders.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.REINFORCED_IRON_BARS)
 								.when(BlockEntityNBTCondition.nbt("canDrop", true)))
 						.when(ExplosionCondition.survivesExplosion())));
@@ -122,7 +122,7 @@ public class BlockLootTableGenerator extends BlockLootSubProvider {
 		//@formatter:off
 		add(SCContent.SONIC_SECURITY_SYSTEM, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
-						.setRolls(ConstantValue.exactly(1))
+						.setRolls(ContextIntProviders.exactly(1))
 						.add(LootItem.lootTableItem(SCContent.SONIC_SECURITY_SYSTEM_ITEM)
 								.apply(CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
 										.include(SCContent.SSS_LINKED_BLOCKS.get())

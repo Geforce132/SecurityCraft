@@ -174,7 +174,7 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 				}
 
 				if (!flag) {
-					if (id != 1 || offsetState.isAir() || !isPushable(offsetState, level, pos, offsetPos, direction.getOpposite(), false, direction) || offsetState.getPistonPushReaction() != PushReaction.NORMAL && !offsetState.is(SCContent.REINFORCED_PISTON.get()) && !offsetState.is(SCContent.REINFORCED_STICKY_PISTON.get()))
+					if (id != 1 || offsetState.isAir() || !isPushable(offsetState, level, pos, offsetPos, direction.getOpposite(), false, direction) || offsetState.getPistonPushReaction() != PushReaction.PUSH_PULL && !offsetState.is(SCContent.REINFORCED_PISTON.get()) && !offsetState.is(SCContent.REINFORCED_STICKY_PISTON.get()))
 						level.removeBlock(pos.relative(direction), false);
 					else
 						moveBlocks(level, pos, direction, false);
@@ -210,11 +210,11 @@ public class ReinforcedPistonBaseBlock extends PistonBaseBlock implements IReinf
 							return false;
 
 						switch (state.getPistonPushReaction()) {
-							case BLOCK:
+							case IMMOVEABLE:
 								return false;
-							case DESTROY:
+							case POPPED:
 								return destroyBlocks;
-							case PUSH_ONLY:
+							case PUSH:
 								return facing == direction;
 							default:
 								break;

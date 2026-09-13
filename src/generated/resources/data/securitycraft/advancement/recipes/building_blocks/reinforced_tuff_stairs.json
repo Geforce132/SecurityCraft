@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_tuff_stairs"
+        "recipes": "securitycraft:reinforced_tuff_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

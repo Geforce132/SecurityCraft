@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:speed_module"
+        "recipes": "securitycraft:speed_module"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -56,7 +56,7 @@ public class SecureTradingStationRenderer implements BlockEntityRenderer<SecureT
 
 		pose.pushPose();
 		pose.translate(0.5F, 0.4F - 0.3F * modelSize.minY, 0.5F);
-		pose.mulPose(state.rotation);
+		pose.rotate(state.rotation);
 		pose.translate(sideOffset, 0.0F, modelSize.getZsize() <= 0.0625F ? 0.1F : 0.0F);
 		pose.scale(0.35F, 0.35F, 0.35F);
 		stack.submit(pose, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);

@@ -1,37 +1,31 @@
 {
   "type": "minecraft:block",
-  "functions": [
-    {
-      "function": "minecraft:copy_components",
-      "include": [
-        "minecraft:custom_name"
-      ],
-      "source": "block_entity"
-    }
-  ],
+  "modifier": {
+    "type": "minecraft:copy_components",
+    "include": [
+      "minecraft:custom_name"
+    ],
+    "source": "block_entity"
+  },
   "pools": [
     {
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "securitycraft:iron_door_reinforced",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "half": "lower"
-              }
+          "condition": {
+            "type": "minecraft:match_block",
+            "blocks": "securitycraft:iron_door_reinforced",
+            "state": {
+              "half": "lower"
             }
-          ],
+          },
           "name": "securitycraft:door_indestructible_iron_item"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "securitycraft:blocks/iron_door_reinforced"

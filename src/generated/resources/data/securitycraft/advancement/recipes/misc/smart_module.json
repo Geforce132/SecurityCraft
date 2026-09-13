@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:smart_module"
+        "recipes": "securitycraft:smart_module"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_polished_andesite"
+        "recipes": "securitycraft:reinforced_polished_andesite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

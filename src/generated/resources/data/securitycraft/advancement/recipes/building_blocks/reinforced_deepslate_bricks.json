@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_deepslate_bricks"
+        "recipes": "securitycraft:reinforced_deepslate_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:coal_mine"
+        "recipes": "securitycraft:coal_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

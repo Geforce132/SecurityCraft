@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_warped_planks"
+        "recipes": "securitycraft:reinforced_warped_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

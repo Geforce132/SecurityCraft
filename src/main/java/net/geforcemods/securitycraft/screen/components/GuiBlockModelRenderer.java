@@ -35,8 +35,8 @@ public class GuiBlockModelRenderer extends PictureInPictureRenderer<GuiBlockMode
 
 		pose.scale(-24.0F, 24.0F, -24.0F);
 		pose.translate(0.5F, -1.5F, 0.5F);
-		pose.mulPose(DEFAULT_ROTATION);
-		pose.mulPose(guiRenderState.rotation());
+		pose.rotate(DEFAULT_ROTATION);
+		pose.rotate(guiRenderState.rotation());
 		pose.translate(-0.5F, -0.5F, -0.5F);
 		mc.gameRenderer.lighting().setupFor(Entry.ENTITY_IN_UI);
 		renderBlockModel(mc, guiRenderState.blockState(), pose, collector);

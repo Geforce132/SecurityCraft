@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:alarm"
+        "recipes": "securitycraft:alarm"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

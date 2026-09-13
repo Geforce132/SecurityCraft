@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.mojang.blaze3d.GpuFormat;
-import com.mojang.blaze3d.buffers.GpuBuffer;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.pipeline.TextureTarget;
+import com.mojang.renderpearl.api.GpuFormat;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
 
 import net.geforcemods.securitycraft.ConfigHandler;
 import net.geforcemods.securitycraft.blockentities.FrameBlockEntity;
@@ -47,7 +47,7 @@ public class CameraFeed {
 	public CameraFeed(GlobalPos globalPos, RenderSection startingSection) {
 		int resolution = ConfigHandler.CLIENT.frameFeedResolution.get();
 
-		renderTarget = new TextureTarget("securitycraft:frame", resolution, resolution, true, GpuFormat.RGBA8_UNORM);
+		renderTarget = new TextureTarget("securitycraft:frame", resolution, resolution, GpuFormat.RGBA8_UNORM, null);
 		fogRenderBuffer = new MappableRingBuffer(() -> "Frame Fog UBO", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_MAP_WRITE, FogRenderer.FOG_UBO_SIZE);
 		compilingSectionsQueue.add(startingSection);
 		sectionsInRange.add(startingSection);

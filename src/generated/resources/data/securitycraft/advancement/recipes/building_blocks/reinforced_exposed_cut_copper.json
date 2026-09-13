@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_exposed_cut_copper"
+        "recipes": "securitycraft:reinforced_exposed_cut_copper"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

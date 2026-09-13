@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_blackstone_stairs"
+        "recipes": "securitycraft:reinforced_blackstone_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

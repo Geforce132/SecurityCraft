@@ -26,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SignText;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 
 public class AdminToolItem extends Item {
 	public AdminToolItem(Item.Properties properties) {
@@ -84,10 +85,10 @@ public class AdminToolItem extends Item {
 				if (isOwnable && be instanceof SignBlockEntity signBe) {
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Component.literal(""), ChatFormatting.DARK_PURPLE);
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.signFrontText"), ChatFormatting.DARK_PURPLE);
-					sendSignText(signBe.getFrontText(), player, adminToolName);
+					sendSignText(signBe.getText(SignTextSlot.FRONT), player, adminToolName);
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Component.literal(""), ChatFormatting.DARK_PURPLE);
 					PlayerUtils.sendMessageToPlayer(player, adminToolName, Utils.localize("messages.securitycraft:adminTool.signBackText"), ChatFormatting.DARK_PURPLE);
-					sendSignText(signBe.getBackText(), player, adminToolName);
+					sendSignText(signBe.getText(SignTextSlot.BACK), player, adminToolName);
 					hasInfo = true;
 				}
 
@@ -106,8 +107,10 @@ public class AdminToolItem extends Item {
 	}
 
 	private void sendSignText(SignText signText, Player player, MutableComponent adminToolName) {
+		List<Component> messages = signText.getMessages(false);
+
 		for (int i = 0; i < 4; i++) {
-			Component text = signText.getMessage(i, false);
+			Component text = messages.get(i);
 
 			if (text instanceof MutableComponent mutableComponent)
 				PlayerUtils.sendMessageToPlayer(player, adminToolName, mutableComponent, ChatFormatting.DARK_PURPLE);

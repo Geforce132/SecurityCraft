@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_polished_blackstone_bricks"
+        "recipes": "securitycraft:reinforced_polished_blackstone_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

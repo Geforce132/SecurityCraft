@@ -129,7 +129,7 @@ public class ReinforcedObserverBlock extends DisguisableBlock implements IReinfo
 	}
 
 	@Override
-	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
+	public boolean shouldRedstoneWireConnectTo(BlockState state, BlockGetter level, BlockPos pos, Direction side) {
 		return side == state.getValue(DirectionalBlock.FACING);
 	}
 

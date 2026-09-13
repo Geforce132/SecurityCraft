@@ -5,64 +5,56 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "conditions": [
-                {
-                  "block": "securitycraft:ims",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "mines": "0"
-                  }
+              "type": "minecraft:set_count",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "securitycraft:ims",
+                "state": {
+                  "mines": "0"
                 }
-              ],
-              "count": 0.0,
-              "function": "minecraft:set_count"
+              },
+              "count": 0
             },
             {
-              "conditions": [
-                {
-                  "block": "securitycraft:ims",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "mines": "2"
-                  }
+              "type": "minecraft:set_count",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "securitycraft:ims",
+                "state": {
+                  "mines": "2"
                 }
-              ],
-              "count": 2.0,
-              "function": "minecraft:set_count"
+              },
+              "count": 2
             },
             {
-              "conditions": [
-                {
-                  "block": "securitycraft:ims",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "mines": "3"
-                  }
+              "type": "minecraft:set_count",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "securitycraft:ims",
+                "state": {
+                  "mines": "3"
                 }
-              ],
-              "count": 3.0,
-              "function": "minecraft:set_count"
+              },
+              "count": 3
             },
             {
-              "conditions": [
-                {
-                  "block": "securitycraft:ims",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "mines": "4"
-                  }
+              "type": "minecraft:set_count",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "securitycraft:ims",
+                "state": {
+                  "mines": "4"
                 }
-              ],
-              "count": 4.0,
-              "function": "minecraft:set_count"
+              },
+              "count": 4
             }
           ],
           "name": "securitycraft:bouncing_betty"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "securitycraft:blocks/ims"

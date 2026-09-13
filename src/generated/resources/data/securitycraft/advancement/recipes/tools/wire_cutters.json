@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:wire_cutters"
+        "recipes": "securitycraft:wire_cutters"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

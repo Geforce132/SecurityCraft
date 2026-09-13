@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_cinnabar_brick_stairs_from_reinforced_cinnabar_stonecutting"
+        "recipes": "securitycraft:reinforced_cinnabar_brick_stairs_from_reinforced_cinnabar_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

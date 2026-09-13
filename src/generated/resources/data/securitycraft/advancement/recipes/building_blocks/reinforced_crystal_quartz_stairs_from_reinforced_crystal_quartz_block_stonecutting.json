@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_crystal_quartz_stairs_from_reinforced_crystal_quartz_block_stonecutting"
+        "recipes": "securitycraft:reinforced_crystal_quartz_stairs_from_reinforced_crystal_quartz_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -85,7 +85,7 @@ public class ProjectorBlock extends DisguisableBlock {
 	}
 
 	@Override
-	public boolean canConnectRedstone(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+	public boolean shouldRedstoneWireConnectTo(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
 		return direction != null && direction.getAxis() != Axis.Y;
 	}
 

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:smoker_mine"
+        "recipes": "securitycraft:smoker_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

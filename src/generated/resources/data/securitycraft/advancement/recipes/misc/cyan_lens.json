@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:cyan_lens"
+        "recipes": "securitycraft:cyan_lens"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

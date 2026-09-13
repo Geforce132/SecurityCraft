@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_chiseled_resin_bricks_from_reinforced_resin_bricks_stonecutting"
+        "recipes": "securitycraft:reinforced_chiseled_resin_bricks_from_reinforced_resin_bricks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

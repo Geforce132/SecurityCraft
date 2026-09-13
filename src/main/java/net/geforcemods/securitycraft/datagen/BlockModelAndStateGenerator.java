@@ -1,5 +1,6 @@
 package net.geforcemods.securitycraft.datagen;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +60,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ColorCollection;
@@ -130,8 +131,11 @@ public class BlockModelAndStateGenerator {
 		List<Holder<Item>> decorationTabItems = SCCreativeModeTabs.getItemList(SCItemGroup.DECORATION);
 		ByState<BlockFamily> copperFamilies = BlockFamilies.COPPER_BLOCK.weathering();
 		ByState<BlockFamily> cutCopperFamilies = BlockFamilies.CUT_COPPER.weathering();
-		List<BlockFamily> excludedFamilies = List.of();
+		List<BlockFamily> excludedFamilies = new ArrayList<>();
 
+		excludedFamilies.addAll(BlockFamilies.CONCRETE.asList());
+		excludedFamilies.add(BlockFamilies.POPLAR_PLANKS);
+		excludedFamilies.addAll(BlockFamilies.WOOL.asList());
 		BlockModelAndStateGenerator.blockModelGenerators = blockModelGenerators;
 		blockStateOutput = blockModelGenerators.blockStateOutput;
 		modelOutput = blockModelGenerators.modelOutput;
@@ -713,7 +717,7 @@ public class BlockModelAndStateGenerator {
 		generatedBlocks.add(pane);
 	}
 
-	public static void createSecretSign(SignItem item, Block vanillaSign, Block vanillaWallSign) {
+	public static void createSecretSign(StandingAndWallBlockItem item, Block vanillaSign, Block vanillaWallSign) {
 		Block secretSign = item.getBlock();
 		Block secretWallSign = item.wallBlock;
 		MultiVariant standingRot0 = BlockModelGenerators.plainVariant(ModelLocationUtils.getModelLocation(vanillaSign, "_rot_0"));
@@ -726,7 +730,7 @@ public class BlockModelAndStateGenerator {
 		generate(secretWallSign, MultiVariantGenerator.dispatch(secretWallSign, wallModel).with(BlockModelGenerators.ROTATION_HORIZONTAL_FACING_ALT));
 	}
 
-	public static void createSecretHangingSign(SignItem item, Block vanillaHangingSign, Block vanillaWallHangingSign) {
+	public static void createSecretHangingSign(StandingAndWallBlockItem item, Block vanillaHangingSign, Block vanillaWallHangingSign) {
 		Block secretHangingSign = item.getBlock();
 		Block secretWallHangingSign = item.wallBlock;
 

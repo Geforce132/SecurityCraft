@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_oxidized_chiseled_copper_from_reinforced_oxidized_copper_stonecutting"
+        "recipes": "securitycraft:reinforced_oxidized_chiseled_copper_from_reinforced_oxidized_copper_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

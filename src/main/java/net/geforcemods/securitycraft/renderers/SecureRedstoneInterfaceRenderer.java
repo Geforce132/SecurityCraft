@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -34,10 +35,15 @@ public class SecureRedstoneInterfaceRenderer implements BlockEntityRenderer<Secu
 		ClientHandler.DISGUISED_BLOCK_RENDER_DELEGATE.trySubmitDelegate(state.disguiseRenderState, pose, collector, camera);
 
 		if (!state.isDisguised && !state.isSender) {
+			RenderType renderType = RenderTypes.entitySolid(TEXTURE);
+
 			pose.translate(0.5D, 0.5D, 0.5D);
-			pose.mulPose(state.modelRotation);
+			pose.rotate(state.modelRotation);
 			pose.translate(0.0D, -0.49999D, 0.0D);
-			collector.submitModel(model, state.dishRotation, pose, RenderTypes.entitySolid(TEXTURE), state.lightCoords, OverlayTexture.NO_OVERLAY, 0, state.breakProgress);
+			collector.submitModel(model, state.dishRotation, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+
+			if (state.breakProgress != null)
+				collector.order(1).submitCrumblingOverlay(model, state.dishRotation, pose, renderType, state.lightCoords, OverlayTexture.NO_OVERLAY, -1, state.breakProgress);
 		}
 	}
 

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:block_change_detector"
+        "recipes": "securitycraft:block_change_detector"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_tinted_glass"
+        "recipes": "securitycraft:reinforced_tinted_glass"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

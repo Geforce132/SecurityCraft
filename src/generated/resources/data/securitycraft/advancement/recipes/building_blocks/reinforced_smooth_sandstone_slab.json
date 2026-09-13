@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:reinforced_smooth_sandstone_slab"
+        "recipes": "securitycraft:reinforced_smooth_sandstone_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:suspicious_sand_mine"
+        "recipes": "securitycraft:suspicious_sand_mine"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

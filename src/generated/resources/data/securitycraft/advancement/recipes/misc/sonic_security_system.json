@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "securitycraft:sonic_security_system"
+        "recipes": "securitycraft:sonic_security_system"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
