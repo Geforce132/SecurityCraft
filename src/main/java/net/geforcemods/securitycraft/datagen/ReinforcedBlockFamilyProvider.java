@@ -137,7 +137,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 			Identifier bottomModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_BOTTOM, slabBlock);
 			MultiVariant bottomModel = BlockModelGenerators.plainVariant(bottomModelLocation);
 			MultiVariant topModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_SLAB_TOP, slabBlock));
-			System.out.println(fullBlock);
+
 			BlockModelAndStateGenerator.generate(slabBlock, BlockModelGenerators.createSlab(slabBlock, bottomModel, topModel, BlockModelGenerators.variant(fullBlock)));
 			BlockModelAndStateGenerator.registerReinforcedItemModel(slabBlock, bottomModelLocation);
 			return this;
@@ -150,7 +150,7 @@ public class ReinforcedBlockFamilyProvider extends BlockFamilyProvider {
 		Identifier straightModelLocation = getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_STRAIGHT, stairsBlock);
 		MultiVariant straightModel = BlockModelGenerators.plainVariant(straightModelLocation);
 		MultiVariant outerModel = BlockModelGenerators.plainVariant(getOrCreateModel(SCModelTemplates.REINFORCED_STAIRS_OUTER, stairsBlock));
-		System.out.println(fullBlock);
+
 		BlockModelAndStateGenerator.generate(stairsBlock, BlockModelGenerators.createStairs(stairsBlock, innerModel, straightModel, outerModel));
 		BlockModelAndStateGenerator.registerReinforcedItemModel(stairsBlock, straightModelLocation);
 		return this;

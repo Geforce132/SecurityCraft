@@ -21,6 +21,7 @@ public class SCTags {
 		public static final TagKey<Block> REINFORCED_BIRCH_LOGS = tag("reinforced/birch_logs");
 		public static final TagKey<Block> REINFORCED_BUTTONS = tag("reinforced/buttons");
 		public static final TagKey<Block> REINFORCED_CAULDRONS = tag("reinforced/cauldrons");
+		public static final TagKey<Block> REINFORCED_CHAINS = tag("reinforced/chains");
 		public static final TagKey<Block> REINFORCED_CHERRY_LOGS = tag("reinforced/cherry_logs");
 		public static final TagKey<Block> REINFORCED_COBBLESTONE = tag("reinforced/cobblestone");
 		public static final TagKey<Block> REINFORCED_CONCRETE = tag("reinforced/concrete");

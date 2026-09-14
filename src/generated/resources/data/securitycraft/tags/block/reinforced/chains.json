@@ -1,0 +1,9 @@
+{
+  "values": [
+    "securitycraft:reinforced_chain",
+    "securitycraft:reinforced_copper_chain",
+    "securitycraft:reinforced_exposed_copper_chain",
+    "securitycraft:reinforced_weathered_copper_chain",
+    "securitycraft:reinforced_oxidized_copper_chain"
+  ]
+}

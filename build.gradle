@@ -71,6 +71,7 @@ neoForge {
 		server {
 			server()
 			programArgument('-nogui')
+			jvmArguments.addAll("-DMC_DEBUG_ENABLED", "-DMC_DEBUG_CALCULATE_SOLID")
 		}
 
 		data {

@@ -27,13 +27,13 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+@SuppressWarnings("unchecked")
 public class BlockTagGenerator extends BlockTagsProvider {
 	public BlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(output, lookupProvider, SecurityCraft.MODID);
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	protected void addTags(HolderLookup.Provider provider) {
 		//@formatter:off
 		List<ResourceKey<Block>> woodenSlabs = Arrays.asList(
@@ -91,6 +91,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_LAVA_CAULDRON.getKey(),
 				SCContent.REINFORCED_POWDER_SNOW_CAULDRON.getKey(),
 				SCContent.REINFORCED_WATER_CAULDRON.getKey());
+		tag(SCTags.Blocks.REINFORCED_CHAINS).add(SCContent.REINFORCED_IRON_CHAIN.getKey()).addAll(keysFromCollection(SCContent.REINFORCED_COPPER_CHAIN));
 		tag(SCTags.Blocks.REINFORCED_CHERRY_LOGS).add(
 				SCContent.REINFORCED_CHERRY_LOG.getKey(),
 				SCContent.REINFORCED_CHERRY_WOOD.getKey(),
@@ -348,7 +349,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_GOLD_BLOCK.getKey(),
 				SCContent.REINFORCED_IRON_BLOCK.getKey(),
 				SCContent.REINFORCED_NETHERITE_BLOCK.getKey());
-		tag(BlockTags.BUTTONS).addTag(SCTags.Blocks.REINFORCED_BUTTONS);
 		tag(BlockTags.CAMEL_SAND_STEP_SOUND_BLOCKS).addTag(SCTags.Blocks.REINFORCED_SAND);
 		tag(BlockTags.CAULDRONS).add(
 				SCContent.REINFORCED_CAULDRON.getKey(),
@@ -475,8 +475,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		tag(BlockTags.WALLS).addTag(SCTags.Blocks.REINFORCED_WALLS);
 		tag(BlockTags.WITHER_SUMMON_BASE_BLOCKS).add(SCContent.REINFORCED_SOUL_SAND.getKey(), SCContent.REINFORCED_SOUL_SOIL.getKey());
 		tag(BlockTags.WOODEN_FENCES).addTag(SCTags.Blocks.REINFORCED_WOODEN_FENCES);
-		tag(BlockTags.WOOL).addTag(SCTags.Blocks.REINFORCED_WOOL);
-		tag(BlockTags.WOOL_CARPETS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
+		tag(BlockTags.COMBINATION_STEP_SOUND_BLOCKS).addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS);
 		tag(BlockTags.ENABLES_BUBBLE_COLUMN_DRAG_DOWN).add(SCContent.REINFORCED_MAGMA_BLOCK.getKey());
 		tag(BlockTags.ENABLES_BUBBLE_COLUMN_PUSH_UP).add(SCContent.REINFORCED_SOUL_SAND.getKey());
 		tag(BlockTags.SUPPORTS_DRY_VEGETATION).addTag(SCTags.Blocks.REINFORCED_SAND).addTag(SCTags.Blocks.REINFORCED_TERRACOTTA);
@@ -539,8 +538,11 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_PRISMARINE_BRICKS.getKey(),
 				SCContent.REINFORCED_SEA_LANTERN.getKey(),
 				SCContent.REINFORCED_DARK_PRISMARINE.getKey());
+		tag(BlockTags.GLAZED_TERRACOTTA).addTag(SCTags.Blocks.REINFORCED_GLAZED_TERRACOTTA);
+		tag(BlockTags.CONCRETE).addTag(SCTags.Blocks.REINFORCED_CONCRETE);
 		//@formatter:on
 		miningRelatedTags();
+		blocksMotion();
 
 		//NeoForge tags
 		tag(Tags.Blocks.CONCRETES).addTag(SCTags.Blocks.REINFORCED_CONCRETE);
@@ -725,7 +727,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 				SCContent.REINFORCED_CRACKED_STONE_BRICKS.getKey(),
 				SCContent.REINFORCED_CHISELED_STONE_BRICKS.getKey(),
 				SCContent.HORIZONTAL_REINFORCED_IRON_BARS.getKey(),
-				SCContent.REINFORCED_IRON_CHAIN.getKey(),
 				SCContent.REINFORCED_BRICK_STAIRS.getKey(),
 				SCContent.REINFORCED_STONE_BRICK_STAIRS.getKey(),
 				SCContent.REINFORCED_NETHER_BRICKS.getKey(),
@@ -913,6 +914,7 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		.addTag(SCTags.Blocks.REINFORCED_BARS)
 		.addTag(SCTags.Blocks.REINFORCED_WALLS)
 		.addTag(SCTags.Blocks.REINFORCED_CAULDRONS)
+		.addTag(SCTags.Blocks.REINFORCED_CHAINS)
 		.addAll(keysFromCollection(SCContent.REINFORCED_DYED_TERRACOTTA))
 		.addAll(keysFromCollection(SCContent.REINFORCED_GLAZED_TERRACOTTA))
 		.addAll(keysFromCollection(SCContent.REINFORCED_CONCRETE))
@@ -924,7 +926,6 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_GRATE))
 		.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_BULB))
 		.addAll(keysFromCollection(SCContent.REINFORCED_LIGHTNING_ROD))
-		.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_CHAIN))
 		.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_LANTERN));
 		tag(BlockTags.MINEABLE_WITH_SHOVEL).add(
 				SCContent.DIRT_MINE.getKey(),
@@ -993,6 +994,245 @@ public class BlockTagGenerator extends BlockTagsProvider {
 		.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_GRATE))
 		.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_BULB))
 		.addAll(keysFromCollection(SCContent.REINFORCED_LIGHTNING_ROD));
+	}
+
+	private void blocksMotion() {
+		tag(BlockTags.BLOCKS_MOTION_NO_LEAVES)
+				.addTag(SCTags.Blocks.REINFORCED_CHAINS)
+				.addAll(keysFromCollection(SCContent.REINFORCED_LIGHTNING_ROD))
+				.addTag(SCTags.Blocks.REINFORCED_CAULDRONS)
+				.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_BLOCK))
+				.addTag(SCTags.Blocks.REINFORCED_FENCES)
+				.addTag(SCTags.Blocks.REINFORCED_PLANKS)
+				.addTag(SCTags.Blocks.REINFORCED_LOGS)
+				.addTag(SCTags.Blocks.REINFORCED_BAMBOO_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_WOODEN_SHELVES)
+				.add(
+						SCContent.KEYPAD_DOOR.getKey(),
+						SCContent.SCANNER_DOOR.getKey(),
+						SCContent.REINFORCED_DOOR.getKey(),
+						SCContent.KEYPAD_TRAPDOOR.getKey(),
+						SCContent.SCANNER_TRAPDOOR.getKey(),
+						SCContent.REINFORCED_IRON_TRAPDOOR.getKey(),
+						SCContent.GOLD_ORE_MINE.getKey(),
+						SCContent.NETHER_GOLD_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_GOLD_ORE_MINE.getKey(),
+						SCContent.IRON_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_IRON_ORE_MINE.getKey(),
+						SCContent.DIAMOND_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_DIAMOND_ORE_MINE.getKey(),
+						SCContent.REDSTONE_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_REDSTONE_ORE_MINE.getKey(),
+						SCContent.LAPIS_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_LAPIS_ORE_MINE.getKey(),
+						SCContent.COAL_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_COAL_ORE_MINE.getKey(),
+						SCContent.EMERALD_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_EMERALD_ORE_MINE.getKey(),
+						SCContent.COPPER_ORE_MINE.getKey(),
+						SCContent.DEEPSLATE_COPPER_ORE_MINE.getKey(),
+						SCContent.QUARTZ_ORE_MINE.getKey(),
+						SCContent.SUSPICIOUS_SAND_MINE.getKey(),
+						SCContent.SUSPICIOUS_GRAVEL_MINE.getKey(),
+						SCContent.GILDED_BLACKSTONE_MINE.getKey()
+				)
+				.addTag(SCTags.Blocks.REINFORCED_GRASS_BLOCKS)
+				.addTag(SCTags.Blocks.REINFORCED_DIRT)
+				.addTag(SCTags.Blocks.REINFORCED_SAND)
+				.addTag(SCTags.Blocks.REINFORCED_ICE)
+				.addTag(SCTags.Blocks.REINFORCED_STONE_BRICKS)
+				.addTag(SCTags.Blocks.REINFORCED_WOOL_CARPETS)
+				.addTag(SCTags.Blocks.REINFORCED_BUTTONS)
+				.addTag(SCTags.Blocks.REINFORCED_WOOL)
+				.addAll(keysFromCollection(SCContent.REINFORCED_STAINED_GLASS))
+				.addAll(keysFromCollection(SCContent.REINFORCED_STAINED_GLASS_PANE))
+				.addAll(keysFromCollection(SCContent.REINFORCED_CUT_COPPER))
+				.addAll(keysFromCollection(SCContent.REINFORCED_CHISELED_COPPER))
+				.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_GRATE))
+				.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_BULB))
+				.addAll(keysFromCollection(SCContent.REINFORCED_COPPER_LANTERN))
+				.add(
+						SCContent.REINFORCED_LANTERN.getKey(),
+						SCContent.REINFORCED_SOUL_LANTERN.getKey(),
+						SCContent.REINFORCED_MOVING_PISTON.getKey(),
+						SCContent.REINFORCED_PISTON_HEAD.getKey(),
+						SCContent.REINFORCED_STONE.getKey(),
+						SCContent.REINFORCED_GRANITE.getKey(),
+						SCContent.REINFORCED_POLISHED_GRANITE.getKey(),
+						SCContent.REINFORCED_DIORITE.getKey(),
+						SCContent.REINFORCED_POLISHED_DIORITE.getKey(),
+						SCContent.REINFORCED_ANDESITE.getKey(),
+						SCContent.REINFORCED_POLISHED_ANDESITE.getKey(),
+						SCContent.REINFORCED_COBBLESTONE.getKey(),
+						SCContent.REINFORCED_BAMBOO_MOSAIC.getKey(),
+						SCContent.REINFORCED_GRAVEL.getKey(),
+						SCContent.REINFORCED_GLASS.getKey(),
+						SCContent.REINFORCED_LAPIS_BLOCK.getKey(),
+						SCContent.REINFORCED_DISPENSER.getKey(),
+						SCContent.REINFORCED_SANDSTONE.getKey(),
+						SCContent.REINFORCED_CHISELED_SANDSTONE.getKey(),
+						SCContent.REINFORCED_CUT_SANDSTONE.getKey(),
+						SCContent.REINFORCED_STICKY_PISTON.getKey(),
+						SCContent.REINFORCED_PISTON.getKey(),
+						SCContent.REINFORCED_GOLD_BLOCK.getKey(),
+						SCContent.REINFORCED_IRON_BLOCK.getKey(),
+						SCContent.REINFORCED_BRICKS.getKey(),
+						SCContent.REINFORCED_BOOKSHELF.getKey(),
+						SCContent.REINFORCED_CHISELED_BOOKSHELF.getKey(),
+						SCContent.REINFORCED_MOSSY_COBBLESTONE.getKey(),
+						SCContent.REINFORCED_OBSIDIAN.getKey(),
+						SCContent.KEYPAD_CHEST.getKey(),
+						SCContent.REINFORCED_DIAMOND_BLOCK.getKey(),
+						SCContent.KEYPAD_FURNACE.getKey(),
+						SCContent.REINFORCED_SNOW_BLOCK.getKey(),
+						SCContent.REINFORCED_CLAY.getKey(),
+						SCContent.REINFORCED_NETHERRACK.getKey(),
+						SCContent.REINFORCED_SOUL_SAND.getKey(),
+						SCContent.REINFORCED_SOUL_SOIL.getKey(),
+						SCContent.REINFORCED_BASALT.getKey(),
+						SCContent.REINFORCED_POLISHED_BASALT.getKey(),
+						SCContent.REINFORCED_GLOWSTONE.getKey(),
+						SCContent.REINFORCED_PACKED_MUD.getKey(),
+						SCContent.REINFORCED_MUD_BRICKS.getKey(),
+						SCContent.REINFORCED_GLASS_PANE.getKey(),
+						SCContent.REINFORCED_RESIN_BLOCK.getKey(),
+						SCContent.REINFORCED_RESIN_BRICKS.getKey(),
+						SCContent.REINFORCED_CHISELED_RESIN_BRICKS.getKey(),
+						SCContent.REINFORCED_NETHER_BRICKS.getKey(),
+						SCContent.REINFORCED_END_STONE.getKey(),
+						SCContent.REINFORCED_REDSTONE_LAMP.getKey(),
+						SCContent.REINFORCED_EMERALD_BLOCK.getKey(),
+						SCContent.REINFORCED_REDSTONE_BLOCK.getKey(),
+						SCContent.REINFORCED_HOPPER.getKey(),
+						SCContent.REINFORCED_QUARTZ_BLOCK.getKey(),
+						SCContent.REINFORCED_CHISELED_QUARTZ.getKey(),
+						SCContent.REINFORCED_QUARTZ_PILLAR.getKey(),
+						SCContent.REINFORCED_DROPPER.getKey(),
+						SCContent.REINFORCED_PRISMARINE.getKey(),
+						SCContent.REINFORCED_PRISMARINE_BRICKS.getKey(),
+						SCContent.REINFORCED_DARK_PRISMARINE.getKey(),
+						SCContent.REINFORCED_SEA_LANTERN.getKey(),
+						SCContent.REINFORCED_COAL_BLOCK.getKey(),
+						SCContent.REINFORCED_RED_SANDSTONE.getKey(),
+						SCContent.REINFORCED_CHISELED_RED_SANDSTONE.getKey(),
+						SCContent.REINFORCED_CUT_RED_SANDSTONE.getKey(),
+						SCContent.REINFORCED_SMOOTH_STONE.getKey(),
+						SCContent.REINFORCED_SMOOTH_SANDSTONE.getKey(),
+						SCContent.REINFORCED_SMOOTH_QUARTZ.getKey(),
+						SCContent.REINFORCED_SMOOTH_RED_SANDSTONE.getKey(),
+						SCContent.REINFORCED_PURPUR_BLOCK.getKey(),
+						SCContent.REINFORCED_PURPUR_PILLAR.getKey(),
+						SCContent.REINFORCED_END_STONE_BRICKS.getKey(),
+						SCContent.REINFORCED_DIRT_PATH.getKey(),
+						SCContent.REINFORCED_MAGMA_BLOCK.getKey(),
+						SCContent.REINFORCED_NETHER_WART_BLOCK.getKey(),
+						SCContent.REINFORCED_RED_NETHER_BRICKS.getKey(),
+						SCContent.REINFORCED_BONE_BLOCK.getKey(),
+						SCContent.REINFORCED_OBSERVER.getKey(),
+						SCContent.KEYPAD_BARREL.getKey(),
+						SCContent.KEYPAD_SMOKER.getKey(),
+						SCContent.KEYPAD_BLAST_FURNACE.getKey(),
+						SCContent.REINFORCED_LECTERN.getKey(),
+						SCContent.REINFORCED_WARPED_NYLIUM.getKey(),
+						SCContent.REINFORCED_WARPED_WART_BLOCK.getKey(),
+						SCContent.REINFORCED_CRIMSON_NYLIUM.getKey(),
+						SCContent.REINFORCED_SHROOMLIGHT.getKey(),
+						SCContent.REINFORCED_NETHERITE_BLOCK.getKey(),
+						SCContent.REINFORCED_CRYING_OBSIDIAN.getKey(),
+						SCContent.REINFORCED_BLACKSTONE.getKey(),
+						SCContent.REINFORCED_POLISHED_BLACKSTONE.getKey(),
+						SCContent.REINFORCED_POLISHED_BLACKSTONE_BRICKS.getKey(),
+						SCContent.REINFORCED_CRACKED_POLISHED_BLACKSTONE_BRICKS.getKey(),
+						SCContent.REINFORCED_CHISELED_POLISHED_BLACKSTONE.getKey(),
+						SCContent.REINFORCED_CHISELED_NETHER_BRICKS.getKey(),
+						SCContent.REINFORCED_CRACKED_NETHER_BRICKS.getKey(),
+						SCContent.REINFORCED_QUARTZ_BRICKS.getKey(),
+						SCContent.REINFORCED_AMETHYST_BLOCK.getKey(),
+						SCContent.REINFORCED_TUFF.getKey(),
+						SCContent.REINFORCED_POLISHED_TUFF.getKey(),
+						SCContent.REINFORCED_CHISELED_TUFF.getKey(),
+						SCContent.REINFORCED_TUFF_BRICKS.getKey(),
+						SCContent.REINFORCED_CHISELED_TUFF_BRICKS.getKey(),
+						SCContent.REINFORCED_SULFUR.getKey(),
+						SCContent.REINFORCED_POTENT_SULFUR.getKey(),
+						SCContent.REINFORCED_POLISHED_SULFUR.getKey(),
+						SCContent.REINFORCED_SULFUR_BRICKS.getKey(),
+						SCContent.REINFORCED_CHISELED_SULFUR.getKey(),
+						SCContent.REINFORCED_CINNABAR.getKey(),
+						SCContent.REINFORCED_POLISHED_CINNABAR.getKey(),
+						SCContent.REINFORCED_CINNABAR_BRICKS.getKey(),
+						SCContent.REINFORCED_CHISELED_CINNABAR.getKey(),
+						SCContent.REINFORCED_CALCITE.getKey(),
+						SCContent.REINFORCED_TINTED_GLASS.getKey(),
+						SCContent.REINFORCED_DRIPSTONE_BLOCK.getKey(),
+						SCContent.REINFORCED_MOSS_BLOCK.getKey(),
+						SCContent.REINFORCED_MUD.getKey(),
+						SCContent.REINFORCED_DEEPSLATE.getKey(),
+						SCContent.REINFORCED_COBBLED_DEEPSLATE.getKey(),
+						SCContent.REINFORCED_POLISHED_DEEPSLATE.getKey(),
+						SCContent.REINFORCED_DEEPSLATE_TILES.getKey(),
+						SCContent.REINFORCED_DEEPSLATE_BRICKS.getKey(),
+						SCContent.REINFORCED_CHISELED_DEEPSLATE.getKey(),
+						SCContent.REINFORCED_CRACKED_DEEPSLATE_BRICKS.getKey(),
+						SCContent.REINFORCED_CRACKED_DEEPSLATE_TILES.getKey(),
+						SCContent.REINFORCED_SMOOTH_BASALT.getKey(),
+						SCContent.REINFORCED_RAW_IRON_BLOCK.getKey(),
+						SCContent.REINFORCED_RAW_COPPER_BLOCK.getKey(),
+						SCContent.REINFORCED_RAW_GOLD_BLOCK.getKey(),
+						SCContent.REINFORCED_OCHRE_FROGLIGHT.getKey(),
+						SCContent.REINFORCED_VERDANT_FROGLIGHT.getKey(),
+						SCContent.REINFORCED_PEARLESCENT_FROGLIGHT.getKey(),
+						SCContent.REINFORCED_PALE_MOSS_BLOCK.getKey(),
+						SCContent.BLOCK_CHANGE_DETECTOR.getKey(),
+						SCContent.BLOCK_POCKET_MANAGER.getKey(),
+						SCContent.BLOCK_POCKET_WALL.getKey(),
+						SCContent.BOUNCING_BETTY.getKey(),
+						SCContent.CAGE_TRAP.getKey(),
+						SCContent.CLAYMORE.getKey(),
+						SCContent.FLOOR_TRAP.getKey(),
+						SCContent.FRAME.getKey(),
+						SCContent.IMS.getKey(),
+						SCContent.INVENTORY_SCANNER.getKey(),
+						SCContent.KEYCARD_READER.getKey(),
+						SCContent.KEYPAD.getKey(),
+						SCContent.LASER_BLOCK.getKey(),
+						SCContent.PROJECTOR.getKey(),
+						SCContent.PROTECTO.getKey(),
+						SCContent.RETINAL_SCANNER.getKey(),
+						SCContent.RIFT_STABILIZER.getKey(),
+						SCContent.SECURE_REDSTONE_INTERFACE.getKey(),
+						SCContent.SECURE_TRADING_STATION.getKey(),
+						SCContent.USERNAME_LOGGER.getKey(),
+						SCContent.MINE.getKey(),
+						SCContent.STONE_MINE.getKey(),
+						SCContent.DEEPSLATE_MINE.getKey(),
+						SCContent.COBBLED_DEEPSLATE_MINE.getKey(),
+						SCContent.DIRT_MINE.getKey(),
+						SCContent.COBBLESTONE_MINE.getKey(),
+						SCContent.SAND_MINE.getKey(),
+						SCContent.GRAVEL_MINE.getKey(),
+						SCContent.NETHERRACK_MINE.getKey(),
+						SCContent.END_STONE_MINE.getKey(),
+						SCContent.ANCIENT_DEBRIS_MINE.getKey(),
+						SCContent.FURNACE_MINE.getKey(),
+						SCContent.SMOKER_MINE.getKey(),
+						SCContent.BLAST_FURNACE_MINE.getKey(),
+						SCContent.CREAKING_HEART_MINE.getKey(),
+						SCContent.REINFORCED_LEVER.getKey(),
+						SCContent.REINFORCED_CRYSTAL_QUARTZ_BLOCK.getKey(),
+						SCContent.REINFORCED_CHISELED_CRYSTAL_QUARTZ.getKey(),
+						SCContent.REINFORCED_CRYSTAL_QUARTZ_PILLAR.getKey(),
+						SCContent.REINFORCED_SMOOTH_CRYSTAL_QUARTZ.getKey(),
+						SCContent.REINFORCED_CRYSTAL_QUARTZ_BRICKS.getKey(),
+						SCContent.CRYSTAL_QUARTZ_BLOCK.getKey(),
+						SCContent.CHISELED_CRYSTAL_QUARTZ.getKey(),
+						SCContent.CRYSTAL_QUARTZ_PILLAR.getKey(),
+						SCContent.SMOOTH_CRYSTAL_QUARTZ.getKey(),
+						SCContent.CRYSTAL_QUARTZ_BRICKS.getKey(),
+						SCContent.HORIZONTAL_REINFORCED_IRON_BARS.getKey(),
+						SCContent.SENTRY_DISGUISE.getKey(),
+						SCContent.REINFORCED_TERRACOTTA.getKey(),
+						SCContent.REINFORCED_COBWEB.getKey());
 	}
 
 	@Override

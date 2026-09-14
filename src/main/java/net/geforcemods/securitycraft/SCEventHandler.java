@@ -29,6 +29,8 @@ import net.geforcemods.securitycraft.blockentities.SecurityCameraBlockEntity;
 import net.geforcemods.securitycraft.blockentities.SonicSecuritySystemBlockEntity;
 import net.geforcemods.securitycraft.blocks.DisplayCaseBlock;
 import net.geforcemods.securitycraft.blocks.RiftStabilizerBlock;
+import net.geforcemods.securitycraft.blocks.SecretStandingSignBlock;
+import net.geforcemods.securitycraft.blocks.SecretWallSignBlock;
 import net.geforcemods.securitycraft.blocks.SecurityCameraBlock;
 import net.geforcemods.securitycraft.components.Notes.NoteWrapper;
 import net.geforcemods.securitycraft.entity.AbstractSecuritySeaBoat;
@@ -64,6 +66,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.TriState;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -95,6 +98,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
@@ -221,6 +225,29 @@ public class SCEventHandler {
 
 		PasscodeUtils.startHashingThread(server);
 		SaltData.loadSalts(server);
+
+		if (!FMLEnvironment.isProduction()) {
+			List<String> incorrectBlocksMotion = SCContent.BLOCKS.getEntries()
+					.stream()
+					.filter(deferredBlock -> {
+						Block block = deferredBlock.get();
+
+						//signs are excluded on purpose, see MC-58061
+						if (block instanceof SecretStandingSignBlock || block instanceof SecretWallSignBlock)
+							return false;
+
+						BlockState state = block.defaultBlockState();
+
+						return state.isSolid() && !state.is(BlockTags.BLOCKS_MOTION);
+					})
+					.map(block -> "\n" + block.getKey().identifier())
+					.toList();
+
+			if (!incorrectBlocksMotion.isEmpty()) {
+				SecurityCraft.LOGGER.error("Some blocks are not correctly in the blocks_motion_no_leaves tag: {}", incorrectBlocksMotion);
+				throw new IllegalStateException();
+			}
+		}
 	}
 
 	@SubscribeEvent
