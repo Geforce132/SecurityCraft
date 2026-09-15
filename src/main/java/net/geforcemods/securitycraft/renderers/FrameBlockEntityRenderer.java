@@ -2,15 +2,12 @@ package net.geforcemods.securitycraft.renderers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
 
 import org.joml.Matrix4f;
 import org.joml.Matrix4fStack;
 import org.joml.Vector4f;
 import org.jspecify.annotations.Nullable;
 
-import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -160,25 +157,24 @@ public class FrameBlockEntityRenderer implements BlockEntityRenderer<FrameBlockE
 		}
 
 		@Override
-		public void executeGroup(FeatureFrameContext context, @Nullable OitStage stage, RenderPass renderPass, int groupIndex, List<Submit> submits, boolean strictlyOrdered) {
+		public void executeGroup(FeatureFrameContext context, @Nullable OitStage stage, RenderPass pass, int groupIndex, List<Submit> submits, boolean strictlyOrdered) {
 			StagedVertexBuffer buffer = context.stagedVertexBuffer();
-			RenderTarget mainRenderTarget = Minecraft.getInstance().gameRenderer.mainRenderTarget();
-			GpuTextureView color = mainRenderTarget.getColorTextureView();
-			GpuTextureView depth = mainRenderTarget.getDepthTextureView();
 
-			try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "SecurityCraft camera frames", color, Optional.empty(), depth, OptionalDouble.empty())) {
-				for (Frame frame : groups.get(groupIndex)) {
-					StagedVertexBuffer.ExecuteInfo info = buffer.getExecuteInfo(frame.draw);
+			pass.pushDebugGroup(() -> "SecurityCraft camera frames");
+			pass.setPipeline(RenderSystem.getCompiledPipeline(FRAME_PIPELINE));
+			RenderSystem.bindDefaultUniforms(pass);
 
-					pass.setPipeline(RenderSystem.getCompiledPipeline(FRAME_PIPELINE));
-					RenderSystem.bindDefaultUniforms(pass);
-					pass.setUniform("DynamicTransforms", RenderSystem.getDynamicUniforms().writeTransform(frame.dynamicTransforms));
-					pass.setUniform("Sampler0", frame.texture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
-					pass.setVertexBuffer(0, info.vertexBuffer().slice());
-					pass.setIndexBuffer(info.indexBuffer(), info.indexType());
-					pass.drawIndexed(info.indexCount(), 1, info.firstIndex(), info.baseVertex(), 0);
-				}
+			for (Frame frame : groups.get(groupIndex)) {
+				StagedVertexBuffer.ExecuteInfo info = buffer.getExecuteInfo(frame.draw);
+
+				pass.setUniform("DynamicTransforms", RenderSystem.getDynamicUniforms().writeTransform(frame.dynamicTransforms));
+				pass.setUniform("Sampler0", frame.texture, RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.NEAREST, FilterMode.LINEAR, false));
+				pass.setVertexBuffer(0, info.vertexBuffer().slice());
+				pass.setIndexBuffer(info.indexBuffer(), info.indexType());
+				pass.drawIndexed(info.indexCount(), 1, info.firstIndex(), info.baseVertex(), 0);
 			}
+
+			pass.popDebugGroup();
 		}
 
 		@Override

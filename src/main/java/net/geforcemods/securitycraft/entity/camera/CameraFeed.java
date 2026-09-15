@@ -47,7 +47,7 @@ public class CameraFeed {
 	public CameraFeed(GlobalPos globalPos, RenderSection startingSection) {
 		int resolution = ConfigHandler.CLIENT.frameFeedResolution.get();
 
-		renderTarget = new TextureTarget("securitycraft:frame", resolution, resolution, GpuFormat.RGBA8_UNORM, null);
+		renderTarget = new TextureTarget("securitycraft:frame", resolution, resolution, GpuFormat.RGBA8_UNORM, GpuFormat.D32_FLOAT);
 		fogRenderBuffer = new MappableRingBuffer(() -> "Frame Fog UBO", GpuBuffer.USAGE_UNIFORM | GpuBuffer.USAGE_MAP_WRITE, FogRenderer.FOG_UBO_SIZE);
 		compilingSectionsQueue.add(startingSection);
 		sectionsInRange.add(startingSection);
