@@ -318,6 +318,12 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 				if (connectedScanner != null)
 					connectedScanner.setSignalLength(io.get());
 			}
+			case BooleanOption bo when option == respectInvisibility -> {
+				InventoryScannerBlockEntity connectedScanner = InventoryScannerBlock.getConnectedInventoryScanner(level, worldPosition);
+
+				if (connectedScanner != null)
+					connectedScanner.setRespectInvisibility(bo.get());
+			}
 			default ->
 					throw new UnsupportedOperationException("Unhandled option synchronization in inventory scanner! " + option.getName());
 		}
@@ -407,6 +413,18 @@ public class InventoryScannerBlockEntity extends DisguisableBlockEntity implemen
 
 	public int getSignalLength() {
 		return signalLength.get();
+	}
+
+	public boolean respectInvisibility() {
+		return respectInvisibility.get();
+	}
+
+	public void setRespectInvisibility(boolean respectInvisibility) {
+		if (respectInvisibility() != respectInvisibility) {
+			this.respectInvisibility.setValue(respectInvisibility);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3); //sync option change to client
+			setChanged();
+		}
 	}
 
 	public boolean isConsideredInvisible(LivingEntity entity) {
