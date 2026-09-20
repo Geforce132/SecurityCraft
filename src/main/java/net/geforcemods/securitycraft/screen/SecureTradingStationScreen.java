@@ -91,7 +91,7 @@ public class SecureTradingStationScreen extends AbstractContainerScreen<SecureTr
 		if (be.getSignalLength() != 0 && be.getBlockState().getValue(SecureTradingStationBlock.POWERED))
 			payButton.active = false;
 		else
-			payButton.active &= getTransactionsOnConfirmation() > 0;
+			payButton.active = getTransactionsOnConfirmation() > 0;
 	}
 
 	@Override
