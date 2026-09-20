@@ -1,14 +1,11 @@
 --------------------------Changelog for the next version of SecurityCraft--------------------------
 
-- Fix: The button to confirm Secure Trading Station transactions is not interactable for other players
-- Fix: Passcode-protected blocks can be set up with an empty passcode
-
---------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
-
 - New: Hungarian translation (Thanks morpheus133!)
 - Fix: Some UIs stay open, even though the player is no longer near the block or holding the item
 - Fix: Reinforced, Keypad, and Scanner Trapdoors show up incorrectly when open and facing east or west (Thanks CYB3RCA4T!)
 - Fix: Retinal Scanners, Scanner Doors, and Scanner Trapdoors send messages to players who are not the owner or allowlisted, even if they're configured to not send messages
+- Fix: The button to confirm Secure Trading Station transactions is not interactable for other players
+- Fix: Passcode-protected blocks can be set up with an empty passcode
 
 --------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
 
