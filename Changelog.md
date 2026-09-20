@@ -1,3 +1,7 @@
+--------------------------Changelog for the next version of SecurityCraft--------------------------
+
+- Fix: The button to confirm Secure Trading Station transactions is not interactable for other players
+
 --------------------------Changelog for v1.10.2.1 of SecurityCraft--------------------------
 
 - New: Hungarian translation (Thanks morpheus133!)
