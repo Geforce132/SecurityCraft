@@ -1,5 +1,7 @@
 package net.geforcemods.securitycraft.screen;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.mojang.blaze3d.platform.InputConstants;
 
 import net.geforcemods.securitycraft.SecurityCraft;
@@ -55,13 +57,8 @@ public class SetPasscodeScreen extends Screen implements StillValid {
 		saveAndContinueButton.active = false;
 		keycodeTextbox = addRenderableWidget(new ErrorMarkingEditBox(font, width / 2 - 37, height / 2 - 47, 77, 12, Component.empty()));
 		keycodeTextbox.setMaxLength(Integer.MAX_VALUE);
-		keycodeTextbox.setValidText(s -> {
-			boolean matches = s.matches("\\d*");
-
-			saveAndContinueButton.active = matches;
-			return matches;
-		});
-		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = !text.isEmpty());
+		keycodeTextbox.setValidText(s -> s.matches("\\d*"));
+		keycodeTextbox.setResponder(text -> saveAndContinueButton.active = StringUtils.isNumeric(text));
 		setInitialFocus(keycodeTextbox);
 	}
 
