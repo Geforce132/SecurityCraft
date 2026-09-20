@@ -796,9 +796,9 @@ public class ClientHandler {
 				case DOWN -> OctahedralGroup.BLOCK_ROT_X_180;
 				case UP -> OctahedralGroup.IDENTITY;
 				case NORTH -> OctahedralGroup.BLOCK_ROT_X_90;
-				case SOUTH -> OctahedralGroup.BLOCK_ROT_X_90.compose(OctahedralGroup.BLOCK_ROT_Y_180);
-				case WEST -> OctahedralGroup.BLOCK_ROT_X_90.compose(OctahedralGroup.BLOCK_ROT_Y_270);
-				case EAST -> OctahedralGroup.BLOCK_ROT_X_90.compose(OctahedralGroup.BLOCK_ROT_Y_90);
+				case SOUTH -> OctahedralGroup.BLOCK_ROT_Y_180.compose(OctahedralGroup.BLOCK_ROT_X_90);
+				case WEST -> OctahedralGroup.BLOCK_ROT_Y_270.compose(OctahedralGroup.BLOCK_ROT_X_90);
+				case EAST -> OctahedralGroup.BLOCK_ROT_Y_90.compose(OctahedralGroup.BLOCK_ROT_X_90);
 			});
 		}
 	}
