@@ -6,10 +6,12 @@ import com.mojang.math.Axis;
 import net.geforcemods.securitycraft.blockentities.ClaymoreBlockEntity;
 import net.geforcemods.securitycraft.blocks.mines.ClaymoreBlock;
 import net.geforcemods.securitycraft.renderers.state.ClaymoreRenderState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.core.Direction;
@@ -24,12 +26,19 @@ public class ClaymoreRenderer implements BlockEntityRenderer<ClaymoreBlockEntity
 
 	@Override
 	public void submit(ClaymoreRenderState state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
+		RenderType renderType;
+
+		if (Minecraft.getInstance().gameRenderer.useImprovedTransparency())
+			renderType = RenderTypes.linesTranslucentNoDepthWrite();
+		else
+			renderType = RenderTypes.linesTranslucent();
+
 		poseStack.pushPose();
 		poseStack.translate(0.5D, 0.0D, 0.5D);
 		poseStack.rotate(state.rotation);
 		poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-		collector.submitCustomGeometry(poseStack, RenderTypes.lines(), (pose, builder) -> {
+		collector.submitCustomGeometry(poseStack, renderType, (pose, builder) -> {
 			Vec3i normal = state.normal;
 			float multiplier = 0.0625F;
 			float xzStart = 9.0F * multiplier;

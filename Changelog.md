@@ -3,6 +3,7 @@
 - Fix: The button to confirm Secure Trading Station transactions is not interactable for other players
 - Fix: Passcode-protected blocks can be set up with an empty passcode
 - Fix: Loading errors with the Disguise Modules, Projectors, and Block Change Detectors forgetting which blocks they had saved
+- Fix: Claymore lasers do not fade out
 
 --------------------------Changelog for v1.10.2.1-beta1 of SecurityCraft--------------------------
 
