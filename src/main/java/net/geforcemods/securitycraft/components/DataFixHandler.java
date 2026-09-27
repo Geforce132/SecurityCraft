@@ -96,7 +96,8 @@ public class DataFixHandler {
 				"securitycraft:sonic_security_system",
 				"securitycraft:secret_hanging_sign",
 				"securitycraft:secret_sign",
-				"securitycraft:secure_redstone_interface"
+				"securitycraft:secure_redstone_interface",
+				"securitycraft:reinforced_observer"
 		};
 		//@formatter:on
 
@@ -121,8 +122,14 @@ public class DataFixHandler {
 		registerInventoryAndModules(schema, map, "securitycraft:reinforced_dispenser");
 		registerSingleItemAndModules(schema, map, "securitycraft:reinforced_lectern", "Book");
 		registerInventoryAndModules(schema, map, "securitycraft:reinforced_chiseled_bookshelf");
-		registerSingleItemAndModules(schema, map, "securitycraft:block_change_detector", "filter");
-		registerSingleItemAndModules(schema, map, "securitycraft:projector", "storedItem");
+		schema.register(map, "securitycraft:block_change_detector", () -> DSL.optionalFields(
+				"filter", References.ITEM_STACK.in(schema),
+				"Modules", DSL.list(References.ITEM_STACK.in(schema)),
+				"entries", DSL.list(DSL.optionalFields("state", References.BLOCK_STATE.in(schema)))));
+		schema.register(map, "securitycraft:projector", () -> DSL.optionalFields(
+				"storedItem", References.ITEM_STACK.in(schema),
+				"Modules", DSL.list(References.ITEM_STACK.in(schema)),
+				"SavedState", References.BLOCK_STATE.in(schema)));
 		//@formatter:off
 		schema.register(map, "securitycraft:laser_block", () -> DSL.allWithRemainder(
 				DSL.optional(DSL.field("Modules", DSL.list(References.ITEM_STACK.in(schema)))),

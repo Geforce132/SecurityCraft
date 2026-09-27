@@ -32,6 +32,8 @@
 		"datafix.V1460Mixin",
 		"datafix.V3439Mixin",
 		"datafix.V4067Mixin",
+		"datafix.V4996_1Mixin",
+		"datafix.V4996Mixin",
 		"datafix.V99Mixin",
 		"mines.BrushItemMixin",
 		"mines.NewMinecartBehaviorMixin",
