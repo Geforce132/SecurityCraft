@@ -1,3 +1,8 @@
+--------------------------Changelog for v1.10.2.1-beta4 of SecurityCraft--------------------------
+
+- Fix: Compatibility with NeoForge 26.3.0.53-beta and newer
+- Misc.: The minimum required NeoForge version is now 26.3.0.53-beta
+
 --------------------------Changelog for v1.10.2.1-beta3 of SecurityCraft--------------------------
 
 - Fix: Compatibility with NeoForge 26.3.0.37-beta and newer
