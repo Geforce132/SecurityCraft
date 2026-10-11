@@ -117,7 +117,7 @@ public class RegistrationHandler {
 
 						for (DeferredHolder<?, ?> holder : holders) {
 							Block block = (Block) holder.get();
-							Item blockItem = new BlockItem(block, SCContent.setId(holder.getKey().identifier().getPath(), new Item.Properties().fireResistant(), true));
+							Item blockItem = new BlockItem(block, SCContent.setId(holder.key().identifier().getPath(), new Item.Properties().fireResistant(), true));
 
 							helper.register(Utils.getRegistryName(block), blockItem);
 
@@ -131,7 +131,7 @@ public class RegistrationHandler {
 
 						for (DeferredHolder<?, ?> holder : holders) {
 							Block block = (Block) holder.get();
-							Item blockItem = new BlockItem(block, SCContent.setId(holder.getKey().identifier().getPath(), new Item.Properties(), true));
+							Item blockItem = new BlockItem(block, SCContent.setId(holder.key().identifier().getPath(), new Item.Properties(), true));
 
 							helper.register(Utils.getRegistryName(block), blockItem);
 
@@ -307,7 +307,7 @@ public class RegistrationHandler {
 			event.accept(SCContent.REINFORCED_GLASS_PANE.get());
 			registerColoredItems(event, gameplayColorOrder, SCContent.REINFORCED_STAINED_GLASS_PANE);
 		}
-		else if (tabKey.equals(SCCreativeModeTabs.DECORATION_TAB.getKey())) {
+		else if (tabKey.equals(SCCreativeModeTabs.DECORATION_TAB.key())) {
 			try {
 				event.insertAfter(new ItemStack(SCContent.REINFORCED_LADDER.get()), new ItemStack(SCContent.REINFORCED_SCAFFOLDING_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);
 				event.insertAfter(new ItemStack(SCContent.REINFORCED_LECTERN.get()), new ItemStack(SCContent.SECRET_OAK_SIGN_ITEM.get()), TabVisibility.PARENT_AND_SEARCH_TABS);

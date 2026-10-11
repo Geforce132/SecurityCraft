@@ -7,7 +7,6 @@ import net.geforcemods.securitycraft.SecurityCraft;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.LootTableProvider.SubProviderEntry;
@@ -17,6 +16,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import net.neoforged.neoforge.data.event.GatherDataRegistryEntriesEvent;
 
 @EventBusSubscriber(modid = SecurityCraft.MODID, value = Dist.CLIENT)
 public class DataGenRegistrar {
@@ -36,12 +36,14 @@ public class DataGenRegistrar {
 			}
 		});
 		event.createBlockAndItemTags(BlockTagGenerator::new, ItemTagGenerator::new);
-		event.createReloadableRegistryObjects(new RegistrySetBuilder()
-						.add(RecipeProvider.asBootstrap(RecipeGenerator::new))
-						.add(Registries.LOOT_TABLE, new LootTableProvider(Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK)))),
-				Set.of("securitycraft"));
 
 		//		if (ModList.get().isLoaded("projecte"))
 		//			generator.addProvider(event.includeServer(), new ProjectECompatConversionProvider(generator));
+	}
+
+	@SubscribeEvent
+	public static void onGatherDataRegistryEntries(GatherDataRegistryEntriesEvent event) {
+		event.add(RecipeProvider.asBootstrap(RecipeGenerator::new));
+		event.add(Registries.LOOT_TABLE, new LootTableProvider(Set.of(), List.of(new SubProviderEntry(BlockLootTableGenerator::new, LootContextParamSets.BLOCK))));
 	}
 }

@@ -36,60 +36,60 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 		//@formatter:off
 		//securitycraft tags
 		tag(SCTags.Items.CAN_INTERACT_WITH_DOORS).add(
-				SCContent.ADMIN_TOOL.getKey(),
-				SCContent.CODEBREAKER.getKey(),
-				SCContent.SONIC_SECURITY_SYSTEM_ITEM.getKey(),
-				SCContent.UNIVERSAL_BLOCK_MODIFIER.getKey(),
-				SCContent.UNIVERSAL_BLOCK_REMOVER.getKey(),
-				SCContent.UNIVERSAL_KEY_CHANGER.getKey(),
-				SCContent.UNIVERSAL_OWNER_CHANGER.getKey())
+				SCContent.ADMIN_TOOL.key(),
+				SCContent.CODEBREAKER.key(),
+				SCContent.SONIC_SECURITY_SYSTEM_ITEM.key(),
+				SCContent.UNIVERSAL_BLOCK_MODIFIER.key(),
+				SCContent.UNIVERSAL_BLOCK_REMOVER.key(),
+				SCContent.UNIVERSAL_KEY_CHANGER.key(),
+				SCContent.UNIVERSAL_OWNER_CHANGER.key())
 		.addTag(SCTags.Items.MODULES);
 		tag(SCTags.Items.KEYCARDS).add(
-				SCContent.KEYCARD_LVL_1.getKey(),
-				SCContent.KEYCARD_LVL_2.getKey(),
-				SCContent.KEYCARD_LVL_3.getKey(),
-				SCContent.KEYCARD_LVL_4.getKey(),
-				SCContent.KEYCARD_LVL_5.getKey());
-		tag(SCTags.Items.KEYCARD_HOLDER_CAN_HOLD).addTag(SCTags.Items.KEYCARDS).add(SCContent.LIMITED_USE_KEYCARD.getKey());
+				SCContent.KEYCARD_LVL_1.key(),
+				SCContent.KEYCARD_LVL_2.key(),
+				SCContent.KEYCARD_LVL_3.key(),
+				SCContent.KEYCARD_LVL_4.key(),
+				SCContent.KEYCARD_LVL_5.key());
+		tag(SCTags.Items.KEYCARD_HOLDER_CAN_HOLD).addTag(SCTags.Items.KEYCARDS).add(SCContent.LIMITED_USE_KEYCARD.key());
 		tag(SCTags.Items.MODULES).add(
-				SCContent.ALLOWLIST_MODULE.getKey(),
-				SCContent.DENYLIST_MODULE.getKey(),
-				SCContent.DISGUISE_MODULE.getKey(),
-				SCContent.HARMING_MODULE.getKey(),
-				SCContent.REDSTONE_MODULE.getKey(),
-				SCContent.SMART_MODULE.getKey(),
-				SCContent.SPEED_MODULE.getKey(),
-				SCContent.STORAGE_MODULE.getKey());
+				SCContent.ALLOWLIST_MODULE.key(),
+				SCContent.DENYLIST_MODULE.key(),
+				SCContent.DISGUISE_MODULE.key(),
+				SCContent.HARMING_MODULE.key(),
+				SCContent.REDSTONE_MODULE.key(),
+				SCContent.SMART_MODULE.key(),
+				SCContent.SPEED_MODULE.key(),
+				SCContent.STORAGE_MODULE.key());
 		tag(SCTags.Items.REINFORCED_STONE_CRAFTING_MATERIALS).add(
 				keyFromItem(SCContent.REINFORCED_COBBLESTONE.get()),
 				keyFromItem(SCContent.REINFORCED_BLACKSTONE.get()),
 				keyFromItem(SCContent.REINFORCED_COBBLED_DEEPSLATE.get()));
 		tag(SCTags.Items.SECRET_HANGING_SIGNS).add(
-				SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_BIRCH_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_OAK_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.getKey(),
-				SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.getKey());
+				SCContent.SECRET_ACACIA_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_BAMBOO_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_BIRCH_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_CHERRY_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_CRIMSON_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_DARK_OAK_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_JUNGLE_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_MANGROVE_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_OAK_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_PALE_OAK_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_SPRUCE_HANGING_SIGN_ITEM.key(),
+				SCContent.SECRET_WARPED_HANGING_SIGN_ITEM.key());
 		tag(SCTags.Items.SECRET_SIGNS).add(
-				SCContent.SECRET_ACACIA_SIGN_ITEM.getKey(),
-				SCContent.SECRET_BAMBOO_SIGN_ITEM.getKey(),
-				SCContent.SECRET_BIRCH_SIGN_ITEM.getKey(),
-				SCContent.SECRET_CHERRY_SIGN_ITEM.getKey(),
-				SCContent.SECRET_CRIMSON_SIGN_ITEM.getKey(),
-				SCContent.SECRET_DARK_OAK_SIGN_ITEM.getKey(),
-				SCContent.SECRET_JUNGLE_SIGN_ITEM.getKey(),
-				SCContent.SECRET_MANGROVE_SIGN_ITEM.getKey(),
-				SCContent.SECRET_OAK_SIGN_ITEM.getKey(),
-				SCContent.SECRET_PALE_OAK_SIGN_ITEM.getKey(),
-				SCContent.SECRET_SPRUCE_SIGN_ITEM.getKey(),
-				SCContent.SECRET_WARPED_SIGN_ITEM.getKey());
+				SCContent.SECRET_ACACIA_SIGN_ITEM.key(),
+				SCContent.SECRET_BAMBOO_SIGN_ITEM.key(),
+				SCContent.SECRET_BIRCH_SIGN_ITEM.key(),
+				SCContent.SECRET_CHERRY_SIGN_ITEM.key(),
+				SCContent.SECRET_CRIMSON_SIGN_ITEM.key(),
+				SCContent.SECRET_DARK_OAK_SIGN_ITEM.key(),
+				SCContent.SECRET_JUNGLE_SIGN_ITEM.key(),
+				SCContent.SECRET_MANGROVE_SIGN_ITEM.key(),
+				SCContent.SECRET_OAK_SIGN_ITEM.key(),
+				SCContent.SECRET_PALE_OAK_SIGN_ITEM.key(),
+				SCContent.SECRET_SPRUCE_SIGN_ITEM.key(),
+				SCContent.SECRET_WARPED_SIGN_ITEM.key());
 		tag(SCTags.Items.SULFUR_CUBE_ARCHETYPE_REINFORCED).add(
 				keyFromItem(SCContent.REINFORCED_ACACIA_LOG.get()),
 				keyFromItem(SCContent.REINFORCED_ACACIA_PLANKS.get()),
@@ -320,16 +320,16 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 		copy(SCTags.Blocks.REINFORCED_WOOL_CARPETS, SCTags.Items.REINFORCED_WOOL_CARPETS);
 
 		//minecraft tags
-		tag(ItemTags.BOOKSHELF_BOOKS).add(SCContent.SC_MANUAL.getKey());
+		tag(ItemTags.BOOKSHELF_BOOKS).add(SCContent.SC_MANUAL.key());
 		tag(BlockItemTags.BUTTONS.item()).addTag(SCTags.Items.REINFORCED_BUTTONS);
 		tag(ItemTags.DAMPENS_VIBRATIONS).addTag(SCTags.Items.REINFORCED_WOOL);
 		tag(ItemTags.DURABILITY_ENCHANTABLE).add(
-				SCContent.WIRE_CUTTERS.getKey(),
-				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.getKey(),
-				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.getKey(),
-				SCContent.UNIVERSAL_BLOCK_REMOVER.getKey(),
-				SCContent.UNIVERSAL_OWNER_CHANGER.getKey());
-		tag(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(SCContent.BRIEFCASE.getKey(), SCContent.LENS.getKey());
+				SCContent.WIRE_CUTTERS.key(),
+				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.key(),
+				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.key(),
+				SCContent.UNIVERSAL_BLOCK_REMOVER.key(),
+				SCContent.UNIVERSAL_OWNER_CHANGER.key());
+		tag(ItemTags.CAULDRON_CAN_REMOVE_DYE).add(SCContent.BRIEFCASE.key(), SCContent.LENS.key());
 		tag(ItemTags.FENCE_GATES).add(keyFromItem(SCContent.ELECTRIFIED_IRON_FENCE_GATE.get()));
 		tag(BlockItemTags.FENCES.item()).add(keyFromItem(SCContent.ELECTRIFIED_IRON_FENCE.get()));
 		tag(ItemTags.HANGING_SIGNS).addTag(SCTags.Items.SECRET_HANGING_SIGNS);
@@ -349,17 +349,17 @@ public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 		tag(ItemTags.TERRACOTTA).addTag(SCTags.Items.REINFORCED_TERRACOTTA);
 		tag(BlockItemTags.TRAPDOORS.item()).add(keyFromItem(SCContent.REINFORCED_IRON_TRAPDOOR.get()), keyFromItem(SCContent.KEYPAD_TRAPDOOR.get()), keyFromItem(SCContent.SCANNER_TRAPDOOR.get()));
 		tag(ItemTags.VANISHING_ENCHANTABLE).add(
-				SCContent.BRIEFCASE.getKey(),
-				SCContent.WIRE_CUTTERS.getKey(),
-				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.getKey(),
-				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.getKey(),
-				SCContent.UNIVERSAL_BLOCK_REMOVER.getKey(),
-				SCContent.UNIVERSAL_OWNER_CHANGER.getKey());
+				SCContent.BRIEFCASE.key(),
+				SCContent.WIRE_CUTTERS.key(),
+				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_1.key(),
+				SCContent.UNIVERSAL_BLOCK_REINFORCER_LVL_2.key(),
+				SCContent.UNIVERSAL_BLOCK_REMOVER.key(),
+				SCContent.UNIVERSAL_OWNER_CHANGER.key());
 		tag(ItemTags.WOODEN_FENCES).addTag(SCTags.Items.REINFORCED_WOODEN_FENCES);
 		tag(ItemTags.WOOL_CARPETS).addTag(SCTags.Items.REINFORCED_WOOL_CARPETS);
 
 		//NeoForge tags
-		tag(Tags.Items.BUCKETS).add(SCContent.FAKE_LAVA_BUCKET.getKey(), SCContent.FAKE_WATER_BUCKET.getKey());
+		tag(Tags.Items.BUCKETS).add(SCContent.FAKE_LAVA_BUCKET.key(), SCContent.FAKE_WATER_BUCKET.key());
 		tag(Tags.Items.CONCRETES).addTag(SCTags.Items.REINFORCED_CONCRETE);
 
 		List<ColorCollection<? extends DeferredBlock<? extends Block>>> allColoredCollections =  List.of(

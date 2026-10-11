@@ -53,19 +53,19 @@ public class ProjectorScreen extends AbstractContainerScreen<ProjectorMenu> impl
 		int left = leftPos + ((imageWidth - sliderWidth) / 2);
 
 		projectionWidthSlider = addRenderableWidget(new CallbackSlider(left, topPos + 57, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.width", ""), Component.empty(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionWidth(), true, this::applySliderValue));
-		projectionWidthSlider.setFGColor(14737632);
+		projectionWidthSlider.setLabelTextColor(14737632);
 		projectionWidthSlider.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:projector.width.description")));
 
 		projectionHeightSlider = addRenderableWidget(new CallbackSlider(left, topPos + 78, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.height", ""), Component.empty(), ProjectorBlockEntity.MIN_WIDTH, ProjectorBlockEntity.MAX_WIDTH, be.getProjectionHeight(), true, this::applySliderValue));
-		projectionHeightSlider.setFGColor(14737632);
+		projectionHeightSlider.setLabelTextColor(14737632);
 		projectionHeightSlider.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:projector.height.description")));
 
 		projectionRangeSlider = addRenderableWidget(new CallbackSlider(left, topPos + 99, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.range", ""), Component.empty(), ProjectorBlockEntity.MIN_RANGE - (be.isHorizontal() ? 16 : 0), ProjectorBlockEntity.MAX_RANGE - (be.isHorizontal() ? 16 : 0), be.getProjectionRange() - (be.isHorizontal() ? 16 : 0), true, this::applySliderValue));
-		projectionRangeSlider.setFGColor(0xE0E0E0);
+		projectionRangeSlider.setLabelTextColor(0xE0E0E0);
 		projectionRangeSlider.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:projector.range.description")));
 
 		projectionOffsetSlider = addRenderableWidget(new CallbackSlider(left, topPos + 120, sliderWidth, 20, Utils.localize("gui.securitycraft:projector.offset", ""), Component.empty(), ProjectorBlockEntity.MIN_OFFSET, ProjectorBlockEntity.MAX_OFFSET, be.getProjectionOffset(), true, this::applySliderValue));
-		projectionOffsetSlider.setFGColor(14737632);
+		projectionOffsetSlider.setLabelTextColor(14737632);
 		projectionOffsetSlider.setTooltip(Tooltip.create(Utils.localize("gui.securitycraft:projector.offset.description")));
 		//@formatter:off
 		horizontalToggleButton = addRenderableWidget(new TogglePictureButton(left + sliderWidth - 20, topPos + 36, 20, 20, 2, 16, 16, 2, button -> {

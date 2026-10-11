@@ -129,11 +129,11 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 							};
 						}
 
-						optionButtons[i].setFGColor(14737632);
+						optionButtons[i].setLabelTextColor(14737632);
 					}
 					else {
 						optionButtons[i] = Button.builder(getOptionButtonTitle(option), this::optionButtonClicked).pos(leftPos + 178, (topPos + 10) + (i * 25)).size(120, 20).build();
-						optionButtons[i].setFGColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
+						optionButtons[i].setLabelTextColor(option.toString().equals(option.getDefaultValue().toString()) ? 16777120 : 14737632);
 					}
 
 					addRenderableWidget(optionButtons[i]);
@@ -228,7 +228,7 @@ public class CustomizeBlockScreen extends AbstractContainerScreen<CustomizeBlock
 			Option<?> tempOption = ((ICustomizable) moduleInv).customOptions()[i]; //safe cast, as this method is only called when it can be casted
 
 			tempOption.toggle();
-			button.setFGColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
+			button.setLabelTextColor(tempOption.toString().equals(tempOption.getDefaultValue().toString()) ? 16777120 : 14737632);
 			button.setMessage(getOptionButtonTitle(tempOption));
 			optionButtons[i].setTooltip(Tooltip.create(getOptionDescription(i)));
 

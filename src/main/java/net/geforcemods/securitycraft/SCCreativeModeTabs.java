@@ -155,7 +155,7 @@ public class SCCreativeModeTabs {
 
 	//@formatter:off
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MINE_TAB = CREATIVE_MODE_TABS.register("mine", () -> CreativeModeTab.builder()
-			.withTabsBefore(TECHNICAL_TAB.getKey())
+			.withTabsBefore(TECHNICAL_TAB.key())
 			.icon(() -> new ItemStack(SCContent.MINE.get()))
 			.title(Component.translatable("itemGroup.securitycraft.explosives"))
 			.displayItems((itemDisplayParameters, output) -> {
@@ -181,7 +181,7 @@ public class SCCreativeModeTabs {
 			}).build());
 	//@formatter:off
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DECORATION_TAB = CREATIVE_MODE_TABS.register("decoration", () -> CreativeModeTab.builder()
-			.withTabsBefore(MINE_TAB.getKey())
+			.withTabsBefore(MINE_TAB.key())
 			.icon(() -> new ItemStack(SCContent.REINFORCED_OAK_STAIRS.get()))
 			.title(Component.translatable("itemGroup.securitycraft.decoration"))
 			.displayItems((itemDisplayParameters, output) -> {

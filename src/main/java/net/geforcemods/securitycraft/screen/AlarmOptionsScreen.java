@@ -64,7 +64,7 @@ public class AlarmOptionsScreen extends Screen {
 		plusTenSeconds = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.plus_ten_seconds"), b -> changeSoundLength(10)).pos(buttonsX + 150, buttonY).size(32, buttonHeight).build());
 		plusMinute = addRenderableWidget(Button.builder(Component.translatable("gui.securitycraft:alarm.plus_one_minute"), b -> changeSoundLength(60)).pos(buttonsX + 184, buttonY).size(32, buttonHeight).build());
 		setSoundLength(alarmScreen.soundLength);
-		addRenderableWidget(new CallbackSlider(leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", ""), Component.empty(), 0.5D, 2.0D, alarmScreen.pitch, 0.05D, 0, true, slider -> alarmScreen.pitch = (float) slider.getValue())).setFGColor(0xE0E0E0);
+		addRenderableWidget(new CallbackSlider(leftPos + imageWidth / 2 - 50, buttonY + 25, 100, 20, Utils.localize("gui.securitycraft:alarm.pitch", ""), Component.empty(), 0.5D, 2.0D, alarmScreen.pitch, 0.05D, 0, true, slider -> alarmScreen.pitch = (float) slider.getValue())).setLabelTextColor(0xE0E0E0);
 	}
 
 	@Override

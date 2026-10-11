@@ -244,7 +244,7 @@ public abstract class AbstractSecuritySeaBoat extends AbstractChestBoat implemen
 
 	@Override
 	public boolean canBoatInFluid(FluidType type) {
-		return super.canBoatInFluid(type) || type == NeoForgeMod.LAVA_TYPE;
+		return super.canBoatInFluid(type) || type == NeoForgeMod.LAVA_TYPE.value();
 	}
 
 	@Override

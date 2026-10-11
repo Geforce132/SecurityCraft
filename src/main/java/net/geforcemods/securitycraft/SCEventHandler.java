@@ -240,7 +240,7 @@ public class SCEventHandler {
 
 						return state.isSolid() && !state.is(BlockTags.BLOCKS_MOTION);
 					})
-					.map(block -> "\n" + block.getKey().identifier())
+					.map(block -> "\n" + block.key().identifier())
 					.toList();
 
 			if (!incorrectBlocksMotion.isEmpty()) {
